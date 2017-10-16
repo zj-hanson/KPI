@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="indicatordefine" icon="ui-icon-restore"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnVerify" value="审核" actionListener="#{indicatorDefineManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{indicatorDefineManagedBean.doCfm}" update="toolbar">
+                        <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUnverify" value="还原" actionListener="#{indicatorDefineManagedBean.unverify()}" icon="ui-icon-check"
+                                     rendered="#{indicatorDefineManagedBean.doUnCfm}" update="toolbar">
+                        <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">KPI维护－查看</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="指标编号"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{indicatorDefineManagedBean.currentEntity.formid}" title="formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="name" value="#{indicatorDefineManagedBean.currentEntity.name}" title="Name"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="指标定义"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="descript" value="#{indicatorDefineManagedBean.currentEntity.descript}" title="descript" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="考核部门"/></p:column>
+                    <p:column>
+                        <h:outputText id="deptno" value="#{indicatorDefineManagedBean.currentEntity.deptno}" title="deptno"  />
+                    </p:column>
+                    <p:column><h:outputText value="部门名称"/></p:column>
+                    <p:column>
+                        <h:outputText id="deptname" value="#{indicatorDefineManagedBean.currentEntity.deptname}" title="deptname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="指标类型"/></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="formtype" value="#{indicatorDefineManagedBean.currentEntity.formtype}" title="formtype"
+                                         required="true" requiredMessage="请输入指标类型" disabled="true">
+                            <f:selectItem itemLabel="数字" itemValue="N"/>
+                            <f:selectItem itemLabel="文字" itemValue="S"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputText value="计算周期"/></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="formkind" value="#{indicatorDefineManagedBean.currentEntity.formkind}" title="formkind"
+                                         required="true" requiredMessage="请输入计算周期" disabled="true">
+                            <f:selectItem itemLabel="月" itemValue="M"/>
+                            <f:selectItem itemLabel="季" itemValue="Q"/>
+                            <f:selectItem itemLabel="半年" itemValue="H"/>
+                            <f:selectItem itemLabel="一年" itemValue="Y"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="计算方式" for="valuemode" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="valuemode" value="#{indicatorDefineManagedBean.currentEntity.valuemode}" title="valuemode"
+                                         required="true" requiredMessage="请输入计算方式" disabled="true">
+                            <f:selectItem itemLabel="手动输入" itemValue="I"/>
+                            <f:selectItem itemLabel="求和" itemValue="S"/>
+                            <f:selectItem itemLabel="平均值" itemValue="A"/>
+                            <f:selectItem itemLabel="表达式" itemValue="E"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column><h:outputText value="数字格式"/></p:column>
+                    <p:column>
+                        <h:outputText id="symbol" value="#{indicatorDefineManagedBean.currentEntity.symbol}" title="symbol" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="单位"/></p:column>
+                    <p:column>
+                        <h:outputText id="unit" value="#{indicatorDefineManagedBean.currentEntity.unit}" title="unit" />
+                    </p:column>
+                    <p:column><h:outputText value="换算率"/></p:column>
+                    <p:column>
+                        <h:outputText id="rate" value="#{indicatorDefineManagedBean.currentEntity.rate}" title="rate" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="API"/></p:column>
+                    <p:column>
+                        <h:outputText id="api" value="#{indicatorDefineManagedBean.currentEntity.api}" title="api"/>
+                    </p:column>
+                    <p:column><h:outputText value="排序"/></p:column>
+                    <p:column>
+                        <h:outputText id="sortid" value="#{indicatorDefineManagedBean.currentEntity.sortid}" title="sortid"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    查询条件
+                </f:facet>
+                <h:outputLabel value="群组编号" for="queryFormId" />
+                <p:inputText id="queryFormId" value="#{roleGrantManagedBean.queryFormId}" title="编号" />
+                <h:outputLabel value="群组名称" for="queryName" />
+                <p:inputText id="queryName" value="#{roleGrantManagedBean.queryName}" title="名称" />
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{roleGrantManagedBean.init()}"  icon="ui-icon-sync"
+                                     update=":formList"/>
+                    <p:commandButton id="btnView" value="查看" action="#{roleGrantManagedBean.view('rolegrantView')}" icon="ui-icon-document"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
+                        <p:menuitem id="btnEdit" value="编辑" action="#{roleGrantManagedBean.edit('rolegrantEdit')}" icon="ui-icon-pencil"
+                                    rendered="#{roleGrantManagedBean.doEdit}" />
+                        <p:menuitem id="btnDelete" value="删除" actionListener="#{roleGrantManagedBean.delete()}" icon="ui-icon-trash"
+                                    rendered="#{roleGrantManagedBean.doDel}" update=":formList">
+                            <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                        </p:menuitem>
+                        <p:menuitem id="btnUnverify" value="还原" actionListener="#{roleGrantManagedBean.unverify()}" icon="ui-icon-lock-open"
+                                    rendered="#{roleGrantManagedBean.doUnCfm}" update=":formList"/>
+                        <p:menuitem id="btnCreate" value="新增" action="#{roleGrantManagedBean.create('rolegrantNew')}" icon="ui-icon-plus"
+                                    rendered="false"/>
+                    </p:splitButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{roleGrantManagedBean.reset()}"  icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{roleGrantManagedBean.query()}"  icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable value="#{roleGrantManagedBean.model}" var="item" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45"  lazy="true" tableStyleClass="tableList"
+                         selectionMode="single" selection="#{roleGrantManagedBean.currentEntity}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    角色授权
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="编号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.roleno}"/>
+                </p:column>
+                <p:column styleClass="Wid60">
+                    <f:facet name="header">
+                        <h:outputText value="名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.rolename}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

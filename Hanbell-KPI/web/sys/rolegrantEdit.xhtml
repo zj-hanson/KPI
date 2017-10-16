@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="rolegrant" icon="ui-icon-restore"  />
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{roleGrantManagedBean.toPrev()}" icon="ui-icon-navigate-before"
+                                     process="@this" update="formOne"
+                                     rendered="#{roleGrantManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{roleGrantManagedBean.toNext()}" icon="ui-icon-navigate-next"
+                                     process="@this" update="formOne"
+                                     rendered="#{roleGrantManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{roleGrantManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">
+                            角色授权－编辑
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="群组编号"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="roleno" value="#{roleGrantManagedBean.currentEntity.roleno}" title="roleno"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="群组名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="rolename" value="#{roleGrantManagedBean.currentEntity.rolename}" title="rolename"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="模块授权">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail" widgetVar="btnAddDetail" value="添加" actionListener="#{roleGrantManagedBean.createDetail()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').enable();"
+                                             process="@this" update=":formOne:tabView:plgDetail"/>
+                            <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{roleGrantManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{roleGrantManagedBean.doConfirmDetail()}" icon="ui-icon-check"
+                                             onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                        <p:row>
+                            <p:column styleClass="Wid20"><p:outputLabel value="部门编号" for="deptno" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="deptno" value="#{roleGrantManagedBean.currentDetail.deptno}" title="deptno"  styleClass="inputWithButton" readonly="true"
+                                             required="true" requiredMessage="请输入部门编号"/>
+                                <p:commandButton id="btnApplyDeptSelect" actionListener="#{roleGrantManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
+                                                 process="@this" >
+                                    <p:ajax event="dialogReturn" listener="#{roleGrantManagedBean.handleDialogReturnWhenEdit}"
+                                            update="deptno,deptname" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column styleClass="Wid20"><p:outputLabel value="部门名称" for="deptname" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="deptname" value="#{roleGrantManagedBean.currentDetail.dept}" title="deptname" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="tableList" value="#{roleGrantManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{roleGrantManagedBean.currentDetail}" rowKey="#{item.deptno}" >
+                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="" />
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="部门编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="部门名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dept}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60">
+
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="rolegrant" icon="ui-icon-restore"  />
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{roleGrantManagedBean.toPrev()}" icon="ui-icon-navigate-before"
+                                     process="@this" update="formOne"
+                                     rendered="#{roleGrantManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{roleGrantManagedBean.toNext()}" icon="ui-icon-navigate-next"
+                                     process="@this" update="formOne"
+                                     rendered="#{roleGrantManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnVerify" value="审核" action="#{roleGrantManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{roleGrantManagedBean.doCfm}" process="@this" update="toolbar"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">
+                            角色授权－查看
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="群组编号"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="roleno" value="#{roleGrantManagedBean.currentEntity.roleno}" title="roleno"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="群组名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="rolename" value="#{roleGrantManagedBean.currentEntity.rolename}" title="rolename"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="模块授权">
+                    <p:dataTable id="tableList" value="#{roleGrantManagedBean.detailList}" var="item" styleClass="tableList Wid100 Mtop10"
+                                 selectionMode="single" selection="#{roleGrantManagedBean.currentDetail}" rowKey="#{item.deptno}" >
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="部门编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="部门名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dept}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60">
+
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
