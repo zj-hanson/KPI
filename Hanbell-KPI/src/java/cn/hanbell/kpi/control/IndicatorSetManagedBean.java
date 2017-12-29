@@ -16,7 +16,6 @@ import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti2Bean;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -59,7 +58,8 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         newDetail2.setSeq(currentEntity.getSeq());
         newDetail2.setSortid(currentEntity.getSortid());
         newDetail2.setLvl(currentEntity.getLvl() + 1);
-        newDetail2.setValuemode(currentEntity.getValuemode());
+        newDetail2.setValueMode(currentEntity.getValueMode());
+        newDetail2.setPerfCalc(currentEntity.getPerfCalc());
         newDetail2.setSymbol(currentEntity.getSymbol());
         newDetail2.setUnit(currentEntity.getUnit());
         newDetail2.setRate(currentEntity.getRate());
@@ -195,6 +195,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         model = new IndicatorModel(indicatorBean);
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
+        model.getSortFields().put("deptno", "ASC");
         super.init();
     }
 
@@ -227,27 +228,9 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
 
     public void updatePerformance() {
         if (currentEntity != null) {
-            if (currentEntity.getTargetIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNq1(currentEntity.getActualIndicator().getNq1().divide(currentEntity.getTargetIndicator().getNq1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNq2(currentEntity.getActualIndicator().getNq2().divide(currentEntity.getTargetIndicator().getNq2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNq3(currentEntity.getActualIndicator().getNq3().divide(currentEntity.getTargetIndicator().getNq3(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNq4(currentEntity.getActualIndicator().getNq4().divide(currentEntity.getTargetIndicator().getNq4(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNh1().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNh1(currentEntity.getActualIndicator().getNh1().divide(currentEntity.getTargetIndicator().getNh1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNh2().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNh2(currentEntity.getActualIndicator().getNh2().divide(currentEntity.getTargetIndicator().getNh2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
-            if (currentEntity.getTargetIndicator().getNfy().compareTo(BigDecimal.ZERO) != 0) {
-                currentEntity.getPerformanceIndicator().setNfy(currentEntity.getActualIndicator().getNfy().divide(currentEntity.getTargetIndicator().getNfy(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
-            }
+            indicatorBean.updatePerformance(currentEntity);
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
         }
     }
 

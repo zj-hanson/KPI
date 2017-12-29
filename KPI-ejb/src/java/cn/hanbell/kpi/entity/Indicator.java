@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno"),
     @NamedQuery(name = "Indicator.findByFormtype", query = "SELECT i FROM Indicator i WHERE i.formtype = :formtype"),
     @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind"),
-    @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid"),
+    @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid ORDER BY i.seq DESC,i.sortid ASC,i.deptno ASC"),
     @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq"),
     @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno"),
     @NamedQuery(name = "Indicator.findByDeptno", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno"),
@@ -101,6 +101,11 @@ public class Indicator extends SuperEntity {
     private int seq;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "objtype")
+    private String objtype;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "deptno")
     private String deptno;
@@ -125,7 +130,11 @@ public class Indicator extends SuperEntity {
     @NotNull
     @Size(max = 10)
     @Column(name = "valuemode")
-    private String valuemode;
+    private String valueMode;
+    @NotNull
+    @Size(max = 10)
+    @Column(name = "perfcalc")
+    private String perfCalc;
     @Size(max = 10)
     @Column(name = "symbol")
     private String symbol;
@@ -234,6 +243,20 @@ public class Indicator extends SuperEntity {
         this.seq = seq;
     }
 
+    /**
+     * @return the objtype
+     */
+    public String getObjtype() {
+        return objtype;
+    }
+
+    /**
+     * @param objtype the objtype to set
+     */
+    public void setObjtype(String objtype) {
+        this.objtype = objtype;
+    }
+
     public String getDeptno() {
         return deptno;
     }
@@ -295,17 +318,31 @@ public class Indicator extends SuperEntity {
     }
 
     /**
-     * @return the valuemode
+     * @return the valueMode
      */
-    public String getValuemode() {
-        return valuemode;
+    public String getValueMode() {
+        return valueMode;
     }
 
     /**
-     * @param valuemode the valuemode to set
+     * @param valueMode the valueMode to set
      */
-    public void setValuemode(String valuemode) {
-        this.valuemode = valuemode;
+    public void setValueMode(String valueMode) {
+        this.valueMode = valueMode;
+    }
+
+    /**
+     * @return the perfCalc
+     */
+    public String getPerfCalc() {
+        return perfCalc;
+    }
+
+    /**
+     * @param perfCalc the perfCalc to set
+     */
+    public void setPerfCalc(String perfCalc) {
+        this.perfCalc = perfCalc;
     }
 
     /**

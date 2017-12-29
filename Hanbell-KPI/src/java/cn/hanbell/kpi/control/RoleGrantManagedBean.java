@@ -214,6 +214,7 @@ public class RoleGrantManagedBean extends SuperSingleBean<Role> {
         detailDeleted.put(detailEJB, this.deletedDetailList);
         superEJB = systemRoleBean;
         setModel(new SystemRoleModel(systemRoleBean));
+        model.getSortFields().put("roleno", "ASC");
         super.init();
     }
 

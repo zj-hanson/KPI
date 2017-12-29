@@ -49,6 +49,7 @@ public class RoleManagedBean extends SuperMultiBean<Role, RoleDetail> {
         this.superEJB = systemRoleBean;
         this.detailEJB = systemRoleDetailBean;
         setModel(new SystemRoleModel(systemRoleBean));
+        model.getSortFields().put("roleno", "ASC");
         super.init();
     }
 

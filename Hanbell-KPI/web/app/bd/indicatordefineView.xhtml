@@ -47,11 +47,11 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><h:outputText value="考核部门"/></p:column>
+                    <p:column><h:outputText value="考核对象"/></p:column>
                     <p:column>
                         <h:outputText id="deptno" value="#{indicatorDefineManagedBean.currentEntity.deptno}" title="deptno"  />
                     </p:column>
-                    <p:column><h:outputText value="部门名称"/></p:column>
+                    <p:column><h:outputText value="对象名称"/></p:column>
                     <p:column>
                         <h:outputText id="deptname" value="#{indicatorDefineManagedBean.currentEntity.deptname}" title="deptname" />
                     </p:column>
@@ -79,7 +79,7 @@
                 <p:row>
                     <p:column><p:outputLabel value="计算方式" for="valuemode" /></p:column>
                     <p:column>
-                        <p:selectOneMenu id="valuemode" value="#{indicatorDefineManagedBean.currentEntity.valuemode}" title="valuemode"
+                        <p:selectOneMenu id="valuemode" value="#{indicatorDefineManagedBean.currentEntity.valueMode}" title="valuemode"
                                          required="true" requiredMessage="请输入计算方式" disabled="true">
                             <f:selectItem itemLabel="手动输入" itemValue="I"/>
                             <f:selectItem itemLabel="求和" itemValue="S"/>
@@ -87,9 +87,13 @@
                             <f:selectItem itemLabel="表达式" itemValue="E"/>
                         </p:selectOneMenu>
                     </p:column>
-                    <p:column><h:outputText value="数字格式"/></p:column>
+                    <p:column><p:outputLabel value="达标计算" for="perfCalc" /></p:column>
                     <p:column>
-                        <h:outputText id="symbol" value="#{indicatorDefineManagedBean.currentEntity.symbol}" title="symbol" />
+                        <p:selectOneMenu id="perfCalc" value="#{indicatorDefineManagedBean.currentEntity.perfCalc}" title="perfCalc"
+                                         required="true" requiredMessage="达标计算" disabled="true">
+                            <f:selectItem itemLabel="实际/目标" itemValue="AT"/>
+                            <f:selectItem itemLabel="目标/实际" itemValue="TA"/>
+                        </p:selectOneMenu>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -103,13 +107,23 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><h:outputText value="API"/></p:column>
+                    <p:column><h:outputText value="数字格式"/></p:column>
                     <p:column>
-                        <h:outputText id="api" value="#{indicatorDefineManagedBean.currentEntity.api}" title="api"/>
+                        <h:outputText id="symbol" value="#{indicatorDefineManagedBean.currentEntity.symbol}" title="symbol" />
                     </p:column>
                     <p:column><h:outputText value="排序"/></p:column>
                     <p:column>
                         <h:outputText id="sortid" value="#{indicatorDefineManagedBean.currentEntity.sortid}" title="sortid"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="API"/></p:column>
+                    <p:column>
+                        <h:outputText id="api" value="#{indicatorDefineManagedBean.currentEntity.api}" title="api"/>
+                    </p:column>
+                    <p:column></p:column>
+                    <p:column>
+
                     </p:column>
                 </p:row>
             </p:panelGrid>

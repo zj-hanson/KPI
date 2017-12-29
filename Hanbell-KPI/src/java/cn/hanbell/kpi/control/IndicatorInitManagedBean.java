@@ -11,7 +11,6 @@ import cn.hanbell.kpi.entity.IndicatorDefine;
 import java.util.Calendar;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -76,7 +75,8 @@ public class IndicatorInitManagedBean extends IndicatorDefineManagedBean {
                 }
                 e.setSortid(id.getSortid());
                 e.setLvl(0);
-                e.setValuemode(id.getValuemode());
+                e.setValueMode(id.getValueMode());
+                e.setPerfCalc(id.getPerfCalc());
                 e.setSymbol(id.getSymbol());
                 e.setUnit(id.getUnit());
                 e.setRate(id.getRate());

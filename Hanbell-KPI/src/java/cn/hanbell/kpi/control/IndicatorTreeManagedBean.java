@@ -104,6 +104,8 @@ public class IndicatorTreeManagedBean extends IndicatorSetManagedBean {
         this.selectedNode = selectedNode;
         if (selectedNode != null) {
             currentEntity = (Indicator) selectedNode.getData();
+            detailList = detailEJB.findByPId(currentEntity.getId());
+            detailList2 = detailEJB2.findByPId(currentEntity.getId());
             setToolBar();
         }
     }

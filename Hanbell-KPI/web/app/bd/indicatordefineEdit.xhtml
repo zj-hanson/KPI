@@ -42,17 +42,17 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column styleClass="Wid20"><p:outputLabel value="考核部门" for="deptno" /></p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="考核对象" for="deptno" /></p:column>
                     <p:column styleClass="Wid30">
                         <p:inputText id="deptno" value="#{indicatorDefineManagedBean.currentEntity.deptno}" title="deptno"  styleClass="inputWithButton" readonly="true"
-                                     required="true" requiredMessage="请输入考核部门"/>
+                                     required="true" requiredMessage="请输入考核对象"/>
                         <p:commandButton id="btnApplyDeptSelect" actionListener="#{indicatorDefineManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
                                          process="@this" >
                             <p:ajax event="dialogReturn" listener="#{indicatorDefineManagedBean.handleDialogReturnWhenNew}"
                                     update="deptno,deptname" />
                         </p:commandButton>
                     </p:column>
-                    <p:column styleClass="Wid20"><p:outputLabel value="部门名称" for="deptname" /></p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="对象名称" for="deptname" /></p:column>
                     <p:column styleClass="Wid30">
                         <h:outputText id="deptname" value="#{indicatorDefineManagedBean.currentEntity.deptname}" title="deptname" />
                     </p:column>
@@ -80,7 +80,7 @@
                 <p:row>
                     <p:column><p:outputLabel value="计算方式" for="valuemode" /></p:column>
                     <p:column>
-                        <p:selectOneMenu id="valuemode" value="#{indicatorDefineManagedBean.currentEntity.valuemode}" title="valuemode"
+                        <p:selectOneMenu id="valuemode" value="#{indicatorDefineManagedBean.currentEntity.valueMode}" title="valuemode"
                                          required="true" requiredMessage="请输入计算方式">
                             <f:selectItem itemLabel="手动输入" itemValue="I"/>
                             <f:selectItem itemLabel="求和" itemValue="S"/>
@@ -88,9 +88,13 @@
                             <f:selectItem itemLabel="表达式" itemValue="E"/>
                         </p:selectOneMenu>
                     </p:column>
-                    <p:column><p:outputLabel value="数字格式" for="symbol" /></p:column>
+                    <p:column><p:outputLabel value="达标计算" for="perfCalc" /></p:column>
                     <p:column>
-                        <p:inputText id="symbol" value="#{indicatorDefineManagedBean.currentEntity.symbol}" title="symbol" />
+                        <p:selectOneMenu id="perfCalc" value="#{indicatorDefineManagedBean.currentEntity.perfCalc}" title="perfCalc"
+                                         required="true" requiredMessage="达标计算">
+                            <f:selectItem itemLabel="实际/目标" itemValue="AT"/>
+                            <f:selectItem itemLabel="目标/实际" itemValue="TA"/>
+                        </p:selectOneMenu>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -104,15 +108,25 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><p:outputLabel value="API" for="api" /></p:column>
+                    <p:column><p:outputLabel value="数字格式" for="symbol" /></p:column>
                     <p:column>
-                        <p:inputText id="api" value="#{indicatorDefineManagedBean.currentEntity.api}" title="api"
-                                     required="true" requiredMessage="请输入API"/>
+                        <p:inputText id="symbol" value="#{indicatorDefineManagedBean.currentEntity.symbol}" title="symbol" />
                     </p:column>
                     <p:column><p:outputLabel value="排序" for="sortid" /></p:column>
                     <p:column>
                         <p:inputText id="sortid" value="#{indicatorDefineManagedBean.currentEntity.sortid}" title="sortid"
                                      required="true" requiredMessage="请输入指标顺序"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="API" for="api" /></p:column>
+                    <p:column>
+                        <p:inputText id="api" value="#{indicatorDefineManagedBean.currentEntity.api}" title="api"
+                                     required="true" requiredMessage="请输入API"/>
+                    </p:column>
+                    <p:column></p:column>
+                    <p:column>
+                        
                     </p:column>
                 </p:row>
             </p:panelGrid>

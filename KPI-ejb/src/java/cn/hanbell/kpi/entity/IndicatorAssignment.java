@@ -7,6 +7,7 @@ package cn.hanbell.kpi.entity;
 
 import com.lightshell.comm.SuperDetailEntity;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -91,6 +92,11 @@ public class IndicatorAssignment extends SuperDetailEntity {
     private String descript;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "objtype")
+    private String objtype;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "deptno")
     private String deptno;
@@ -115,7 +121,11 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @NotNull
     @Size(max = 10)
     @Column(name = "valuemode")
-    private String valuemode;
+    private String valueMode;
+    @NotNull
+    @Size(max = 10)
+    @Column(name = "perfcalc")
+    private String perfCalc;
     @Size(max = 10)
     @Column(name = "symbol")
     private String symbol;
@@ -211,6 +221,20 @@ public class IndicatorAssignment extends SuperDetailEntity {
         this.descript = descript;
     }
 
+    /**
+     * @return the objtype
+     */
+    public String getObjtype() {
+        return objtype;
+    }
+
+    /**
+     * @param objtype the objtype to set
+     */
+    public void setObjtype(String objtype) {
+        this.objtype = objtype;
+    }
+
     public String getDeptno() {
         return deptno;
     }
@@ -272,17 +296,31 @@ public class IndicatorAssignment extends SuperDetailEntity {
     }
 
     /**
-     * @return the valuemode
+     * @return the valueMode
      */
-    public String getValuemode() {
-        return valuemode;
+    public String getValueMode() {
+        return valueMode;
     }
 
     /**
-     * @param valuemode the valuemode to set
+     * @param valueMode the valueMode to set
      */
-    public void setValuemode(String valuemode) {
-        this.valuemode = valuemode;
+    public void setValueMode(String valueMode) {
+        this.valueMode = valueMode;
+    }
+
+    /**
+     * @return the perfCalc
+     */
+    public String getPerfCalc() {
+        return perfCalc;
+    }
+
+    /**
+     * @param perfCalc the perfCalc to set
+     */
+    public void setPerfCalc(String perfCalc) {
+        this.perfCalc = perfCalc;
     }
 
     /**
@@ -400,13 +438,15 @@ public class IndicatorAssignment extends SuperDetailEntity {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof IndicatorAssignment)) {
             return false;
         }
         IndicatorAssignment other = (IndicatorAssignment) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
+        if (this.id != null && other.id != null) {
+            return Objects.equals(this.id, other.id);
+        }
+        if (Objects.equals(this.pid, other.pid)) {
+            return Objects.equals(this.deptno, other.deptno);
         }
         return true;
     }

@@ -58,6 +58,11 @@ public class IndicatorDefine extends SuperEntity {
     @Size(max = 400)
     @Column(name = "descript")
     private String descript;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "objtype")
+    private String objtype;
     @Size(max = 10)
     @Column(name = "deptno")
     private String deptno;
@@ -72,7 +77,12 @@ public class IndicatorDefine extends SuperEntity {
     @NotNull
     @Size(max = 10)
     @Column(name = "valuemode")
-    private String valuemode;
+    private String valueMode;
+    @Basic(optional = false)
+    @NotNull
+    @Size(max = 10)
+    @Column(name = "perfcalc")
+    private String perfCalc;
     @Size(max = 10)
     @Column(name = "symbol")
     private String symbol;
@@ -149,6 +159,20 @@ public class IndicatorDefine extends SuperEntity {
         this.descript = descript;
     }
 
+    /**
+     * @return the objtype
+     */
+    public String getObjtype() {
+        return objtype;
+    }
+
+    /**
+     * @param objtype the objtype to set
+     */
+    public void setObjtype(String objtype) {
+        this.objtype = objtype;
+    }
+
     public String getDeptno() {
         return deptno;
     }
@@ -180,17 +204,31 @@ public class IndicatorDefine extends SuperEntity {
     }
 
     /**
-     * @return the valuemode
+     * @return the valueMode
      */
-    public String getValuemode() {
-        return valuemode;
+    public String getValueMode() {
+        return valueMode;
     }
 
     /**
-     * @param valuemode the valuemode to set
+     * @param valueMode the valueMode to set
      */
-    public void setValuemode(String valuemode) {
-        this.valuemode = valuemode;
+    public void setValueMode(String valueMode) {
+        this.valueMode = valueMode;
+    }
+
+    /**
+     * @return the perfCalc
+     */
+    public String getPerfCalc() {
+        return perfCalc;
+    }
+
+    /**
+     * @param perfCalc the perfCalc to set
+     */
+    public void setPerfCalc(String perfCalc) {
+        this.perfCalc = perfCalc;
     }
 
     /**
