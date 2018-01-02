@@ -15,7 +15,9 @@ import cn.hanbell.kpi.entity.IndicatorAssignment;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti2Bean;
+import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -40,6 +42,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
 
     protected String queryDeptno;
     protected String queryDeptname;
+    private int queryYear;
 
     public IndicatorSetManagedBean() {
         super(Indicator.class, IndicatorDepartment.class, IndicatorAssignment.class);
@@ -199,21 +202,63 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         super.init();
     }
 
+    public void print(String rptdesign, String reportFormat) throws Exception {
+        if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
+            HashMap<String, Object> reportParams = new HashMap<>();
+            reportParams.put("company", userManagedBean.getCurrentCompany().getName());
+            reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
+            reportParams.put("JNDIName", this.currentPrgGrant.getSysprg().getRptjndi());
+            if (!this.model.getFilterFields().isEmpty()) {
+                reportParams.put("filterFields", BaseLib.convertMapToStringWithClass(this.model.getFilterFields()));
+            } else {
+                reportParams.put("filterFields", "");
+            }
+            if (!this.model.getSortFields().isEmpty()) {
+                reportParams.put("sortFields", BaseLib.convertMapToString(this.model.getSortFields()));
+            } else {
+                reportParams.put("sortFields", "");
+            }
+            this.fileName = this.currentPrgGrant.getSysprg().getApi() + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + reportFormat;
+            String reportName = reportPath + rptdesign;
+            String outputName = reportOutputPath + this.fileName;
+            this.reportViewPath = reportViewContext + this.fileName;
+            try {
+                if (this.currentPrgGrant.getSysprg().getRptclazz() != null) {
+                    reportClassLoader = Class.forName(this.currentPrgGrant.getSysprg().getRptclazz()).getClassLoader();
+                }
+                //初始配置
+                this.reportInitAndConfig();
+                //生成报表
+                this.reportRunAndOutput(reportName, reportParams, outputName, reportFormat, null);
+                //预览报表
+                this.preview();
+            } catch (Exception ex) {
+                throw ex;
+            }
+        }
+    }
+
     @Override
     public void query() {
-        if (this.model != null) {
-            this.model.getFilterFields().clear();
-            if (this.queryName != null && !"".equals(this.queryName)) {
-                this.model.getFilterFields().put("name", this.queryName);
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFormId != null && !"".equals(queryFormId)) {
+                model.getFilterFields().put("formid", queryFormId);
             }
-            if (this.queryDeptno != null && !"".equals(this.queryDeptno)) {
-                this.model.getFilterFields().put("deptno", this.queryDeptno);
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("name", queryName);
             }
-            if (this.queryDeptname != null && !"".equals(this.queryDeptname)) {
-                this.model.getFilterFields().put("deptname", this.queryDeptname);
+            if (queryDeptno != null && !"".equals(queryDeptno)) {
+                model.getFilterFields().put("deptno", queryDeptno);
+            }
+            if (queryDeptname != null && !"".equals(queryDeptname)) {
+                model.getFilterFields().put("deptname", queryDeptname);
+            }
+            if (queryYear > 2016) {
+                model.getFilterFields().put("seq", queryYear);
             }
             if (queryState != null && !"ALL".equals(queryState)) {
-                this.model.getFilterFields().put("status", queryState);
+                model.getFilterFields().put("status", queryState);
             }
         }
     }
@@ -221,9 +266,9 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
     @Override
     public void reset() {
         super.reset();
-        this.queryName = null;
-        this.queryDeptno = null;
-        this.queryDeptname = null;
+        queryName = null;
+        queryDeptno = null;
+        queryDeptname = null;
     }
 
     public void updatePerformance() {
@@ -260,6 +305,20 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
      */
     public void setQueryDeptname(String queryDeptname) {
         this.queryDeptname = queryDeptname;
+    }
+
+    /**
+     * @return the queryYear
+     */
+    public int getQueryYear() {
+        return queryYear;
+    }
+
+    /**
+     * @param queryYear the queryYear to set
+     */
+    public void setQueryYear(int queryYear) {
+        this.queryYear = queryYear;
     }
 
 }

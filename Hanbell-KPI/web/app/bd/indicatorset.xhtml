@@ -13,18 +13,22 @@
                 <f:facet name="header">
                     查询条件
                 </f:facet>
-                <h:outputLabel value="名称" for="queryName" />
+                <h:outputLabel value="指标编号" for="queryFormId" />
+                <p:inputText id="queryFormId" value="#{indicatorSetManagedBean.queryFormId}" title="指标编号" />
+                <h:outputLabel value="指标名称" for="queryName" />
                 <p:inputText id="queryName" value="#{indicatorSetManagedBean.queryName}" title="名称" />
+                <h:outputLabel value="考核部门" for="queryDeptno" />
+                <p:inputText id="queryDeptno" value="#{indicatorSetManagedBean.queryDeptno}" title="考核部门" />
+                <h:outputLabel value="部门名称" for="queryDeptname" />
+                <p:inputText id="queryDeptname" value="#{indicatorSetManagedBean.queryDeptname}" title="部门名称" />
+                <h:outputLabel value="年度" for="queryYear" />
+                <p:spinner id="queryYear" value="#{indicatorSetManagedBean.queryYear}" title="年度" min="2016" max="2020"/>
                 <h:outputLabel value="状态" for="queryState" />
                 <p:selectOneMenu id="queryState" value="#{indicatorSetManagedBean.queryState}" title="状态" >
                     <f:selectItem itemLabel="全部" itemValue="ALL"/>
                     <f:selectItem itemLabel="未审核" itemValue="N"/>
                     <f:selectItem itemLabel="已审核" itemValue="V"/>
                 </p:selectOneMenu>
-                <h:outputLabel value="考核部门" for="queryDeptno" />
-                <p:inputText id="queryDeptno" value="#{indicatorSetManagedBean.queryDeptno}" title="考核部门" />
-                <h:outputLabel value="部门名称" for="queryDeptname" />
-                <p:inputText id="queryDeptname" value="#{indicatorSetManagedBean.queryDeptname}" title="部门名称" />
             </p:panelGrid>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
@@ -45,6 +49,8 @@
                                     rendered="#{indicatorSetManagedBean.doUnCfm}" update=":formList"/>
                         <p:menuitem id="btnCreate" value="新增" icon="ui-icon-plus" action="#{indicatorSetManagedBean.create('indicatorsetNew')}"
                                     rendered="#{indicatorSetManagedBean.doAdd}" process="@this"/>
+                        <p:menuitem id="btnExport" value="导出" icon="ui-icon-print" actionListener="#{indicatorSetManagedBean.print('indicatorlist.rptdesign','xls')}"
+                                    rendered="#{indicatorSetManagedBean.doPrt}" process="@this"/>
                     </p:splitButton>
                     <p:commandButton id="btnReset" value="重置" actionListener="#{indicatorSetManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
@@ -102,7 +108,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formList" trigger="btnUnverify">
+            <p:blockUI id="blockUI" block="formList" trigger="btnUnverify,btnExport">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
