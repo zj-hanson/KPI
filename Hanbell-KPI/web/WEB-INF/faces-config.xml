@@ -68,6 +68,11 @@
         <description>系统模块一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
+            <from-outcome>companygrant</from-outcome>
+            <to-view-id>/sys/companygrant.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>systemrole</from-outcome>
             <to-view-id>/sys/systemrole.xhtml</to-view-id>
             <redirect/>
@@ -87,90 +92,100 @@
         <description>基础模块一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
-            <from-outcome>companygrant</from-outcome>
-            <to-view-id>/app/bd/companygrant.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>indicator</from-outcome>
-            <to-view-id>/app/bd/indicator.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicator.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatordefine</from-outcome>
-            <to-view-id>/app/bd/indicatordefine.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatordefine.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatorinit</from-outcome>
-            <to-view-id>/app/bd/indicatorinit.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatorinit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatorset</from-outcome>
-            <to-view-id>/app/bd/indicatorset.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatorset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatortree</from-outcome>
-            <to-view-id>/app/bd/indicatortree.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatortree.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>category</from-outcome>
+            <to-view-id>/app/prod/category.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>product</from-outcome>
+            <to-view-id>/app/prod/product.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>productset</from-outcome>
+            <to-view-id>/app/prod/productset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <description>指标定义</description>
-        <from-view-id>/app/bd/indicatordefine.xhtml</from-view-id>
+        <description>部门指标定义</description>
+        <from-view-id>/app/dept/indicatordefine.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>indicatordefineNew</from-outcome>
-            <to-view-id>/app/bd/indicatordefineNew.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatordefineNew.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatordefineEdit</from-outcome>
-            <to-view-id>/app/bd/indicatordefineEdit.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatordefineEdit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatordefineView</from-outcome>
-            <to-view-id>/app/bd/indicatordefineView.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatordefineView.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <description>指标设置</description>
-        <from-view-id>/app/bd/indicatorset.xhtml</from-view-id>
+        <description>部门指标设置</description>
+        <from-view-id>/app/dept/indicatorset.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>indicatorsetNew</from-outcome>
-            <to-view-id>/app/bd/indicatorsetNew.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatorsetNew.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatorsetEdit</from-outcome>
-            <to-view-id>/app/bd/indicatorsetEdit.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatorsetEdit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatorsetView</from-outcome>
-            <to-view-id>/app/bd/indicatorsetView.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatorsetView.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <description>指标关系</description>
-        <from-view-id>/app/bd/indicatortree.xhtml</from-view-id>
+        <description>部门指标关系</description>
+        <from-view-id>/app/dept/indicatortree.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>indicatortreeNew</from-outcome>
-            <to-view-id>/app/bd/indicatortreeNew.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatortreeNew.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatortreeEdit</from-outcome>
-            <to-view-id>/app/bd/indicatortreeEdit.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatortreeEdit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>indicatortreeView</from-outcome>
-            <to-view-id>/app/bd/indicatortreeView.xhtml</to-view-id>
+            <to-view-id>/app/dept/indicatortreeView.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -180,6 +195,11 @@
         <navigation-case>
             <from-outcome>departmentSelect</from-outcome>
             <to-view-id>/app/df/departmentSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>categorySelect</from-outcome>
+            <to-view-id>/app/df/categorySelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

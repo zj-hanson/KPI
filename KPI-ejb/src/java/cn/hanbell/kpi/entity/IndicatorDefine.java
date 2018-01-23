@@ -91,6 +91,10 @@ public class IndicatorDefine extends SuperEntity {
     private String unit;
     @Column(name = "rate")
     private BigDecimal rate;
+    @Column(name = "minNum")
+    private BigDecimal minNum;
+    @Column(name = "maxNum")
+    private BigDecimal maxNum;
     @Column(name = "limited")
     private boolean limited;
     @Size(max = 45)
@@ -101,8 +105,11 @@ public class IndicatorDefine extends SuperEntity {
     private String remark;
 
     public IndicatorDefine() {
-        this.limited = false;
         this.symbol = "";
+        this.rate = BigDecimal.ONE;
+        this.minNum = BigDecimal.ZERO;
+        this.maxNum = BigDecimal.ZERO;
+        this.limited = false;
     }
 
     public String getCompany() {
@@ -307,6 +314,34 @@ public class IndicatorDefine extends SuperEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * @return the minNum
+     */
+    public BigDecimal getMinNum() {
+        return minNum;
+    }
+
+    /**
+     * @param minNum the minNum to set
+     */
+    public void setMinNum(BigDecimal minNum) {
+        this.minNum = minNum;
+    }
+
+    /**
+     * @return the maxNum
+     */
+    public BigDecimal getMaxNum() {
+        return maxNum;
+    }
+
+    /**
+     * @param maxNum the maxNum to set
+     */
+    public void setMaxNum(BigDecimal maxNum) {
+        this.maxNum = maxNum;
     }
 
     @Override

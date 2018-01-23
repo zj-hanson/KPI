@@ -134,6 +134,10 @@ public class IndicatorAssignment extends SuperDetailEntity {
     private String unit;
     @Column(name = "rate")
     private BigDecimal rate;
+    @Column(name = "minNum")
+    private BigDecimal minNum;
+    @Column(name = "maxNum")
+    private BigDecimal maxNum;
     @Column(name = "limited")
     private boolean limited;
     @Column(name = "assigned")
@@ -151,6 +155,9 @@ public class IndicatorAssignment extends SuperDetailEntity {
     private String status;
 
     public IndicatorAssignment() {
+        this.rate = BigDecimal.ONE;
+        this.minNum = BigDecimal.ZERO;
+        this.maxNum = BigDecimal.ZERO;
         this.limited = false;
         this.assigned = false;
     }
@@ -413,6 +420,34 @@ public class IndicatorAssignment extends SuperDetailEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * @return the minNum
+     */
+    public BigDecimal getMinNum() {
+        return minNum;
+    }
+
+    /**
+     * @param minNum the minNum to set
+     */
+    public void setMinNum(BigDecimal minNum) {
+        this.minNum = minNum;
+    }
+
+    /**
+     * @return the maxNum
+     */
+    public BigDecimal getMaxNum() {
+        return maxNum;
+    }
+
+    /**
+     * @param maxNum the maxNum to set
+     */
+    public void setMaxNum(BigDecimal maxNum) {
+        this.maxNum = maxNum;
     }
 
     /**

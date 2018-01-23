@@ -64,6 +64,7 @@ public class IndicatorInitManagedBean extends IndicatorDefineManagedBean {
                 e.setDescript(id.getDescript());
                 e.setPid(id.getId());
                 e.setSeq(queryYear);
+                e.setObjtype("D");
                 if (queryDeptno != null && queryDeptname != null && !"".equals(queryDeptno) && !"".equals(queryDeptname)) {
                     e.setDeptno(queryDeptno);
                     e.setDeptname(queryDeptname);
@@ -80,6 +81,8 @@ public class IndicatorInitManagedBean extends IndicatorDefineManagedBean {
                 e.setSymbol(id.getSymbol());
                 e.setUnit(id.getUnit());
                 e.setRate(id.getRate());
+                e.setMinNum(id.getMinNum());
+                e.setMaxNum(id.getMaxNum());
                 e.setLimited(id.isLimited());
                 e.setApi(id.getApi());
                 e.setStatusToNew();

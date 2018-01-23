@@ -181,8 +181,6 @@ public class MenuManagedBean implements Serializable {
             }
             model.addElement(appmenu);
 
-            kpimenu = new DefaultSubMenu("KPI");
-            kpimenu.setIcon("menu");
             roleDetailList = roleDetailBean.findByUserId(userManagedBean.getCurrentUser().getUserid());
             for (RoleDetail r : roleDetailList) {
                 roleGrantList = roleGrantModuleBean.findByRoleId(r.getPid());
@@ -210,10 +208,32 @@ public class MenuManagedBean implements Serializable {
                     return 1;
                 }
             });
+            
+            kpimenu = new DefaultSubMenu("部门KPI");
+            kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
                 submenu = new DefaultSubMenu(r.getDept());
                 submenu.setIcon("menu");
-                indicatorDepartmentList = indicatorDepartmentBean.findByDeptno(r.getDeptno());
+                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "D");
+                if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
+                    for (IndicatorDepartment i : indicatorDepartmentList) {
+                        menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
+                        menuitem.setIcon("menu");
+                        menuitem.setOutcome(i.getParent().getApi());
+                        menuitem.setParam("id", i.getParent().getId());
+                        submenu.addElement(menuitem);
+                    }
+                }
+                kpimenu.addElement(submenu);
+            }
+            model.addElement(kpimenu);
+            
+            kpimenu = new DefaultSubMenu("产品KPI");
+            kpimenu.setIcon("menu");
+            for (RoleGrantModule r : grantList) {
+                submenu = new DefaultSubMenu(r.getDept());
+                submenu.setIcon("menu");
+                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "P");
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
                     for (IndicatorDepartment i : indicatorDepartmentList) {
                         menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());

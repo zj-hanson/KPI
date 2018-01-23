@@ -86,9 +86,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public List<Indicator> findRootByCompany(String company) {
+    public List<Indicator> findRootByCompany(String company, String objtype) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByCompany");
         query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
         try {
             return query.getResultList();
         } catch (Exception ex) {
@@ -165,6 +166,42 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         if (entity != null) {
             switch (entity.getPerfCalc()) {
                 case "AT":
+                    if (entity.getTargetIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN01(entity.getActualIndicator().getN01().divide(entity.getTargetIndicator().getN01(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN02(entity.getActualIndicator().getN02().divide(entity.getTargetIndicator().getN02(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN03(entity.getActualIndicator().getN03().divide(entity.getTargetIndicator().getN03(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN04(entity.getActualIndicator().getN04().divide(entity.getTargetIndicator().getN04(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN05(entity.getActualIndicator().getN05().divide(entity.getTargetIndicator().getN05(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN06(entity.getActualIndicator().getN06().divide(entity.getTargetIndicator().getN06(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN07(entity.getActualIndicator().getN07().divide(entity.getTargetIndicator().getN07(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN08(entity.getActualIndicator().getN08().divide(entity.getTargetIndicator().getN08(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN09(entity.getActualIndicator().getN09().divide(entity.getTargetIndicator().getN09(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN10(entity.getActualIndicator().getN10().divide(entity.getTargetIndicator().getN10(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN11(entity.getActualIndicator().getN11().divide(entity.getTargetIndicator().getN11(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getTargetIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN12(entity.getActualIndicator().getN12().divide(entity.getTargetIndicator().getN12(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
                     if (entity.getTargetIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
                         entity.getPerformanceIndicator().setNq1(entity.getActualIndicator().getNq1().divide(entity.getTargetIndicator().getNq1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
                     }
@@ -188,6 +225,42 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     }
                     break;
                 case "TA":
+                    if (entity.getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN01(entity.getTargetIndicator().getN01().divide(entity.getActualIndicator().getN01(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN02(entity.getTargetIndicator().getN02().divide(entity.getActualIndicator().getN02(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN03(entity.getTargetIndicator().getN03().divide(entity.getActualIndicator().getN03(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN04(entity.getTargetIndicator().getN04().divide(entity.getActualIndicator().getN04(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN05(entity.getTargetIndicator().getN05().divide(entity.getActualIndicator().getN05(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN06(entity.getTargetIndicator().getN06().divide(entity.getActualIndicator().getN06(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN07(entity.getTargetIndicator().getN07().divide(entity.getActualIndicator().getN07(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN08(entity.getTargetIndicator().getN08().divide(entity.getActualIndicator().getN08(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN09(entity.getTargetIndicator().getN09().divide(entity.getActualIndicator().getN09(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN10(entity.getTargetIndicator().getN10().divide(entity.getActualIndicator().getN10(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN11(entity.getTargetIndicator().getN11().divide(entity.getActualIndicator().getN11(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
+                    if (entity.getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                        entity.getPerformanceIndicator().setN12(entity.getTargetIndicator().getN12().divide(entity.getActualIndicator().getN12(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                    }
                     if (entity.getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
                         entity.getPerformanceIndicator().setNq1(entity.getTargetIndicator().getNq1().divide(entity.getActualIndicator().getNq1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
                     }

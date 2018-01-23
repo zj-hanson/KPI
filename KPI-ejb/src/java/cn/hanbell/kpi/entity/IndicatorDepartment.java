@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "IndicatorDepartment.findById", query = "SELECT i FROM IndicatorDepartment i WHERE i.id = :id"),
     @NamedQuery(name = "IndicatorDepartment.findByPId", query = "SELECT i FROM IndicatorDepartment i WHERE i.pid = :pid"),
     @NamedQuery(name = "IndicatorDepartment.findByPIdAndSeq", query = "SELECT i FROM IndicatorDepartment i WHERE i.pid= :pid AND i.seq = :seq"),
-    @NamedQuery(name = "IndicatorDepartment.findByDeptno", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno ORDER by i.parent.seq DESC,i.parent.sortid"),
+    @NamedQuery(name = "IndicatorDepartment.findByDeptnoAndType", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno AND i.parent.objtype = :objtype ORDER by i.parent.seq DESC,i.parent.sortid"),
     @NamedQuery(name = "IndicatorDepartment.findByDeptname", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptname = :deptname"),
     @NamedQuery(name = "IndicatorDepartment.findByUserid", query = "SELECT i FROM IndicatorDepartment i WHERE i.userid = :userid"),
     @NamedQuery(name = "IndicatorDepartment.findByUsername", query = "SELECT i FROM IndicatorDepartment i WHERE i.username = :username")})

@@ -31,9 +31,10 @@ public class IndicatorDepartmentBean extends SuperEJBForKPI<IndicatorDepartment>
         }
     }
 
-    public List<IndicatorDepartment> findByDeptno(String deptno) {
-        Query query = getEntityManager().createNamedQuery("IndicatorDepartment.findByDeptno");
+    public List<IndicatorDepartment> findByDeptnoAndType(String deptno, String objtype) {
+        Query query = getEntityManager().createNamedQuery("IndicatorDepartment.findByDeptnoAndType");
         query.setParameter("deptno", deptno);
+        query.setParameter("objtype", objtype);
         try {
             return query.getResultList();
         } catch (Exception ex) {

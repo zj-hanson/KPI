@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Indicator.findAll", query = "SELECT i FROM Indicator i"),
     @NamedQuery(name = "Indicator.findById", query = "SELECT i FROM Indicator i WHERE i.id = :id"),
-    @NamedQuery(name = "Indicator.findByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company ORDER BY i.seq DESC,i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype ORDER BY i.seq DESC,i.sortid ASC"),
     @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno"),
     @NamedQuery(name = "Indicator.findByFormtype", query = "SELECT i FROM Indicator i WHERE i.formtype = :formtype"),
     @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind"),
@@ -120,6 +120,18 @@ public class Indicator extends SuperEntity {
     @Size(max = 20)
     @Column(name = "username")
     private String username;
+
+    @Column(name = "productId")
+    private int productId;
+    @Size(max = 20)
+    @Column(name = "product")
+    private String product;
+    @Column(name = "categoryId")
+    private int categoryId;
+    @Size(max = 20)
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "sortid")
     private int sortid;
     @Basic(optional = false)
@@ -143,6 +155,10 @@ public class Indicator extends SuperEntity {
     private String unit;
     @Column(name = "rate")
     private BigDecimal rate;
+    @Column(name = "minNum")
+    private BigDecimal minNum;
+    @Column(name = "maxNum")
+    private BigDecimal maxNum;
     @Column(name = "limited")
     private boolean limited;
     @Column(name = "assigned")
@@ -157,6 +173,9 @@ public class Indicator extends SuperEntity {
     public Indicator() {
         this.pid = 0;
         this.symbol = "";
+        this.rate = BigDecimal.ONE;
+        this.minNum = BigDecimal.ZERO;
+        this.maxNum = BigDecimal.ZERO;
         this.limited = false;
         this.assigned = false;
     }
@@ -287,6 +306,62 @@ public class Indicator extends SuperEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the productId
+     */
+    public int getProductId() {
+        return productId;
+    }
+
+    /**
+     * @param productId the productId to set
+     */
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    /**
+     * @return the product
+     */
+    public String getProduct() {
+        return product;
+    }
+
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    /**
+     * @return the categoryId
+     */
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    /**
+     * @param categoryId the categoryId to set
+     */
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    /**
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     /**
@@ -435,6 +510,34 @@ public class Indicator extends SuperEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * @return the minNum
+     */
+    public BigDecimal getMinNum() {
+        return minNum;
+    }
+
+    /**
+     * @param minNum the minNum to set
+     */
+    public void setMinNum(BigDecimal minNum) {
+        this.minNum = minNum;
+    }
+
+    /**
+     * @return the maxNum
+     */
+    public BigDecimal getMaxNum() {
+        return maxNum;
+    }
+
+    /**
+     * @param maxNum the maxNum to set
+     */
+    public void setMaxNum(BigDecimal maxNum) {
+        this.maxNum = maxNum;
     }
 
     @Override

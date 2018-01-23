@@ -42,7 +42,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
 
     protected String queryDeptno;
     protected String queryDeptname;
-    private int queryYear;
+    protected int queryYear;
 
     public IndicatorSetManagedBean() {
         super(Indicator.class, IndicatorDepartment.class, IndicatorAssignment.class);
@@ -59,6 +59,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         newDetail2.setDescript(currentEntity.getDescript());
         newDetail2.setPid(currentEntity.getId());
         newDetail2.setSeq(currentEntity.getSeq());
+        newDetail2.setObjtype("D");
         newDetail2.setSortid(currentEntity.getSortid());
         newDetail2.setLvl(currentEntity.getLvl() + 1);
         newDetail2.setValueMode(currentEntity.getValueMode());
@@ -66,6 +67,8 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         newDetail2.setSymbol(currentEntity.getSymbol());
         newDetail2.setUnit(currentEntity.getUnit());
         newDetail2.setRate(currentEntity.getRate());
+        newDetail2.setMinNum(currentEntity.getMinNum());
+        newDetail2.setMaxNum(currentEntity.getMaxNum());
         newDetail2.setLimited(currentEntity.isLimited());
         newDetail2.setApi(currentEntity.getApi());
         newDetail2.setStatus("N");
@@ -157,6 +160,24 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void handleDialogReturnWhenEdit(SelectEvent event) {
+        if (event.getObject() != null && currentEntity != null) {
+            Department e = (Department) event.getObject();
+            currentEntity.setDeptno(e.getDeptno());
+            currentEntity.setDeptname(e.getDept());
+        }
+    }
+
+    @Override
+    public void handleDialogReturnWhenNew(SelectEvent event) {
+        if (event.getObject() != null && newEntity != null) {
+            Department e = (Department) event.getObject();
+            newEntity.setDeptno(e.getDeptno());
+            newEntity.setDeptname(e.getDept());
+        }
     }
 
     public void handleDialogReturnDeptForQuery(SelectEvent event) {
