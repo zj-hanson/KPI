@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="category" icon="ui-icon-restore"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{categoryManagedBean.persist()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">指标类别－新增</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="类别名称" for="name" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="name" value="#{categoryManagedBean.newEntity.category}" title="Name"
+                                     required="true" requiredMessage="请输入类别名称"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="上级类别" for="pid" /></p:column>
+                    <p:column>
+                        <p:inputText id="pid" value="#{categoryManagedBean.newEntity.parent.category}" title="Pid" styleClass="inputWithButton" readonly="true" />
+                        <p:commandButton id="btnCategorySelect" actionListener="#{categoryManagedBean.openDialog('categorySelect')}" icon="ui-icon-add"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{categoryManagedBean.handleDialogReturnWhenNew}"
+                                    update="pid" />
+                        </p:commandButton>
+                        <p:commandButton id="btnCategoryClear" actionListener="#{categoryManagedBean.removeParentWhenNew}" icon="ui-icon-remove"
+                                         process="@this" update="pid" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="排序" for="sortid" /></p:column>
+                    <p:column>
+                        <p:inputText id="sortid" value="#{categoryManagedBean.newEntity.sortid}" title="sortid"
+                                     required="true" requiredMessage="请输入指标顺序"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="备注" for="remark" /></p:column>
+                    <p:column>
+                        <p:inputText id="remark" value="#{categoryManagedBean.newEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -11,55 +11,67 @@
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
-                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{companyGrantManagedBean.init()}" icon="ui-icon-sync"
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{categoryManagedBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
-                    <p:commandButton id="btnView" value="查看" action="#{companyGrantManagedBean.view('companygrantView')}" icon="ui-icon-document"/>
+                    <p:commandButton id="btnView" value="查看" action="#{categoryManagedBean.view('categoryView')}" icon="ui-icon-document"/>
                 </f:facet>
                 <f:facet name="right">
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
-                        <p:menuitem id="btnEdit" value="编辑" action="#{companyGrantManagedBean.edit('companygrantEdit')}" icon="ui-icon-pencil"
-                                    rendered="#{companyGrantManagedBean.doEdit}"/>
-                        <p:menuitem id="btnDelete" value="删除" actionListener="#{companyGrantManagedBean.delete()}" icon="ui-icon-trash"
-                                    rendered="#{companyGrantManagedBean.doDel}" update=":formList">
+                        <p:menuitem id="btnEdit" value="编辑" action="#{categoryManagedBean.edit('categoryEdit')}" icon="ui-icon-pencil"
+                                    rendered="#{categoryManagedBean.doEdit}"/>
+                        <p:menuitem id="btnDelete" value="删除" actionListener="#{categoryManagedBean.delete()}" icon="ui-icon-trash"
+                                    rendered="#{categoryManagedBean.doDel}" update=":formList">
                             <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
                         </p:menuitem>
-                        <p:menuitem id="btnUnverify" value="还原" actionListener="#{companyGrantManagedBean.unverify()}" icon="ui-icon-lock-open"
-                                    rendered="#{companyGrantManagedBean.doUnCfm}"  update=":formList"/>
-                        <p:menuitem id="btnCreate" value="新增" action="#{companyGrantManagedBean.create('companygrantNew')}" icon="ui-icon-plus"
-                                    rendered="#{companyGrantManagedBean.doAdd}" process="@this" />
+                        <p:menuitem id="btnUnverify" value="还原" actionListener="#{categoryManagedBean.unverify()}" icon="ui-icon-lock-open"
+                                    rendered="#{categoryManagedBean.doUnCfm}"  update=":formList"/>
+                        <p:menuitem id="btnCreate" value="新增" action="#{categoryManagedBean.create('categoryNew')}" icon="ui-icon-plus"
+                                    rendered="#{categoryManagedBean.doAdd}" process="@this" />
                     </p:splitButton>
-                    <p:commandButton id="btnReset" value="重置" actionListener="#{companyGrantManagedBean.reset()}" icon="ui-icon-refresh"
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{categoryManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
-                    <p:commandButton id="btnQuery" value="查询" actionListener="#{companyGrantManagedBean.query()}" icon="ui-icon-search"
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{categoryManagedBean.query()}" icon="ui-icon-search"
                                      update=":formList"/>
                 </f:facet>
             </p:toolbar>
-            <p:treeTable value="#{companyGrantManagedBean.rootNode}" var="item" tableStyleClass="tableList"
-                         selectionMode="single" selection="#{companyGrantManagedBean.selectedNode}">
+            <p:treeTable value="#{categoryManagedBean.rootNode}" var="item" tableStyleClass="tableList"
+                         selectionMode="single" selection="#{categoryManagedBean.selectedNode}">
                 <f:facet name="header">
-                    公司授权维护
+                    指标产品维护
                 </f:facet>
                 <p:ajax event="select"  update=":formList:toolbar" />
                 <p:ajax event="unselect" update=":formList:toolbar" />
-                <p:column>
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
                         <h:outputText value="公司"/>
                     </f:facet>
                     <h:outputText value="#{item.company}"/>
                 </p:column>
-                <p:column>
+                <p:column styleClass="Wid20">
                     <f:facet name="header">
-                        <h:outputText value="工号"/>
+                        <h:outputText value="产品"/>
                     </f:facet>
-                    <h:outputText value="#{item.userid}"/>
+                    <h:outputText value="#{item.category}"/>
                 </p:column>
-                <p:column>
+                <p:column styleClass="Wid20">
                     <f:facet name="header">
-                        <h:outputText value="姓名"/>
+                        <h:outputText value="备注"/>
                     </f:facet>
-                    <h:outputText value="#{item.username}"/>
+                    <h:outputText value="#{item.remark}"/>
                 </p:column>
-                <p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="分类"/>
+                    </f:facet>
+                    <h:outputText value="#{item.parent.category}"/>
+                </p:column>
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="排序"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sortid}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
                     <f:facet name="header">
                         <h:outputText value="状态"/>
                     </f:facet>
