@@ -10,14 +10,22 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import com.lightshell.comm.SuperEJB;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+import org.apache.commons.beanutils.BeanUtils;
+import cn.hanbell.kpi.comm.Actual;
 
 /**
  *
@@ -33,8 +41,33 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     @EJB
     private IndicatorDetailBean indicatorDetailBean;
 
+    protected Actual actualInterface;
+
     public IndicatorBean() {
         super(Indicator.class);
+    }
+
+    public void addValue(IndicatorDetail a, IndicatorDetail b) {
+        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        a.setNfy(a.getNfy().add(b.getNfy()));
+        a.setNh2(a.getNh2().add(b.getNh2()));
+        a.setNh1(a.getNh1().add(b.getNh1()));
+        a.setNq4(a.getNq4().add(b.getNq4()));
+        a.setNq3(a.getNq3().add(b.getNq3()));
+        a.setNq2(a.getNq2().add(b.getNq2()));
+        a.setNq1(a.getNq1().add(b.getNq1()));
+        a.setN01(a.getN01().add(b.getN01()));
+        a.setN02(a.getN02().add(b.getN02()));
+        a.setN03(a.getN03().add(b.getN03()));
+        a.setN04(a.getN04().add(b.getN04()));
+        a.setN05(a.getN05().add(b.getN05()));
+        a.setN06(a.getN06().add(b.getN06()));
+        a.setN07(a.getN07().add(b.getN07()));
+        a.setN08(a.getN08().add(b.getN08()));
+        a.setN09(a.getN09().add(b.getN09()));
+        a.setN10(a.getN10().add(b.getN10()));
+        a.setN11(a.getN11().add(b.getN11()));
+        a.setN12(a.getN12().add(b.getN12()));
     }
 
     @Override
@@ -61,6 +94,172 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public void divideByRate(Indicator i, int scale) {
+        divideByRate(i.getActualIndicator(), i.getRate(), scale);
+        divideByRate(i.getBenchmarkIndicator(), i.getRate(), scale);
+        divideByRate(i.getForecastIndicator(), i.getRate(), scale);
+        divideByRate(i.getTargetIndicator(), i.getRate(), scale);
+    }
+
+    public void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {
+        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        id.setNfy(id.getNfy().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNh2(id.getNh2().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNh1(id.getNh1().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq4(id.getNq4().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq3(id.getNq3().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq2(id.getNq2().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq1(id.getNq1().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN01(id.getN01().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN02(id.getN02().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN03(id.getN03().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN04(id.getN04().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN05(id.getN05().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN06(id.getN06().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN07(id.getN07().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN08(id.getN08().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN09(id.getN09().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN10(id.getN10().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN11(id.getN11().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN12(id.getN12().divide(rate, scale, RoundingMode.HALF_UP));
+    }
+
+    public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m) {
+        return getAccumulatedGrowth(a, b, m, 2);
+    }
+
+    public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m, int scale) {
+        BigDecimal na, nb;
+        na = getAccumulatedValue(a, m);
+        nb = getAccumulatedValue(b, m);
+        //计算
+        if (nb.compareTo(BigDecimal.ZERO) != 0) {
+            return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+        } else {
+            return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+        }
+    }
+
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, IndicatorDetail b, int m) {
+        return getAccumulatedPerformance(a, b, m, 2);
+    }
+
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, IndicatorDetail b, int m, int scale) {
+        BigDecimal na, nb;
+        na = getAccumulatedValue(a, m);
+        nb = getAccumulatedValue(b, m);
+        //计算
+        if (nb.compareTo(BigDecimal.ZERO) != 0) {
+            return na.divide(nb, scale, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+        } else {
+            return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+        }
+    }
+
+    public BigDecimal getAccumulatedValue(IndicatorDetail entity, int m) {
+        String mon;
+        BigDecimal total = BigDecimal.ZERO;
+        Field f;
+        for (int i = 1; i <= m; i++) {
+            try {
+                mon = this.getIndicatorColumn("N", i);
+                f = entity.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                total = BigDecimal.ZERO;
+            }
+        }
+        return total;
+    }
+
+    public BigDecimal getGrowth(IndicatorDetail a, IndicatorDetail b, int m) {
+        return getGrowth(a, b, m, 2);
+    }
+
+    public BigDecimal getGrowth(IndicatorDetail a, IndicatorDetail b, int m, int scale) {
+        String mon;
+        BigDecimal na, nb;
+        Field f;
+        try {
+            mon = this.getIndicatorColumn("N", m);
+            //实际值分子
+            f = a.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            na = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
+            //比较值分母
+            f = b.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
+            //计算
+            if (nb.compareTo(BigDecimal.ZERO) != 0) {
+                return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            } else {
+                return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public String getIndicatorColumn(String formtype, int m) {
+        if (formtype.equals("N")) {
+            return "n" + String.format("%02d", m);
+        } else {
+            return "";
+        }
+    }
+
+    public Indicator getSumValue(List<Indicator> indicators) {
+        if (indicators.isEmpty()) {
+            return null;
+        }
+        Indicator entity = null;
+        IndicatorDetail a, b, f, t;
+        try {
+            entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
+            entity.setId(-1);
+            entity.setName("合计");
+            for (int i = 1; i < indicators.size(); i++) {
+                a = indicators.get(i).getActualIndicator();
+                b = indicators.get(i).getBenchmarkIndicator();
+                f = indicators.get(i).getForecastIndicator();
+                t = indicators.get(i).getTargetIndicator();
+                addValue(entity.getActualIndicator(), a);
+                addValue(entity.getBenchmarkIndicator(), b);
+                addValue(entity.getForecastIndicator(), f);
+                addValue(entity.getTargetIndicator(), t);
+            }
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return entity;
+    }
+
+    public List<Indicator> findByCategoryAndYear(String c, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByCategoryAndSeq");
+        query.setParameter("category", c);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findByFormidAndYear(String formid, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByFormidAndSeq");
+        query.setParameter("formid", formid);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Indicator findByFormidYearAndDeptno(String formid, int y, String value) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByFormidSeqAndDeptno");
         query.setParameter("formid", formid);
@@ -69,6 +268,29 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         try {
             Object o = query.getSingleResult();
             return (Indicator) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Indicator findByIdAndYear(Integer id, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByIdAndSeq");
+        query.setParameter("id", id);
+        query.setParameter("seq", y);
+        try {
+            Object o = query.getSingleResult();
+            return (Indicator) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findByObjtypeAndYear(String type, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByObjtypeAndSeq");
+        query.setParameter("objtype", type);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }
@@ -160,6 +382,24 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.update(entity.getActualIndicator());
         indicatorDetailBean.update(entity.getPerformanceIndicator());
         return super.update(entity);
+    }
+
+    public void updateActual(int id, int y, int m, Date d, int type) {
+        Indicator entity = findById(id);
+        if (entity != null && (entity.getSeq() == y)) {
+            IndicatorDetail a = entity.getActualIndicator();
+            try {
+                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                actualInterface.setEJB(entity.getActualEJB());
+                //可以传入Query参数
+                BigDecimal na = actualInterface.getValue(y, m, d, type, null);
+                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(a, na);
+                indicatorDetailBean.update(a);
+            } catch (Exception ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public void updatePerformance(Indicator entity) {

@@ -145,6 +145,12 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @Size(max = 45)
     @Column(name = "api")
     private String api;
+        @Size(max = 45)
+    @Column(name = "actualInterface")
+    private String actualInterface;
+    @Size(max = 100)
+    @Column(name = "actualEJB")
+    private String actualEJB;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -412,6 +418,34 @@ public class IndicatorAssignment extends SuperDetailEntity {
      */
     public void setApi(String api) {
         this.api = api;
+    }
+
+    /**
+     * @return the actualInterface
+     */
+    public String getActualInterface() {
+        return actualInterface;
+    }
+
+    /**
+     * @param actualInterface the actualInterface to set
+     */
+    public void setActualInterface(String actualInterface) {
+        this.actualInterface = actualInterface;
+    }
+
+    /**
+     * @return the actualEJB
+     */
+    public String getActualEJB() {
+        return actualEJB;
+    }
+
+    /**
+     * @param actualEJB the actualEJB to set
+     */
+    public void setActualEJB(String actualEJB) {
+        this.actualEJB = actualEJB;
     }
 
     public String getRemark() {

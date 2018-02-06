@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : 2017-12-29, 12:05:20
     Author     : C0160
 */
@@ -12,17 +12,20 @@ body
 {
     font-size: 14px;
 }
-.content{
+div.content{
     margin: auto;
     text-align: center;
 }
+div.tbl{
+    margin-bottom: 20px;
+}
 table
-{   
-    margin: auto;
+{
+    margin:auto;
     border-spacing: 10px;
     border: 1px solid #A2C0DA;
 }
-td, th
+th,td
 {
     padding: 5px;
     border-collapse: collapse;
@@ -44,7 +47,7 @@ td
 .title
 {
     font-size:14px;
-    font-weight:bold;	
+    font-weight:bold;
 
 }
 .foot
@@ -53,7 +56,14 @@ td
     color:Red;
 }
 .divFoot
-{text-align:right;
- height:20px;
- width:100%;
+{
+    text-align:right;
+    height:20px;
+    width:100%;
+}
+div.tableTitle{
+    float:left;
+    font-size:14px;
+    font-weight:bold;
+    text-align:left;
 }

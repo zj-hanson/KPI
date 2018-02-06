@@ -6,7 +6,8 @@
 package cn.hanbell.kpi.control;
 
 import cn.hanbell.kpi.entity.Category;
-import com.ibm.icu.util.Calendar;
+import java.util.Calendar;
+
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.event.SelectEvent;
@@ -60,6 +61,34 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
     public void init() {
         super.init();
         model.getFilterFields().put("objtype =", "P");
+    }
+
+    @Override
+    public void query() {
+        super.query();
+        model.getFilterFields().put("objtype =", "P");
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        model.getFilterFields().put("objtype =", "P");
+    }
+
+    public void updateActualValue() {
+        if (queryDateBegin != null && currentEntity != null) {
+            try {
+                Calendar c = Calendar.getInstance();
+                c.setTime(queryDateBegin);
+                indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                //indicatorBean.getEntityManager().refresh(currentEntity);
+                indicatorBean.updatePerformance(currentEntity);
+                indicatorBean.update(currentEntity);
+                showInfoMsg("Info", "更新实际值成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.toString());
+            }
+        }
     }
 
 }

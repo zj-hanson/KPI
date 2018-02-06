@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="mailsetting" icon="ui-icon-restore"  />
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{mailSettingManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">邮件排程维护－修改</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><p:outputLabel value="编号" for="roleno" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="roleno" value="#{mailSettingManagedBean.currentEntity.formid}" title="formid"
+                                     required="true" requiredMessage="编号不能为空." disabled="#{mailSettingManagedBean.currentPrgGrant.sysprg.noauto}"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="设定日期" for="formdate" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:calendar id="formdate" value="#{mailSettingManagedBean.currentEntity.formdate}" title="Formdate"
+                                    pattern="yyyy/MM/dd" required="true" requiredMessage="请输入设定日期"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="主旨" for="name" /></p:column>
+                    <p:column>
+                        <p:inputText id="name" value="#{mailSettingManagedBean.currentEntity.name}" title="name"
+                                     required="true" requiredMessage="主旨不能为空."/>
+                    </p:column>
+                      <p:column><p:outputLabel value="邮件接口" for="mailClazz" /></p:column>
+                    <p:column>
+                        <p:inputText id="mailClazz" value="#{mailSettingManagedBean.currentEntity.mailClazz}" title="mailClazz"
+                                     required="true" requiredMessage="请输入邮件接口"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="邮件Bean" for="mailEJB" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="mailEJB" value="#{mailSettingManagedBean.currentEntity.mailEJB}" title="mailEJB"
+                                     required="true" requiredMessage="请输入邮件Bean"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="收件人员">
+                    <p:toolbar id="detailToolbar" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail" widgetVar="btnAddDetail" value="添加" actionListener="#{mailSettingManagedBean.createDetail()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').enable();"
+                                             process="@this" update=":formOne:tabView:plgDetail"/>
+                            <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{mailSettingManagedBean.deleteDetail()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{mailSettingManagedBean.doConfirmDetail()}" icon="ui-icon-check"
+                                             onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
+                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panelGrid id="plgDetail" styleClass="plgDetail Wid100">
+                        <p:row>
+                            <p:column styleClass="Wid20"><p:outputLabel value="收件人员" for="userid" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="userid" value="#{mailSettingManagedBean.currentDetail.userid}" title="userid" styleClass="inputWithButton"
+                                             required="true" requiredMessage="请输入收件人员"  readonly="true" />
+                                <p:commandButton id="btnSystemUserSelect" actionListener="#{mailSettingManagedBean.openDialog('sysuserSelect')}" icon="ui-icon-search"
+                                                 process="@this" >
+                                    <p:ajax event="dialogReturn" listener="#{mailSettingManagedBean.handleDialogReturnWhenDetailEdit}"
+                                            process="@this" update="plgDetail" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="姓名"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="username" value="#{mailSettingManagedBean.currentDetail.username}" title="username" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="邮箱"/></p:column>
+                            <p:column>
+                                <p:inputText id="mailadd" value="#{mailSettingManagedBean.currentDetail.mailadd}" title="mailadd"
+                                             required="true" requiredMessage="请输入邮箱"  readonly="true"  />
+                            </p:column>
+                            <p:column><p:outputLabel value="类别" for="kind" /></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="kind" value="#{mailSettingManagedBean.currentDetail.kind}" title="类别" >
+                                    <f:selectItem itemLabel="收件" itemValue="to"/>
+                                    <f:selectItem itemLabel="抄送" itemValue="cc"/>
+                                    <f:selectItem itemLabel="密件" itemValue="bcc"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="tableList" value="#{mailSettingManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{mailSettingManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail" oncomplete="" />
+                        <p:column headerText="类别" styleClass="Wid10">
+                            <h:outputText value="#{item.kind}"/>
+                        </p:column>
+                        <p:column headerText="账号" styleClass="Wid20">
+                            <h:outputText value="#{item.userid}"/>
+                        </p:column>
+                        <p:column headerText="姓名" styleClass="Wid20">
+                            <h:outputText value="#{item.username}"/>
+                        </p:column>
+                        <p:column  headerText="邮箱" styleClass="Wid50">
+                            <h:outputText value="#{item.mailadd}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

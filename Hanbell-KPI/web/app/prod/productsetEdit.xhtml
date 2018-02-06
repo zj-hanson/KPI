@@ -14,6 +14,8 @@
                     <p:button id="btnReturn" value="返回" outcome="productset" icon="ui-icon-restore"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnUpdatePerformance" value="计算" actionListener="#{productSetManagedBean.updatePerformance()}" icon="ui-icon-save"
+                                     process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
                     <p:commandButton id="btnSave" value="保存" actionListener="#{productSetManagedBean.update()}" icon="ui-icon-save"
                                      process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
                 </f:facet>

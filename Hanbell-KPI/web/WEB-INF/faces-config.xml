@@ -73,6 +73,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>mailsetting</from-outcome>
+            <to-view-id>/sys/mailsetting.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>systemrole</from-outcome>
             <to-view-id>/sys/systemrole.xhtml</to-view-id>
             <redirect/>

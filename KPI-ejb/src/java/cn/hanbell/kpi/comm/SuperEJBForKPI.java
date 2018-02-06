@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 /**
  *
  * @author C0160
+ * @param <T>
  */
 public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
 

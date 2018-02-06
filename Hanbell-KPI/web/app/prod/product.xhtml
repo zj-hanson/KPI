@@ -26,91 +26,90 @@
                     </p:commandButton>
                 </f:facet>
             </p:toolbar>
-            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="4">KPI维护－查看</p:column>
-                    </p:row>
-                </f:facet>
-                <p:row>
-                    <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
-                    <p:column styleClass="Wid30">
-                        <h:outputText id="name" value="#{productManagedBean.currentEntity.name}" title="Name"/>
-                    </p:column>
-                    <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
-                    <p:column styleClass="Wid30">
-                        <h:outputText id="seq" value="#{productManagedBean.currentEntity.seq}" title="seq"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="指标定义"/></p:column>
-                    <p:column colspan="3">
-                        <h:outputText id="descript" value="#{productManagedBean.currentEntity.descript}" title="descript" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="考核部门"/></p:column>
-                    <p:column>
-                        <h:outputText id="deptno" value="#{productManagedBean.currentEntity.deptno}" title="deptno"  />
-                    </p:column>
-                    <p:column><h:outputText value="部门名称"/></p:column>
-                    <p:column>
-                        <h:outputText id="deptname" value="#{productManagedBean.currentEntity.deptname}" title="deptname" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="指标类型"/></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="formtype" value="#{productManagedBean.currentEntity.formtype}" title="formtype"
-                                         required="true" requiredMessage="请输入指标类型" disabled="true">
-                            <f:selectItem itemLabel="数字" itemValue="N"/>
-                            <f:selectItem itemLabel="文字" itemValue="S"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column><h:outputText value="计算周期"/></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="formkind" value="#{productManagedBean.currentEntity.formkind}" title="formkind"
-                                         required="true" requiredMessage="请输入计算周期" disabled="true">
-                            <f:selectItem itemLabel="月" itemValue="M"/>
-                            <f:selectItem itemLabel="季" itemValue="Q"/>
-                            <f:selectItem itemLabel="半年" itemValue="H"/>
-                            <f:selectItem itemLabel="一年" itemValue="Y"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="计算方式" /></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="valuemode" value="#{productManagedBean.currentEntity.valueMode}" title="valuemode"
-                                         required="true" requiredMessage="请输入计算方式" disabled="true">
-                            <f:selectItem itemLabel="手动输入" itemValue="I"/>
-                            <f:selectItem itemLabel="求和" itemValue="S"/>
-                            <f:selectItem itemLabel="平均值" itemValue="A"/>
-                            <f:selectItem itemLabel="表达式" itemValue="E"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column><h:outputText value="数字格式"/></p:column>
-                    <p:column>
-                        <h:outputText id="symbol" value="#{productManagedBean.currentEntity.symbol}" title="symbol" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="单位"/></p:column>
-                    <p:column>
-                        <h:outputText id="unit" value="#{productManagedBean.currentEntity.unit}" title="unit" />
-                    </p:column>
-                    <p:column><h:outputText value="换算率"/></p:column>
-                    <p:column>
-                        <h:outputText id="rate" value="#{productManagedBean.currentEntity.rate}" title="rate" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="备注"/></p:column>
-                    <p:column colspan="3">
-                        <h:outputText id="remark" value="#{productManagedBean.currentEntity.remark}" title="Remark" />
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
+            <p:accordionPanel>
+                <p:tab title="产品KPI－查看">
+                    <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                        <p:row>
+                            <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="name" value="#{productManagedBean.currentEntity.name}" title="Name"/>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="seq" value="#{productManagedBean.currentEntity.seq}" title="seq"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="指标定义"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="descript" value="#{productManagedBean.currentEntity.descript}" title="descript" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="考核部门"/></p:column>
+                            <p:column>
+                                <h:outputText id="deptno" value="#{productManagedBean.currentEntity.deptno}" title="deptno"  />
+                            </p:column>
+                            <p:column><h:outputText value="部门名称"/></p:column>
+                            <p:column>
+                                <h:outputText id="deptname" value="#{productManagedBean.currentEntity.deptname}" title="deptname" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="指标类型"/></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="formtype" value="#{productManagedBean.currentEntity.formtype}" title="formtype"
+                                                 required="true" requiredMessage="请输入指标类型" disabled="true">
+                                    <f:selectItem itemLabel="数字" itemValue="N"/>
+                                    <f:selectItem itemLabel="文字" itemValue="S"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column><h:outputText value="计算周期"/></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="formkind" value="#{productManagedBean.currentEntity.formkind}" title="formkind"
+                                                 required="true" requiredMessage="请输入计算周期" disabled="true">
+                                    <f:selectItem itemLabel="月" itemValue="M"/>
+                                    <f:selectItem itemLabel="季" itemValue="Q"/>
+                                    <f:selectItem itemLabel="半年" itemValue="H"/>
+                                    <f:selectItem itemLabel="一年" itemValue="Y"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="计算方式" /></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="valuemode" value="#{productManagedBean.currentEntity.valueMode}" title="valuemode"
+                                                 required="true" requiredMessage="请输入计算方式" disabled="true">
+                                    <f:selectItem itemLabel="手动输入" itemValue="I"/>
+                                    <f:selectItem itemLabel="求和" itemValue="S"/>
+                                    <f:selectItem itemLabel="平均值" itemValue="A"/>
+                                    <f:selectItem itemLabel="表达式" itemValue="E"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column><h:outputText value="数字格式"/></p:column>
+                            <p:column>
+                                <h:outputText id="symbol" value="#{productManagedBean.currentEntity.symbol}" title="symbol" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="单位"/></p:column>
+                            <p:column>
+                                <h:outputText id="unit" value="#{productManagedBean.currentEntity.unit}" title="unit" />
+                            </p:column>
+                            <p:column><h:outputText value="换算率"/></p:column>
+                            <p:column>
+                                <h:outputText id="rate" value="#{productManagedBean.currentEntity.rate}" title="rate" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="备注"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="remark" value="#{productManagedBean.currentEntity.remark}" title="Remark" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
             <p:tabView id="tabView" styleClass="tabView">
                 <p:tab title="指标查看">
                     <p:panelGrid id="plgTarget" styleClass="plgDetail Wid100">

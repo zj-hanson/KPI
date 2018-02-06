@@ -20,8 +20,6 @@
                                      rendered="#{productSetManagedBean.hasNext}"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton id="btnSave" value="保存" actionListener="#{productSetManagedBean.update()}" icon="ui-icon-save"
-                                     rendered="#{productSetManagedBean.doEdit}" process="@this" update="formOne"/>
                     <p:commandButton id="btnVerify" value="审核" actionListener="#{productSetManagedBean.verify()}" icon="ui-icon-check"
                                      rendered="#{productSetManagedBean.doCfm}" process="@this" update="toolbar">
                         <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />

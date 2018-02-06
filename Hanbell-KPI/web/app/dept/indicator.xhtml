@@ -26,302 +26,300 @@
                     </p:commandButton>
                 </f:facet>
             </p:toolbar>
-            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="4">KPI维护－查看</p:column>
-                    </p:row>
-                </f:facet>
-                <p:row>
-                    <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
-                    <p:column styleClass="Wid30">
-                        <h:outputText id="name" value="#{indicatorManagedBean.currentEntity.name}" title="Name"/>
-                    </p:column>
-                    <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
-                    <p:column styleClass="Wid30">
-                        <h:outputText id="seq" value="#{indicatorManagedBean.currentEntity.seq}" title="seq"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="指标定义"/></p:column>
-                    <p:column colspan="3">
-                        <h:outputText id="descript" value="#{indicatorManagedBean.currentEntity.descript}" title="descript" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="考核部门"/></p:column>
-                    <p:column>
-                        <h:outputText id="deptno" value="#{indicatorManagedBean.currentEntity.deptno}" title="deptno"  />
-                    </p:column>
-                    <p:column><h:outputText value="部门名称"/></p:column>
-                    <p:column>
-                        <h:outputText id="deptname" value="#{indicatorManagedBean.currentEntity.deptname}" title="deptname" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="指标类型"/></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="formtype" value="#{indicatorManagedBean.currentEntity.formtype}" title="formtype"
-                                         required="true" requiredMessage="请输入指标类型" disabled="true">
-                            <f:selectItem itemLabel="数字" itemValue="N"/>
-                            <f:selectItem itemLabel="文字" itemValue="S"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column><h:outputText value="计算周期"/></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="formkind" value="#{indicatorManagedBean.currentEntity.formkind}" title="formkind"
-                                         required="true" requiredMessage="请输入计算周期" disabled="true">
-                            <f:selectItem itemLabel="月" itemValue="M"/>
-                            <f:selectItem itemLabel="季" itemValue="Q"/>
-                            <f:selectItem itemLabel="半年" itemValue="H"/>
-                            <f:selectItem itemLabel="一年" itemValue="Y"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="计算方式" /></p:column>
-                    <p:column>
-                        <p:selectOneMenu id="valuemode" value="#{indicatorManagedBean.currentEntity.valueMode}" title="valuemode"
-                                         required="true" requiredMessage="请输入计算方式" disabled="true">
-                            <f:selectItem itemLabel="手动输入" itemValue="I"/>
-                            <f:selectItem itemLabel="求和" itemValue="S"/>
-                            <f:selectItem itemLabel="平均值" itemValue="A"/>
-                            <f:selectItem itemLabel="表达式" itemValue="E"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column><h:outputText value="数字格式"/></p:column>
-                    <p:column>
-                        <h:outputText id="symbol" value="#{indicatorManagedBean.currentEntity.symbol}" title="symbol" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="单位"/></p:column>
-                    <p:column>
-                        <h:outputText id="unit" value="#{indicatorManagedBean.currentEntity.unit}" title="unit" />
-                    </p:column>
-                    <p:column><h:outputText value="换算率"/></p:column>
-                    <p:column>
-                        <h:outputText id="rate" value="#{indicatorManagedBean.currentEntity.rate}" title="rate" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column><h:outputText value="备注"/></p:column>
-                    <p:column colspan="3">
-                        <h:outputText id="remark" value="#{indicatorManagedBean.currentEntity.remark}" title="Remark" />
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
-            <p:tabView id="tabView" styleClass="tabView">
-                <p:tab title="指标查看">
-                    <p:panelGrid id="plgTarget" styleClass="plgDetail Wid100">
+            <p:accordionPanel>
+                <p:tab title="部门KPI－查看">
+                    <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
                         <p:row>
-                            <p:column><p:outputLabel value="Q1基准" for="bnq1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="bnq1" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq1}" title="bnq1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="bnh1,bnfy" />
-                                </p:inputNumber>
+                            <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="name" value="#{indicatorManagedBean.currentEntity.name}" title="Name"/>
                             </p:column>
-                            <p:column><p:outputLabel value="Q1目标" for="tnq1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="tnq1" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq1}" title="tnq1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="tnh1,tnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q1实际" for="anq1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anq1" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq1}" title="anq1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="anh1,anfy,pnq1,pnh1,pnfy" listener="#{indicatorManagedBean.updatePerformance}" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q1达成" for="pnq1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnq1" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq1}" title="pnq1"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="seq" value="#{indicatorManagedBean.currentEntity.seq}" title="seq"/>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="Q2基准" for="bnq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="bnq2" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq2}" title="bnq2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="bnh1,bnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q2目标" for="tnq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="tnq2" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq2}" title="tnq2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="tnh1,tnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q2实际" for="anq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anq2" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq2}" title="anq2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="anh1,anfy,pnq2,pnh1,pnfy"  listener="#{indicatorManagedBean.updatePerformance}" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q2达成" for="pnq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnq2" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq2}" title="pnq2"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            <p:column><h:outputText value="指标定义"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="descript" value="#{indicatorManagedBean.currentEntity.descript}" title="descript" />
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="上半年" for="bnh1" /></p:column>
+                            <p:column><h:outputText value="考核部门"/></p:column>
                             <p:column>
-                                <p:inputNumber id="bnh1" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nh1}" title="bnh1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <h:outputText id="deptno" value="#{indicatorManagedBean.currentEntity.deptno}" title="deptno"  />
                             </p:column>
-                            <p:column><p:outputLabel value="上半年" for="tnh1" /></p:column>
+                            <p:column><h:outputText value="部门名称"/></p:column>
                             <p:column>
-                                <p:inputNumber id="tnh1" value="#{indicatorManagedBean.currentEntity.targetIndicator.nh1}" title="tnh1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="上半年" for="anh1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anh1" value="#{indicatorManagedBean.currentEntity.actualIndicator.nh1}" title="anh1"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="上半年达成" for="pnh1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnh1" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nh1}" title="pnh1"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <h:outputText id="deptname" value="#{indicatorManagedBean.currentEntity.deptname}" title="deptname" />
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="Q3基准" for="bnq3" /></p:column>
+                            <p:column><h:outputText value="指标类型"/></p:column>
                             <p:column>
-                                <p:inputNumber id="bnq3" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq3}" title="bnq3"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="bnh2,bnfy" />
-                                </p:inputNumber>
+                                <p:selectOneMenu id="formtype" value="#{indicatorManagedBean.currentEntity.formtype}" title="formtype"
+                                                 required="true" requiredMessage="请输入指标类型" disabled="true">
+                                    <f:selectItem itemLabel="数字" itemValue="N"/>
+                                    <f:selectItem itemLabel="文字" itemValue="S"/>
+                                </p:selectOneMenu>
                             </p:column>
-                            <p:column><p:outputLabel value="Q3目标" for="tnq3" /></p:column>
+                            <p:column><h:outputText value="计算周期"/></p:column>
                             <p:column>
-                                <p:inputNumber id="tnq3" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq3}" title="tnq3"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="tnh2,tnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q3实际" for="anq3" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anq3" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq3}" title="anq3"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="anh2,anfy,pnq3,pnh2,pnfy" listener="#{indicatorManagedBean.updatePerformance}" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q3达成" for="pnq3" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnq3" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq3}" title="pnq3"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <p:selectOneMenu id="formkind" value="#{indicatorManagedBean.currentEntity.formkind}" title="formkind"
+                                                 required="true" requiredMessage="请输入计算周期" disabled="true">
+                                    <f:selectItem itemLabel="月" itemValue="M"/>
+                                    <f:selectItem itemLabel="季" itemValue="Q"/>
+                                    <f:selectItem itemLabel="半年" itemValue="H"/>
+                                    <f:selectItem itemLabel="一年" itemValue="Y"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="Q4基准" for="bnq4" /></p:column>
+                            <p:column><h:outputText value="计算方式" /></p:column>
                             <p:column>
-                                <p:inputNumber id="bnq4" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq4}" title="bnq4"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="bnh2,bnfy" />
-                                </p:inputNumber>
+                                <p:selectOneMenu id="valuemode" value="#{indicatorManagedBean.currentEntity.valueMode}" title="valuemode"
+                                                 required="true" requiredMessage="请输入计算方式" disabled="true">
+                                    <f:selectItem itemLabel="手动输入" itemValue="I"/>
+                                    <f:selectItem itemLabel="求和" itemValue="S"/>
+                                    <f:selectItem itemLabel="平均值" itemValue="A"/>
+                                    <f:selectItem itemLabel="表达式" itemValue="E"/>
+                                </p:selectOneMenu>
                             </p:column>
-                            <p:column><p:outputLabel value="Q4目标" for="tnq4" /></p:column>
+                            <p:column><h:outputText value="数字格式"/></p:column>
                             <p:column>
-                                <p:inputNumber id="tnq4" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq4}" title="tnq4"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="tnh2,tnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q4实际" for="anq4" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anq4" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq4}" title="anq4"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
-                                    <p:ajax process="@this" update="anh2,anfy,pnq4,pnh2,pnfy"  listener="#{indicatorManagedBean.updatePerformance}"/>
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q4达成" for="pnq4" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnq4" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq4}" title="pnq4"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <h:outputText id="symbol" value="#{indicatorManagedBean.currentEntity.symbol}" title="symbol" />
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="下半年" for="bnh2" /></p:column>
+                            <p:column><h:outputText value="单位"/></p:column>
                             <p:column>
-                                <p:inputNumber id="bnh2" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nh2}" title="bnh2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <h:outputText id="unit" value="#{indicatorManagedBean.currentEntity.unit}" title="unit" />
                             </p:column>
-                            <p:column><p:outputLabel value="下半年" for="tnh2" /></p:column>
+                            <p:column><h:outputText value="换算率"/></p:column>
                             <p:column>
-                                <p:inputNumber id="tnh2" value="#{indicatorManagedBean.currentEntity.targetIndicator.nh2}" title="tnh2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="下半年" for="anh2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anh2" value="#{indicatorManagedBean.currentEntity.actualIndicator.nh2}" title="anh2"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="下半年达成" for="pnh2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnh2" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nh2}" title="pnh2"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                <h:outputText id="rate" value="#{indicatorManagedBean.currentEntity.rate}" title="rate" />
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column><p:outputLabel value="全年基准" for="bnfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="bnfy" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nfy}" title="bnfy"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="全年目标" for="tnfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="tnfy" value="#{indicatorManagedBean.currentEntity.targetIndicator.nfy}" title="tnfy"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="全年实际" for="anfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="anfy" value="#{indicatorManagedBean.currentEntity.actualIndicator.nfy}" title="anfy"
-                                               symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="全年达成" for="pnfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="pnfy" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nfy}" title="pnfy"
-                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            <p:column><h:outputText value="备注"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="remark" value="#{indicatorManagedBean.currentEntity.remark}" title="Remark" />
                             </p:column>
                         </p:row>
                     </p:panelGrid>
                 </p:tab>
-                <p:tab title="关联部门">
-                    <p:dataTable id="tableList" value="#{indicatorManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
-                                 selectionMode="single" selection="#{indicatorManagedBean.currentDetail}" rowKey="#{item.id}" >
-                        <p:ajax event="rowSelect"  update="formOne:tabView:tableList" oncomplete="" />
-                        <p:ajax event="rowUnselect"  update="formOne:tabView:tableList" oncomplete="" />
-                        <p:column styleClass="Wid10">
-                            <f:facet name="header">
-                                <h:outputText value="关联部门"/>
-                            </f:facet>
-                            <h:outputText value="#{item.deptno}"/>
-                        </p:column>
-                        <p:column styleClass="Wid20">
-                            <f:facet name="header">
-                                <h:outputText value="部门名称"/>
-                            </f:facet>
-                            <h:outputText value="#{item.deptname}"/>
-                        </p:column>
-                        <p:column styleClass="Wid70"/>
-                    </p:dataTable>
-                </p:tab>
-            </p:tabView>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-            </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
-                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
-            </p:blockUI>
+                <p:tabView id="tabView" styleClass="tabView">
+                    <p:tab title="指标查看">
+                        <p:panelGrid id="plgTarget" styleClass="plgDetail Wid100">
+                            <p:row>
+                                <p:column><p:outputLabel value="Q1基准" for="bnq1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnq1" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq1}" title="bnq1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="bnh1,bnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q1目标" for="tnq1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnq1" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq1}" title="tnq1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="tnh1,tnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q1实际" for="anq1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anq1" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq1}" title="anq1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="anh1,anfy,pnq1,pnh1,pnfy" listener="#{indicatorManagedBean.updatePerformance}" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q1达成" for="pnq1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnq1" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq1}" title="pnq1"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="Q2基准" for="bnq2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnq2" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq2}" title="bnq2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="bnh1,bnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q2目标" for="tnq2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnq2" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq2}" title="tnq2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="tnh1,tnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q2实际" for="anq2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anq2" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq2}" title="anq2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="anh1,anfy,pnq2,pnh1,pnfy"  listener="#{indicatorManagedBean.updatePerformance}" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q2达成" for="pnq2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnq2" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq2}" title="pnq2"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="上半年" for="bnh1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnh1" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nh1}" title="bnh1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="上半年" for="tnh1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnh1" value="#{indicatorManagedBean.currentEntity.targetIndicator.nh1}" title="tnh1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="上半年" for="anh1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anh1" value="#{indicatorManagedBean.currentEntity.actualIndicator.nh1}" title="anh1"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="上半年达成" for="pnh1" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnh1" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nh1}" title="pnh1"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="Q3基准" for="bnq3" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnq3" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq3}" title="bnq3"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="bnh2,bnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q3目标" for="tnq3" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnq3" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq3}" title="tnq3"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="tnh2,tnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q3实际" for="anq3" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anq3" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq3}" title="anq3"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="anh2,anfy,pnq3,pnh2,pnfy" listener="#{indicatorManagedBean.updatePerformance}" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q3达成" for="pnq3" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnq3" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq3}" title="pnq3"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="Q4基准" for="bnq4" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnq4" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nq4}" title="bnq4"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="bnh2,bnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q4目标" for="tnq4" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnq4" value="#{indicatorManagedBean.currentEntity.targetIndicator.nq4}" title="tnq4"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="tnh2,tnfy" />
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q4实际" for="anq4" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anq4" value="#{indicatorManagedBean.currentEntity.actualIndicator.nq4}" title="anq4"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                        <p:ajax process="@this" update="anh2,anfy,pnq4,pnh2,pnfy"  listener="#{indicatorManagedBean.updatePerformance}"/>
+                                    </p:inputNumber>
+                                </p:column>
+                                <p:column><p:outputLabel value="Q4达成" for="pnq4" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnq4" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nq4}" title="pnq4"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="下半年" for="bnh2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnh2" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nh2}" title="bnh2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="下半年" for="tnh2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnh2" value="#{indicatorManagedBean.currentEntity.targetIndicator.nh2}" title="tnh2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="下半年" for="anh2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anh2" value="#{indicatorManagedBean.currentEntity.actualIndicator.nh2}" title="anh2"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="下半年达成" for="pnh2" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnh2" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nh2}" title="pnh2"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column><p:outputLabel value="全年基准" for="bnfy" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="bnfy" value="#{indicatorManagedBean.currentEntity.benchmarkIndicator.nfy}" title="bnfy"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="全年目标" for="tnfy" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="tnfy" value="#{indicatorManagedBean.currentEntity.targetIndicator.nfy}" title="tnfy"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="全年实际" for="anfy" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="anfy" value="#{indicatorManagedBean.currentEntity.actualIndicator.nfy}" title="anfy"
+                                                   symbol="#{indicatorManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                                <p:column><p:outputLabel value="全年达成" for="pnfy" /></p:column>
+                                <p:column>
+                                    <p:inputNumber id="pnfy" value="#{indicatorManagedBean.currentEntity.performanceIndicator.nfy}" title="pnfy"
+                                                   symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="关联部门">
+                        <p:dataTable id="tableList" value="#{indicatorManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                     selectionMode="single" selection="#{indicatorManagedBean.currentDetail}" rowKey="#{item.id}" >
+                            <p:ajax event="rowSelect"  update="formOne:tabView:tableList" oncomplete="" />
+                            <p:ajax event="rowUnselect"  update="formOne:tabView:tableList" oncomplete="" />
+                            <p:column styleClass="Wid10">
+                                <f:facet name="header">
+                                    <h:outputText value="关联部门"/>
+                                </f:facet>
+                                <h:outputText value="#{item.deptno}"/>
+                            </p:column>
+                            <p:column styleClass="Wid20">
+                                <f:facet name="header">
+                                    <h:outputText value="部门名称"/>
+                                </f:facet>
+                                <h:outputText value="#{item.deptname}"/>
+                            </p:column>
+                            <p:column styleClass="Wid70"/>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
+                    <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+                </p:blockUI>
         </h:form>
 
     </ui:define>

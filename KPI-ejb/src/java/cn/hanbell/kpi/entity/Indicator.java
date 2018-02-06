@@ -30,10 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Indicator.findAll", query = "SELECT i FROM Indicator i"),
     @NamedQuery(name = "Indicator.findById", query = "SELECT i FROM Indicator i WHERE i.id = :id"),
+    @NamedQuery(name = "Indicator.findByIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.id = :id AND i.seq = :seq "),
     @NamedQuery(name = "Indicator.findByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype ORDER BY i.seq DESC,i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findByCategoryAndSeq", query = "SELECT i FROM Indicator i WHERE i.category = :category AND i.seq = :seq ORDER BY i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findByFormidAndSeq", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq ORDER BY i.sortid ASC"),
     @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno"),
     @NamedQuery(name = "Indicator.findByFormtype", query = "SELECT i FROM Indicator i WHERE i.formtype = :formtype"),
     @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind"),
+    @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq"),
     @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid ORDER BY i.seq DESC,i.sortid ASC,i.deptno ASC"),
     @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq"),
     @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno"),
@@ -41,7 +45,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Indicator.findByDeptname", query = "SELECT i FROM Indicator i WHERE i.deptname = :deptname"),
     @NamedQuery(name = "Indicator.findByUserid", query = "SELECT i FROM Indicator i WHERE i.userid = :userid"),
     @NamedQuery(name = "Indicator.findByUsername", query = "SELECT i FROM Indicator i WHERE i.username = :username"),
-    @NamedQuery(name = "Indicator.findByRemark", query = "SELECT i FROM Indicator i WHERE i.remark = :remark"),
     @NamedQuery(name = "Indicator.findByStatus", query = "SELECT i FROM Indicator i WHERE i.status = :status")})
 public class Indicator extends SuperEntity {
 
@@ -166,6 +169,12 @@ public class Indicator extends SuperEntity {
     @Size(max = 45)
     @Column(name = "api")
     private String api;
+    @Size(max = 45)
+    @Column(name = "actualInterface")
+    private String actualInterface;
+    @Size(max = 100)
+    @Column(name = "actualEJB")
+    private String actualEJB;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -502,6 +511,34 @@ public class Indicator extends SuperEntity {
      */
     public void setApi(String api) {
         this.api = api;
+    }
+
+    /**
+     * @return the actualInterface
+     */
+    public String getActualInterface() {
+        return actualInterface;
+    }
+
+    /**
+     * @param actualInterface the actualInterface to set
+     */
+    public void setActualInterface(String actualInterface) {
+        this.actualInterface = actualInterface;
+    }
+
+    /**
+     * @return the actualEJB
+     */
+    public String getActualEJB() {
+        return actualEJB;
+    }
+
+    /**
+     * @param actualEJB the actualEJB to set
+     */
+    public void setActualEJB(String actualEJB) {
+        this.actualEJB = actualEJB;
     }
 
     public String getRemark() {
