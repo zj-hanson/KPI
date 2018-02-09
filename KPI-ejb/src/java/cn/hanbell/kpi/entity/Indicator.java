@@ -169,7 +169,7 @@ public class Indicator extends SuperEntity {
     @Size(max = 45)
     @Column(name = "api")
     private String api;
-    @Size(max = 45)
+    @Size(max = 100)
     @Column(name = "actualInterface")
     private String actualInterface;
     @Size(max = 100)

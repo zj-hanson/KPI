@@ -30,8 +30,8 @@
                         <p:inputText id="name" value="#{categoryManagedBean.currentEntity.category}" title="Name"
                                      required="true" requiredMessage="请输入类别名称"/>
                     </p:column>
-                    <p:column><p:outputLabel value="上级类别" for="pid" /></p:column>
-                    <p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="上级类别" for="pid" /></p:column>
+                    <p:column styleClass="Wid30">
                         <p:inputText id="pid" value="#{categoryManagedBean.currentEntity.parent.category}" title="Pid" styleClass="inputWithButton" readonly="true" />
                         <p:commandButton id="btnCategorySelect" actionListener="#{categoryManagedBean.openDialog('categorySelect')}" icon="ui-icon-add"
                                          process="@this" >

@@ -35,8 +35,8 @@
                     <p:column styleClass="Wid30">
                         <h:outputText id="name" value="#{categoryManagedBean.currentEntity.category}" title="Name"/>
                     </p:column>
-                    <p:column><h:outputText value="上级类别"/></p:column>
-                    <p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="上级类别"/></p:column>
+                    <p:column styleClass="Wid30">
                         <h:outputText id="pid" value="#{categoryManagedBean.currentEntity.parent.category}" title="Pid"/>
                     </p:column>
                 </p:row>

@@ -9,11 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentQuantityAJ1 extends ShipmentQuantityAJ {
+public class ShipmentAmountAA1 extends ShipmentAmountAA {
 
-    public ShipmentQuantityAJ1() {
+    public ShipmentAmountAA1() {
         super();
         queryParams.put("decode", "1");
+        queryParams.put("ogdkid", "RL01");
     }
 
 }

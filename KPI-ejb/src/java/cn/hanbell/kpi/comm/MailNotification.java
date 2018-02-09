@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 
@@ -49,7 +50,7 @@ public abstract class MailNotification {
     protected List<File> attachments;
 
     protected List<Indicator> indicators;
-    protected List<?> data;
+    protected HashMap<String, BigDecimal> data;
 
     protected Calendar c;
     protected int y;
@@ -67,7 +68,7 @@ public abstract class MailNotification {
         this.bcc = new ArrayList();
         this.attachments = new ArrayList();
         this.indicators = new ArrayList();
-        this.data = new ArrayList();
+        this.data = new HashMap<>();
         this.decimalFormat = new DecimalFormat("#,###");
     }
 
@@ -93,7 +94,9 @@ public abstract class MailNotification {
         this.indicators.add(i);
     }
 
-    protected String getHtmlTable(List<Indicator> data, int y, int m, Date d, boolean needsum) {
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
+        getData().clear();
+        getData().put("sum1", BigDecimal.ZERO);
         //取得月份字段
         StringBuilder sb = new StringBuilder();
         try {
@@ -104,7 +107,7 @@ public abstract class MailNotification {
             sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
-            for (Indicator i : data) {
+            for (Indicator i : indicatorList) {
                 sb.append(getHtmlTableRow(i, y, m, d));
             }
             if (needsum) {
@@ -133,9 +136,13 @@ public abstract class MailNotification {
         try {
             Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
             actualInterface.setEJB(indicator.getActualEJB());
+            BigDecimal num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+            if (indicator.getId() != -1) {
+                sumAdditionalData("sum1", num1);
+            }
             sb.append("<tr>");
             sb.append("<td>").append(indicator.getName()).append("</td>");
-            sb.append("<td>").append(decimalFormat.format(actualInterface.getValue(y, m, d, Calendar.DATE, null).divide(indicator.getRate(), 2, RoundingMode.HALF_UP))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
             //当月
             //实际
             f = a.getClass().getDeclaredField(mon);
@@ -253,6 +260,16 @@ public abstract class MailNotification {
         this.decimalFormat.applyPattern(format);
     }
 
+    public void sumAdditionalData(String k, BigDecimal value) {
+        try {
+            getData().merge(k, value, (K, V) -> {
+                return K.add(V);
+            });
+        } catch (Exception ex) {
+
+        }
+    }
+
     /**
      * @return the attachments
      */
@@ -315,15 +332,8 @@ public abstract class MailNotification {
     /**
      * @return the data
      */
-    public List<?> getData() {
+    public HashMap<String, BigDecimal> getData() {
         return data;
-    }
-
-    /**
-     * @param data the data to set
-     */
-    public void setData(List<?> data) {
-        this.data = data;
     }
 
 }

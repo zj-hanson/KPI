@@ -81,7 +81,7 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
                 Calendar c = Calendar.getInstance();
                 c.setTime(queryDateBegin);
                 indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
-                //indicatorBean.getEntityManager().refresh(currentEntity);
+                currentEntity = indicatorBean.findById(currentEntity.getId());
                 indicatorBean.updatePerformance(currentEntity);
                 indicatorBean.update(currentEntity);
                 showInfoMsg("Info", "更新实际值成功");

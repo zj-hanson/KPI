@@ -9,9 +9,9 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentQuantityAJ1 extends ShipmentQuantityAJ {
+public class ShipmentQuantityAA1 extends ShipmentQuantityAA {
 
-    public ShipmentQuantityAJ1() {
+    public ShipmentQuantityAA1() {
         super();
         queryParams.put("decode", "1");
     }

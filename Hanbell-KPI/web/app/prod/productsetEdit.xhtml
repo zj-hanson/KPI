@@ -14,7 +14,7 @@
                     <p:button id="btnReturn" value="返回" outcome="productset" icon="ui-icon-restore"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton id="btnUpdatePerformance" value="计算" actionListener="#{productSetManagedBean.updatePerformance()}" icon="ui-icon-save"
+                    <p:commandButton id="btnUpdatePerformance" value="达成" actionListener="#{productSetManagedBean.updatePerformance()}" icon="ui-icon-save"
                                      process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
                     <p:commandButton id="btnSave" value="保存" actionListener="#{productSetManagedBean.update()}" icon="ui-icon-save"
                                      process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
@@ -126,6 +126,18 @@
                     <p:column>
                         <p:inputText id="sortid" value="#{productSetManagedBean.currentEntity.sortid}" title="sortid"
                                      required="true" requiredMessage="请输入指标顺序"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="计算接口" for="actualInterface" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="actualInterface" value="#{productSetManagedBean.currentEntity.actualInterface}" title="actualInterface"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="接口EJB" for="actualEJB" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="actualEJB" value="#{productSetManagedBean.currentEntity.actualEJB}" title="actualEJB"/>
                     </p:column>
                 </p:row>
                 <p:row>

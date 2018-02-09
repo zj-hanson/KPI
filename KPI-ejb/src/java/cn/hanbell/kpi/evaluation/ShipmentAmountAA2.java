@@ -9,12 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public abstract class ShipmentAJ extends Shipment {
+public class ShipmentAmountAA2 extends ShipmentAmountAA {
 
-    public ShipmentAJ() {
+    public ShipmentAmountAA2() {
         super();
-        queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", "AH");
+        queryParams.put("decode", "2");
+        queryParams.put("ogdkid", "RL03");
+        queryParams.put("n_code_CD", " ='WX' ");
     }
 
 }

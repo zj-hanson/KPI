@@ -91,6 +91,18 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><p:outputLabel value="计算接口" for="actualInterface" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="actualInterface" value="#{productSetManagedBean.newEntity.actualInterface}" title="actualInterface"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="接口EJB" for="actualEJB" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="actualEJB" value="#{productSetManagedBean.newEntity.actualEJB}" title="actualEJB"/>
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><p:outputLabel value="备注" for="remark" /></p:column>
                     <p:column colspan="3">
                         <p:inputText id="remark" value="#{productSetManagedBean.newEntity.remark}" title="Remark" />

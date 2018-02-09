@@ -391,8 +391,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
                 actualInterface.setEJB(entity.getActualEJB());
-                //可以传入Query参数
-                BigDecimal na = actualInterface.getValue(y, m, d, type, null);
+                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
                 Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(a, na);
                 indicatorDetailBean.update(a);

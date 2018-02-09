@@ -9,7 +9,7 @@ import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.mail.AAMailBean;
+import cn.hanbell.kpi.mail.AJMailBean;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.Resource;
@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 public class TimerBean {
 
     @EJB
-    private AAMailBean aaMailBean;
+    private AJMailBean ajMailBean;
 
     @EJB
     private IndicatorBean indicatorBean;
@@ -76,11 +76,11 @@ public class TimerBean {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
         try {
-            aaMailBean.init();
-            aaMailBean.setD(c.getTime());
-            aaMailBean.setMailContent();
-            aaMailBean.setMailSubject();
-            aaMailBean.notify(new MailNotify());
+            ajMailBean.init();
+            ajMailBean.setD(c.getTime());
+            ajMailBean.setMailContent();
+            ajMailBean.setMailSubject();
+            ajMailBean.notify(new MailNotify());
             logger.info(String.format("成功执行%s:发送报表%s", "sendKPIReport", "AAMailBean"));
         } catch (Exception ex) {
             logger.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", "AAMailBean"), ex);

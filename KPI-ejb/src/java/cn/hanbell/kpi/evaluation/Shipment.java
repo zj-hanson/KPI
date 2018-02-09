@@ -51,7 +51,10 @@ public abstract class Shipment implements Actual {
         String n_code_DA = map.get("n_code_DA").toString();
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d ");
-        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND h.facno='${facno}' AND h.hmark1='${n_code_DA}' ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND h.facno='${facno}' ");
+        if (!"".equals(n_code_DA)) {
+            sb.append(" AND h.hmark1 ").append(n_code_DA);
+        }
         sb.append(" AND year(h.trdat) = ${y} AND month(h.trdat) = ${m} ");
         switch (type) {
             case 2:
@@ -65,7 +68,7 @@ public abstract class Shipment implements Actual {
             default:
                 sb.append(" AND h.trdat<= '${d}' ");
         }
-        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${n_code_DA}", n_code_DA);
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
         try {
@@ -83,7 +86,10 @@ public abstract class Shipment implements Actual {
         String n_code_DA = map.get("n_code_DA").toString();
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(apmamt),0) FROM armicdh h WHERE h.shpno IN ");
-        sb.append(" (SELECT DISTINCT b.shpno FROM cdrhad a,cdrdta b WHERE a.facno=b.facno AND a.shpno=b.shpno AND a.houtsta<>'W' AND a.facno='${facno}' AND a.decode='${decode}' AND b.n_code_DA='${n_code_DA}' ");
+        sb.append(" (SELECT DISTINCT b.shpno FROM cdrhad a,cdrdta b WHERE a.facno=b.facno AND a.shpno=b.shpno AND a.houtsta<>'W' AND a.facno='${facno}' AND a.decode='${decode}' ");
+        if (!"".equals(n_code_DA)) {
+            sb.append(" AND b.n_code_DA ").append(n_code_DA);
+        }
         sb.append(" AND year(a.shpdate) = ${y}  AND month(a.shpdate)= ${m} ");
         switch (type) {
             case 2:
@@ -111,7 +117,7 @@ public abstract class Shipment implements Actual {
             default:
                 sb.append(" AND h.shpdate<= '${d}' ");
         }
-        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${decode}", decode).replace("${n_code_DA}", n_code_DA);
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${decode}", decode);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
         try {
@@ -142,6 +148,41 @@ public abstract class Shipment implements Actual {
                 sb.append(" AND h.bildat<= '${d}' ");
         }
         String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${deptno}", deptno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno").toString();
+        String n_code_DA = map.get("n_code_DA").toString();
+        String ogdkid = map.get("ogdkid").toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
+        sb.append(" AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
+        if (!"".equals(n_code_DA)) {
+            sb.append(" AND h.hmark1 ").append(n_code_DA);
+        }
+        sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" AND h.recdate<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" AND h.recdate= '${d}' ");
+                break;
+            default:
+                sb.append(" AND h.recdate<= '${d}' ");
+        }
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${ogdkid}", ogdkid);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
         try {
