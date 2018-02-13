@@ -9,15 +9,15 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentAmountAJ9 extends ShipmentAmount9 {
+public abstract class ShipmentAmountSDS extends ShipmentAmount {
 
-    public ShipmentAmountAJ9() {
+    public ShipmentAmountSDS() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "1");
+        queryParams.put("deptno", " '1G500' ");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
-        queryParams.put("n_code_DD", " ='01' ");
+        queryParams.put("n_code_DC", " ='SDS'");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }

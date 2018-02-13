@@ -192,7 +192,7 @@ public abstract class MailNotification {
     protected String getMailHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title></title>");
-        sb.append("<link rel=\"stylesheet\" href=\"http://i2.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
         sb.append("</head><body><div class=\"content\">");
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
@@ -207,7 +207,7 @@ public abstract class MailNotification {
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
         sb.append("</div>");//对应Head中的div.content
-        sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复.</div>");
+        sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复</div>");
         sb.append("<div class=\"divFoot\">报表管理员</div>");
         sb.append("</div></body></html>");
         return sb.toString();
@@ -218,7 +218,7 @@ public abstract class MailNotification {
     }
 
     public void setMailSubject() {
-        this.mailSubject = BaseLib.formatDate("yyyy/MM/dd", d) + this.mailSubject;
+        this.mailSubject = this.mailSubject + BaseLib.formatDate("yyyy/MM/dd", d);
     }
 
     public BigDecimal getPercent(BigDecimal up, BigDecimal down, int scale) {

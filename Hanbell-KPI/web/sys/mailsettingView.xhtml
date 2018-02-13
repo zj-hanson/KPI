@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="mailsetting" icon="ui-icon-restore"  />
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{mailSettingManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{mailSettingManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{mailSettingManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{mailSettingManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnVerify" value="审核" actionListener="#{mailSettingManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{mailSettingManagedBean.doCfm}" process="@this" update="toolbar"/>
+                    <p:commandButton id="btnUnverify" value="还原" actionListener="#{mailSettingManagedBean.unverify()}" icon="ui-icon-lock-open"
+                                     rendered="#{mailSettingManagedBean.doUnCfm}" process="@this" update="toolbar"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">邮件排程维护－查看</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="编号"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="roleno" value="#{mailSettingManagedBean.currentEntity.formid}" title="formid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="设定日期"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formdate" value="#{mailSettingManagedBean.currentEntity.formdate}" title="Formdate">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="主旨"/></p:column>
+                    <p:column>
+                        <h:outputText id="name" value="#{mailSettingManagedBean.currentEntity.name}" title="name"/>
+                    </p:column>
+                    <p:column><h:outputText value="邮件接口"/></p:column>
+                    <p:column>
+                        <h:outputText id="mailClazz" value="#{mailSettingManagedBean.currentEntity.mailClazz}" title="mailClazz"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="邮件Bean"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="mailEJB" value="#{mailSettingManagedBean.currentEntity.mailEJB}" title="mailEJB"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="收件人员">
+                    <p:dataTable id="tableList" value="#{mailSettingManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{mailSettingManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                        <p:ajax event="rowSelect"  update="" oncomplete=""/>
+                        <p:ajax event="rowUnselect"  update="" oncomplete="" />
+                        <p:column headerText="类别" styleClass="Wid10">
+                            <h:outputText value="#{item.kind}"/>
+                        </p:column>
+                        <p:column headerText="账号" styleClass="Wid20">
+                            <h:outputText value="#{item.userid}"/>
+                        </p:column>
+                        <p:column headerText="姓名" styleClass="Wid20">
+                            <h:outputText value="#{item.username}"/>
+                        </p:column>
+                        <p:column  headerText="邮箱" styleClass="Wid50">
+                            <h:outputText value="#{item.mailadd}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

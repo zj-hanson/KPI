@@ -85,7 +85,8 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                 if (mailBean != null) {
                     mailBean.init();
                     mailBean.setD(queryDateBegin);
-                    mailBean.setMailContent();
+                    mailBean.setMailContent();                    
+                    mailBean.setMailSubject();
                     mailBean.notify(new MailNotify());
                     showInfoMsg("Info", "报表邮件发送成功");
                 } else {

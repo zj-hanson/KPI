@@ -5,19 +5,23 @@
  */
 package cn.hanbell.kpi.timer;
 
+import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.mail.AJMailBean;
+import cn.hanbell.kpi.entity.MailSetting;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TimerService;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,9 +32,6 @@ import org.apache.logging.log4j.Logger;
 @Singleton
 @Startup
 public class TimerBean {
-
-    @EJB
-    private AJMailBean ajMailBean;
 
     @EJB
     private IndicatorBean indicatorBean;
@@ -45,6 +46,18 @@ public class TimerBean {
 
     public TimerBean() {
 
+    }
+
+    private MailNotification getMailNotificationBean(String JNDIName) {
+        InitialContext c;
+        try {
+            c = new InitialContext();
+            Object objRef = c.lookup(JNDIName);
+            return (MailNotification) objRef;
+        } catch (NamingException ex) {
+            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Schedule(hour = "*/1", persistent = false)
@@ -71,19 +84,29 @@ public class TimerBean {
         logger.info("updateIndicatorActualValue轮询");
     }
 
-    @Schedule(hour = "10", persistent = true)
+    @Schedule(minute = "3", hour = "9", persistent = true)
     public void sendKPIReport() {
+        String reportName = "";
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
+        List<MailSetting> mailSettingList = mailSettingBean.findByStatus("V");
         try {
-            ajMailBean.init();
-            ajMailBean.setD(c.getTime());
-            ajMailBean.setMailContent();
-            ajMailBean.setMailSubject();
-            ajMailBean.notify(new MailNotify());
-            logger.info(String.format("成功执行%s:发送报表%s", "sendKPIReport", "AAMailBean"));
+            for (MailSetting ms : mailSettingList) {
+                reportName = ms.getName();
+                MailNotification mn = getMailNotificationBean(ms.getMailEJB());
+                if (mn != null) {
+                    mn.init();
+                    mn.setD(c.getTime());
+                    mn.setMailContent();
+                    mn.setMailSubject();
+                    mn.notify(new MailNotify());
+                    logger.info(String.format("成功执行%s:发送报表%s", "sendKPIReport", reportName));
+                } else {
+                    logger.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
+                }
+            }
         } catch (Exception ex) {
-            logger.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", "AAMailBean"), ex);
+            logger.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
         }
     }
 

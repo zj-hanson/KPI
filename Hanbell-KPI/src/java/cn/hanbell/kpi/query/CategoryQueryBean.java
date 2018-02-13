@@ -24,6 +24,8 @@ public class CategoryQueryBean extends SuperQueryBean<Category> {
     @EJB
     private CategoryBean categoryBean;
 
+    protected Integer querySortid;
+
     public CategoryQueryBean() {
         super(Category.class);
     }
@@ -34,6 +36,30 @@ public class CategoryQueryBean extends SuperQueryBean<Category> {
         model = new CategoryModel(categoryBean, userManagedBean);
         model.getSortFields().put("sortid", "ASC");
         super.init();
+    }
+
+    @Override
+    public void query() {
+        if (querySortid != null) {
+            model.getFilterFields().put("sortid", querySortid);
+        }
+        if (queryName != null && !"".equals(queryName)) {
+            model.getFilterFields().put("category", queryName);
+        }
+    }
+
+    /**
+     * @return the querySortid
+     */
+    public Integer getQuerySortid() {
+        return querySortid;
+    }
+
+    /**
+     * @param querySortid the querySortid to set
+     */
+    public void setQuerySortid(Integer querySortid) {
+        this.querySortid = querySortid;
     }
 
 }
