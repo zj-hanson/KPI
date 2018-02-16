@@ -9,7 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public abstract class ShipmentAmountPPL2 extends ShipmentAmount {
+public class ShipmentAmountPPL2 extends ShipmentAmount {
 
     public ShipmentAmountPPL2() {
         super();
