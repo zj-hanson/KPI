@@ -580,38 +580,39 @@
                     </p:toolbar>
                     <p:panelGrid id="plgDetail2" styleClass="plgDetail Wid100">
                         <p:row>
-                            <p:column styleClass="Wid20"><p:outputLabel value="考核部门" for="cdeptno" /></p:column>
+                            <p:column styleClass="Wid20"><p:outputLabel value="产品" for="cpid"/></p:column>
                             <p:column styleClass="Wid30">
-                                <p:inputText id="cdeptno" value="#{productSetManagedBean.currentDetail2.deptno}" title="deptno" styleClass="inputWithButton" readonly="true"/>
-                                <p:commandButton id="btnDepartmentSelect2" actionListener="#{productSetManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
+                                <p:inputText id="cpid" value="#{productSetManagedBean.currentDetail2.product}" title="PId" styleClass="inputWithButton"
+                                             required="true" requiredMessage="请输入指标产品"/>
+                                <p:commandButton id="btnProductSelect" actionListener="#{productSetManagedBean.openDialog('categorySelect')}" icon="ui-icon-extlink"
                                                  process="@this" >
-                                    <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnWhenDetail2Edit}"
-                                            update="cdeptno,cdeptname" />
+                                    <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnProductWhenDetail2Edit}"
+                                            update="cpid" />
                                 </p:commandButton>
                             </p:column>
-                            <p:column styleClass="Wid20"><p:outputLabel value="部门名称" for="cdeptname" /></p:column>
+                            <p:column styleClass="Wid20"><p:outputLabel value="指标名称" for="cname"/></p:column>
                             <p:column styleClass="Wid30">
-                                <h:outputText id="cdeptname" value="#{productSetManagedBean.currentDetail2.deptname}" title="deptname" />
+                                <p:inputText id="cname" value="#{productSetManagedBean.currentDetail2.name}" title="Name"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
                     <p:dataTable id="tableList2" value="#{productSetManagedBean.detailList2}" var="item" styleClass="tableList Mtop10"
-                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail2}" rowKey="#{item.deptno}" >
+                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail2}" rowKey="#{item.product}" >
                         <p:ajax event="rowSelect"  update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" oncomplete="PF('btnAddDetail2').disable();PF('btnDeleteDetail2').enable();PF('btnSaveDetail2').enable();" />
                         <p:ajax event="rowUnselect"  update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" oncomplete="" />
-                        <p:column styleClass="Wid10">
+                        <p:column styleClass="Wid30">
                             <f:facet name="header">
-                                <h:outputText value="考核部门"/>
+                                <h:outputText value="指标名称"/>
                             </f:facet>
-                            <h:outputText value="#{item.deptno}"/>
+                            <h:outputText value="#{item.name}"/>
                         </p:column>
-                        <p:column styleClass="Wid20">
+                        <p:column styleClass="Wid30">
                             <f:facet name="header">
-                                <h:outputText value="部门名称"/>
+                                <h:outputText value="产品"/>
                             </f:facet>
-                            <h:outputText value="#{item.deptname}"/>
+                            <h:outputText value="#{item.product}"/>
                         </p:column>
-                        <p:column styleClass="Wid50"/>
+                        <p:column styleClass="Wid40"/>
                     </p:dataTable>
                 </p:tab>
             </p:tabView>

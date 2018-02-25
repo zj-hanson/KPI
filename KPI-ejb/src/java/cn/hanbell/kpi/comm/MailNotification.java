@@ -8,11 +8,9 @@ package cn.hanbell.kpi.comm;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.MailSetting;
 import com.lightshell.comm.BaseLib;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -94,105 +92,27 @@ public abstract class MailNotification {
         this.indicators.add(i);
     }
 
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
-        getData().clear();
-        getData().put("sum1", BigDecimal.ZERO);
-        //取得月份字段
-        StringBuilder sb = new StringBuilder();
-        try {
-            sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
-            sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-            sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
-            sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("</tr>");
-            for (Indicator i : indicatorList) {
-                sb.append(getHtmlTableRow(i, y, m, d));
-            }
-            if (needsum) {
-                Indicator sum = indicatorBean.getSumValue(indicators);
-                if (sum != null) {
-                    indicatorBean.updatePerformance(sum);
-                    sb.append(getHtmlTableRow(sum, y, m, d));
-                }
-            }
-            sb.append("</table></div>");
-        } catch (Exception ex) {
-            return ex.toString();
-        }
-        return sb.toString();
-    }
+    protected abstract String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum);
 
-    protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
-        //获取需要取值栏位
-        String mon = indicatorBean.getIndicatorColumn(indicator.getFormtype(), m);
-        StringBuilder sb = new StringBuilder();
-        IndicatorDetail a = indicator.getActualIndicator();
-        IndicatorDetail b = indicator.getBenchmarkIndicator();
-        IndicatorDetail p = indicator.getPerformanceIndicator();
-        IndicatorDetail t = indicator.getTargetIndicator();
-        Field f;
-        try {
-            Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
-            actualInterface.setEJB(indicator.getActualEJB());
-            BigDecimal num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
-            if (indicator.getId() != -1) {
-                sumAdditionalData("sum1", num1);
-            }
-            sb.append("<tr>");
-            sb.append("<td>").append(indicator.getName()).append("</td>");
-            sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
-            //当月
-            //实际
-            f = a.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(a))).append("</td>");
-            //目标
-            f = t.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
-            //达成
-            f = p.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //同期
-            f = b.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
-            //成长
-            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m))).append("</td>");
-            //累计
-            //实际
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
-            //目标
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m))).append("</td>");
-            //达成
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
-            //同期
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
-            //成长
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
-            //年度目标
-            f = t.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
-            //年度达成
-            f = p.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            sb.append("<td>订单未交</td>");
-            sb.append("</tr>");
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            throw new Exception(ex);
-        }
-        return sb.toString();
-    }
+    protected abstract String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception;
 
     protected String getMailHead() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><head><title></title>");
-        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("<html><head><title>Hanbell</title>");
+        //sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("<style type=text/css>");
+        sb.append("body{font-size: 14px;}");
+        sb.append("div.content{    margin: auto;    text-align: center;}");
+        sb.append("div.tbl{    margin-bottom: 20px;}");
+        sb.append("table{    margin:auto;    border-spacing: 10px;    border: 1px solid #A2C0DA;}");
+        sb.append("th,td{    padding: 5px;    border-collapse: collapse;    text-align: left;}");
+        sb.append("th{    background: #B0D0FC;    border: 1px solid #000000;    text-align: center;    font-weight: bold;}");
+        sb.append("td{    background: #D3E5FD;    border: 1px solid #000000;    text-align: right;}");
+        sb.append(".title{    font-size:14px;    font-weight:bold;}");
+        sb.append(".foot{    font-size:14px;    color:Red;}");
+        sb.append(".divFoot{    text-align:right;    height:20px;    width:100%;}");
+        sb.append("div.tableTitle{    float:left;    font-size:14px;    font-weight:bold;    text-align:left;}");
+        sb.append("</style>");
         sb.append("</head><body><div class=\"content\">");
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");

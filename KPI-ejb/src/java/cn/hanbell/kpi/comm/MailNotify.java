@@ -49,12 +49,12 @@ public class MailNotify {
             }
             if (notification.cc != null && !notification.cc.isEmpty()) {
                 for (String c : notification.cc) {
-                    email.addTo(c);
+                    email.addCc(c);
                 }
             }
             if (notification.bcc != null && !notification.bcc.isEmpty()) {
                 for (String b : notification.bcc) {
-                    email.addTo(b);
+                    email.addBcc(b);
                 }
             }
             if (notification.getAttachments() != null) {

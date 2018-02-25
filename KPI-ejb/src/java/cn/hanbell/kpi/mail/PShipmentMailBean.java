@@ -5,7 +5,7 @@
  */
 package cn.hanbell.kpi.mail;
 
-import cn.hanbell.kpi.comm.MailNotification;
+import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -16,9 +16,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class SDSMailBean extends MailNotification {
+public class PShipmentMailBean extends ShipmentMail {
 
-    public SDSMailBean() {
+    public PShipmentMailBean() {
 
     }
 
@@ -42,18 +42,18 @@ public class SDSMailBean extends MailNotification {
 
     protected String getQuantityTable() {
         this.indicators.clear();
-        this.indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货台数", y);
+        this.indicators = indicatorBean.findByCategoryAndYear("P每日出货台数", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
-            return "SDS无油每日出货台数设定错误";
+            return "P每日出货台数设定错误";
         }
     }
 
     protected String getAmountTable() {
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
+        indicators = indicatorBean.findByCategoryAndYear("P每日出货金额", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
@@ -61,13 +61,13 @@ public class SDSMailBean extends MailNotification {
             }
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
-            return "SDS无油每日出货金额设定错误";
+            return "P每日出货金额设定错误";
         }
     }
 
     protected String getServiceTable() {
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
+        indicators = indicatorBean.findByCategoryAndYear("P收费服务金额", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
@@ -75,7 +75,7 @@ public class SDSMailBean extends MailNotification {
             }
             return getHtmlTable(this.indicators, y, m, d, false);
         } else {
-            return "SDS无油收费服务金额设定错误";
+            return "P收费服务金额设定错误";
         }
     }
 

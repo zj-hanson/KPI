@@ -521,190 +521,91 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="指标分配">
-                    <p:toolbar id="detailToolbar2" styleClass="detailToolbar">
-                        <f:facet name="left">
-                            <p:commandButton id="btnAddDetail2" widgetVar="btnAddDetail2" value="添加" actionListener="#{productSetManagedBean.createDetail2()}" icon="ui-icon-plus"
-                                             oncomplete="PF('btnAddDetail2').disable();PF('btnDeleteDetail2').disable();PF('btnSaveDetail2').enable();"
-                                             update="formOne:tabView:plgDetail2" process="@this" />
-                            <p:commandButton id="btnDeleteDetail2" widgetVar="btnDeleteDetail2" value="删除" actionListener="#{productSetManagedBean.deleteDetail2()}" icon="ui-icon-trash"
-                                             oncomplete="PF('btnAddDetail2').enable();PF('btnDeleteDetail2').disable();PF('btnSaveDetail2').disable();"
-                                             update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" process="@this" />
-                        </f:facet>
-                        <f:facet name="right">
-                            <p:commandButton id="btnSaveDetail2" widgetVar="btnSaveDetail2" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail2()}" icon="ui-icon-disk"
-                                             onsuccess="PF('btnAddDetail2').enable();PF('btnDeleteDetail2').disable();PF('btnSaveDetail2').disable();"
-                                             update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" process="@this,formOne:tabView:plgDetail2"/>
-                        </f:facet>
-                    </p:toolbar>
-                    <p:panelGrid id="plgDetail2" styleClass="plgDetail Wid100">
-                        <p:row>
-                            <p:column styleClass="Wid20"><p:outputLabel value="考核部门" for="cdeptno" /></p:column>
-                            <p:column styleClass="Wid30">
-                                <p:inputText id="cdeptno" value="#{productSetManagedBean.currentDetail2.deptno}" title="deptno" styleClass="inputWithButton" readonly="true"/>
-                                <p:commandButton id="btnDepartmentSelect2" actionListener="#{productSetManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
-                                                 process="@this" >
-                                    <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnWhenDetail2Edit}"
-                                            update="cdeptno,cdeptname" />
-                                </p:commandButton>
-                            </p:column>
-                            <p:column styleClass="Wid20"><p:outputLabel value="部门名称" for="cdeptname" /></p:column>
-                            <p:column styleClass="Wid30">
-                                <h:outputText id="cdeptname" value="#{productSetManagedBean.currentDetail2.deptname}" title="deptname" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="全年基准" for="cbnfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnfy" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nfy}" title="cbnfy"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="全年目标" for="tnfy" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnfy" value="#{productSetManagedBean.currentDetail2.targetIndicator.nfy}" title="ctnfy"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column styleClass="Wid20"><p:outputLabel value="Q1基准" for="cbnq1" /></p:column>
-                            <p:column styleClass="Wid30">
-                                <p:inputNumber id="cbnq1" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nq1}" title="cbnq1"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="cbnh1,cbnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column styleClass="Wid20"><p:outputLabel value="Q1目标" for="ctnq1" /></p:column>
-                            <p:column styleClass="Wid30">
-                                <p:inputNumber id="ctnq1" value="#{productSetManagedBean.currentDetail2.targetIndicator.nq1}" title="ctnq1"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="ctnh1,ctnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="Q2基准" for="cbnq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnq2" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nq2}" title="cbnq2"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="cbnh1,cbnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q2目标" for="ctnq2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnq2" value="#{productSetManagedBean.currentDetail2.targetIndicator.nq2}" title="ctnq2"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="ctnh1,ctnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="上半年" for="cbnh1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnh1" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nh1}" title="cbnh1"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="上半年" for="ctnh1" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnh1" value="#{productSetManagedBean.currentDetail2.targetIndicator.nh1}" title="ctnh1"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="Q3基准" for="cbnq3" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnq3" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nq3}" title="cbnq3"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="cbnh2,cbnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q3目标" for="ctnq3" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnq3" value="#{productSetManagedBean.currentDetail2.targetIndicator.nq3}" title="ctnq3"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="ctnh2,ctnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="Q4基准" for="cbnq4" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnq4" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nq4}" title="cbnq4"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="cbnh2,cbnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                            <p:column><p:outputLabel value="Q4目标" for="ctnq4" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnq4" value="#{productSetManagedBean.currentDetail2.targetIndicator.nq4}" title="ctnq4"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero">
-                                    <p:ajax process="@this" update="ctnh2,ctnfy" />
-                                </p:inputNumber>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><p:outputLabel value="下半年" for="cbnh2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="cbnh2" value="#{productSetManagedBean.currentDetail2.benchmarkIndicator.nh2}" title="cbnh2"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                            <p:column><p:outputLabel value="下半年" for="ctnh2" /></p:column>
-                            <p:column>
-                                <p:inputNumber id="ctnh2" value="#{productSetManagedBean.currentDetail2.targetIndicator.nh2}" title="ctnh2"
-                                               symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
                     <p:dataTable id="tableList2" value="#{productSetManagedBean.detailList2}" var="item" styleClass="tableList Mtop10"
                                  selectionMode="single" selection="#{productSetManagedBean.currentDetail2}" rowKey="#{item.id}" >
-                        <p:ajax event="rowSelect"  update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" oncomplete="PF('btnAddDetail2').disable();PF('btnDeleteDetail2').enable();PF('btnSaveDetail2').enable();" />
-                        <p:ajax event="rowUnselect"  update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" oncomplete="" />
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="考核部门"/>
+                                <h:outputText value="产品"/>
                             </f:facet>
-                            <h:outputText value="#{item.deptno}"/>
+                            <h:outputText value="#{item.product}"/>
                         </p:column>
-                        <p:column styleClass="Wid20">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="部门名称"/>
+                                <h:outputText value="M01目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.deptname}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n01}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Q1目标"/>
+                                <h:outputText value="M02目标"/>
                             </f:facet>
-                            <p:inputNumber value="#{item.targetIndicator.nq1}"
-                                           symbol="#{productSetManagedBean.currentDetail2.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            <p:inputNumber value="#{item.targetIndicator.n02}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Q2目标"/>
+                                <h:outputText value="M03目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.targetIndicator.nq2}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n03}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="上半年"/>
+                                <h:outputText value="M04目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.targetIndicator.nh1}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n04}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Q3目标"/>
+                                <h:outputText value="M05目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.targetIndicator.nq3}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n05}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Q4目标"/>
+                                <h:outputText value="M06目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.targetIndicator.nq4}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n06}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column>
                             <f:facet name="header">
-                                <h:outputText value="下半年"/>
+                                <h:outputText value="M07目标"/>
                             </f:facet>
-                            <h:outputText value="#{item.targetIndicator.nh2}"/>
+                            <p:inputNumber value="#{item.targetIndicator.n07}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="M08目标"/>
+                            </f:facet>
+                            <p:inputNumber value="#{item.targetIndicator.n08}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="M09目标"/>
+                            </f:facet>
+                            <p:inputNumber value="#{item.targetIndicator.n09}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="M10目标"/>
+                            </f:facet>
+                            <p:inputNumber value="#{item.targetIndicator.n10}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="M11目标"/>
+                            </f:facet>
+                            <p:inputNumber value="#{item.targetIndicator.n11}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="M12目标"/>
+                            </f:facet>
+                            <p:inputNumber value="#{item.targetIndicator.n12}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="全年"/>
+                            </f:facet>
+                            <h:outputText value="#{item.targetIndicator.nfy}"/>
                         </p:column>
                     </p:dataTable>
                 </p:tab>

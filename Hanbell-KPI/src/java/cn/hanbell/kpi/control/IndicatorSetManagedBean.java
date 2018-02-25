@@ -17,6 +17,7 @@ import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti2Bean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -59,7 +60,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         newDetail2.setDescript(currentEntity.getDescript());
         newDetail2.setPid(currentEntity.getId());
         newDetail2.setSeq(currentEntity.getSeq());
-        newDetail2.setObjtype("D");
+        newDetail2.setObjtype(currentEntity.getObjtype());
         newDetail2.setSortid(currentEntity.getSortid());
         newDetail2.setLvl(currentEntity.getLvl() + 1);
         newDetail2.setValueMode(currentEntity.getValueMode());
@@ -220,6 +221,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
+        queryYear = Calendar.getInstance().get(Calendar.YEAR);
         super.init();
     }
 
@@ -295,6 +297,7 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
     public void updatePerformance() {
         if (currentEntity != null) {
             indicatorBean.updatePerformance(currentEntity);
+            showInfoMsg("Info", "更新达成率成功,请保存");
         } else {
             showErrorMsg("Error", "没有可更新指标");
         }

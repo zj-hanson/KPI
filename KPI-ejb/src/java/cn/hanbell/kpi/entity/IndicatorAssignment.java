@@ -111,6 +111,18 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @Size(max = 20)
     @Column(name = "username")
     private String username;
+
+    @Column(name = "productId")
+    private int productId;
+    @Size(max = 20)
+    @Column(name = "product")
+    private String product;
+    @Column(name = "categoryId")
+    private int categoryId;
+    @Size(max = 20)
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "sortid")
     private int sortid;
     @Basic(optional = false)
@@ -145,7 +157,7 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @Size(max = 45)
     @Column(name = "api")
     private String api;
-        @Size(max = 45)
+    @Size(max = 45)
     @Column(name = "actualInterface")
     private String actualInterface;
     @Size(max = 100)
@@ -278,6 +290,62 @@ public class IndicatorAssignment extends SuperDetailEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the productId
+     */
+    public int getProductId() {
+        return productId;
+    }
+
+    /**
+     * @param productId the productId to set
+     */
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    /**
+     * @return the product
+     */
+    public String getProduct() {
+        return product;
+    }
+
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    /**
+     * @return the categoryId
+     */
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    /**
+     * @param categoryId the categoryId to set
+     */
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    /**
+     * @return the category
+     */
+    public String getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     /**

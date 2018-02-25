@@ -57,6 +57,14 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
         }
     }
 
+    public void handleDialogReturnProductWhenDetail2Edit(SelectEvent event) {
+        if (currentDetail2 != null && event.getObject() != null) {
+            Category e = (Category) event.getObject();
+            currentDetail2.setProductId(e.getId());
+            currentDetail2.setProduct(e.getCategory());
+        }
+    }
+
     @Override
     public void init() {
         super.init();

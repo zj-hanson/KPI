@@ -62,18 +62,6 @@ public class SuperEJBForERP implements Serializable {
         return getEntityManager(getCompany());
     }
 
-    public Boolean initByOAPSN(String psn) {
-        return true;
-    }
-
-    public Boolean updateByOAPSN(String psn) {
-        return true;
-    }
-
-    public Boolean deleteByOAPSN(String psn) {
-        return true;
-    }
-
     protected EntityManager getEntityManager(String facno) {
         switch (facno) {
             case "A":

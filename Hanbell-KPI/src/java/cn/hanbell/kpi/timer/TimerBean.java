@@ -60,7 +60,7 @@ public class TimerBean {
         return null;
     }
 
-    @Schedule(hour = "*/1", persistent = false)
+    @Schedule(hour = "*/4", persistent = false)
     public void updateIndicatorActualValue() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
@@ -84,7 +84,7 @@ public class TimerBean {
         logger.info("updateIndicatorActualValue轮询");
     }
 
-    @Schedule(minute = "3", hour = "9", persistent = true)
+    @Schedule(minute = "3", hour = "9", dayOfWeek = "Tue,Wed,Thu,Fri,Sat", persistent = true)
     public void sendKPIReport() {
         String reportName = "";
         Calendar c = Calendar.getInstance();
