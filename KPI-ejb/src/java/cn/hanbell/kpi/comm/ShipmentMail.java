@@ -24,6 +24,7 @@ public abstract class ShipmentMail extends MailNotification {
 
     }
 
+    @Override
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
@@ -53,6 +54,7 @@ public abstract class ShipmentMail extends MailNotification {
         return sb.toString();
     }
 
+    @Override
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
         //获取需要取值栏位
         String col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), m);

@@ -99,21 +99,8 @@ public abstract class MailNotification {
     protected String getMailHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title>Hanbell</title>");
-        //sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
-        sb.append("<style type=text/css>");
-        sb.append("body{font-size: 14px;}");
-        sb.append("div.content{    margin: auto;    text-align: center;}");
-        sb.append("div.tbl{    margin-bottom: 20px;}");
-        sb.append("table{    margin:auto;    border-spacing: 10px;    border: 1px solid #A2C0DA;}");
-        sb.append("th,td{    padding: 5px;    border-collapse: collapse;    text-align: left;}");
-        sb.append("th{    background: #B0D0FC;    border: 1px solid #000000;    text-align: center;    font-weight: bold;}");
-        sb.append("td{    background: #D3E5FD;    border: 1px solid #000000;    text-align: right;}");
-        sb.append(".title{    font-size:14px;    font-weight:bold;}");
-        sb.append(".foot{    font-size:14px;    color:Red;}");
-        sb.append(".divFoot{    text-align:right;    height:20px;    width:100%;}");
-        sb.append("div.tableTitle{    float:left;    font-size:14px;    font-weight:bold;    text-align:left;}");
-        sb.append("</style>");
-        sb.append("</head><body><div class=\"content\">");
+        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
