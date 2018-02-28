@@ -47,27 +47,47 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         super(Indicator.class);
     }
 
-    public void addValue(IndicatorDetail a, IndicatorDetail b) {
+    public void addValue(IndicatorDetail a, IndicatorDetail b, String formKind) {
         //先算汇总字段再算每月字段,A和S类型会重算汇总
-        a.setNfy(a.getNfy().add(b.getNfy()));
-        a.setNh2(a.getNh2().add(b.getNh2()));
-        a.setNh1(a.getNh1().add(b.getNh1()));
-        a.setNq4(a.getNq4().add(b.getNq4()));
-        a.setNq3(a.getNq3().add(b.getNq3()));
-        a.setNq2(a.getNq2().add(b.getNq2()));
-        a.setNq1(a.getNq1().add(b.getNq1()));
-        a.setN01(a.getN01().add(b.getN01()));
-        a.setN02(a.getN02().add(b.getN02()));
-        a.setN03(a.getN03().add(b.getN03()));
-        a.setN04(a.getN04().add(b.getN04()));
-        a.setN05(a.getN05().add(b.getN05()));
-        a.setN06(a.getN06().add(b.getN06()));
-        a.setN07(a.getN07().add(b.getN07()));
-        a.setN08(a.getN08().add(b.getN08()));
-        a.setN09(a.getN09().add(b.getN09()));
-        a.setN10(a.getN10().add(b.getN10()));
-        a.setN11(a.getN11().add(b.getN11()));
-        a.setN12(a.getN12().add(b.getN12()));
+        switch (formKind) {
+            case "M":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                a.setNq4(a.getNq4().add(b.getNq4()));
+                a.setNq3(a.getNq3().add(b.getNq3()));
+                a.setNq2(a.getNq2().add(b.getNq2()));
+                a.setNq1(a.getNq1().add(b.getNq1()));
+                a.setN01(a.getN01().add(b.getN01()));
+                a.setN02(a.getN02().add(b.getN02()));
+                a.setN03(a.getN03().add(b.getN03()));
+                a.setN04(a.getN04().add(b.getN04()));
+                a.setN05(a.getN05().add(b.getN05()));
+                a.setN06(a.getN06().add(b.getN06()));
+                a.setN07(a.getN07().add(b.getN07()));
+                a.setN08(a.getN08().add(b.getN08()));
+                a.setN09(a.getN09().add(b.getN09()));
+                a.setN10(a.getN10().add(b.getN10()));
+                a.setN11(a.getN11().add(b.getN11()));
+                a.setN12(a.getN12().add(b.getN12()));
+                break;
+            case "Q":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                a.setNq4(a.getNq4().add(b.getNq4()));
+                a.setNq3(a.getNq3().add(b.getNq3()));
+                a.setNq2(a.getNq2().add(b.getNq2()));
+                a.setNq1(a.getNq1().add(b.getNq1()));
+                break;
+            case "H":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                break;
+            case "Y":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+        }
     }
 
     @Override
@@ -212,6 +232,14 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public String getIndicatorColumn(String formtype, String c) {
+        if (formtype.equals("N")) {
+            return "n" + c;
+        } else {
+            return "";
+        }
+    }
+
     public Indicator getSumValue(List<Indicator> indicators) {
         if (indicators.isEmpty()) {
             return null;
@@ -227,10 +255,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 b = indicators.get(i).getBenchmarkIndicator();
                 f = indicators.get(i).getForecastIndicator();
                 t = indicators.get(i).getTargetIndicator();
-                addValue(entity.getActualIndicator(), a);
-                addValue(entity.getBenchmarkIndicator(), b);
-                addValue(entity.getForecastIndicator(), f);
-                addValue(entity.getTargetIndicator(), t);
+                addValue(entity.getActualIndicator(), a, entity.getFormkind());
+                addValue(entity.getBenchmarkIndicator(), b, entity.getFormkind());
+                addValue(entity.getForecastIndicator(), f, entity.getFormkind());
+                addValue(entity.getTargetIndicator(), t, entity.getFormkind());
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
             Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);

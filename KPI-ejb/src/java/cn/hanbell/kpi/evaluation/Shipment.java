@@ -46,9 +46,10 @@ public abstract class Shipment implements Actual {
         superEJB = (SuperEJBForERP) objRef;
     }
 
+    //加扣款
     public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno").toString();
-        String n_code_DA = map.get("n_code_DA").toString();
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d ");
         sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND h.facno='${facno}' ");
@@ -80,15 +81,28 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
+    //代收其他款项
     public BigDecimal getARM235Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno").toString();
-        String decode = map.get("decode").toString();
-        String n_code_DA = map.get("n_code_DA").toString();
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(apmamt),0) FROM armicdh h WHERE h.shpno IN ");
         sb.append(" (SELECT DISTINCT b.shpno FROM cdrhad a,cdrdta b WHERE a.facno=b.facno AND a.shpno=b.shpno AND a.houtsta<>'W' AND a.facno='${facno}' AND a.decode='${decode}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND b.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_CD)) {
+            sb.append(" AND b.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND b.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND b.n_code_DD ").append(n_code_DD);
         }
         sb.append(" AND year(a.shpdate) = ${y}  AND month(a.shpdate)= ${m} ");
         switch (type) {
@@ -129,9 +143,10 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
+    //它项金额
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno").toString();
-        String deptno = map.get("deptno").toString();
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(h.shpamt),0) FROM armbil h WHERE h.rkd='RQ11' AND h.facno='${facno}' AND h.depno IN (${deptno}) ");
         sb.append(" AND year(h.bildat) = ${y} AND month(h.bildat)= ${m} ");
@@ -159,10 +174,11 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
+    //折让
     public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno").toString();
-        String n_code_DA = map.get("n_code_DA").toString();
-        String ogdkid = map.get("ogdkid").toString();
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
         sb.append(" AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");

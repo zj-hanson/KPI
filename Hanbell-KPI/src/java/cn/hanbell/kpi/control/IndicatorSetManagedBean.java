@@ -10,15 +10,19 @@ import cn.hanbell.kpi.ejb.IndicatorAssignmentBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
 import cn.hanbell.kpi.ejb.IndicatorDetailBean;
+import cn.hanbell.kpi.ejb.IndicatorSetBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAssignment;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
+import cn.hanbell.kpi.entity.IndicatorSet;
 import cn.hanbell.kpi.lazy.IndicatorModel;
-import cn.hanbell.kpi.web.SuperMulti2Bean;
+import cn.hanbell.kpi.web.SuperMulti3Bean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +34,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean(name = "indicatorSetManagedBean")
 @SessionScoped
-public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, IndicatorDepartment, IndicatorAssignment> {
+public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, IndicatorDepartment, IndicatorAssignment, IndicatorSet> {
 
     @EJB
     protected IndicatorBean indicatorBean;
@@ -40,13 +44,15 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
     protected IndicatorAssignmentBean indicatorAssignmentBean;
     @EJB
     protected IndicatorDetailBean indicatorDetailBean;
+    @EJB
+    protected IndicatorSetBean indicatorSetBean;
 
     protected String queryDeptno;
     protected String queryDeptname;
     protected int queryYear;
 
     public IndicatorSetManagedBean() {
-        super(Indicator.class, IndicatorDepartment.class, IndicatorAssignment.class);
+        super(Indicator.class, IndicatorDepartment.class, IndicatorAssignment.class, IndicatorSet.class);
     }
 
     @Override
@@ -217,10 +223,12 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
         superEJB = indicatorBean;
         detailEJB = indicatorDepartmentBean;
         detailEJB2 = indicatorAssignmentBean;
+        detailEJB3 = indicatorSetBean;
         model = new IndicatorModel(indicatorBean);
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
+        model.getFilterFields().put("objtype =", "D");
         queryYear = Calendar.getInstance().get(Calendar.YEAR);
         super.init();
     }
@@ -283,15 +291,53 @@ public class IndicatorSetManagedBean extends SuperMulti2Bean<Indicator, Indicato
             if (queryState != null && !"ALL".equals(queryState)) {
                 model.getFilterFields().put("status", queryState);
             }
+            model.getFilterFields().put("objtype =", "D");
         }
     }
 
     @Override
     public void reset() {
         super.reset();
+        model.getFilterFields().put("objtype =", "D");
         queryName = null;
         queryDeptno = null;
         queryDeptname = null;
+    }
+
+    public void updateActualValue() {
+        if (currentEntity != null) {
+            if (currentEntity.isAssigned() && !detailList2.isEmpty()) {
+                List<Indicator> indicators = new ArrayList<>();
+                for (IndicatorAssignment ia : detailList2) {
+                    Indicator i = indicatorBean.findByFormidYearAndDeptno(ia.getFormid(), currentEntity.getSeq(), ia.getDeptno());
+                    if (i != null) {
+                        indicators.add(i);
+                    }
+                }
+                Indicator si = indicatorBean.getSumValue(indicators);
+                currentEntity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
+                currentEntity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
+                currentEntity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
+                currentEntity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
+                showInfoMsg("Info", "更新实际值成功,请保存");
+            } else if (currentEntity.getActualInterface() == null && !detailList3.isEmpty()) {
+                List<Indicator> indicators = new ArrayList<>();
+                for (IndicatorSet is : detailList3) {
+                    Indicator i = indicatorBean.findByFormidYearAndDeptno(is.getFormid(), currentEntity.getSeq(), is.getDeptno());
+                    if (i != null) {
+                        indicators.add(i);
+                    }
+                }
+                Indicator si = indicatorBean.getSumValue(indicators);
+                currentEntity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
+                currentEntity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
+                currentEntity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
+                currentEntity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
+                showInfoMsg("Info", "更新实际值成功,请保存");
+            }
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
+        }
     }
 
     public void updatePerformance() {

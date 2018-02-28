@@ -39,6 +39,13 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
         newEntity.setPerfCalc("AT");
     }
 
+    @Override
+    public void createDetail2() {
+        super.createDetail2();
+        newDetail2.setDeptno(currentEntity.getDeptno());
+        newDetail2.setDeptname(currentEntity.getDeptname());
+    }
+
     public void handleDialogReturnProductWhenEdit(SelectEvent event) {
         if (event.getObject() != null && currentEntity != null) {
             Category e = (Category) event.getObject();
@@ -83,6 +90,7 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
         model.getFilterFields().put("objtype =", "P");
     }
 
+    @Override
     public void updateActualValue() {
         if (queryDateBegin != null && currentEntity != null) {
             try {
