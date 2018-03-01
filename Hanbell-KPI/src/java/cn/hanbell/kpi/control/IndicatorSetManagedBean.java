@@ -304,37 +304,19 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         queryDeptname = null;
     }
 
-    public void updateActualValue() {
+    public void updateActual() {
         if (currentEntity != null) {
-            if (currentEntity.isAssigned() && !detailList2.isEmpty()) {
-                List<Indicator> indicators = new ArrayList<>();
-                for (IndicatorAssignment ia : detailList2) {
-                    Indicator i = indicatorBean.findByFormidYearAndDeptno(ia.getFormid(), currentEntity.getSeq(), ia.getDeptno());
-                    if (i != null) {
-                        indicators.add(i);
-                    }
-                }
-                Indicator si = indicatorBean.getSumValue(indicators);
-                currentEntity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
-                currentEntity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
-                currentEntity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
-                currentEntity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
-                showInfoMsg("Info", "更新实际值成功,请保存");
-            } else if (currentEntity.getActualInterface() == null && !detailList3.isEmpty()) {
-                List<Indicator> indicators = new ArrayList<>();
-                for (IndicatorSet is : detailList3) {
-                    Indicator i = indicatorBean.findByFormidYearAndDeptno(is.getFormid(), currentEntity.getSeq(), is.getDeptno());
-                    if (i != null) {
-                        indicators.add(i);
-                    }
-                }
-                Indicator si = indicatorBean.getSumValue(indicators);
-                currentEntity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
-                currentEntity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
-                currentEntity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
-                currentEntity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
-                showInfoMsg("Info", "更新实际值成功,请保存");
-            }
+            indicatorBean.updateActual(currentEntity);
+            showInfoMsg("Info", "更新实际值成功,请保存");
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
+        }
+    }
+
+    public void updateBenchmark() {
+        if (currentEntity != null) {
+            indicatorBean.updateBenchmark(currentEntity);
+            showInfoMsg("Info", "更新基准值成功,请保存");
         } else {
             showErrorMsg("Error", "没有可更新指标");
         }
@@ -344,6 +326,15 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         if (currentEntity != null) {
             indicatorBean.updatePerformance(currentEntity);
             showInfoMsg("Info", "更新达成率成功,请保存");
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
+        }
+    }
+
+    public void updateTarget() {
+        if (currentEntity != null) {
+            indicatorBean.updateTarget(currentEntity);
+            showInfoMsg("Info", "更新目标值成功,请保存");
         } else {
             showErrorMsg("Error", "没有可更新指标");
         }

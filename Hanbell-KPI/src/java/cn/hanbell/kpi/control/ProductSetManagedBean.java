@@ -90,7 +90,6 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
         model.getFilterFields().put("objtype =", "P");
     }
 
-    @Override
     public void updateActualValue() {
         if (queryDateBegin != null && currentEntity != null) {
             try {

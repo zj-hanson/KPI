@@ -26,6 +26,9 @@ import javax.ejb.LocalBean;
 import javax.persistence.Query;
 import org.apache.commons.beanutils.BeanUtils;
 import cn.hanbell.kpi.comm.Actual;
+import cn.hanbell.kpi.entity.IndicatorAssignment;
+import cn.hanbell.kpi.entity.IndicatorSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -36,10 +39,16 @@ import cn.hanbell.kpi.comm.Actual;
 public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     @EJB
+    private IndicatorAssignmentBean indicatorAssignmentBean;
+
+    @EJB
     private IndicatorDepartmentBean indicatorDepartmentBean;
 
     @EJB
     private IndicatorDetailBean indicatorDetailBean;
+
+    @EJB
+    private IndicatorSetBean indicatorSetBean;
 
     protected Actual actualInterface;
 
@@ -412,6 +421,65 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return super.update(entity);
     }
 
+    public void updateActual(Indicator entity) {
+        List<Indicator> indicators = new ArrayList<>();
+        if (entity.isAssigned()) {
+            List<IndicatorAssignment> assList = indicatorAssignmentBean.findByPId(entity.getId());
+            for (IndicatorAssignment ia : assList) {
+                Indicator i = findByFormidYearAndDeptno(ia.getFormid(), entity.getSeq(), ia.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        } else if (entity.getActualInterface() == null) {
+            List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
+            for (IndicatorSet is : setList) {
+                Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        }
+        indicatorAssignmentBean.getEntityManager().clear();
+        indicatorSetBean.getEntityManager().clear();
+        getEntityManager().clear();
+        if (!indicators.isEmpty()) {
+            Indicator si = getSumValue(indicators);
+            switch (entity.getFormkind()) {
+                case "M":
+                    entity.getActualIndicator().setNfy(si.getActualIndicator().getNfy());
+                    entity.getActualIndicator().setNh2(si.getActualIndicator().getNh2());
+                    entity.getActualIndicator().setNh1(si.getActualIndicator().getNh1());
+                    entity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
+                    entity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
+                    entity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
+                    entity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
+                    entity.getActualIndicator().setN01(si.getActualIndicator().getN01());
+                    entity.getActualIndicator().setN02(si.getActualIndicator().getN02());
+                    entity.getActualIndicator().setN03(si.getActualIndicator().getN03());
+                    entity.getActualIndicator().setN04(si.getActualIndicator().getN04());
+                    entity.getActualIndicator().setN05(si.getActualIndicator().getN05());
+                    entity.getActualIndicator().setN06(si.getActualIndicator().getN06());
+                    entity.getActualIndicator().setN07(si.getActualIndicator().getN07());
+                    entity.getActualIndicator().setN08(si.getActualIndicator().getN08());
+                    entity.getActualIndicator().setN09(si.getActualIndicator().getN09());
+                    entity.getActualIndicator().setN10(si.getActualIndicator().getN10());
+                    entity.getActualIndicator().setN11(si.getActualIndicator().getN11());
+                    entity.getActualIndicator().setN12(si.getActualIndicator().getN12());
+                    break;
+                case "Q":
+                    entity.getActualIndicator().setNfy(si.getActualIndicator().getNfy());
+                    entity.getActualIndicator().setNh2(si.getActualIndicator().getNh2());
+                    entity.getActualIndicator().setNh1(si.getActualIndicator().getNh1());
+                    entity.getActualIndicator().setNq1(si.getActualIndicator().getNq1());
+                    entity.getActualIndicator().setNq2(si.getActualIndicator().getNq2());
+                    entity.getActualIndicator().setNq3(si.getActualIndicator().getNq3());
+                    entity.getActualIndicator().setNq4(si.getActualIndicator().getNq4());
+                    break;
+            }
+        }
+    }
+
     public void updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
         if (entity != null && (entity.getSeq() == y)) {
@@ -425,6 +493,65 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.update(a);
             } catch (Exception ex) {
                 Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void updateBenchmark(Indicator entity) {
+        List<Indicator> indicators = new ArrayList<>();
+        if (entity.isAssigned()) {
+            List<IndicatorAssignment> assList = indicatorAssignmentBean.findByPId(entity.getId());
+            for (IndicatorAssignment ia : assList) {
+                Indicator i = findByFormidYearAndDeptno(ia.getFormid(), entity.getSeq(), ia.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        } else if (entity.getActualInterface() == null) {
+            List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
+            for (IndicatorSet is : setList) {
+                Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        }
+        indicatorAssignmentBean.getEntityManager().clear();
+        indicatorSetBean.getEntityManager().clear();
+        getEntityManager().clear();
+        if (!indicators.isEmpty()) {
+            Indicator si = getSumValue(indicators);
+            switch (entity.getFormkind()) {
+                case "M":
+                    entity.getBenchmarkIndicator().setNfy(si.getBenchmarkIndicator().getNfy());
+                    entity.getBenchmarkIndicator().setNh2(si.getBenchmarkIndicator().getNh2());
+                    entity.getBenchmarkIndicator().setNh1(si.getBenchmarkIndicator().getNh1());
+                    entity.getBenchmarkIndicator().setNq1(si.getBenchmarkIndicator().getNq1());
+                    entity.getBenchmarkIndicator().setNq2(si.getBenchmarkIndicator().getNq2());
+                    entity.getBenchmarkIndicator().setNq3(si.getBenchmarkIndicator().getNq3());
+                    entity.getBenchmarkIndicator().setNq4(si.getBenchmarkIndicator().getNq4());
+                    entity.getBenchmarkIndicator().setN01(si.getBenchmarkIndicator().getN01());
+                    entity.getBenchmarkIndicator().setN02(si.getBenchmarkIndicator().getN02());
+                    entity.getBenchmarkIndicator().setN03(si.getBenchmarkIndicator().getN03());
+                    entity.getBenchmarkIndicator().setN04(si.getBenchmarkIndicator().getN04());
+                    entity.getBenchmarkIndicator().setN05(si.getBenchmarkIndicator().getN05());
+                    entity.getBenchmarkIndicator().setN06(si.getBenchmarkIndicator().getN06());
+                    entity.getBenchmarkIndicator().setN07(si.getBenchmarkIndicator().getN07());
+                    entity.getBenchmarkIndicator().setN08(si.getBenchmarkIndicator().getN08());
+                    entity.getBenchmarkIndicator().setN09(si.getBenchmarkIndicator().getN09());
+                    entity.getBenchmarkIndicator().setN10(si.getBenchmarkIndicator().getN10());
+                    entity.getBenchmarkIndicator().setN11(si.getBenchmarkIndicator().getN11());
+                    entity.getBenchmarkIndicator().setN12(si.getBenchmarkIndicator().getN12());
+                    break;
+                case "Q":
+                    entity.getBenchmarkIndicator().setNfy(si.getBenchmarkIndicator().getNfy());
+                    entity.getBenchmarkIndicator().setNh2(si.getBenchmarkIndicator().getNh2());
+                    entity.getBenchmarkIndicator().setNh1(si.getBenchmarkIndicator().getNh1());
+                    entity.getBenchmarkIndicator().setNq1(si.getBenchmarkIndicator().getNq1());
+                    entity.getBenchmarkIndicator().setNq2(si.getBenchmarkIndicator().getNq2());
+                    entity.getBenchmarkIndicator().setNq3(si.getBenchmarkIndicator().getNq3());
+                    entity.getBenchmarkIndicator().setNq4(si.getBenchmarkIndicator().getNq4());
+                    break;
             }
         }
     }
@@ -549,6 +676,65 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     if (entity.getActualIndicator().getNfy().compareTo(BigDecimal.ZERO) != 0) {
                         entity.getPerformanceIndicator().setNfy(entity.getTargetIndicator().getNfy().divide(entity.getActualIndicator().getNfy(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
                     }
+                    break;
+            }
+        }
+    }
+
+    public void updateTarget(Indicator entity) {
+        List<Indicator> indicators = new ArrayList<>();
+        if (entity.isAssigned()) {
+            List<IndicatorAssignment> assList = indicatorAssignmentBean.findByPId(entity.getId());
+            for (IndicatorAssignment ia : assList) {
+                Indicator i = findByFormidYearAndDeptno(ia.getFormid(), entity.getSeq(), ia.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        } else if (entity.getActualInterface() == null) {
+            List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
+            for (IndicatorSet is : setList) {
+                Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        }
+        indicatorAssignmentBean.getEntityManager().clear();
+        indicatorSetBean.getEntityManager().clear();
+        getEntityManager().clear();
+        if (!indicators.isEmpty()) {
+            Indicator si = getSumValue(indicators);
+            switch (entity.getFormkind()) {
+                case "M":
+                    entity.getTargetIndicator().setNfy(si.getTargetIndicator().getNfy());
+                    entity.getTargetIndicator().setNh2(si.getTargetIndicator().getNh2());
+                    entity.getTargetIndicator().setNh1(si.getTargetIndicator().getNh1());
+                    entity.getTargetIndicator().setNq1(si.getTargetIndicator().getNq1());
+                    entity.getTargetIndicator().setNq2(si.getTargetIndicator().getNq2());
+                    entity.getTargetIndicator().setNq3(si.getTargetIndicator().getNq3());
+                    entity.getTargetIndicator().setNq4(si.getTargetIndicator().getNq4());
+                    entity.getTargetIndicator().setN01(si.getTargetIndicator().getN01());
+                    entity.getTargetIndicator().setN02(si.getTargetIndicator().getN02());
+                    entity.getTargetIndicator().setN03(si.getTargetIndicator().getN03());
+                    entity.getTargetIndicator().setN04(si.getTargetIndicator().getN04());
+                    entity.getTargetIndicator().setN05(si.getTargetIndicator().getN05());
+                    entity.getTargetIndicator().setN06(si.getTargetIndicator().getN06());
+                    entity.getTargetIndicator().setN07(si.getTargetIndicator().getN07());
+                    entity.getTargetIndicator().setN08(si.getTargetIndicator().getN08());
+                    entity.getTargetIndicator().setN09(si.getTargetIndicator().getN09());
+                    entity.getTargetIndicator().setN10(si.getTargetIndicator().getN10());
+                    entity.getTargetIndicator().setN11(si.getTargetIndicator().getN11());
+                    entity.getTargetIndicator().setN12(si.getTargetIndicator().getN12());
+                    break;
+                case "Q":
+                    entity.getTargetIndicator().setNfy(si.getTargetIndicator().getNfy());
+                    entity.getTargetIndicator().setNh2(si.getTargetIndicator().getNh2());
+                    entity.getTargetIndicator().setNh1(si.getTargetIndicator().getNh1());
+                    entity.getTargetIndicator().setNq1(si.getTargetIndicator().getNq1());
+                    entity.getTargetIndicator().setNq2(si.getTargetIndicator().getNq2());
+                    entity.getTargetIndicator().setNq3(si.getTargetIndicator().getNq3());
+                    entity.getTargetIndicator().setNq4(si.getTargetIndicator().getNq4());
                     break;
             }
         }

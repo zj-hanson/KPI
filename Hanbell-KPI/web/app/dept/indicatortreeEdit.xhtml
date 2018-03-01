@@ -14,10 +14,22 @@
                     <p:button id="btnReturn" value="返回" outcome="indicatortree" icon="ui-icon-restore"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton id="btnUpdateActual" value="实绩" actionListener="#{indicatorTreeManagedBean.updateActualValue()}" icon="ui-icon-save"
-                                     process="@this" update="formOne"/>
+                    <p:commandButton id="btnUpdateBenchmark" value="基准" actionListener="#{indicatorTreeManagedBean.updateBenchmark()}" icon="ui-icon-save"
+                                     process="@this" update="formOne">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateTarget" value="目标" actionListener="#{indicatorTreeManagedBean.updateTarget()}" icon="ui-icon-save"
+                                     process="@this" update="formOne">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateActual" value="实绩" actionListener="#{indicatorTreeManagedBean.updateActual()}" icon="ui-icon-save"
+                                     process="@this" update="formOne">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnUpdatePerformance" value="达成" actionListener="#{indicatorTreeManagedBean.updatePerformance()}" icon="ui-icon-save"
-                                     process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
+                                     process="@this,plgHead,formOne:tabView:plgTarget" update="formOne">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnSave" value="保存" actionListener="#{indicatorTreeManagedBean.update()}" icon="ui-icon-save"
                                      process="@this,plgHead,formOne:tabView:plgTarget" update="formOne"/>
                 </f:facet>
@@ -438,7 +450,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formOne" trigger="btnUpdateActual,btnUpdatePerformance,btnSave">
+            <p:blockUI id="blockUI" block="formOne" trigger="btnUpdateBenchmark,btnUpdateTarget,btnUpdateActual,btnUpdatePerformance,btnSave">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
