@@ -14,10 +14,10 @@ public class ShipmentQuantityR1T2 extends ShipmentQuantityR {
     public ShipmentQuantityR1T2() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1T000' ");
+        queryParams.put("deptno", " '1T000','1T100' ");
         queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " ='E' ");
+        queryParams.put("n_code_DC", " ='H' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

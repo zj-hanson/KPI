@@ -14,7 +14,6 @@ public abstract class ShipmentQuantityAJ extends ShipmentQuantity {
     public ShipmentQuantityAJ() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1G000','1G100' ");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_DC", " like 'AJ%' ");
         queryParams.put("n_code_DD", " ='00' ");

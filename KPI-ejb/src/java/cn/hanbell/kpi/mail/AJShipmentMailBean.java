@@ -7,6 +7,7 @@ package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
+import java.text.DecimalFormat;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -75,7 +76,10 @@ public class AJShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            return getHtmlTable(this.indicators, y, m, d, false);
+            setDecimalFormat("#,###.00");
+            String t = getHtmlTable(this.indicators, y, m, d, false);
+            setDecimalFormat("#,###");
+            return t;
         } else {
             return "A机体每日出货金额设定错误";
         }

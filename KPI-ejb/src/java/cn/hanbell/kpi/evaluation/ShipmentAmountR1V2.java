@@ -22,7 +22,7 @@ public class ShipmentAmountR1V2 extends ShipmentAmountR {
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='CQ' ");
-        queryParams.put("n_code_DC", " ='E' ");
+        queryParams.put("n_code_DC", " ='H' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 
@@ -38,11 +38,6 @@ public class ShipmentAmountR1V2 extends ShipmentAmountR {
         temp2 = super.getValue(y, m, d, type, queryParams);
         //SHB + CQ
         return temp1.add(temp2);
-    }
-
-    @Override
-    public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
     }
 
     @Override

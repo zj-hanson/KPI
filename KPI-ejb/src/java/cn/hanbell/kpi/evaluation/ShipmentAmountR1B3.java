@@ -27,11 +27,6 @@ public class ShipmentAmountR1B3 extends ShipmentAmountR {
     }
 
     @Override
-    public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
-    @Override
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return BigDecimal.ZERO;
     }

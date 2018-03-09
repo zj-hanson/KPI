@@ -17,9 +17,9 @@ import javax.persistence.Query;
  *
  * @author C0160
  */
-public abstract class ShipmentQuantityR extends Shipment {
+public abstract class ShipmentAmountR9 extends Shipment {
 
-    public ShipmentQuantityR() {
+    public ShipmentAmountR9() {
         super();
     }
 
@@ -36,10 +36,9 @@ public abstract class ShipmentQuantityR extends Shipment {
 
         BigDecimal shpqy1 = BigDecimal.ZERO;
         BigDecimal bshpqy1 = BigDecimal.ZERO;
-
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and d.issevdta='N' and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','SSD00328') ");
+        sb.append(" and h.facno='${facno}' and h.decode='${decode}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -69,8 +68,8 @@ public abstract class ShipmentQuantityR extends Shipment {
                 .replace("${facno}", facno).replace("${decode}", decode);
 
         sb.setLength(0);
-        sb.append("select isnull(sum(d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and d.issevdta='N' and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','SSD00328') ");
+        sb.append(" and h.facno='${facno}' and h.decode='${decode}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
