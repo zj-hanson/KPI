@@ -34,12 +34,13 @@ public abstract class ShipmentAmount extends Shipment {
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
-        BigDecimal shpqy1 = BigDecimal.ZERO;
-        BigDecimal bshpqy1 = BigDecimal.ZERO;
+        BigDecimal shp1 = BigDecimal.ZERO;
+        BigDecimal bshp1 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
         sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
-        sb.append(" and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and d.issevdta='N' and h.facno='${facno}' and h.decode='${decode}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -70,7 +71,8 @@ public abstract class ShipmentAmount extends Shipment {
 
         sb.setLength(0);
         sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-        sb.append(" and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and d.issevdta='N' and h.facno='${facno}' and h.decode='${decode}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -105,8 +107,8 @@ public abstract class ShipmentAmount extends Shipment {
         try {
             Object o1 = query1.getSingleResult();
             Object o2 = query2.getSingleResult();
-            shpqy1 = (BigDecimal) o1;
-            bshpqy1 = (BigDecimal) o2;
+            shp1 = (BigDecimal) o1;
+            bshp1 = (BigDecimal) o2;
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,7 +119,7 @@ public abstract class ShipmentAmount extends Shipment {
             this.arm270 = this.getARM270Value(y, m, d, type, getQueryParams());
             this.arm423 = this.getARM423Value(y, m, d, type, getQueryParams());
         }
-        return shpqy1.subtract(bshpqy1).add(arm232).add(arm235).add(arm270).add(arm423);
+        return shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423);
     }
 
 }

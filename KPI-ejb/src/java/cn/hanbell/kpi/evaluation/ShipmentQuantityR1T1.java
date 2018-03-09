@@ -9,7 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentQuantityR1T1 extends ShipmentQuantityR {
+public class ShipmentQuantityR1T1 extends ShipmentQuantity {
 
     public ShipmentQuantityR1T1() {
         super();

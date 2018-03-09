@@ -9,14 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentAmountR1T9 extends ShipmentAmountR9 {
+public class ShipmentAmountR1T9 extends ShipmentAmount9 {
 
     public ShipmentAmountR1T9() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DD", " ='01' ");
     }
 
 }

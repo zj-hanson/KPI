@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  *
  * @author C0160
  */
-public class ShipmentAmountR1B2 extends ShipmentAmountR {
+public class ShipmentAmountR1B2 extends ShipmentAmount {
 
     public ShipmentAmountR1B2() {
         super();
