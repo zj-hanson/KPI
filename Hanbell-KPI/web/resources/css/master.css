@@ -7,7 +7,11 @@ li{
 }
 
 body .ui-panelgrid .ui-panelgrid-cell {
-    padding: 0px 16px;
+    padding: 0px 6px;
+}
+
+body .plgChartData td.ui-panelgrid-cell{
+    padding: 2px 1px;
 }
 
 .right{

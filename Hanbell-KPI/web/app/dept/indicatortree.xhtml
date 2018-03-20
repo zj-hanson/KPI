@@ -32,6 +32,18 @@
                     <p:commandButton id="btnView" value="查看" action="#{indicatorTreeManagedBean.view('indicatortreeView')}"  icon="ui-icon-document"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnUpdateBenchmark" value="基准" actionListener="#{indicatorTreeManagedBean.calcBenchmark()}" icon="ui-icon-save"
+                                     process="@this" update="formList">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateTarget" value="目标" actionListener="#{indicatorTreeManagedBean.calcTarget()}" icon="ui-icon-save"
+                                     process="@this" update="formList">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateActual" value="实绩" actionListener="#{indicatorTreeManagedBean.calcActual()}" icon="ui-icon-save"
+                                     process="@this" update="formList">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
                         <p:menuitem id="btnEdit" value="编辑" icon="ui-icon-pencil" action="#{indicatorTreeManagedBean.edit('indicatortreeEdit')}"
                                     rendered="#{indicatorTreeManagedBean.doEdit}"/>
@@ -100,7 +112,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formList" trigger="btnUnverify">
+            <p:blockUI id="blockUI" block="formList" trigger="btnUpdateTarget,btnUpdateActual,btnUnverify">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>

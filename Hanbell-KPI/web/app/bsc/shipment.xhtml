@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center"><span style="float: left">单位:#{shipmentBscReportBean.indicator.unit}</span>#{shipmentBscReportBean.y}#{shipmentBscReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
+                        <f:facet name="header">
+                            <p:row style="font-weight: 600;">
+                                <p:column>名称</p:column>
+                                <p:column>1月</p:column>
+                                <p:column>2月</p:column>
+                                <p:column>3月</p:column>
+                                <p:column>4月</p:column>
+                                <p:column>5月</p:column>
+                                <p:column>6月</p:column>
+                                <p:column>7月</p:column>
+                                <p:column>8月</p:column>
+                                <p:column>9月</p:column>
+                                <p:column>10月</p:column>
+                                <p:column>11月</p:column>
+                                <p:column>12月</p:column>
+                                <p:column>合计</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row style="text-align: right;font-weight: 800;">
+                            <p:column>目标</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n01)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n02)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n03)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n04)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n05)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n06)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n07)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n08)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n09)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.n12)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.targetIndicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800;">
+                            <p:column>实际</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n01)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n02)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n03)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n04)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n05)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n06)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n07)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n08)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n09)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.n12)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.actualIndicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>实际累计</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n01)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n02)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n03)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n04)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n05)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n06)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n07)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n08)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n09)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.actualAccumulated.n12)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>同期</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n01)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n02)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n03)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n04)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n05)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n06)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n07)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n08)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n09)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.n12)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.indicator.benchmarkIndicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>本月达成</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n01,1)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n02,2)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n03,3)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n04,4)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n05,5)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n06,6)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n07,7)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n08,8)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n09,9)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n10,10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n11,11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.n12,12)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.indicator.performanceIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>同期累计</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n01)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n02)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n03)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n04)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n05)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n06)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n07)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n08)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n09)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.format(shipmentBscReportBean.benchmarkAccumulated.n12)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>同比成长</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n01,1)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n02,2)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n03,3)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n04,4)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n05,5)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n06,6)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n07,7)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n08,8)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n09,9)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n10,10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n11,11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.BG.n12,12)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>累计成长</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n01,1)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n02,2)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n03,3)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n04,4)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n05,5)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n06,6)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n07,7)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n08,8)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n09,9)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n10,10)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n11,11)}</p:column>
+                            <p:column>#{shipmentBscReportBean.percentFormat(shipmentBscReportBean.AG.n12,12)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart type="line" model="#{shipmentBscReportBean.initLineChartModel('月份','指标')}" style="height:300px"
+                             responsive="true" >
+                        <p:ajax process="@this" oncomplete="alert('11');"/>
+                    </p:chart>
+                </div>
+                <div><h:inputHidden id="m" value="#{shipmentBscReportBean.m}"></h:inputHidden></div>
+            </div>
+        </h:form>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var m = document.getElementById("formOne:m");
+                if (m !== null) {
+                    var tr = $("tr.ui-widget-content");
+                    $(tr).each(function (i, t) {
+                        var c = $(t).find("td.ui-panelgrid-cell")[m.value];
+                        if (c !== null) {
+                            $(c).css("color", "red");
+                        }
+                    });
+                }
+            });
+        </script>
+    </ui:define>
+
+</ui:composition>

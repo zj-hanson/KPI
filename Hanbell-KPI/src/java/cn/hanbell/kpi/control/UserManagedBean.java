@@ -13,6 +13,8 @@ import cn.hanbell.eap.entity.SystemGrantPrg;
 import cn.hanbell.eap.entity.SystemUser;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,6 +43,8 @@ public class UserManagedBean implements Serializable {
 
     private Company currentCompany;
     private SystemUser currentUser;
+    private boolean status;
+    private Date baseDate;
 
     private String company;
     private String userid;
@@ -49,7 +53,6 @@ public class UserManagedBean implements Serializable {
     private String pwd;
     private String newpwd;
     private String secpwd;
-    private boolean status;
 
     private List<SystemGrantPrg> systemGrantPrgList;
     private List<Company> companyList;
@@ -61,6 +64,10 @@ public class UserManagedBean implements Serializable {
     @PostConstruct
     public void construct() {
         companyList = companyBean.findAll();
+        Calendar c = Calendar.getInstance();
+        c.setTime(BaseLib.getDate());
+        c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
+        baseDate = c.getTime();
     }
 
     public boolean checkUser() {
@@ -90,6 +97,8 @@ public class UserManagedBean implements Serializable {
                 u = systemUserBean.findByUserId(getUserid());
             }
             if (u != null) {
+                this.company = "C";
+                this.currentCompany = companyBean.findByCompany("C");
                 if ("Admin".equals(u.getUserid())) {
                     currentCompany = companyBean.findByCompany(company);
                     if (currentCompany == null) {
@@ -193,6 +202,20 @@ public class UserManagedBean implements Serializable {
 
     public boolean getStatus() {
         return status;
+    }
+
+    /**
+     * @return the baseDate
+     */
+    public Date getBaseDate() {
+        return baseDate;
+    }
+
+    /**
+     * @param baseDate the baseDate to set
+     */
+    public void setBaseDate(Date baseDate) {
+        this.baseDate = baseDate;
     }
 
     /**

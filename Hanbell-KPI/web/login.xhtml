@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
@@ -38,11 +37,7 @@
                         </h:panelGroup>
                     </div>
                     <div class="ui-g-12">
-                        <p:selectOneMenu id="company" value="#{userManagedBean.company}" title="公司"
-                                         required="true" requiredMessage="请选择公司" >
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItems value="#{userManagedBean.companyList}" var="c" itemLabel="#{c.name}" itemValue="#{c.company}"/>
-                        </p:selectOneMenu>
+                        <p:calendar value="#{userManagedBean.baseDate}" required="true" requiredMessage="请输入报告月份" pattern="yyyy/MM/dd"/>
                     </div>
                     <div class="ui-g-12">
                         <p:commandButton value="登录系统" action="#{userManagedBean.login()}" update="@form"/>
@@ -50,7 +45,7 @@
                 </div>
             </div>
         </h:form>
-        <div class="login-footer">汉钟精机 | MiddleWare</div>
+        <div class="login-footer">汉钟精机 | Middleware</div>
 
         <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
         <h:outputStylesheet name="css/layout-blue.css" library="ultima-layout" />

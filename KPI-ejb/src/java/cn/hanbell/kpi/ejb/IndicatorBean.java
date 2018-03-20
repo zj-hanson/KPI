@@ -356,6 +356,14 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public String percentFormat(BigDecimal value) {
+        return percentFormat(value, 2);
+    }
+
+    public String percentFormat(BigDecimal value, int scale) {
+        return String.format("%s%%", value.setScale(scale, RoundingMode.HALF_UP).toString());
+    }
+
     @Override
     public void persist(Indicator entity) {
         super.persist(entity);

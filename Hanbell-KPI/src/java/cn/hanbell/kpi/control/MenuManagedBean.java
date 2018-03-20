@@ -11,9 +11,11 @@ import cn.hanbell.eap.ejb.SystemRoleDetailBean;
 import cn.hanbell.eap.entity.SystemGrantModule;
 import cn.hanbell.eap.entity.SystemGrantPrg;
 import cn.hanbell.eap.entity.SystemRoleDetail;
+import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
 import cn.hanbell.kpi.ejb.RoleDetailBean;
 import cn.hanbell.kpi.ejb.RoleGrantModuleBean;
+import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.entity.RoleDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
@@ -39,6 +41,8 @@ import org.primefaces.model.menu.MenuModel;
 @SessionScoped
 public class MenuManagedBean implements Serializable {
 
+    @EJB
+    private IndicatorChartBean indicatorChartBean;
     @EJB
     private IndicatorDepartmentBean indicatorDepartmentBean;
 
@@ -69,6 +73,7 @@ public class MenuManagedBean implements Serializable {
     private List<RoleGrantModule> grantList;
     private List<RoleDetail> roleDetailList;
 
+    private List<IndicatorChart> indicatorChartList;
     private List<IndicatorDepartment> indicatorDepartmentList;
 
     private MenuModel model;
@@ -208,7 +213,7 @@ public class MenuManagedBean implements Serializable {
                     return 1;
                 }
             });
-            
+
             kpimenu = new DefaultSubMenu("部门KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
@@ -227,7 +232,7 @@ public class MenuManagedBean implements Serializable {
                 kpimenu.addElement(submenu);
             }
             model.addElement(kpimenu);
-            
+
             kpimenu = new DefaultSubMenu("产品KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
@@ -240,6 +245,25 @@ public class MenuManagedBean implements Serializable {
                         menuitem.setIcon("menu");
                         menuitem.setOutcome(i.getParent().getApi());
                         menuitem.setParam("id", i.getParent().getId());
+                        submenu.addElement(menuitem);
+                    }
+                }
+                kpimenu.addElement(submenu);
+            }
+            model.addElement(kpimenu);
+
+            kpimenu = new DefaultSubMenu("经营汇报");
+            kpimenu.setIcon("menu");
+            for (RoleGrantModule r : grantList) {
+                submenu = new DefaultSubMenu(r.getDept());
+                submenu.setIcon("menu");
+                indicatorChartList = indicatorChartBean.findByPId(r.getDeptno());
+                if (indicatorChartList != null && !indicatorChartList.isEmpty()) {
+                    for (IndicatorChart i : indicatorChartList) {
+                        menuitem = new DefaultMenuItem(i.getName());
+                        menuitem.setIcon("menu");
+                        menuitem.setOutcome(i.getApi());
+                        menuitem.setParam("id", i.getId());
                         submenu.addElement(menuitem);
                     }
                 }

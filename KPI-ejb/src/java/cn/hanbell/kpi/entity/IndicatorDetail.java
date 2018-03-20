@@ -111,6 +111,13 @@ public class IndicatorDetail extends SuperDetailEntity {
         return parent;
     }
 
+    /**
+     * @param parent the parent to set
+     */
+    public void setParent(Indicator parent) {
+        this.parent = parent;
+    }
+
     public String getType() {
         return type;
     }
@@ -315,14 +322,14 @@ public class IndicatorDetail extends SuperDetailEntity {
     }
 
     public void calcMonth() {
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("S")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("S")) {
             this.nq1 = this.n01.add(this.n02).add(this.n03);
             this.nq2 = this.n04.add(this.n05).add(this.n06);
             this.nq3 = this.n07.add(this.n08).add(this.n09);
             this.nq4 = this.n10.add(this.n11).add(this.n12);
             calcQuarter();
         }
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("A")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("A")) {
             this.nq1 = this.n01.add(this.n02).add(this.n03).divide(BigDecimal.valueOf(3d), 2, RoundingMode.HALF_UP);
             this.nq2 = this.n04.add(this.n05).add(this.n06).divide(BigDecimal.valueOf(3d), 2, RoundingMode.HALF_UP);
             this.nq3 = this.n07.add(this.n08).add(this.n09).divide(BigDecimal.valueOf(3d), 2, RoundingMode.HALF_UP);
@@ -332,12 +339,12 @@ public class IndicatorDetail extends SuperDetailEntity {
     }
 
     public void calcQuarter() {
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("S")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("S")) {
             this.nh1 = this.nq1.add(this.nq2);
             this.nh2 = this.nq3.add(this.nq4);
             calcHalfYear();
         }
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("A")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("A")) {
             if (this.nq2.compareTo(BigDecimal.ZERO) > 0) {
                 this.nh1 = this.nq1.add(this.nq2).divide(BigDecimal.valueOf(2d), 2, RoundingMode.HALF_UP);
             } else {
@@ -353,10 +360,10 @@ public class IndicatorDetail extends SuperDetailEntity {
     }
 
     public void calcHalfYear() {
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("S")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("S")) {
             this.nfy = this.nh1.add(this.nh2);
         }
-        if (!this.type.equals("P") && this.parent.getValueMode().equals("A")) {
+        if (!this.type.equals("P") && this.getParent().getValueMode().equals("A")) {
             if (this.nh2.compareTo(BigDecimal.ZERO) > 0) {
                 this.nfy = this.nh1.add(this.nh2).divide(BigDecimal.valueOf(2d), 2, RoundingMode.HALF_UP);
             } else {

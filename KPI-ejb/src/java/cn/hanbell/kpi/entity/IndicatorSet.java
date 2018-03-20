@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "IndicatorSet.findAll", query = "SELECT i FROM IndicatorSet i"),
     @NamedQuery(name = "IndicatorSet.findById", query = "SELECT i FROM IndicatorSet i WHERE i.id = :id"),
-    @NamedQuery(name = "IndicatorSet.findByPId", query = "SELECT i FROM IndicatorSet i WHERE i.pid = :pid"),
+    @NamedQuery(name = "IndicatorSet.findByPId", query = "SELECT i FROM IndicatorSet i WHERE i.pid = :pid ORDER BY i.seq"),
     @NamedQuery(name = "IndicatorSet.findByFormid", query = "SELECT i FROM IndicatorSet i WHERE i.formid = :formid"),
     @NamedQuery(name = "IndicatorSet.findByRemark", query = "SELECT i FROM IndicatorSet i WHERE i.remark = :remark")})
 public class IndicatorSet extends SuperDetailEntity {

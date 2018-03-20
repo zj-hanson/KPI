@@ -61,9 +61,15 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column styleClass="Wid20"><h:outputText value="考核部门"/></p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="考核部门" for="deptno"/></p:column>
                     <p:column styleClass="Wid30">
-                        <h:outputText id="deptno" value="#{productSetManagedBean.currentEntity.deptno}" title="deptno"  />
+                        <p:inputText id="deptno" value="#{productSetManagedBean.currentEntity.deptno}" title="deptno"  styleClass="inputWithButton"
+                                     required="true" requiredMessage="请输入考核部门"/>
+                        <p:commandButton id="btnDepartmentSelect" actionListener="#{productSetManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnWhenEdit}"
+                                    update="deptno,deptname" />
+                        </p:commandButton>
                     </p:column>
                     <p:column styleClass="Wid20"><h:outputText value="部门名称"/></p:column>
                     <p:column styleClass="Wid30">

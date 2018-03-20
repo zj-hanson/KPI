@@ -17,7 +17,6 @@ public class ShipmentAmountSDS9 extends ShipmentAmount9 {
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='AH' ");
         queryParams.put("n_code_DC", " ='SDS' ");
-        queryParams.put("n_code_DD", " ='01' ");
     }
 
 }

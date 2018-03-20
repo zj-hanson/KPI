@@ -73,6 +73,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>indicatorchart</from-outcome>
+            <to-view-id>/sys/indicatorchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>mailsetting</from-outcome>
             <to-view-id>/sys/mailsetting.xhtml</to-view-id>
             <redirect/>
@@ -94,7 +99,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <description>基础模块一级导航</description>
+        <description>KPI一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>indicator</from-outcome>
@@ -191,6 +196,15 @@
         <navigation-case>
             <from-outcome>indicatortreeView</from-outcome>
             <to-view-id>/app/dept/indicatortreeView.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <description>BSC汇报一级导航</description>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>shipment</from-outcome>
+            <to-view-id>/app/bsc/shipment.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

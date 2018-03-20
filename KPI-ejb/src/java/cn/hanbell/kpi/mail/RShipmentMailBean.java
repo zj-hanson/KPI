@@ -73,7 +73,7 @@ public class RShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            return getHtmlTable(this.indicators, y, m, d, false);
+            return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "R收费服务金额设定错误";
         }
