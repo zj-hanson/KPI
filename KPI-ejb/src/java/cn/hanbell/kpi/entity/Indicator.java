@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Indicator.findAll", query = "SELECT i FROM Indicator i"),
     @NamedQuery(name = "Indicator.findById", query = "SELECT i FROM Indicator i WHERE i.id = :id"),
     @NamedQuery(name = "Indicator.findByIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.id = :id AND i.seq = :seq "),
-    @NamedQuery(name = "Indicator.findByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype ORDER BY i.seq DESC,i.sortid ASC"),
     @NamedQuery(name = "Indicator.findByCategoryAndSeq", query = "SELECT i FROM Indicator i WHERE i.category = :category AND i.seq = :seq ORDER BY i.sortid ASC"),
     @NamedQuery(name = "Indicator.findByFormidAndSeq", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq ORDER BY i.sortid ASC"),
     @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno"),
@@ -42,10 +41,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq"),
     @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno"),
     @NamedQuery(name = "Indicator.findByDeptno", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno"),
-    @NamedQuery(name = "Indicator.findByDeptname", query = "SELECT i FROM Indicator i WHERE i.deptname = :deptname"),
+    @NamedQuery(name = "Indicator.findByDeptnoObjtypeAndYear", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.sortid"),
     @NamedQuery(name = "Indicator.findByUserid", query = "SELECT i FROM Indicator i WHERE i.userid = :userid"),
     @NamedQuery(name = "Indicator.findByUsername", query = "SELECT i FROM Indicator i WHERE i.username = :username"),
-    @NamedQuery(name = "Indicator.findByStatus", query = "SELECT i FROM Indicator i WHERE i.status = :status")})
+    @NamedQuery(name = "Indicator.findByStatus", query = "SELECT i FROM Indicator i WHERE i.status = :status"),
+    @NamedQuery(name = "Indicator.findRootByAssigned", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findRootByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")})
 public class Indicator extends SuperEntity {
 
     @JoinColumn(name = "formid", referencedColumnName = "formid", updatable = false, insertable = false)

@@ -22,7 +22,7 @@ public class ShipmentQuantityR1C2 extends ShipmentQuantity {
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='JN' ");
-        queryParams.put("n_code_DC", " ='E' ");
+        queryParams.put("n_code_DC", " ='H' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

@@ -39,7 +39,10 @@ public abstract class ShipmentAmount9 extends Shipment {
         StringBuilder sb = new StringBuilder();
         sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and d.issevdta='Y' and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append(" and d.issevdta='Y' and h.facno='${facno}' ");
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -66,12 +69,15 @@ public abstract class ShipmentAmount9 extends Shipment {
                 sb.append(" and h.shpdate<= '${d}' ");
         }
         String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno).replace("${decode}", decode);
+                .replace("${facno}", facno);
 
         sb.setLength(0);
         sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and d.issevdta='Y' and h.facno='${facno}' and h.decode='${decode}' ");
+        sb.append(" and d.issevdta='Y' and h.facno='${facno}' ");
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -98,7 +104,7 @@ public abstract class ShipmentAmount9 extends Shipment {
                 sb.append(" and h.bakdate<= '${d}' ");
         }
         String cdrbdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno).replace("${decode}", decode);
+                .replace("${facno}", facno);
 
         superEJB.setCompany(facno);
         Query query1 = superEJB.getEntityManager().createNativeQuery(cdrdta);

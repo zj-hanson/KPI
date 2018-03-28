@@ -34,9 +34,9 @@ public class ShipmentAmountR1E3 extends ShipmentAmount {
         queryParams.remove("facno");
         queryParams.remove("n_code_CD");
         queryParams.put("facno", "N");
-        //GZ ERP
+        //NJ ERP
         temp2 = super.getValue(y, m, d, type, queryParams);
-        //SHB + GZ
+        //SHB + NJ
         return temp1.add(temp2);
     }
 

@@ -103,7 +103,10 @@ public abstract class Shipment implements Actual {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(apmamt),0) FROM armicdh h WHERE h.shpno IN ");
-        sb.append(" (SELECT DISTINCT b.shpno FROM cdrhad a,cdrdta b WHERE a.facno=b.facno AND a.shpno=b.shpno AND a.houtsta<>'W' AND a.facno='${facno}' AND a.decode='${decode}' ");
+        sb.append(" (SELECT DISTINCT b.shpno FROM cdrhad a,cdrdta b WHERE a.facno=b.facno AND a.shpno=b.shpno AND a.houtsta<>'W' AND a.facno='${facno}' ");
+        if (!"".equals(decode)) {
+            sb.append(" AND h.decode ='").append(decode).append("' ");
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" AND b.n_code_DA ").append(n_code_DA);
         }
@@ -143,7 +146,7 @@ public abstract class Shipment implements Actual {
             default:
                 sb.append(" AND h.shpdate<= '${d}' ");
         }
-        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${decode}", decode);
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
         try {

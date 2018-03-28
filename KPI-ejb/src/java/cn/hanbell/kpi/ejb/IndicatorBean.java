@@ -115,11 +115,13 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     }
 
     public void deleteByPIdAndYear(int pid, int y) {
-        Indicator i = findByPIdAndYear(pid, y);
-        if (i != null) {
-            indicatorDetailBean.deleteByPId(i.getId());
-            indicatorDepartmentBean.deleteByPId(i.getId());
-            delete(i);
+        List<Indicator> data = findByPIdAndYear(pid, y);
+        if (data != null) {
+            for (Indicator i : data) {
+                indicatorDetailBean.deleteByPId(i.getId());
+                indicatorDepartmentBean.deleteByPId(i.getId());
+                delete(i);
+            }
         }
     }
 
@@ -286,6 +288,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public List<Indicator> findByDeptnoObjtypeAndYear(String d, String t, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByDeptnoObjtypeAndYear");
+        query.setParameter("deptno", d);
+        query.setParameter("objtype", t);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Indicator> findByFormidAndYear(String formid, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByFormidAndSeq");
         query.setParameter("formid", formid);
@@ -310,7 +324,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public Indicator findByIdAndYear(Integer id, int y) {
+    public Indicator findByIdAndYear(int id, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByIdAndSeq");
         query.setParameter("id", id);
         query.setParameter("seq", y);
@@ -333,22 +347,34 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public Indicator findByPIdAndYear(int pid, int y) {
+    public List<Indicator> findByPIdAndYear(int pid, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByPIdAndSeq");
         query.setParameter("pid", pid);
         query.setParameter("seq", y);
         try {
-            Object o = query.getSingleResult();
-            return (Indicator) o;
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public List<Indicator> findRootByCompany(String company, String objtype) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByCompany");
+    public List<Indicator> findRootByCompany(String company, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByCompany");
         query.setParameter("company", company);
         query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findRootByAssigned(String company, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssigned");
+        query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
         try {
             return query.getResultList();
         } catch (Exception ex) {
@@ -488,9 +514,57 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public void updateActual(int id, int y, int m, Date d, int type) {
+    public void updateActual(Indicator entity, Object prop) {
+        List<Indicator> indicators = new ArrayList<>();
+        if (entity.isAssigned()) {
+            List<IndicatorAssignment> assList = indicatorAssignmentBean.findByPId(entity.getId());
+            for (IndicatorAssignment ia : assList) {
+                Indicator i = findByFormidYearAndDeptno(ia.getFormid(), entity.getSeq(), ia.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        } else if (entity.getActualInterface() == null) {
+            List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
+            for (IndicatorSet is : setList) {
+                Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        }
+        indicatorAssignmentBean.getEntityManager().clear();
+        indicatorSetBean.getEntityManager().clear();
+        getEntityManager().clear();
+        if (!indicators.isEmpty()) {
+            Indicator si = getSumValue(indicators);
+            String col = "";
+            Field f;
+            Method setMethod;
+            try {
+                switch (entity.getFormtype() + entity.getFormkind()) {
+                    case "NM":
+                        col = this.getIndicatorColumn(entity.getFormtype(), Integer.valueOf(prop.toString()));
+                        break;
+                    case "NQ":
+                        col = this.getIndicatorColumn(entity.getFormtype(), prop.toString());
+                        break;
+                }
+                if (col != null && !"".equals(col)) {
+                    f = entity.getActualIndicator().getClass().getDeclaredField(col);
+                    f.setAccessible(true);
+                    setMethod = entity.getActualIndicator().getClass().getDeclaredMethod("set" + col.substring(0, 1).toUpperCase() + col.substring(1), BigDecimal.class);
+                    setMethod.invoke(entity.getActualIndicator(), BigDecimal.valueOf(Double.valueOf(f.get(entity.getActualIndicator()).toString())));
+                }
+            } catch (NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public Indicator updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
-        if (entity != null && (entity.getSeq() == y)) {
+        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null)) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
@@ -503,6 +577,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return entity;
     }
 
     public void updateBenchmark(Indicator entity) {
