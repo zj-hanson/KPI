@@ -38,7 +38,7 @@
                     <p:commandButton id="btnView" value="查看" action="#{productSetManagedBean.view('productsetView')}"  icon="ui-icon-document"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:commandButton id="btnUpdateActual" value="实绩" actionListener="#{productSetManagedBean.updateActualValue()}" icon="ui-icon-save"
+                    <p:commandButton id="btnUpdateActualValue" value="计算" actionListener="#{productSetManagedBean.updateActualValue()}" icon="ui-icon-save"
                                      process="@this,formList:plgQuery"/>
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
                         <p:menuitem id="btnEdit" value="编辑" icon="ui-icon-pencil" action="#{productSetManagedBean.edit('productsetEdit')}"
@@ -124,7 +124,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formList" trigger="btnUpdateActual,btnUnverify,btnExport">
+            <p:blockUI id="blockUI" block="formList" trigger="btnUpdateActualValue,btnUnverify,btnExport">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>

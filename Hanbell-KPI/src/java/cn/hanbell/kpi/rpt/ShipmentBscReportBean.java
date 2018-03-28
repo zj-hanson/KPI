@@ -6,13 +6,8 @@
 package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.web.BscReportManagedBean;
-import java.util.Objects;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CategoryAxis;
-import org.primefaces.model.chart.LineChartModel;
 
 /**
  *

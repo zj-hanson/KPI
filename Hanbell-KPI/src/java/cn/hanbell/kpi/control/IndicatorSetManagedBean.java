@@ -268,7 +268,9 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
         model.getFilterFields().put("objtype =", "D");
-        queryYear = Calendar.getInstance().get(Calendar.YEAR);
+        Calendar c = Calendar.getInstance();
+        c.setTime(userManagedBean.getBaseDate());
+        queryYear = c.get(Calendar.YEAR);
         super.init();
     }
 

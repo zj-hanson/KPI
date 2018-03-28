@@ -10,6 +10,7 @@ import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -125,7 +126,7 @@ public abstract class BscReportManagedBean extends SuperQueryBean<Indicator> {
                 setMethod = AG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(AG, v);
             }
-        } catch (Exception ex) {
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
         }
 
@@ -263,7 +264,19 @@ public abstract class BscReportManagedBean extends SuperQueryBean<Indicator> {
     }
 
     public String format(BigDecimal value) {
-        if (value == null || (value.compareTo(BigDecimal.ZERO) == 0)) {
+        if (value == null) {
+            return "";
+        } else {
+            return decimalFormat.format(value);
+        }
+    }
+
+    public String format(BigDecimal value, int i) {
+        if (value == null) {
+            return "";
+        } else if (i <= m) {
+            return decimalFormat.format(value);
+        } else if (value.compareTo(BigDecimal.ZERO) == 0) {
             return "";
         } else {
             return decimalFormat.format(value);

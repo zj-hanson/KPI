@@ -66,6 +66,7 @@ public class TimerBean {
         c.add(Calendar.DATE, -1);
         List<Indicator> indicatorList = indicatorBean.findByObjtypeAndYear("P", c.get(Calendar.YEAR));
         if (indicatorList != null && !indicatorList.isEmpty()) {
+            Indicator i;
             for (Indicator e : indicatorList) {
                 if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
                     try {
@@ -78,6 +79,28 @@ public class TimerBean {
                     } catch (Exception ex) {
                         logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
                     }
+                }
+            }
+        }
+        indicatorList = indicatorBean.findRootByAssigned("C", "D", c.get(Calendar.YEAR));
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                }
+            }
+        }
+        indicatorList = indicatorBean.findRootByAssigned("C", "P", c.get(Calendar.YEAR));
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
                 }
             }
         }
@@ -107,6 +130,25 @@ public class TimerBean {
             }
         } catch (Exception ex) {
             logger.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
+        }
+    }
+
+    public void updateActual(Indicator entity, int m) {
+        //递归更新某个月份的实际值,不调用ActualInterface计算方法
+        if (entity.isAssigned()) {
+            List<Indicator> details = indicatorBean.findByPId(entity.getId());
+            if (details != null && !details.isEmpty()) {
+                for (Indicator d : details) {
+                    updateActual(d, m);
+                }
+            }//先计算子项值
+            indicatorBean.updateActual(entity, m);
+            indicatorBean.updatePerformance(entity);
+            indicatorBean.update(entity);
+        } else {
+            indicatorBean.updateActual(entity, m);
+            indicatorBean.updatePerformance(entity);
+            indicatorBean.update(entity);
         }
     }
 

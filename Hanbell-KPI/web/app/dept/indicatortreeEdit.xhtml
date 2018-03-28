@@ -37,17 +37,19 @@
             <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
                 <f:facet name="header">
                     <p:row>
-                        <p:column colspan="4">KPI维护－查看</p:column>
+                        <p:column colspan="4">KPI维护－修改</p:column>
                     </p:row>
                 </f:facet>
                 <p:row>
-                    <p:column><h:outputText value="指标名称"/></p:column>
-                    <p:column>
-                        <h:outputText id="name" value="#{indicatorTreeManagedBean.currentEntity.name}" title="Name"/>
+                    <p:column styleClass="Wid20"><p:outputLabel value="指标名称" for="name" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="name" value="#{indicatorTreeManagedBean.currentEntity.name}" title="Name"
+                                     required="true" requiredMessage="请输入指标名称"/>
                     </p:column>
-                    <p:column><h:outputText value="排序"/></p:column>
-                    <p:column>
-                        <h:outputText id="sortid" value="#{indicatorTreeManagedBean.currentEntity.sortid}" title="sortid"/>
+                    <p:column styleClass="Wid20"><p:outputLabel value="排序" for="sortid" /></p:column>
+                    <p:column styleClass="Wid30">
+                        <p:inputText id="sortid" value="#{indicatorTreeManagedBean.currentEntity.sortid}" title="sortid"
+                                     required="true" requiredMessage="请输入指标顺序"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -71,12 +73,12 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column styleClass="Wid20"><h:outputText value="考核部门"/></p:column>
-                    <p:column styleClass="Wid30">
+                    <p:column><h:outputText value="考核部门"/></p:column>
+                    <p:column>
                         <h:outputText id="deptno" value="#{indicatorTreeManagedBean.currentEntity.deptno}" title="deptno"  />
                     </p:column>
-                    <p:column styleClass="Wid20"><h:outputText value="部门名称"/></p:column>
-                    <p:column styleClass="Wid30">
+                    <p:column><h:outputText value="部门名称"/></p:column>
+                    <p:column>
                         <h:outputText id="deptname" value="#{indicatorTreeManagedBean.currentEntity.deptname}" title="deptname" />
                     </p:column>
                 </p:row>
