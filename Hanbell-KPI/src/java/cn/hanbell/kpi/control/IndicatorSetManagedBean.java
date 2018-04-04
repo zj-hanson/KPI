@@ -19,7 +19,6 @@ import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti3Bean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;

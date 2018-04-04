@@ -155,6 +155,116 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         id.setN12(id.getN12().divide(rate, scale, RoundingMode.HALF_UP));
     }
 
+    public List<Indicator> findByCategoryAndYear(String c, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByCategoryAndSeq");
+        query.setParameter("category", c);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findByDeptnoObjtypeAndYear(String d, String t, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByDeptnoObjtypeAndYear");
+        query.setParameter("deptno", d);
+        query.setParameter("objtype", t);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findByFormidAndYear(String formid, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByFormidAndSeq");
+        query.setParameter("formid", formid);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Indicator findByFormidYearAndDeptno(String formid, int y, String value) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByFormidSeqAndDeptno");
+        query.setParameter("formid", formid);
+        query.setParameter("seq", y);
+        query.setParameter("deptno", value);
+        try {
+            Object o = query.getSingleResult();
+            return (Indicator) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Indicator findByIdAndYear(int id, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByIdAndSeq");
+        query.setParameter("id", id);
+        query.setParameter("seq", y);
+        try {
+            Object o = query.getSingleResult();
+            return (Indicator) o;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findByObjtypeAndYear(String type, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByObjtypeAndSeq");
+        query.setParameter("objtype", type);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Indicator> findByPId(Object value) {
+        return super.findByPId(value);
+    }
+
+    public List<Indicator> findByPIdAndYear(int pid, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByPIdAndSeq");
+        query.setParameter("pid", pid);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findRootByCompany(String company, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByCompany");
+        query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findRootByAssigned(String company, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssigned");
+        query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m) {
         return getAccumulatedGrowth(a, b, m, 2);
     }
@@ -275,111 +385,6 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entity;
-    }
-
-    public List<Indicator> findByCategoryAndYear(String c, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByCategoryAndSeq");
-        query.setParameter("category", c);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findByDeptnoObjtypeAndYear(String d, String t, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByDeptnoObjtypeAndYear");
-        query.setParameter("deptno", d);
-        query.setParameter("objtype", t);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findByFormidAndYear(String formid, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByFormidAndSeq");
-        query.setParameter("formid", formid);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public Indicator findByFormidYearAndDeptno(String formid, int y, String value) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByFormidSeqAndDeptno");
-        query.setParameter("formid", formid);
-        query.setParameter("seq", y);
-        query.setParameter("deptno", value);
-        try {
-            Object o = query.getSingleResult();
-            return (Indicator) o;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public Indicator findByIdAndYear(int id, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByIdAndSeq");
-        query.setParameter("id", id);
-        query.setParameter("seq", y);
-        try {
-            Object o = query.getSingleResult();
-            return (Indicator) o;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findByObjtypeAndYear(String type, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByObjtypeAndSeq");
-        query.setParameter("objtype", type);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findByPIdAndYear(int pid, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findByPIdAndSeq");
-        query.setParameter("pid", pid);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findRootByCompany(String company, String objtype, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findRootByCompany");
-        query.setParameter("company", company);
-        query.setParameter("objtype", objtype);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<Indicator> findRootByAssigned(String company, String objtype, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssigned");
-        query.setParameter("company", company);
-        query.setParameter("objtype", objtype);
-        query.setParameter("seq", y);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
     }
 
     public String percentFormat(BigDecimal value) {
@@ -551,10 +556,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         break;
                 }
                 if (col != null && !"".equals(col)) {
-                    f = entity.getActualIndicator().getClass().getDeclaredField(col);
+                    f = si.getActualIndicator().getClass().getDeclaredField(col);
                     f.setAccessible(true);
                     setMethod = entity.getActualIndicator().getClass().getDeclaredMethod("set" + col.substring(0, 1).toUpperCase() + col.substring(1), BigDecimal.class);
-                    setMethod.invoke(entity.getActualIndicator(), BigDecimal.valueOf(Double.valueOf(f.get(entity.getActualIndicator()).toString())));
+                    setMethod.invoke(entity.getActualIndicator(), BigDecimal.valueOf(Double.valueOf(f.get(si.getActualIndicator()).toString())));
                 }
             } catch (NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
                 Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);

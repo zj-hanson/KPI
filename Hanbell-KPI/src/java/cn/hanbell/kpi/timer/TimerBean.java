@@ -60,53 +60,6 @@ public class TimerBean {
         return null;
     }
 
-    @Schedule(hour = "*/4", persistent = true)
-    public void updateIndicatorActualValue() {
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -1);
-        List<Indicator> indicatorList = indicatorBean.findByObjtypeAndYear("P", c.get(Calendar.YEAR));
-        if (indicatorList != null && !indicatorList.isEmpty()) {
-            Indicator i;
-            for (Indicator e : indicatorList) {
-                if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
-                    try {
-                        indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
-                        logger.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                        indicatorBean.getEntityManager().refresh(e);
-                        indicatorBean.updatePerformance(e);
-                        indicatorBean.update(e);
-                        logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                    } catch (Exception ex) {
-                        logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
-                    }
-                }
-            }
-        }
-        indicatorList = indicatorBean.findRootByAssigned("C", "D", c.get(Calendar.YEAR));
-        if (indicatorList != null && !indicatorList.isEmpty()) {
-            for (Indicator e : indicatorList) {
-                try {
-                    updateActual(e, c.get(Calendar.MONTH) + 1);
-                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                } catch (Exception ex) {
-                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
-                }
-            }
-        }
-        indicatorList = indicatorBean.findRootByAssigned("C", "P", c.get(Calendar.YEAR));
-        if (indicatorList != null && !indicatorList.isEmpty()) {
-            for (Indicator e : indicatorList) {
-                try {
-                    updateActual(e, c.get(Calendar.MONTH) + 1);
-                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                } catch (Exception ex) {
-                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
-                }
-            }
-        }
-        logger.info("updateIndicatorActualValue轮询");
-    }
-
     @Schedule(minute = "3", hour = "9", dayOfWeek = "Tue,Wed,Thu,Fri,Sat", persistent = false)
     public void sendKPIReport() {
         String reportName = "";
@@ -131,6 +84,54 @@ public class TimerBean {
         } catch (Exception ex) {
             logger.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
         }
+    }
+
+    @Schedule(hour = "*/4", persistent = true)
+    public void updateIndicatorActualValue() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
+        List<Indicator> indicatorList = indicatorBean.findByObjtypeAndYear("P", c.get(Calendar.YEAR));
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            Indicator i;
+            for (Indicator e : indicatorList) {
+                if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
+                    try {
+                        indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                        logger.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                        indicatorBean.getEntityManager().refresh(e);
+                        indicatorBean.updatePerformance(e);
+                        indicatorBean.update(e);
+                        logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                    } catch (Exception ex) {
+                        logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                    }
+                }
+            }
+        }
+        //部门指标来源产品指标，所以先算产品指标
+        indicatorList = indicatorBean.findRootByAssigned("C", "P", c.get(Calendar.YEAR));
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                }
+            }
+        }
+        indicatorList = indicatorBean.findRootByAssigned("C", "D", c.get(Calendar.YEAR));
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                }
+            }
+        }
+        logger.info("updateIndicatorActualValue轮询");
     }
 
     public void updateActual(Indicator entity, int m) {

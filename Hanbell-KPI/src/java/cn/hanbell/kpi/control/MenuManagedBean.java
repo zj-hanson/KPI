@@ -259,6 +259,14 @@ public class MenuManagedBean implements Serializable {
                 submenu.setIcon("menu");
                 indicatorChartList = indicatorChartBean.findByPId(r.getDeptno());
                 if (indicatorChartList != null && !indicatorChartList.isEmpty()) {
+                    //按报表名称重新排序
+                    indicatorChartList.sort((IndicatorChart o1, IndicatorChart o2) -> {
+                        if (o1.getName().compareTo(o2.getName()) < 0) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
                     for (IndicatorChart i : indicatorChartList) {
                         menuitem = new DefaultMenuItem(i.getName());
                         menuitem.setIcon("menu");
