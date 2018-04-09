@@ -19,12 +19,11 @@ public class ShipmentAmountAA2VN extends ShipmentAmount {
         super();
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1T000','1T100' ");
-        queryParams.put("decode", "2");
         queryParams.put("ogdkid", "RL03");
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_CD", " ='WXVN' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", "  in ('00','02') ");
     }
 
     @Override

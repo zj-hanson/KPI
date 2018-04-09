@@ -13,7 +13,12 @@ public class ShipmentQuantityAA1 extends ShipmentQuantityAA {
 
     public ShipmentQuantityAA1() {
         super();
-        queryParams.put("decode", "1");
+        queryParams.put("facno", "C");
+        queryParams.put("deptno", " '1Q000' ");
+        queryParams.put("n_code_DA", " ='AA' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }

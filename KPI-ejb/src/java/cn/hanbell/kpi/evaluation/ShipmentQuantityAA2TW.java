@@ -13,8 +13,12 @@ public class ShipmentQuantityAA2TW extends ShipmentQuantityAA {
 
     public ShipmentQuantityAA2TW() {
         super();
-        queryParams.put("decode", "2");
+        queryParams.put("facno", "C");
+        queryParams.put("deptno", " '1T000','1T100' ");
+        queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_CD", " ='WXTW' ");
+        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }

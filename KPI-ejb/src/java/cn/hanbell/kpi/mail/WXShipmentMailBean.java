@@ -40,6 +40,8 @@ public class WXShipmentMailBean extends ShipmentMail {
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
+        sb.append("<div class=\"tableTitle\">单位：万元</div>");
+        sb.append(getServiceTable());
         return sb.toString();
     }
 
@@ -77,6 +79,20 @@ public class WXShipmentMailBean extends ShipmentMail {
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "外销每日出货金额设定错误";
+        }
+    }
+
+    protected String getServiceTable() {
+        indicators.clear();
+        indicators = indicatorBean.findByCategoryAndYear("外销零件", y);
+        indicatorBean.getEntityManager().clear();
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
+                indicatorBean.divideByRate(i, 2);
+            }
+            return getHtmlTable(indicators, y, m, d, false);
+        } else {
+            return "外销零件金额设定错误";
         }
     }
 
