@@ -9,11 +9,15 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentQuantityAJ2 extends ShipmentQuantityAJ {
+public class ShipmentQuantityAJ2 extends ShipmentQuantity {
 
     public ShipmentQuantityAJ2() {
         super();
-        queryParams.put("decode", "2");
+        queryParams.put("facno", "C");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }

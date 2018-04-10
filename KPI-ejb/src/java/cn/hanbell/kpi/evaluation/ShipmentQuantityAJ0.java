@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author C0160
  */
-public class ShipmentQuantityAJ0 extends ShipmentQuantityAJ {
+public class ShipmentQuantityAJ0 extends ShipmentQuantity {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
