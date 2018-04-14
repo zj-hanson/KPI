@@ -11,6 +11,7 @@ import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.Company;
 import cn.hanbell.eap.entity.SystemGrantPrg;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -55,6 +56,7 @@ public class UserManagedBean implements Serializable {
     private String secpwd;
 
     private List<SystemGrantPrg> systemGrantPrgList;
+    private List<RoleGrantModule> roleGrantDeptList;
     private List<Company> companyList;
 
     public UserManagedBean() {
@@ -328,6 +330,20 @@ public class UserManagedBean implements Serializable {
      */
     public List<Company> getCompanyList() {
         return companyList;
+    }
+
+    /**
+     * @return the roleGrantDeptList
+     */
+    public List<RoleGrantModule> getRoleGrantDeptList() {
+        return roleGrantDeptList;
+    }
+
+    /**
+     * @param roleGrantDeptList the roleGrantDeptList to set
+     */
+    public void setRoleGrantDeptList(List<RoleGrantModule> roleGrantDeptList) {
+        this.roleGrantDeptList = roleGrantDeptList;
     }
 
 }

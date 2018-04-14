@@ -20,6 +20,8 @@ import java.util.List;
  */
 public abstract class ShipmentMail extends MailNotification {
 
+    protected Indicator sumIndicator;
+
     public ShipmentMail() {
 
     }
@@ -41,10 +43,10 @@ public abstract class ShipmentMail extends MailNotification {
                 sb.append(getHtmlTableRow(i, y, m, d));
             }
             if (needsum) {
-                Indicator sum = indicatorBean.getSumValue(indicators);
-                if (sum != null) {
-                    indicatorBean.updatePerformance(sum);
-                    sb.append(getHtmlTableRow(sum, y, m, d));
+                sumIndicator = indicatorBean.getSumValue(indicators);
+                if (sumIndicator != null) {
+                    indicatorBean.updatePerformance(sumIndicator);
+                    sb.append(getHtmlTableRow(sumIndicator, y, m, d));
                 }
             }
             sb.append("</table></div>");
@@ -65,9 +67,14 @@ public abstract class ShipmentMail extends MailNotification {
         IndicatorDetail t = indicator.getTargetIndicator();
         Field f;
         try {
-            Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
-            actualInterface.setEJB(indicator.getActualEJB());
-            BigDecimal num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+            BigDecimal num1;
+            if (indicator.getActualInterface() != null) {
+                Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
+                actualInterface.setEJB(indicator.getActualEJB());
+                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+            } else {
+                num1 = BigDecimal.ZERO;
+            }
             if (indicator.getId() != -1) {
                 sumAdditionalData("sum1", num1);
             }
@@ -118,6 +125,13 @@ public abstract class ShipmentMail extends MailNotification {
             throw new Exception(ex);
         }
         return sb.toString();
+    }
+
+    /**
+     * @return the sumIndicator
+     */
+    public Indicator getSumIndicator() {
+        return sumIndicator;
     }
 
 }

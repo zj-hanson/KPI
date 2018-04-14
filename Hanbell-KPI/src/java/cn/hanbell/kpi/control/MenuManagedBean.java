@@ -213,6 +213,7 @@ public class MenuManagedBean implements Serializable {
                     return 1;
                 }
             });
+            userManagedBean.setRoleGrantDeptList(grantList);
 
             kpimenu = new DefaultSubMenu("部门KPI");
             kpimenu.setIcon("menu");

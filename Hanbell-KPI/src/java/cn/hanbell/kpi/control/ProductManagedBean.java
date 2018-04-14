@@ -5,6 +5,7 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "productManagedBean")
 @ViewScoped
 public class ProductManagedBean extends IndicatorSetManagedBean {
+
+    private boolean deny = true;
 
     /**
      * Creates a new instance of IndicatorManagedBean
@@ -29,8 +32,22 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         int id = Integer.valueOf(request.getParameter("id"));
         currentEntity = indicatorBean.findById(id);
+        if (currentEntity != null) {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(currentEntity.getDeptno())) {
+                    deny = false;
+                }
+            }
+        }
         detailList = detailEJB.findByPId(id);
         this.doEdit = true;
+    }
+
+    /**
+     * @return the deny
+     */
+    public boolean isDeny() {
+        return deny;
     }
 
 }
