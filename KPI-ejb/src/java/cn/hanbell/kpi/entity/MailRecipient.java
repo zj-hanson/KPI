@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MailRecipient.findAll", query = "SELECT m FROM MailRecipient m"),
     @NamedQuery(name = "MailRecipient.findById", query = "SELECT m FROM MailRecipient m WHERE m.id = :id"),
-    @NamedQuery(name = "MailRecipient.findByPId", query = "SELECT m FROM MailRecipient m WHERE m.pid = :pid"),
+    @NamedQuery(name = "MailRecipient.findByPId", query = "SELECT m FROM MailRecipient m WHERE m.pid = :pid ORDER BY m.seq"),
     @NamedQuery(name = "MailRecipient.findByPIdAndKind", query = "SELECT m FROM MailRecipient m WHERE  m.pid = :pid AND m.kind = :kind ORDER BY m.seq"),
     @NamedQuery(name = "MailRecipient.findByMailadd", query = "SELECT m FROM MailRecipient m WHERE m.mailadd = :mailadd")})
 public class MailRecipient extends FormDetailEntity {

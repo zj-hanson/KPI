@@ -7,7 +7,6 @@ package cn.hanbell.kpi.control;
 
 import cn.hanbell.kpi.entity.Category;
 import java.util.Calendar;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.event.SelectEvent;

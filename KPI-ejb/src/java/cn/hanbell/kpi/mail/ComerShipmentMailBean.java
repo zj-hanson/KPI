@@ -16,9 +16,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class RShipmentMailBean extends ShipmentMail {
+public class ComerShipmentMailBean extends ShipmentMail {
 
-    public RShipmentMailBean() {
+    public ComerShipmentMailBean() {
 
     }
 
@@ -35,35 +35,25 @@ public class RShipmentMailBean extends ShipmentMail {
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
-        sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getServiceTable());
-        return sb.toString();
-    }
-
-    protected String getMailFooter() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("</div>");//对应Head中的div.content
-        sb.append("<div style=\"text-align:left;width:100%;color:Red;\">华东销售实际值包括销售给柯茂的台数和金额</div>");
-        sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复</div>");
-        sb.append("<div class=\"divFoot\">报表管理员</div>");
-        sb.append("</div></body></html>");
+        //sb.append("<div class=\"tableTitle\">单位：万元</div>");
+        //sb.append(getServiceTable());
         return sb.toString();
     }
 
     protected String getQuantityTable() {
         this.indicators.clear();
-        this.indicators = indicatorBean.findByCategoryAndYear("R冷媒出货台数", y);
+        this.indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货台数", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
-            return "R冷媒出货台数设定错误";
+            return "柯茂每日出货台数设定错误";
         }
     }
 
     protected String getAmountTable() {
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("R冷媒出货金额", y);
+        indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
@@ -71,21 +61,21 @@ public class RShipmentMailBean extends ShipmentMail {
             }
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
-            return "R冷媒出货金额设定错误";
+            return "柯茂每日出货金额设定错误";
         }
     }
 
     protected String getServiceTable() {
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("R收费服务金额", y);
+        indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            return getHtmlTable(this.indicators, y, m, d, true);
+            return getHtmlTable(this.indicators, y, m, d, false);
         } else {
-            return "R收费服务金额设定错误";
+            return "柯茂收费服务金额设定错误";
         }
     }
 

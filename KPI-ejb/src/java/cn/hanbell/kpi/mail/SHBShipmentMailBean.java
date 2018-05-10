@@ -114,6 +114,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R冷媒出货金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("R机体出货金额");
@@ -122,6 +125,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机体出货金额");
@@ -130,6 +136,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组每日出货金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机组出货金额");
@@ -138,6 +147,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("SDS无油出货金额");
@@ -146,6 +158,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P每日出货金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("P真空出货金额");
@@ -173,6 +188,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R收费服务金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("R机体收费服务");
@@ -181,6 +199,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体收费服务", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机体收费服务");
@@ -189,6 +210,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组收费服务金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机组收费服务");
@@ -197,6 +221,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("SDS无油收费服务");
@@ -205,6 +232,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P收费服务金额", y);
             indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("P真空收费服务");

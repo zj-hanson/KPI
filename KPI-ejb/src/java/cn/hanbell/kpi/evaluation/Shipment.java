@@ -46,7 +46,7 @@ public abstract class Shipment implements Actual {
         superEJB = (SuperEJBForERP) objRef;
     }
 
-    //加扣款
+    //加扣款,关联4个分类
     public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
@@ -55,7 +55,7 @@ public abstract class Shipment implements Actual {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d,cdrdta s ");
-        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.shpno=s.shpno AND d.shpseq = s.trseq AND h.facno='${facno}' ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq AND h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND s.n_code_DA ").append(n_code_DA);
         }
@@ -93,7 +93,7 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
-    //代收其他款项
+    //代收其他款项,关联4个分类
     public BigDecimal getARM235Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String decode = map.get("decode") != null ? map.get("decode").toString() : "";
@@ -158,7 +158,7 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
-    //它项金额
+    //它项金额,关联部门
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
@@ -189,20 +189,28 @@ public abstract class Shipment implements Actual {
         return BigDecimal.ZERO;
     }
 
-    //折让
+    //折让,关联4个分类
     public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
         sb.append(" AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
         if (!"".equals(n_code_DA)) {
-            sb.append(" AND h.hmark1 ").append(n_code_DA);
+            sb.append(" AND h.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(n_code_CD)) {
-            sb.append(" AND h.hmark2 ").append(n_code_CD);
+            sb.append(" AND h.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND h.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND h.n_code_DD ").append(n_code_DD);
         }
         sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {

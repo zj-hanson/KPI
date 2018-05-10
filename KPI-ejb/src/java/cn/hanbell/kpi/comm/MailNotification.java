@@ -99,7 +99,7 @@ public abstract class MailNotification {
     protected String getMailHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title>Hanbell</title>");
-        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-KPI/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-war/resources/css/mail.css\" type=\"text/css\"/>");
         sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");

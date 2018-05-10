@@ -583,7 +583,7 @@ public class IndicatorAssignment extends SuperDetailEntity {
             return Objects.equals(this.id, other.id);
         }
         if (Objects.equals(this.pid, other.pid)) {
-            return Objects.equals(this.deptno, other.deptno);
+            return Objects.equals(this.formid, other.formid) && Objects.equals(this.deptno, other.deptno);
         }
         return true;
     }
