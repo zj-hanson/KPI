@@ -97,13 +97,9 @@ public abstract class ShipmentMail extends MailNotification {
             //同期
             f = b.getClass().getDeclaredField(col);
             f.setAccessible(true);
-            //sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getValueOfDays((BigDecimal) f.get(b), d, 2))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
             //成长
-            //sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d))).append("</td>");
+            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m))).append("</td>");
             //累计
             //实际
             sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
@@ -112,13 +108,9 @@ public abstract class ShipmentMail extends MailNotification {
             //达成
             sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
             //同期
-            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
             //成长
-            //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
             //年度目标
             f = t.getClass().getDeclaredField("nfy");
             f.setAccessible(true);

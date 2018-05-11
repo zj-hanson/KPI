@@ -35,7 +35,7 @@ public abstract class MailNotification {
 
     protected MailNotify mail;
 
-    protected String mailFrom = "sys@hanbell.cn";
+    protected String mailFrom = "noreply@hanbell.com.cn";
     protected String mailContent;
     protected String mailSubject;
 

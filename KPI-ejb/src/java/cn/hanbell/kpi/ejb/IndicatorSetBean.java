@@ -7,6 +7,7 @@ package cn.hanbell.kpi.ejb;
 
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.entity.IndicatorSet;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 

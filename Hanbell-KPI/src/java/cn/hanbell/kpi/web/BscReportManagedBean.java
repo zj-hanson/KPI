@@ -32,7 +32,7 @@ import org.primefaces.model.chart.LineChartModel;
  *
  * @author C0160
  */
-public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
+public abstract class BscReportManagedBean extends SuperQueryBean<Indicator> {
 
     @EJB
     protected IndicatorBean indicatorBean;
@@ -41,7 +41,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected IndicatorChartBean indicatorChartBean;
 
     protected Indicator indicator;
-    protected IndicatorChart indicatorChart;
+    private IndicatorChart indicatorChart;
     protected IndicatorDetail actualAccumulated;
     protected IndicatorDetail benchmarkAccumulated;
     protected IndicatorDetail BG;
@@ -53,7 +53,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected int y;
     protected int m;
 
-    public BscChartManagedBean() {
+    public BscReportManagedBean() {
         super(Indicator.class);
         this.decimalFormat = new DecimalFormat("#,###");
     }

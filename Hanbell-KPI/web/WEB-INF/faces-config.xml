@@ -203,13 +203,8 @@
         <description>BSC汇报一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
-            <from-outcome>shipmentchart</from-outcome>
-            <to-view-id>/app/bsc/shipmentchart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>shipmentsheet</from-outcome>
-            <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
+            <from-outcome>shipment</from-outcome>
+            <to-view-id>/app/bsc/shipment.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
