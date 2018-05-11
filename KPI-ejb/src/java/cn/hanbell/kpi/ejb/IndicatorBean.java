@@ -29,6 +29,7 @@ import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.entity.IndicatorAssignment;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -281,6 +282,22 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m, Date d) {
+        return getAccumulatedGrowth(a, b, m, d, 2);
+    }
+
+    public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m, Date d, int scale) {
+        BigDecimal na, nb;
+        na = getAccumulatedValue(a, m);
+        nb = getAccumulatedValue(b, m, d);
+        //计算
+        if (nb.compareTo(BigDecimal.ZERO) != 0) {
+            return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+        } else {
+            return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+        }
+    }
+
     public BigDecimal getAccumulatedPerformance(IndicatorDetail a, IndicatorDetail b, int m) {
         return getAccumulatedPerformance(a, b, m, 2);
     }
@@ -315,6 +332,28 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return total;
     }
 
+    public BigDecimal getAccumulatedValue(IndicatorDetail entity, int m, Date d) {
+        String mon;
+        BigDecimal total = BigDecimal.ZERO;
+        Field f;
+        for (int i = 1; i <= m; i++) {
+            try {
+                mon = this.getIndicatorColumn("N", i);
+                f = entity.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                if (i < m) {
+                    total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
+                } else {
+                    total = total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 2));
+                }
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                total = BigDecimal.ZERO;
+            }
+        }
+        return total;
+    }
+
     public BigDecimal getGrowth(IndicatorDetail a, IndicatorDetail b, int m) {
         return getGrowth(a, b, m, 2);
     }
@@ -333,6 +372,38 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             f = b.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
+            //计算
+            if (nb.compareTo(BigDecimal.ZERO) != 0) {
+                return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            } else {
+                return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getGrowth(IndicatorDetail a, IndicatorDetail b, int m, Date d) {
+        return getGrowth(a, b, m, d, 2);
+    }
+
+    public BigDecimal getGrowth(IndicatorDetail a, IndicatorDetail b, int m, Date d, int scale) {
+        String mon;
+        BigDecimal na, nb;
+        Field f;
+        try {
+            mon = this.getIndicatorColumn("N", m);
+            //实际值分子
+            f = a.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            na = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
+            //比较值分母
+            f = b.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
+            //折算到天数
+            nb = getValueOfDays(nb, d, scale);
             //计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
                 return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
@@ -385,6 +456,17 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return entity;
+    }
+
+    public BigDecimal getValueOfDays(BigDecimal v, Date d, int scale) {
+        int i, j;
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        i = c.get(Calendar.DAY_OF_MONTH);
+        c.add(Calendar.MONTH, 1);
+        c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
+        j = c.get(Calendar.DAY_OF_MONTH);
+        return v.multiply(BigDecimal.valueOf(i)).divide(BigDecimal.valueOf(j), scale);
     }
 
     public String percentFormat(BigDecimal value) {

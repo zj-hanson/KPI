@@ -5,7 +5,7 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.web.BscReportManagedBean;
+import cn.hanbell.kpi.web.BscChartManagedBean;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -13,14 +13,14 @@ import javax.faces.bean.ViewScoped;
  *
  * @author C0160
  */
-@ManagedBean(name = "shipmentBscReportBean")
+@ManagedBean(name = "shipmentChartReportBean")
 @ViewScoped
-public class ShipmentBscReportBean extends BscReportManagedBean {
+public class ShipmentChartReportBean extends BscChartManagedBean {
 
     /**
      * Creates a new instance of ShipmentReportBean
      */
-    public ShipmentBscReportBean() {
+    public ShipmentChartReportBean() {
 
     }
 

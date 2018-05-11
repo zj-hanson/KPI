@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center"><span style="float: left">单位:#{shipmentSheetReportBean.indicator.unit}</span>#{shipmentSheetReportBean.y} #{shipmentSheetReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
+                    <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="plgChartData Wid100">
+                        <p:column headerText="产品" groupRow="true">
+                            <h:outputText value="#{item.parent.product}" />
+                        </p:column>
+                        <p:column headerText="类别">
+                            <h:outputText value="#{item.type}" />
+                        </p:column>
+                        <p:column headerText="M01">
+                            <h:outputText value="#{item.n01}" />
+                        </p:column>
+                        <p:column headerText="M02">
+                            <h:outputText value="#{item.n02}" />
+                        </p:column>
+                        <p:column headerText="M03">
+                            <h:outputText value="#{item.n03}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var m = document.getElementById("formOne:m");
+                if (m !== null) {
+                    var tr = $("tr.ui-widget-content");
+                    $(tr).each(function (i, t) {
+                        var c = $(t).find("td.ui-panelgrid-cell")[m.value];
+                        if (c !== null) {
+                            $(c).css("color", "red");
+                        }
+                    });
+                }
+            });
+        </script>
+    </ui:define>
+
+</ui:composition>
