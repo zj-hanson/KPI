@@ -38,7 +38,7 @@ public class MailNotify {
     public void send() {
         try {
             init();
-            email.setFrom(notification.mailFrom);
+            email.setFrom(notification.mailFrom, "sys", "utf8");
             email.setSubject(notification.mailSubject);
             email.setHtmlMsg(notification.mailContent);
             email.setCharset("utf8");
