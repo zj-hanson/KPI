@@ -42,8 +42,8 @@ public class ShipmentAmountT9 extends ShipmentAmount {
         BigDecimal shp1 = BigDecimal.ZERO;
         BigDecimal bshp1 = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003','SXG00002') ");
+        sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' and h.depno='1T100' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003') ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");

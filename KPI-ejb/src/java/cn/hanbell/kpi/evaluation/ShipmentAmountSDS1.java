@@ -9,12 +9,17 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentAmountSDS1 extends ShipmentAmountSDS {
+public class ShipmentAmountSDS1 extends ShipmentAmount {
 
     public ShipmentAmountSDS1() {
         super();
+        queryParams.put("facno", "C");
+        queryParams.put("deptno", " '1G500' ");
         queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_DC", " ='SDS'");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }

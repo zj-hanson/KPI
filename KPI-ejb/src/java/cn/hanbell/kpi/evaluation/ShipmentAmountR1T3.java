@@ -21,7 +21,7 @@ public class ShipmentAmountR1T3 extends ShipmentAmount {
         queryParams.put("deptno", " '1T000','1T100' ");
         queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_CD", " ='WX' ");
+        queryParams.put("n_code_CD", "  LIKE 'WX%' ");
         queryParams.put("n_code_DC", " ='L' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

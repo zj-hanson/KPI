@@ -60,7 +60,7 @@ public class TimerBean {
         return null;
     }
 
-    @Schedule(minute = "3", hour = "9", dayOfWeek = "Tue,Wed,Thu,Fri,Sat", persistent = false)
+    @Schedule(minute = "3", hour = "10", dayOfWeek = "Tue,Wed,Thu,Fri,Sat", persistent = false)
     public void sendKPIReport() {
         String reportName = "";
         Calendar c = Calendar.getInstance();

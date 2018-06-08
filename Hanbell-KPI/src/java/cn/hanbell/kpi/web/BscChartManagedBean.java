@@ -44,6 +44,8 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected IndicatorChart indicatorChart;
     protected IndicatorDetail actualAccumulated;
     protected IndicatorDetail benchmarkAccumulated;
+    protected IndicatorDetail targetAccumulated;
+    protected IndicatorDetail AP;
     protected IndicatorDetail BG;
     protected IndicatorDetail AG;
 
@@ -97,6 +99,14 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         benchmarkAccumulated.setParent(indicator);
         benchmarkAccumulated.setType("B");
 
+        targetAccumulated = new IndicatorDetail();
+        targetAccumulated.setParent(indicator);
+        targetAccumulated.setType("T");
+
+        AP = new IndicatorDetail();
+        AP.setParent(indicator);
+        AP.setType("P");
+
         BG = new IndicatorDetail();
         BG.setParent(indicator);
         BG.setType("P");
@@ -117,6 +127,14 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
                 v = indicatorBean.getAccumulatedValue(indicator.getBenchmarkIndicator(), i);
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(benchmarkAccumulated, v);
+                //目标值累计
+                v = indicatorBean.getAccumulatedValue(indicator.getTargetIndicator(), i);
+                setMethod = getTargetAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(targetAccumulated, v);
+                //累计达成
+                v = indicatorBean.getAccumulatedPerformance(indicator.getActualIndicator(), indicator.getTargetIndicator(), i);
+                setMethod = AP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(AP, v);
                 //同比成长率
                 v = indicatorBean.getGrowth(indicator.getActualIndicator(), indicator.getBenchmarkIndicator(), i);
                 setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -310,13 +328,6 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     }
 
     /**
-     * @param actualAccumulated the actualAccumulated to set
-     */
-    public void setActualAccumulated(IndicatorDetail actualAccumulated) {
-        this.actualAccumulated = actualAccumulated;
-    }
-
-    /**
      * @return the benchmarkAccumulated
      */
     public IndicatorDetail getBenchmarkAccumulated() {
@@ -324,10 +335,17 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     }
 
     /**
-     * @param benchmarkAccumulated the benchmarkAccumulated to set
+     * @return the targetAccumulated
      */
-    public void setBenchmarkAccumulated(IndicatorDetail benchmarkAccumulated) {
-        this.benchmarkAccumulated = benchmarkAccumulated;
+    public IndicatorDetail getTargetAccumulated() {
+        return targetAccumulated;
+    }
+
+    /**
+     * @return the AP
+     */
+    public IndicatorDetail getAP() {
+        return AP;
     }
 
     /**
