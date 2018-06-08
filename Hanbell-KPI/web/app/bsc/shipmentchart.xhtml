@@ -63,6 +63,38 @@
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>本月达成</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>目标累计</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.targetAccumulated.n12,12)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
                             <p:column>实际累计</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.actualAccumulated.n01,1)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.actualAccumulated.n02,2)}</p:column>
@@ -79,7 +111,23 @@
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
-                            <p:column>同期</p:column>
+                            <p:column>累计达成</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.AP.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>去年同期</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n01)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n02)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n03)}</p:column>
@@ -93,22 +141,6 @@
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n11)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n12)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.nfy)}</p:column>
-                        </p:row>
-                        <p:row  style="text-align: right;font-weight: 800">
-                            <p:column>本月达成</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n01,1)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n02,2)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n03,3)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n04,4)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n05,5)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n06,6)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n07,7)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n08,8)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n09,9)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n10,10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n11,11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.n12,12)}</p:column>
-                            <p:column>#{shipmentChartReportBean.percentFormat(shipmentChartReportBean.indicator.performanceIndicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
                             <p:column>同期累计</p:column>

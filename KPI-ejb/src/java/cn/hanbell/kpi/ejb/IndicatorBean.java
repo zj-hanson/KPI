@@ -276,7 +276,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         nb = getAccumulatedValue(b, m);
         //计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -292,7 +292,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         nb = getAccumulatedValue(b, m, d);
         //计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -308,7 +308,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         nb = getAccumulatedValue(b, m);
         //计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -374,7 +374,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
             //计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
-                return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+                return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
             } else {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
@@ -406,7 +406,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             nb = getValueOfDays(nb, d, scale);
             //计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
-                return na.divide(nb, scale, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+                return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
             } else {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
@@ -438,11 +438,32 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
         Indicator entity = null;
         IndicatorDetail a, b, f, t;
+        IndicatorDetail sa, sb, sf, st, sp;
         try {
             entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
             entity.setId(-1);
             entity.setName("合计");
-            for (int i = 1; i < indicators.size(); i++) {
+            sa = new IndicatorDetail();
+            sa.setParent(entity);
+            sa.setType("A");
+            sb = new IndicatorDetail();
+            sb.setParent(entity);
+            sb.setType("B");
+            sf = new IndicatorDetail();
+            sf.setParent(entity);
+            sf.setType("F");
+            st = new IndicatorDetail();
+            st.setParent(entity);
+            st.setType("T");
+            sp = new IndicatorDetail();
+            sp.setParent(entity);
+            sp.setType("P");
+            entity.setActualIndicator(sa);
+            entity.setBenchmarkIndicator(sb);
+            entity.setForecastIndicator(sf);
+            entity.setTargetIndicator(st);
+            entity.setPerformanceIndicator(sp);
+            for (int i = 0; i < indicators.size(); i++) {
                 a = indicators.get(i).getActualIndicator();
                 b = indicators.get(i).getBenchmarkIndicator();
                 f = indicators.get(i).getForecastIndicator();

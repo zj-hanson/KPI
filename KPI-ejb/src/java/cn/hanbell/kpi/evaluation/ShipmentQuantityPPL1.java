@@ -14,9 +14,9 @@ public class ShipmentQuantityPPL1 extends ShipmentQuantity {
     public ShipmentQuantityPPL1() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "1");
-        queryParams.put("deptno", " '1H000' ");
+        queryParams.put("deptno", " '1H000','1H100' ");
         queryParams.put("n_code_DA", " ='P' ");
+        queryParams.put("n_code_CD", " <>'WX' ");
         queryParams.put("n_code_DC", " ='PL' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

@@ -47,8 +47,15 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     protected IndicatorDetail actualAccumulated;
     protected IndicatorDetail benchmarkAccumulated;
     protected IndicatorDetail targetAccumulated;
+    protected IndicatorDetail AP;
     protected IndicatorDetail BG;
     protected IndicatorDetail AG;
+    //合计
+    protected Indicator sumIndicator;
+    protected IndicatorDetail sumActualAccumulated;
+    protected IndicatorDetail sumBenchmarkAccumulated;
+    protected IndicatorDetail sumTargetAccumulated;
+    protected IndicatorDetail sumPerformanceAccumulated;
 
     protected List<Indicator> indicatorList;
     protected List<IndicatorSet> indicatorSetList;
@@ -124,9 +131,34 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
                 return -1;
             }
         });
+
         for (Indicator e : indicatorList) {
             //按换算率计算结果
             indicatorBean.divideByRate(e, 2);
+        }
+
+        //计算合计值
+        sumIndicator = indicatorBean.getSumValue(indicatorList);
+        indicatorBean.updatePerformance(sumIndicator);
+
+        sumActualAccumulated = new IndicatorDetail();
+        sumActualAccumulated.setParent(sumIndicator);
+        sumActualAccumulated.setType("A");
+
+        sumBenchmarkAccumulated = new IndicatorDetail();
+        sumBenchmarkAccumulated.setParent(sumIndicator);
+        sumBenchmarkAccumulated.setType("B");
+
+        sumTargetAccumulated = new IndicatorDetail();
+        sumTargetAccumulated.setParent(sumIndicator);
+        sumTargetAccumulated.setType("T");
+
+        sumPerformanceAccumulated = new IndicatorDetail();
+        sumPerformanceAccumulated.setParent(sumIndicator);
+        sumPerformanceAccumulated.setType("P");
+
+        //计算每个指标的累计
+        for (Indicator e : indicatorList) {
 
             actualAccumulated = new IndicatorDetail();
             actualAccumulated.setParent(e);
@@ -139,6 +171,10 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             targetAccumulated = new IndicatorDetail();
             targetAccumulated.setParent(e);
             targetAccumulated.setType("T");
+
+            AP = new IndicatorDetail();
+            AP.setParent(e);
+            AP.setType("P");
 
             BG = new IndicatorDetail();
             BG.setParent(e);
@@ -165,6 +201,10 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
                     v = indicatorBean.getAccumulatedValue(e.getTargetIndicator(), i);
                     setMethod = getTargetAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(targetAccumulated, v);
+                    //累计达成
+                    v = indicatorBean.getAccumulatedPerformance(e.getActualIndicator(), e.getTargetIndicator(), i);
+                    setMethod = AP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(AP, v);
                     //同比成长率
                     v = indicatorBean.getGrowth(e.getActualIndicator(), e.getBenchmarkIndicator(), i);
                     setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -188,6 +228,10 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
                 f = targetAccumulated.getClass().getDeclaredField(mon);
                 f.setAccessible(true);
                 targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
+                //M表示月份型
+                indicatorBean.addValue(sumActualAccumulated, actualAccumulated, "M");
+                indicatorBean.addValue(sumBenchmarkAccumulated, benchmarkAccumulated, "M");
+                indicatorBean.addValue(sumTargetAccumulated, targetAccumulated, "M");
 
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
@@ -196,19 +240,50 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             }
             e.getTargetIndicator().setType("目标");
             indicatorDetailList.add(e.getTargetIndicator());
-            targetAccumulated.setType("目标累计");
-            indicatorDetailList.add(targetAccumulated);
             e.getActualIndicator().setType("实际");
             indicatorDetailList.add(e.getActualIndicator());
+            e.getPerformanceIndicator().setType("本月达成");
+            indicatorDetailList.add(e.getPerformanceIndicator());
+            targetAccumulated.setType("目标累计");
+            indicatorDetailList.add(targetAccumulated);
             actualAccumulated.setType("实际累计");
             indicatorDetailList.add(actualAccumulated);
-            e.getPerformanceIndicator().setType("当月达成");
-            indicatorDetailList.add(e.getPerformanceIndicator());
+            AP.setType("累计达成");
+            indicatorDetailList.add(AP);
+            e.getBenchmarkIndicator().setType("去年同期");
+            indicatorDetailList.add(e.getBenchmarkIndicator());
+            benchmarkAccumulated.setType("去年累计");
+            indicatorDetailList.add(benchmarkAccumulated);
             BG.setType("同比成长");
             indicatorDetailList.add(BG);
-            //需要累计达成
+            AG.setType("累计成长");
+            indicatorDetailList.add(AG);
 
         }
+        //产品合计累计达成
+        try {
+            BigDecimal v;
+            Method setMethod;
+            for (int i = getM(); i > 0; i--) {
+                v = indicatorBean.getAccumulatedPerformance(sumIndicator.getActualIndicator(), sumIndicator.getTargetIndicator(), i);
+                setMethod = sumPerformanceAccumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumPerformanceAccumulated, v);
+            }
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
+        }
+        sumIndicator.getTargetIndicator().setType("目标");
+        indicatorDetailList.add(sumIndicator.getTargetIndicator());
+        sumIndicator.getActualIndicator().setType("实际");
+        indicatorDetailList.add(sumIndicator.getActualIndicator());
+        sumIndicator.getPerformanceIndicator().setType("本月达成");
+        indicatorDetailList.add(sumIndicator.getPerformanceIndicator());
+        sumTargetAccumulated.setType("目标累计");
+        indicatorDetailList.add(sumTargetAccumulated);
+        sumActualAccumulated.setType("实际累计");
+        indicatorDetailList.add(sumActualAccumulated);
+        sumPerformanceAccumulated.setType("累计达成");
+        indicatorDetailList.add(sumPerformanceAccumulated);
 
     }
 
