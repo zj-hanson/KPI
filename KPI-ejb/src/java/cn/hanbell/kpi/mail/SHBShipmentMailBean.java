@@ -7,6 +7,8 @@ package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.evaluation.SalesOrderAmount;
+import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -51,6 +53,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
+
+            salesOrder = new SalesOrderQuantity();
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R冷媒出货台数", y);
@@ -110,6 +114,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
+
+            salesOrder = new SalesOrderAmount();
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R冷媒出货金额", y);
@@ -184,6 +190,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
+
+            salesOrder = null;
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R收费服务金额", y);

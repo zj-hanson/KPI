@@ -55,7 +55,9 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     protected IndicatorDetail sumActualAccumulated;
     protected IndicatorDetail sumBenchmarkAccumulated;
     protected IndicatorDetail sumTargetAccumulated;
-    protected IndicatorDetail sumPerformanceAccumulated;
+    protected IndicatorDetail sumAP;
+    protected IndicatorDetail sumBG;
+    protected IndicatorDetail sumAG;
 
     protected List<Indicator> indicatorList;
     protected List<IndicatorSet> indicatorSetList;
@@ -137,8 +139,9 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             indicatorBean.divideByRate(e, 2);
         }
 
-        //计算合计值
+        //计算产品合计
         sumIndicator = indicatorBean.getSumValue(indicatorList);
+        //合计本月达成
         indicatorBean.updatePerformance(sumIndicator);
 
         sumActualAccumulated = new IndicatorDetail();
@@ -153,9 +156,17 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
         sumTargetAccumulated.setParent(sumIndicator);
         sumTargetAccumulated.setType("T");
 
-        sumPerformanceAccumulated = new IndicatorDetail();
-        sumPerformanceAccumulated.setParent(sumIndicator);
-        sumPerformanceAccumulated.setType("P");
+        sumAP = new IndicatorDetail();
+        sumAP.setParent(sumIndicator);
+        sumAP.setType("P");
+
+        sumBG = new IndicatorDetail();
+        sumBG.setParent(sumIndicator);
+        sumBG.setType("P");
+
+        sumAG = new IndicatorDetail();
+        sumAG.setParent(sumIndicator);
+        sumAG.setType("P");
 
         //计算每个指标的累计
         for (Indicator e : indicatorList) {
@@ -260,14 +271,23 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             indicatorDetailList.add(AG);
 
         }
-        //产品合计累计达成
+        //产品合计逻辑
         try {
             BigDecimal v;
             Method setMethod;
             for (int i = getM(); i > 0; i--) {
+                //合计累计达成
                 v = indicatorBean.getAccumulatedPerformance(sumIndicator.getActualIndicator(), sumIndicator.getTargetIndicator(), i);
-                setMethod = sumPerformanceAccumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(sumPerformanceAccumulated, v);
+                setMethod = sumAP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumAP, v);
+                //合计同期成长
+                v = indicatorBean.getGrowth(sumIndicator.getActualIndicator(), sumIndicator.getBenchmarkIndicator(), i);
+                setMethod = sumBG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumBG, v);
+                //合计累计成长
+                v = indicatorBean.getGrowth(sumActualAccumulated, sumBenchmarkAccumulated, i);
+                setMethod = sumAG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumAG, v);
             }
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
@@ -282,9 +302,16 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
         indicatorDetailList.add(sumTargetAccumulated);
         sumActualAccumulated.setType("实际累计");
         indicatorDetailList.add(sumActualAccumulated);
-        sumPerformanceAccumulated.setType("累计达成");
-        indicatorDetailList.add(sumPerformanceAccumulated);
-
+        sumAP.setType("累计达成");
+        indicatorDetailList.add(sumAP);
+        sumIndicator.getBenchmarkIndicator().setType("去年同期");
+        indicatorDetailList.add(sumIndicator.getBenchmarkIndicator());
+        sumBenchmarkAccumulated.setType("同期累计");
+        indicatorDetailList.add(sumBenchmarkAccumulated);
+        sumBG.setType("同比成长");
+        indicatorDetailList.add(sumBG);
+        sumAG.setType("累计成长");
+        indicatorDetailList.add(sumAG);
     }
 
     /**
