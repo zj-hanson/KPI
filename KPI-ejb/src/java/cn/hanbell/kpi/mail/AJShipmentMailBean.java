@@ -7,6 +7,8 @@ package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.evaluation.SalesOrderAmount;
+import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
 import java.text.DecimalFormat;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -48,6 +50,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         this.indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
+            salesOrder = new SalesOrderQuantity();
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "A机体每日出货台数设定错误";
@@ -62,6 +65,7 @@ public class AJShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
+            salesOrder = new SalesOrderAmount();
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "A机体每日出货金额设定错误";
@@ -76,6 +80,7 @@ public class AJShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
+            salesOrder = null;
             setDecimalFormat("#,###.00");
             String t = getHtmlTable(this.indicators, y, m, d, false);
             setDecimalFormat("#,###");

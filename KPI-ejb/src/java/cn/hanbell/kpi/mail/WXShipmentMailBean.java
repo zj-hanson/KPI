@@ -7,6 +7,8 @@ package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.evaluation.SalesOrderAmount;
+import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -56,6 +58,7 @@ public class WXShipmentMailBean extends ShipmentMail {
             }
         }
         if (indicators != null && !indicators.isEmpty()) {
+            salesOrder = new SalesOrderQuantity();
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "外销每日出货台数设定错误";
@@ -76,6 +79,7 @@ public class WXShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
+            salesOrder = new SalesOrderAmount();
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "外销每日出货金额设定错误";
@@ -90,6 +94,7 @@ public class WXShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
+            salesOrder = null;
             return getHtmlTable(indicators, y, m, d, false);
         } else {
             return "外销零件金额设定错误";

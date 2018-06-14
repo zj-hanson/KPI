@@ -7,6 +7,7 @@ package cn.hanbell.kpi.comm;
 
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.evaluation.SalesOrder;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,6 +23,8 @@ public abstract class ShipmentMail extends MailNotification {
 
     protected Indicator sumIndicator;
 
+    protected SalesOrder salesOrder;
+
     public ShipmentMail() {
 
     }
@@ -30,6 +33,7 @@ public abstract class ShipmentMail extends MailNotification {
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
+        getData().put("sum2", BigDecimal.ZERO);
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
@@ -67,16 +71,26 @@ public abstract class ShipmentMail extends MailNotification {
         IndicatorDetail t = indicator.getTargetIndicator();
         Field f;
         try {
-            BigDecimal num1;
-            if (indicator.getActualInterface() != null) {
+            BigDecimal num1, num2;
+            if (indicator.getActualInterface() != null && indicator.getActualEJB() != null && indicator.getId() != -1) {
+                //本日出货
                 Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
                 actualInterface.setEJB(indicator.getActualEJB());
                 num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+                //未交订单
+                if (salesOrder != null) {
+                    salesOrder.setEJB(indicator.getActualEJB());
+                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+                } else {
+                    num2 = BigDecimal.ZERO;
+                }
             } else {
                 num1 = BigDecimal.ZERO;
+                num2 = BigDecimal.ZERO;
             }
             if (indicator.getId() != -1) {
                 sumAdditionalData("sum1", num1);
+                sumAdditionalData("sum2", num2);
             }
             sb.append("<tr>");
             sb.append("<td>").append(indicator.getName()).append("</td>");
@@ -127,7 +141,7 @@ public abstract class ShipmentMail extends MailNotification {
             f = p.getClass().getDeclaredField("nfy");
             f.setAccessible(true);
             sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            sb.append("<td>订单未交</td>");
+            sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
             sb.append("</tr>");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);
