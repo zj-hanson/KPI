@@ -7,18 +7,15 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C0160
+ * @author C1879
  */
-public class ShipmentAmountPDVR1 extends ShipmentAmount {
+public class SalesOrderAmountP9 extends SalesOrderAmount{
 
-    public ShipmentAmountPDVR1() {
+    public SalesOrderAmountP9() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1H000','1H100' ");
-        queryParams.put("ogdkid", "RL01");
+        queryParams.put("decode", "");
         queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("n_code_DC", " ='DVR' ");
-        queryParams.put("n_code_DD", " ='00' ");
     }
 
 }
