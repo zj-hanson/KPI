@@ -7,20 +7,16 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C0160
+ * @author C1879
  */
-public class ShipmentAmountAJ2 extends ShipmentAmount {
+public class SalesOrderAmountT9 extends SalesOrderAmount {
 
-    public ShipmentAmountAJ2() {
+    public SalesOrderAmountT9() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1T100' ");
         queryParams.put("decode", "2");
-        queryParams.put("ogdkid", "RL03");
-        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_DA", " IN ('AA','AH') ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", " ='01' ");//00是整机-01是零件-02是后处理
     }
-
 }
