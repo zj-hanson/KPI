@@ -21,7 +21,62 @@ public class SalesOrderAmount extends SalesOrder {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
+         //获得查询参数
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
+        
+         BigDecimal tram = BigDecimal.ZERO;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
+        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND d.drecsta not in ('98','99')  AND  h.facno='${facno}' ");
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_CD)) {
+            sb.append(" and d.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" and d.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" and h.recdate<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" and h.recdate= '${d}' ");
+                break;
+            default:
+                sb.append(" and h.recdate<= '${d}' ");
+        }
+
+        String cdrdmas = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+                .replace("${facno}", facno);
+
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(cdrdmas);
+        try {
+            Object o1 = query.getSingleResult();
+            tram = (BigDecimal) o1;
+        } catch (Exception ex) {
+            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tram;
     }
 
     @Override
