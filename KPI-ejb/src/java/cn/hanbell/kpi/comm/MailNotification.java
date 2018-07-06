@@ -47,6 +47,8 @@ public abstract class MailNotification {
     protected List<String> bcc;
     protected List<File> attachments;
 
+    protected String css = "";
+
     protected List<Indicator> indicators;
     protected HashMap<String, BigDecimal> data;
 
@@ -99,14 +101,15 @@ public abstract class MailNotification {
     protected String getMailHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title>Hanbell</title>");
-        sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-war/resources/css/mail.css\" type=\"text/css\"/>");
+        //sb.append("<link rel=\"stylesheet\" href=\"http://jws.hanbell.com.cn:8480/Hanbell-war/resources/css/mail.css\" type=\"text/css\"/>");
+        sb.append("<style type=\"text/css\">{css}</style>");
         sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
         sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
         sb.append("</div>");
-        return sb.toString();
+        return sb.toString().replace("{css}", css);
     }
 
     protected abstract String getMailBody();
