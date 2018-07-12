@@ -94,6 +94,14 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
             try {
                 Calendar c = Calendar.getInstance();
                 c.setTime(queryDateBegin);
+                if (currentEntity.getFreezeDate() != null) {
+                    Calendar f = Calendar.getInstance();
+                    f.setTime(currentEntity.getFreezeDate());
+                    if (c.compareTo(f) < 1) {
+                        showErrorMsg("Info", "资料已冻结不可再计算");
+                        return;
+                    }
+                }
                 indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
                 currentEntity = indicatorBean.findById(currentEntity.getId());
                 indicatorBean.updatePerformance(currentEntity);

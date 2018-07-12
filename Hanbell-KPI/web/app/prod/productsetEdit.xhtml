@@ -51,8 +51,13 @@
                 </p:row>
                 <p:row>
                     <p:column><p:outputLabel value="指标定义" for="descript" /></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <p:inputText id="descript" value="#{productSetManagedBean.currentEntity.descript}" title="descript" />
+                    </p:column>
+                    <p:column><p:outputLabel value="冻结日期" for="freezeDate" /></p:column>
+                    <p:column>
+                        <p:calendar id="freezeDate" value="#{productSetManagedBean.currentEntity.freezeDate}" title="freezeDate" 
+                                    pattern="yyyy/MM/dd" />
                     </p:column>
                 </p:row>
                 <p:row>

@@ -7,6 +7,7 @@ package cn.hanbell.kpi.entity;
 
 import com.lightshell.comm.SuperDetailEntity;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -154,6 +157,9 @@ public class IndicatorAssignment extends SuperDetailEntity {
     private boolean limited;
     @Column(name = "assigned")
     private boolean assigned;
+    @Column(name = "freezeDate")
+    @Temporal(TemporalType.DATE)
+    private Date freezeDate;
     @Size(max = 45)
     @Column(name = "api")
     private String api;
@@ -472,6 +478,20 @@ public class IndicatorAssignment extends SuperDetailEntity {
      */
     public void setAssigned(boolean assigned) {
         this.assigned = assigned;
+    }
+
+    /**
+     * @return the freezeDate
+     */
+    public Date getFreezeDate() {
+        return freezeDate;
+    }
+
+    /**
+     * @param freezeDate the freezeDate to set
+     */
+    public void setFreezeDate(Date freezeDate) {
+        this.freezeDate = freezeDate;
     }
 
     /**

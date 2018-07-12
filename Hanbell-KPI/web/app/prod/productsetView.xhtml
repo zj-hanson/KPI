@@ -48,8 +48,14 @@
                 </p:row>
                 <p:row>
                     <p:column><h:outputText value="指标定义"/></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <h:outputText id="descript" value="#{productSetManagedBean.currentEntity.descript}" title="descript" />
+                    </p:column>
+                    <p:column><h:outputText value="冻结日期"/></p:column>
+                    <p:column>
+                        <h:outputText id="freezeDate" value="#{productSetManagedBean.currentEntity.freezeDate}" title="freezeDate" >
+                            <f:convertDateTime pattern="yyyy/MM/dd"/>
+                        </h:outputText>
                     </p:column>
                 </p:row>
                 <p:row>
