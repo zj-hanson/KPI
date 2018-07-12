@@ -22,7 +22,6 @@ public class ShipmentAmountT9 extends ShipmentAmount {
     public ShipmentAmountT9() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " IN ('AA','AH') ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
         queryParams.put("n_code_DD", " ='01' ");//00是整机-01是零件-02是后处理
@@ -78,7 +77,7 @@ public class ShipmentAmountT9 extends ShipmentAmount {
 
         sb.setLength(0);
         sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003','SXG00002') ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003') ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
