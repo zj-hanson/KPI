@@ -68,3 +68,6 @@ dist/
 /build
 /Hanbell-KPI/build
 /KPI-ejb/build
+/nbproject/private/
+/Hanbell-KPI/nbproject/private/
+/KPI-ejb/nbproject/private/
