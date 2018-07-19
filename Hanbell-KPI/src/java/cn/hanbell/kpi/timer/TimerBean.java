@@ -7,13 +7,11 @@ package cn.hanbell.kpi.timer;
 
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
-import cn.hanbell.kpi.ejb.ClientNowAndPastBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.MailSetting;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Resource;
@@ -26,7 +24,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.primefaces.util.LimitedSizeHashMap;
 
 /**
  *
@@ -35,9 +32,6 @@ import org.primefaces.util.LimitedSizeHashMap;
 @Singleton
 @Startup
 public class TimerBean {
-
-    @EJB
-    private ClientNowAndPastBean clientNowAndPast;
 
     @EJB
     private IndicatorBean indicatorBean;
@@ -159,11 +153,4 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "*/1", hour = "*", persistent = true)
-    public void test() {
-//       LinkedHashMap<String, String> map = new LinkedHashMap<>();
-//       map.put("n_code_DA", "R");
-//       map.put("deptno", "C");
-//       clientNowAndPast.getNowClient(2018, 2, map);
-    }
 }

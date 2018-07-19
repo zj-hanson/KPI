@@ -2,16 +2,26 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="404.xhtml" x="400" y="300" zoom="true"/>
         <Node id="app/df/sysuserSelect.xhtml" x="150" y="300" zoom="true"/>
-        <Node id="login.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="app/bd/indicatordefineEdit.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="404.xhtml" x="400" y="300" zoom="true"/>
         <Node id="error.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="home.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="empty.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="app/bd/indicatordefineNew.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="app/bd/indicatordefine.xhtml" x="900" y="450" zoom="true"/>
         <Node id="*" x="1150" y="150" zoom="true"/>
+        <Node id="app/bd/indicatordefineView.xhtml" x="650" y="450" zoom="true"/>
         <Node id="app/df/departmentSelect.xhtml" x="400" y="150" zoom="true"/>
         <Node id="resetPwd.xhtml" x="150" y="450" zoom="true"/>
         <Node id="deny.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="app/bd/companygrantNew.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="app/bd/companygrantView.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="login.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="home.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="empty.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="app/bd/companygrantEdit.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="app/bd/indicatorinit.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="app/bd/companygrant.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="app/bd/indicator.xhtml" x="1400" y="150" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

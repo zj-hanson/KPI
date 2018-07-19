@@ -121,7 +121,9 @@ public abstract class ShipmentAmount extends Shipment {
         if (queryParams != null && !queryParams.isEmpty()) {
             //计算其他金额
             this.arm232 = this.getARM232Value(y, m, d, type, getQueryParams());
-            this.arm235 = this.getARM235Value(y, m, d, type, getQueryParams());
+            //ARM235不算事业部
+            //this.arm235 = this.getARM235Value(y, m, d, type, getQueryParams());
+            this.arm235 = BigDecimal.ZERO;
             this.arm270 = this.getARM270Value(y, m, d, type, getQueryParams());
             this.arm423 = this.getARM423Value(y, m, d, type, getQueryParams());
         }
