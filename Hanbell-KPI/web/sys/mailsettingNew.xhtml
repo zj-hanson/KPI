@@ -79,7 +79,7 @@
                             <p:column styleClass="Wid20"><p:outputLabel value="收件人员" for="userid" /></p:column>
                             <p:column styleClass="Wid30">
                                 <p:inputText id="userid" value="#{mailSettingManagedBean.currentDetail.userid}" title="userid" styleClass="inputWithButton"
-                                             required="true" requiredMessage="请输入收件人员"  readonly="true" />
+                                             required="true" requiredMessage="请输入收件人员"  />
                                 <p:commandButton id="btnSystemUserSelect" actionListener="#{mailSettingManagedBean.openDialog('sysuserSelect')}" icon="ui-icon-search"
                                                  process="@this" >
                                     <p:ajax event="dialogReturn" listener="#{mailSettingManagedBean.handleDialogReturnWhenDetailEdit}"
@@ -95,7 +95,7 @@
                             <p:column><p:outputLabel value="邮箱"/></p:column>
                             <p:column>
                                 <p:inputText id="mailadd" value="#{mailSettingManagedBean.currentDetail.mailadd}" title="mailadd"
-                                             required="true" requiredMessage="请输入邮箱"  readonly="true"  />
+                                             required="true" requiredMessage="请输入邮箱"  />
                             </p:column>
                             <p:column><p:outputLabel value="类别" for="kind" /></p:column>
                             <p:column>

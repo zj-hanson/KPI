@@ -42,6 +42,7 @@ public class RShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
+    @Override
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
         sb.append("</div>");//对应Head中的div.content
