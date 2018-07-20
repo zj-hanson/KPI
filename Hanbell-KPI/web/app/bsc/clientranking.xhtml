@@ -9,60 +9,48 @@
     <ui:define name="content">
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <f:facet name="header">
                     查询条件
                 </f:facet>
                 <h:outputLabel value=" * 请输入查询的年份" for="clientyear" />
                 <p:inputText id="clientyear" value="#{shipmentTopManagedBean.year}" title="年" />
-                <h:selectBooleanCheckbox value="#{shipmentTopManagedBean.checkbox}"  title="√为查询月销售统计,反之产查询年." style="height: 18px;width: 18px" >
-                    请输入查询的月份
+                <h:selectBooleanCheckbox value="#{shipmentTopManagedBean.checkbox}"  title="√不选中为年统计." style="height: 18px;width: 18px" >
+                    只查当月
                 </h:selectBooleanCheckbox>
                 <p:inputText id="clientmonth" value="#{shipmentTopManagedBean.month}" title="月" />
+                <p:commandButton id="btnReset" value="重置" actionListener="#{shipmentTopManagedBean.refreshxhtml()}"  icon="ui-icon-refresh"
+                                 update="formOne"  />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-search"
+                                 update="formOne:tblList"/>
             </p:panelGrid>
-            <div style="width: 100%;" >
-                <span style="color: red; font-size: 13px;padding-left:50%;"  >
-                    &nbsp;*&nbsp;查询年销售统计需把<span style="font-size: 18px">&nbsp;√&nbsp;</span>去掉,反之为查询月销售.
-                </span>
-            </div>   
-            <p:toolbar id="toolbar" styleClass="topToolbar">
-                <f:facet name="left">
-                    <p:commandButton id="btnLoad" value="刷新"  actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-sync"
-                                     update="formOne"/>
-                </f:facet>
-                <f:facet name="right">
-                    <p:commandButton id="btnReset" value="重置" actionListener="#{shipmentTopManagedBean.refreshxhtml()}"  icon="ui-icon-refresh"
-                                     update="formOne"/>
-                    <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-search"
-                                     update="formOne:tblList"/>
-                </f:facet>
-            </p:toolbar>
+            <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
             <p:dataTable id="tblList" value="#{shipmentTopManagedBean.clientlist}" var="item"
-                         tableStyleClass="tableList" rowSelectMode="single" rowKey="item.id" style="text-align: right">
-                <f:facet name="header" >
-                    <span style="font-size: 21px;font-weight: bold;" ></span>#{shipmentTopManagedBean.map.daname}#{shipmentTopManagedBean.map.year}#{shipmentTopManagedBean.map.title}累计出货销售统计表
+                         tableStyleClass="tableList" rowSelectMode="single" rowKey="item.id">
+                <f:facet name="header"  >
+                    <span style="font-size: 21px;" >#{shipmentTopManagedBean.map.daname}#{shipmentTopManagedBean.map.year}#{shipmentTopManagedBean.map.title}累计出货销售统计表</span>
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
-                <p:column styleClass="Wid20" style="text-align: center">
+                <p:column styleClass="Wid20" style="text-align: center;">
                     <f:facet name="header">
                         <h:outputText value="客户"/>
                     </f:facet>
-                    <h:outputText value="#{item.cusna}"/>
+                    <h:outputText value="#{item.cusna}" />
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: center">
+                <p:column styleClass="Wid20" style="text-align: center;">
                     <f:facet name="header">
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}排名"/>
                     </f:facet>
                     <h:outputText value="#{item.nowrank}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="#{shipmentTopManagedBean.map.futitle}台数"/>
+                <p:column styleClass="Wid20" style="text-align: right;">
+                    <f:facet name="header" >
+                        <h:outputText value="#{shipmentTopManagedBean.map.futitle}台数" style="text-align: center"/>
                     </f:facet>
-                    <h:outputText value="#{item.nowshpqy1}"/>
+                    <h:outputText  value="#{item.nowshpqy1}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}金额"/>
                     </f:facet>
@@ -74,19 +62,19 @@
                     </f:facet>
                     <h:outputText value="#{item.pastrank}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="去年同期台数"/>
                     </f:facet>
                     <h:outputText value="#{item.pastshpqy1}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="去年同期金额"/>
                     </f:facet>
                     <h:outputText value="#{item.pastshpamts}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="同比差异值"/>
                     </f:facet>
@@ -99,11 +87,11 @@
                     <h:outputText value="#{item.growthrate}"/>
                 </p:column>
             </p:dataTable>
-             <div style="width: 100%;color: gray; font-size: 13px;" >
-                 <p style="height: 14px">
+            <div style="width: 100%;color: gray; font-size: 13px;" >
+                <p style="height: 14px">
                     同比差异值 = 本年累计金额 - 去年同期累计金额   
                 </p>
-                 <p style="height: 14px">
+                <p style="height: 14px">
                     同比成长率 = (本年累计金额 - 去年同期累计金额)/去年同期累计金额*100%                     
                 </p>
             </div>   

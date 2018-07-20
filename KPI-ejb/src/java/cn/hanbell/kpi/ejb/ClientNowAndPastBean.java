@@ -27,8 +27,10 @@ public class ClientNowAndPastBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
+    private final DecimalFormat df;
 
     public ClientNowAndPastBean() {
+        this.df = new DecimalFormat("#,###.00");
     }
 
     public String getQuantitySql(int y, int m, LinkedHashMap<String, String> map) {
@@ -139,7 +141,6 @@ public class ClientNowAndPastBean implements Serializable {
 
     public List<ClientTable> getNowClient(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
-        DecimalFormat df = new DecimalFormat("#.00");
         StringBuilder sb = new StringBuilder();
         sb.append(" select  a.cusno as 'cusno',a.cusna as 'cusna',a.shpqy1 as 'shpqy1',b.shpamts as 'shpamts' from ( ");
         sb.append(getQuantitySql(y, m, map));
@@ -165,7 +166,7 @@ public class ClientNowAndPastBean implements Serializable {
                     ct.setCusno(row[0].toString());
                     ct.setCusna(row[1].toString());
                     ct.setNowshpqy1(String.valueOf(Double.valueOf(row[2].toString()).intValue()));
-                    ct.setNowshpamts(row[3].toString());
+                    ct.setNowshpamts(df.format(Double.parseDouble(row[3].toString())));
                     ct.setNowrank(String.valueOf(i + 1));
                     for (int j = 0; j < pastlist.size(); j++) {
                         if (row[0].toString().equals(pastlist.get(j).getCusno())) {
@@ -173,7 +174,7 @@ public class ClientNowAndPastBean implements Serializable {
                             nowshpamts = Double.parseDouble(row[3].toString());
                             pastshpamts = Double.parseDouble(pastlist.get(j).getPastshpamts());
                             ct.setPastshpqy1(pastlist.get(j).getPastshpqy1());
-                            ct.setPastshpamts(pastlist.get(j).getPastshpamts());
+                            ct.setPastshpamts(df.format(Double.parseDouble(pastlist.get(j).getPastshpamts())));
                             ct.setPastrank(pastlist.get(j).getPastrank());
                             ct.setDifferencevalue(df.format(nowshpamts - pastshpamts));
                             ct.setGrowthrate(String.valueOf(df.format((nowshpamts - pastshpamts) / pastshpamts * 100)) + "%");                            
@@ -183,7 +184,7 @@ public class ClientNowAndPastBean implements Serializable {
                         ct.setPastshpqy1("0");
                         ct.setPastshpamts("0");
                         ct.setGrowthrate("100%");
-                        ct.setDifferencevalue(row[3].toString());
+                        ct.setDifferencevalue(df.format(Double.parseDouble(row[3].toString())));
                     }
                     nowlist.add(ct);
                 }
