@@ -9,27 +9,24 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityWL extends ManmasQuantity {
+public class ProductionQuantityVPZ extends ProductionQuantity {
 
     /**
-     * 空气源热泵
+     * P机组
      */
-    public ManmasQuantityWL() {
+    public ProductionQuantityVPZ() {
         super();
         //*公司别
-        queryParams.put("facno", "K");
+        queryParams.put("facno", "C");
         //*生产地
         queryParams.put("prono", "1");
         //*生产线别
-        queryParams.put("linecode", " = '01' ");
+        queryParams.put("linecode", " = 'VPZ' ");
         //制令种类
-        queryParams.put("mankind", "");
+        queryParams.put("mankind", " 'MOS' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
-        queryParams.put("itcls", " IN ('3W76','3W79','3W80')");
-        
-        queryParams.put("itnbrf", " and itnbrf in (select itnbr from borgrp where itnbrgrp like 'KMAT%') ");
+    
 
     }
 }

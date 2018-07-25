@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityWC extends ManmasQuantity {
+public class ProductionQuantityKWL extends ProductionQuantity {
 
     /**
-     * 螺杆机组
+     * 空气源热泵
      */
-    public ManmasQuantityWC() {
+    public ProductionQuantityKWL() {
         super();
         //*公司别
         queryParams.put("facno", "K");
@@ -29,7 +29,7 @@ public class ManmasQuantityWC extends ManmasQuantity {
         //
         queryParams.put("itcls", " IN ('3W76','3W79','3W80')");
         
-        queryParams.put("itnbrf", " and itnbrf in (select itnbr from [comererp].[dbo].borgrp where itnbrgrp  not like 'KMAT%') ");
+        queryParams.put("itnbrf", " and itnbrf in (select itnbr from borgrp where itnbrgrp like 'KMAT%') ");
 
     }
 }

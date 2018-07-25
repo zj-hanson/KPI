@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityHC extends ManmasQuantity {
+public class ProductionQuantityKBA extends ProductionQuantity {
 
     /**
-     * 离心机组
+     * ORC机组
      */
-    public ManmasQuantityHC() {
+    public ProductionQuantityKBA() {
         super();
         //*公司别
         queryParams.put("facno", "K");
@@ -27,7 +27,7 @@ public class ManmasQuantityHC extends ManmasQuantity {
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //
-        queryParams.put("itcls", " IN ('3H76','3H79','3H80')");
+        queryParams.put("itcls", " IN ('3B80')");
 
     }
 }

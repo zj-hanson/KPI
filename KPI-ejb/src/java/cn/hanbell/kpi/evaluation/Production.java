@@ -16,13 +16,13 @@ import javax.naming.InitialContext;
  *
  * @author C1879
  */
-public abstract class Manmas implements Actual {
+public abstract class Production implements Actual {
 
      protected SuperEJBForERP superEJB;
 
     protected LinkedHashMap<String, Object> queryParams;
 
-    public Manmas() {
+    public Production() {
         queryParams = new LinkedHashMap<>();
     }
 

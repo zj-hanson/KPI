@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author C1879
  */
-public class ManmasQuantity extends Manmas {
+public class ProductionQuantity extends Production {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {

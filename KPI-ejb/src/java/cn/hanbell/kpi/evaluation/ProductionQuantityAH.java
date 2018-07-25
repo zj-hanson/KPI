@@ -9,25 +9,25 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityRC extends ManmasQuantity {
+public class ProductionQuantityAH extends ProductionQuantity {
 
     /**
-     * R冷媒
+     * A机体
      */
-    public ManmasQuantityRC() {
+    public ProductionQuantityAH() {
         super();
         //*公司别
         queryParams.put("facno", "C");
         //*生产地
         queryParams.put("prono", "1");
         //*生产线别
-        queryParams.put("linecode", " = 'RC' ");
+        queryParams.put("linecode", " = 'AH' ");
         //制令种类
         queryParams.put("mankind", "");
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //
-        queryParams.put("itcls", " IN ('3176','3177','3179','3180','3276','3279','3280','3083','4079')");
-
+        queryParams.put("itcls", "");
+        
     }
 }

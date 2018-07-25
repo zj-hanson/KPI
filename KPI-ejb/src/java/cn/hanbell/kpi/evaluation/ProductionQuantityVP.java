@@ -9,21 +9,21 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityVPZ extends ManmasQuantity {
+public class ProductionQuantityVP extends ProductionQuantity {
 
     /**
-     * P机组
+     * P机体湿式正空
      */
-    public ManmasQuantityVPZ() {
+    public ProductionQuantityVP() {
         super();
         //*公司别
         queryParams.put("facno", "C");
         //*生产地
         queryParams.put("prono", "1");
         //*生产线别
-        queryParams.put("linecode", " = 'VPZ' ");
+        queryParams.put("linecode", " = 'VP' ");
         //制令种类
-        queryParams.put("mankind", " 'MOS' ");
+        queryParams.put("mankind", "");
         //制令等级
         queryParams.put("typecode", "= '01' ");
     

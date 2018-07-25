@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityAJZ extends ManmasQuantity {
+public class ProductionQuantityAJZ extends ProductionQuantity {
 
     /**
      * A机组
      */
-    public ManmasQuantityAJZ() {
+    public ProductionQuantityAJZ() {
         super();
         //*公司别
         queryParams.put("facno", "C");

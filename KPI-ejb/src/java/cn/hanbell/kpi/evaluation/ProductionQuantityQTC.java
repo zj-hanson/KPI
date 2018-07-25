@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ManmasQuantityQTC extends ManmasQuantity {
+public class ProductionQuantityQTC extends ProductionQuantity {
 
     /**
      * 世纪华东
      */
-    public ManmasQuantityQTC() {
+    public ProductionQuantityQTC() {
         super();
 //        //*公司别
 //        queryParams.put("facno", "");
