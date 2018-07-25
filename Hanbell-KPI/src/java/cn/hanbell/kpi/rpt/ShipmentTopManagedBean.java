@@ -152,6 +152,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("deptnoname", "空压机体产品部");
                 getMap().put("daname", "空压机体");
                 getMap().put("n_code_DA", "= 'AH'");
+                break;
             case "1H000":
                 getMap().put("facno", "C");
                 getMap().put("deptnoname", "真空产品部");
