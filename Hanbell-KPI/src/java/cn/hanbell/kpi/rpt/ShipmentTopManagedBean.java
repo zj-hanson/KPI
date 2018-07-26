@@ -107,24 +107,32 @@ public class ShipmentTopManagedBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         int m = cal.get(Calendar.MONTH) + 1;
-        int y = cal.get(Calendar.YEAR);
-        getMap().put("year", getYear() + "年");
+        int y = cal.get(Calendar.YEAR);        
         if (getYear() == null || getYear() > y || getMonth() > 12 || getMonth() < 1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "输入的年份或月份值有误请重新填写！"));
             return false;
         } else {
-             if (isCheckbox()) {
+            getMap().put("year", getYear() + "年");
+            if (isCheckbox()) {
                 getMap().put("title", getMonth() + "月");
                 getMap().put("futitle", "当月");
             } else if (getYear() == findyear()) {
-                if (findmonth() > 1) {
-                    getMap().put("title", "1月至" + findmonth() + "月");
+                if (getMonth() > 1) {
+                    if(getMonth() > findmonth()){
+                         getMap().put("title", "1月至" + findmonth() + "月");
+                    }else{
+                         getMap().put("title", "1月至" + getMonth() + "月");
+                    }   
                 } else {
                     getMap().put("title", "1月");
                 }
                 getMap().put("futitle", "本年");
             } else {
-                getMap().put("title", "1月至12月");
+                if (getMonth() > 1) {
+                    getMap().put("title", "1月至" + getMonth() + "月");
+                } else {
+                    getMap().put("title", "1月");
+                }
                 getMap().put("futitle", "本年");
             }
             return true;
@@ -206,11 +214,14 @@ public class ShipmentTopManagedBean implements Serializable {
                     getMap().put("style", "nowmonth");
                 } else {
                     if (y != findyear()) {
-                        //不是当前年查1至12月
-                        m = 12;
+                        m = getMonth();
                     } else {
                         //当前年1月至登陆下方日期月份
-                        m = findmonth();
+                        if(getMonth() > findmonth()){
+                            m = findmonth();
+                        }else{
+                            m = getMonth();
+                        }
                     }
                 }                    
                 List<ClientTable> list = clientrank.getNowClient(y, m, getMap());
