@@ -67,14 +67,14 @@ public class ShipmentTopManagedBean implements Serializable {
         return c.get(Calendar.MONTH) + 1;
     }
 
-    public void initial(){
+    public void initial() {
         setClientlist(new ArrayList<>());
         getMap().put("title", "");
         getMap().put("futitle", "");
         getMap().put("year", "");
         getMap().put("style", "");
     }
-    
+
     @PostConstruct
     public void construct() {
         setCheckbox(true);
@@ -113,7 +113,7 @@ public class ShipmentTopManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "输入的年份或月份值有误请重新填写！"));
             return false;
         } else {
-             if (isCheckbox()) {
+            if (isCheckbox()) {
                 getMap().put("title", getMonth() + "月");
                 getMap().put("futitle", "当月");
             } else if (getYear() == findyear()) {
@@ -128,11 +128,11 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("futitle", "本年");
             }
             return true;
-        } 
-               
+        }
+
     }
 
-    public void  finddeptno(){
+    public void finddeptno() {
         String deptno = indicatorChart.getDeptno();
         switch (deptno) {
             case "1F000":
@@ -161,8 +161,8 @@ public class ShipmentTopManagedBean implements Serializable {
             case "1U000":
                 getMap().put("facno", "C");
                 getMap().put("deptnoname", "涡旋产品部");
-                getMap().put("daname", "旋涡");
-                getMap().put("n_code_DA", "= 'R'");
+                getMap().put("daname", "涡旋");
+                getMap().put("n_code_DA", "= 'S'");
                 break;
             case "5B000":
                 getMap().put("facno", "K");
@@ -180,7 +180,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("facno", "K");
                 getMap().put("deptnoname", "柯茂");
                 getMap().put("daname", "离心机");
-                getMap().put("n_code_DA", " In('RT','OH') ");
+                getMap().put("n_code_DA", " In ('RT','OH') ");
                 break;
             default:
                 getMap().put("facno", "");
@@ -189,9 +189,10 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("daname", "");
                 getMap().put("n_code_DA", "");
                 getMap().put("n_code_DC", "");
-                
+
         }
     }
+
     public void findclient() {
         initial();
         try {
@@ -211,7 +212,7 @@ public class ShipmentTopManagedBean implements Serializable {
                         //当前年1月至登陆下方日期月份
                         m = findmonth();
                     }
-                }                    
+                }
                 List<ClientTable> list = clientrank.getNowClient(y, m, getMap());
                 if (list.size() > 0) {
                     setClientlist(list);
