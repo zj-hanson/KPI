@@ -560,6 +560,207 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.update(entity.getForecastIndicator());
         indicatorDetailBean.update(entity.getActualIndicator());
         indicatorDetailBean.update(entity.getPerformanceIndicator());
+        if (entity.getHasOther() == 1) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+        }
+        if (entity.getHasOther() == 2) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+            if (entity.getOther2Indicator() == null) {
+                IndicatorDetail o2 = new IndicatorDetail();
+                o2.setPid(entity.getId());
+                o2.setSeq(7);
+                o2.setType("A");
+                indicatorDetailBean.persist(o2);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther2Indicator(o2);
+            }
+        }
+        if (entity.getHasOther() == 3) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+            if (entity.getOther2Indicator() == null) {
+                IndicatorDetail o2 = new IndicatorDetail();
+                o2.setPid(entity.getId());
+                o2.setSeq(7);
+                o2.setType("A");
+                indicatorDetailBean.persist(o2);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther2Indicator(o2);
+            }
+            if (entity.getOther3Indicator() == null) {
+                IndicatorDetail o3 = new IndicatorDetail();
+                o3.setPid(entity.getId());
+                o3.setSeq(8);
+                o3.setType("A");
+                indicatorDetailBean.persist(o3);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther3Indicator(o3);
+            }
+        }
+        if (entity.getHasOther() == 4) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+            if (entity.getOther2Indicator() == null) {
+                IndicatorDetail o2 = new IndicatorDetail();
+                o2.setPid(entity.getId());
+                o2.setSeq(7);
+                o2.setType("A");
+                indicatorDetailBean.persist(o2);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther2Indicator(o2);
+            }
+            if (entity.getOther3Indicator() == null) {
+                IndicatorDetail o3 = new IndicatorDetail();
+                o3.setPid(entity.getId());
+                o3.setSeq(8);
+                o3.setType("A");
+                indicatorDetailBean.persist(o3);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther3Indicator(o3);
+            }
+            if (entity.getOther4Indicator() == null) {
+                IndicatorDetail o4 = new IndicatorDetail();
+                o4.setPid(entity.getId());
+                o4.setSeq(9);
+                o4.setType("A");
+                indicatorDetailBean.persist(o4);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther4Indicator(o4);
+            }
+        }
+        if (entity.getHasOther() == 5) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+            if (entity.getOther2Indicator() == null) {
+                IndicatorDetail o2 = new IndicatorDetail();
+                o2.setPid(entity.getId());
+                o2.setSeq(7);
+                o2.setType("A");
+                indicatorDetailBean.persist(o2);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther2Indicator(o2);
+            }
+            if (entity.getOther3Indicator() == null) {
+                IndicatorDetail o3 = new IndicatorDetail();
+                o3.setPid(entity.getId());
+                o3.setSeq(8);
+                o3.setType("A");
+                indicatorDetailBean.persist(o3);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther3Indicator(o3);
+            }
+            if (entity.getOther4Indicator() == null) {
+                IndicatorDetail o4 = new IndicatorDetail();
+                o4.setPid(entity.getId());
+                o4.setSeq(9);
+                o4.setType("A");
+                indicatorDetailBean.persist(o4);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther4Indicator(o4);
+            }
+            if (entity.getOther5Indicator() == null) {
+                IndicatorDetail o5 = new IndicatorDetail();
+                o5.setPid(entity.getId());
+                o5.setSeq(10);
+                o5.setType("A");
+                indicatorDetailBean.persist(o5);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o5);
+            }
+        }
+        if (entity.getHasOther() == 6) {
+            if (entity.getOther1Indicator() == null) {
+                IndicatorDetail o1 = new IndicatorDetail();
+                o1.setPid(entity.getId());
+                o1.setSeq(6);
+                o1.setType("A");
+                indicatorDetailBean.persist(o1);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther1Indicator(o1);
+            }
+            if (entity.getOther2Indicator() == null) {
+                IndicatorDetail o2 = new IndicatorDetail();
+                o2.setPid(entity.getId());
+                o2.setSeq(7);
+                o2.setType("A");
+                indicatorDetailBean.persist(o2);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther2Indicator(o2);
+            }
+            if (entity.getOther3Indicator() == null) {
+                IndicatorDetail o3 = new IndicatorDetail();
+                o3.setPid(entity.getId());
+                o3.setSeq(8);
+                o3.setType("A");
+                indicatorDetailBean.persist(o3);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther3Indicator(o3);
+            }
+            if (entity.getOther4Indicator() == null) {
+                IndicatorDetail o4 = new IndicatorDetail();
+                o4.setPid(entity.getId());
+                o4.setSeq(9);
+                o4.setType("A");
+                indicatorDetailBean.persist(o4);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther4Indicator(o4);
+            }
+            if (entity.getOther5Indicator() == null) {
+                IndicatorDetail o5 = new IndicatorDetail();
+                o5.setPid(entity.getId());
+                o5.setSeq(10);
+                o5.setType("A");
+                indicatorDetailBean.persist(o5);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther5Indicator(o5);
+            }
+            if (entity.getOther6Indicator() == null) {
+                IndicatorDetail o6 = new IndicatorDetail();
+                o6.setPid(entity.getId());
+                o6.setSeq(11);
+                o6.setType("A");
+                indicatorDetailBean.persist(o6);
+                indicatorDetailBean.getEntityManager().flush();
+                entity.setOther6Indicator(o6);
+            }
+        }
         return super.update(entity);
     }
 

@@ -67,14 +67,14 @@ public class ShipmentTopManagedBean implements Serializable {
         return c.get(Calendar.MONTH) + 1;
     }
 
-    public void initial(){
+    public void initial() {
         setClientlist(new ArrayList<>());
         getMap().put("title", "");
         getMap().put("futitle", "");
         getMap().put("year", "");
         getMap().put("style", "");
     }
-    
+
     @PostConstruct
     public void construct() {
         setCheckbox(true);
@@ -107,7 +107,7 @@ public class ShipmentTopManagedBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         int m = cal.get(Calendar.MONTH) + 1;
-        int y = cal.get(Calendar.YEAR);        
+        int y = cal.get(Calendar.YEAR);
         if (getYear() == null || getYear() > y || getMonth() > 12 || getMonth() < 1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "输入的年份或月份值有误请重新填写！"));
             return false;
@@ -118,11 +118,11 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("futitle", "当月");
             } else if (getYear() == findyear()) {
                 if (getMonth() > 1) {
-                    if(getMonth() > findmonth()){
-                         getMap().put("title", "1月至" + findmonth() + "月");
-                    }else{
-                         getMap().put("title", "1月至" + getMonth() + "月");
-                    }   
+                    if (getMonth() > findmonth()) {
+                        getMap().put("title", "1月至" + findmonth() + "月");
+                    } else {
+                        getMap().put("title", "1月至" + getMonth() + "月");
+                    }
                 } else {
                     getMap().put("title", "1月");
                 }
@@ -136,11 +136,11 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("futitle", "本年");
             }
             return true;
-        } 
-               
+        }
+
     }
 
-    public void  finddeptno(){
+    public void finddeptno() {
         String deptno = indicatorChart.getDeptno();
         switch (deptno) {
             case "1F000":
@@ -198,9 +198,10 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("daname", "");
                 getMap().put("n_code_DA", "");
                 getMap().put("n_code_DC", "");
-                
+
         }
     }
+
     public void findclient() {
         initial();
         try {
@@ -217,13 +218,13 @@ public class ShipmentTopManagedBean implements Serializable {
                         m = getMonth();
                     } else {
                         //当前年1月至登陆下方日期月份
-                        if(getMonth() > findmonth()){
+                        if (getMonth() > findmonth()) {
                             m = findmonth();
-                        }else{
+                        } else {
                             m = getMonth();
                         }
                     }
-                }                    
+                }
                 List<ClientTable> list = clientrank.getNowClient(y, m, getMap());
                 if (list.size() > 0) {
                     setClientlist(list);
@@ -234,7 +235,6 @@ public class ShipmentTopManagedBean implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
         }
-
     }
 
     /**
