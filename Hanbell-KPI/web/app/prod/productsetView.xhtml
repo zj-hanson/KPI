@@ -125,15 +125,27 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><h:outputText value="计算接口" /></p:column>
+                    <p:column><h:outputText value="实际接口" /></p:column>
                     <p:column colspan="3">
                         <h:outputText id="actualInterface" value="#{productSetManagedBean.currentEntity.actualInterface}" title="actualInterface"/>
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><h:outputText value="接口EJB"/></p:column>
+                    <p:column><h:outputText value="实际EJB"/></p:column>
                     <p:column colspan="3">
                         <h:outputText id="actualEJB" value="#{productSetManagedBean.currentEntity.actualEJB}" title="actualEJB"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="达标接口"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="performanceInterface" value="#{productSetManagedBean.currentEntity.performanceInterface}" title="performanceInterface"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="达标EJB"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="performanceEJB" value="#{productSetManagedBean.currentEntity.performanceEJB}" title="performanceEJB"/>
                     </p:column>
                 </p:row>
                 <p:row>

@@ -32,18 +32,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicator")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorAssignment.findAll", query = "SELECT i FROM IndicatorAssignment i"),
-    @NamedQuery(name = "IndicatorAssignment.findById", query = "SELECT i FROM IndicatorAssignment i WHERE i.id = :id"),
-    @NamedQuery(name = "IndicatorAssignment.findByCompany", query = "SELECT i FROM IndicatorAssignment i WHERE i.company = :company"),
-    @NamedQuery(name = "IndicatorAssignment.findByFormtype", query = "SELECT i FROM IndicatorAssignment i WHERE i.formtype = :formtype"),
-    @NamedQuery(name = "IndicatorAssignment.findByFormkind", query = "SELECT i FROM IndicatorAssignment i WHERE i.formkind = :formkind"),
-    @NamedQuery(name = "IndicatorAssignment.findByPId", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid"),
-    @NamedQuery(name = "IndicatorAssignment.findByPIdAndSeq", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid AND i.seq = :seq"),
-    @NamedQuery(name = "IndicatorAssignment.findByDeptno", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptno = :deptno"),
-    @NamedQuery(name = "IndicatorAssignment.findByDeptname", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptname = :deptname"),
-    @NamedQuery(name = "IndicatorAssignment.findByUserid", query = "SELECT i FROM IndicatorAssignment i WHERE i.userid = :userid"),
-    @NamedQuery(name = "IndicatorAssignment.findByUsername", query = "SELECT i FROM IndicatorAssignment i WHERE i.username = :username"),
-    @NamedQuery(name = "IndicatorAssignment.findByRemark", query = "SELECT i FROM IndicatorAssignment i WHERE i.remark = :remark"),
+    @NamedQuery(name = "IndicatorAssignment.findAll", query = "SELECT i FROM IndicatorAssignment i")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findById", query = "SELECT i FROM IndicatorAssignment i WHERE i.id = :id")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByCompany", query = "SELECT i FROM IndicatorAssignment i WHERE i.company = :company")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByFormtype", query = "SELECT i FROM IndicatorAssignment i WHERE i.formtype = :formtype")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByFormkind", query = "SELECT i FROM IndicatorAssignment i WHERE i.formkind = :formkind")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByPId", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByPIdAndSeq", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid AND i.seq = :seq")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByDeptno", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptno = :deptno")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByDeptname", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptname = :deptname")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByUserid", query = "SELECT i FROM IndicatorAssignment i WHERE i.userid = :userid")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByUsername", query = "SELECT i FROM IndicatorAssignment i WHERE i.username = :username")
+    ,
+    @NamedQuery(name = "IndicatorAssignment.findByRemark", query = "SELECT i FROM IndicatorAssignment i WHERE i.remark = :remark")
+    ,
     @NamedQuery(name = "IndicatorAssignment.findByStatus", query = "SELECT i FROM IndicatorAssignment i WHERE i.status = :status")})
 public class IndicatorAssignment extends SuperDetailEntity {
 
@@ -70,6 +82,25 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @JoinColumn(name = "targetId", referencedColumnName = "id")
     @OneToOne
     private IndicatorDetail targetIndicator;
+
+    @JoinColumn(name = "other1", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other1Indicator;
+    @JoinColumn(name = "other2", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other2Indicator;
+    @JoinColumn(name = "other3", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other3Indicator;
+    @JoinColumn(name = "other4", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other4Indicator;
+    @JoinColumn(name = "other5", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other5Indicator;
+    @JoinColumn(name = "other6", referencedColumnName = "id")
+    @OneToOne(optional = true)
+    private IndicatorDetail other6Indicator;
 
     @Basic(optional = false)
     @NotNull
@@ -160,15 +191,82 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @Column(name = "freezeDate")
     @Temporal(TemporalType.DATE)
     private Date freezeDate;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "hasOther")
+    private int hasOther;
+
     @Size(max = 45)
     @Column(name = "api")
     private String api;
-    @Size(max = 45)
+    @Size(max = 100)
     @Column(name = "actualInterface")
     private String actualInterface;
     @Size(max = 100)
     @Column(name = "actualEJB")
     private String actualEJB;
+    @Size(max = 100)
+    @Column(name = "performanceInterface")
+    private String performanceInterface;
+    @Size(max = 100)
+    @Column(name = "performanceEJB")
+    private String performanceEJB;
+    @Size(max = 100)
+    @Column(name = "other1Interface")
+    private String other1Interface;
+    @Size(max = 100)
+    @Column(name = "other1EJB")
+    private String other1EJB;
+    @Size(max = 45)
+    @Column(name = "other1Label")
+    private String other1Label;
+    @Size(max = 100)
+    @Column(name = "other2Interface")
+    private String other2Interface;
+    @Size(max = 100)
+    @Column(name = "other2EJB")
+    private String other2EJB;
+    @Size(max = 45)
+    @Column(name = "other2Label")
+    private String other2Label;
+    @Size(max = 100)
+    @Column(name = "other3Interface")
+    private String other3Interface;
+    @Size(max = 100)
+    @Column(name = "other3EJB")
+    private String other3EJB;
+    @Size(max = 45)
+    @Column(name = "other3Label")
+    private String other3Label;
+    @Size(max = 100)
+    @Column(name = "other4Interface")
+    private String other4Interface;
+    @Size(max = 100)
+    @Column(name = "other4EJB")
+    private String other4EJB;
+    @Size(max = 45)
+    @Column(name = "other4Label")
+    private String other4Label;
+    @Size(max = 100)
+    @Column(name = "other5Interface")
+    private String other5Interface;
+    @Size(max = 100)
+    @Column(name = "other5EJB")
+    private String other5EJB;
+    @Size(max = 45)
+    @Column(name = "other5Label")
+    private String other5Label;
+    @Size(max = 100)
+    @Column(name = "other6Interface")
+    private String other6Interface;
+    @Size(max = 100)
+    @Column(name = "other6EJB")
+    private String other6EJB;
+    @Size(max = 45)
+    @Column(name = "other6Label")
+    private String other6Label;
+
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -184,6 +282,7 @@ public class IndicatorAssignment extends SuperDetailEntity {
         this.maxNum = BigDecimal.ZERO;
         this.limited = false;
         this.assigned = false;
+        this.hasOther = 0;
     }
 
     public String getCompany() {
@@ -495,6 +594,20 @@ public class IndicatorAssignment extends SuperDetailEntity {
     }
 
     /**
+     * @return the hasOther
+     */
+    public int getHasOther() {
+        return hasOther;
+    }
+
+    /**
+     * @param hasOther the hasOther to set
+     */
+    public void setHasOther(int hasOther) {
+        this.hasOther = hasOther;
+    }
+
+    /**
      * @return the api
      */
     public String getApi() {
@@ -534,6 +647,286 @@ public class IndicatorAssignment extends SuperDetailEntity {
      */
     public void setActualEJB(String actualEJB) {
         this.actualEJB = actualEJB;
+    }
+
+    /**
+     * @return the performanceInterface
+     */
+    public String getPerformanceInterface() {
+        return performanceInterface;
+    }
+
+    /**
+     * @param performanceInterface the performanceInterface to set
+     */
+    public void setPerformanceInterface(String performanceInterface) {
+        this.performanceInterface = performanceInterface;
+    }
+
+    /**
+     * @return the performanceEJB
+     */
+    public String getPerformanceEJB() {
+        return performanceEJB;
+    }
+
+    /**
+     * @param performanceEJB the performanceEJB to set
+     */
+    public void setPerformanceEJB(String performanceEJB) {
+        this.performanceEJB = performanceEJB;
+    }
+
+    /**
+     * @return the other1Interface
+     */
+    public String getOther1Interface() {
+        return other1Interface;
+    }
+
+    /**
+     * @param other1Interface the other1Interface to set
+     */
+    public void setOther1Interface(String other1Interface) {
+        this.other1Interface = other1Interface;
+    }
+
+    /**
+     * @return the other1EJB
+     */
+    public String getOther1EJB() {
+        return other1EJB;
+    }
+
+    /**
+     * @param other1EJB the other1EJB to set
+     */
+    public void setOther1EJB(String other1EJB) {
+        this.other1EJB = other1EJB;
+    }
+
+    /**
+     * @return the other1Label
+     */
+    public String getOther1Label() {
+        return other1Label;
+    }
+
+    /**
+     * @param other1Label the other1Label to set
+     */
+    public void setOther1Label(String other1Label) {
+        this.other1Label = other1Label;
+    }
+
+    /**
+     * @return the other2Interface
+     */
+    public String getOther2Interface() {
+        return other2Interface;
+    }
+
+    /**
+     * @param other2Interface the other2Interface to set
+     */
+    public void setOther2Interface(String other2Interface) {
+        this.other2Interface = other2Interface;
+    }
+
+    /**
+     * @return the other2EJB
+     */
+    public String getOther2EJB() {
+        return other2EJB;
+    }
+
+    /**
+     * @param other2EJB the other2EJB to set
+     */
+    public void setOther2EJB(String other2EJB) {
+        this.other2EJB = other2EJB;
+    }
+
+    /**
+     * @return the other2Label
+     */
+    public String getOther2Label() {
+        return other2Label;
+    }
+
+    /**
+     * @param other2Label the other2Label to set
+     */
+    public void setOther2Label(String other2Label) {
+        this.other2Label = other2Label;
+    }
+
+    /**
+     * @return the other3Interface
+     */
+    public String getOther3Interface() {
+        return other3Interface;
+    }
+
+    /**
+     * @param other3Interface the other3Interface to set
+     */
+    public void setOther3Interface(String other3Interface) {
+        this.other3Interface = other3Interface;
+    }
+
+    /**
+     * @return the other3EJB
+     */
+    public String getOther3EJB() {
+        return other3EJB;
+    }
+
+    /**
+     * @param other3EJB the other3EJB to set
+     */
+    public void setOther3EJB(String other3EJB) {
+        this.other3EJB = other3EJB;
+    }
+
+    /**
+     * @return the other3Label
+     */
+    public String getOther3Label() {
+        return other3Label;
+    }
+
+    /**
+     * @param other3Label the other3Label to set
+     */
+    public void setOther3Label(String other3Label) {
+        this.other3Label = other3Label;
+    }
+
+    /**
+     * @return the other4Interface
+     */
+    public String getOther4Interface() {
+        return other4Interface;
+    }
+
+    /**
+     * @param other4Interface the other4Interface to set
+     */
+    public void setOther4Interface(String other4Interface) {
+        this.other4Interface = other4Interface;
+    }
+
+    /**
+     * @return the other4EJB
+     */
+    public String getOther4EJB() {
+        return other4EJB;
+    }
+
+    /**
+     * @param other4EJB the other4EJB to set
+     */
+    public void setOther4EJB(String other4EJB) {
+        this.other4EJB = other4EJB;
+    }
+
+    /**
+     * @return the other4Label
+     */
+    public String getOther4Label() {
+        return other4Label;
+    }
+
+    /**
+     * @param other4Label the other4Label to set
+     */
+    public void setOther4Label(String other4Label) {
+        this.other4Label = other4Label;
+    }
+
+    /**
+     * @return the other5Interface
+     */
+    public String getOther5Interface() {
+        return other5Interface;
+    }
+
+    /**
+     * @param other5Interface the other5Interface to set
+     */
+    public void setOther5Interface(String other5Interface) {
+        this.other5Interface = other5Interface;
+    }
+
+    /**
+     * @return the other5EJB
+     */
+    public String getOther5EJB() {
+        return other5EJB;
+    }
+
+    /**
+     * @param other5EJB the other5EJB to set
+     */
+    public void setOther5EJB(String other5EJB) {
+        this.other5EJB = other5EJB;
+    }
+
+    /**
+     * @return the other5Label
+     */
+    public String getOther5Label() {
+        return other5Label;
+    }
+
+    /**
+     * @param other5Label the other5Label to set
+     */
+    public void setOther5Label(String other5Label) {
+        this.other5Label = other5Label;
+    }
+
+    /**
+     * @return the other6Interface
+     */
+    public String getOther6Interface() {
+        return other6Interface;
+    }
+
+    /**
+     * @param other6Interface the other6Interface to set
+     */
+    public void setOther6Interface(String other6Interface) {
+        this.other6Interface = other6Interface;
+    }
+
+    /**
+     * @return the other6EJB
+     */
+    public String getOther6EJB() {
+        return other6EJB;
+    }
+
+    /**
+     * @param other6EJB the other6EJB to set
+     */
+    public void setOther6EJB(String other6EJB) {
+        this.other6EJB = other6EJB;
+    }
+
+    /**
+     * @return the other6Label
+     */
+    public String getOther6Label() {
+        return other6Label;
+    }
+
+    /**
+     * @param other6Label the other6Label to set
+     */
+    public void setOther6Label(String other6Label) {
+        this.other6Label = other6Label;
     }
 
     public String getRemark() {
@@ -695,6 +1088,90 @@ public class IndicatorAssignment extends SuperDetailEntity {
      */
     public void setTargetIndicator(IndicatorDetail targetIndicator) {
         this.targetIndicator = targetIndicator;
+    }
+
+    /**
+     * @return the other1Indicator
+     */
+    public IndicatorDetail getOther1Indicator() {
+        return other1Indicator;
+    }
+
+    /**
+     * @param other1Indicator the other1Indicator to set
+     */
+    public void setOther1Indicator(IndicatorDetail other1Indicator) {
+        this.other1Indicator = other1Indicator;
+    }
+
+    /**
+     * @return the other2Indicator
+     */
+    public IndicatorDetail getOther2Indicator() {
+        return other2Indicator;
+    }
+
+    /**
+     * @param other2Indicator the other2Indicator to set
+     */
+    public void setOther2Indicator(IndicatorDetail other2Indicator) {
+        this.other2Indicator = other2Indicator;
+    }
+
+    /**
+     * @return the other3Indicator
+     */
+    public IndicatorDetail getOther3Indicator() {
+        return other3Indicator;
+    }
+
+    /**
+     * @param other3Indicator the other3Indicator to set
+     */
+    public void setOther3Indicator(IndicatorDetail other3Indicator) {
+        this.other3Indicator = other3Indicator;
+    }
+
+    /**
+     * @return the other4Indicator
+     */
+    public IndicatorDetail getOther4Indicator() {
+        return other4Indicator;
+    }
+
+    /**
+     * @param other4Indicator the other4Indicator to set
+     */
+    public void setOther4Indicator(IndicatorDetail other4Indicator) {
+        this.other4Indicator = other4Indicator;
+    }
+
+    /**
+     * @return the other5Indicator
+     */
+    public IndicatorDetail getOther5Indicator() {
+        return other5Indicator;
+    }
+
+    /**
+     * @param other5Indicator the other5Indicator to set
+     */
+    public void setOther5Indicator(IndicatorDetail other5Indicator) {
+        this.other5Indicator = other5Indicator;
+    }
+
+    /**
+     * @return the other6Indicator
+     */
+    public IndicatorDetail getOther6Indicator() {
+        return other6Indicator;
+    }
+
+    /**
+     * @param other6Indicator the other6Indicator to set
+     */
+    public void setOther6Indicator(IndicatorDetail other6Indicator) {
+        this.other6Indicator = other6Indicator;
     }
 
 }
