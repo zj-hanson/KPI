@@ -255,9 +255,69 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
                 b.set("Q4", getIndicator().getBenchmarkIndicator().getNq4().doubleValue());
                 break;
         }
+
+        
+        ChartSeries f = new ChartSeries();
+        f.setLabel("预测");
+        switch (getIndicator().getFormkind()) {
+            case "M":
+                if (getIndicator().getForecastIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M01", getIndicator().getForecastIndicator().getN01().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M02", getIndicator().getForecastIndicator().getN02().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M03", getIndicator().getForecastIndicator().getN03().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M04", getIndicator().getForecastIndicator().getN04().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M05", getIndicator().getForecastIndicator().getN05().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M06", getIndicator().getForecastIndicator().getN06().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M07", getIndicator().getForecastIndicator().getN07().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M08", getIndicator().getForecastIndicator().getN08().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M09", getIndicator().getForecastIndicator().getN09().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M10", getIndicator().getForecastIndicator().getN10().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M11", getIndicator().getForecastIndicator().getN11().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("M12", getIndicator().getForecastIndicator().getN12().doubleValue());
+                }
+                break;
+            case "Q":
+                if (getIndicator().getForecastIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("Q1", getIndicator().getForecastIndicator().getNq1().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("Q2", getIndicator().getForecastIndicator().getNq2().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("Q3", getIndicator().getForecastIndicator().getNq3().doubleValue());
+                }
+                if (getIndicator().getForecastIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
+                    f.set("Q4", getIndicator().getForecastIndicator().getNq4().doubleValue());
+                }
+                break;
+        }
+       
         getChartModel().addSeries(t);//目标
         getChartModel().addSeries(b);//同期
         getChartModel().addSeries(a);//实际
+        getChartModel().addSeries(f);//预测
         getChartModel().setTitle(getIndicator().getName());
         getChartModel().setLegendPosition("e");
         getChartModel().setShowPointLabels(true);
@@ -266,7 +326,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
-        getChartModel().setSeriesColors("33FF66,FF6633,0000EE");//自定义颜色
+        getChartModel().setSeriesColors("33FF66,FF6633,0000EE,000000");//自定义颜色
         getChartModel().getAxes().put(AxisType.X, new CategoryAxis(xTitle));
         yAxis = getChartModel().getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");

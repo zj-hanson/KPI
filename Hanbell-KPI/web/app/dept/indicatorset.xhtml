@@ -49,7 +49,9 @@
                                     rendered="#{indicatorSetManagedBean.doUnCfm}" update=":formList"/>
                         <p:menuitem id="btnCreate" value="新增" icon="ui-icon-plus" action="#{indicatorSetManagedBean.create('indicatorsetNew')}"
                                     rendered="#{indicatorSetManagedBean.doAdd}" process="@this"/>
-                        <p:menuitem id="btnExport" value="导出" icon="ui-icon-print" actionListener="#{indicatorSetManagedBean.print('indicatorlist.rptdesign','xls')}"
+                        <p:menuitem id="btnExport" value="导出季报" icon="ui-icon-print" actionListener="#{indicatorSetManagedBean.print('indicatorlist.rptdesign','xls')}"
+                                    rendered="#{indicatorSetManagedBean.doPrt}" process="@this"/>
+                        <p:menuitem id="btnExportMonth" value="导出月报" icon="ui-icon-print" actionListener="#{indicatorSetManagedBean.print('indicatordetail.rptdesign','xls')}"
                                     rendered="#{indicatorSetManagedBean.doPrt}" process="@this"/>
                     </p:splitButton>
                     <p:commandButton id="btnReset" value="重置" actionListener="#{indicatorSetManagedBean.reset()}" icon="ui-icon-refresh"

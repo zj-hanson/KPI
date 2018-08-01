@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    
+
     <h:head>
         <f:facet name="first">
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,18 +17,18 @@
     </h:head>
 
     <h:body styleClass="exception-body error-page">
-    
+
         <div class="exception-type">
             <p:graphicImage name="images/error.svg" library="ultima-layout" />
         </div>
-        
+
         <div class="card exception-panel">
             <i class="material-icons">&#xE000;</i>
             <h1>Exception Occured</h1>
             <div class="exception-detail">Please contact system administrator</div>
             <p:button outcome="/dashboard" value="Homepage" styleClass="secondary"/>
         </div>
-        
+
         <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
         <h:outputStylesheet name="css/layout-#{ultimaPreferences.theme}.css" library="ultima-layout" />
     </h:body>

@@ -6,6 +6,7 @@
 package cn.hanbell.kpi.control;
 
 import cn.hanbell.kpi.entity.Category;
+import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.util.Calendar;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
@@ -18,6 +19,9 @@ import org.primefaces.event.SelectEvent;
 @ManagedBean(name = "productSetManagedBean")
 @SessionScoped
 public class ProductSetManagedBean extends IndicatorSetManagedBean {
+
+    private IndicatorDetail otherIndicator;
+    private String otherLabel;
 
     /**
      * Creates a new instance of ProductIndicatorManagedBean
@@ -94,6 +98,14 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
             try {
                 Calendar c = Calendar.getInstance();
                 c.setTime(queryDateBegin);
+                if (currentEntity.getFreezeDate() != null) {
+                    Calendar f = Calendar.getInstance();
+                    f.setTime(currentEntity.getFreezeDate());
+                    if (c.compareTo(f) < 1) {
+                        showErrorMsg("Info", "资料已冻结不可再计算");
+                        return;
+                    }
+                }
                 indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
                 currentEntity = indicatorBean.findById(currentEntity.getId());
                 indicatorBean.updatePerformance(currentEntity);
@@ -103,6 +115,50 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
                 showErrorMsg("Error", ex.toString());
             }
         }
+    }
+
+    public void updateOtherIndicator() {
+        if (otherIndicator != null) {
+            try {
+                indicatorDetailBean.update(otherIndicator);
+                showInfoMsg("Info", "更新其他数据成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.toString());
+            }
+        }
+    }
+
+    /**
+     * @return the otherIndicator
+     */
+    public IndicatorDetail getOtherIndicator() {
+        return otherIndicator;
+    }
+
+    /**
+     * @param otherIndicator the otherIndicator to set
+     */
+    public void setOtherIndicator(IndicatorDetail otherIndicator) {
+        this.otherIndicator = otherIndicator;
+    }
+
+    public void setOtherIndicator(String label, IndicatorDetail otherIndicator) {
+        this.otherLabel = label;
+        this.otherIndicator = otherIndicator;
+    }
+
+    /**
+     * @return the otherLabel
+     */
+    public String getOtherLabel() {
+        return otherLabel;
+    }
+
+    /**
+     * @param otherLabel the otherLabel to set
+     */
+    public void setOtherLabel(String otherLabel) {
+        this.otherLabel = otherLabel;
     }
 
 }

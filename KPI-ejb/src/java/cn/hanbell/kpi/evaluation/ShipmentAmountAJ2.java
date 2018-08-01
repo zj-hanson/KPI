@@ -15,6 +15,7 @@ public class ShipmentAmountAJ2 extends ShipmentAmount {
         super();
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1T100' ");
+        queryParams.put("decode", "2");
         queryParams.put("ogdkid", "RL03");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");

@@ -19,7 +19,7 @@ public class ShipmentAmountSDS1 extends ShipmentAmount {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_DC", " ='SDS'");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", " in ('00','02') ");
     }
 
 }

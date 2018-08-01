@@ -20,6 +20,5 @@ public class ShipmentAmountPDVR1 extends ShipmentAmount {
         queryParams.put("n_code_DC", " ='DVR' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-    
 
 }
