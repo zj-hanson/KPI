@@ -18,7 +18,7 @@ public class ShipmentAmountKRT1 extends ShipmentAmount{
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='RT' ");
-        queryParams.put("n_code_DD", " ='00','02' ");
+        queryParams.put("n_code_DD", " In ('00','02') ");
     }
 
 }
