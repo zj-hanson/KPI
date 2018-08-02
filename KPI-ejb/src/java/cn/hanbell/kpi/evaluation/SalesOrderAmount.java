@@ -21,7 +21,7 @@ public class SalesOrderAmount extends SalesOrder {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-         //获得查询参数
+        //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String decode = map.get("decode") != null ? map.get("decode").toString() : "";
         String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
@@ -29,13 +29,18 @@ public class SalesOrderAmount extends SalesOrder {
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
-        
-         BigDecimal tram = BigDecimal.ZERO;
+
+        BigDecimal tram = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
         sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" AND d.drecsta not in ('98','99')  AND  h.facno='${facno}' ");
+        sb.append(" AND  h.facno='${facno}' ");
+        if ("R".equals(n_code_DA)) {
+            sb.append(" and d.drecsta not in ('98','99','10') ");
+        } else {
+            sb.append(" and d.drecsta not in ('98','99') ");
+        }
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
