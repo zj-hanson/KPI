@@ -15,7 +15,7 @@ public class ShipmentQuantityR1B1 extends ShipmentQuantity {
         super();
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1B000' ");
-        queryParams.put("decode", "1");
+        //queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='HD' ");
         queryParams.put("n_code_DC", " ='R' ");
