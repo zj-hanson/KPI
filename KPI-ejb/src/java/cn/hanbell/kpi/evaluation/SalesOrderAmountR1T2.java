@@ -17,6 +17,7 @@ public class SalesOrderAmountR1T2 extends SalesOrderAmount {
         queryParams.put("deptno", " '1T000','1T100' ");
         queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_CD", "  LIKE 'WX%' ");
         queryParams.put("n_code_DC", " ='H' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
