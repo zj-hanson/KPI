@@ -22,8 +22,6 @@ public class ProductionQuantityKBA extends ProductionQuantity {
         queryParams.put("prono", "1");
         //*生产线别
         queryParams.put("linecode", " = '01' ");
-        //制令种类
-        queryParams.put("mankind", "");
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //

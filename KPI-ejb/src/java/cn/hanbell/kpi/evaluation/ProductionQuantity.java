@@ -46,7 +46,7 @@ public class ProductionQuantity extends Production {
         if (!"".equals(itcls)) {
             sb.append(" and itcls ").append(itcls);
         }
-        if (!"".equals(itcls)) {
+        if (!"".equals(itnbrf)) {
             sb.append(itnbrf);
         }
         sb.append(" and year(issdate) = ${y} and month(issdate)= ${m} ");
