@@ -93,6 +93,19 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         }
     }
 
+    public void calcForecast() {
+        if (currentEntity != null) {
+            try {
+                updateForecast(currentEntity);
+                showInfoMsg("Info", "更新预测值成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
+        }
+    }
+
     @Override
     public void createDetail2() {
         super.createDetail2();
@@ -427,6 +440,33 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
             indicatorBean.update(entity);
         } else {
             indicatorBean.updateTarget(entity);
+            indicatorBean.updatePerformance(entity);
+            indicatorBean.update(entity);
+        }
+    }
+
+    public void updateForecast() {
+        if (currentEntity != null) {
+            indicatorBean.updateForecast(currentEntity);
+            showInfoMsg("Info", "更新实际值成功,请保存");
+        } else {
+            showErrorMsg("Error", "没有可更新指标");
+        }
+    }
+
+    public void updateForecast(Indicator entity) {
+        if (entity.isAssigned()) {
+            List<Indicator> details = indicatorBean.findByPId(entity.getId());
+            if (details != null && !details.isEmpty()) {
+                for (Indicator d : details) {
+                    updateForecast(d);
+                }
+            }//先计算子项值
+            indicatorBean.updateForecast(entity);
+            indicatorBean.updatePerformance(entity);
+            indicatorBean.update(entity);
+        } else {
+            indicatorBean.updateForecast(entity);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
         }

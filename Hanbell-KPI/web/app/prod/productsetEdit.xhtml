@@ -14,6 +14,10 @@
                     <p:button id="btnReturn" value="返回" outcome="productset" icon="ui-icon-restore"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnUpdateForecast" value="预测" actionListener="#{productSetManagedBean.calcForecast()}" icon="ui-icon-save"
+                                     process="@this" update="formOne">
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnUpdateBenchmark" value="基准" actionListener="#{productSetManagedBean.calcBenchmark()}" icon="ui-icon-save"
                                      process="@this" update="formOne">
                         <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
