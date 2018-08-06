@@ -1083,7 +1083,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+    } else if (entity.getActualInterface() == null) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
@@ -1127,6 +1127,65 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     entity.getTargetIndicator().setNq2(si.getTargetIndicator().getNq2());
                     entity.getTargetIndicator().setNq3(si.getTargetIndicator().getNq3());
                     entity.getTargetIndicator().setNq4(si.getTargetIndicator().getNq4());
+                    break;
+            }
+        }
+    }
+
+    public void updateForecast(Indicator entity) {
+        List<Indicator> indicators = new ArrayList<>();
+        if (entity.isAssigned()) {
+            List<IndicatorAssignment> assList = indicatorAssignmentBean.findByPId(entity.getId());
+            for (IndicatorAssignment ia : assList) {
+                Indicator i = findByFormidYearAndDeptno(ia.getFormid(), entity.getSeq(), ia.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        } else if (entity.getActualInterface() == null) {
+            List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
+            for (IndicatorSet is : setList) {
+                Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
+                if (i != null) {
+                    indicators.add(i);
+                }
+            }
+        }
+        indicatorAssignmentBean.getEntityManager().clear();
+        indicatorSetBean.getEntityManager().clear();
+        getEntityManager().clear();
+        if (!indicators.isEmpty()) {
+            Indicator si = getSumValue(indicators);
+            switch (entity.getFormkind()) {
+                case "M":
+                    entity.getForecastIndicator().setNfy(si.getForecastIndicator().getNfy());
+                    entity.getForecastIndicator().setNh2(si.getForecastIndicator().getNh2());
+                    entity.getForecastIndicator().setNh1(si.getForecastIndicator().getNh1());
+                    entity.getForecastIndicator().setNq1(si.getForecastIndicator().getNq1());
+                    entity.getForecastIndicator().setNq2(si.getForecastIndicator().getNq2());
+                    entity.getForecastIndicator().setNq3(si.getForecastIndicator().getNq3());
+                    entity.getForecastIndicator().setNq4(si.getForecastIndicator().getNq4());
+                    entity.getForecastIndicator().setN01(si.getForecastIndicator().getN01());
+                    entity.getForecastIndicator().setN02(si.getForecastIndicator().getN02());
+                    entity.getForecastIndicator().setN03(si.getForecastIndicator().getN03());
+                    entity.getForecastIndicator().setN04(si.getForecastIndicator().getN04());
+                    entity.getForecastIndicator().setN05(si.getForecastIndicator().getN05());
+                    entity.getForecastIndicator().setN06(si.getForecastIndicator().getN06());
+                    entity.getForecastIndicator().setN07(si.getForecastIndicator().getN07());
+                    entity.getForecastIndicator().setN08(si.getForecastIndicator().getN08());
+                    entity.getForecastIndicator().setN09(si.getForecastIndicator().getN09());
+                    entity.getForecastIndicator().setN10(si.getForecastIndicator().getN10());
+                    entity.getForecastIndicator().setN11(si.getForecastIndicator().getN11());
+                    entity.getForecastIndicator().setN12(si.getForecastIndicator().getN12());
+                    break;
+                case "Q":
+                    entity.getForecastIndicator().setNfy(si.getForecastIndicator().getNfy());
+                    entity.getForecastIndicator().setNh2(si.getForecastIndicator().getNh2());
+                    entity.getForecastIndicator().setNh1(si.getForecastIndicator().getNh1());
+                    entity.getForecastIndicator().setNq1(si.getForecastIndicator().getNq1());
+                    entity.getForecastIndicator().setNq2(si.getForecastIndicator().getNq2());
+                    entity.getForecastIndicator().setNq3(si.getForecastIndicator().getNq3());
+                    entity.getForecastIndicator().setNq4(si.getForecastIndicator().getNq4());
                     break;
             }
         }
