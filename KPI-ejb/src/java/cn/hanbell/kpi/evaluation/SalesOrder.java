@@ -7,14 +7,10 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InitialContext;
-import javax.persistence.Query;
 
 /**
  *
