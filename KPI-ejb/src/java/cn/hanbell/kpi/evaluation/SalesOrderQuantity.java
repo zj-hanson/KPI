@@ -33,13 +33,17 @@ public class SalesOrderQuantity extends SalesOrder {
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
-
         BigDecimal cdrqy1 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' and isnull(h.hmark2,'') <> 'FW'");
-        sb.append(" and d.drecsta not in ('98','99') and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and  h.facno='${facno}' ");
+        sb.append(" select isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
+        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
+        if ("='R'".equals(n_code_DA.trim())) {
+            sb.append(" and d.drecsta not in ('98','99','10') ");
+        } else {
+            sb.append(" and d.drecsta not in ('98','99') ");
+        }
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }

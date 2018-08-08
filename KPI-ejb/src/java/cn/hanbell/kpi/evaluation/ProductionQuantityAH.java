@@ -22,12 +22,8 @@ public class ProductionQuantityAH extends ProductionQuantity {
         queryParams.put("prono", "1");
         //*生产线别
         queryParams.put("linecode", " = 'AH' ");
-        //制令种类
-        queryParams.put("mankind", "");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
-        queryParams.put("itcls", "");
         
     }
 }

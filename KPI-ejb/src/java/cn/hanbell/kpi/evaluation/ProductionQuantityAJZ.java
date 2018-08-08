@@ -25,7 +25,7 @@ public class ProductionQuantityAJZ extends ProductionQuantity {
         //制令种类
         queryParams.put("mankind", " = 'MOS' ");
         //制令等级
-        queryParams.put("itcls", "");
+        queryParams.put("typecode", "= '01' ");
     }
 
 }

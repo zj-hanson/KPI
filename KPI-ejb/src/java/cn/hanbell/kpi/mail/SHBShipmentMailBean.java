@@ -96,6 +96,14 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("P真空出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂出货台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
@@ -172,6 +180,17 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("P真空出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
 
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂出货金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
@@ -246,6 +265,17 @@ public class SHBShipmentMailBean extends ShipmentMail {
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("P真空收费服务");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂收费服务金额");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             sb.append("</table></div>");

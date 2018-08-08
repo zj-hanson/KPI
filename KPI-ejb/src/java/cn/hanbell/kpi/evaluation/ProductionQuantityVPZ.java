@@ -23,7 +23,7 @@ public class ProductionQuantityVPZ extends ProductionQuantity {
         //*生产线别
         queryParams.put("linecode", " = 'VPZ' ");
         //制令种类
-        queryParams.put("mankind", " 'MOS' ");
+        queryParams.put("mankind", " = 'MOS' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
     
