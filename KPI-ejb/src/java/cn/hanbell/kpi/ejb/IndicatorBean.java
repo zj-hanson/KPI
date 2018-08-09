@@ -52,6 +52,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     private IndicatorSetBean indicatorSetBean;
 
     protected Actual actualInterface;
+    protected Actual otherInterface;
 
     public IndicatorBean() {
         super(Indicator.class);
@@ -702,7 +703,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 o5.setType("A");
                 indicatorDetailBean.persist(o5);
                 indicatorDetailBean.getEntityManager().flush();
-                entity.setOther1Indicator(o5);
+                entity.setOther5Indicator(o5);
             }
         }
         if (entity.getHasOther() == 6) {
@@ -873,6 +874,87 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     public Indicator updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
+        //先计算Other
+        if (entity != null && entity.getHasOther() > 0) {
+            if (entity.getOther1Interface() != null && !"".equals(entity.getOther1Interface())) {
+                IndicatorDetail o1 = entity.getOther1Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther1Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther1EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o1.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1, na);
+                    indicatorDetailBean.update(o1);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (entity.getOther2Interface() != null && !"".equals(entity.getOther2Interface())) {
+                IndicatorDetail o2 = entity.getOther2Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther2Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther2EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o2.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o2, na);
+                    indicatorDetailBean.update(o2);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (entity.getOther3Interface() != null && !"".equals(entity.getOther3Interface())) {
+                IndicatorDetail o3 = entity.getOther3Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther3Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther3EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o3.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3, na);
+                    indicatorDetailBean.update(o3);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (entity.getOther4Interface() != null && !"".equals(entity.getOther4Interface())) {
+                IndicatorDetail o4 = entity.getOther4Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther4Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther4EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o4.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o4, na);
+                    indicatorDetailBean.update(o4);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (entity.getOther5Interface() != null && !"".equals(entity.getOther5Interface())) {
+                IndicatorDetail o5 = entity.getOther5Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther5Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther5EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o5.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o5, na);
+                    indicatorDetailBean.update(o5);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (entity.getOther6Interface() != null && !"".equals(entity.getOther6Interface())) {
+                IndicatorDetail o6 = entity.getOther6Indicator();
+                try {
+                    otherInterface = (Actual) Class.forName(entity.getOther6Interface()).newInstance();
+                    otherInterface.setEJB(entity.getOther6EJB());
+                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o6.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o6, na);
+                    indicatorDetailBean.update(o6);
+                } catch (Exception ex) {
+                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
         if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null)) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
@@ -1083,7 +1165,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-    } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());

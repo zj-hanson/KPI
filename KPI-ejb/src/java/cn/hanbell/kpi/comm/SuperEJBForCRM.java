@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.comm;
 
-import com.lightshell.comm.SuperEJB;
 import java.io.Serializable;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
