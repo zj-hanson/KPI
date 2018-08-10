@@ -752,6 +752,17 @@
                 </p:tab>
                 <p:tab title="其他数据" rendered="#{productSetManagedBean.currentEntity.hasOther>0}">
                     <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
+                        <p:row >
+                            <p:column styleClass="Wid20"><h:outputLabel value="计算日期" for="queryDateBegin" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:calendar id="queryDateBegin" value="#{productSetManagedBean.queryDateBegin}" title="计算日期" pattern="yyyy/MM/dd" />
+                            </p:column>
+                            <p:column styleClass="Wid20">
+                                <p:commandButton id="btnUpdateActualValueManual" value="计算" actionListener="#{productSetManagedBean.updateActualValueManual()}" icon="ui-icon-save"
+                                                 process="@this,queryDateBegin"  update="formOne"/>
+                            </p:column>
+                            <p:column styleClass="Wid30"></p:column>
+                        </p:row>
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>0}">
                             <p:column styleClass="Wid20"><p:outputLabel value="Other1名称" for="other1Label" /></p:column>
                             <p:column styleClass="Wid30">
@@ -966,6 +977,7 @@
                         </p:row>
                     </f:facet>
                 </p:panelGrid>
+
             </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

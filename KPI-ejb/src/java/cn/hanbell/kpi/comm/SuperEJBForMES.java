@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.comm;
 
-import com.lightshell.comm.SuperEJB;
 import java.io.Serializable;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -20,7 +19,7 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class SuperEJBForMES implements Serializable {
 
-    @PersistenceContext(unitName = "CRM-ejbPU")
+    @PersistenceContext(unitName = "SHBMES-ejbPU")
     private EntityManager em;
 
     public SuperEJBForMES() {

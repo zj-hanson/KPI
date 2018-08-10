@@ -18,7 +18,7 @@ public class SalesOrderAmountKRT1 extends SalesOrderAmount {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='RT' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", " IN('00','02') ");
     }
 
 }
