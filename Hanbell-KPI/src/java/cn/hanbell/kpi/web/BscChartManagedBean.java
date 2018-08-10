@@ -50,6 +50,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected IndicatorDetail AG;
 
     protected final DecimalFormat decimalFormat;
+    protected final DecimalFormat decimalFormatdouble;
     protected LineChartModel chartModel;
 
     protected int y;
@@ -58,6 +59,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     public BscChartManagedBean() {
         super(Indicator.class);
         this.decimalFormat = new DecimalFormat("#,###");
+        this.decimalFormatdouble=new DecimalFormat("##.##％");
     }
 
     @PostConstruct
@@ -360,7 +362,26 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
             return decimalFormat.format(value);
         }
     }
+    
+    public String doubleformat(BigDecimal value) {
+        if (value == null) {
+            return "";
+        } else {
+            return decimalFormatdouble.format(value);
+        }
+    }
 
+    public String doubleformat(BigDecimal value, int i) {
+        if (value == null) {
+            return "";
+        } else if (i <= m) {
+            return decimalFormatdouble.format(value);
+        } else if (value.compareTo(BigDecimal.ZERO) == 0) {
+            return "";
+        } else {
+            return decimalFormatdouble.format(value);
+        }
+    }
     public String percentFormat(BigDecimal value, int i) {
         if (value == null) {
             return "";

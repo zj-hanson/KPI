@@ -116,6 +116,30 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
             }
         }
     }
+    
+    public void updateActualValueManual() {
+        if (queryDateBegin != null && currentEntity != null) {
+            try {
+                Calendar c = Calendar.getInstance();
+                c.setTime(queryDateBegin);
+                if (currentEntity.getFreezeDate() != null) {
+                    Calendar f = Calendar.getInstance();
+                    f.setTime(currentEntity.getFreezeDate());
+                    if (c.compareTo(f) < 1) {
+                        showErrorMsg("Info", "资料已冻结不可再计算");
+                        return;
+                    }
+                }
+                indicatorBean.updateActualManual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                currentEntity = indicatorBean.findById(currentEntity.getId());
+                indicatorBean.updatePerformance(currentEntity);
+                indicatorBean.update(currentEntity);
+                showInfoMsg("Info", "更新实际值成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.toString());
+            }
+        }
+    }
 
     public void updateOtherIndicator() {
         if (otherIndicator != null) {

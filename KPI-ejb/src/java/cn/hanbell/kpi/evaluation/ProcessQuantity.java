@@ -17,44 +17,44 @@ import javax.persistence.Query;
  *
  * @author C1879
  */
+
 public class ProcessQuantity extends  Process{
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String prono = map.get("prono") != null ? map.get("prono").toString() : "";
-        String prosscode = map.get("prosscode") != null ? map.get("prosscode").toString() : "";
-        String wrcode = map.get("wrcode") != null ? map.get("wrcode").toString() : "";
+        String linecode = map.get("linecode") != null ? map.get("linecode").toString() : "";
         String stats = map.get("stats") != null ? map.get("stats").toString() : ""; 
         
-        BigDecimal godqty = BigDecimal.ZERO;
+        BigDecimal attqty1 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(godqty),0) from sfcfsd d,sfcfsh h where h.facno = d.facno and h.prono = d.prono and h.fshno = d.fshno");
-        sb.append(" and h.facno = '${facno}' and h.prono= '${prono}' ");
-        if (!"".equals(prosscode)) {
-            sb.append(" and h.prosscode ").append(prosscode);
-        }
-        if (!"".equals(wrcode)) {
-            sb.append(" and  h.wrcode ").append(wrcode);
+        sb.append(" select isnull(sum(sfcwad.attqty1),0) FROM invmas,manmas,sfcwad,sfcwah ");
+        sb.append(" WHERE ( sfcwah.facno = sfcwad.facno ) and ( sfcwah.prono = sfcwad.prono ) and ( sfcwah.inpno = sfcwad.inpno ) ");
+        sb.append(" AND ( sfcwad.manno = manmas.manno ) and ( sfcwad.facno = manmas.facno ) and ( sfcwad.prono = manmas.prono ) ");
+        sb.append(" AND ( invmas.itnbr = manmas.itnbrf ) AND ( sfcwah.facno = '${facno}' and sfcwah.prono ='${prono}' ");
+        if (!"".equals(linecode)) {
+            sb.append(" and manmas.linecode ").append(linecode);
         }
         if (!"".equals(stats)) {
-            sb.append(" and d.stats ").append(stats);
+            sb.append(" and sfcwad.stats ").append(stats);
         }
 
-        sb.append(" and year(h.fshdat) = ${y} and month(h.fshdat)= ${m} ");
+        sb.append(" AND year(sfcwah.indat) = ${y} and month(sfcwah.indat)= ${m} ");
         switch (type) {
             case 2:
                 //月
-                sb.append(" and h.fshdat<= '${d}' ");
+                sb.append(" and sfcwah.indat<= '${d}' ");
                 break;
             case 5:
                 //日
-                sb.append(" and h.fshdat= '${d}' ");
+                sb.append(" and sfcwah.indat= '${d}' ");
                 break;
             default:
-                sb.append(" and h.fshdat<= '${d}' ");
+                sb.append(" and sfcwah.indat<= '${d}' ");
         }
+        sb.append(" ) ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno).replace("${prono}", prono);
         
@@ -62,11 +62,11 @@ public class ProcessQuantity extends  Process{
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
-            godqty = (BigDecimal) o;
+            attqty1 = (BigDecimal) o;
         } catch (Exception e) {
              Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
-        return godqty;
+        return attqty1;
     }
     
 }
