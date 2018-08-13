@@ -35,7 +35,7 @@ public class ClientNowAndPastBean implements Serializable {
 
     public String getQuantitySql(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
-        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        String decode = map.get("decode") != null ? map.get("decode") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -77,7 +77,7 @@ public class ClientNowAndPastBean implements Serializable {
         }
         if (!"".equals(n_code_DC)) {
             sb.append(" and d.n_code_DC ").append(n_code_DC);
-        }        
+        }
         sb.append(" group by  h.cusno ) ");
         sb.append(" x  group by x.cusno ) ");
         sb.append(" z,cdrcus c  where z.cusno=c.cusno ");
@@ -87,7 +87,7 @@ public class ClientNowAndPastBean implements Serializable {
 
     public String getAmountSql(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
-        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        String decode = map.get("decode") != null ? map.get("decode") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -150,48 +150,134 @@ public class ClientNowAndPastBean implements Serializable {
 
         List<ClientTable> nowlist = new ArrayList<>();
         List<ClientTable> pastlist = getPastClient(y, m, map);
+        List<ClientTable> clientlist = new ArrayList<>();
+
         erpEJB.setCompany(facno);
-        Query query = erpEJB.getEntityManager().createNativeQuery(sb.toString()).setFirstResult(0).setMaxResults(20);
+        //.setFirstResult(0).setMaxResults(20)
+        Query query = erpEJB.getEntityManager().createNativeQuery(sb.toString());
         try {
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 //通过客户编号找到去年同期值;
-                boolean aa;
-                double nowshpamts;
-                double pastshpamts;
+                boolean aa, bb;
+                double nowshpamts, pastshpamts;
+                Double nowamountshpqy1 = 0.0;
+                Double nowamountshpamts = 0.0;
                 for (int i = 0; i < result.size(); i++) {
                     aa = true;
-                    Object[] row = (Object[]) result.get(i);
+                    bb = true;
                     ClientTable ct = new ClientTable();
+                    Object[] row = (Object[]) result.get(i);
                     ct.setCusno(row[0].toString());
                     ct.setCusna(row[1].toString());
                     ct.setNowshpqy1(String.valueOf(Double.valueOf(row[2].toString()).intValue()));
-                    ct.setNowshpamts(df.format(Double.parseDouble(row[3].toString())));
+                    ct.setNowshpamts(row[3].toString());
                     ct.setNowrank(String.valueOf(i + 1));
+                    nowamountshpqy1 = nowamountshpqy1 + Double.valueOf(row[2].toString());
+                    nowamountshpamts = nowamountshpamts + Double.valueOf(row[3].toString());
                     for (int j = 0; j < pastlist.size(); j++) {
                         if (row[0].toString().equals(pastlist.get(j).getCusno())) {
                             aa = false;
                             nowshpamts = Double.parseDouble(row[3].toString());
                             pastshpamts = Double.parseDouble(pastlist.get(j).getPastshpamts());
                             ct.setPastshpqy1(pastlist.get(j).getPastshpqy1());
-                            ct.setPastshpamts(df.format(Double.parseDouble(pastlist.get(j).getPastshpamts())));
+                            ct.setPastshpamts(pastlist.get(j).getPastshpamts());
                             ct.setPastrank(pastlist.get(j).getPastrank());
                             ct.setDifferencevalue(df.format(nowshpamts - pastshpamts));
-                            ct.setGrowthrate(String.valueOf(df.format((nowshpamts - pastshpamts) / pastshpamts * 100)) + "%");                            
+                            if (((nowshpamts - pastshpamts) / pastshpamts * 100) < 0) {
+                                ct.setStyle("red");
+                            }
+                            ct.setGrowthrate(String.valueOf(df.format((nowshpamts - pastshpamts) / pastshpamts * 100)));
                         }
                     }
                     if (aa) {
                         ct.setPastshpqy1("0");
                         ct.setPastshpamts("0");
-                        ct.setGrowthrate("100%");
+                        ct.setGrowthrate("100");
                         ct.setDifferencevalue(df.format(Double.parseDouble(row[3].toString())));
                     }
                     nowlist.add(ct);
+                    if (result.size() == (i + 1)) {
+                        for (int j = 0; j < pastlist.size(); j++) {
+                            if ("总计".equals(pastlist.get(j).getCusna())) {
+                                bb = false;
+                                ClientTable client = new ClientTable();
+                                client.setCusna("总计");
+                                client.setNowshpqy1(String.valueOf(nowamountshpqy1.intValue()));
+                                client.setNowshpamts(String.valueOf(nowamountshpamts));
+                                client.setPastshpqy1(pastlist.get(j).getPastshpqy1());
+                                client.setPastshpamts(pastlist.get(j).getPastshpamts());
+                                client.setDifferencevalue(df.format(nowamountshpamts - Double.parseDouble(pastlist.get(j).getPastshpamts())));
+                                client.setGrowthrate(String.valueOf(df.format((nowamountshpamts - Double.parseDouble(pastlist.get(j).getPastshpamts())) / Double.parseDouble(pastlist.get(j).getPastshpamts()) * 100)));
+                                nowlist.add(client);
+                            }
+                        }
+                        if (bb) {
+                            ClientTable client = new ClientTable();
+                            client.setCusna("总计");
+                            client.setNowshpqy1(String.valueOf(nowamountshpqy1.intValue()));
+                            client.setNowshpamts(String.valueOf(nowamountshpamts));
+                            client.setPastshpqy1("0");
+                            client.setPastshpamts("0");
+                            client.setDifferencevalue(df.format(nowamountshpamts));
+                            client.setGrowthrate("100");
+                            nowlist.add(client);
+                        }
+                    }
                 }
-
+                //重新赋值top20 计算其他、合计\
+                int nowothershpqy1, pastothershpqy1;
+                Double nowothershpamts, pastothershpamts;
+                //总计
+                int top20nowshpqy1 = 0;
+                double top20nowshpamts = 0;
+                int top20pastshpqy1 = 0;
+                Double top20pastshpamts = 0.0;
+                for (int i = 0; i < nowlist.size(); i++) {
+                    //top20
+                    if (i < 20 && !"总计".equals(nowlist.get(i).getCusna())) {
+                        top20nowshpqy1 = top20nowshpqy1 + Integer.parseInt(nowlist.get(i).getNowshpqy1());
+                        top20nowshpamts = top20nowshpamts + Double.parseDouble(nowlist.get(i).getNowshpamts());
+                        top20pastshpqy1 = top20pastshpqy1 + Integer.parseInt(nowlist.get(i).getPastshpqy1());
+                        top20pastshpamts = top20pastshpamts + Double.parseDouble(nowlist.get(i).getPastshpamts());
+                        clientlist.add(nowlist.get(i));
+                    }
+                    if ("总计".equals(nowlist.get(i).getCusna())) {
+                        ClientTable cto = new ClientTable();
+                        if (nowlist.size() > 21) {
+                            nowothershpqy1 = Integer.parseInt(nowlist.get(i).getNowshpqy1()) - top20nowshpqy1;
+                            pastothershpqy1 = Integer.parseInt(nowlist.get(i).getPastshpqy1()) - top20pastshpqy1;
+                            nowothershpamts = Double.parseDouble(nowlist.get(i).getNowshpamts()) - (top20nowshpamts);
+                            pastothershpamts = Double.parseDouble(nowlist.get(i).getPastshpamts()) - (top20pastshpamts);
+                            ClientTable client = new ClientTable();
+                            client.setCusna("其他");
+                            client.setNowshpqy1(String.valueOf(nowothershpqy1));
+                            client.setNowshpamts(df.format(nowothershpamts));
+                            client.setPastshpqy1(String.valueOf(pastothershpqy1));
+                            client.setPastshpamts(pastothershpamts==0?"0":df.format(pastothershpamts));
+                            client.setDifferencevalue(df.format(nowothershpamts));
+                            if (pastothershpamts == 0) {
+                                client.setGrowthrate("100");
+                            } else {
+                                if (((nowothershpamts - pastothershpamts) / pastothershpamts * 100) < 0) {
+                                    client.setStyle("red");
+                                } 
+                                client.setGrowthrate(df.format((nowothershpamts - pastothershpamts) / pastothershpamts * 100));
+                            }
+                            clientlist.add(client);
+                        }
+                        cto.setCusna("总计");
+                        cto.setNowshpqy1(nowlist.get(i).getNowshpqy1());
+                        cto.setNowshpamts(df.format(Double.parseDouble(nowlist.get(i).getNowshpamts())));
+                        cto.setPastshpqy1(nowlist.get(i).getPastshpqy1());
+                        cto.setPastshpamts(nowlist.get(i).getPastshpamts().equals("0")?"0":df.format(Double.parseDouble(nowlist.get(i).getPastshpamts())));
+                        cto.setDifferencevalue(nowlist.get(i).getDifferencevalue());
+                        cto.setGrowthrate(nowlist.get(i).getGrowthrate());
+                        clientlist.add(cto);
+                    }
+                }
             }
-
-            return nowlist;
+            return clientlist;
         } catch (Exception e) {
             return null;
         }
@@ -210,17 +296,28 @@ public class ClientNowAndPastBean implements Serializable {
         erpEJB.setCompany(facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sb.toString());
         try {
+            Double pastamountshpqy1 = 0.0;
+            Double pastamountshpamts = 0.0;
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
-                    Object[] row = (Object[]) result.get(i);
                     ClientTable ct = new ClientTable();
+                    Object[] row = (Object[]) result.get(i);
                     ct.setCusno(row[0].toString());
                     ct.setCusna(row[1].toString());
                     ct.setPastshpqy1(String.valueOf(Double.valueOf(row[2].toString()).intValue()));
                     ct.setPastshpamts(row[3].toString());
                     ct.setPastrank(String.valueOf(i + 1));
+                    pastamountshpqy1 = pastamountshpqy1 + Double.valueOf(row[2].toString());
+                    pastamountshpamts = pastamountshpamts + Double.valueOf(row[3].toString());
                     list.add(ct);
+                    if (result.size() == (i + 1)) {
+                        ClientTable ct1 = new ClientTable();
+                        ct1.setCusna("总计");
+                        ct1.setPastshpqy1(String.valueOf(pastamountshpqy1.intValue()));
+                        ct1.setPastshpamts(String.valueOf(pastamountshpamts));
+                        list.add(ct1);
+                    }
                 }
             }
             return list;

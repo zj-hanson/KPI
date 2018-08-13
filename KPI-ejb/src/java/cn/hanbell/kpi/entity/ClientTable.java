@@ -64,6 +64,8 @@ public class ClientTable implements Serializable {
 
     //成长率
     private String growthrate;
+    //字体颜色
+    private String style;
 
     public Long getId() {
         return id;
@@ -234,4 +236,19 @@ public class ClientTable implements Serializable {
         this.growthrate = growthrate;
     }
 
+    /**
+     * @return the style
+     */
+    public String getStyle() {
+        return style;
+    }
+
+    /**
+     * @param style the style to set
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    
 }

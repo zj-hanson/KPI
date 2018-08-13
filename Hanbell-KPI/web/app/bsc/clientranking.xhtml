@@ -4,9 +4,11 @@
                 template="./../../WEB-INF/template.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
+        
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
             <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
@@ -36,55 +38,55 @@
                     <f:facet name="header">
                         <h:outputText value="客户"/>
                     </f:facet>
-                    <h:outputText value="#{item.cusna}" />
+                    <h:outputText value="#{item.cusna}" style="#{(item.cusna == '总计')?'color:red':'' }" />
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: center;">
                     <f:facet name="header">
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}排名"/>
                     </f:facet>
-                    <h:outputText value="#{item.nowrank}"/>
+                    <h:outputText value="#{item.nowrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header" >
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}台数" style="text-align: center"/>
                     </f:facet>
-                    <h:outputText  value="#{item.nowshpqy1}"/>
+                    <h:outputText  value="#{item.nowshpqy1}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}金额"/>
                     </f:facet>
-                    <h:outputText value="#{item.nowshpamts}"/>
+                    <h:outputText value="#{item.nowshpamts}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: center">
+                <p:column styleClass="Wid20" style="text-align: center" >
                     <f:facet name="header">
                         <h:outputText value="去年同期排名"/>
                     </f:facet>
-                    <h:outputText value="#{item.pastrank}"/>
+                    <h:outputText value="#{item.pastrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="去年同期台数"/>
                     </f:facet>
-                    <h:outputText value="#{item.pastshpqy1}"/>
+                    <h:outputText value="#{item.pastshpqy1}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="去年同期金额"/>
                     </f:facet>
-                    <h:outputText value="#{item.pastshpamts}"/>
+                    <h:outputText value="#{item.pastshpamts}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="同比差异值"/>
                     </f:facet>
-                    <h:outputText value="#{item.differencevalue}"/>
+                    <h:outputText value="#{item.differencevalue}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
                         <h:outputText value="同比成长率"/>
                     </f:facet>
-                    <h:outputText value="#{item.growthrate}"/>
+                    <h:outputText value="#{item.growthrate}%"  style="#{(item.cusna == '总计' or item.style=='red' )?'color:red':'' }" />
                 </p:column>
             </p:dataTable>
             <div style="width: 100%;color: gray; font-size: 13px;" >
