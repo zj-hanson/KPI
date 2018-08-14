@@ -971,6 +971,24 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return entity;
     }
 
+     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
+        Indicator entity = findById(id);
+        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null)) {
+            IndicatorDetail a = entity.getActualIndicator();
+            try {
+                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                actualInterface.setEJB(entity.getActualEJB());
+                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(a, na);
+                indicatorDetailBean.update(a);
+            } catch (Exception ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return entity;
+    }
+    
     public void updateBenchmark(Indicator entity) {
         List<Indicator> indicators = new ArrayList<>();
         if (entity.isAssigned()) {

@@ -7,19 +7,19 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1879
- * 圆型
+ * @author C1879 
+ * 方型圆型总加工数
  */
-public class ProcessQuantityHYX extends ProcessQuantity {
+public class ProcessQuantityHFXandYX extends ProcessQuantity {
 
-    public ProcessQuantityHYX() {
+    public ProcessQuantityHFXandYX() {
         super();
         //*公司别
         queryParams.put("facno", "C");
         //*生产地
         queryParams.put("prono", "1");
         //* 生产线别
-        queryParams.put("linecode", " IN('YX') ");
+        queryParams.put("linecode", " IN('FX','YX') ");
         //状态码 1未确认 2 确认 3作废
         queryParams.put("stats", " IN('2') ");
 

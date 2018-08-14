@@ -119,9 +119,9 @@ public class ShipmentTopManagedBean implements Serializable {
             } else if (getYear() == findyear()) {
                 if (getMonth() > 1) {
                     if (getMonth() > findmonth()) {
-                        getMap().put("title", "1月至" + findmonth() + "月");
+                        getMap().put("title", "1月至" + findmonth() + "月累计");
                     } else {
-                        getMap().put("title", "1月至" + getMonth() + "月");
+                        getMap().put("title", "1月至" + getMonth() + "月累计");
                     }
                 } else {
                     getMap().put("title", "1月");
@@ -129,7 +129,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("futitle", "本年");
             } else {
                 if (getMonth() > 1) {
-                    getMap().put("title", "1月至" + getMonth() + "月");
+                    getMap().put("title", "1月至" + getMonth() + "月累计");
                 } else {
                     getMap().put("title", "1月");
                 }
@@ -170,7 +170,7 @@ public class ShipmentTopManagedBean implements Serializable {
             case "1U000":
                 getMap().put("facno", "C");
                 getMap().put("deptnoname", "涡旋产品部");
-                getMap().put("daname", "旋涡");
+                getMap().put("daname", "涡旋");
                 getMap().put("n_code_DA", "= 'S'");
                 break;
             case "5B000":
