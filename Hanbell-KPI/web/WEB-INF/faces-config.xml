@@ -223,8 +223,28 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>processratio</from-outcome>
-            <to-view-id>/app/bsc/processratio.xhtml</to-view-id>
+            <from-outcome>processRatiochart</from-outcome>
+            <to-view-id>/app/bsc/processRatiochart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>processScrapchart</from-outcome>
+            <to-view-id>/app/bsc/processScrapchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschart</from-outcome>
+            <to-view-id>/app/bsc/complaintschart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>nventoryAmountchart</from-outcome>
+            <to-view-id>/app/bsc/nventoryAmountchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>nventoryDaychart</from-outcome>
+            <to-view-id>/app/bsc/nventoryDaychart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
