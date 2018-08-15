@@ -104,11 +104,11 @@ public abstract class SuperMulti2Bean<T extends SuperEntity, D1 extends SuperDet
         return this.appDataPath;
     }
 
-    @Override
     public String getAppImgPath() {
         return this.appResPath;
     }
 
+    @Override
     public String getAppResPath() {
         return this.appResPath;
     }

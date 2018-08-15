@@ -137,11 +137,11 @@ public abstract class FormMulti2Bean<T extends FormEntity, D1 extends FormDetail
         return this.appDataPath;
     }
 
-    @Override
     public String getAppImgPath() {
         return this.appResPath;
     }
 
+    @Override
     public String getAppResPath() {
         return this.appResPath;
     }
