@@ -247,6 +247,11 @@
             <to-view-id>/app/bsc/inventorydaychart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>productivity</from-outcome>
+            <to-view-id>/app/bsc/productivity.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>模态开窗</description>
