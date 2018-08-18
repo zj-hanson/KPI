@@ -22,11 +22,11 @@ import javax.naming.NamingException;
  *
  * @author C1879 增长率
  */
-public class ProductivityGrowthrRate extends Productivity {
+public class ProductivityGrowthrRateFX extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ProductivityGrowthrRate() {
+    public ProductivityGrowthrRateFX() {
         super();
         queryParams.put("formid", "R-方型件加工机综合");
         queryParams.put("deptno", "1P100");

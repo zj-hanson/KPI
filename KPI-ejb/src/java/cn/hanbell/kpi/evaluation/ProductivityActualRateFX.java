@@ -22,11 +22,11 @@ import javax.naming.NamingException;
  *
  * @author C1879 综合效率
  */
-public class ProductivityActualRate extends Productivity {
+public class ProductivityActualRateFX extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ProductivityActualRate() {
+    public ProductivityActualRateFX() {
         super();
         queryParams.put("formid", "R-方型件加工机综合");
         queryParams.put("deptno", "1P100");
