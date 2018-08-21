@@ -20,7 +20,7 @@ public class ProductivityOutputMinuteKAPP extends ProductivityOutputMinute{
         //*制作流程号
         queryParams.put("prosscode", " IN('Y9') ");
         //* 生产线别
-        queryParams.put("linecode", " IN('FX') ");
+        queryParams.put("linecode", " IN('YX') ");
         //状态码 1未确认 2 确认 3作废
         queryParams.put("stats", " IN('2') ");
 
