@@ -238,6 +238,21 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>complaintschartmis</from-outcome>
+            <to-view-id>/app/bsc/complaintschartmis.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartabroad</from-outcome>
+            <to-view-id>/app/bsc/complaintschartabroad.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartc</from-outcome>
+            <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>inventoryamountchart</from-outcome>
             <to-view-id>/app/bsc/inventoryamountchart.xhtml</to-view-id>
             <redirect/>
@@ -250,6 +265,16 @@
         <navigation-case>
             <from-outcome>productivity</from-outcome>
             <to-view-id>/app/bsc/productivity.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>consumptioncutter</from-outcome>
+            <to-view-id>/app/bsc/consumptioncutter.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartb</from-outcome>
+            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
