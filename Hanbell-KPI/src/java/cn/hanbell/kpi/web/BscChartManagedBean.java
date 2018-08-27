@@ -58,7 +58,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     public BscChartManagedBean() {
         super(Indicator.class);
-        this.decimalFormat = new DecimalFormat("#,###");
+        this.decimalFormat = new DecimalFormat("#,###.##");
         this.decimalFormatdouble=new DecimalFormat("##.##％");
     }
 
