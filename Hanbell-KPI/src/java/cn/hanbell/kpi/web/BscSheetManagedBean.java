@@ -71,7 +71,7 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
 
     public BscSheetManagedBean() {
         super(Indicator.class);
-        this.decimalFormat = new DecimalFormat("#,###");
+        this.decimalFormat = new DecimalFormat("#,###.##");
         //初始化对象
         indicatorList = new ArrayList<>();
         indicatorDetailList = new ArrayList<>();

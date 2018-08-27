@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./../../WEB-INF/template.xhtml"
+                template="./../../WEB-INF/bsc.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -11,10 +11,7 @@
         
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
-                <f:facet name="header">
-                    查询条件
-                </f:facet>
+            <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询的年份" for="clientyear" />
                 <p:inputText id="clientyear" value="#{shipmentTopManagedBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
                 <h:selectBooleanCheckbox value="#{shipmentTopManagedBean.checkbox}"  title="√不选中为年统计." style="height: 18px;width: 18px" >
@@ -25,6 +22,7 @@
                                  update="formOne"  />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-search"
                                  update="formOne:tblList"/>
+                <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
             <p:dataTable id="tblList" value="#{shipmentTopManagedBean.clientlist}" var="item" tableStyleClass="plgSheetData"

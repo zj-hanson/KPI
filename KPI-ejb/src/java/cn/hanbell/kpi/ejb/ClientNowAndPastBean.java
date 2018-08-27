@@ -255,7 +255,7 @@ public class ClientNowAndPastBean implements Serializable {
                             client.setNowshpamts(df.format(nowothershpamts));
                             client.setPastshpqy1(String.valueOf(pastothershpqy1));
                             client.setPastshpamts(pastothershpamts==0?"0":df.format(pastothershpamts));
-                            client.setDifferencevalue(df.format(nowothershpamts));
+                            client.setDifferencevalue(df.format(nowothershpamts-pastothershpamts));
                             if (pastothershpamts == 0) {
                                 client.setGrowthrate("100");
                             } else {
