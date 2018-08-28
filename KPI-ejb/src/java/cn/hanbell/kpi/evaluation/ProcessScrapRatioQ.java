@@ -54,10 +54,10 @@ public class ProcessScrapRatioQ extends ProcessQuantity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            if ("".equals(f.get(o1).toString()) || f.get(o1) == null || "0".equals(f.get(o1).toString())) {
+            if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
                 v1 = BigDecimal.valueOf(0);
             } else {
-                v1 = BigDecimal.valueOf((a2 / a1) * 100);
+                v1 = BigDecimal.valueOf((a2 / a1) * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

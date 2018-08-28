@@ -53,10 +53,10 @@ public class ProcessRatioFX extends ProcessQuantity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            if ("".equals(f.get(o2).toString()) || f.get(o2) == null || "0".equals(f.get(o2).toString())) {
+            if (f.get(o2) == null || "".equals(f.get(o2).toString()) || "0.00".equals(f.get(o2).toString())) {
                 v1 = BigDecimal.valueOf(0);
             } else {
-                v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100);
+                v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
 
             return v1;

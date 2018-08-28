@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -52,10 +53,10 @@ public class InventoryAmountAA extends SalesOrderAmount {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(actual).toString());
 
-            if ("".equals(f.get(actual).toString()) || f.get(actual) == null || "0".equals(f.get(actual).toString())) {
+            if (f.get(actual) == null || "".equals(f.get(actual).toString()) || "0.00".equals(f.get(actual).toString())) {
                 v1 = BigDecimal.valueOf(100);
             } else {
-                v1 = BigDecimal.valueOf(a1 / a2 * 100);
+                v1 = BigDecimal.valueOf(a1 / a2 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

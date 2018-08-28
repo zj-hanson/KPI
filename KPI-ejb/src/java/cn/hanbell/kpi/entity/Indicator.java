@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind")
     ,
-    @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq")
+    @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq ORDER BY i.id")
     ,
     @NamedQuery(name = "Indicator.findByObjtypeSeqAndStatus", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq AND i.status =:status")
     ,
