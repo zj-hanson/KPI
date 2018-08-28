@@ -52,8 +52,11 @@ public class InventoryAmountAA extends SalesOrderAmount {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(actual).toString());
 
-            v1 = BigDecimal.valueOf(a1 / a2 * 100);
-
+            if ("".equals(f.get(actual).toString()) || f.get(actual) == null || "0".equals(f.get(actual).toString())) {
+                v1 = BigDecimal.valueOf(100);
+            } else {
+                v1 = BigDecimal.valueOf(a1 / a2 * 100);
+            }
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);

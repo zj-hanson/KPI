@@ -52,7 +52,11 @@ public class ProcessRatioFX extends ProcessQuantity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100);
+            if ("".equals(f.get(o2).toString()) || f.get(o2) == null || "0".equals(f.get(o2).toString())) {
+                v1 = BigDecimal.valueOf(0);
+            } else {
+                v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100);
+            }
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

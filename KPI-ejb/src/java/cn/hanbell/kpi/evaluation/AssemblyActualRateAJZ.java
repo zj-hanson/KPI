@@ -53,7 +53,7 @@ public class AssemblyActualRateAJZ extends Productivity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            if ("".equals(f.get(o1).toString()) || f.get(o1) == null) {
+            if ("".equals(f.get(o1).toString()) || f.get(o1) == null || "0".equals(f.get(o1).toString()) ) {
                 v1 = BigDecimal.valueOf(100);
             } else {
                 v1 = BigDecimal.valueOf(a2 / a1 * 100);

@@ -52,7 +52,11 @@ public class ConsumptionCutterFX extends ConsumptionCutter {
             f.setAccessible(true);
             a4 = Double.valueOf(f.get(o4).toString());
 
-            v1 = BigDecimal.valueOf(a4 / a1);
+            if ("".equals(f.get(o1).toString()) || f.get(o1) == null || "0".equals(f.get(o1).toString())) {
+                v1 = BigDecimal.valueOf(100);
+            } else {
+                v1 = BigDecimal.valueOf(a4 / a1);
+            }
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

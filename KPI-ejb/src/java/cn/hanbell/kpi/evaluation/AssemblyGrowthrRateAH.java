@@ -60,9 +60,9 @@ public class AssemblyGrowthrRateAH extends Productivity {
 
             //增长率公式
             //(（a2/a1）*100-a3)/a3*100 如无同期值则增长率为100%
-            if ("".equals(f.get(benchmark).toString()) || f.get(benchmark) == null) {
+            if ("".equals(f.get(benchmark).toString()) || f.get(benchmark) == null || "0".equals(f.get(benchmark).toString()) ) {
                 v1 = BigDecimal.valueOf(100);
-            } else if ("".equals(f.get(o1).toString()) || f.get(o1) == null) {
+            } else if ("".equals(f.get(o1).toString()) || f.get(o1) == null || "0".equals(f.get(o1).toString()) ) {
                 v1 = BigDecimal.valueOf((100 - a3) / a3 * 100);
             } else {
                 v1 = BigDecimal.valueOf((a2 / a1 * 100 - a3) / a3 * 100);
