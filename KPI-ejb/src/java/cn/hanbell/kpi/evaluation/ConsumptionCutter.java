@@ -7,6 +7,7 @@ package cn.hanbell.kpi.evaluation;
 
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -58,8 +59,8 @@ public class ConsumptionCutter extends Process {
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
-            amount = (BigDecimal) o;
-        } catch (Exception e) {
+            amount = BigDecimal.valueOf(Double.valueOf(o.toString())).multiply(BigDecimal.ONE).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
+        } catch (NumberFormatException e) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
         return amount;

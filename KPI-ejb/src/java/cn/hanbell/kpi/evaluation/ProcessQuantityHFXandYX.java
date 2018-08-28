@@ -19,9 +19,9 @@ public class ProcessQuantityHFXandYX extends ProcessQuantity {
         //*生产地
         queryParams.put("prono", "1");
         //* 生产线别
-        queryParams.put("linecode", " IN('FX','YX') ");
+        queryParams.put("linecode", " IN ('FX','YX') ");
         //状态码 1未确认 2 确认 3作废
-        queryParams.put("stats", " IN('2') ");
+        queryParams.put("stats", " IN ('2') ");
 
     }
 

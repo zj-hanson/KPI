@@ -7,8 +7,6 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import javax.naming.InitialContext;
 

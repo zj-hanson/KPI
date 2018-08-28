@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq")
     ,
+    @NamedQuery(name = "Indicator.findByObjtypeSeqAndStatus", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq AND i.status =:status")
+    ,
     @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid ORDER BY i.seq DESC,i.sortid ASC,i.deptno ASC")
     ,
     @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq")

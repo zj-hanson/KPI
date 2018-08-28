@@ -20,7 +20,7 @@ public class ConsumptionCutterFXo3 extends ConsumptionCutter {
         //* 单据类别
         queryParams.put("trtype", "IAB");
         //部门
-        queryParams.put("depno", " IN('1P100') ");
+        queryParams.put("depno", " IN ('1P100') ");
         //刀具型号
         queryParams.put("qualification", " (t.itnbr like 'B102%' or t.itnbr like 'B103%' or t.itnbr like 'B104%' or t.itnbr like 'B105%' ) ");
        

@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -52,7 +53,7 @@ public class ConsumptionCutterFX extends ConsumptionCutter {
             f.setAccessible(true);
             a4 = Double.valueOf(f.get(o4).toString());
 
-            v1 = BigDecimal.valueOf(a4 / a1);
+            v1 = BigDecimal.valueOf(a4 / a1).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
