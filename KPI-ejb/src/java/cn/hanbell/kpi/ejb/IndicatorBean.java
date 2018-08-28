@@ -227,6 +227,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public List<Indicator> findByObjtypeYearAndStatus(String type, int y, String status) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByObjtypeSeqAndStatus");
+        query.setParameter("objtype", type);
+        query.setParameter("seq", y);
+        query.setParameter("status", status);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     @Override
     public List<Indicator> findByPId(Object value) {
         return super.findByPId(value);
@@ -775,7 +787,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null || "".equals(entity.getActualInterface())) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
@@ -834,7 +846,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null || "".equals(entity.getActualInterface())) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
@@ -857,8 +869,30 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         col = this.getIndicatorColumn(entity.getFormtype(), Integer.valueOf(prop.toString()));
                         break;
                     case "NQ":
-                        col = this.getIndicatorColumn(entity.getFormtype(), prop.toString());
-                        break;
+                        switch (prop.toString()) {
+                            case "1":
+                            case "2":
+                            case "3":
+                                col = this.getIndicatorColumn(entity.getFormtype(), "q1");
+                                break;
+                            case "4":
+                            case "5":
+                            case "6":
+                                col = this.getIndicatorColumn(entity.getFormtype(), "q2");
+                                break;
+                            case "7":
+                            case "8":
+                            case "9":
+                                col = this.getIndicatorColumn(entity.getFormtype(), "q3");
+                                break;
+                            case "10":
+                            case "11":
+                            case "12":
+                                col = this.getIndicatorColumn(entity.getFormtype(), "q4");
+                                break;
+                            default:
+                                col = this.getIndicatorColumn(entity.getFormtype(), prop.toString());
+                        }
                 }
                 if (col != null && !"".equals(col)) {
                     f = si.getActualIndicator().getClass().getDeclaredField(col);
@@ -954,8 +988,28 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            indicatorDetailBean.getEntityManager().flush();
         }
-        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null)) {
+        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null) && (!"".equals(entity.getActualInterface()))) {
+            IndicatorDetail a = entity.getActualIndicator();
+            try {
+                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                actualInterface.setEJB(entity.getActualEJB());
+                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(a, na);
+                indicatorDetailBean.update(a);
+                indicatorDetailBean.getEntityManager().flush();
+            } catch (Exception ex) {
+                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return entity;
+    }
+
+    public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
+        Indicator entity = findById(id);
+        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
@@ -971,24 +1025,6 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return entity;
     }
 
-     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
-        Indicator entity = findById(id);
-        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null)) {
-            IndicatorDetail a = entity.getActualIndicator();
-            try {
-                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
-                actualInterface.setEJB(entity.getActualEJB());
-                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(a, na);
-                indicatorDetailBean.update(a);
-            } catch (Exception ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return entity;
-    }
-    
     public void updateBenchmark(Indicator entity) {
         List<Indicator> indicators = new ArrayList<>();
         if (entity.isAssigned()) {
@@ -999,7 +1035,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null || "".equals(entity.getActualInterface())) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
@@ -1183,7 +1219,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null || "".equals(entity.getActualInterface())) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
@@ -1242,7 +1278,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     indicators.add(i);
                 }
             }
-        } else if (entity.getActualInterface() == null) {
+        } else if (entity.getActualInterface() == null || "".equals(entity.getActualInterface())) {
             List<IndicatorSet> setList = indicatorSetBean.findByPId(entity.getId());
             for (IndicatorSet is : setList) {
                 Indicator i = findByFormidYearAndDeptno(is.getFormid(), entity.getSeq(), is.getDeptno());
