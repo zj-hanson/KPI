@@ -53,8 +53,11 @@ public class ConsumptionCutterYX extends ConsumptionCutter {
             f.setAccessible(true);
             a6 = Double.valueOf(f.get(o6).toString());
 
-            v1 = BigDecimal.valueOf(a6 / a1).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
-
+            if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
+                v1 = BigDecimal.valueOf(100);
+            } else {
+                v1 = BigDecimal.valueOf(a6 / a1).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
+            }
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);

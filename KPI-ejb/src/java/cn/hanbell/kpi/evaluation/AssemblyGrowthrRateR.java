@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -20,10 +21,9 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879
- * R冷媒装配同期增长率
+ * @author C1879 R冷媒装配同期增长率
  */
-public class AssemblyGrowthrRateR  extends Productivity {
+public class AssemblyGrowthrRateR extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
@@ -61,12 +61,12 @@ public class AssemblyGrowthrRateR  extends Productivity {
 
             //增长率公式
             //(（a2/a1）*100-a3)/a3*100 如无同期值则增长率为100%
-            if ("".equals(f.get(benchmark).toString()) || f.get(benchmark) == null) {
+            if (f.get(benchmark) == null || "".equals(f.get(benchmark).toString()) || "0.00".equals(f.get(benchmark).toString())) {
                 v1 = BigDecimal.valueOf(100);
-            } else if ("".equals(f.get(o1).toString()) || f.get(o1) == null) {
-                v1 = BigDecimal.valueOf((100 - a3) / a3 * 100);
+            } else if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
+                v1 = BigDecimal.valueOf((-a3) / a3 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             } else {
-                v1 = BigDecimal.valueOf((a2 / a1 * 100 - a3) / a3 * 100);
+                v1 = BigDecimal.valueOf((a2 / a1 * 100 - a3) / a3 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
 
             return v1;
@@ -86,5 +86,3 @@ public class AssemblyGrowthrRateR  extends Productivity {
         }
     }
 }
-
-

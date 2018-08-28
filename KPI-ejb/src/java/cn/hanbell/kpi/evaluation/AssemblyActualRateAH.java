@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -20,8 +21,7 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879
- * A机体装配综合效率
+ * @author C1879 A机体装配综合效率
  */
 public class AssemblyActualRateAH extends Productivity {
 
@@ -53,10 +53,10 @@ public class AssemblyActualRateAH extends Productivity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            if ("".equals(f.get(o1).toString()) || f.get(o1) == null) {
+            if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
                 v1 = BigDecimal.valueOf(100);
             } else {
-                v1 = BigDecimal.valueOf(a2 / a1 * 100);
+                v1 = BigDecimal.valueOf(a2 / a1 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
 
             return v1;
@@ -76,4 +76,3 @@ public class AssemblyActualRateAH extends Productivity {
         }
     }
 }
-
