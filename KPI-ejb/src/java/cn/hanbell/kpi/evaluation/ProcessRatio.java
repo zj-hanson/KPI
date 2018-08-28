@@ -68,9 +68,9 @@ public class ProcessRatio extends Process {
         Query query = superMES.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
-            godqty = BigDecimal.valueOf((int)o) ;
+            godqty = BigDecimal.valueOf((int) o);
         } catch (Exception e) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ProcessRatio.class.getName()).log(Level.SEVERE, null, e);
         }
         return godqty;
     }
