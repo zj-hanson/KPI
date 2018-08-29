@@ -21,19 +21,19 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879 增长率
+ * @author C1879 A机组装配同期增长率
  */
-public class ProductivityGrowthrRateFX extends Productivity {
+public class AssemblyGrowthRateAJZ extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ProductivityGrowthrRateFX() {
+    public AssemblyGrowthRateAJZ() {
         super();
-        queryParams.put("formid", "R-方型件加工机综合");
-        queryParams.put("deptno", "1P100");
+        queryParams.put("formid", "R-A机组装配");
+        queryParams.put("deptno", "1W000");
     }
 
-    //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））
+    //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））、同期值
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
@@ -60,7 +60,6 @@ public class ProductivityGrowthrRateFX extends Productivity {
             a3 = Double.valueOf(f.get(benchmark).toString());
 
             //增长率公式
-            //(（a2/a1）*100-a3)/a3*100 如无同期值则增长率为100%
             if (a3 == 0.00 || a1 == 0.00) {
                 v1 = BigDecimal.valueOf(0);
             } else {

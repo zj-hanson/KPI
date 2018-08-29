@@ -21,15 +21,15 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879 R冷媒七号车间装配同期增长率
+ * @author C1879 R冷媒四号车间装配同期增长率
  */
-public class AssemblyGrowthrRateR7 extends Productivity {
+public class AssemblyGrowthRateR4 extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public AssemblyGrowthrRateR7() {
+    public AssemblyGrowthRateR4() {
         super();
-        queryParams.put("formid", "R-R冷媒七号装配");
+        queryParams.put("formid", "R-R冷媒四号装配");
         queryParams.put("deptno", "1W000");
     }
 

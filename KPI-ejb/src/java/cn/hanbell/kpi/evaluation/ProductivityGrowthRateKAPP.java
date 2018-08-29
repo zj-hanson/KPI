@@ -21,19 +21,19 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879 R冷媒四号车间装配同期增长率
+ * @author C1879
  */
-public class AssemblyGrowthrRateR4 extends Productivity {
+public class ProductivityGrowthRateKAPP extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public AssemblyGrowthrRateR4() {
+    public ProductivityGrowthRateKAPP() {
         super();
-        queryParams.put("formid", "R-R冷媒四号装配");
-        queryParams.put("deptno", "1W000");
+        queryParams.put("formid", "R-KAPP加工机综合");
+        queryParams.put("deptno", "1P500");
     }
 
-    //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））、同期值
+    //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;

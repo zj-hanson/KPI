@@ -23,11 +23,11 @@ import javax.naming.NamingException;
  *
  * @author C1879 R冷媒后制程装配同期增长率
  */
-public class AssemblyGrowthrRateRhz extends Productivity {
+public class AssemblyGrowthRateRhz extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public AssemblyGrowthrRateRhz() {
+    public AssemblyGrowthRateRhz() {
         super();
         queryParams.put("formid", "R-R冷媒后制程装配");
         queryParams.put("deptno", "1W000");

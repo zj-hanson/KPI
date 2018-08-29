@@ -21,16 +21,16 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879
+ * @author C1879 增长率
  */
-public class ProductivityGrowthrRateKAPP extends Productivity {
+public class ProductivityGrowthRateFX extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ProductivityGrowthrRateKAPP() {
+    public ProductivityGrowthRateFX() {
         super();
-        queryParams.put("formid", "R-KAPP加工机综合");
-        queryParams.put("deptno", "1P500");
+        queryParams.put("formid", "R-方型件加工机综合");
+        queryParams.put("deptno", "1P100");
     }
 
     //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））
@@ -60,6 +60,7 @@ public class ProductivityGrowthrRateKAPP extends Productivity {
             a3 = Double.valueOf(f.get(benchmark).toString());
 
             //增长率公式
+            //(（a2/a1）*100-a3)/a3*100 如无同期值则增长率为100%
             if (a3 == 0.00 || a1 == 0.00) {
                 v1 = BigDecimal.valueOf(0);
             } else {
