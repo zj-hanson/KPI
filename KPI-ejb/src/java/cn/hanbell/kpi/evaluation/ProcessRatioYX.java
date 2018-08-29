@@ -53,7 +53,7 @@ public class ProcessRatioYX extends ProcessQuantity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            if (f.get(o2) == null || "".equals(f.get(o2).toString()) || "0.00".equals(f.get(o2).toString())) {
+            if (a2 == 0.00) {
                 v1 = BigDecimal.valueOf(0);
             } else {
                 v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
