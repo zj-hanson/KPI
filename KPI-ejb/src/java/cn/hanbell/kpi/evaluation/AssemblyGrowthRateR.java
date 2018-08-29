@@ -21,15 +21,15 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1879 R冷媒后制程装配同期增长率
+ * @author C1879 R冷媒装配同期增长率
  */
-public class AssemblyGrowthrRateRhz extends Productivity {
+public class AssemblyGrowthRateR extends Productivity {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public AssemblyGrowthrRateRhz() {
+    public AssemblyGrowthRateR() {
         super();
-        queryParams.put("formid", "R-R冷媒后制程装配");
+        queryParams.put("formid", "R-R冷媒装配");
         queryParams.put("deptno", "1W000");
     }
 
@@ -60,11 +60,8 @@ public class AssemblyGrowthrRateRhz extends Productivity {
             a3 = Double.valueOf(f.get(benchmark).toString());
 
             //增长率公式
-            //(（a2/a1）*100-a3)/a3*100 如无同期值则增长率为100%
-            if (f.get(benchmark) == null || "".equals(f.get(benchmark).toString()) || "0.00".equals(f.get(benchmark).toString())) {
-                v1 = BigDecimal.valueOf(100);
-            } else if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
-                v1 = BigDecimal.valueOf((-a3) / a3 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
+            if (a3 == 0.00 || a1 == 0.00) {
+                v1 = BigDecimal.valueOf(0);
             } else {
                 v1 = BigDecimal.valueOf((a2 / a1 * 100 - a3) / a3 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }

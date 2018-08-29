@@ -53,8 +53,8 @@ public class ConsumptionCutterYX extends ConsumptionCutter {
             f.setAccessible(true);
             a6 = Double.valueOf(f.get(o6).toString());
 
-            if (f.get(o1) == null || "".equals(f.get(o1).toString()) || "0.00".equals(f.get(o1).toString())) {
-                v1 = BigDecimal.valueOf(100);
+            if (a1 == 0.00) {
+                v1 = BigDecimal.valueOf(0);
             } else {
                 v1 = BigDecimal.valueOf(a6 / a1).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }

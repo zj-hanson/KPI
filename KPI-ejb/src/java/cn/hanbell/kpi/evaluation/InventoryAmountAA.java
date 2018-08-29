@@ -53,8 +53,8 @@ public class InventoryAmountAA extends SalesOrderAmount {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(actual).toString());
 
-            if (f.get(actual) == null || "".equals(f.get(actual).toString()) || "0.00".equals(f.get(actual).toString())) {
-                v1 = BigDecimal.valueOf(100);
+            if (a2 == 0.00) {
+                v1 = BigDecimal.valueOf(0);
             } else {
                 v1 = BigDecimal.valueOf(a1 / a2 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
             }
