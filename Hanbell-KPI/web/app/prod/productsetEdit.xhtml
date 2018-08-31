@@ -123,9 +123,13 @@
                             <f:selectItem itemLabel="表达式" itemValue="E"/>
                         </p:selectOneMenu>
                     </p:column>
-                    <p:column><p:outputLabel value="数字格式" for="symbol" /></p:column>
+                    <p:column><p:outputLabel value="达标计算" for="perfCalc" /></p:column>
                     <p:column>
-                        <p:inputText id="symbol" value="#{productSetManagedBean.currentEntity.symbol}" title="symbol" />
+                        <p:selectOneMenu id="perfCalc" value="#{productSetManagedBean.currentEntity.perfCalc}" title="perfCalc"
+                                         required="true" requiredMessage="达标计算">
+                            <f:selectItem itemLabel="实际/目标" itemValue="AT"/>
+                            <f:selectItem itemLabel="目标/实际" itemValue="TA"/>
+                        </p:selectOneMenu>
                     </p:column>
                 </p:row>
                 <p:row>

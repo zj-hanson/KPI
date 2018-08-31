@@ -86,7 +86,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(hour = "*/4", persistent = true)
+    @Schedule(minute = "*/45", hour = "*", persistent = true)
     public void updateIndicatorActualValue() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
@@ -98,9 +98,13 @@ public class TimerBean {
                     try {
                         indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
                         logger.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                        indicatorBean.getEntityManager().refresh(e);
-                        indicatorBean.updatePerformance(e);
-                        indicatorBean.update(e);
+                    } catch (Exception ex) {
+                        logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                    }
+                    try {
+                        i = indicatorBean.findById(e.getId());
+                        indicatorBean.updatePerformance(i);
+                        indicatorBean.update(i);
                         logger.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
                     } catch (Exception ex) {
                         logger.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
@@ -109,6 +113,7 @@ public class TimerBean {
             }
         }
         //部门指标来源产品指标，所以先算产品指标
+        logger.info("updateIndicatorActualValue开始产品指标堆叠计算");
         indicatorList = indicatorBean.findRootByAssigned("C", "P", c.get(Calendar.YEAR));
         if (indicatorList != null && !indicatorList.isEmpty()) {
             for (Indicator e : indicatorList) {
@@ -120,6 +125,7 @@ public class TimerBean {
                 }
             }
         }
+        logger.info("updateIndicatorActualValue开始部门指标堆叠计算");
         indicatorList = indicatorBean.findRootByAssigned("C", "D", c.get(Calendar.YEAR));
         if (indicatorList != null && !indicatorList.isEmpty()) {
             for (Indicator e : indicatorList) {
