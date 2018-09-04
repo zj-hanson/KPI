@@ -16,8 +16,9 @@ public class ShipmentAmountPPL2 extends ShipmentAmount {
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1T000','1T100' ");
         queryParams.put("ogdkid", "RL03");
+        queryParams.put("decode", "2");
         queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("n_code_CD", " ='WX' ");
+        queryParams.put("n_code_CD", " LIEK 'WX%' ");
         queryParams.put("n_code_DC", " ='PL' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
