@@ -155,11 +155,21 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("daname", "空压机组");
                 getMap().put("n_code_DA", "= 'AA'");
                 break;
-            case "1G000":
+            case "1G100":
                 getMap().put("facno", "C");
-                getMap().put("deptnoname", "空压机体产品部");
-                getMap().put("daname", "空压机体");
-                getMap().put("n_code_DA", "= 'AH'");
+                getMap().put("deptnoname", "空压机体营销一课");
+                getMap().put("daname", "A机体");
+                getMap().put("n_code_DA", " = 'AH' ");
+                getMap().put("n_code_DC", " LIKE 'AJ%'");
+                getMap().put("depno", " IN ('1G110','1T100') ");
+                break;
+            case "1G500":
+                getMap().put("facno", "C");
+                getMap().put("deptnoname", "空压机体营销二课");
+                getMap().put("daname", "SDS无油");
+                getMap().put("n_code_DA", " = 'AH'");
+                getMap().put("n_code_DC", " = 'SDS' ");
+                getMap().put("depno", " IN ('1G500') ");
                 break;
             case "1H000":
                 getMap().put("facno", "C");

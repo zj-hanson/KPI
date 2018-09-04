@@ -36,6 +36,7 @@ public class ClientNowAndPastBean implements Serializable {
     public String getQuantitySql(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         String decode = map.get("decode") != null ? map.get("decode") : "";
+        String depno = map.get("depno") != null ? map.get("depno") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -56,8 +57,15 @@ public class ClientNowAndPastBean implements Serializable {
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
-        if (!"".equals(n_code_DC)) {
-            sb.append(" and d.n_code_DC ").append(n_code_DC);
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (y > 2017) {
+            if (!"".equals(n_code_DC)) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            }
+        } else {
+            if (!"".equals(depno)) {
+                sb.append(" and h.depno ").append(depno);
+            }
         }
         sb.append(" group by  h.cusno ");
         sb.append(" union all ");
@@ -75,8 +83,15 @@ public class ClientNowAndPastBean implements Serializable {
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
-        if (!"".equals(n_code_DC)) {
-            sb.append(" and d.n_code_DC ").append(n_code_DC);
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (y > 2017) {
+            if (!"".equals(n_code_DC)) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            }
+        } else {
+            if (!"".equals(depno)) {
+                sb.append(" and h.depno ").append(depno);
+            }
         }
         sb.append(" group by  h.cusno ) ");
         sb.append(" x  group by x.cusno ) ");
@@ -88,6 +103,7 @@ public class ClientNowAndPastBean implements Serializable {
     public String getAmountSql(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         String decode = map.get("decode") != null ? map.get("decode") : "";
+        String depno = map.get("depno") != null ? map.get("depno") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -109,8 +125,15 @@ public class ClientNowAndPastBean implements Serializable {
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
-        if (!"".equals(n_code_DC)) {
-            sb.append(" and d.n_code_DC ").append(n_code_DC);
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (y > 2017) {
+            if (!"".equals(n_code_DC)) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            }
+        } else {
+            if (!"".equals(depno)) {
+                sb.append(" and h.depno ").append(depno);
+            }
         }
         sb.append(" group by  h.cusno ");
         sb.append(" union all ");
@@ -123,14 +146,21 @@ public class ClientNowAndPastBean implements Serializable {
         } else {
             sb.append(" and month(h.bakdate) BETWEEN 1 AND ${m} ");
         }
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (y > 2017) {
+            if (!"".equals(n_code_DC)) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            }
+        } else {
+            if (!"".equals(depno)) {
+                sb.append(" and h.depno ").append(depno);
+            }
+        }
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
-        }
-        if (!"".equals(n_code_DC)) {
-            sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         sb.append(" group by  h.cusno ) ");
         sb.append(" x  group by x.cusno ) ");
@@ -254,14 +284,14 @@ public class ClientNowAndPastBean implements Serializable {
                             client.setNowshpqy1(String.valueOf(nowothershpqy1));
                             client.setNowshpamts(df.format(nowothershpamts));
                             client.setPastshpqy1(String.valueOf(pastothershpqy1));
-                            client.setPastshpamts(pastothershpamts==0?"0":df.format(pastothershpamts));
-                            client.setDifferencevalue(df.format(nowothershpamts-pastothershpamts));
+                            client.setPastshpamts(pastothershpamts == 0 ? "0" : df.format(pastothershpamts));
+                            client.setDifferencevalue(df.format(nowothershpamts - pastothershpamts));
                             if (pastothershpamts == 0) {
                                 client.setGrowthrate("100");
                             } else {
                                 if (((nowothershpamts - pastothershpamts) / pastothershpamts * 100) < 0) {
                                     client.setStyle("red");
-                                } 
+                                }
                                 client.setGrowthrate(df.format((nowothershpamts - pastothershpamts) / pastothershpamts * 100));
                             }
                             clientlist.add(client);
@@ -270,7 +300,7 @@ public class ClientNowAndPastBean implements Serializable {
                         cto.setNowshpqy1(nowlist.get(i).getNowshpqy1());
                         cto.setNowshpamts(df.format(Double.parseDouble(nowlist.get(i).getNowshpamts())));
                         cto.setPastshpqy1(nowlist.get(i).getPastshpqy1());
-                        cto.setPastshpamts(nowlist.get(i).getPastshpamts().equals("0")?"0":df.format(Double.parseDouble(nowlist.get(i).getPastshpamts())));
+                        cto.setPastshpamts(nowlist.get(i).getPastshpamts().equals("0") ? "0" : df.format(Double.parseDouble(nowlist.get(i).getPastshpamts())));
                         cto.setDifferencevalue(nowlist.get(i).getDifferencevalue());
                         cto.setGrowthrate(nowlist.get(i).getGrowthrate());
                         clientlist.add(cto);
