@@ -125,7 +125,7 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                     mailBean.notify(new MailNotify());
                     showInfoMsg("Info", "报表邮件发送成功");
                 } else {
-                    showErrorMsg("Error", "MailEJB设置错误");
+                    showErrorMsg("Error", "MailEJB或测试人员设置错误");
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(MailSettingManagedBean.class.getName()).log(Level.SEVERE, null, ex);

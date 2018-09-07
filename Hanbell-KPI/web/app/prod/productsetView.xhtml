@@ -119,6 +119,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><h:outputText value="数字格式"/></p:column>
+                    <p:column>
+                        <h:outputText id="symbol" value="#{productSetManagedBean.currentEntity.symbol}" title="symbol" />
+                    </p:column>
+                    <p:column><h:outputText value="系統排程"/></p:column>
+                    <p:column>
+                        <h:outputText id="jobSchedule" value="#{productSetManagedBean.currentEntity.jobSchedule}" title="symbol" />
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><h:outputText value="API"/></p:column>
                     <p:column>
                         <h:outputText id="api" value="#{productSetManagedBean.currentEntity.api}" title="api"/>

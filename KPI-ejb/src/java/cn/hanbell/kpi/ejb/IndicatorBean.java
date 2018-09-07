@@ -204,6 +204,17 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public List<Indicator> findByJobScheduleAndStatus(String jobschedule, String status) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByJobScheduleAndStatus");
+        query.setParameter("jobschedule", jobschedule);
+        query.setParameter("status", status);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public Indicator findByIdAndYear(int id, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByIdAndSeq");
         query.setParameter("id", id);
@@ -272,6 +283,19 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         query.setParameter("company", company);
         query.setParameter("objtype", objtype);
         query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Indicator> findRootByAssignedAndJobSchedule(String company, String objtype, int y, String jobschedule) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssignedAndJobSchedule");
+        query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        query.setParameter("jobschedule", jobschedule);
         try {
             return query.getResultList();
         } catch (Exception ex) {
