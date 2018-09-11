@@ -31,7 +31,7 @@ public class ClientNowAndPastBean implements Serializable {
     private final DecimalFormat df;
 
     public ClientNowAndPastBean() {
-        this.df = new DecimalFormat("#,###.##");
+        this.df = new DecimalFormat("#,###.00");
     }
 
     //出货台数SQL
@@ -384,12 +384,14 @@ public class ClientNowAndPastBean implements Serializable {
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getNowshpamts()) > Double.valueOf(returnlist.get(min).getNowshpamts())) {
                         min = j;
-                        ct = returnlist.get(i);
-                        returnlist.set(i, returnlist.get(min));
-                        returnlist.set(min, ct);
-                        returnlist.get(i).setNowrank(String.valueOf(i + 1));
                     }
                 }
+                if (min != i) {
+                    ct = returnlist.get(i);
+                    returnlist.set(i, returnlist.get(min));
+                    returnlist.set(min, ct);
+                }
+
             }
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
@@ -468,10 +470,12 @@ public class ClientNowAndPastBean implements Serializable {
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getPastshpamts()) > Double.valueOf(returnlist.get(min).getPastshpamts())) {
                         min = j;
-                        ct = returnlist.get(i);
-                        returnlist.set(i, returnlist.get(min));
-                        returnlist.set(min, ct);
                     }
+                }
+                if (min != i) {
+                    ct = returnlist.get(i);
+                    returnlist.set(i, returnlist.get(min));
+                    returnlist.set(min, ct);
                 }
             }
             if (returnlist != null && !returnlist.isEmpty()) {
