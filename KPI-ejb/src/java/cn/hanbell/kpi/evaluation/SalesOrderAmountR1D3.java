@@ -13,11 +13,11 @@ public class SalesOrderAmountR1D3 extends SalesOrderAmount{
 
     public SalesOrderAmountR1D3() {
         super();
-        queryParams.put("facno", "C");
+        queryParams.put("facno", "G");
         queryParams.put("deptno", " '1D000' ");
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_CD", " ='GZ' ");
+        //queryParams.put("n_code_CD", " ='GZ' ");
         queryParams.put("n_code_DC", " ='L' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

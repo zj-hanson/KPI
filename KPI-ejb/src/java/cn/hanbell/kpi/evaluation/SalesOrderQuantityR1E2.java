@@ -13,11 +13,11 @@ public class SalesOrderQuantityR1E2 extends SalesOrderQuantity{
 
     public SalesOrderQuantityR1E2() {
         super();
-        queryParams.put("facno", "C");
+        queryParams.put("facno", "N");
         queryParams.put("deptno", " '1E000' ");
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_CD", " ='NJ' ");
+        //queryParams.put("n_code_CD", " ='NJ' ");
         queryParams.put("n_code_DC", " ='H' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
