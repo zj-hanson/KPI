@@ -148,7 +148,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷产品");
                 getMap().put("n_code_DA", "= 'R'");
-                getMap().put("depno", " IN ('1B000','1C000','1B000','1D000','1B000','1E000','1V000') ");
+                getMap().put("depno", " IN ('1B000','1C000','1D000',,'1E000','1V000') ");
                 getMap().put("ogdkid", " IN ('RL01') ");
                 break;
             case "1Q000":

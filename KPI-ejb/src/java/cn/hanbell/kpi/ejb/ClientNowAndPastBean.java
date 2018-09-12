@@ -58,12 +58,11 @@ public class ClientNowAndPastBean implements Serializable {
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
+        // 当无产品别时，则按大类查询
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
             if (y > 2017) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and d.n_code_DC ").append(n_code_DC);
-                }
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and h.depno ").append(depno);
@@ -88,10 +87,8 @@ public class ClientNowAndPastBean implements Serializable {
         }
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
-            if (y > 2017 && !"".equals(n_code_DC)) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and d.n_code_DC ").append(n_code_DC);
-                }
+            if (y > 2017 ) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and h.depno ").append(depno);
@@ -134,9 +131,7 @@ public class ClientNowAndPastBean implements Serializable {
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
             if (y > 2017) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and d.n_code_DC ").append(n_code_DC);
-                }
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and h.depno ").append(depno);
@@ -163,9 +158,7 @@ public class ClientNowAndPastBean implements Serializable {
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
             if (y > 2017) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and d.n_code_DC ").append(n_code_DC);
-                }
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and h.depno ").append(depno);
@@ -184,9 +177,7 @@ public class ClientNowAndPastBean implements Serializable {
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
             if (y > 2017) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and s.n_code_DC ").append(n_code_DC);
-                }
+                sb.append(" and s.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and d.depno ").append(depno);
@@ -213,9 +204,7 @@ public class ClientNowAndPastBean implements Serializable {
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
             if (y > 2017) {
-                if (!"".equals(n_code_DC)) {
-                    sb.append(" and h.n_code_DC ").append(n_code_DC);
-                }
+                sb.append(" and h.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
                     sb.append(" and h.depno ").append(depno);
