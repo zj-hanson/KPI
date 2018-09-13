@@ -40,13 +40,22 @@ public class ClientNowAndPastBean implements Serializable {
         String depno = map.get("depno") != null ? map.get("depno") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         String style = map.get("style") != null ? map.get("style") : "";
         StringBuilder sb = new StringBuilder();
         sb.append(" select  z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.num  as 'shpqy1' from ( ");
         sb.append(" select x.cusno,sum(num) as num  from ( ");
-        sb.append(" select h.cusno,sum(shpqy1) as num  from cdrdta d left join cdrhad h on d.shpno=h.shpno ");
-        sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
-        sb.append(" and h.houtsta <> 'W' and year(h.shpdate) = ${y} and d.n_code_DD ='00' ");
+        sb.append(" select h.cusno,sum(shpqy1) as num  from cdrdta d left join cdrhad h on d.shpno=h.shpno  ");
+        sb.append(" where h.facno='${facno}' and h.houtsta <> 'W' ");
+        if (n_code_DA.equals("= 'AA'")) {
+            sb.append(" and left(d.itnbr,1)='3' ");
+        } else {
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'  ");
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ='00' ");
+        }
+        sb.append(" and year(h.shpdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.shpdate) = ${m} ");
         } else {
@@ -72,8 +81,16 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" group by  h.cusno ");
         sb.append(" union all ");
         sb.append(" select  h.cusno,-sum(bshpqy1) as num  from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
-        sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
-        sb.append(" and h.baksta <> 'W' and year(h.bakdate) = ${y} and  d.n_code_DD ='00' ");
+        sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' ");
+        if (n_code_DA.equals("= 'AA'")) {
+            sb.append(" and left(d.itnbr,1)='3' ");
+        } else {
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'  ");
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ='00' ");
+        }
+        sb.append(" and year(h.bakdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.bakdate)= ${m} ");
         } else {
@@ -87,7 +104,7 @@ public class ClientNowAndPastBean implements Serializable {
         }
         //当查询年限超过2017年则按产品别查询，否则按部门区分
         if (!"".equals(n_code_DC)) {
-            if (y > 2017 ) {
+            if (y > 2017) {
                 sb.append(" and d.n_code_DC ").append(n_code_DC);
             } else {
                 if (!"".equals(depno)) {
@@ -108,6 +125,7 @@ public class ClientNowAndPastBean implements Serializable {
         String depno = map.get("depno") != null ? map.get("depno") : "";
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
         StringBuilder sb = new StringBuilder();
@@ -116,7 +134,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select  h.cusno,isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as num ");
         sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno ");
         sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
-        sb.append(" and h.houtsta <> 'W'  and d.n_code_DD ='00' and year(h.shpdate) = ${y}  ");
+        sb.append(" and h.houtsta <> 'W' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.shpdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.shpdate) = ${m} ");
         } else {
@@ -143,7 +165,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select  h.cusno,isnull(convert(decimal(16,2),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as num ");
         sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
         sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
-        sb.append(" and h.baksta <> 'W' and d.n_code_DD ='00' and year(h.bakdate) = ${y}  ");
+        sb.append(" and h.baksta <> 'W' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.bakdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.bakdate)= ${m} ");
         } else {
@@ -170,7 +196,10 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" union all ");
         //加扣款
         sb.append(" SELECT h.cusno AS 'cusno', ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) AS num FROM armpmm h,armacq d,cdrdta s ");
-        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq  AND h.facno='${facno}' and s.n_code_DD ='00' ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq  AND h.facno='${facno}' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and s.n_code_DD ").append(n_code_DD);
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and s.n_code_DA ").append(n_code_DA);
         }
@@ -194,9 +223,12 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" union all ");
         //--折让
         sb.append(" SELECT d.ivocus AS 'cusno',ISNULL(sum(d.recamt),0) AS num FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno ");
-        sb.append("  AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' AND h.facno='${facno}' and h.n_code_DD ='00' ");
+        sb.append("  AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' AND h.facno='${facno}' ");
         if (!"".equals(ogdkid)) {
             sb.append(" AND h.ogdkid ").append(ogdkid);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND h.n_code_DD ").append(n_code_DD);
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and h.n_code_DA ").append(n_code_DA);
@@ -318,6 +350,162 @@ public class ClientNowAndPastBean implements Serializable {
         return null;
     }
 
+    //得到总金额
+    protected Double getSumAmount(int y, int m, String arr1, LinkedHashMap<String, String> map) {
+        String decode = map.get("decode") != null ? map.get("decode") : "";
+        String depno = map.get("depno") != null ? map.get("depno") : "";
+        String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid") : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
+        String style = map.get("style") != null ? map.get("style") : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select  isnull(SUM(z.num ),0) from ( ");
+        sb.append(" select x.cusno,sum(num) as num  from ( ");
+        sb.append(" select  h.cusno,isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as num ");
+        sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno ");
+        sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
+        sb.append(" and h.houtsta <> 'W' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.shpdate) = ${y} ");
+        if (style.equals("nowmonth")) {
+            sb.append(" and month(h.shpdate) = ${m} ");
+        } else {
+            sb.append(" and month(h.shpdate) BETWEEN 1 AND ${m} ");
+        }
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (!"".equals(n_code_DC)) {
+            if (y > 2017) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            } else {
+                if (!"".equals(depno)) {
+                    sb.append(" and h.depno ").append(depno);
+                }
+            }
+        }
+        sb.append(" group by  h.cusno ");
+        sb.append(" union all ");
+        sb.append(" select  h.cusno,isnull(convert(decimal(16,2),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as num ");
+        sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
+        sb.append(" where h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and h.facno='${facno}' ");
+        sb.append(" and h.baksta <> 'W' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.bakdate) = ${y} ");
+        if (style.equals("nowmonth")) {
+            sb.append(" and month(h.bakdate)= ${m} ");
+        } else {
+            sb.append(" and month(h.bakdate) BETWEEN 1 AND ${m} ");
+        }
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (!"".equals(n_code_DC)) {
+            if (y > 2017) {
+                sb.append(" and d.n_code_DC ").append(n_code_DC);
+            } else {
+                if (!"".equals(depno)) {
+                    sb.append(" and h.depno ").append(depno);
+                }
+            }
+        }
+        //机体机组算入折让
+        sb.append(" group by  h.cusno ");
+        sb.append(" union all ");
+        //加扣款
+        sb.append(" SELECT h.cusno AS 'cusno', ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) AS num FROM armpmm h,armacq d,cdrdta s ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq  AND h.facno='${facno}' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and s.n_code_DD ").append(n_code_DD);
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and s.n_code_DA ").append(n_code_DA);
+        }
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (!"".equals(n_code_DC)) {
+            if (y > 2017) {
+                sb.append(" and s.n_code_DC ").append(n_code_DC);
+            } else {
+                if (!"".equals(depno)) {
+                    sb.append(" and d.depno ").append(depno);
+                }
+            }
+        }
+        sb.append(" and year(h.trdat) = ${y}  ");
+        if (style.equals("nowmonth")) {
+            sb.append(" and month(h.trdat) = ${m} ");
+        } else {
+            sb.append(" and month(h.trdat) BETWEEN 1 AND ${m} ");
+        }
+        sb.append(" group by  h.cusno ");
+        sb.append(" union all ");
+        //--折让
+        sb.append(" SELECT d.ivocus AS 'cusno',ISNULL(sum(d.recamt),0) AS num FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno ");
+        sb.append("  AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' AND h.facno='${facno}' ");
+        if (!"".equals(ogdkid)) {
+            sb.append(" AND h.ogdkid ").append(ogdkid);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND h.n_code_DD ").append(n_code_DD);
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and h.n_code_DA ").append(n_code_DA);
+        }
+        //当查询年限超过2017年则按产品别查询，否则按部门区分
+        if (!"".equals(n_code_DC)) {
+            if (y > 2017) {
+                sb.append(" and h.n_code_DC ").append(n_code_DC);
+            } else {
+                if (!"".equals(depno)) {
+                    sb.append(" and h.depno ").append(depno);
+                }
+            }
+        }
+        sb.append(" and year(h.recdate) = ${y}  ");
+        if (style.equals("nowmonth")) {
+            sb.append(" and month(h.recdate) = ${m} ");
+        } else {
+            sb.append(" and month(h.recdate) BETWEEN 1 AND ${m} ");
+        }
+        sb.append(" GROUP BY d.ivocus ");
+        sb.append(" union all ");
+        //它项金额,关联部门 发票
+        sb.append(" SELECT h.cusno AS 'cusno', ISNULL(sum(h.shpamt),0) AS  num FROM armbil h WHERE h.rkd='RQ11' AND h.facno='${facno}' ");
+        sb.append("  AND h.depno ").append(depno);
+        sb.append(" and year(h.bildat) = ${y}  ");
+        if (style.equals("nowmonth")) {
+            sb.append(" and month(h.bildat) = ${m} ");
+        } else {
+            sb.append(" and month(h.bildat) BETWEEN 1 AND ${m} ");
+        }
+        sb.append(" group by  h.cusno ) ");
+        sb.append(" x  group by x.cusno ) ");
+        sb.append(" z,cdrcus c where z.cusno=c.cusno ");
+        String sql = sb.toString().replace("${facno}", arr1).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
+        erpEJB.setCompany(arr1);
+        try {
+            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            Object o1 = query.getSingleResult();
+            return Double.parseDouble(o1.toString());
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.ClientNowAndPastBean.getSumAmount()" + e);
+        }
+        return 0.0;
+    }
+
     //当前
     public List<ClientTable> getNowClient(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
@@ -329,9 +517,12 @@ public class ClientNowAndPastBean implements Serializable {
         List<ClientTable> returnlist = new ArrayList<>();
         ClientTable ct;
         boolean aa;
+        //总金额
+        Double sumshpamts = 0.0;
         try {
             for (String arr1 : arr) {
                 list = new ArrayList<>();
+                sumshpamts += getSumAmount(y, m, arr1, map);
                 List result = getClient(y, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
@@ -384,12 +575,10 @@ public class ClientNowAndPastBean implements Serializable {
             }
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
-                Double sumshpamts = 0.0;
                 ct = new ClientTable();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setNowrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getNowshpqy1());
-                    sumshpamts += Double.parseDouble(returnlist.get(i).getNowshpamts());
                 }
                 ct.setCusna("总计");
                 ct.setNowshpqy1(String.valueOf(sumshpqy1));
@@ -571,22 +760,21 @@ public class ClientNowAndPastBean implements Serializable {
                                     ct.setNowshpqy1(String.valueOf(nowothershpqy1));
                                     ct.setNowshpamts(df.format(nowothershpamts));
                                     ct.setPastshpqy1(String.valueOf(pastothershpqy1));
-                                    ct.setPastshpamts(df.format(pastothershpamts));
+                                    if (new DecimalFormat("#").format(pastothershpamts).equals("0")) {
+                                        ct.setPastshpamts("0");
+                                        ct.setDifferencevalue(RTdifferencevalue(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
+                                        ct.setGrowthrate("100");
+                                    } else {
+                                        ct.setPastshpamts(df.format(pastothershpamts));
+                                        ct.setDifferencevalue(RTdifferencevalue(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
+                                        ct.setGrowthrate(RTgrowthrate(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
+                                    }
                                     if ((nowothershpamts - pastothershpamts) < 0) {
                                         ct.setStyle("red");
                                     }
                                     if (Double.parseDouble(pastList.get(j).getPastshpamts()) == 0) {
                                         ct.setDifferencevalue("0");
                                         ct.setGrowthrate("100");
-                                    } else {
-                                        if (df.format(pastothershpamts).equals("0")) {
-                                            ct.setDifferencevalue(RTdifferencevalue(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
-                                            ct.setGrowthrate("100");
-                                        } else {
-                                            ct.setDifferencevalue(RTdifferencevalue(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
-                                            ct.setGrowthrate(RTgrowthrate(String.valueOf(nowothershpamts), String.valueOf(pastothershpamts)));
-                                        }
-
                                     }
                                     list.add(ct);
                                     ClientTable ctsum = new ClientTable();
