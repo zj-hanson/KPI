@@ -148,8 +148,9 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷产品");
                 getMap().put("n_code_DA", "= 'R'");
-                getMap().put("depno", " IN ('1B000','1C000','1D000',,'1E000','1V000') ");
-                getMap().put("ogdkid", " IN ('RL01') ");
+                getMap().put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
+                getMap().put("n_code_DD", " IN ('00') ");
+                getMap().put("ogdkid", " IN ('RL01') ");                
                 break;
             case "1Q000":
                 getMap().put("facno", "C");
@@ -157,6 +158,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("daname", "空压机组");
                 getMap().put("n_code_DA", "= 'AA'");
                 getMap().put("depno", " IN ('1Q000','1Q100') ");
+                getMap().put("n_code_DD", " IN ('00','02') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
                 break;
             case "1G100":
@@ -167,6 +169,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DC", " LIKE 'AJ%'");
                 getMap().put("depno", " IN ('1G110','1T100') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1G500":
                 getMap().put("facno", "C");
@@ -176,6 +179,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DC", " = 'SDS' ");
                 getMap().put("depno", " IN ('1G500') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1H000":
                 getMap().put("facno", "C");
@@ -184,6 +188,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'P'");
                 getMap().put("depno", " IN ('1H000','1H100') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1U000":
                 getMap().put("facno", "C");
@@ -192,6 +197,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'S'");
                 getMap().put("depno", " IN ('1U000') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "5B000":
                 getMap().put("facno", "K");
@@ -200,6 +206,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'OH'");
                 getMap().put("depno", " IN ('5B000') ");
                 getMap().put("ogdkid", " IN ('RL01') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "5A000":
                 getMap().put("facno", "K");
@@ -208,6 +215,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'RT'");
                 getMap().put("depno", " IN ('5A000','5A100') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "50000":
                 getMap().put("facno", "K");
@@ -216,14 +224,18 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", " In('RT','OH') ");
                 getMap().put("depno", " IN ('5A000','5A100','5B000') ");
                 getMap().put("ogdkid", " IN ('RL01','RL03') ");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             default:
                 getMap().put("facno", "");
                 getMap().put("decode", "");
+                getMap().put("depno", "");
                 getMap().put("deptnoname", "");
                 getMap().put("daname", "");
                 getMap().put("n_code_DA", "");
+                getMap().put("ogdkid", "");
                 getMap().put("n_code_DC", "");
+                getMap().put("n_code_DD", "");
 
         }
     }
@@ -251,7 +263,6 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
-                String deptno = indicatorChart.getDeptno();
                 List<ClientTable> list= clientrank.getClientList(y, m, getMap());
                 if (list.size() > 0) {
                     setClientlist(list);
