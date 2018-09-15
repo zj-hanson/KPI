@@ -24,10 +24,10 @@ public class ProductionQuantityKWL extends ProductionQuantity {
         queryParams.put("linecode", " = '01' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
+        //品号大类
         queryParams.put("itcls", " IN ('3W76','3W79','3W80')");
         
-        queryParams.put("itnbrf", " and itnbrf in (select itnbr from borgrp where itnbrgrp like 'KMAT%') ");
+        queryParams.put("itnbrf", " and itnbrf in (select itnbr from borgrp where (itnbrgrp  like 'KMAT%' OR itnbrgrp = 'DA01')) ");
 
     }
 }

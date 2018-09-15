@@ -28,7 +28,7 @@ public class ProductionQuantity extends Production {
         String typecode = map.get("typecode") != null ? map.get("typecode").toString() : "";
         String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
         String itnbrf = map.get("itnbrf") != null ? map.get("itnbrf").toString() : "";    
-        
+        String itnbrgrp = map.get("itnbrgrp") != null ? map.get("itnbrgrp").toString() : ""; 
         BigDecimal manqty = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
@@ -42,6 +42,9 @@ public class ProductionQuantity extends Production {
         }
         if (!"".equals(typecode)) {
             sb.append(" and typecode ").append(typecode);
+        }
+        if (!"".equals(itnbrgrp)) {
+            sb.append(" and itnbrgrp ").append(itnbrgrp);
         }
         if (!"".equals(itcls)) {
             sb.append(" and itcls ").append(itcls);
