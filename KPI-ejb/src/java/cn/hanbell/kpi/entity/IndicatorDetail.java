@@ -371,5 +371,11 @@ public class IndicatorDetail extends SuperDetailEntity {
             }
         }
     }
+    //增加合计值
+    public BigDecimal nsy(){
+        BigDecimal a =BigDecimal.ZERO;
+        a = this.n01.add(this.n02).add(this.n03).add(this.n04).add(this.n05).add(this.n06).add(this.n07).add(this.n08).add(this.n09).add(this.n10).add(this.n11).add(this.n12);
+        return a;
+    }
 
 }

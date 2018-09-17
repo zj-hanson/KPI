@@ -31,7 +31,7 @@ public class ClientNowAndPastBean implements Serializable {
     private final DecimalFormat df;
 
     public ClientNowAndPastBean() {
-        this.df = new DecimalFormat("#,###.00");
+        this.df = new DecimalFormat("#,##0.00");
     }
 
     //出货台数SQL

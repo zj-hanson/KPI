@@ -37,7 +37,7 @@ public class ProcessRatio extends Process {
             sb.append(" and s.PROJECTID IN (SELECT DISTINCT PROJECTID FROM FLOW_FORM_UQF_COMP_NOW WHERE PRODUCTID NOT LIKE '%-GB%' ) ");
         }
         if (!"Scrap".equals(stats)) {
-            sb.append(" and s.PROJECTCREATEUSERID in (select USERID FROM MPROCESSUSERGROUP_USER where GROUPROLE<>'普通人员' AND GROUPID='GU001') ");
+            sb.append(" and s.PROJECTCREATEUSERID in (select USERID FROM MPROCESSUSERGROUP_USER where  GROUPID='GU001') ");
         }
         if ("YX".equals(stats)) {
             //圆型不良件数特有条件

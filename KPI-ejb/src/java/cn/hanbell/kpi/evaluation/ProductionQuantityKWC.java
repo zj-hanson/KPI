@@ -24,9 +24,10 @@ public class ProductionQuantityKWC extends ProductionQuantity {
         queryParams.put("linecode", " = '01' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
-        queryParams.put("itcls", " IN ('3W76','3W79','3W80')");
-        
+        //品号
+        queryParams.put("itnbrgrp" , " NOT IN ('DA01') ");
+        //品号大类
+        queryParams.put("itcls", " IN ('3W76','3W79','3W80')");       
         queryParams.put("itnbrf", " and itnbrf in (select itnbr from [comererp].[dbo].borgrp where itnbrgrp  not like 'KMAT%') ");
 
     }
