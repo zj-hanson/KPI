@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ShipmentTopManagedBean implements Serializable {
 
     @EJB
-    private ClientNowAndPastBean clientrank;
+    protected ClientNowAndPastBean clientrank;
 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
@@ -150,7 +150,15 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
                 getMap().put("n_code_DD", " IN ('00') ");
-                getMap().put("ogdkid", " IN ('RL01') ");                
+                getMap().put("ogdkid", " IN ('RL01') ");
+                break;
+            case "1F330":
+                getMap().put("facno", "C,C4,N,G,J");
+                getMap().put("deptnoname", "制冷产品部");
+                getMap().put("daname", "制冷冷冻");
+                getMap().put("n_code_DA", "= 'R'");
+                getMap().put("n_code_DC", "= 'L'");
+                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1Q000":
                 getMap().put("facno", "C");
@@ -263,7 +271,14 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
-                List<ClientTable> list= clientrank.getClientList(y, m, getMap());
+                String deptno = indicatorChart.getDeptno();
+                List<ClientTable> list = null;
+                if ("1F330".equals(deptno)) {
+                    list = clientrank.getClientListRL(y, m, getMap());
+                } else { 
+                    list = clientrank.getClientList(y, m, getMap());
+                }
+                
                 if (list.size() > 0) {
                     setClientlist(list);
                 } else {
