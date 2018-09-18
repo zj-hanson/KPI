@@ -32,10 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicatorchart")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorChart.findAll", query = "SELECT i FROM IndicatorChart i"),
-    @NamedQuery(name = "IndicatorChart.findById", query = "SELECT i FROM IndicatorChart i WHERE i.id = :id"),
-    @NamedQuery(name = "IndicatorChart.findByCompany", query = "SELECT i FROM IndicatorChart i WHERE i.company = :company"),
-    @NamedQuery(name = "IndicatorChart.findByFormid", query = "SELECT i FROM IndicatorChart i WHERE i.formid = :formid"),
+    @NamedQuery(name = "IndicatorChart.findAll", query = "SELECT i FROM IndicatorChart i")
+    ,
+    @NamedQuery(name = "IndicatorChart.findById", query = "SELECT i FROM IndicatorChart i WHERE i.id = :id")
+    ,
+    @NamedQuery(name = "IndicatorChart.findByCompany", query = "SELECT i FROM IndicatorChart i WHERE i.company = :company")
+    ,
+    @NamedQuery(name = "IndicatorChart.findByFormid", query = "SELECT i FROM IndicatorChart i WHERE i.formid = :formid")
+    ,
     @NamedQuery(name = "IndicatorChart.findByPId", query = "SELECT i FROM IndicatorChart i WHERE i.pid = :pid ORDER BY i.formid")})
 public class IndicatorChart extends SuperEntity {
 
@@ -84,6 +88,9 @@ public class IndicatorChart extends SuperEntity {
     @Size(min = 1, max = 20)
     @Column(name = "pid")
     private String pid;
+    @NotNull
+    @Column(name = "sortid")
+    private int sortid;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -189,6 +196,20 @@ public class IndicatorChart extends SuperEntity {
      */
     public void setPid(String pid) {
         this.pid = pid;
+    }
+
+    /**
+     * @return the sortid
+     */
+    public int getSortid() {
+        return sortid;
+    }
+
+    /**
+     * @param sortid the sortid to set
+     */
+    public void setSortid(int sortid) {
+        this.sortid = sortid;
     }
 
     public String getRemark() {

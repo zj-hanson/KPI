@@ -262,7 +262,7 @@ public class MenuManagedBean implements Serializable {
                 if (indicatorChartList != null && !indicatorChartList.isEmpty()) {
                     //按报表名称重新排序
                     indicatorChartList.sort((IndicatorChart o1, IndicatorChart o2) -> {
-                        if (o1.getName().compareTo(o2.getName()) < 0) {
+                        if (o1.getSortid() <= o2.getSortid()) {
                             return -1;
                         } else {
                             return 1;
