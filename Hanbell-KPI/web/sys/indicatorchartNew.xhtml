@@ -25,7 +25,7 @@
                     </p:row>
                 </f:facet>
                 <p:row>
-                   <p:column styleClass="Wid20"><p:outputLabel value="指标编号" for="formid"/></p:column>
+                    <p:column styleClass="Wid20"><p:outputLabel value="指标编号" for="formid"/></p:column>
                     <p:column styleClass="Wid30">
                         <p:inputText id="formid" value="#{indicatorChartManagedBean.newEntity.formid}" title="formid"
                                      required="true" requiredMessage="请输入指标编号"/>
@@ -64,8 +64,13 @@
                 </p:row>
                 <p:row>
                     <p:column><p:outputLabel value="备注" for="remark" /></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <p:inputText id="remark" value="#{indicatorChartManagedBean.newEntity.remark}" title="Remark" />
+                    </p:column>
+                    <p:column><p:outputLabel value="排序" for="sortid" /></p:column>
+                    <p:column>
+                        <p:inputText id="sortid" value="#{indicatorChartManagedBean.newEntity.sortid}" title="sortid"
+                                     required="true" requiredMessage="请输入指标顺序"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

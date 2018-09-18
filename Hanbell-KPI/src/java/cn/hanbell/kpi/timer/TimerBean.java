@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import javax.ejb.DependsOn;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.ScheduleExpression;
