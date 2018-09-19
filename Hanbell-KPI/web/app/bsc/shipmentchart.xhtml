@@ -10,7 +10,15 @@
         <h:form id="formOne">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
-                    <div><h3 style="text-align: center"><span style="float: left">单位:#{shipmentChartReportBean.indicator.unit}</span>#{shipmentChartReportBean.y} #{shipmentChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
+                    <div><h3 style="text-align: center">
+                            <span style="float: left">单位:#{shipmentChartReportBean.indicator.unit}</span>#{shipmentChartReportBean.y} #{shipmentChartReportBean.indicatorChart.name}
+                            <p:link value="返回" outcome="home" style="float: right"/>
+                            <p:selectOneRadio id="scale" value="#{shipmentChartReportBean.scale}" label="小数位数" style="float:right">
+                                <f:selectItem itemLabel="0位" itemValue="0" />
+                                <f:selectItem itemLabel="2位" itemValue="2" />
+                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                            </p:selectOneRadio>
+                        </h3></div>
                     <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
                         <f:facet name="header">
                             <p:row>
@@ -203,6 +211,9 @@
         </h:form>
         <script type="text/javascript">
             $(document).ready(function () {
+                setColor();
+            });
+            var setColor = function () {
                 var m = document.getElementById("formOne:m");
                 if (m !== null) {
                     var tr = $("tr.ui-widget-content");
@@ -213,7 +224,7 @@
                         }
                     });
                 }
-            });
+            };
         </script>
     </ui:define>
 

@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -36,6 +38,8 @@ public abstract class SuperQueryBean<T extends BaseEntity> extends SuperSingleMa
     protected SystemGrantPrg currentPrgGrant;
 
     protected Map<String, String[]> params;//页面传参
+
+    protected final Logger log4j = LogManager.getLogger();
 
     /**
      * @param entityClass
