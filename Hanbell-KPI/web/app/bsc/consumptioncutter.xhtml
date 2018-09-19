@@ -27,7 +27,7 @@
                                 <p:column>10月</p:column>
                                 <p:column>11月</p:column>
                                 <p:column>12月</p:column>
-                                <p:column>平均</p:column>
+                                <p:column>累计/年平均</p:column>
                             </p:row>
                         </f:facet>                        
                         <p:row style="text-align: right;font-weight: 800;">
@@ -48,114 +48,120 @@
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
                             <p:column>基準</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.n12,12)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.benchmarkIndicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other1Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other1Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>    
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other2Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other2Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other3Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other3Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other3Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other4Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other4Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other4Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other5Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other5Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other5Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;#{(shipmentChartReportBean.indicator.other6Label == null)?'display:none':'' } ">
                             <p:column>#{shipmentChartReportBean.indicator.other6Label}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n01)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n02)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n03)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n04)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n05)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n06)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n07)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n08)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n09)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n10)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n11)}</p:column>
-                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other6Indicator.nsy(),0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800;">
