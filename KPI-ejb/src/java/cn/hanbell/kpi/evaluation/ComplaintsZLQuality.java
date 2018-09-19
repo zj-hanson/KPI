@@ -25,7 +25,7 @@ public class ComplaintsZLQuality extends Complaints {
         StringBuilder varnr = new StringBuilder();
         String mis = map.get("mis") != null ? map.get("mis").toString() : ""; //MJS（3/6/12）
         int count = Integer.parseInt(mis);
-        ComplaintsQualityKSZL mKS = new ComplaintsQualityKSZL();
+        ComplaintsQualityOrder mKS = new ComplaintsQualityOrder();
         varnr.append(" in(");
         List<String> list = mKS.getValue(y, m, d, type, map);
         List<String> newlist = new ArrayList<>();

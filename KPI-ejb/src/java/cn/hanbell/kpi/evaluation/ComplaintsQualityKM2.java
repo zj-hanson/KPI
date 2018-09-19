@@ -8,14 +8,16 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 空气源移动平均出货台数
  */
-public class ComplaintsQualityR extends ComplaintsQuality {
+public class ComplaintsQualityKM2 extends ComplaintsQuality {
 
-    public ComplaintsQualityR() {
+    public ComplaintsQualityKM2() {
         super();
         queryParams.put("facno", "C");
         //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DA", " ='RT' ");
+        queryParams.put("n_code_DC", "in ('WL') ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 }

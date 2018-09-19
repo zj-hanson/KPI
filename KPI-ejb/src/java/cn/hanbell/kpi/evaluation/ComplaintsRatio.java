@@ -21,7 +21,7 @@ public abstract class ComplaintsRatio extends Complaints {
     //获得当月的移动平均出货台数
     public Double getAvgShip(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        //String decode = map.get("decode") != null ? map.get("decode").toString() : "";移动平均不区分内外销 
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
@@ -30,9 +30,6 @@ public abstract class ComplaintsRatio extends Complaints {
         StringBuilder sb = new StringBuilder();
         sb.append("select isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' and left(d.itnbr,1)='3' ");
         sb.append(" and h.facno='${facno}' ");
-        if (!"".equals(decode)) {
-            sb.append(" and h.decode ='").append(decode).append("' ");
-        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -53,9 +50,6 @@ public abstract class ComplaintsRatio extends Complaints {
         sb.setLength(0);
         sb.append("select isnull(sum(d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W'  and left(d.itnbr,1)='3' ");
         sb.append(" and h.facno='${facno}' ");
-        if (!"".equals(decode)) {
-            sb.append(" and h.decode ='").append(decode).append("' ");
-        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }

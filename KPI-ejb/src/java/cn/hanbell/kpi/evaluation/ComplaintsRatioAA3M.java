@@ -22,18 +22,18 @@ import javax.naming.NamingException;
  *
  * @author C1749
  */
-public class ComplaintsRatioR6M extends ComplaintsRatio {
+public class ComplaintsRatioAA3M extends ComplaintsRatio {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ComplaintsRatioR6M() {
+    public ComplaintsRatioAA3M() {
         super();
         queryParams.put("formid", "KS-冷媒Mis");
         queryParams.put("deptno", "1M000");
-        queryParams.put("mis", "6");
+        queryParams.put("mis", "3");
         queryParams.put("facno", "C");
         //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DD", " ='00' ");
 
     }

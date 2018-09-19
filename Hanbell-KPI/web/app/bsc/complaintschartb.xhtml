@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center"><span style="float: left">单位:#{shipmentChartReportBean.indicator.unit}</span>#{shipmentChartReportBean.y}#{shipmentChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
+                        <f:facet name="header">
+                            <p:row style="font-weight: 600;">
+                                <p:column>名称</p:column>
+                                <p:column>1月</p:column>
+                                <p:column>2月</p:column>
+                                <p:column>3月</p:column>
+                                <p:column>4月</p:column>
+                                <p:column>5月</p:column>
+                                <p:column>6月</p:column>
+                                <p:column>7月</p:column>
+                                <p:column>8月</p:column>
+                                <p:column>9月</p:column>
+                                <p:column>10月</p:column>
+                                <p:column>11月</p:column>
+                                <p:column>12月</p:column>
+                                <p:column>年移动平均</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>基准值</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n01)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n02)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n03)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n04)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n05)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n06)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n07)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n08)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n09)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.n12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.benchmarkIndicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row style="text-align: right;font-weight: 800;">
+                            <p:column>目标值</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800;">
+                            <p:column>实际值</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n01,1)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n02,2)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n03,3)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n04,4)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n05,5)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n06,6)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n07,7)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n08,8)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n09,9)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n10,10)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n11,11)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n12,12)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                 <div class="ui-g-12 ui-md-12">
+                    <p:chart type="line" model="#{shipmentChartReportBean.initLineChartModel('月份','指标')}" style="height:300px"
+                             responsive="true" >
+                        <p:ajax process="@this" oncomplete="alert('11');"/>
+                    </p:chart>
+                </div>  
+                <div><h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden></div>
+            </div>
+        </h:form>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var m = document.getElementById("formOne:m");
+                if (m !== null) {
+                    var tr = $("tr.ui-widget-content");
+                    $(tr).each(function (i, t) {
+                        var c = $(t).find("td.ui-panelgrid-cell")[m.value];
+                        if (c !== null) {
+                            $(c).css("color", "red");
+                        }
+                    });
+                }
+            });
+        </script>
+    </ui:define>
+
+</ui:composition>

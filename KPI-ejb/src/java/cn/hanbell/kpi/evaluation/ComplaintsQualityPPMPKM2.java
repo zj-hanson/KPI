@@ -6,15 +6,15 @@
 package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.ejb.IndicatorBean;
-import java.lang.reflect.Field;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.LinkedHashMap;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -23,13 +23,12 @@ import javax.naming.NamingException;
  *
  * @author C1749
  */
-public class ComplaintsQualityPPM extends Complaints {
-
+public class ComplaintsQualityPPMPKM2 extends Complaints{
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ComplaintsQualityPPM() {
+    public ComplaintsQualityPPMPKM2() {
         super();
-        queryParams.put("formid", "KS-冷媒");
+        queryParams.put("formid", "KS-空气源机组");
         queryParams.put("deptno", "1M000");
     }
 
@@ -39,7 +38,6 @@ public class ComplaintsQualityPPM extends Complaints {
         String mon;
         Field f;
         double t = 0;
-        BigDecimal v1 = null;
         Double a1, a2;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail a = i.getActualIndicator();
@@ -55,11 +53,11 @@ public class ComplaintsQualityPPM extends Complaints {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());  
             if(a2 != 0){
-                t = (a1 / a2) * 1000000;
+                t = (a1 / a2) * 100;
                 System.out.println(t);
-                return  BigDecimal.valueOf(t).divide(BigDecimal.ONE, 4, RoundingMode.HALF_UP);
+                return  BigDecimal.valueOf(t).divide(BigDecimal.ONE, 3, RoundingMode.HALF_UP);
             }else{
-                System.out.println("移动平均数为0");
+                System.out.println("");
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,5 +74,5 @@ public class ComplaintsQualityPPM extends Complaints {
             throw new RuntimeException(ne);
         }
     }
-
+    
 }

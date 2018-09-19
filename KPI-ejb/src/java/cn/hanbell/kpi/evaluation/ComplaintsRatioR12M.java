@@ -32,7 +32,7 @@ public class ComplaintsRatioR12M extends ComplaintsRatio {
         queryParams.put("deptno", "1M000");
         queryParams.put("mis", "12");
         queryParams.put("facno", "C");
-        queryParams.put("decode", "1");
+        //queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");
 

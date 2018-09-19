@@ -23,12 +23,12 @@ import javax.naming.NamingException;
  *
  * @author C1749
  */
-public class ComplaintsQualityPPMPercent extends Complaints{
+public class ComplaintsQualityPPMPKM1 extends Complaints{
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ComplaintsQualityPPMPercent() {
+    public ComplaintsQualityPPMPKM1() {
         super();
-        queryParams.put("formid", "KS-冷媒");
+        queryParams.put("formid", "KS-柯茂水冷机组");
         queryParams.put("deptno", "1M000");
     }
 
@@ -38,7 +38,6 @@ public class ComplaintsQualityPPMPercent extends Complaints{
         String mon;
         Field f;
         double t = 0;
-        BigDecimal v1 = null;
         Double a1, a2;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail a = i.getActualIndicator();

@@ -6,14 +6,15 @@
 package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.ejb.IndicatorBean;
+import java.lang.reflect.Field;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.LinkedHashMap;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,39 +23,43 @@ import javax.naming.NamingException;
  *
  * @author C1749
  */
-public class ComplaintsRatioR6M extends ComplaintsRatio {
+public class ComplaintsQualityPPMAH extends Complaints {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public ComplaintsRatioR6M() {
+    public ComplaintsQualityPPMAH() {
         super();
-        queryParams.put("formid", "KS-冷媒Mis");
+        queryParams.put("formid", "KS-机体保内");
         queryParams.put("deptno", "1M000");
-        queryParams.put("mis", "6");
-        queryParams.put("facno", "C");
-        //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DD", " ='00' ");
-
     }
 
+    //Other1(客诉) Other2 （移动平均）
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
         Field f;
-        BigDecimal v1;
-        Double a1;
+        double t = 0;
+        Double a1, a2;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
+        IndicatorDetail a = i.getActualIndicator();
         IndicatorDetail o1 = i.getOther1Indicator();
+        IndicatorDetail o2 = i.getOther2Indicator();
         try {
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a1 = Double.valueOf(f.get(o1).toString());
 
-            v1 = BigDecimal.valueOf(a1 / (super.getsumAvgShip(y, m, d, type, map)) * 100);
-
-            return v1;
+            f = o2.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a2 = Double.valueOf(f.get(o2).toString());  
+            if(a2 != 0){
+                t = (a1 / a2) * 1000000;
+                System.out.println(t);
+                return  BigDecimal.valueOf(t).divide(BigDecimal.ONE, 4, RoundingMode.HALF_UP);
+            }else{
+                System.out.println("移动平均数为0");
+            }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
         }

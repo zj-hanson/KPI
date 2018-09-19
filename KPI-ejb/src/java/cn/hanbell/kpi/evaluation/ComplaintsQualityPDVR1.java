@@ -7,15 +7,17 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1749
+ * @author C0160
  */
-public class ComplaintsQualityR extends ComplaintsQuality {
-
-    public ComplaintsQualityR() {
+public class ComplaintsQualityPDVR1 extends ComplaintsQuality {
+    //真空干泵年移动平均台数接口
+    public ComplaintsQualityPDVR1() {
         super();
         queryParams.put("facno", "C");
-        //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        //queryParams.put("deptno", " '1H000','1H100' ");
+        queryParams.put("n_code_DA", " ='P' ");
+        queryParams.put("n_code_DC", " ='DVR' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
+
 }

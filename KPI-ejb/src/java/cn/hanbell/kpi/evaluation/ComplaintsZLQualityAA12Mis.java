@@ -9,13 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class ComplaintsZLQualityR12Mis  extends ComplaintsZLQuality{
+public class ComplaintsZLQualityAA12Mis  extends ComplaintsZLQuality{
 
-    public ComplaintsZLQualityR12Mis() {
+    public ComplaintsZLQualityAA12Mis() {
         super();
-        queryParams.put("BQ197", "%R%");
-        queryParams.put("BQ003", " in ('RLM') ");
-        queryParams.put("BQ134", " in ('YX')  ");
+        queryParams.put("BQ197", "%AA%");
+        queryParams.put("BQ003"," in ('AJZ') ");
+        queryParams.put("BQ134", " in ('YX','-1') ");
         queryParams.put("mis","12");
     }
     

@@ -8,14 +8,13 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 离心机体客诉台数
  */
-public class ComplaintsQualityR extends ComplaintsQuality {
+public class ComplaintsQualityPenKM4 extends ComplaintsQualityPen {
 
-    public ComplaintsQualityR() {
+    public ComplaintsQualityPenKM4() {
         super();
-        queryParams.put("facno", "C");
-        //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("BQ197", "%CM%");
+        queryParams.put("BQ003"," in ('RTZ') ");
     }
 }

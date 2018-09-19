@@ -8,15 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
- * 3mis台数
  */
-public class ComplaintsZLQualityR3Mis  extends ComplaintsZLQuality{
+public class ComplaintsZLQualityAA3Mis  extends ComplaintsZLQuality{
 
-    public ComplaintsZLQualityR3Mis() {
+    public ComplaintsZLQualityAA3Mis() {
         super();
-        queryParams.put("BQ197", "%R%");
-        queryParams.put("BQ003", " in ('RLM') ");
-        queryParams.put("BQ134", " in ('YX')  ");
+        queryParams.put("BQ197", "%AA%");
+        queryParams.put("BQ003"," in ('AJZ') ");
+        queryParams.put("BQ134", " in ('YX','-1') ");
         queryParams.put("mis", "3");
     }
     

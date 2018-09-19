@@ -8,14 +8,13 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 柯茂ORC客诉接口
  */
-public class ComplaintsQualityR extends ComplaintsQuality {
+public class ComplaintsQualityPenKM3 extends ComplaintsQualityPen {
 
-    public ComplaintsQualityR() {
+    public ComplaintsQualityPenKM3() {
         super();
-        queryParams.put("facno", "C");
-        //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("BQ197", "%KM%");
+        queryParams.put("BQ003"," in ('BAZ','ORC') ");
     }
 }

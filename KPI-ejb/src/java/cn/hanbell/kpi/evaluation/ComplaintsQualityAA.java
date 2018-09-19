@@ -9,13 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class ComplaintsQualityR extends ComplaintsQuality {
+public class ComplaintsQualityAA extends ComplaintsQuality {
 
-    public ComplaintsQualityR() {
+    public ComplaintsQualityAA() {
         super();
         queryParams.put("facno", "C");
         //queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 }
