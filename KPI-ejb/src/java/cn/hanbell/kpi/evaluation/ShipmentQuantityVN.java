@@ -31,10 +31,9 @@ public class ShipmentQuantityVN extends ShipmentQuantity {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         BigDecimal shpqy1 = BigDecimal.ZERO;
         BigDecimal bshpqy1 = BigDecimal.ZERO;
-
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" select isnull(sum(d.shpqy1),0) from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno  ");
+        sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
         sb.append(" and h.facno='${facno}' ");
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
@@ -53,8 +52,8 @@ public class ShipmentQuantityVN extends ShipmentQuantity {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        sb.append("select sum(0-isnull(d.bshpqy1,0)) from cdrhmas e,cdrbhad h right join [vnerp1].[dbo].cdrbdta d on h.bakno=d.bakno ");
-        sb.append(" where  h.baksta <> 'W' and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
+        sb.append(" select isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
+        sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
         sb.append(" and h.facno='${facno}' ");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
@@ -78,8 +77,8 @@ public class ShipmentQuantityVN extends ShipmentQuantity {
         try {
             Object o1 = query1.getSingleResult();
             Object o2 = query2.getSingleResult();
-            shpqy1 = (BigDecimal) o1;
-            bshpqy1 = (BigDecimal) o2;
+            shpqy1 = BigDecimal.valueOf(Double.valueOf(o1.toString()));
+            bshpqy1 = BigDecimal.valueOf(Double.valueOf(o2.toString()));
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }

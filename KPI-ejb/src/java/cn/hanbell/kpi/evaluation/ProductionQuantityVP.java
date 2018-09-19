@@ -23,7 +23,9 @@ public class ProductionQuantityVP extends ProductionQuantity {
         //*生产线别
         queryParams.put("linecode", " = 'VP' ");
         //制令种类
-        queryParams.put("mankind", "");
+        queryParams.put("mankind", "");       
+        //品号大类
+        queryParams.put("itcls", "  IN ('3376','3379','3380','3476','3479','3480') ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
     

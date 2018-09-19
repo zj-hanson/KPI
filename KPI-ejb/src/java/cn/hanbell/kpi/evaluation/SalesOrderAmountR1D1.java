@@ -5,11 +5,15 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 /**
  *
  * @author C1879
  */
-public class SalesOrderAmountR1D1 extends SalesOrderAmount{
+public class SalesOrderAmountR1D1 extends SalesOrderAmount {
 
     public SalesOrderAmountR1D1() {
         super();
@@ -21,5 +25,16 @@ public class SalesOrderAmountR1D1 extends SalesOrderAmount{
         queryParams.put("n_code_DC", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-    
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal amount1, amount2;
+        amount1 = super.getValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.remove("n_code_CD");
+        queryParams.put("fanco", "G");
+        amount2 = super.getValue(y, m, d, type, map);
+        return amount1.add(amount2);
+    }
+
 }

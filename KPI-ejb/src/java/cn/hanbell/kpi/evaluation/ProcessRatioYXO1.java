@@ -15,9 +15,9 @@ public class ProcessRatioYXO1 extends ProcessRatio {
     public ProcessRatioYXO1() {
         super();
         //*责任单位
-        queryParams.put("RESPONSIBILITYDP", " IN('圆型加工课') ");
+        queryParams.put("RESPONSIBILITYDP", " IN ('圆型加工课') ");
         //*检验判断结果
-        queryParams.put("ANALYSISJUDGEMENTRESULT", " IN ('特采','自行重工') ");
+        queryParams.put("ANALYSISJUDGEMENTRESULT", " IN ('特采','就地报废','自行重工') ");
         queryParams.put("stats", "YX");
     }
 }

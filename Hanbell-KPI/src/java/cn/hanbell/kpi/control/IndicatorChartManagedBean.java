@@ -26,6 +26,9 @@ public class IndicatorChartManagedBean extends SuperSingleBean<IndicatorChart> {
     @EJB
     private IndicatorChartBean indicatorChartBean;
 
+    private String queryDeptno;
+    private String queryDeptname;
+
     public IndicatorChartManagedBean() {
         super(IndicatorChart.class);
     }
@@ -59,6 +62,53 @@ public class IndicatorChartManagedBean extends SuperSingleBean<IndicatorChart> {
         this.superEJB = indicatorChartBean;
         this.model = new IndicatorChartModel(indicatorChartBean, userManagedBean);
         super.init();
+    }
+
+    @Override
+    public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFormId != null && !"".equals(queryFormId)) {
+                model.getFilterFields().put("formid", queryFormId);
+            }
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("name", queryName);
+            }
+            if (queryDeptno != null && !"".equals(queryDeptno)) {
+                model.getFilterFields().put("deptno", queryDeptno);
+            }
+            if (queryDeptname != null && !"".equals(queryDeptname)) {
+                model.getFilterFields().put("deptname", queryDeptname);
+            }
+        }
+    }
+
+    /**
+     * @return the queryDeptno
+     */
+    public String getQueryDeptno() {
+        return queryDeptno;
+    }
+
+    /**
+     * @param queryDeptno the queryDeptno to set
+     */
+    public void setQueryDeptno(String queryDeptno) {
+        this.queryDeptno = queryDeptno;
+    }
+
+    /**
+     * @return the queryDeptname
+     */
+    public String getQueryDeptname() {
+        return queryDeptname;
+    }
+
+    /**
+     * @param queryDeptname the queryDeptname to set
+     */
+    public void setQueryDeptname(String queryDeptname) {
+        this.queryDeptname = queryDeptname;
     }
 
 }

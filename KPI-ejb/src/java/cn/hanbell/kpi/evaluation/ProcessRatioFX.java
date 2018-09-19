@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -52,7 +53,11 @@ public class ProcessRatioFX extends ProcessQuantity {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100);
+            if (a2 == 0.00) {
+                v1 = BigDecimal.valueOf(0);
+            } else {
+                v1 = BigDecimal.valueOf((a2 - a1) / a2 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
+            }
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

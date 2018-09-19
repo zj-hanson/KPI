@@ -7,6 +7,7 @@ package cn.hanbell.kpi.evaluation;
 
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -62,7 +63,7 @@ public class ProcessQuantity extends  Process{
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
-            attqty1 = (BigDecimal) o;
+            attqty1 =  BigDecimal.valueOf(Double.valueOf(o.toString())).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
         } catch (Exception e) {
              Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }

@@ -53,7 +53,7 @@ public class WXShipmentMailBean extends ShipmentMail {
             if (i.isAssigned()) {
                 continue;
             }
-            if (i.getFormid().startsWith("Q")) {
+            if (i.getFormid().startsWith("Q") && !i.getFormid().contains("订单")) {
                 indicators.add(i);
             }
         }
@@ -71,7 +71,7 @@ public class WXShipmentMailBean extends ShipmentMail {
             if (i.isAssigned()) {
                 continue;
             }
-            if (i.getFormid().startsWith("A")) {
+            if (i.getFormid().startsWith("A") && !i.getFormid().contains("订单")) {
                 indicators.add(i);
             }
         }

@@ -115,9 +115,11 @@
                 </p:column>
                 <p:column styleClass="Wid10">
                     <f:facet name="header">
-                        <h:outputText value="状态"/>
+                        <h:outputText value="日期"/>
                     </f:facet>
-                    <h:outputText value="#{item.status}"/>
+                    <h:outputText value="#{item.freezeDate}">
+                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                    </h:outputText>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

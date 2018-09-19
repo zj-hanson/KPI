@@ -16,8 +16,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -55,6 +53,8 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     protected int y;
     protected int m;
+
+    protected int scale;
 
     public BscChartManagedBean() {
         super(Indicator.class);
@@ -148,7 +148,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
                 setMethod.invoke(AG, v);
             }
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
+            log4j.error("bscReportManagedBean", ex);
         }
 
         chartModel = new LineChartModel();
@@ -456,6 +456,27 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
      */
     public int getM() {
         return m;
+    }
+
+    /**
+     * @return the scale
+     */
+    public int getScale() {
+        return scale;
+    }
+
+    /**
+     * @param scale the scale to set
+     */
+    public void setScale(int scale) {
+        this.scale = scale;
+        if (scale == 2) {
+            this.decimalFormat.applyPattern("###,###.00");
+            this.construct();
+        } else {
+            this.decimalFormat.applyPattern("###,###");
+            this.construct();
+        }
     }
 
     /**
