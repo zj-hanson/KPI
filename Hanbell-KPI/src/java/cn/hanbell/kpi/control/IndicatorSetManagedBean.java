@@ -6,19 +6,24 @@
 package cn.hanbell.kpi.control;
 
 import cn.hanbell.eap.entity.Department;
+import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorAssignmentBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
 import cn.hanbell.kpi.ejb.IndicatorDetailBean;
 import cn.hanbell.kpi.ejb.IndicatorSetBean;
+import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorAssignment;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.entity.IndicatorSet;
+import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti3Bean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +50,18 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
     protected IndicatorDetailBean indicatorDetailBean;
     @EJB
     protected IndicatorSetBean indicatorSetBean;
+    @EJB
+    protected IndicatorAnalysisBean indicatorAnalysisBean;
+    @EJB
+    protected IndicatorSummaryBean indicatorSummaryBean;
+
+    protected IndicatorAnalysis indicatorAnalysis;
+    protected IndicatorSummary indicatorSummary;
+
+    protected List<IndicatorAnalysis> analysisList;
+    protected List<IndicatorSummary> summaryList;
+
+    protected Calendar c;
 
     protected String queryDeptno;
     protected String queryDeptname;
@@ -52,6 +69,9 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
 
     public IndicatorSetManagedBean() {
         super(Indicator.class, IndicatorDepartment.class, IndicatorAssignment.class, IndicatorSet.class);
+        summaryList = new ArrayList<>();
+        analysisList = new ArrayList<>();
+        c = Calendar.getInstance();
     }
 
     public void calcActual() {
@@ -130,6 +150,52 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         newDetail2.setLimited(currentEntity.isLimited());
         newDetail2.setApi(currentEntity.getApi());
         newDetail2.setStatus("N");
+    }
+
+    public void createIndicatorAnalysis() {
+        if (currentEntity == null) {
+            showErrorMsg("Error", "没有选择任何对象");
+            return;
+        }
+        setIndicatorAnalysis(new IndicatorAnalysis());
+        getIndicatorAnalysis().setPid(currentEntity.getId());
+        getIndicatorAnalysis().setM(c.get(Calendar.MONTH) + 1);
+        getIndicatorAnalysis().setSeq(this.getMaxSeq(analysisList));
+    }
+
+    public void createIndicatorSummary() {
+        if (currentEntity == null) {
+            showErrorMsg("Error", "没有选择任何对象");
+            return;
+        }
+        setIndicatorSummary(new IndicatorSummary());
+        indicatorSummary.setPid(currentEntity.getId());
+        indicatorSummary.setM(c.get(Calendar.MONTH) + 1);
+        indicatorSummary.setSeq(this.getMaxSeq(summaryList));
+    }
+
+    public void deleteIndicatorAnalysis() {
+        if (indicatorAnalysis != null) {
+            analysisList.remove(indicatorAnalysis);
+            try {
+                indicatorAnalysisBean.delete(indicatorAnalysis);
+                showInfoMsg("Info", "删除成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
+    }
+
+    public void deleteIndicatorSummary() {
+        if (indicatorSummary != null) {
+            summaryList.remove(indicatorSummary);
+            try {
+                indicatorSummaryBean.delete(indicatorSummary);
+                showInfoMsg("Info", "删除成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
     }
 
     @Override
@@ -280,7 +346,6 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
         model.getFilterFields().put("objtype =", "D");
-        Calendar c = Calendar.getInstance();
         c.setTime(userManagedBean.getBaseDate());
         queryYear = c.get(Calendar.YEAR);
         super.init();
@@ -355,6 +420,38 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         queryName = null;
         queryDeptno = null;
         queryDeptname = null;
+    }
+
+    public void updateIndicatorAnalysis() {
+        if (indicatorAnalysis != null) {
+            try {
+                if (indicatorAnalysis.getId() == null) {
+                    analysisList.add(indicatorAnalysis);
+                    indicatorAnalysisBean.persist(indicatorAnalysis);
+                } else {
+                    indicatorAnalysisBean.update(indicatorAnalysis);
+                }
+                showInfoMsg("Info", "更新成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
+    }
+
+    public void updateIndicatorSummary() {
+        if (indicatorSummary != null) {
+            try {
+                if (indicatorSummary.getId() == null) {
+                    summaryList.add(indicatorSummary);
+                    indicatorSummaryBean.persist(indicatorSummary);
+                } else {
+                    indicatorSummaryBean.update(indicatorSummary);
+                }
+                showInfoMsg("Info", "更新成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
     }
 
     public void updateActual() {
@@ -472,6 +569,22 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         }
     }
 
+    @Override
+    public void setCurrentEntity(Indicator currentEntity) {
+        super.setCurrentEntity(currentEntity);
+        if (currentEntity != null && currentEntity.getId() != null) {
+            summaryList = indicatorSummaryBean.findByPId(currentEntity.getId());
+            analysisList = indicatorAnalysisBean.findByPId(currentEntity.getId());
+        } else {
+            if (summaryList != null) {
+                summaryList.clear();
+            }
+            if (analysisList != null) {
+                analysisList.clear();
+            }
+        }
+    }
+
     /**
      * @return the queryDeptno
      */
@@ -512,6 +625,62 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
      */
     public void setQueryYear(int queryYear) {
         this.queryYear = queryYear;
+    }
+
+    /**
+     * @return the indicatorAnalysis
+     */
+    public IndicatorAnalysis getIndicatorAnalysis() {
+        return indicatorAnalysis;
+    }
+
+    /**
+     * @param indicatorAnalysis the indicatorAnalysis to set
+     */
+    public void setIndicatorAnalysis(IndicatorAnalysis indicatorAnalysis) {
+        this.indicatorAnalysis = indicatorAnalysis;
+    }
+
+    /**
+     * @return the indicatorSummary
+     */
+    public IndicatorSummary getIndicatorSummary() {
+        return indicatorSummary;
+    }
+
+    /**
+     * @param indicatorSummary the indicatorSummary to set
+     */
+    public void setIndicatorSummary(IndicatorSummary indicatorSummary) {
+        this.indicatorSummary = indicatorSummary;
+    }
+
+    /**
+     * @return the analysisList
+     */
+    public List<IndicatorAnalysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    /**
+     * @param analysisList the analysisList to set
+     */
+    public void setAnalysisList(List<IndicatorAnalysis> analysisList) {
+        this.analysisList = analysisList;
+    }
+
+    /**
+     * @return the summaryList
+     */
+    public List<IndicatorSummary> getSummaryList() {
+        return summaryList;
+    }
+
+    /**
+     * @param summaryList the summaryList to set
+     */
+    public void setSummaryList(List<IndicatorSummary> summaryList) {
+        this.summaryList = summaryList;
     }
 
 }
