@@ -5,16 +5,21 @@
  */
 package cn.hanbell.kpi.web;
 
+import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
+import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.entity.IndicatorSummary;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,9 +39,12 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     @EJB
     protected IndicatorBean indicatorBean;
-
     @EJB
     protected IndicatorChartBean indicatorChartBean;
+    @EJB
+    protected IndicatorAnalysisBean indicatorAnalysisBean;
+    @EJB
+    protected IndicatorSummaryBean indicatorSummaryBean;
 
     protected Indicator indicator;
     protected IndicatorChart indicatorChart;
@@ -50,6 +58,11 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected final DecimalFormat decimalFormat;
     protected final DecimalFormat decimalFormatdouble;
     protected LineChartModel chartModel;
+
+    protected List<IndicatorAnalysis> analysisList;
+    protected List<IndicatorSummary> summaryList;
+    protected int analysisCount;
+    protected int summaryCount;
 
     protected int y;
     protected int m;
@@ -323,6 +336,17 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         getChartModel().setLegendPosition("e");
         getChartModel().setShowPointLabels(true);
         getChartModel().setBreakOnNull(true);
+
+        //根据指标ID加载指标说明、指标分析
+        analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
+        if (analysisList != null) {
+            this.analysisCount = analysisList.size();
+        }
+        summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
+        if (summaryList != null) {
+            this.summaryCount = summaryList.size();
+        }
+
     }
 
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
@@ -483,6 +507,34 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
      */
     public LineChartModel getChartModel() {
         return chartModel;
+    }
+
+    /**
+     * @return the analysisList
+     */
+    public List<IndicatorAnalysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    /**
+     * @return the summaryList
+     */
+    public List<IndicatorSummary> getSummaryList() {
+        return summaryList;
+    }
+
+    /**
+     * @return the analysisCount
+     */
+    public int getAnalysisCount() {
+        return analysisCount;
+    }
+
+    /**
+     * @return the summaryCount
+     */
+    public int getSummaryCount() {
+        return summaryCount;
     }
 
 }
