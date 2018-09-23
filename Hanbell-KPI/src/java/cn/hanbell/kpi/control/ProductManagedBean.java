@@ -40,6 +40,8 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
             }
         }
         detailList = detailEJB.findByPId(id);
+        summaryList = indicatorSummaryBean.findByPId(id);
+        analysisList = indicatorAnalysisBean.findByPId(id);
         this.doEdit = true;
     }
 

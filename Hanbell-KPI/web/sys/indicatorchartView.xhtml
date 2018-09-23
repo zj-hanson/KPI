@@ -64,8 +64,12 @@
                 </p:row>
                 <p:row>
                     <p:column><h:outputText value="备注"/></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <h:outputText id="remark" value="#{indicatorChartManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                    <p:column><h:outputText value="排序"/></p:column>
+                    <p:column>
+                        <h:outputText id="sortid" value="#{indicatorChartManagedBean.currentEntity.sortid}" title="sortid"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
