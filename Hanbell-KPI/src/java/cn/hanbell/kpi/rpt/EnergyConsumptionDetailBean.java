@@ -9,6 +9,8 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import cn.hanbell.kpi.web.BscSheetManagedBean;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class EnergyConsumptionDetailBean extends BscSheetManagedBean {
 
+    protected final DecimalFormat Format;
+    protected final DecimalFormat DoubleFormat;
+
     public EnergyConsumptionDetailBean() {
+        this.Format = new DecimalFormat("#,###");
+        this.DoubleFormat = new DecimalFormat("0.00");
     }
 
     @Override
@@ -96,6 +103,41 @@ public class EnergyConsumptionDetailBean extends BscSheetManagedBean {
 
         }
 
+    }
+
+    @Override
+    public String format(BigDecimal value, int i) {
+        if (value == null) {
+            return "";
+        } else if (i <= m) {
+            return DoubleFormat.format(value);
+        } else if (value.compareTo(BigDecimal.ZERO) == 0) {
+            return "";
+        } else {
+            return DoubleFormat.format(value);
+        }
+    }
+
+    @Override
+    public String format(String type, BigDecimal value, int i) {
+        switch (type) {
+            case "吨标煤/万元产值":
+            case "能耗达标率":
+            case "实际（吨标煤/万元产值）":
+            case "基准（吨标煤/万元产值）":
+            case "目标（吨标煤/万元产值）":
+                return format(value, i);
+            default:
+                if (value == null) {
+                    return "";
+                } else if (i <= m) {
+                    return Format.format(value);
+                } else if (value.compareTo(BigDecimal.ZERO) == 0) {
+                    return "";
+                } else {
+                    return Format.format(value);
+                }
+        }
     }
 
 }
