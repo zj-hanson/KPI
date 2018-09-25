@@ -24,6 +24,7 @@ public abstract class ComplaintsRatio extends Complaints {
         //String decode = map.get("decode") != null ? map.get("decode").toString() : "";移动平均不区分内外销 
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
+        String dmark1 = map.get("dmark1") != null ? map.get("dmark1").toString() : "";//机型别
 
         Double avgShip = 0.0;
         Double num1, num2;
@@ -35,6 +36,9 @@ public abstract class ComplaintsRatio extends Complaints {
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and dmark1 ").append(dmark1);
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(d);
@@ -74,7 +78,7 @@ public abstract class ComplaintsRatio extends Complaints {
             num2 = Double.parseDouble(o2.toString());
             avgShip = (num1 - num2) / 12;
             return avgShip;
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
         return avgShip;

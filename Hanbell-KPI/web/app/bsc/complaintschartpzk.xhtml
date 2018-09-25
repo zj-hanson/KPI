@@ -27,7 +27,7 @@
                                 <p:column>10月</p:column>
                                 <p:column>11月</p:column>
                                 <p:column>12月</p:column>
-                                <p:column>年移动平均比率</p:column>
+                                <p:column>年移动平均</p:column>
                             </p:row>
                         </f:facet>
                         <p:row  style="text-align: right;font-weight: 800">
@@ -45,6 +45,22 @@
                             <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other1Indicator.n11)}</p:column>
                             <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other1Indicator.n12)}</p:column>
                             <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other1Indicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row  style="text-align: right;font-weight: 800">
+                            <p:column>当月销售台数</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n01)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n02)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n03)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n04)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n05)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n06)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n07)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n08)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n09)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n10)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n11)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.n12)}</p:column>
+                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.other3Indicator.nfy)}</p:column>
                         </p:row>
                         <p:row style="text-align: right;font-weight: 800;">
                             <p:column>移动平均销售台数</p:column>
@@ -77,22 +93,6 @@
                             <p:column>#{complaintsChartReportPzkBean.doubleformat(complaintsChartReportPzkBean.indicator.actualIndicator.n11,11)}</p:column>
                             <p:column>#{complaintsChartReportPzkBean.doubleformat(complaintsChartReportPzkBean.indicator.actualIndicator.n12,12)}</p:column>
                             <p:column>#{complaintsChartReportPzkBean.doubleformat(complaintsChartReportPzkBean.indicator.actualIndicator.nfy,0)}</p:column>
-                        </p:row>
-                         <p:row  style="text-align: right;font-weight: 800">
-                            <p:column>客诉累计数</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n01)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n02)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n03)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n04)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n05)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n06)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n07)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n08)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n09)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n10)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n11)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.n12)}</p:column>
-                            <p:column>#{complaintsChartReportPzkBean.format(complaintsChartReportPzkBean.indicator.targetIndicator.nfy)}</p:column>
                         </p:row>
                     </p:panelGrid>
                 </div>
