@@ -298,6 +298,11 @@
             <to-view-id>/app/bsc/energyconsumptionsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>inventoryamountsheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryamountsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>模态开窗</description>

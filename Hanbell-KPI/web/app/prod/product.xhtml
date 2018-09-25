@@ -12,7 +12,7 @@
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="right">
                     <p:commandButton id="btnSave" value="保存" actionListener="#{productManagedBean.update()}" icon="ui-icon-save"
-                                     rendered="#{productManagedBean.doEdit}" update="formOne"/>
+                                     rendered="#{productManagedBean.doEdit}" process="@this,formOne:tabView:plgTarget" update="formOne:tabView"/>
                     <p:commandButton id="btnVerify" value="审核" actionListener="#{productManagedBean.verify()}" icon="ui-icon-check"
                                      rendered="#{productManagedBean.doCfm}" process="@this" update="toolbar">
                         <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
@@ -24,7 +24,7 @@
                 </f:facet>
             </p:toolbar>
             <p:accordionPanel>
-                <p:tab title="产品KPI－查看">
+                <p:tab title="#{productManagedBean.currentEntity.name}-查看">
                     <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
                         <p:row>
                             <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
@@ -490,7 +490,142 @@
                         <p:column styleClass="Wid70"/>
                     </p:dataTable>
                 </p:tab>
+                <p:tab title="指标说明">
+                    <p:toolbar id="summaryToolbar" styleClass="detailToolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="btnAddIndicatorSummary" widgetVar="btnAddIndicatorSummary" value="添加"
+                                             actionListener="#{productManagedBean.createIndicatorSummary()}" icon="ui-icon-plus"
+                                             process="@this" update="formOne:dlgIndicatorSummary" oncomplete="PF('dlgIndicatorSummary').show();"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="summaryList" value="#{productManagedBean.summaryList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{productManagedBean.indicatorSummary}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="formOne:dlgIndicatorSummary" oncomplete="PF('dlgIndicatorSummary').show();" />
+                        <p:ajax event="rowUnselect"  update="formOne:dlgIndicatorSummary" oncomplete="" />
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="月份"/>
+                            </f:facet>
+                            <h:outputText value="#{item.m}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid80">
+                            <f:facet name="header">
+                                <h:outputText value="标题"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="指标分析">
+                    <p:toolbar id="analysisToolbar" styleClass="detailToolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="btnAddIndicatorAnalysis" widgetVar="btnAddIndicatorAnalysis" value="添加"
+                                             actionListener="#{productManagedBean.createIndicatorAnalysis()}" icon="ui-icon-plus"
+                                             process="@this" update="formOne:dlgIndicatorAnalysis" oncomplete="PF('dlgIndicatorAnalysis').show();"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="analysisList" value="#{productManagedBean.analysisList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{productManagedBean.indicatorAnalysis}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="formOne:dlgIndicatorAnalysis" oncomplete="PF('dlgIndicatorAnalysis').show();" />
+                        <p:ajax event="rowUnselect"  update="formOne:dlgIndicatorAnalysis" oncomplete="" />
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="月份"/>
+                            </f:facet>
+                            <h:outputText value="#{item.m}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid80">
+                            <f:facet name="header">
+                                <h:outputText value="标题"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
             </p:tabView>
+            <p:dialog id="dlgIndicatorSummary" widgetVar="dlgIndicatorSummary" width="80%">
+                <p:panelGrid id="plgIndicatorSummary" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">#{productManagedBean.currentEntity.seq}年#{productManagedBean.indicatorSummary.m}月指标说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column styleClass="Wid20"><p:outputLabel value="标题" for="titleSummary" /></p:column>
+                        <p:column styleClass="Wid80">
+                            <p:inputText id="titleSummary" value="#{productManagedBean.indicatorSummary.title}" title="SummaryTitle"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{productManagedBean.indicatorSummary.summary}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer" rendered="#{productManagedBean.doEdit}">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="updateIndicatorSummary"  actionListener="#{productManagedBean.updateIndicatorSummary()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                </p:commandButton>
+                                <p:commandButton id="deleteIndicatorSummary"  actionListener="#{productManagedBean.deleteIndicatorSummary()}" value="删除" icon="ui-icon-trash" style="float: right"
+                                                 process="@this" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                    <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog id="dlgIndicatorAnalysis" widgetVar="dlgIndicatorAnalysis" width="80%">
+                <p:panelGrid id="plgIndicatorAnalysis"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3">#{productManagedBean.currentEntity.seq}年#{productManagedBean.indicatorAnalysis.m}月指标分析</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:inputText id="titleAnalysis" value="#{productManagedBean.indicatorAnalysis.title}" title="AnalysisTitle"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorIssue" value="#{productManagedBean.indicatorAnalysis.issue}" height="500"/>
+                        </p:column>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorFactor" value="#{productManagedBean.indicatorAnalysis.factor}" height="500"/>
+                        </p:column>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorCountermeasure" value="#{productManagedBean.indicatorAnalysis.countermeasure}" height="500"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer" rendered="#{productManagedBean.doEdit}">
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton id="updateIndicatorAnalysis"  actionListener="#{productManagedBean.updateIndicatorAnalysis()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="formOne:dlgIndicatorAnalysis" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">
+                                </p:commandButton>
+                                <p:commandButton id="deleteIndicatorAnalysis"  actionListener="#{productManagedBean.deleteIndicatorAnalysis()}" value="删除" icon="ui-icon-trash" style="float: right"
+                                                 process="@this" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">
+                                    <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -503,7 +638,7 @@
             <h1 style="text-align: center">你想干嘛</h1>
             <h1 style="text-align: center">别没事找事</h1>
             <h1 style="text-align: center">再看我真的生气了</h1>
-            <div class="exception-type" style="text-align: center ">
+            <div class="exception-type" style="text-align: center;">
                 <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
             </div>
         </h:form>
