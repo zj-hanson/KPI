@@ -76,6 +76,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     }
 
     @PostConstruct
+    @Override
     public void construct() {
         fc = FacesContext.getCurrentInstance();
         ec = fc.getExternalContext();

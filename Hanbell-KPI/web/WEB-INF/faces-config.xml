@@ -254,8 +254,18 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>complaintschartb</from-outcome>
+            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>complaintschartc</from-outcome>
             <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartpzk</from-outcome>
+            <to-view-id>/app/bsc/complaintschartpzk.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
