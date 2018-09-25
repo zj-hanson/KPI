@@ -188,7 +188,7 @@
                 </div>
                 <div id="indicatorSummary" class="ui-g-12 ui-md-12">
                     <p:repeat id="repSummary" value="#{shipmentChartReportBean.summaryList}" var="s" rendered="#{shipmentChartReportBean.summaryCount>0}">
-                        <p:panel  id="summaryPanel" header="指标说明" toggleable="true" style="height:min-content">
+                        <p:panel  id="summaryPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid>
                                 <h:outputText id="summary"/>
                                 <h:inputHidden id="hdnSummary" value="#{s.summary}"/>

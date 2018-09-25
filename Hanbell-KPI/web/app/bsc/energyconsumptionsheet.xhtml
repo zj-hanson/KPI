@@ -74,7 +74,7 @@
                     </p:dataTable>
                 </div>           
                 <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repSummary" value="#{shipmentChartReportBean.summaryList}" var="s" rendered="#{shipmentChartReportBean.summaryCount>0}">
+                    <p:repeat id="repSummary" value="#{energyConsumptionDetailBean.summaryList}" var="s" rendered="#{energyConsumptionDetailBean.summaryCount>0}">
                         <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid>
                                 <h:outputText id="summary"/>
@@ -84,7 +84,7 @@
                     </p:repeat>
                 </div>
                 <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repAnalysis" value="#{shipmentChartReportBean.analysisList}" var="a" rendered="#{shipmentChartReportBean.analysisCount>0}">
+                    <p:repeat id="repAnalysis" value="#{energyConsumptionDetailBean.analysisList}" var="a" rendered="#{energyConsumptionDetailBean.analysisCount>0}">
                         <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                                 <h:outputText id="issueLabel" value="问题"/>
@@ -101,9 +101,9 @@
                     </p:repeat>
                 </div>
                 <div>
-                    <h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden>
-                    <h:inputHidden id="sc" value="#{shipmentChartReportBean.summaryCount}"></h:inputHidden>
-                    <h:inputHidden id="ac" value="#{shipmentChartReportBean.analysisCount}"></h:inputHidden>
+                    <h:inputHidden id="m" value="#{energyConsumptionDetailBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{energyConsumptionDetailBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{energyConsumptionDetailBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
             <h:outputScript name="bsc-analysis-sheet.js" library="js"/>

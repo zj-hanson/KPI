@@ -5,13 +5,17 @@
  */
 package cn.hanbell.kpi.web;
 
+import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorSetBean;
+import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.IndicatorSet;
+import cn.hanbell.kpi.entity.IndicatorSummary;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,10 +37,12 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
 
     @EJB
     protected IndicatorBean indicatorBean;
-
     @EJB
     protected IndicatorChartBean indicatorChartBean;
-
+    @EJB
+    protected IndicatorAnalysisBean indicatorAnalysisBean;
+    @EJB
+    protected IndicatorSummaryBean indicatorSummaryBean;
     @EJB
     protected IndicatorSetBean indicatorSetBean;
 
@@ -63,6 +69,11 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     protected List<IndicatorDetail> indicatorDetailList;
 
     protected final DecimalFormat decimalFormat;
+
+    protected List<IndicatorAnalysis> analysisList;
+    protected List<IndicatorSummary> summaryList;
+    protected int analysisCount;
+    protected int summaryCount;
 
     protected int y;
     protected int m;
@@ -318,6 +329,17 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             indicatorDetailList.add(sumBG);
             sumAG.setType("累计成长");
             indicatorDetailList.add(sumAG);
+
+            //根据指标ID加载指标说明、指标分析
+            analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
+            if (analysisList != null) {
+                this.analysisCount = analysisList.size();
+            }
+            summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
+            if (summaryList != null) {
+                this.summaryCount = summaryList.size();
+            }
+
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
             log4j.error("bscReportManagedBean", ex);
         }
@@ -487,6 +509,34 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
      */
     public void setIndicatorDetailList(List<IndicatorDetail> indicatorDetailList) {
         this.indicatorDetailList = indicatorDetailList;
+    }
+
+    /**
+     * @return the analysisList
+     */
+    public List<IndicatorAnalysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    /**
+     * @return the summaryList
+     */
+    public List<IndicatorSummary> getSummaryList() {
+        return summaryList;
+    }
+
+    /**
+     * @return the analysisCount
+     */
+    public int getAnalysisCount() {
+        return analysisCount;
+    }
+
+    /**
+     * @return the summaryCount
+     */
+    public int getSummaryCount() {
+        return summaryCount;
     }
 
 }
