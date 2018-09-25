@@ -103,6 +103,16 @@ public class EnergyConsumptionDetailBean extends BscSheetManagedBean {
 
         }
 
+        //根据指标ID加载指标说明、指标分析
+        analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
+        if (analysisList != null) {
+            this.analysisCount = analysisList.size();
+        }
+        summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
+        if (summaryList != null) {
+            this.summaryCount = summaryList.size();
+        }
+
     }
 
     @Override
