@@ -196,7 +196,9 @@ public class IndicatorAssignment extends SuperDetailEntity {
     @NotNull
     @Column(name = "hasOther")
     private int hasOther;
-
+    @Size(max = 800)
+    @Column(name = "associatedIndicator")
+    private String associatedIndicator;
     @Size(max = 45)
     @Column(name = "api")
     private String api;
@@ -607,6 +609,20 @@ public class IndicatorAssignment extends SuperDetailEntity {
      */
     public void setHasOther(int hasOther) {
         this.hasOther = hasOther;
+    }
+
+    /**
+     * @return the associatedIndicator
+     */
+    public String getAssociatedIndicator() {
+        return associatedIndicator;
+    }
+
+    /**
+     * @param associatedIndicator the associatedIndicator to set
+     */
+    public void setAssociatedIndicator(String associatedIndicator) {
+        this.associatedIndicator = associatedIndicator;
     }
 
     /**

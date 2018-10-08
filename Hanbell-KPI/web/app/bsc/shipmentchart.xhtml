@@ -203,7 +203,6 @@
                 <div class="ui-g-12 ui-md-12">
                     <p:chart type="line" model="#{shipmentChartReportBean.initLineChartModel('月份','指标')}" style="height:300px"
                              responsive="true" >
-                        <p:ajax process="@this" oncomplete="alert('11');"/>
                     </p:chart>
                 </div>
                 <div><h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden></div>

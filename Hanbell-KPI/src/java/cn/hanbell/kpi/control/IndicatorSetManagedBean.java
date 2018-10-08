@@ -22,6 +22,7 @@ import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti3Bean;
 import com.lightshell.comm.BaseLib;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +31,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -124,6 +126,33 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         } else {
             showErrorMsg("Error", "没有可更新指标");
         }
+    }
+
+    public String copyEntity(String path) {
+        if (this.currentEntity != null && this.currentPrgGrant != null) {
+            try {
+                Indicator entity = (Indicator) BeanUtils.cloneBean(currentEntity);
+                entity.setId(null);
+                entity.setAssigned(false);
+                entity.setFreezeDate(null);
+                entity.setPid(0);
+                entity.setSeq(entity.getSeq() + 1);
+                entity.setOther1Indicator(null);
+                entity.setOther2Indicator(null);
+                entity.setOther3Indicator(null);
+                entity.setOther4Indicator(null);
+                entity.setOther5Indicator(null);
+                entity.setOther6Indicator(null);
+                entity.setCreator(this.userManagedBean.getCurrentUser().getUserid() + "-" + this.userManagedBean.getCurrentUser().getUsername());
+                entity.setCredate(getDate());
+                entity.setStatus("N");
+                setNewEntity(entity);
+                return path;
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
+        return "";
     }
 
     @Override

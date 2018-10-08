@@ -275,10 +275,10 @@ public class ShipmentTopManagedBean implements Serializable {
                 List<ClientTable> list = null;
                 if ("1F330".equals(deptno)) {
                     list = clientrank.getClientListRL(y, m, getMap());
-                } else { 
+                } else {
                     list = clientrank.getClientList(y, m, getMap());
                 }
-                
+
                 if (list.size() > 0) {
                     setClientlist(list);
                 } else {

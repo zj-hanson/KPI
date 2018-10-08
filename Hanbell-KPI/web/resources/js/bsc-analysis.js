@@ -6,13 +6,25 @@
 $(document).ready(function () {
     var m = document.getElementById("formOne:m");
     if (m !== null) {
-        var tr = $("tr.ui-widget-content");
+        var chartData = document.getElementById("formOne:plgChartData");
+        var tr = $(chartData).find("tr.ui-widget-content");
         $(tr).each(function (i, t) {
             var c = $(t).find("td.ui-panelgrid-cell")[m.value];
             if (c !== null) {
                 $(c).css("color", "red");
             }
         });
+        //MIS当月数据显示红色
+        var misData = document.getElementById("formOne:plgMISData");
+        if (misData !== undefined && misData !== null) {
+            var tr = $(misData).find("tr.ui-widget-content");
+            $(tr).each(function (i, t) {
+                var c = $(t).find("td.ui-panelgrid-cell")[12];
+                if (c !== null) {
+                    $(c).css("color", "red");
+                }
+            });
+        }
     }
     //指标说明
     var sc = document.getElementById("formOne:sc");
