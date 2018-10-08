@@ -20,6 +20,10 @@
                                      rendered="#{productSetManagedBean.hasNext}"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnCopy" value="复制" action="#{productSetManagedBean.copyEntity('productsetNew')}" icon="ui-icon-copy"
+                                     process="@this">
+                        <p:confirm header="系统提示" message="复制吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnVerify" value="审核" actionListener="#{productSetManagedBean.verify()}" icon="ui-icon-check"
                                      rendered="#{productSetManagedBean.doCfm}" process="@this" update="toolbar">
                         <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
@@ -136,6 +140,13 @@
                     <p:column><h:outputText value="排序"/></p:column>
                     <p:column>
                         <h:outputText id="sortid" value="#{productSetManagedBean.currentEntity.sortid}" title="sortid"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="关联指标" for="associatedIndicator" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="associatedIndicator" value="#{productSetManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"
+                                     placeholder="多个请用;隔开"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -735,7 +746,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
+            <p:blockUI id="blockUI" block="formOne" trigger="btnCopy,btnVerify,btnUnverify">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>

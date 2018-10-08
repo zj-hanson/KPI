@@ -182,6 +182,13 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><p:outputLabel value="关联指标" for="associatedIndicator" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="associatedIndicator" value="#{productSetManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"
+                                     placeholder="多个请用;隔开"/>
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><p:outputLabel value="实际接口" for="actualInterface" /></p:column>
                     <p:column colspan="3">
                         <p:inputText id="actualInterface" value="#{productSetManagedBean.currentEntity.actualInterface}" title="actualInterface"/>

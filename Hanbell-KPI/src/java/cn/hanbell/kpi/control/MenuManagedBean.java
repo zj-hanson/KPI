@@ -218,10 +218,10 @@ public class MenuManagedBean implements Serializable {
             kpimenu = new DefaultSubMenu("部门KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                submenu = new DefaultSubMenu(r.getDept());
-                submenu.setIcon("menu");
                 indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "D");
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
+                    submenu = new DefaultSubMenu(r.getDept());
+                    submenu.setIcon("menu");
                     for (IndicatorDepartment i : indicatorDepartmentList) {
                         menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
                         menuitem.setIcon("menu");
@@ -229,18 +229,18 @@ public class MenuManagedBean implements Serializable {
                         menuitem.setParam("id", i.getParent().getId());
                         submenu.addElement(menuitem);
                     }
+                    kpimenu.addElement(submenu);
                 }
-                kpimenu.addElement(submenu);
             }
             model.addElement(kpimenu);
 
             kpimenu = new DefaultSubMenu("产品KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                submenu = new DefaultSubMenu(r.getDept());
-                submenu.setIcon("menu");
                 indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "P");
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
+                    submenu = new DefaultSubMenu(r.getDept());
+                    submenu.setIcon("menu");
                     for (IndicatorDepartment i : indicatorDepartmentList) {
                         menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
                         menuitem.setIcon("menu");
@@ -248,8 +248,8 @@ public class MenuManagedBean implements Serializable {
                         menuitem.setParam("id", i.getParent().getId());
                         submenu.addElement(menuitem);
                     }
+                    kpimenu.addElement(submenu);
                 }
-                kpimenu.addElement(submenu);
             }
             model.addElement(kpimenu);
 

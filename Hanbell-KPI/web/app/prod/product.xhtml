@@ -99,6 +99,12 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><h:outputText value="关联指标"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="associatedIndicator" value="#{productManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column><h:outputText value="备注"/></p:column>
                             <p:column colspan="3">
                                 <h:outputText id="remark" value="#{productManagedBean.currentEntity.remark}" title="Remark" />
@@ -490,6 +496,108 @@
                         <p:column styleClass="Wid70"/>
                     </p:dataTable>
                 </p:tab>
+                <p:tab title="指标分配">
+                    <p:dataTable id="tableList2" value="#{productManagedBean.detailList2}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{productManagedBean.currentDetail2}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="" oncomplete="" />
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="指标名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="产品"/>
+                            </f:facet>
+                            <h:outputText value="#{item.product}"/>
+                        </p:column>
+                        <p:column styleClass="Wid40"/>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="其他数据" rendered="#{productManagedBean.currentEntity.hasOther>0}">
+                    <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>0}">
+                            <p:column styleClass="Wid20"><h:outputText value="Other1名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="other1Label" value="#{productManagedBean.currentEntity.other1Label}" title="other1Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other1Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other1Label,productManagedBean.currentEntity.other1Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="Other1计算接口"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="other1Interface" value="#{productManagedBean.currentEntity.other1Interface}" title="other1Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>1}">
+                            <p:column><h:outputText value="Other2名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other2Label" value="#{productManagedBean.currentEntity.other2Label}" title="other2Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other2Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other2Label,productManagedBean.currentEntity.other2Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other2计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other2Interface" value="#{productManagedBean.currentEntity.other2Interface}" title="other2Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>2}">
+                            <p:column><h:outputText value="Other3名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other3Label" value="#{productManagedBean.currentEntity.other3Label}" title="other3Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other3Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other3Label,productManagedBean.currentEntity.other3Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other3计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other3Interface" value="#{productManagedBean.currentEntity.other3Interface}" title="other3Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>3}">
+                            <p:column><h:outputText value="Other4名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other4Label" value="#{productManagedBean.currentEntity.other4Label}" title="other4Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other4Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other4Label,productManagedBean.currentEntity.other4Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other4计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other4Interface" value="#{productManagedBean.currentEntity.other4Interface}" title="other4Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>4}">
+                            <p:column><h:outputText value="Other5名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other5Label" value="#{productManagedBean.currentEntity.other5Label}" title="other5Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other5Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other5Label,productManagedBean.currentEntity.other5Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other5计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other5Interface" value="#{productManagedBean.currentEntity.other5Interface}" title="other5Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{productManagedBean.currentEntity.hasOther>5}">
+                            <p:column><h:outputText value="Other6名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other6Label" value="#{productManagedBean.currentEntity.other6Label}" title="other6Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:commandButton id="other6Set"  actionListener="#{productManagedBean.setOtherIndicator(productManagedBean.currentEntity.other6Label,productManagedBean.currentEntity.other6Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other6计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other6Interface" value="#{productManagedBean.currentEntity.other6Interface}" title="other6Interface"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
                 <p:tab title="指标说明">
                     <p:toolbar id="summaryToolbar" styleClass="detailToolbar">
                         <f:facet name="right">
@@ -555,6 +663,104 @@
                     </p:dataTable>
                 </p:tab>
             </p:tabView>
+            <p:dialog id="dlgOther" widgetVar="dlgOther" width="60%">
+                <p:panelGrid id="plgOtherIndicator"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="6">#{productManagedBean.otherLabel}</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><p:outputLabel value="M01" for="on01" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on01" value="#{productManagedBean.otherIndicator.n01}" title="on01"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M02" for="on02" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on02" value="#{productManagedBean.otherIndicator.n02}" title="on02"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M03" for="on03" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on03" value="#{productManagedBean.otherIndicator.n03}" title="on03"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M04" for="on04" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on04" value="#{productManagedBean.otherIndicator.n04}" title="on04"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M05" for="on05" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on05" value="#{productManagedBean.otherIndicator.n05}" title="on05"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M06" for="on06" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on06" value="#{productManagedBean.otherIndicator.n06}" title="on06"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M07" for="on07" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on07" value="#{productManagedBean.otherIndicator.n07}" title="on07"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M08" for="on08" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on08" value="#{productManagedBean.otherIndicator.n08}" title="on08"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M09" for="on09" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on09" value="#{productManagedBean.otherIndicator.n09}" title="on09"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M10" for="on10" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on10" value="#{productManagedBean.otherIndicator.n10}" title="on10"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M11" for="on11" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on11" value="#{productManagedBean.otherIndicator.n11}" title="on11"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="M12" for="on12" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on12" value="#{productManagedBean.otherIndicator.n12}" title="on12"
+                                           symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="6">
+                                <p:commandButton id="saveOther"  actionListener="#{productManagedBean.updateOtherIndicator()}" icon="ui-icon-save" value="保存" style="float: right"
+                                                 process="@this,formOne:dlgOther" oncomplete="PF('dlgOther').hide();" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
             <p:dialog id="dlgIndicatorSummary" widgetVar="dlgIndicatorSummary" width="80%">
                 <p:panelGrid id="plgIndicatorSummary" styleClass="plgDetail Wid100">
                     <f:facet name="header">

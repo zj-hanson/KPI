@@ -5,6 +5,7 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class ProductManagedBean extends IndicatorSetManagedBean {
 
+    private IndicatorDetail otherIndicator;
+    private String otherLabel;
     private boolean deny = true;
 
     /**
@@ -43,6 +46,50 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
         summaryList = indicatorSummaryBean.findByPId(id);
         analysisList = indicatorAnalysisBean.findByPId(id);
         this.doEdit = true;
+    }
+
+    public void setOtherIndicator(String label, IndicatorDetail otherIndicator) {
+        this.otherLabel = label;
+        this.otherIndicator = otherIndicator;
+    }
+
+    public void updateOtherIndicator() {
+        if (otherIndicator != null) {
+            try {
+                indicatorDetailBean.update(otherIndicator);
+                showInfoMsg("Info", "更新其他数据成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.toString());
+            }
+        }
+    }
+
+    /**
+     * @return the otherIndicator
+     */
+    public IndicatorDetail getOtherIndicator() {
+        return otherIndicator;
+    }
+
+    /**
+     * @param otherIndicator the otherIndicator to set
+     */
+    public void setOtherIndicator(IndicatorDetail otherIndicator) {
+        this.otherIndicator = otherIndicator;
+    }
+
+    /**
+     * @return the otherLabel
+     */
+    public String getOtherLabel() {
+        return otherLabel;
+    }
+
+    /**
+     * @param otherLabel the otherLabel to set
+     */
+    public void setOtherLabel(String otherLabel) {
+        this.otherLabel = otherLabel;
     }
 
     /**

@@ -16,5 +16,5 @@ import javax.faces.bean.ApplicationScoped;
 @FacesConfig(version = JSF_2_3)
 @ApplicationScoped
 public class JSFConfigBean {
-    
+
 }
