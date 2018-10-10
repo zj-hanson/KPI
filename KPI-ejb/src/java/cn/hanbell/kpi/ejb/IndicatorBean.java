@@ -132,12 +132,6 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         divideByRate(i.getBenchmarkIndicator(), i.getRate(), scale);
         divideByRate(i.getForecastIndicator(), i.getRate(), scale);
         divideByRate(i.getTargetIndicator(), i.getRate(), scale);
-        if(i.getOther1Indicator() !=null ){
-            divideByRate(i.getOther1Indicator(), i.getRate(), scale);
-        }
-        if(i.getOther2Indicator() !=null ){
-            divideByRate(i.getOther2Indicator(), i.getRate(), scale);
-        }
     }
 
     public void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {

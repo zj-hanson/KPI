@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +75,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
 
         for (Indicator e : indicatorList) {
             //按换算率计算结果
-            indicatorBean.divideByRate(e, 2);
+            this.divideByRate(e, 2);
         }
 
         //计算产品合计
@@ -163,11 +164,11 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 e.getOther1Indicator().setType("质量扣款");
                 indicatorDetailList.add(e.getOther1Indicator());
             }
-            if(e.getOther1Label() != null || e.getOther2Label() != null){
+            if (e.getOther1Label() != null || e.getOther2Label() != null) {
                 e.getActualIndicator().setType("实际合计");
-            }else{
+            } else {
                 e.getActualIndicator().setType("实际");
-            }           
+            }
             indicatorDetailList.add(e.getActualIndicator());
             actualAccumulated.setType("实际累计");
             indicatorDetailList.add(actualAccumulated);
@@ -232,4 +233,41 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 return format(value, i);
         }
     }
+
+    private void divideByRate(Indicator i, int scale) {
+        divideByRate(i.getActualIndicator(), i.getRate(), scale);
+        divideByRate(i.getBenchmarkIndicator(), i.getRate(), scale);
+        divideByRate(i.getForecastIndicator(), i.getRate(), scale);
+        divideByRate(i.getTargetIndicator(), i.getRate(), scale);
+        if (i.getOther1Indicator() != null) {
+            divideByRate(i.getOther1Indicator(), i.getRate(), scale);
+        }
+        if (i.getOther2Indicator() != null) {
+            divideByRate(i.getOther2Indicator(), i.getRate(), scale);
+        }
+    }
+
+    private void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {
+        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        id.setNfy(id.getNfy().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNh2(id.getNh2().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNh1(id.getNh1().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq4(id.getNq4().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq3(id.getNq3().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq2(id.getNq2().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setNq1(id.getNq1().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN01(id.getN01().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN02(id.getN02().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN03(id.getN03().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN04(id.getN04().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN05(id.getN05().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN06(id.getN06().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN07(id.getN07().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN08(id.getN08().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN09(id.getN09().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN10(id.getN10().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN11(id.getN11().divide(rate, scale, RoundingMode.HALF_UP));
+        id.setN12(id.getN12().divide(rate, scale, RoundingMode.HALF_UP));
+    }
+
 }
