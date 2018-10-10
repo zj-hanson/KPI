@@ -783,7 +783,7 @@ public class ClientNowAndPastBean implements Serializable {
 
     //得到合计台数
     protected String RTshpqy1(String a, String b) {
-        return String.valueOf(Double.valueOf(a).intValue() + Double.valueOf(a).intValue());
+        return String.valueOf(Double.valueOf(a).intValue() + Double.valueOf(b).intValue());
     }
 
     //得到合计金额
@@ -1050,7 +1050,7 @@ public class ClientNowAndPastBean implements Serializable {
                     }
                     //汇总
                     //循环list数据往returnlist合并数据
-                    if (result == null && returnlist.isEmpty()) {
+                    if (!list.isEmpty() && returnlist.isEmpty()) {
                         returnlist = list;
                     } else {
                         for (int i = 0; i < list.size(); i++) {
@@ -1122,7 +1122,7 @@ public class ClientNowAndPastBean implements Serializable {
         try {
             for (String arr1 : arr) {
                 list = new ArrayList<>();
-                List result = getClientRT(y-1, m, arr1, map);
+                List result = getClientRT(y - 1, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
                         ct = new ClientTable();
@@ -1350,7 +1350,7 @@ public class ClientNowAndPastBean implements Serializable {
             }
             return list;
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.ClientNowAndPastBean.getClientListRL():"+e);
+            System.out.println("cn.hanbell.kpi.ejb.ClientNowAndPastBean.getClientListRL():" + e);
             return list;
         }
     }
