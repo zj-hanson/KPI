@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "inventoryAmountBean")
 @ViewScoped
-public class InventoryAmountBean extends BscSheetManagedBean{
+public class InventoryAmountReportBean extends BscSheetManagedBean{
 
-    public InventoryAmountBean() {
+    public InventoryAmountReportBean() {
     }
 
     @Override

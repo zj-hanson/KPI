@@ -776,6 +776,61 @@
                         <p:column styleClass="Wid40"/>
                     </p:dataTable>
                 </p:tab>
+                <p:tab title="指标归集">
+                    <p:toolbar id="detailToolbar3" styleClass="detailToolbar">
+                        <f:facet name="left">
+                            <p:commandButton id="btnAddDetail3" widgetVar="btnAddDetail3" value="添加" actionListener="#{productSetManagedBean.createDetail3()}" icon="ui-icon-plus"
+                                             oncomplete="PF('btnAddDetail3').disable();PF('btnDeleteDetail3').disable();PF('btnSaveDetail3').enable();"
+                                             update="formOne:tabView:plgDetail3" process="@this" />
+                            <p:commandButton id="btnDeleteDetail3" widgetVar="btnDeleteDetail3" value="删除" actionListener="#{productSetManagedBean.deleteDetail3()}" icon="ui-icon-trash"
+                                             oncomplete="PF('btnAddDetail3').enable();PF('btnDeleteDetail3').disable();PF('btnSaveDetail3').disable();"
+                                             update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" process="@this" />
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton id="btnSaveDetail3" widgetVar="btnSaveDetail3" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail3()}" icon="ui-icon-disk"
+                                             onsuccess="PF('btnAddDetail3').enable();PF('btnDeleteDetail3').disable();PF('btnSaveDetail3').disable();"
+                                             update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" process="@this,formOne:tabView:plgDetail3"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panelGrid id="plgDetail3" styleClass="plgDetail Wid100">
+                        <p:row>
+                            <p:column styleClass="Wid20"><p:outputLabel value="指标编号" for="dformid" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="dformid" value="#{productSetManagedBean.currentDetail3.formid}" title="formid"
+                                             required="true" requiredMessage="请输入相关指标编号" />
+                            </p:column>
+                            <p:column styleClass="Wid20"><p:outputLabel value="指标部门" for="ddeptno" /></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="ddeptno" value="#{productSetManagedBean.currentDetail3.deptno}" title="deptno"
+                                             required="true" requiredMessage="请输入相关指标部门" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="备注" for="dremark" /></p:column>
+                            <p:column colspan="3">
+                                <p:inputText id="dremark" value="#{productSetManagedBean.currentDetail3.remark}" title="remark" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="tableList3" value="#{productSetManagedBean.detailList3}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail3}" rowKey="#{item.formid}" >
+                        <p:ajax event="rowSelect"  update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" oncomplete="PF('btnAddDetail3').disable();PF('btnDeleteDetail3').enable();PF('btnSaveDetail3').enable();" />
+                        <p:ajax event="rowUnselect"  update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" oncomplete="" />
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="指标编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formid}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="指标部门"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60"/>
+                    </p:dataTable>
+                </p:tab>
                 <p:tab title="其他数据" rendered="#{productSetManagedBean.currentEntity.hasOther>0}">
                     <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
                         <p:row >

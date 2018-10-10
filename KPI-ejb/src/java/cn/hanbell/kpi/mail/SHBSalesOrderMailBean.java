@@ -93,6 +93,22 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             total.setName("P真空订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂订单台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("涡旋产品订单台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("涡旋订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
@@ -167,6 +183,28 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("P真空订单金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂订单金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂订单金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("涡旋产品订单金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("涡旋订单金额");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             sb.append("</table></div>");

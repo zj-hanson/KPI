@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "energyConsumptionDetailBean")
 @ViewScoped
-public class EnergyConsumptionDetailBean extends BscSheetManagedBean {
+public class EnergyConsumptionReportBean extends BscSheetManagedBean {
 
     protected final DecimalFormat Format;
     protected final DecimalFormat DoubleFormat;
 
-    public EnergyConsumptionDetailBean() {
+    public EnergyConsumptionReportBean() {
         this.Format = new DecimalFormat("#,###");
         this.DoubleFormat = new DecimalFormat("0.00");
     }

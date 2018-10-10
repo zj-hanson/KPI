@@ -155,4 +155,11 @@
     <validation-mode>NONE</validation-mode>
     <properties/>
   </persistence-unit>
+  <persistence-unit name="PU-SHBEFGP" transaction-type="JTA">
+    <jta-data-source>jdbc/syncEFGP</jta-data-source>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties/>
+  </persistence-unit>
 </persistence>
