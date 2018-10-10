@@ -28,7 +28,7 @@
             <p:dataTable id="tblList" value="#{shipmentTopManagedBean.clientlist}" var="item" tableStyleClass="plgSheetData"
                          rowSelectMode="single" rowKey="item.id">
                 <f:facet name="header">
-                    <span style="font-size: 21px;" >#{shipmentTopManagedBean.map.daname}#{shipmentTopManagedBean.map.year}#{shipmentTopManagedBean.map.title}出货销售统计表</span>
+                    <span style="font-size: 21px;" >#{shipmentTopManagedBean.map.daname}&nbsp;#{shipmentTopManagedBean.map.year}#{shipmentTopManagedBean.map.title}出货销售统计表</span>
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
