@@ -471,7 +471,7 @@ public class ClientNowAndPastBean implements Serializable {
                     }
                     //汇总
                     //循环list数据往returnlist合并数据
-                    if (result == null && returnlist.isEmpty()) {
+                    if (!list.isEmpty() && returnlist.isEmpty()) {
                         returnlist = list;
                     } else {
                         for (int i = 0; i < list.size(); i++) {
@@ -553,7 +553,7 @@ public class ClientNowAndPastBean implements Serializable {
                     }
                     //汇总
                     //循环list数据往returnlist合并数据
-                    if (result == null && returnlist.isEmpty()) {
+                    if (!list.isEmpty() && returnlist.isEmpty()) {
                         returnlist = list;
                     } else {
                         for (int i = 0; i < list.size(); i++) {
@@ -1135,7 +1135,7 @@ public class ClientNowAndPastBean implements Serializable {
                     }
                     //汇总
                     //循环list数据往returnlist合并数据
-                    if (result == null && returnlist.isEmpty()) {
+                    if (!list.isEmpty() && returnlist.isEmpty()) {
                         returnlist = list;
                     } else {
                         for (int i = 0; i < list.size(); i++) {
