@@ -14,8 +14,7 @@ import javax.naming.InitialContext;
 
 /**
  *
- * @author C1879
- * 加工机综合效率管理表
+ * @author C1879 加工机综合效率管理表
  */
 public class Productivity implements Actual {
 
@@ -46,6 +45,16 @@ public class Productivity implements Actual {
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        return m;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        return y;
     }
 
 }

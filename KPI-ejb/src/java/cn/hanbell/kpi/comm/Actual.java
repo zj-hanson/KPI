@@ -19,6 +19,10 @@ public interface Actual {
 
     public LinkedHashMap<String, Object> getQueryParams();
 
+    public int getUpdateMonth(int y, int m);
+
+    public int getUpdateYear(int y, int m);
+
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map);
 
 }

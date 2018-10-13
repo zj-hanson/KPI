@@ -12,8 +12,7 @@ import javax.naming.InitialContext;
 
 /**
  *
- * @author C1879
- * 圆型、方型件加工实绩管理表
+ * @author C1879 圆型、方型件加工实绩管理表
  */
 public abstract class Process implements Actual {
 
@@ -39,5 +38,15 @@ public abstract class Process implements Actual {
     @Override
     public LinkedHashMap<String, Object> getQueryParams() {
         return queryParams;
+    }
+
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        return m;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        return y;
     }
 }

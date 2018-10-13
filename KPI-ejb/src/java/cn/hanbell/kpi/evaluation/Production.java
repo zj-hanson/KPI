@@ -40,4 +40,13 @@ public abstract class Production implements Actual {
         return queryParams;
     }
 
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        return m;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        return y;
+    }
 }

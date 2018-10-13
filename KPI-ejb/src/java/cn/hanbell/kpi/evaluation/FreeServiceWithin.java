@@ -17,16 +17,7 @@ public abstract class FreeServiceWithin extends FreeServiceERP {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        try {
-            //每月3-5号自动更新上个月的数据
-            int year, month;
-            if (m == 1) {
-                year = y - 1;
-                month = 12;
-            } else {
-                year = y;
-                month = m;
-            }
+        try {         
             inv310ks = this.getINV310KS(y, m, d, type, map);
             man410and510 = this.getMAN410and510(y, m, d, type, map);
         } catch (Exception e) {

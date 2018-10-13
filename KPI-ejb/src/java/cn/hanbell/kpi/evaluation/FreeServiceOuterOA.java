@@ -7,7 +7,6 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.SuperEJBForEFGP;
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -42,18 +41,9 @@ public abstract class FreeServiceOuterOA implements Actual {
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         try {
-            //每月3-5号自动更新上个月的数据
-            int year, month;
-            if (m == 1) {
-                year = y - 1;
-                month = 12;
-            } else {
-                year = y;
-                month = m;
-            }
-            workSF = getWorkSF(year, month, d, type, map);
-            returnSM = getReturnSM(year, month, d, type, map);
-            travelCharge = getTravelCharge(year, month, d, type, map);
+            workSF = getWorkSF(y, m, d, type, map);
+            returnSM = getReturnSM(y, m, d, type, map);
+            travelCharge = getTravelCharge(y, m, d, type, map);
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.evaluation.FreeserveOuter.getValue()" + e);
         }
@@ -192,4 +182,27 @@ public abstract class FreeServiceOuterOA implements Actual {
         superEFGP = (SuperEJBForEFGP) objRef;
     }
 
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        //每月3-5号自动更新上个月的数据
+        int month;
+        if (m == 1) {
+            month = 12;
+        } else {
+            month = m - 1;
+        }
+        return month;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        //每月3-5号自动更新上个月的数据
+        int year;
+        if (m == 1) {
+            year = y - 1;
+        } else {
+            year = y;
+        }
+        return year;
+    }
 }

@@ -39,4 +39,14 @@ public abstract class ComplaintsKS implements Actual {
         superEJBForCRM = (SuperEJBForCRM) objRef;
     }
 
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        return m;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        return y;
+    }
+
 }
