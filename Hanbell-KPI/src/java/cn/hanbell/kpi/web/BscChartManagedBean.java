@@ -495,7 +495,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     public void setScale(int scale) {
         this.scale = scale;
         if (scale == 2) {
-            this.decimalFormat.applyPattern("###,###.00");
+            this.decimalFormat.applyPattern("###,##0.00");
             this.construct();
         } else {
             this.decimalFormat.applyPattern("###,###");

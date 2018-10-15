@@ -44,8 +44,8 @@ class FreeserveOuterERP5AB extends FreeServiceOuterERP {
     public FreeserveOuterERP5AB() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("hmark1", "='HD' ");
-        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY') ");
+//        queryParams.put("hmark1", "='HD' ");
+//        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY','KM') ");
         queryParams.put("depno", " like '5%' ");
     }
 }
