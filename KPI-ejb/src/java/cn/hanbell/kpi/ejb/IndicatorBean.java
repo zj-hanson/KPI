@@ -933,15 +933,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public Indicator updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
         IndicatorDetail detail;
+        int uy, um;
         //先计算Other
         if (entity != null && entity.getHasOther() > 0) {
             if (entity.getOther1Interface() != null && !"".equals(entity.getOther1Interface())) {
                 IndicatorDetail o1 = entity.getOther1Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther1Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther1EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
-                    Method setMethod = o1.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o1.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o1, na);
                     indicatorDetailBean.update(o1);
                 } catch (Exception ex) {
@@ -952,9 +955,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 IndicatorDetail o2 = entity.getOther2Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther2Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther2EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
-                    Method setMethod = o2.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o2.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o2, na);
                     indicatorDetailBean.update(o2);
                 } catch (Exception ex) {
@@ -965,10 +970,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 IndicatorDetail o3 = entity.getOther3Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther3Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther3EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     detail = indicatorDetailBean.findById(o3.getId());
-                    Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(detail, na);
                     indicatorDetailBean.update(detail);
                 } catch (Exception ex) {
@@ -979,9 +986,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 IndicatorDetail o4 = entity.getOther4Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther4Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther4EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
-                    Method setMethod = o4.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o4.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o4, na);
                     indicatorDetailBean.update(o4);
                 } catch (Exception ex) {
@@ -992,9 +1001,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 IndicatorDetail o5 = entity.getOther5Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther5Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther5EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
-                    Method setMethod = o5.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o5.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o5, na);
                     indicatorDetailBean.update(o5);
                 } catch (Exception ex) {
@@ -1005,9 +1016,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 IndicatorDetail o6 = entity.getOther6Indicator();
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther6Interface()).newInstance();
+                    uy = otherInterface.getUpdateYear(y, m);
+                    um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther6EJB());
-                    BigDecimal na = otherInterface.getValue(y, m, d, type, otherInterface.getQueryParams());
-                    Method setMethod = o6.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    Method setMethod = o6.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o6, na);
                     indicatorDetailBean.update(o6);
                 } catch (Exception ex) {
@@ -1019,9 +1032,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                uy = actualInterface.getUpdateYear(y, m);
+                um = actualInterface.getUpdateMonth(y, m);
                 actualInterface.setEJB(entity.getActualEJB());
-                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(a, na);
                 indicatorDetailBean.update(a);
             } catch (Exception ex) {
@@ -1033,13 +1048,16 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
+        int uy, um;
         if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                uy = actualInterface.getUpdateYear(y, m);
+                um = actualInterface.getUpdateMonth(y, m);
                 actualInterface.setEJB(entity.getActualEJB());
-                BigDecimal na = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+                BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(a, na);
                 indicatorDetailBean.update(a);
             } catch (Exception ex) {

@@ -23,15 +23,6 @@ public abstract class FreeServiceOuterERP extends FreeServiceERP {
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         try {
-            //每月3-5号自动更新上个月的数据
-            int year, month;
-            if (m == 1) {
-                year = y - 1;
-                month = 12;
-            } else {
-                year = y;
-                month = m;
-            }
             String facno = map.get("facno") != null ? map.get("facno").toString() : "";
             if("C".equals(facno) || "K".equals(facno)){
                 cdrN20 = this.getCDRN20Value(y, m, d, type, map);

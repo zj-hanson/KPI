@@ -366,4 +366,28 @@ public abstract class FreeServiceERP implements Actual {
         superEJB = (SuperEJBForERP) objRef;
     }
 
+    @Override
+    public int getUpdateMonth(int y, int m) {
+        //每月3-5号自动更新上个月的数据
+        int month;
+        if (m == 1) {
+            month = 12;
+        } else {
+            month = m - 1;
+        }
+        return month;
+    }
+
+    @Override
+    public int getUpdateYear(int y, int m) {
+        //每月3-5号自动更新上个月的数据
+        int year;
+        if (m == 1) {
+            year = y - 1;
+        } else {
+            year = y;
+        }
+        return year;
+    }
+
 }
