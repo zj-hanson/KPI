@@ -301,10 +301,6 @@ public abstract class FreeServiceERP implements Actual {
         sb.append(" where  (manpih.facno= manpid.facno) and (manpih.prono = manpid.prono) and (manpih.pisno = manpid.pisno)   AND (manpih.issstatus = 'C') ");
         sb.append(" and manpid.altitnbr <> '3188-GBR6254-FW' and manpih.facno = '${facno}' and manpih.prono='1'  and manpih.issdepno = '9900' ");
         sb.append(" and manpid.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode='02' ");
-        sb.append("");
-        sb.append("");
-        sb.append(" AND manpih.issstatus = 'C' and manpih.facno = '${facno}' and manpih.prono='1'  and manpih.issdepno = '9900' ");
-        sb.append(" and manpid.altitnbr<>'3188-GBR6254-FW' and manpid.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode='02' ");
         if (!"".equals(remark1)) {
             sb.append(" AND  manmas.remark1 ").append(remark1);
         }
