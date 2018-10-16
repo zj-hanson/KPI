@@ -10,9 +10,9 @@ package cn.hanbell.kpi.evaluation;
  * @author C1749
  * 混合机型的客诉笔数
  */
-public class ComplaintsQualityPenpzkPjt2 extends ComplaintsQualityPenpzk {
+public class ComplaintsQualityPenpzkPjt3 extends ComplaintsQualityPenpzk {
 
-    public ComplaintsQualityPenpzkPjt2() {
+    public ComplaintsQualityPenpzkPjt3() {
         super();
         queryParams.put("BQ197", "%P%");
         queryParams.put("BQ003", " in ('PZK') ");

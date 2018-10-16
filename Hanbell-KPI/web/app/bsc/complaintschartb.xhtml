@@ -80,12 +80,12 @@
                         </p:row>
                     </p:panelGrid>
                 </div>
-                 <div class="ui-g-12 ui-md-12">
+                <div class="ui-g-12 ui-md-12">
                     <p:chart type="line" model="#{shipmentChartReportBean.initLineChartModel('月份','指标')}" style="height:300px"
                              responsive="true" >
                         <p:ajax process="@this" oncomplete="alert('11');"/>
                     </p:chart>
-                </div>  
+                </div>
                 <div id="indicatorSummary" class="ui-g-12 ui-md-12">
                     <p:repeat id="repSummary" value="#{shipmentChartReportBean.summaryList}" var="s" rendered="#{shipmentChartReportBean.summaryCount>0}">
                         <p:panel  id="summaryPanel" header="指标说明" toggleable="true" style="height:min-content">
@@ -122,5 +122,4 @@
             <h:outputScript name="bsc-analysis.js" library="js"/>
         </h:form>
     </ui:define>
-
 </ui:composition>

@@ -254,10 +254,10 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>complaintschartb</from-outcome>
-            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
+            <from-outcome>complaintschartajz</from-outcome>
+            <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
             <redirect/>
-        </navigation-case>
+    </navigation-case>
         <navigation-case>
             <from-outcome>complaintschartc</from-outcome>
             <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>

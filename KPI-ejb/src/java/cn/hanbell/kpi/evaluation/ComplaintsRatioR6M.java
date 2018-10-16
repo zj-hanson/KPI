@@ -28,7 +28,7 @@ public class ComplaintsRatioR6M extends ComplaintsRatio {
 
     public ComplaintsRatioR6M() {
         super();
-        queryParams.put("formid", "KS-冷媒Mis");
+        queryParams.put("formid", "KS-冷媒MIS");
         queryParams.put("deptno", "1M000");
         queryParams.put("mis", "6");
         queryParams.put("facno", "C");
