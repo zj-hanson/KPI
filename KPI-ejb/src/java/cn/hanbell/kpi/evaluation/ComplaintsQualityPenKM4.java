@@ -14,7 +14,9 @@ public class ComplaintsQualityPenKM4 extends ComplaintsQualityPen {
 
     public ComplaintsQualityPenKM4() {
         super();
-        queryParams.put("BQ197", "%CM%");
+        queryParams.put("BQ197", "%KM%");
         queryParams.put("BQ003"," in ('RTZ') ");
+        queryParams.put("BQ134", " in ('YX')  ");
+        queryParams.put("BQ110"," in ('Y') ");
     }
 }

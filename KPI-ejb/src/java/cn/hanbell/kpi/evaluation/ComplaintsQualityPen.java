@@ -36,7 +36,7 @@ public class ComplaintsQualityPen extends ComplaintsKS {
 //        sb.append(" LEFT JOIN REPTA REPTA ON rtrim(REPTA.TA001) = rtrim(SERCA.CA010) AND rtrim(REPTA.TA002) = rtrim(SERCA.CA011)");
 //        sb.append(" LEFT JOIN REPMI REPMI ON rtrim(MI002) = rtrim(CA009) ) a ON rtrim(a.CA001)=rtrim(SERBQ.BQ001) ");
 //        sb.append(" where BQ197 = '${BQ197}' AND BQ130 ='${BQ130}' and MI017 = '${MI017}' and BQ035 = '${BQ035}' and BQ110 = '${BQ110}'");
-        sb.append("select  count(DISTINCT BQ001) from SERBQ,SERCA  ");
+        sb.append("select  count(DISTINCT BQ001) as num from SERBQ,SERCA  ");
         sb.append(" where  BQ001= CA001 and  BQ197 like '${BQ197}'  ");
         if (!"".equals(BQ003)) {
             sb.append(" and BQ003 ").append(BQ003);

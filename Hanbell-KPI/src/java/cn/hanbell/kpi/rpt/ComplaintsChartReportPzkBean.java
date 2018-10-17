@@ -87,7 +87,7 @@ public class ComplaintsChartReportPzkBean extends BscChartManagedBean {
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(benchmarkAccumulated, v);
                 //目标值累计
-                v = indicatorBean.getAccumulatedValue(indicator.getOther1Indicator(), i);
+                v = indicatorBean.getAccumulatedValue(indicator.getTargetIndicator(), i);
                 setMethod = getTargetAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(targetAccumulated, v);
                 //累计达成
@@ -104,7 +104,7 @@ public class ComplaintsChartReportPzkBean extends BscChartManagedBean {
                 setMethod.invoke(AG, v);
             }
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
+            Logger.getLogger("complaintsChartReportPzkBean").log(Level.SEVERE, null, ex);
         }
 
         chartModel = new LineChartModel();
@@ -112,55 +112,55 @@ public class ComplaintsChartReportPzkBean extends BscChartManagedBean {
         t.setLabel("客诉比率");
         switch (getIndicator().getFormkind()) {
             case "M":
-                if (getIndicator().getPerformanceIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M01", getIndicator().getPerformanceIndicator().getN01().doubleValue());
+                if (getIndicator().getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M01", getIndicator().getActualIndicator().getN01().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M02", getIndicator().getPerformanceIndicator().getN02().doubleValue());
+                if (getIndicator().getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M02", getIndicator().getActualIndicator().getN02().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M03", getIndicator().getPerformanceIndicator().getN03().doubleValue());
+                if (getIndicator().getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M03", getIndicator().getActualIndicator().getN03().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M04", getIndicator().getPerformanceIndicator().getN04().doubleValue());
+                if (getIndicator().getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M04", getIndicator().getActualIndicator().getN04().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M05", getIndicator().getPerformanceIndicator().getN05().doubleValue());
+                if (getIndicator().getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M05", getIndicator().getActualIndicator().getN05().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M06", getIndicator().getPerformanceIndicator().getN06().doubleValue());
+                if (getIndicator().getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M06", getIndicator().getActualIndicator().getN06().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M07", getIndicator().getPerformanceIndicator().getN07().doubleValue());
+                if (getIndicator().getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M07", getIndicator().getActualIndicator().getN07().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M08", getIndicator().getPerformanceIndicator().getN08().doubleValue());
+                if (getIndicator().getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M08", getIndicator().getActualIndicator().getN08().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M09", getIndicator().getPerformanceIndicator().getN09().doubleValue());
+                if (getIndicator().getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M09", getIndicator().getActualIndicator().getN09().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M10", getIndicator().getPerformanceIndicator().getN10().doubleValue());
+                if (getIndicator().getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M10", getIndicator().getActualIndicator().getN10().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M11", getIndicator().getPerformanceIndicator().getN11().doubleValue());
+                if (getIndicator().getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M11", getIndicator().getActualIndicator().getN11().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("M12", getIndicator().getPerformanceIndicator().getN12().doubleValue());
+                if (getIndicator().getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
                 }
                 break;
             case "Q":
-                if (getIndicator().getPerformanceIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("Q1", getIndicator().getPerformanceIndicator().getNq1().doubleValue());
+                if (getIndicator().getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("Q1", getIndicator().getActualIndicator().getNq1().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("Q2", getIndicator().getPerformanceIndicator().getNq2().doubleValue());
+                if (getIndicator().getActualIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("Q2", getIndicator().getActualIndicator().getNq2().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("Q3", getIndicator().getPerformanceIndicator().getNq3().doubleValue());
+                if (getIndicator().getActualIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("Q3", getIndicator().getActualIndicator().getNq3().doubleValue());
                 }
-                if (getIndicator().getPerformanceIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                    t.set("Q4", getIndicator().getPerformanceIndicator().getNq4().doubleValue());
+                if (getIndicator().getActualIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
+                    t.set("Q4", getIndicator().getActualIndicator().getNq4().doubleValue());
                 }
                 break;
         }

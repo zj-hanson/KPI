@@ -28,7 +28,7 @@ public class ComplaintsRatioAA3M extends ComplaintsRatio {
 
     public ComplaintsRatioAA3M() {
         super();
-        queryParams.put("formid", "KS-冷媒Mis");
+        queryParams.put("formid", "KS-冷媒MIS");
         queryParams.put("deptno", "1M000");
         queryParams.put("mis", "3");
         queryParams.put("facno", "C");

@@ -16,5 +16,6 @@ public class ComplaintsQualityPenAA extends ComplaintsQualityPen {
         queryParams.put("BQ197", "%AA%");
         queryParams.put("BQ003"," in ('AJZ') ");
         queryParams.put("BQ134", " in ('YX','-1') ");
+        queryParams.put("BQ110"," in ('Y') ");
     }
 }
