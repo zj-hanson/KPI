@@ -22,8 +22,8 @@ public class ProductionQuantityAJZ extends ProductionQuantity {
         queryParams.put("prono", "1");
         //*生产线别
         queryParams.put("linecode", " = 'AJZ' ");
-        //制令种类
-        queryParams.put("mankind", " = 'MOS' ");
+//        //制令种类
+//        queryParams.put("mankind", " = 'MOS' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
     }

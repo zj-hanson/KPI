@@ -9,6 +9,7 @@ import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.evaluation.SalesOrderAmount;
 import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -23,6 +24,8 @@ import javax.ejb.Stateless;
 public class SHBShipmentMailBean extends ShipmentMail {
 
     protected List<Indicator> sumList;
+    protected BigDecimal sum1 = BigDecimal.ZERO;
+    protected BigDecimal sum2 = BigDecimal.ZERO;
 
     public SHBShipmentMailBean() {
 
@@ -150,6 +153,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("R机体出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
@@ -162,6 +167,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("A机体出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组每日出货金额", y);
@@ -174,6 +181,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("A机组出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
@@ -186,6 +195,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("SDS无油出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P每日出货金额", y);
@@ -198,6 +209,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("P真空出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
@@ -210,6 +223,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("柯茂出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             salesOrder = null;
 
@@ -224,6 +239,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("R机体收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体收费服务", y);
@@ -236,6 +253,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("A机体收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组收费服务金额", y);
@@ -248,6 +267,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("A机组收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
@@ -260,6 +281,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("SDS无油收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P收费服务金额", y);
@@ -272,6 +295,8 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("P真空收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
@@ -284,11 +309,15 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("柯茂收费服务金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
 
             total = indicatorBean.getSumValue(sumList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
                 total.setName("合计");
+                getData().put("sum1", sum1);
+                getData().put("sum2", sum2);
                 sb.append(getHtmlTableRow(total, y, m, d));
             }
 
