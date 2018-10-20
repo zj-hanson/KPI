@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" columns="8" columnClasses="Wid10,Wid20,Wid0,Wid20,Wid10,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100" >
+                <h:outputLabel value="请输入日期：" for="queryDateBegin" />
+                <p:calendar id="queryDateBegin" value="#{exchangeRateReportBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd" />
+                <span style="font-size: 30px;font-weight: bolder" >～</span>
+                <p:calendar id="queryDateEnd" value="#{exchangeRateReportBean.queryDateEnd}" title="结束日期" pattern="yyyy/MM/dd" />
+                <font>请输入币别：</font>
+                <p:selectOneMenu id="queryCurrency" value="#{exchangeRateReportBean.queryCurrency}" style="width:100%;" title="币别" >
+                    <f:selectItem itemLabel="请选择" itemValue="0"/>
+                    <f:selectItem itemLabel="美金/人民币" itemValue="1"/>
+                    <f:selectItem itemLabel="欧元/人民币" itemValue="2"/>
+                    <f:selectItem itemLabel="日圆/人民币" itemValue="3"/>
+                    <f:selectItem itemLabel="人民币/台币" itemValue="4"/>
+                    <f:selectItem itemLabel="黄金盎司/美金" itemValue="5"/>
+                    <f:selectItem itemLabel="美金/日圆" itemValue="6"/>
+                    <f:selectItem itemLabel="欧元/美金" itemValue="7"/>
+                    <f:selectItem itemLabel="美金/台币" itemValue="8"/>
+                </p:selectOneMenu>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{exchangeRateReportBean.initial()}"  icon="ui-icon-refresh"
+                                 update="formOne"  />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{exchangeRateReportBean.queryExchangeRate()}"  icon="ui-icon-search"
+                                 update="formOne"/>
+            </p:panelGrid>
+
+            <!--折线图显示-->
+            <div style="height:610px;width: 100%;" >
+                <div style="display:#{exchangeRateReportBean.remind};padding-top: 10px;" align="right" >
+                    <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
+                </div>
+                <div style="width: 100%;height: 450px;display:#{exchangeRateReportBean.displaySting};" align="center" >
+                    <h2 style="background-color: #2F4050;color: white;height: 40px;line-height: 40px"  >外币汇率走势图</h2>
+                    <div class="ui-g-12 ui-md-12">
+                        <p:chart type="line" model="#{exchangeRateReportBean.chartModel}" style="height:400px"
+                                 responsive="true" >
+                        </p:chart>
+                    </div>
+                </div>
+                <div style="width: 100%;padding-top: 10px;display:#{exchangeRateReportBean.displaySting};" align="center" >
+                    <table cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height:150px;text-align: center;font-size: 15px;" >
+                        <thead><tr><th bgcolor="#2F4050" colspan="5 " style="font-size: 19px;color: white;height: 40px" >#{exchangeRateReportBean.map.get('title')}</th></tr></thead>
+                        <tbody>
+                            <tr style="background-color:#E8E8E8;">
+                                <td>环比</td>
+                                <td>#{exchangeRateReportBean.map.get('HBtime')}</td>
+                                <td>#{exchangeRateReportBean.map.get('Endtime')}</td>
+                                <td>涨跌额</td>
+                                <td>涨跌幅度</td>
+                            </tr>
+                            <tr align="right">
+                                <td>#{exchangeRateReportBean.map.get('name')}</td>
+                                <td>#{exchangeRateReportBean.map.get('HBrate')}</td>
+                                <td>#{exchangeRateReportBean.map.get('Endrate')}</td>
+                                <td>#{exchangeRateReportBean.map.get('HBamount')}</td>
+                                <td style="color: #{exchangeRateReportBean.map.get('HBcolor')}" >#{exchangeRateReportBean.map.get('HBrange')}</td>
+                            </tr>
+                            <tr style="background-color:#E8E8E8;">
+                                <td>定比</td>
+                                <td>#{exchangeRateReportBean.map.get('DBtime')}</td>
+                                <td>#{exchangeRateReportBean.map.get('Endtime')}</td>
+                                <td>涨跌额</td>
+                                <td>涨跌幅度</td>
+                            </tr>
+                            <tr align="right">
+                                <td>#{exchangeRateReportBean.map.get('name')}</td>
+                                <td>#{exchangeRateReportBean.map.get('DBrate')}</td>
+                                <td>#{exchangeRateReportBean.map.get('Endrate')}</td>
+                                <td>#{exchangeRateReportBean.map.get('DBamount')}</td>
+                                <td style="color: #{exchangeRateReportBean.map.get('DBcolor')}">#{exchangeRateReportBean.map.get('DBrange')}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
