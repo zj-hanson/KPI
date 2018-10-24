@@ -8,7 +8,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-        
+
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
@@ -93,6 +93,9 @@
                 </p>
                 <p style="height: 14px">
                     同比成长率 = (本年累计金额 - 去年同期累计金额)/去年同期累计金额*100%
+                </p>
+                <p  style="height: 14px;#{(shipmentTopManagedBean.display)}">
+                    R冷媒冷冻年/月客户排名没有去除销售折让、质量扣款金额
                 </p>
             </div>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">

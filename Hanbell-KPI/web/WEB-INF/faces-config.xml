@@ -257,7 +257,7 @@
             <from-outcome>complaintschartajz</from-outcome>
             <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
             <redirect/>
-    </navigation-case>
+        </navigation-case>
         <navigation-case>
             <from-outcome>complaintschartc</from-outcome>
             <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
@@ -306,6 +306,11 @@
         <navigation-case>
             <from-outcome>freeservicesheet</from-outcome>
             <to-view-id>/app/bsc/freeservicesheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>exchangerate</from-outcome>
+            <to-view-id>/app/bsc/exchangerate.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

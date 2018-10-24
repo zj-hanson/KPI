@@ -46,6 +46,7 @@ public class ShipmentTopManagedBean implements Serializable {
     private Integer month;
     private LinkedHashMap<String, String> map;
     private List<ClientTable> clientlist;
+    protected String display;
 
     FacesContext fc;
     ExternalContext ec;
@@ -92,6 +93,11 @@ public class ShipmentTopManagedBean implements Serializable {
         year = findyear();
         month = findmonth();
 
+        if (indicatorChart.getDeptno().equals("1F330")) {
+            display = "display:block";
+        } else {
+            display = "display:none";
+        }
         map = new LinkedHashMap<>();
         setClientlist(new ArrayList<>());
     }
@@ -372,6 +378,20 @@ public class ShipmentTopManagedBean implements Serializable {
      */
     public void setCheckbox(boolean checkbox) {
         this.checkbox = checkbox;
+    }
+
+    /**
+     * @return the display
+     */
+    public String getDisplay() {
+        return display;
+    }
+
+    /**
+     * @param display the display to set
+     */
+    public void setDisplay(String display) {
+        this.display = display;
     }
 
 }
