@@ -147,6 +147,11 @@
             <to-view-id>/app/prod/productset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>exchange</from-outcome>
+            <to-view-id>/app/prod/exchange.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>部门指标定义</description>
