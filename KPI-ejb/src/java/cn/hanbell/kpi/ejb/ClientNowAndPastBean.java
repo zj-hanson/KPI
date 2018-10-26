@@ -537,10 +537,13 @@ public class ClientNowAndPastBean implements Serializable {
         List<ClientTable> returnlist = new ArrayList<>();
         ClientTable ct;
         boolean aa;
+        //总金额
+        Double sumshpamts = 0.0;
         try {
             for (String arr1 : arr) {
                 list = new ArrayList<>();
-                List result = getClient(y - 1, m, arr1, map);
+                sumshpamts += getSumAmount(y - 1, m, arr1, map);
+               List result = getClient(y - 1, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
                         ct = new ClientTable();
@@ -571,10 +574,8 @@ public class ClientNowAndPastBean implements Serializable {
                             }
                         }
                     }
-
                 }
             }
-
             //客户排名
             int min;
             for (int i = 0; i < returnlist.size() - 1; i++) {
@@ -593,12 +594,10 @@ public class ClientNowAndPastBean implements Serializable {
             }
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
-                Double sumshpamts = 0.0;
                 ct = new ClientTable();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setPastrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getPastshpqy1());
-                    sumshpamts += Double.parseDouble(returnlist.get(i).getPastshpamts());
                 }
                 ct.setCusna("总计");
                 ct.setPastshpqy1(String.valueOf(sumshpqy1));
