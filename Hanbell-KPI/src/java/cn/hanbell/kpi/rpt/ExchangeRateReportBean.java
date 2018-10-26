@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -98,8 +97,7 @@ public class ExchangeRateReportBean implements Serializable {
 
         map = new LinkedHashMap<>();
         list = new ArrayList<>();
-        chartModel= new LineChartModel();
-
+        chartModel = new LineChartModel();
     }
 
     public void initial() {
@@ -120,19 +118,7 @@ public class ExchangeRateReportBean implements Serializable {
         chartModel.clear();
         displaySting = "none";
         remind = "block";
-        if (queryDateBegin.after(queryDateEnd)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询开始日期不能大于结束日期！"));
-            aa = false;
-        }
-        if (queryDateEnd.after(rtndate().getTime())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
-            aa = false;
-        }
-        if (queryCurrency.equals("0")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "请选择需要查询的币种！"));
-            aa = false;
-        }
-        if (aa) {
+        if (hint()) {
             map = exchangeRateBean.getHashMap(queryCurrency, queryDateBegin, queryDateEnd);
             if (map != null) {
                 list = exchangeRateBean.getlList(queryCurrency, queryDateBegin, queryDateEnd);
@@ -160,6 +146,23 @@ public class ExchangeRateReportBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
         }
+    }
+
+    private boolean hint() {
+        boolean aa = true;
+        if (queryDateBegin.after(queryDateEnd)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询开始日期不能大于结束日期！"));
+            aa = false;
+        }
+        if (queryDateEnd.after(rtndate().getTime())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
+            aa = false;
+        }
+        if (queryCurrency.equals("0")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "请选择需要查询的币种！"));
+            aa = false;
+        }
+        return aa;
     }
 
     /**

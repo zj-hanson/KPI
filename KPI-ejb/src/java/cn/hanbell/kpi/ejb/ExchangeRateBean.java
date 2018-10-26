@@ -5,9 +5,8 @@
  */
 package cn.hanbell.kpi.ejb;
 
-import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import com.lightshell.comm.BaseLib;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -15,10 +14,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import cn.hanbell.kpi.entity.ExchangeRate;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -26,51 +26,63 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class ExchangeRateBean implements Serializable {
-
-    @EJB
-    private SuperEJBForERP erpEJB;
+public class ExchangeRateBean extends SuperEJBForKPI<ExchangeRate> {
 
     private final DecimalFormat df;
     private final DecimalFormat doubledf;
 
     public ExchangeRateBean() {
+        super(ExchangeRate.class);
         this.df = new DecimalFormat("0.####");
         this.doubledf = new DecimalFormat("0.00％");
+    }
+
+    public boolean queryRateIsExist(ExchangeRate rate) {
+        Query query = getEntityManager().createQuery(" SELECT e FROM ExchangeRate e WHERE e.rpttype = :rpttype and e.rateday = :rateday ");
+        try {
+            query.setParameter("rpttype", rate.getRpttype());
+            query.setParameter("rateday", rate.getRateday());
+            if (query.getResultList().isEmpty()) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.ExchangeRateBean.queryRateIsExist()" + e);
+        }
+        return true;
     }
 
     public List<String[]> getlList(String queryCurrency, Date queryDateBegin, Date queryDateEnd) {
         List<String[]> list;
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT right(CONVERT(varchar(100), rateday, 111),5),rate FROM  arm_cw_rate where rpttype ='${queryCurrency}' ");
+        sb.append(" SELECT rateday,rate FROM  exchangerate where rpttype =${queryCurrency} ");
         sb.append(" and rateday >= '${queryDateBegin}' and  rateday <= '${queryDateEnd}' ORDER BY rateday ASC ");
         String sql = sb.toString().replace("${queryCurrency}", queryCurrency).replace("${queryDateBegin}", BaseLib.formatDate("yyyyMMdd", queryDateBegin)).replace("${queryDateEnd}", BaseLib.formatDate("yyyyMMdd", queryDateEnd));
         try {
-            erpEJB.setCompany("C");
-            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            Query query = getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             list = new ArrayList<>();
             int size = 1;
             //图表显示最多30条数据
-            while (((double)result.size() / (double)size) > 30) {
+            while (((double) result.size() / (double) size) > 30) {
                 size = size * 2;
             }
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i = i + size) {
                     Object[] row = (Object[]) result.get(i);
                     String[] arr = new String[2];
-                    arr[0] = row[0].toString();
+                    arr[0] = new SimpleDateFormat("MM/dd").format(row[0]);
                     arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     list.add(arr);
-                    if ( i + size >= result.size()) {
+                    if (i + size >= result.size()) {
                         row = (Object[]) result.get(result.size() - 1);
                         arr = new String[2];
-                        arr[0] = row[0].toString();
+                        arr[0] = new SimpleDateFormat("MM/dd").format(row[0]);
                         arr[1] = df.format(Double.parseDouble(row[1].toString()));
                         list.add(arr);
                     }
 
                 }
+                getEntityManager().clear();
                 return list;
             }
         } catch (Exception e) {
@@ -198,18 +210,17 @@ public class ExchangeRateBean implements Serializable {
         List<String> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT top 1 exchange,CONVERT(varchar(100), rateday, 111),rate FROM  arm_cw_rate where rpttype ='${queryCurrency}' ");
-        sb.append(" and year(rateday) = ${y}  ORDER BY rateday ASC ");
+        sb.append(" SELECT exchangena,rateday,rate FROM  exchangerate where rpttype =${queryCurrency} ");
+        sb.append(" and year(rateday) = ${y}  ORDER BY rateday ASC LIMIT 1 ");
         String sql = sb.toString().replace("${queryCurrency}", queryCurrency).replace("${y}", String.valueOf(c.get(Calendar.YEAR)));
         try {
-            erpEJB.setCompany("C");
-            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            Query query = getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
                     list.add(row[0].toString());
-                    list.add(row[1].toString());
+                    list.add(new SimpleDateFormat("yyyy/MM/dd").format(row[1]));
                     list.add(row[2].toString());
                 }
                 return list;
@@ -225,17 +236,16 @@ public class ExchangeRateBean implements Serializable {
         List<String> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT top 1 CONVERT(varchar(100), rateday, 111),rate FROM  arm_cw_rate where rpttype ='${queryCurrency}' ");
-        sb.append(" and rateday >= '${queryDateBegin}' and  rateday <= '${queryDateEnd}'  ORDER BY rateday DESC ");
+        sb.append(" SELECT  rateday,rate FROM  exchangerate where rpttype =${queryCurrency} ");
+        sb.append(" and rateday >= '${queryDateBegin}' and  rateday <= '${queryDateEnd}'  ORDER BY rateday DESC LIMIT 1 ");
         String sql = sb.toString().replace("${queryCurrency}", queryCurrency).replace("${queryDateBegin}", BaseLib.formatDate("yyyyMMdd", queryDateBegin)).replace("${queryDateEnd}", BaseLib.formatDate("yyyyMMdd", queryDateEnd));
         try {
-            erpEJB.setCompany("C");
-            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            Query query = getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
-                    list.add(row[0].toString());
+                    list.add(new SimpleDateFormat("yyyy/MM/dd").format(row[0]));
                     list.add(row[1].toString());
                 }
                 return list;
@@ -251,17 +261,16 @@ public class ExchangeRateBean implements Serializable {
         List<String> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT top 1 CONVERT(varchar(100), rateday, 111),rate FROM  arm_cw_rate where rpttype ='${queryCurrency}' ");
-        sb.append(" and rateday >= '${queryDateBegin}' and  rateday <= '${queryDateEnd}'  ORDER BY rateday ASC ");
+        sb.append(" SELECT  rateday,rate FROM  exchangerate where rpttype =${queryCurrency} ");
+        sb.append(" and rateday >= '${queryDateBegin}' and  rateday <= '${queryDateEnd}'  ORDER BY rateday ASC LIMIT 1 ");
         String sql = sb.toString().replace("${queryCurrency}", queryCurrency).replace("${queryDateBegin}", BaseLib.formatDate("yyyyMMdd", queryDateBegin)).replace("${queryDateEnd}", BaseLib.formatDate("yyyyMMdd", queryDateEnd));
         try {
-            erpEJB.setCompany("C");
-            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            Query query = getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
-                    list.add(row[0].toString());
+                    list.add(new SimpleDateFormat("yyyy/MM/dd").format(row[0]));
                     list.add(row[1].toString());
                 }
                 return list;
