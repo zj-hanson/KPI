@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <h:form id="formOne">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" columns="5" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15" styleClass="plgQuery Wid100">
+                <p:outputLabel value="请输入查询日期*" for="btndate" />
+                <p:calendar id="btndate" value="#{incomeStatementReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
+                <h:selectBooleanCheckbox value="#{incomeStatementReportBean.checkbox}"  title="√选中为损益表月查询" style="height: 18px;width: 18px" >
+                    只查当月
+                </h:selectBooleanCheckbox>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{incomeStatementReportBean.btnreset()}"  icon="ui-icon-refresh"
+                                 update="formOne"  />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{incomeStatementReportBean.btnquery()}"  icon="ui-icon-search"
+                                 update="formOne"/>
+            </p:panelGrid>
+            <div style="height: 610px">
+                <div style="display:#{incomeStatementReportBean.statusMap.displaydiv1};padding-top: 10px;" align="right" >
+                    <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
+                </div>
+                <div style="display:#{incomeStatementReportBean.statusMap.displaydiv2};padding-top: 10px;" align="right">
+                    <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                        <f:facet name="header" >
+                            <p:row >
+                                <p:column style="font-size: 20px;letter-spacing:2px" >上海汉钟精机股份有限公司<br/>损益表#{incomeStatementReportBean.statusMap.title}</p:column>
+                            </p:row>
+                            <p:row style="text-align: right;background-color: ">
+                                <p:column >单位：万元</p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid >
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#table tr").hover(function () {
+                               $(this).css("background-color", "#E8E8E8");
+                            }, function () {
+                                $(this).css("background-color", "");
+                            });
+                        });
+                    </script>
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 510px;text-align: center;font-size: 15px;">
+                        <thead style="background-color: #E8E8E8;">
+                            <tr>
+                                <th rowspan="2">项目</th>
+                                <th colspan="2">#{incomeStatementReportBean.statusMap.th1title}</th>
+                                <th colspan="2">#{incomeStatementReportBean.statusMap.th2title}</th>
+                                <th rowspan="2">差异额</th>
+                                <th rowspan="2">变动幅度</th>
+                                <c:if test="#{incomeStatementReportBean.checkbox == false}">
+                                    <th colspan="2">全年目标</th>
+                                    <th rowspan="2">达成率</th>
+                                </c:if>
+                            </tr>
+                            <tr>
+                                <th>金额</th>
+                                <th>百分比</th>
+                                <th>金额</th>
+                                <th>百分比</th>
+                                <c:if test="#{incomeStatementReportBean.checkbox == false}">
+                                    <th>金额</th>
+                                    <th>百分比</th>
+                                </c:if>
+                            </tr>
+                        </thead>
+                        <tbody id="table">
+                            <tr>
+                                <td>销售收入</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('1')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>销售成本</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('2')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>销售毛利</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('999')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>销售税金</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('3')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>销售费用</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('4')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>管理费用</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('5')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>财务费用</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('6')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>资产减值损失</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('7')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>投资收益</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('9')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>营业利润</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('11')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>营业外收入</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('12')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>营业外支出</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('13')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>税前利润</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('15')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>所得税</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('16')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>营业净利润</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('17')}" var="item" >
+                                    <td>#{item}</td>
+                                </c:forEach>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
