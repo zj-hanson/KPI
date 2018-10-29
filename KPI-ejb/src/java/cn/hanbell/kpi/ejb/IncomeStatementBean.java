@@ -78,9 +78,9 @@ public class IncomeStatementBean implements Serializable {
                     Object[] row = (Object[]) result.get(i);
                     String[] arr = new String[9];
                     arr[0] = df.format(Double.parseDouble(row[1].toString()));
-                    arr[1] = dfpercent.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = dfpercent.format(Double.parseDouble(row[2].toString())*100);
                     arr[2] = DFormat(row[3].toString());
-                    arr[3] = dfpercent.format(Double.parseDouble(row[4].toString()));
+                    arr[3] = dfpercent.format(Double.parseDouble(row[4].toString())*100);
                     arr[4] = DFormat(row[5].toString());
                     if (Double.parseDouble(row[3].toString()) != 0) {
                         arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString())*100);
@@ -88,7 +88,7 @@ public class IncomeStatementBean implements Serializable {
                         arr[5] = dfpercent.format(100);
                     }
                     arr[6] = DFormat(row[6].toString());
-                    arr[7] = dfpercent.format(Double.parseDouble(row[7].toString()));
+                    arr[7] = dfpercent.format(Double.parseDouble(row[7].toString())*100);
                     if (Double.parseDouble(row[6].toString()) != 0) {
                         arr[8] = dfpercent.format(Double.parseDouble(row[1].toString()) / Double.parseDouble(row[6].toString())*100);
                     } else {
@@ -127,9 +127,9 @@ public class IncomeStatementBean implements Serializable {
                     Object[] row = (Object[]) result.get(i);
                     String[] arr = new String[6];
                     arr[0] = DFormat(row[1].toString());
-                    arr[1] = dfpercent.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = dfpercent.format(Double.parseDouble(row[2].toString())*100);
                     arr[2] = DFormat(row[3].toString());
-                    arr[3] = dfpercent.format(Double.parseDouble(row[4].toString()));
+                    arr[3] = dfpercent.format(Double.parseDouble(row[4].toString())*100);
                     arr[4] = DFormat(row[5].toString());
                     if (Double.parseDouble(row[3].toString()) != 0) {
                         arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString())*100);
