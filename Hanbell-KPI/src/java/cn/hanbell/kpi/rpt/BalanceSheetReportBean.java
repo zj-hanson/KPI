@@ -6,7 +6,7 @@
 package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.control.UserManagedBean;
-import cn.hanbell.kpi.ejb.IncomeStatementBean;
+import cn.hanbell.kpi.ejb.BalanceSheetBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import java.io.Serializable;
@@ -27,19 +27,19 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author C1879
  */
-@ManagedBean(name = "incomeStatementReportBean")
+@ManagedBean(name = "balanceSheetReportBean")
 @ViewScoped
-public class IncomeStatementReportBean implements Serializable {
+public class BalanceSheetReportBean implements Serializable {
 
     @EJB
-    protected IncomeStatementBean incomeStatementBean;
+    protected BalanceSheetBean balanceSheetBean;
 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
 
-    protected boolean checkbox;
     protected Date btndate;
-    protected LinkedHashMap<String, String[]> map;
+    protected LinkedHashMap<String, String[]> zcmap;
+    protected LinkedHashMap<String, String[]> fzmap;
     protected LinkedHashMap<String, String> statusMap;
 
     @ManagedProperty(value = "#{userManagedBean}")
@@ -49,7 +49,7 @@ public class IncomeStatementReportBean implements Serializable {
     ExternalContext ec;
     protected IndicatorChart indicatorChart;
 
-    public IncomeStatementReportBean() {
+    public BalanceSheetReportBean() {
     }
 
     public Calendar settlementDate() {
@@ -77,81 +77,84 @@ public class IncomeStatementReportBean implements Serializable {
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
-        map = new LinkedHashMap<>();
+        zcmap = new LinkedHashMap<>();
+        fzmap = new LinkedHashMap<>();
         statusMap = new LinkedHashMap<>();
-        checkbox = true;
-        statusMap.put("title", checkbox ? "(当月)" : "(年度累计)");
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
     }
 
     public void btnreset() {;
-        checkbox = true;
-        statusMap.put("title", checkbox ? "(当月)" : "(年度累计)");
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
     }
 
     public void btnquery() {
-        map = new LinkedHashMap<>();
+        zcmap = new LinkedHashMap<>();
+        fzmap = new LinkedHashMap<>();
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
-        statusMap.put("title", checkbox ? "(当月)" : "(年度累计)");
         boolean aa = true;
         if (getBtndate().after(settlementDate().getTime())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
         }
         if (aa) {
-            if (checkbox) {
-                map = incomeStatementBean.monthMap(btndate);
-
-            } else {
-                map = incomeStatementBean.yearMap(btndate);
-            }
-            if (map != null && !map.isEmpty()) {
+            zcmap = balanceSheetBean.assetMap(btndate);
+            fzmap = balanceSheetBean.liabilitiesMap(btndate);
+            if ((zcmap != null && !zcmap.isEmpty()) || (fzmap != null && !fzmap.isEmpty())) {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");
-                statusMap.put("th1title", checkbox ? getdate().get(Calendar.YEAR) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月"
-                        : getdate().get(Calendar.YEAR) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
-                statusMap.put("th2title", checkbox ? (getdate().get(Calendar.YEAR) - 1) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月"
-                        : (getdate().get(Calendar.YEAR) - 1) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
+                statusMap.put("th1title", getdate().get(Calendar.YEAR) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月");
+                statusMap.put("th2title", (getdate().get(Calendar.YEAR) - 1) + "");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
-
         }
-
     }
 
     /**
-     * @return the checkbox
+     * @return the btndate
      */
-    public boolean isCheckbox() {
-        return checkbox;
+    public Date getBtndate() {
+        return btndate;
     }
 
     /**
-     * @param checkbox the checkbox to set
+     * @param btndate the btndate to set
      */
-    public void setCheckbox(boolean checkbox) {
-        this.checkbox = checkbox;
+    public void setBtndate(Date btndate) {
+        this.btndate = btndate;
     }
 
     /**
-     * @return the map
+     * @return the zcmap
      */
-    public LinkedHashMap<String, String[]> getMap() {
-        return map;
+    public LinkedHashMap<String, String[]> getZcmap() {
+        return zcmap;
     }
 
     /**
-     * @param map the map to set
+     * @param zcmap the zcmap to set
      */
-    public void setMap(LinkedHashMap<String, String[]> map) {
-        this.map = map;
+    public void setZcmap(LinkedHashMap<String, String[]> zcmap) {
+        this.zcmap = zcmap;
+    }
+
+    /**
+     * @return the fzmap
+     */
+    public LinkedHashMap<String, String[]> getFzmap() {
+        return fzmap;
+    }
+
+    /**
+     * @param fzmap the fzmap to set
+     */
+    public void setFzmap(LinkedHashMap<String, String[]> fzmap) {
+        this.fzmap = fzmap;
     }
 
     /**
@@ -180,20 +183,6 @@ public class IncomeStatementReportBean implements Serializable {
      */
     public void setUserManagedBean(UserManagedBean userManagedBean) {
         this.userManagedBean = userManagedBean;
-    }
-
-    /**
-     * @return the btndate
-     */
-    public Date getBtndate() {
-        return btndate;
-    }
-
-    /**
-     * @param btndate the btndate to set
-     */
-    public void setBtndate(Date btndate) {
-        this.btndate = btndate;
     }
 
 }

@@ -9,9 +9,9 @@
 
     <ui:define name="content">
 
-        <h:form id="formOne">
+        <h:form id="formOne" >
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="5" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15" styleClass="plgQuery Wid100">
+            <p:panelGrid id="plgQuery" columns="5" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{incomeStatementReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
                 <h:selectBooleanCheckbox value="#{incomeStatementReportBean.checkbox}"  title="√选中为损益表月查询" style="height: 18px;width: 18px" >
@@ -23,32 +23,32 @@
                                  update="formOne"/>
             </p:panelGrid>
             <div style="height: 610px">
+                <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                    <f:facet name="header" >
+                        <p:row >
+                            <p:column style="font-size: 20px;letter-spacing:2px;font-weight: 600" >上海汉钟精机股份有限公司<br/>损益表#{incomeStatementReportBean.statusMap.title}</p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid >
                 <div style="display:#{incomeStatementReportBean.statusMap.displaydiv1};padding-top: 10px;" align="right" >
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
                 </div>
-                <div style="display:#{incomeStatementReportBean.statusMap.displaydiv2};padding-top: 10px;" align="right">
-                    <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
-                        <f:facet name="header" >
-                            <p:row >
-                                <p:column style="font-size: 20px;letter-spacing:2px" >上海汉钟精机股份有限公司<br/>损益表#{incomeStatementReportBean.statusMap.title}</p:column>
-                            </p:row>
-                            <p:row style="text-align: right;background-color: ">
-                                <p:column >单位：万元</p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid >
+                <div style="display:#{incomeStatementReportBean.statusMap.displaydiv2};" align="right">
                     <script type="text/javascript">
                         $(function () {
                             $("#table tr").hover(function () {
-                               $(this).css("background-color", "#E8E8E8");
+                                $(this).css("background-color", "#1AB394");
+                                $(this).css("color", "white");
                             }, function () {
                                 $(this).css("background-color", "");
+                                $(this).css("color", "black");
                             });
                         });
                     </script>
-                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 510px;text-align: center;font-size: 15px;">
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 540px;text-align: center;font-size: 15px;">
+                        <caption style="padding-right: 30px;background-color:#2F4050;text-align: right;color: white"><p:column  >单位：万元</p:column></caption>
                         <thead style="background-color: #E8E8E8;">
-                            <tr>
+                            <tr style="height: 30px">
                                 <th rowspan="2">项目</th>
                                 <th colspan="2">#{incomeStatementReportBean.statusMap.th1title}</th>
                                 <th colspan="2">#{incomeStatementReportBean.statusMap.th2title}</th>
@@ -59,7 +59,7 @@
                                     <th rowspan="2">达成率</th>
                                 </c:if>
                             </tr>
-                            <tr>
+                            <tr style="height: 30px">
                                 <th>金额</th>
                                 <th>百分比</th>
                                 <th>金额</th>
