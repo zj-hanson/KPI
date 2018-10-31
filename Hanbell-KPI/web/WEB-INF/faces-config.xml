@@ -328,6 +328,11 @@
             <to-view-id>/app/bsc/balancesheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>feedstockchart</from-outcome>
+            <to-view-id>/app/bsc/feedstockchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>模态开窗</description>
