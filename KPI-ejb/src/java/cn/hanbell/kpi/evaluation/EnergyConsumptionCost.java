@@ -57,7 +57,7 @@ public class EnergyConsumptionCost extends EnergyConsumption {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         BigDecimal charge = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(SUM( KWH * UnitElectricCost),0) FROM ElectricDayReport e INNER JOIN DayReportPara d ON e.TagID=d.ItemName ");
+        sb.append(" SELECT isnull(SUM( KWH * UnitElectricCost)${condition},0) FROM ElectricDayReport e INNER JOIN DayReportPara d ON e.TagID=d.ItemName ");
         sb.append(" WHERE  d.Description ").append(otheritem);
         sb.append(" and year(e.RecTime) = ${y} and month(e.RecTime)= ${m} ");
         switch (type) {

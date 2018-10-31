@@ -284,6 +284,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>incomestatement</from-outcome>incomestatement
+            <to-view-id>/app/bsc/incomestatement.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>productivity</from-outcome>
             <to-view-id>/app/bsc/productivity.xhtml</to-view-id>
             <redirect/>
@@ -316,6 +321,11 @@
         <navigation-case>
             <from-outcome>exchangerate</from-outcome>
             <to-view-id>/app/bsc/exchangerate.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>balancesheet</from-outcome>
+            <to-view-id>/app/bsc/balancesheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
