@@ -22,7 +22,7 @@
                     <f:selectItem itemLabel="请选择" itemValue="0"/>
                     <f:selectItem itemLabel="美金/人民币" itemValue="1"/>
                     <f:selectItem itemLabel="欧元/人民币" itemValue="2"/>
-                    <f:selectItem itemLabel="日圆/人民币" itemValue="3"/>
+                    <f:selectItem itemLabel="100日圆/人民币" itemValue="3"/>
                     <f:selectItem itemLabel="人民币/台币" itemValue="4"/>
                     <f:selectItem itemLabel="黄金盎司/美金" itemValue="5"/>
                     <f:selectItem itemLabel="美金/日圆" itemValue="6"/>
@@ -36,7 +36,6 @@
                                      update=":formList"/>
                 </f:facet>
                 <f:facet name="right">
-
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
                         <p:menuitem id="btnUpdate" value="修改" actionListener="#{exchangeRateManagedBean.update()}" icon="ui-icon-update"
                                     update=":formList" />
@@ -100,11 +99,18 @@
             </p:confirmDialog>
         </h:form>
         <h:form id="formOne">
-                <p:dialog id="exchangeRateAdd" widgetVar="exchangeRateAdd" width="45%" style="border-color: #666666">
+            <p:dialog id="exchangeRateAdd" widgetVar="exchangeRateAdd" width="40%" style="border-color: #666666">
+                <p:panelGrid id="exchangeRatesValue" styleClass="plgDetail Wid100">
+                    <p:row>
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{exchangeRateManagedBean.handleFileUploadWhenNew}"  styleClass="fileUpload"
+                                      allowTypes="/(\.|\/)(xlsx)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原" value="批量添加"
+                                      process="@this" update="formList,formOne:exchangeRateValue"/>
+                    </p:row>
+                </p:panelGrid>
                 <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
                     <f:facet name="header" >
                         <p:row >
-                            <p:column colspan="2">汇率增加</p:column>
+                            <p:column colspan="2">汇率单项添加</p:column>
                         </p:row>
                     </f:facet>
                     <p:row>
@@ -123,7 +129,7 @@
                                 <f:selectItem itemLabel="请选择" itemValue="0"/>
                                 <f:selectItem itemLabel="美金/人民币" itemValue="1"/>
                                 <f:selectItem itemLabel="欧元/人民币" itemValue="2"/>
-                                <f:selectItem itemLabel="日圆/人民币" itemValue="3"/>
+                                <f:selectItem itemLabel="100日圆/人民币" itemValue="3"/>
                                 <f:selectItem itemLabel="人民币/台币" itemValue="4"/>
                                 <f:selectItem itemLabel="黄金盎司/美金" itemValue="5"/>
                                 <f:selectItem itemLabel="美金/日圆" itemValue="6"/>
@@ -139,12 +145,9 @@
                                            required="true" requiredMessage="请输入汇率"  />
                         </p:column>
                     </p:row>
-                    <p:row>
-                        <p:column colspan="2" style="height: 25px"></p:column>
-                    </p:row>
                     <f:facet name="footer" rendered="#{exchangeRateManagedBean.doEdit}" >
                         <p:row>
-                            <p:column colspan="6">
+                            <p:column colspan="2">
                                 <p:commandButton id="updateIndicatorSummary"  actionListener="#{exchangeRateManagedBean.persist()}" value="保存" icon="ui-icon-save" style="float: right"
                                                  process="formOne:exchangeRateAdd" update="formList,formOne:exchangeRateValue" >
                                 </p:commandButton>
