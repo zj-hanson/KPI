@@ -20,12 +20,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -150,7 +147,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                         setDefaultValue();
                         if (exchangeRateBean.queryRateIsExist(newEntity)) {
                             showErrorMsg("Error", "添加数据库失败;Excel表格中时间栏为：" + df.format(sheet.getRow(0).getCell(i).getDateCellValue()) + "第" + (j + 1) + "行已有该货币汇率数据");
-                            addlist = new ArrayList<>();
+                            addlist.clear();
                             return;
                         }
                         addlist.add(newEntity);
@@ -170,15 +167,10 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                     }
 
                 }
-            } catch (IOException ex) {
+            }catch(Exception ex){
                 showErrorMsg("Error", "导入失败,找不到文件或格式错误" + ex.toString());
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidFormatException ex) {
-                showErrorMsg("Error", ex.toString());
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            } catch (NullPointerException ex) {
-                showErrorMsg("Error", ex.toString());
             }
+            //将导入文件删除掉
             File file = new File(getAppResPath() + "/" + fileName);
             if (file.isFile()) {
                 file.delete();
@@ -189,6 +181,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     private void setDefaultValue() {
         newEntity.setFacno("C");
+        newEntity.setStatus("N");
         switch (newEntity.getRpttype()) {
             case "1":
                 newEntity.setCoin("USD");
