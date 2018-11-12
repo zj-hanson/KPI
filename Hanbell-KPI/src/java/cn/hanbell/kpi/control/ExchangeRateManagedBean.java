@@ -126,7 +126,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     @Override
     public void handleFileUploadWhenNew(FileUploadEvent event) {
-        DateFormat  df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         List<ExchangeRate> addlist = new ArrayList<>();
 
         super.handleFileUploadWhenNew(event);
@@ -162,11 +162,11 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                         for (int i = 0; i < addlist.size(); i++) {
                             exchangeRateBean.persist(addlist.get(i));
                         }
+                        showInfoMsg("Info", "数据导入成功");
                     } catch (Exception el) {
                         showInfoMsg("Info", "数据导入失败");
                         System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
                     }
-                    showInfoMsg("Info", "数据导入成功");
                 }
             } catch (IOException ex) {
                 showErrorMsg("Info", "导入失败,找不到文件或格式错误");
