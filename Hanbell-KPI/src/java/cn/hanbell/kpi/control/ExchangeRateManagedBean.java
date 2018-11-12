@@ -9,6 +9,7 @@ import cn.hanbell.kpi.ejb.ExchangeRateBean;
 import cn.hanbell.kpi.entity.ExchangeRate;
 import cn.hanbell.kpi.lazy.ExchangeRateModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,13 +168,20 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                         showInfoMsg("Info", "数据导入失败");
                         System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
                     }
+
                 }
             } catch (IOException ex) {
-                showErrorMsg("Info", "导入失败,找不到文件或格式错误");
+                showErrorMsg("Error", "导入失败,找不到文件或格式错误" + ex.toString());
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidFormatException ex) {
-                showErrorMsg("Info", "日期格式错误");
-                Logger.getLogger(ExchangeRateManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                showErrorMsg("Error", ex.toString());
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            } catch (NullPointerException ex) {
+                showErrorMsg("Error", ex.toString());
+            }
+            File file = new File(getAppResPath() + "/" + fileName);
+            if (file.isFile()) {
+                file.delete();
             }
         }
 
