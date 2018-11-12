@@ -9,6 +9,7 @@ import cn.hanbell.kpi.ejb.ExchangeRateBean;
 import cn.hanbell.kpi.entity.ExchangeRate;
 import cn.hanbell.kpi.lazy.ExchangeRateModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,12 +20,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -126,9 +124,11 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     @Override
     public void handleFileUploadWhenNew(FileUploadEvent event) {
-        DateFormat  df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         List<ExchangeRate> addlist = new ArrayList<>();
 
+        String a = "";
+        String b = "";
         super.handleFileUploadWhenNew(event);
         if (this.fileName != null) {
             ExchangeRate e;
@@ -139,17 +139,20 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                 InputStream is = new FileInputStream(getAppResPath() + "/" + fileName);
                 Workbook excel = WorkbookFactory.create(is);
                 Sheet sheet = excel.getSheetAt(0);
+
                 int cols = sheet.getRow(0).getLastCellNum();
                 for (int i = 0; i < cols; i++) {
-                    for (int j = 0; j < sheet.getLastRowNum(); j++) {
+                    for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
+                        a = df.format(sheet.getRow(0).getCell(i).getDateCellValue());
+                        b = j + "";
                         newEntity = new ExchangeRate();
                         newEntity.setRateday(sheet.getRow(0).getCell(i).getDateCellValue());
-                        newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j + 1).getCell(i).getNumericCellValue())));
-                        newEntity.setRpttype((j + 1) + "");
+                        newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j).getCell(i).getNumericCellValue())));
+                        newEntity.setRpttype(j + "");
                         setDefaultValue();
                         if (exchangeRateBean.queryRateIsExist(newEntity)) {
-                            showErrorMsg("Error", "添加数据库失败;Excel表格中时间栏为：" + df.format(sheet.getRow(0).getCell(i).getDateCellValue()) + "第" + (j + 1) + "行已有该货币汇率数据");
-                            addlist = new ArrayList<>();
+                            showErrorMsg("Error", "添加数据库失败;Excel表格中时间栏为：" + df.format(sheet.getRow(0).getCell(i).getDateCellValue()) + "第" + j + "行已有该货币汇率数据");
+                            addlist.clear();
                             return;
                         }
                         addlist.add(newEntity);
@@ -162,18 +165,20 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                         for (int i = 0; i < addlist.size(); i++) {
                             exchangeRateBean.persist(addlist.get(i));
                         }
+                        showInfoMsg("Info", "数据导入成功");
                     } catch (Exception el) {
                         showInfoMsg("Info", "数据导入失败");
                         System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
                     }
-                    showInfoMsg("Info", "数据导入成功");
                 }
-            } catch (IOException ex) {
-                showErrorMsg("Info", "导入失败,找不到文件或格式错误");
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidFormatException ex) {
-                showErrorMsg("Info", "日期格式错误");
-                Logger.getLogger(ExchangeRateManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                showErrorMsg("Error", "导入失败,找不到文件或格式错误----" + ex.toString());
+                showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
+            }
+            //将导入文件删除掉
+            File file = new File(getAppResPath() + "/" + fileName);
+            if (file.isFile()) {
+                file.delete();
             }
         }
 
@@ -181,6 +186,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     private void setDefaultValue() {
         newEntity.setFacno("C");
+        newEntity.setStatus("N");
         switch (newEntity.getRpttype()) {
             case "1":
                 newEntity.setCoin("USD");
