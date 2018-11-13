@@ -55,7 +55,7 @@ public abstract class Shipment implements Actual {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d,cdrdta s ");
-        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq AND h.facno='${facno}' ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq and s.issevdta<>'Y' AND h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND s.n_code_DA ").append(n_code_DA);
         }
