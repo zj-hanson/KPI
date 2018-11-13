@@ -30,7 +30,7 @@ public class ProductivityActualRateKAPP extends Production {
     public ProductivityActualRateKAPP() {
         super();
         queryParams.put("formid", "R-KAPP加工机综合");
-        queryParams.put("deptno", "1P500");
+        queryParams.put("deptno", "1W000");
     }
 
     //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））

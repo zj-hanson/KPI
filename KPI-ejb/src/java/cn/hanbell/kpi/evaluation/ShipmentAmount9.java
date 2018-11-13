@@ -24,6 +24,50 @@ public abstract class ShipmentAmount9 extends Shipment {
     }
 
     @Override
+    public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d,cdrdta s ");
+        sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq and s.issevdta='Y' AND h.facno='${facno}' ");
+        if (!"".equals(n_code_DA)) {
+            sb.append(" AND s.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_CD)) {
+            sb.append(" AND s.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND s.n_code_DC ").append(n_code_DC);
+        }
+        sb.append(" AND year(h.trdat) = ${y} AND month(h.trdat) = ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" AND h.trdat<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" AND h.trdat= '${d}' ");
+                break;
+            default:
+                sb.append(" AND h.trdat<= '${d}' ");
+        }
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return BigDecimal.ZERO;
+    }
+    
+    @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
@@ -114,10 +158,11 @@ public abstract class ShipmentAmount9 extends Shipment {
             Object o2 = query2.getSingleResult();
             shp1 = (BigDecimal) o1;
             bshp1 = (BigDecimal) o2;
+            this.arm232 = this.getARM232Value(y, m, d, type, getQueryParams());
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return shp1.subtract(bshp1);
+        return shp1.subtract(bshp1).add(arm232);
     }
 
 }
