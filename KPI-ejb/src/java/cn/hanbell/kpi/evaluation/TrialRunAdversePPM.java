@@ -117,7 +117,7 @@ public class TrialRunAdversePPM extends TrialRun {
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result.multiply(BigDecimal.valueOf(1000000));//乘以100等于实际值;
+        return result.multiply(BigDecimal.valueOf(1000000));//乘以1000000等于实际值PPM;
     }
     
 }

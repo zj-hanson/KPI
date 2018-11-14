@@ -40,15 +40,15 @@ public class ComplaintsQualityPenpzk extends ComplaintsKS {
 //        sb.append(" LEFT JOIN REPMI REPMI ON rtrim(MI002) = rtrim(CA009) ) a ON rtrim(a.CA001)=rtrim(SERBQ.BQ001) ");
 //        sb.append(" where BQ197 = '${BQ197}' AND BQ130 ='${BQ130}' and MI017 = '${MI017}' and BQ035 = '${BQ035}' and BQ110 = '${BQ110}'");
         sb.append("select count(DISTINCT BQ001)  from (  ");
-        sb.append(" select BQ001,BQ197,BQ134,BQ003,BQ021,CA009,BQ110,  ");
-        sb.append(" (CASE when CA022 in ('PZ90+PL250','PZ90+PL660','PX300+PL1300','PX300+PL1300','PX300+PL1300') then '混合机型' ");
-        sb.append(" when (CA022 like 'PX-%' or CA022 like 'PZ-%') then 'P机体' ELSE 'P机组'  end ) as pjx from SERBQ,SERCA ");
+        sb.append(" select BQ001,BQ197,BQ505,BQ003,BQ021,CA009,BQ110,  ");
+        sb.append(" (CASE when CA500 in ('PZ90+PL250','PZ90+PL660','PX300+PL1300','PX300+PL1300','PX300+PL1300') then '混合机型' ");
+        sb.append(" when (CA500 like 'PX-%' or CA500  like 'PZ-%') then 'P机体' ELSE 'P机组'  end ) as pjx from SERBQ,SERCA ");
         sb.append(" where BQ001 = CA001 BQ197 like '${BQ197}' ");
         if (!"".equals(BQ003)) {
             sb.append(" and BQ003 ").append(BQ003);
         }
         if (!"".equals(BQ134)) {
-            sb.append(" and BQ134 ").append(BQ134);
+            sb.append(" and BQ505 ").append(BQ134);
         }
         if (!"".equals(BQ110)) {
             sb.append(" and BQ110 ").append(BQ110);
