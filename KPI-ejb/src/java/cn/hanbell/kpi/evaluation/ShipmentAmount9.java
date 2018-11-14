@@ -25,11 +25,10 @@ public abstract class ShipmentAmount9 extends Shipment {
 
     @Override
     public BigDecimal getARM232Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
-        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d,cdrdta s ");
         sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq and s.issevdta='Y' AND h.facno='${facno}' ");
@@ -66,7 +65,55 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         return BigDecimal.ZERO;
     }
-    
+
+    @Override
+    public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
+        sb.append(" AND h.facno='${facno}' ");
+        if (!"".equals(ogdkid)) {
+            sb.append(" AND h.ogdkid ").append(ogdkid);
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" AND h.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_CD)) {
+            sb.append(" AND h.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND h.n_code_DC ").append(n_code_DC);
+        }
+        sb.append(" AND h.n_code_DD='01' ");
+        sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" AND h.recdate<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" AND h.recdate= '${d}' ");
+                break;
+            default:
+                sb.append(" AND h.recdate<= '${d}' ");
+        }
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
@@ -159,10 +206,11 @@ public abstract class ShipmentAmount9 extends Shipment {
             shp1 = (BigDecimal) o1;
             bshp1 = (BigDecimal) o2;
             this.arm232 = this.getARM232Value(y, m, d, type, getQueryParams());
+            this.arm423 = this.getARM423Value(y, m, d, type, getQueryParams());
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return shp1.subtract(bshp1).add(arm232);
+        return shp1.subtract(bshp1).add(arm232).add(arm423);
     }
 
 }
