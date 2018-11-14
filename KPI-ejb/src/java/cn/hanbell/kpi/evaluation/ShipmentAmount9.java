@@ -75,10 +75,7 @@ public abstract class ShipmentAmount9 extends Shipment {
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
-        sb.append(" AND h.facno='${facno}' ");
-        if (!"".equals(ogdkid)) {
-            sb.append(" AND h.ogdkid ").append(ogdkid);
-        }
+        sb.append(" AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND h.n_code_DA ").append(n_code_DA);
         }
@@ -102,7 +99,7 @@ public abstract class ShipmentAmount9 extends Shipment {
             default:
                 sb.append(" AND h.recdate<= '${d}' ");
         }
-        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${ogdkid}", ogdkid);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
         try {

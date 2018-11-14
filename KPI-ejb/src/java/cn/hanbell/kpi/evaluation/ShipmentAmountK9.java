@@ -14,7 +14,7 @@ public class ShipmentAmountK9 extends ShipmentAmount9 {
     public ShipmentAmountK9() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
+        queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " IN('OH','RT') ");
     }
 

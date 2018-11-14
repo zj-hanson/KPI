@@ -19,7 +19,7 @@ public class ShipmentAmountR1D9 extends ShipmentAmount9 {
         super();
         queryParams.put("facno", "C");
         queryParams.put("decode", "1");
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='GZ' ");
     }
