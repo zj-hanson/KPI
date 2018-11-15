@@ -56,7 +56,8 @@ public class IndicatorInitManagedBean extends IndicatorDefineManagedBean {
         try {
             for (IndicatorDefine id : entityList) {
                 e = new Indicator();
-                e.setCompany(id.getCompany());
+                //e.setCompany(id.getCompany());
+                e.setCompany(userManagedBean.getCompany());
                 e.setFormid(id.getFormid());
                 e.setFormtype(id.getFormtype());
                 e.setFormkind(id.getFormkind());

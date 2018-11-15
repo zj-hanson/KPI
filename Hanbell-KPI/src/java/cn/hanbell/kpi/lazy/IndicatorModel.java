@@ -5,9 +5,13 @@
  */
 package cn.hanbell.kpi.lazy;
 
+import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.entity.Indicator;
 import com.lightshell.comm.BaseLazyModel;
 import com.lightshell.comm.SuperEJB;
+import java.util.List;
+import java.util.Map;
+import org.primefaces.model.SortOrder;
 
 /**
  *
@@ -15,8 +19,17 @@ import com.lightshell.comm.SuperEJB;
  */
 public class IndicatorModel extends BaseLazyModel<Indicator> {
 
-    public IndicatorModel(SuperEJB superEJB) {
+    private final UserManagedBean userManagedBean;
+
+    public IndicatorModel(SuperEJB superEJB, UserManagedBean userManagedBean) {
         this.superEJB = superEJB;
+        this.userManagedBean = userManagedBean;
+    }
+
+    @Override
+    public List<Indicator> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        filterFields.put("company =", userManagedBean.getCompany());
+        return super.load(first, pageSize, sortField, sortOrder, filters);
     }
 
 }
