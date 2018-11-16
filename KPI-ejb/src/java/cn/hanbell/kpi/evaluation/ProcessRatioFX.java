@@ -30,7 +30,7 @@ public class ProcessRatioFX extends ProcessQuantity {
     public ProcessRatioFX() {
         super();
         queryParams.put("formid", "R-方型加工");
-        queryParams.put("deptno", "1P100");
+        queryParams.put("deptno", "1P000");
     }
 
     //得到Other1（不良数）与Other2的值（加工数总数）
