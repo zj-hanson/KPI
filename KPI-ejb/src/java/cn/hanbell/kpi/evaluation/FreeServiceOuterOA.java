@@ -31,8 +31,6 @@ public abstract class FreeServiceOuterOA implements Actual {
     protected BigDecimal workSF = BigDecimal.ZERO;
     //服务成本（厂外）退货通知单（吊装费、运费）
     protected BigDecimal returnSM = BigDecimal.ZERO;
-    //服务成本（厂外）差旅费
-    protected BigDecimal travelCharge = BigDecimal.ZERO;
 
     public FreeServiceOuterOA() {
         queryParams = new LinkedHashMap<>();
@@ -43,11 +41,10 @@ public abstract class FreeServiceOuterOA implements Actual {
         try {
             workSF = getWorkSF(y, m, d, type, map);
             returnSM = getReturnSM(y, m, d, type, map);
-            travelCharge = getTravelCharge(y, m, d, type, map);
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.evaluation.FreeserveOuter.getValue()" + e);
         }
-        return workSF.add(returnSM).add(travelCharge);
+        return workSF.add(returnSM);
     }
 
     //服务成本（厂外）OA工作支援单（快递费和运费）
@@ -65,16 +62,7 @@ public abstract class FreeServiceOuterOA implements Actual {
             sb.append("  and applydept ").append(applydept);
         }
         sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");
-//        switch (type) {
-//            case 2:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//                break;
-//            case 5:
-//                sb.append(" AND wi.completedTime= '${d}' ");
-//                break;
-//            default:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//        }
+
         sb.append(" ) as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         Query query = superEFGP.getEntityManager().createNativeQuery(sql);
@@ -101,54 +89,7 @@ public abstract class FreeServiceOuterOA implements Actual {
         if (!"".equals(supportdept)) {
             sb.append("  and h6.supportdept ").append(supportdept);
         }
-        sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");
-//        switch (type) {
-//            case 2:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//                break;
-//            case 5:
-//                sb.append(" AND wi.completedTime= '${d}' ");
-//                break;
-//            default:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//        }
-        sb.append(" ) as a ");
-        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
-        Query query = superEFGP.getEntityManager().createNativeQuery(sql);
-        try {
-            Object o = query.getSingleResult();
-            return BigDecimal.valueOf(Double.valueOf(o.toString()));
-        } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return BigDecimal.ZERO;
-    }
-
-    //服务成本（厂外）差旅费
-    protected BigDecimal getTravelCharge(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        //配合部门
-        String appDept = map.get("depno") != null ? map.get("depno").toString() : "";
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT ISNULL(sum(a.totaltaxInclusiveRMB),0) FROM  ");
-        sb.append(" ( select DISTINCT pi.serialNumber,h.appDept,h.totaltaxInclusiveRMB from HZ_CW028 h ");
-        sb.append(" INNER JOIN  ProcessInstance pi on h.processSerialNumber=pi.serialNumber INNER JOIN WorkItem wi on pi.contextOID=wi.contextOID ");
-        sb.append(" where h.cost in ('0','1') and h.reimbursement ='1'  and pi.currentState = '3' AND h.facno='${facno}' ");
-        if (!"".equals(appDept)) {
-            sb.append("  AND h.appDept ").append(appDept);
-        }
-        sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");
-//        switch (type) {
-//            case 2:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//                break;
-//            case 5:
-//                sb.append(" AND wi.completedTime= '${d}' ");
-//                break;
-//            default:
-//                sb.append(" AND wi.completedTime<= '${d}' ");
-//        }
+        sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");       
         sb.append(" ) as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         Query query = superEFGP.getEntityManager().createNativeQuery(sql);

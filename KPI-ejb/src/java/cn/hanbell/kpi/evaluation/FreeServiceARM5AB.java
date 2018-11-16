@@ -21,6 +21,8 @@ public class FreeServiceARM5AB extends FreeServiceERP{
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " IN('OH','RT') ");
         queryParams.put("n_code_DD", "  IN ('00','02') ");
+        queryParams.put("hmark1", " IN('RTZ','RZ','ZSNY') ");
+        queryParams.put("hmark2", " HD ");
     }
 
     @Override
