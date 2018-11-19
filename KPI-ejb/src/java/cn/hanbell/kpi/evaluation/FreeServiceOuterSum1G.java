@@ -24,7 +24,7 @@ import javax.naming.NamingException;
  */
 public class FreeServiceOuterSum1G extends FreeServiceERP{
 
-    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
+    IndicatorBean indicatorBean = lookupIndicatorBean();
 
     public FreeServiceOuterSum1G() {
         super();
@@ -66,7 +66,7 @@ public class FreeServiceOuterSum1G extends FreeServiceERP{
         return BigDecimal.ZERO;
     }
 
-    private IndicatorBean lookupIndicatorBeanBean() {
+    private IndicatorBean lookupIndicatorBean() {
         try {
             Context c = new InitialContext();
             return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");

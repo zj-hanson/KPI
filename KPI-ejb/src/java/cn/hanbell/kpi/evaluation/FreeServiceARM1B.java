@@ -23,8 +23,6 @@ public class FreeServiceARM1B extends FreeServiceERP{
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='HD' ");
         queryParams.put("n_code_DD", " ='00' ");
-        queryParams.put("hmark1", " ='R' ");
-        queryParams.put("hmark2", " ='HD' ");
     }
 
     @Override

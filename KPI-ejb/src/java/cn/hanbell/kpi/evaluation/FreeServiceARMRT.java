@@ -21,8 +21,6 @@ public class FreeServiceARMRT extends FreeServiceERP {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='RT' ");
-        queryParams.put("hmark1", " ='HD' ");
-        queryParams.put("hmark2", " ='CM' ");
     }
 
     @Override

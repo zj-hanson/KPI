@@ -21,8 +21,6 @@ public class FreeServiceARM1G extends FreeServiceERP {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_DC", " LIKE 'AJ%' ");
-        queryParams.put("hmark1", " ='AH' ");
-        queryParams.put("hmark2", " ='HD' ");
     }
 
     @Override

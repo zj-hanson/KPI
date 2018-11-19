@@ -21,8 +21,6 @@ public class FreeServiceARMSDS extends FreeServiceERP {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_DC", " ='SDS' ");
-        queryParams.put("hmark1", " ='HD' ");
-        queryParams.put("hmark2", " ='WY' ");
     }
 
     @Override

@@ -39,9 +39,6 @@ public abstract class FreeServiceERP implements Actual {
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
-        String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
-        String hmark2 = map.get("hmark2") != null ? map.get("hmark2").toString() : "";
-
         //质量扣款
         BigDecimal arm423 = BigDecimal.ZERO;
         //折让
@@ -49,7 +46,7 @@ public abstract class FreeServiceERP implements Actual {
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(-SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
-        sb.append(" AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
+        sb.append(" AND h.zlk='Y'  AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND h.n_code_DA ").append(n_code_DA);
         }
@@ -64,14 +61,18 @@ public abstract class FreeServiceERP implements Actual {
 
         sb.setLength(0);
 
-        sb.append(" SELECT SUM(ISNULL(armpmm.pmamt,0))  FROM armpmm WHERE zlk='Y' AND h.facno='${facno}' ");
-        if (!"".equals(hmark1)) {
-            sb.append(" and hmark1 ").append(hmark1);
+        sb.append(" select isnull(sum(d.psamt),0) from  armpmm h,armacq d,cdrdta s WHERE  h.facno=d.facno AND h.trno = d.trno ");
+        sb.append(" AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq and  h.zlk='Y' AND h.facno='${facno}' ");
+         if (!"".equals(n_code_DA)) {
+            sb.append(" AND s.n_code_DA ").append(n_code_DA);
         }
-        if (!"".equals(hmark2)) {
-            sb.append(" and hmark2 ").append(hmark2);
+        if (!"".equals(n_code_CD)) {
+            sb.append(" AND s.n_code_CD ").append(n_code_CD);
         }
-        sb.append(" AND year(trdat) = ${y} and month(trdat)= ${m} ");
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND s.n_code_DC ").append(n_code_DC);
+        }
+        sb.append(" AND year(h.trdat) = ${y} AND month(h.trdat) = ${m} ");
         String sqlARMPMM = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
 
         superEJB.setCompany(facno);
