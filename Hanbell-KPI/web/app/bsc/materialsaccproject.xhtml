@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center">
+                            <span style="float: left"></span>#{materialsAccprojectReportBean.y} #{materialsAccprojectReportBean.indicatorChart.name}
+                            <p:link value="返回" outcome="home" style="float: right"/>
+                            <p:selectOneRadio id="scale" value="#{materialsAccprojectReportBean.scale}" label="小数位数" style="float:right">
+                                <f:selectItem itemLabel="0位" itemValue="0" />
+                                <f:selectItem itemLabel="2位" itemValue="2" />
+                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                            </p:selectOneRadio>
+                        </h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>名称</p:column>
+                                <p:column>1月</p:column>
+                                <p:column>2月</p:column>
+                                <p:column>3月</p:column>
+                                <p:column>4月</p:column>
+                                <p:column>5月</p:column>
+                                <p:column>6月</p:column>
+                                <p:column>7月</p:column>
+                                <p:column>8月</p:column>
+                                <p:column>9月</p:column>
+                                <p:column>10月</p:column>
+                                <p:column>11月</p:column>
+                                <p:column>12月</p:column>
+                                <p:column>合计</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other1Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other1Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other2Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other2Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other3Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other3Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other4Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other4Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other5Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other5Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>#{materialsAccprojectReportBean.indicator.other6Label}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.format(materialsAccprojectReportBean.indicator.other6Indicator.nsy(),0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.targetIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>实际</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>基准值</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n01,1)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n02,2)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n03,3)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n04,4)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n05,5)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n06,6)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n07,7)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n08,8)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n09,9)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n10,10)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n11,11)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.n12,12)}</p:column>
+                            <p:column>#{materialsAccprojectReportBean.percentFormat(materialsAccprojectReportBean.indicator.benchmarkIndicator.nfy,0)}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart type="line" model="#{materialsAccprojectReportBean.initLineChartModel('月份','指标')}" style="height:300px"
+                             responsive="true" >
+                    </p:chart>
+                </div>
+                <div><h:inputHidden id="m" value="#{materialsAccprojectReportBean.m}"></h:inputHidden></div>
+            </div>
+        </h:form>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setColor();
+            });
+            var setColor = function () {
+                var m = document.getElementById("formOne:m");
+                if (m !== null) {
+                    var tr = $("tr.ui-widget-content");
+                    $(tr).each(function (i, t) {
+                        var c = $(t).find("td.ui-panelgrid-cell")[m.value];
+                        if (c !== null) {
+                            $(c).css("color", "red");
+                        }
+                    });
+                }
+            };
+        </script>
+    </ui:define>
+
+</ui:composition>
