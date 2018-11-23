@@ -22,9 +22,9 @@ import javax.naming.NamingException;
  *
  * @author C1879
  */
-public class FreeServiceOuterSum1V extends FreeServiceOuterERP{
+public class FreeServiceOuterSum1V extends FreeServiceERP{
 
-    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
+    IndicatorBean indicatorBean = lookupIndicatorBean();
 
     public FreeServiceOuterSum1V() {
         super();
@@ -32,16 +32,17 @@ public class FreeServiceOuterSum1V extends FreeServiceOuterERP{
         queryParams.put("deptno", "1V000");
     }
 
-    //得到Other1值与Other2的值相加
+    //差旅费+运费+服务领退料
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
         Field f;
         BigDecimal v1;
-        Double a1, a2;
+        Double a1, a2, a3;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail o1 = i.getOther1Indicator();
         IndicatorDetail o2 = i.getOther2Indicator();
+        IndicatorDetail o3 = i.getOther2Indicator();
         try {
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
@@ -52,16 +53,20 @@ public class FreeServiceOuterSum1V extends FreeServiceOuterERP{
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf(a1 + a2);
+            f = o3.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a3 = Double.valueOf(f.get(o3).toString());
 
+            v1 = BigDecimal.valueOf(a1 + a2 + a3);
+            
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FreeServiceOuterSum1V.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
     }
 
-    private IndicatorBean lookupIndicatorBeanBean() {
+    private IndicatorBean lookupIndicatorBean() {
         try {
             Context c = new InitialContext();
             return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");

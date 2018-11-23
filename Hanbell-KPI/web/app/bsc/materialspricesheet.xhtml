@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center">
+                            <span style="float: left"></span>#{materialsPriceReportBean.y}&nbsp;&nbsp;#{materialsPriceReportBean.indicatorChart.name}
+                            <p:link value="返回" outcome="home" style="float: right"/>
+                            <p:selectOneRadio id="scale" value="#{materialsPriceReportBean.scale}" style="float:right" >
+                                <f:selectItem itemLabel="0位" itemValue="0" />
+                                <f:selectItem itemLabel="2位" itemValue="2" />
+                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                            </p:selectOneRadio>
+                        </h3>
+                    </div>
+                    <p:dataTable var="item" value="#{materialsPriceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                        <p:column headerText="" groupRow="true" styleClass="plgSheetData Wid5">
+                            <div style="text-align: center"> <h:outputText value="#{item.parent.name}" /></div>
+                        </p:column>
+                        <p:column headerText="类别" styleClass="plgSheetData Wid10" >
+                            <div style="text-align: left"><h:outputText value="#{item.type}"  /></div>
+
+                        </p:column>
+                        <p:column headerText="1月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n01,1)}" />
+                        </p:column>
+                        <p:column headerText="2月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n02,2)}" />
+                        </p:column>
+                        <p:column headerText="3月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n03,3)}" />
+                        </p:column>
+                        <p:column headerText="4月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n04,4)}" />
+                        </p:column>
+                        <p:column headerText="5月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n05,5)}" />
+                        </p:column>
+                        <p:column headerText="6月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n06,6)}" />
+                        </p:column>
+                        <p:column headerText="7月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n07,7)}" />
+                        </p:column>
+                        <p:column headerText="8月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n08,8)}" />
+                        </p:column>
+                        <p:column headerText="9月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n09,9)}" />
+                        </p:column>
+                        <p:column headerText="10月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n10,10)}" />
+                        </p:column>
+                        <p:column headerText="11月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n11,11)}" />
+                        </p:column>
+                        <p:column headerText="12月">
+                            <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n12,12)}" />
+                        </p:column>
+                        <p:column headerText="今年平均">
+                            <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.nfy,0) }" />
+                        </p:column>
+                        <p:column headerText="去年平均">
+                            <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.parent.benchmarkIndicator.nfy,0) }" />
+                        </p:column>
+                        <p:column headerText="汇报当日">
+                            <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,materialsPriceReportBean.getForecastValue(item.parent.forecastIndicator),0) }" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            <div><h:inputHidden id="m" value="#{materialsPriceReportBean.m}"></h:inputHidden></div>
+        </h:form>
+        <div style="width: 100%;color: gray; font-size: 15px;" >
+            <p>
+                备注：月跌涨比例 = (1月 - 本月 ) / 1月 * 100%
+            </p>
+            <p>
+                年涨跌比例 = (今年平均 - 去年平均) / 去年平均 * 100%
+            </p>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setColor();
+            });
+            var setColor = function () {
+                var m = document.getElementById("formOne:m");
+                if (m !== null) {
+                    var tr = $("tr.ui-widget-content");
+                    $(tr).each(function (i, t) {
+                        var c;
+                        if ($(t).find("td").length === 17) {
+                            c = $(t).find("td")[parseInt(m.value) + 1];
+                        } else {
+                            c = $(t).find("td")[m.value];
+                        }
+                        if (c !== null) {
+                            $(c).css("color", "red");
+                        }
+                    });
+                }
+            };
+        </script>
+    </ui:define>
+
+</ui:composition>

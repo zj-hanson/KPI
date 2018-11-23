@@ -30,7 +30,7 @@ public class ProcessRatioYX extends ProcessQuantity {
     public ProcessRatioYX() {
         super();
         queryParams.put("formid", "R-圆型加工");
-        queryParams.put("deptno", "1P500");
+        queryParams.put("deptno", "1P000");
     }
 
     //得到Other1（不良数）与Other2的值（加工数总数）
