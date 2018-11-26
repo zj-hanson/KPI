@@ -156,16 +156,20 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(e.getTargetIndicator());
             targetAccumulated.setType("目标累计");
             indicatorDetailList.add(targetAccumulated);
-            if (e.getOther1Label().equals("厂内+厂外")) {
-                e.getOther2Indicator().setType("当月");
-                indicatorDetailList.add(e.getOther1Indicator());
-            }
-            if (e.getOther2Label().equals("质量扣款")) {
-                e.getOther1Indicator().setType("质量扣款");
-                indicatorDetailList.add(e.getOther2Indicator());
-            }
-            if (e.getOther1Label().equals("厂内+厂外") || e.getOther2Label().equals("质量扣款")) {
-                e.getActualIndicator().setType("当月合计");
+            if (e.getOther1Label() != null || e.getOther2Label() != null) {
+                if (e.getOther2Label().equals("质量扣款")) {
+                    e.getOther1Indicator().setType("质量扣款");
+                    indicatorDetailList.add(e.getOther2Indicator());
+                }
+                if (e.getOther1Label().equals("厂内+厂外")) {
+                    e.getOther2Indicator().setType("当月");
+                    indicatorDetailList.add(e.getOther1Indicator());
+                }
+                if (e.getOther1Label().equals("厂内+厂外") || e.getOther2Label().equals("质量扣款")) {
+                    e.getActualIndicator().setType("当月合计");
+                } else {
+                    e.getActualIndicator().setType("当月");
+                }
             } else {
                 e.getActualIndicator().setType("当月");
             }

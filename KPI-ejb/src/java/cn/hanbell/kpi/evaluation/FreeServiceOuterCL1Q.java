@@ -17,15 +17,8 @@ public class FreeServiceOuterCL1Q extends FreeServiceOuterCL {
 
     public FreeServiceOuterCL1Q() {
         super();
-//        queryParams.put("facno", "C");
-//        queryParams.put("depno", " like '%' ");为找到合理的方法去确认离心机免费服务差旅费统计，待定
+        queryParams.put("facno", "C");
+        queryParams.put("depno", " like '%1Q' ");
     }
-
-    @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ONE;
-    }
-
-    
-    
+   
 }

@@ -14,8 +14,8 @@ public class FreeServiceOuterFW5AB extends FreeServiceOuterFW {
     public FreeServiceOuterFW5AB() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("hmark1", "='HD' ");
-        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY') ");
+//        queryParams.put("hmark1", "='HD' ");
+//        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY') ");
     }
 
 }
