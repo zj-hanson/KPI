@@ -24,12 +24,22 @@ public class FreeServiceOuterFW1E extends FreeServiceOuterFW {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        BigDecimal temp1, temp2;
+        BigDecimal temp1, temp2, temp3, temp4, temp5;
         temp1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
-        queryParams.put("facno", "N");
+        queryParams.put("facno", "J");
         temp2 = super.getValue(y, m, d, type, queryParams);
+        queryParams.remove("facno");
+        queryParams.put("facno", "G");
+        temp3 = super.getValue(y, m, d, type, queryParams);
+        queryParams.remove("facno");
+        queryParams.put("facno", "C4");
+        temp4 = super.getValue(y, m, d, type, queryParams);
+        queryParams.remove("facno");
+        queryParams.put("facno", "N");
+        temp5 = super.getValue(y, m, d, type, queryParams);
 
-        return temp1.add(temp2);
-    }   
+        return temp1.add(temp2).add(temp3).add(temp4).add(temp5);
+    }
+
 }

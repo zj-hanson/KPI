@@ -50,31 +50,6 @@ public class MaterialsAccprojectReportBean extends BscChartManagedBean {
         }
         //按换算率计算结果
         indicatorBean.divideByRate(indicator, 2);
-
-        actualAccumulated = new IndicatorDetail();
-        actualAccumulated.setParent(indicator);
-        actualAccumulated.setType("A");
-
-        benchmarkAccumulated = new IndicatorDetail();
-        benchmarkAccumulated.setParent(indicator);
-        benchmarkAccumulated.setType("B");
-
-        targetAccumulated = new IndicatorDetail();
-        targetAccumulated.setParent(indicator);
-        targetAccumulated.setType("T");
-
-        AP = new IndicatorDetail();
-        AP.setParent(indicator);
-        AP.setType("P");
-
-        BG = new IndicatorDetail();
-        BG.setParent(indicator);
-        BG.setType("P");
-
-        AG = new IndicatorDetail();
-        AG.setParent(indicator);
-        AG.setType("P");
-
         chartModel = new LineChartModel();
         ChartSeries t = new ChartSeries();
         t.setLabel("目标");
@@ -92,12 +67,6 @@ public class MaterialsAccprojectReportBean extends BscChartManagedBean {
                 t.set("M10", getIndicator().getTargetIndicator().getN10().doubleValue());
                 t.set("M11", getIndicator().getTargetIndicator().getN11().doubleValue());
                 t.set("M12", getIndicator().getTargetIndicator().getN12().doubleValue());
-                break;
-            case "Q":
-                t.set("Q1", getIndicator().getTargetIndicator().getNq1().doubleValue());
-                t.set("Q2", getIndicator().getTargetIndicator().getNq2().doubleValue());
-                t.set("Q3", getIndicator().getTargetIndicator().getNq3().doubleValue());
-                t.set("Q4", getIndicator().getTargetIndicator().getNq4().doubleValue());
                 break;
         }
 
@@ -142,20 +111,6 @@ public class MaterialsAccprojectReportBean extends BscChartManagedBean {
                     a.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
                 }
                 break;
-            case "Q":
-                if (getIndicator().getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q1", getIndicator().getActualIndicator().getNq1().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q2", getIndicator().getActualIndicator().getNq2().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q3", getIndicator().getActualIndicator().getNq3().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q4", getIndicator().getActualIndicator().getNq4().doubleValue());
-                }
-                break;
         }
 
         ChartSeries b = new ChartSeries();
@@ -163,31 +118,31 @@ public class MaterialsAccprojectReportBean extends BscChartManagedBean {
         switch (getIndicator().getFormkind()) {
             case "M":
                 if (getIndicator().getBenchmarkIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M01", getIndicator().getBenchmarkIndicator().getN01().doubleValue());
+               b.set("M01", getIndicator().getBenchmarkIndicator().getN01().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M02", getIndicator().getBenchmarkIndicator().getN02().doubleValue());
+               b.set("M02", getIndicator().getBenchmarkIndicator().getN02().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M03", getIndicator().getBenchmarkIndicator().getN03().doubleValue());
+               b.set("M03", getIndicator().getBenchmarkIndicator().getN03().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M04", getIndicator().getBenchmarkIndicator().getN04().doubleValue());
+               b.set("M04", getIndicator().getBenchmarkIndicator().getN04().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M05", getIndicator().getBenchmarkIndicator().getN05().doubleValue());
+               b.set("M05", getIndicator().getBenchmarkIndicator().getN05().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M06", getIndicator().getBenchmarkIndicator().getN06().doubleValue());
+               b.set("M06", getIndicator().getBenchmarkIndicator().getN06().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M07", getIndicator().getBenchmarkIndicator().getN07().doubleValue());
+               b.set("M07", getIndicator().getBenchmarkIndicator().getN07().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M08", getIndicator().getBenchmarkIndicator().getN08().doubleValue());
+               b.set("M08", getIndicator().getBenchmarkIndicator().getN08().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                    b.set("M09", getIndicator().getBenchmarkIndicator().getN09().doubleValue());
+               b.set("M09", getIndicator().getBenchmarkIndicator().getN09().doubleValue());
                 }
                 if (getIndicator().getBenchmarkIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
                     b.set("M010", getIndicator().getBenchmarkIndicator().getN10().doubleValue());
@@ -198,12 +153,6 @@ public class MaterialsAccprojectReportBean extends BscChartManagedBean {
                 if (getIndicator().getBenchmarkIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
                     b.set("M012", getIndicator().getBenchmarkIndicator().getN12().doubleValue());
                 }
-                break;
-            case "Q":
-                b.set("Q1", getIndicator().getBenchmarkIndicator().getNq1().doubleValue());
-                b.set("Q2", getIndicator().getBenchmarkIndicator().getNq2().doubleValue());
-                b.set("Q3", getIndicator().getBenchmarkIndicator().getNq3().doubleValue());
-                b.set("Q4", getIndicator().getBenchmarkIndicator().getNq4().doubleValue());
                 break;
         }
 

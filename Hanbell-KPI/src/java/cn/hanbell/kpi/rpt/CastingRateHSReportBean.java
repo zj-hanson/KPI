@@ -180,7 +180,7 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
     @Override
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
-        getChartModel().setSeriesColors("33FF66,FF6633");//自定义颜色
+        getChartModel().setSeriesColors("33FF66,0000EE");//自定义颜色
         getChartModel().getAxes().put(AxisType.X, new CategoryAxis(xTitle));
         yAxis = getChartModel().getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(%)");

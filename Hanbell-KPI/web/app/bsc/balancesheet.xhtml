@@ -139,12 +139,12 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr>
+<!--                            <tr>
                                 <td>在建工程</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('31')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td>无形资产</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('39')}" var="item" >
@@ -263,6 +263,12 @@
                             <tr>
                                 <td>资本公积</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('40')}" var="item" >
+                                    <td style="text-align: right">#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>减：库存股</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('41')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
