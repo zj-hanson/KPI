@@ -276,9 +276,8 @@ public class MaterialsFreightRateReportBean extends BscChartManagedBean {
 
     }
 
-    //(one - two) / one
     private Double getDouble(Double one, Double two) {
-        return (one - two) / one;
+        return (two / one) * 100 ;
     }
 
     @Override
