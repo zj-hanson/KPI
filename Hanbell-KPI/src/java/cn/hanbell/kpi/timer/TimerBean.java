@@ -5,6 +5,8 @@
  */
 package cn.hanbell.kpi.timer;
 
+import cn.hanbell.erp.ejb.BscGroupServiceBean;
+import cn.hanbell.erp.ejb.BscGroupShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
@@ -14,6 +16,8 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
@@ -47,6 +51,10 @@ public class TimerBean {
     private JobScheduleBean jobScheduleBean;
     @EJB
     private MailSettingBean mailSettingBean;
+    @EJB
+    private BscGroupShipmentBean bscGroupShipmentBean;
+    @EJB
+    private BscGroupServiceBean bscGroupServiceBean;
 
     @Resource
     TimerService timerService;
@@ -208,4 +216,19 @@ public class TimerBean {
         }
     }
 
+    @Schedule(minute = "*/2", hour = "*", persistent = false)
+    public void updateERPBscGroupShipment() {
+        try {
+            Calendar now = Calendar.getInstance();
+            Date date = new Date();
+            int y = now.get(Calendar.YEAR);
+            int m = (now.get(Calendar.MONTH));
+            now.set(Calendar.DATE, 31);
+            Date d = now.getTime();
+            bscGroupShipmentBean.updataActualValue(y, m, d);
+            bscGroupServiceBean.updataActualValue(y, m, d);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

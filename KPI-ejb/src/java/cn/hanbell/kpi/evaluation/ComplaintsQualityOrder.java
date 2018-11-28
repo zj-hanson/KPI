@@ -37,18 +37,19 @@ public class ComplaintsQualityOrder {
         String BQ110 = map.get("BQ110") != null ? map.get("BQ110").toString() : ""; //是否客诉
         List<String> reslut = new LinkedList();
         StringBuilder sb = new StringBuilder();
-        sb.append(" select  rtrim(DISTINCT CA009) from SERBQ,SERCA");
-        sb.append(" where BQ001= CA001  ");
+        sb.append(" select a.CA009 as num from ( ");
+        sb.append(" select  DISTINCT CA009,BQ001 from SERBQ,SERCA where BQ001= CA001  ");
         sb.append(" and  rtrim(BQ197) like '${BQ197}' ");
          if (!"".equals(BQ003)) {
             sb.append(" and BQ003 ").append(BQ003);
         }
         if (!"".equals(BQ134)) {
-            sb.append(" and BQ134 ").append(BQ134);
+            sb.append(" and BQ505 ").append(BQ134);
         }
         if (!"".equals(BQ110)) {
             sb.append(" and BQ110 ").append(BQ110);
         }
+        sb.append(") as a ");
         String sql = sb.toString().replace("${BQ197}", BQ197);
         Query query = superEJBForCRM.getEntityManager().createNativeQuery(sql);
         try {
