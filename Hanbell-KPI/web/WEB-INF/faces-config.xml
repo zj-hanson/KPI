@@ -344,6 +344,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>materialsfreightrate</from-outcome>
+            <to-view-id>/app/bsc/materialsfreightrate.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>materialspricesheet</from-outcome>
             <to-view-id>/app/bsc/materialspricesheet.xhtml</to-view-id>
             <redirect/>
