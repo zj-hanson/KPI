@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center"><span style="float: left">单位:#{complaintsChartReportBean.indicator.unit}</span>#{complaintsChartReportBean.y} #{complaintsChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>名称</p:column>
+                                <p:column>1月</p:column>
+                                <p:column>2月</p:column>
+                                <p:column>3月</p:column>
+                                <p:column>4月</p:column>
+                                <p:column>5月</p:column>
+                                <p:column>6月</p:column>
+                                <p:column>7月</p:column>
+                                <p:column>8月</p:column>
+                                <p:column>9月</p:column>
+                                <p:column>10月</p:column>
+                                <p:column>11月</p:column>
+                                <p:column>12月</p:column>
+                                <p:column>年移动平均</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>基准值</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n01)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n02)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n03)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n04)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n05)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n06)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n07)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n08)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n09)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.n12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other4Indicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标值</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n01,1)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n02,2)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n03,3)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n04,4)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n05,5)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n06,6)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n07,7)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n08,8)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n09,9)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n10,10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n11,11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.n12,12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other5Indicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>实际值</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n01,1)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n02,2)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n03,3)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n04,4)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n05,5)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n06,6)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n07,7)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n08,8)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n09,9)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n10,10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n11,11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.n12,12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.indicator.other3Indicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>基准值PPM</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n01)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n02)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n03)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n04)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n05)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n06)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n07)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n08)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n09)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.n12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.benchmarkIndicator.nfy)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标值PPM</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n01,1)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n02,2)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n03,3)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n04,4)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n05,5)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n06,6)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n07,7)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n08,8)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n09,9)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n10,10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n11,11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.n12,12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.targetIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>实际值PPM</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n01,1)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n02,2)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n03,3)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n04,4)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n05,5)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n06,6)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n07,7)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n08,8)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n09,9)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n10,10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n11,11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.n12,12)}</p:column>
+                            <p:column>#{complaintsChartReportBean.format(complaintsChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart id="chartModel" type="line" model="#{complaintsChartReportBean.initLineChartModel('月份','指标')}" style="height:300px"
+                             responsive="true" >
+                    </p:chart>
+                </div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{complaintsChartReportBean.summaryList}" var="s" rendered="#{complaintsChartReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="指标说明" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{complaintsChartReportBean.analysisList}" var="a" rendered="#{complaintsChartReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:panelGrid id="plgMISData" styleClass="plgChartData Wid100"  rendered="#{complaintsChartReportBean.hasMIS}" >
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>名称</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN01()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN02()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN03()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN04()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN05()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN06()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN07()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN08()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN09()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN10()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN11()}月</p:column>
+                                <p:column>#{complaintsChartReportBean.period.getN12()}月</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>3MIS台数</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n01}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n02}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n03}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n04}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n05}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n06}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n07}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n08}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n09}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n10}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n11}</p:column>
+                            <p:column>#{complaintsChartReportBean.threeMIS.n12}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>3MIS比率</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n01)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n02)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n03)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n04)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n05)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n06)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n07)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n08)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n09)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n12)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>6MIS台数</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n01}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n02}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n03}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n04}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n05}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n06}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n07}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n08}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n09}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n10}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n11}</p:column>
+                            <p:column>#{complaintsChartReportBean.sixMIS.n12}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>6MIS比率</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n01)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n02)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n03)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n04)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n05)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n06)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n07)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n08)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n09)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n12)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>12MIS台数</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n01}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n02}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n03}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n04}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n05}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n06}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n07}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n08}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n09}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n10}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n11}</p:column>
+                            <p:column>#{complaintsChartReportBean.twelveMIS.n12}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>12MIS比率</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n01)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n02)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n03)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n04)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n05)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n06)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n07)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n08)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n09)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n10)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n11)}</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n12)}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart id="chartMIS" type="line" model="#{complaintsChartReportBean.initLineChartMIS('月份','指标')}" style="height:300px"
+                             responsive="true" rendered="#{complaintsChartReportBean.hasMIS}" >
+                    </p:chart>
+                </div>
+                <div>
+                    <h:inputHidden id="m" value="#{complaintsChartReportBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{complaintsChartReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{complaintsChartReportBean.analysisCount}"></h:inputHidden>
+                </div>
+            </div>
+            <h:outputScript name="bsc-analysis.js" library="js"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
