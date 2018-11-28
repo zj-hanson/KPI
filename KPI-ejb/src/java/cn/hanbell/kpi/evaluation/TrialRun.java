@@ -14,10 +14,11 @@ import javax.naming.InitialContext;
 
 /**
  *
- * @author C1749
+ * @author C1749 试车
  */
-public class TrialRun implements Actual{
-     protected SuperEJBForMES superEJB;
+public abstract class TrialRun implements Actual {
+
+    protected SuperEJBForMES superEJB;
     protected LinkedHashMap<String, Object> queryParams;
 
     public TrialRun() {
@@ -43,8 +44,8 @@ public class TrialRun implements Actual{
     public LinkedHashMap<String, Object> getQueryParams() {
         return queryParams;
     }
-    
-        @Override
+
+    @Override
     public int getUpdateMonth(int y, int m) {
         return m;
     }
@@ -58,5 +59,5 @@ public class TrialRun implements Actual{
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

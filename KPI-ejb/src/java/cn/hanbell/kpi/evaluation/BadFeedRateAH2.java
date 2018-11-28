@@ -13,16 +13,17 @@ import java.util.LinkedHashMap;
  *
  * @author C1749
  */
-public class TrialRunAdverseR1V2 extends TrialRunAdverseR {
-
-    public TrialRunAdverseR1V2() {
+public class BadFeedRateAH2 extends BadFeedRate{
+    public BadFeedRateAH2(){
         super();
-        queryParams.put("STEPID", "冷媒");
-        queryParams.put("typecode", "RC2");
+        queryParams.put("SYSTEMID", "'QC_JLBLReport'");
+        queryParams.put("SEQUENCE", "'6'");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(10000)); 
+        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(10000));
     }
+    
+    
 }

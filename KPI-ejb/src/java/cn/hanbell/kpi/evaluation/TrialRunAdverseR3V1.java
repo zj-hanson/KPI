@@ -9,7 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class TrialRunAdverseR3V1 extends TrialRunAdverse {
+public class TrialRunAdverseR3V1 extends TrialRunAdverseR {
 
     public TrialRunAdverseR3V1() {
         super();

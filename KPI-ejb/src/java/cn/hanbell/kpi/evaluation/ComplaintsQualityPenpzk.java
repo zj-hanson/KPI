@@ -43,7 +43,7 @@ public class ComplaintsQualityPenpzk extends ComplaintsKS {
         sb.append(" select BQ001,BQ197,BQ505,BQ003,BQ021,CA009,BQ110,  ");
         sb.append(" (CASE when CA500 in ('PZ90+PL250','PZ90+PL660','PX300+PL1300','PX300+PL1300','PX300+PL1300') then '混合机型' ");
         sb.append(" when (CA500 like 'PX-%' or CA500  like 'PZ-%') then 'P机体' ELSE 'P机组'  end ) as pjx from SERBQ,SERCA ");
-        sb.append(" where BQ001 = CA001 BQ197 like '${BQ197}' ");
+        sb.append(" where BQ001 = CA001 and BQ197 like '${BQ197}' ");
         if (!"".equals(BQ003)) {
             sb.append(" and BQ003 ").append(BQ003);
         }
@@ -70,7 +70,7 @@ public class ComplaintsQualityPenpzk extends ComplaintsKS {
             default:
                 sb.append(" and BQ021 <= '${d}' ");
         }
-        sb.append("  ) as a where ");
+        sb.append("  ) as a where 1=1 ");
         if (!"".equals(CA002)) {
             sb.append(" and a.CA002 ").append(CA002);
         }

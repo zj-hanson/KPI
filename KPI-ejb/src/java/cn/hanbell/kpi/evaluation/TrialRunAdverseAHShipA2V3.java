@@ -9,11 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class TrialRunAdverseR1V1 extends TrialRunAdverseR {
+public class TrialRunAdverseAHShipA2V3 extends TrialRunAdverseAHShipA2{
 
-    public TrialRunAdverseR1V1() {
+    public TrialRunAdverseAHShipA2V3() {
         super();
-        queryParams.put("STEPID", "冷媒");
-        queryParams.put("typecode", "RC2");
+        queryParams.put("typecode", "1030");
     }
+    
+    
 }

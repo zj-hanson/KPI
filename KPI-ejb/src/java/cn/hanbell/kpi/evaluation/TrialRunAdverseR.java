@@ -8,6 +8,7 @@ package cn.hanbell.kpi.evaluation;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -21,7 +22,7 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class TrialRunAdversePPM extends TrialRun {
+public class TrialRunAdverseR extends TrialRun {
     
     SuperEJBForMES superEJBForMES = lookupSuperEJBForMESBean();
     
@@ -111,13 +112,13 @@ public class TrialRunAdversePPM extends TrialRun {
         try {
             Object o1 = query1.getSingleResult();
             Object o2 = query2.getSingleResult();
-            divisor1 = (BigDecimal) o1;
-            divisor2 = (BigDecimal) o2;
-            result = divisor1.divide(divisor2, 6, BigDecimal.ROUND_HALF_UP);
+            Double value1 = Double.valueOf(o1.toString());
+            Double value2 = Double.valueOf(o2.toString());
+            result = BigDecimal.valueOf(value1 / value2).divide(BigDecimal.ONE, 4, RoundingMode.HALF_UP);
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result.multiply(BigDecimal.valueOf(1000000));//乘以1000000等于实际值PPM;
+        return result;
     }
     
 }

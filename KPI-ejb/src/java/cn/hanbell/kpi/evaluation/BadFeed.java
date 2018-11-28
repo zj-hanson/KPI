@@ -16,12 +16,12 @@ import javax.naming.InitialContext;
  *
  * @author C1749
  */
-public class FeedstockBad implements Actual{
+public class BadFeed implements Actual{
     
     protected SuperEJBForMES superEJB;
     protected LinkedHashMap<String, Object> queryParams;
 
-    public FeedstockBad() {
+    public BadFeed() {
         queryParams = new LinkedHashMap<>();
     }
 
