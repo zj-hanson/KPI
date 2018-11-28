@@ -31,7 +31,7 @@
                 <p:row>
                     <p:column><h:outputLabel value="考核部门" for="queryDeptno" /></p:column>
                     <p:column>
-                        <p:inputText id="queryDeptno" value="#{indicatorInitManagedBean.queryDeptno}" title="考核部门"  styleClass="inputWithButton" readonly="true"/>
+                        <p:inputText id="queryDeptno" value="#{indicatorInitManagedBean.queryDeptno}" title="考核部门"  styleClass="inputWithButton" />
                         <p:commandButton id="btnApplyDeptSelect" actionListener="#{indicatorInitManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
                                          process="@this" >
                             <p:ajax event="dialogReturn" listener="#{indicatorInitManagedBean.handleDialogReturnDeptForQuery}"

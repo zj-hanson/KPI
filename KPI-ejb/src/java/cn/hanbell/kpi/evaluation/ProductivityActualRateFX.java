@@ -30,7 +30,7 @@ public class ProductivityActualRateFX extends Productivity {
     public ProductivityActualRateFX() {
         super();
         queryParams.put("formid", "R-方型件加工机综合");
-        queryParams.put("deptno", "1P100");
+        queryParams.put("deptno", "1W000");
     }
 
     //得到Other1（总投入工时（分钟））与Other2的值（产出工时（分钟））

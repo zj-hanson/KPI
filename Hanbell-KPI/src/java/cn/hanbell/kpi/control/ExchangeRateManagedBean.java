@@ -9,12 +9,25 @@ import cn.hanbell.kpi.ejb.ExchangeRateBean;
 import cn.hanbell.kpi.entity.ExchangeRate;
 import cn.hanbell.kpi.lazy.ExchangeRateModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -51,12 +64,10 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     @Override
     protected boolean doAfterPersist() throws Exception {
-        super.doAfterPersist(); 
+        super.doAfterPersist();
         create();
         return true;
     }
-    
-    
 
     public Calendar getNowDateBegin() {
         Calendar c = Calendar.getInstance();
@@ -108,8 +119,74 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
         queryCurrency = "0";
     }
 
+    public void readFile() {
+    }
+
+    @Override
+    public void handleFileUploadWhenNew(FileUploadEvent event) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        List<ExchangeRate> addlist = new ArrayList<>();
+
+        String a = "";
+        String b = "";
+        super.handleFileUploadWhenNew(event);
+        if (this.fileName != null) {
+            ExchangeRate e;
+            if (addlist != null) {
+                addlist.clear();
+            }
+            try {
+                InputStream is = new FileInputStream(getAppResPath() + "/" + fileName);
+                Workbook excel = WorkbookFactory.create(is);
+                Sheet sheet = excel.getSheetAt(0);
+
+                int cols = sheet.getRow(0).getLastCellNum();
+                for (int i = 0; i < cols; i++) {
+                    for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
+                        a = df.format(sheet.getRow(0).getCell(i).getDateCellValue());
+                        b = j + "";
+                        newEntity = new ExchangeRate();
+                        newEntity.setRateday(sheet.getRow(0).getCell(i).getDateCellValue());
+                        newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j).getCell(i).getNumericCellValue())));
+                        newEntity.setRpttype(j + "");
+                        setDefaultValue();
+                        if (exchangeRateBean.queryRateIsExist(newEntity)) {
+                            showErrorMsg("Error", "添加数据库失败;Excel表格中时间栏为：" + df.format(sheet.getRow(0).getCell(i).getDateCellValue()) + "第" + j + "行已有该货币汇率数据");
+                            addlist.clear();
+                            return;
+                        }
+                        addlist.add(newEntity);
+                    }
+                }
+                newEntity = new ExchangeRate();
+                //导入数据
+                if (addlist != null && !addlist.isEmpty()) {
+                    try {
+                        for (int i = 0; i < addlist.size(); i++) {
+                            exchangeRateBean.persist(addlist.get(i));
+                        }
+                        showInfoMsg("Info", "数据导入成功");
+                    } catch (Exception el) {
+                        showInfoMsg("Info", "数据导入失败");
+                        System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
+                    }
+                }
+            } catch (Exception ex) {
+                showErrorMsg("Error", "导入失败,找不到文件或格式错误----" + ex.toString());
+                showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
+            }
+            //将导入文件删除掉
+            File file = new File(getAppResPath() + "/" + fileName);
+            if (file.isFile()) {
+                file.delete();
+            }
+        }
+
+    }
+
     private void setDefaultValue() {
         newEntity.setFacno("C");
+        newEntity.setStatus("N");
         switch (newEntity.getRpttype()) {
             case "1":
                 newEntity.setCoin("USD");
@@ -130,7 +207,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                 newEntity.setCoinna("日圆");
                 newEntity.setExcoin("RMB");
                 newEntity.setExcoinna("人民币");
-                newEntity.setExchangena("日圆/人民币");
+                newEntity.setExchangena("100日圆/人民币");
                 break;
             case "4":
                 newEntity.setCoin("RMB");

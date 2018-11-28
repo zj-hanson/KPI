@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./../../WEB-INF/template.xhtml"
+                template="./../../WEB-INF/bsc.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
@@ -10,7 +10,7 @@
 
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="8" columnClasses="Wid10,Wid20,Wid0,Wid20,Wid10,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100" >
+            <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid20,Wid0,Wid20,Wid10,Wid20,Wid10,Wid10,Wid0" styleClass="plgQuery Wid100" >
                 <h:outputLabel value="请输入日期：" for="queryDateBegin" />
                 <p:calendar id="queryDateBegin" value="#{exchangeRateReportBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd" />
                 <span style="font-size: 30px;font-weight: bolder" >～</span>
@@ -31,6 +31,7 @@
                                  update="formOne"  />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{exchangeRateReportBean.queryExchangeRate()}"  icon="ui-icon-search"
                                  update="formOne"/>
+                <p:link  value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
 
             <!--折线图显示-->

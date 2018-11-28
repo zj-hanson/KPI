@@ -20,6 +20,7 @@ public class FreeServiceARM5AB extends FreeServiceERP{
         queryParams.put("facno", "K");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " IN('OH','RT') ");
+        queryParams.put("n_code_DA", " IN('OH','RT') ");
         queryParams.put("n_code_DD", "  IN ('00','02') ");
     }
 

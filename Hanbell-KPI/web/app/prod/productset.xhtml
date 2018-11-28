@@ -71,7 +71,7 @@
                 </f:facet>
                 <p:ajax event="rowSelect"  update=":formList:toolbar" />
                 <p:ajax event="rowUnselect" update=":formList:toolbar" />
-                <p:column styleClass="Wid10">
+                <p:column styleClass="Wid5">
                     <f:facet name="header">
                         <h:outputText value="年度"/>
                     </f:facet>
@@ -120,6 +120,12 @@
                     <h:outputText value="#{item.freezeDate}">
                         <f:convertDateTime pattern="yyyy/MM/dd" />
                     </h:outputText>
+                </p:column>
+                <p:column styleClass="Wid5">
+                    <f:facet name="header">
+                        <h:outputText value="状态"/>
+                    </f:facet>
+                    <h:outputText value="#{item.status}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

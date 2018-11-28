@@ -370,7 +370,7 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         detailEJB = indicatorDepartmentBean;
         detailEJB2 = indicatorAssignmentBean;
         detailEJB3 = indicatorSetBean;
-        model = new IndicatorModel(indicatorBean);
+        model = new IndicatorModel(indicatorBean,this.userManagedBean);
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
