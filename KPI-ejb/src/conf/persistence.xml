@@ -24,6 +24,7 @@
   <persistence-unit name="PU_shberp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/shberp</jta-data-source>
+    <class>cn.hanbell.erp.entity.BscGroupShipment</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
