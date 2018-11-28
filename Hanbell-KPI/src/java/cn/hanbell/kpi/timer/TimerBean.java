@@ -216,7 +216,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "*/2", hour = "*", persistent = false)
+    @Schedule(minute = "*", hour = "*/12", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
             Calendar now = Calendar.getInstance();
