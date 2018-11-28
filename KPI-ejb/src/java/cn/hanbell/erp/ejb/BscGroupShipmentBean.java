@@ -351,12 +351,12 @@ public class BscGroupShipmentBean implements Serializable {
                 protypeno = "S";
                 shptype = "1";
             } else if (n_code_DA.contains("OH")) {
-                protype = "OH";
-                protypeno = "低环温热泵";
+                protype = "低环温热泵";
+                protypeno = "OH";
                 shptype = "2";
             } else if (n_code_DA.contains("RT")) {
-                protype = "RT";
-                protypeno = "离心机体";
+                protype = "离心机体";
+                protypeno = "RT";
                 shptype = "2";
             } else {
                 protype = "";
