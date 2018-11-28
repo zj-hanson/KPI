@@ -40,6 +40,13 @@
                         <p:calendar value="#{userManagedBean.baseDate}" required="true" requiredMessage="请输入报告月份" pattern="yyyy/MM/dd"/>
                     </div>
                     <div class="ui-g-12">
+                        <p:selectOneMenu id="company" value="#{userManagedBean.company}" title="公司"
+                                         required="true" requiredMessage="请选择公司" >
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{userManagedBean.companyList}" var="c" itemLabel="#{c.name}" itemValue="#{c.company}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="ui-g-12">
                         <p:commandButton value="登录系统" action="#{userManagedBean.login()}" update="@form"/>
                     </div>
                 </div>

@@ -329,7 +329,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         nb = getAccumulatedValue(b, m, d);
         //计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -381,7 +381,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 if (i < m) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
                 } else {
-                    total = total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 2));
+                    total = total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 0));
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -443,7 +443,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             nb = getValueOfDays(nb, d, scale);
             //计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
-                return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+                return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
             } else {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
@@ -524,7 +524,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         c.add(Calendar.MONTH, 1);
         c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
         j = c.get(Calendar.DAY_OF_MONTH);
-        return v.multiply(BigDecimal.valueOf(i)).divide(BigDecimal.valueOf(j), scale);
+        return v.multiply(BigDecimal.valueOf(i)).divide(BigDecimal.valueOf(j), scale, RoundingMode.HALF_UP);
     }
 
     public String percentFormat(BigDecimal value) {

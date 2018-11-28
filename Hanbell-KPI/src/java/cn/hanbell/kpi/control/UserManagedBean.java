@@ -65,7 +65,7 @@ public class UserManagedBean implements Serializable {
 
     @PostConstruct
     public void construct() {
-        companyList = companyBean.findAll();
+        companyList = companyBean.findBySystemName("KPI");
         Calendar c = Calendar.getInstance();
         c.setTime(BaseLib.getDate());
         c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
@@ -99,8 +99,6 @@ public class UserManagedBean implements Serializable {
                 u = systemUserBean.findByUserId(getUserid());
             }
             if (u != null) {
-                this.company = "C";
-                this.currentCompany = companyBean.findByCompany("C");
                 if ("Admin".equals(u.getUserid())) {
                     currentCompany = companyBean.findByCompany(company);
                     if (currentCompany == null) {

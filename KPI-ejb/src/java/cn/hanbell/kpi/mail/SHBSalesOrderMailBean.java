@@ -146,6 +146,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
+            sum1 = BigDecimal.ZERO;
             sumList.clear();
             salesOrder = new SalesOrderAmount();
 

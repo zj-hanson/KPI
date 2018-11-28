@@ -10,7 +10,6 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -37,7 +36,7 @@ public class ComplaintsQualityBroadR extends Complaints{
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
         Field f;
-        double t = 0;
+        BigDecimal t = BigDecimal.ZERO;
         Double a1, a2;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail a = i.getActualIndicator();
@@ -53,11 +52,13 @@ public class ComplaintsQualityBroadR extends Complaints{
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());  
             if(a2 != 0){
-                t = (a1 / a2) * 100;
-                System.out.println(t);
-                return  BigDecimal.valueOf(t).divide(BigDecimal.ONE, 3, RoundingMode.HALF_UP);
+                BigDecimal v1 = new BigDecimal(a1);
+                BigDecimal v2 = new BigDecimal(a2);
+                t = v1.divide(v2);
+                t = t.multiply(BigDecimal.valueOf(100));
+                return  t;
             }else{
-                System.out.println("");
+                System.out.println("移动平均数为0");
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
