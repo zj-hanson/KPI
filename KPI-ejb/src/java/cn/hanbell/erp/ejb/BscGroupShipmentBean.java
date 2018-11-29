@@ -44,7 +44,7 @@ public class BscGroupShipmentBean implements Serializable {
 
     public void updataActualValue(int y, int m, Date d) {
         queryParams.clear();
-        
+
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");
@@ -281,10 +281,11 @@ public class BscGroupShipmentBean implements Serializable {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
         List<BscGroupShipment> data = new ArrayList<>();
+        List<BscGroupShipment> temp;
         BigDecimal qty = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
-        Double orderNum = 0.0;
-        Double orderamts = 0.0;
+        BigDecimal orderNum = BigDecimal.ZERO;
+        BigDecimal orderamts = BigDecimal.ZERO;
         StringBuilder shpSql = new StringBuilder();
         shpSql.append("select h.shpdate,isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' ");
         shpSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
@@ -298,8 +299,8 @@ public class BscGroupShipmentBean implements Serializable {
         if (!"".equals(n_code_DD)) {
             shpSql.append(" and d.n_code_DD ").append(n_code_DD);
         }
-        shpSql.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} group by h.shpdate");
-        String cdrdta = shpSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
+        shpSql.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' group by h.shpdate");
+        String cdrdta = shpSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
 
         StringBuilder bakSql = new StringBuilder();
         bakSql.append("select h.bakdate,isnull(sum(0 - d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
@@ -314,12 +315,12 @@ public class BscGroupShipmentBean implements Serializable {
         if (!"".equals(n_code_DD)) {
             bakSql.append(" and d.n_code_DD ").append(n_code_DD);
         }
-        bakSql.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} group by h.bakdate");
-        String cdrbdta = bakSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
+        bakSql.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' group by h.bakdate");
+        String cdrbdta = bakSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
         Query shpQuery = erpEJB.getEntityManager().createNativeQuery(cdrdta);
         Query bakQuery = erpEJB.getEntityManager().createNativeQuery(cdrbdta);
-        try {         
+        try {
             List shpResult = shpQuery.getResultList();
             List bakResult = bakQuery.getResultList();
             Date shpdate;
@@ -386,23 +387,20 @@ public class BscGroupShipmentBean implements Serializable {
                     data.add(e);
                 }
             }
-            
             //订单
-            if(!data.isEmpty()){
-                for (BscGroupShipment e : data) {
-                  List  orderList = getOrder(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
-                    for (int i = 0; i < orderList.size(); i++) {
-                        Object [] row = (Object[])orderList.get(i);
-                        orderNum = Double.valueOf(row[0].toString());
-                        orderamts = Double.valueOf(row[1].toString());
-                    }
-                    if (!orderList.isEmpty()) {
-                        e.setOrdnum(BigDecimal.valueOf(orderNum));
-                        e.setOrdamts(BigDecimal.valueOf(orderamts));
+            temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
+            if (temp != null && !temp.isEmpty()) {
+                for (BscGroupShipment c : temp) {
+                    if (data.contains(c)) {
+                        BscGroupShipment a = data.get(data.indexOf(c));
+                        a.setOrdnum(a.getOrdnum().add(c.getOrdnum()));
+                        a.setOrdamts(a.getOrdamts().add(c.getOrdamts()));
+                    } else {
+                        data.add(c);
                     }
                 }
             }
-            
+            //出貨金額
             if (!data.isEmpty()) {
                 if (map.get("n_code_DD") != null) {
                     map.remove("n_code_DD");
@@ -722,9 +720,123 @@ public class BscGroupShipmentBean implements Serializable {
         }
         return BigDecimal.ZERO;
     }
-    
-   //订单
-    protected List getOrder(int y, int m, Date d, int type,LinkedHashMap<String, Object> map) {
+
+    //订单台数
+    protected List<BscGroupShipment> getSalesOrder(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        //获得查询参数
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String decode = map.get("decode") != null ? map.get("decode").toString() : "";
+        String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
+
+        List<BscGroupShipment> data = new ArrayList<>();
+        BigDecimal qty = BigDecimal.ZERO;
+        BigDecimal amts = BigDecimal.ZERO;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select h.recdate,isnull(sum(d.cdrqy1),0) as num  ");
+        sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
+        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
+        if ("='R'".equals(n_code_DA.trim())) {
+            sb.append(" and d.drecsta not in ('98','99','10') ");
+        } else {
+            sb.append(" and d.drecsta not in ('98','99') ");
+        }
+        if (!"".equals(decode)) {
+            sb.append(" and h.decode ='").append(decode).append("' ");
+        }
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_CD)) {
+            sb.append(" and d.n_code_CD ").append(n_code_CD);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" and d.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
+        }
+        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate<='${d}' group by h.recdate");
+        String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
+        erpEJB.setCompany(facno);
+        Query cdrQuery = erpEJB.getEntityManager().createNativeQuery(cdrSql);
+        try {
+            List cdrResult = cdrQuery.getResultList();
+            Date recdate;
+            String protype, protypeno, shptype;
+            if (n_code_DA.contains("R")) {
+                protype = "R机体";
+                protypeno = "R";
+                shptype = "1";
+            } else if (n_code_DA.contains("AA")) {
+                protype = "A机组";
+                protypeno = "A";
+                shptype = "2";
+            } else if (n_code_DA.contains("AH")) {
+                if (n_code_DC.contains("SDS")) {
+                    protype = "日立A机组";
+                    protypeno = "A";
+                    shptype = "3";
+                } else {
+                    protype = "A机体";
+                    protypeno = "A";
+                    shptype = "1";
+                }
+            } else if (n_code_DA.contains("P")) {
+                protype = "真空泵";
+                protypeno = "P";
+                shptype = "1";
+            } else if (n_code_DA.contains("S")) {
+                protype = "无油机组";
+                protypeno = "S";
+                shptype = "1";
+            } else if (n_code_DA.contains("OH")) {
+                protype = "低环温热泵";
+                protypeno = "OH";
+                shptype = "2";
+            } else if (n_code_DA.contains("RT")) {
+                protype = "离心机体";
+                protypeno = "RT";
+                shptype = "2";
+            } else {
+                protype = "";
+                protypeno = "";
+                shptype = "";
+            }
+            for (int i = 0; i < cdrResult.size(); i++) {
+                Object o[] = (Object[]) cdrResult.get(i);
+                recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
+                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
+                BscGroupShipment e = new BscGroupShipment("S", recdate, protype, protypeno, shptype);
+                e.setOrdnum(qty);
+                e.setOrdamts(BigDecimal.ZERO);
+                data.add(e);
+            }
+            if (!data.isEmpty()) {
+                if (map.get("n_code_DD") != null) {
+                    map.remove("n_code_DD");
+                    map.put("n_code_DD", " IN ('00','02') ");
+                }
+                for (BscGroupShipment e : data) {
+                    amts = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
+                    if (amts != null) {
+                        e.setOrdamts(amts);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
+    }
+
+    //订单金额
+    protected BigDecimal getSalesOrderAmount(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String decode = map.get("decode") != null ? map.get("decode").toString() : "";
@@ -734,10 +846,8 @@ public class BscGroupShipmentBean implements Serializable {
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
-        List result = new ArrayList();
-        String num = "";
-        String tramt = "";
-        sb.append(" select isnull(sum(d.cdrqy1),0) as num,isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as tramt  ");
+        BigDecimal result = BigDecimal.ZERO;
+        sb.append(" select isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as tramt  ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
@@ -765,32 +875,26 @@ public class BscGroupShipmentBean implements Serializable {
         switch (type) {
             case 2:
                 //月
-                sb.append(" and h.recdate= '${d}' ");
+                sb.append(" and h.recdate<= '${d}' ");
                 break;
             case 5:
                 //日
                 sb.append(" and h.recdate= '${d}' ");
                 break;
             default:
-                sb.append(" and h.recdate= '${d}' ");
+                sb.append(" and h.recdate<= '${d}' ");
         }
         String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
         Query query1 = erpEJB.getEntityManager().createNativeQuery(sql);
         try {
-            result = query1.getResultList();
-            if (result != null && !result.isEmpty()) {
-                for (int i = 0; i < result.size(); i++) {
-                    Object[] row = (Object[]) result.get(i);
-                    num = row[0].toString();
-                    tramt = row[1].toString();
-                }
-            }
+            Object o1 = query1.getSingleResult();
+            result = (BigDecimal) o1;
         } catch (Exception ex) {
             Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
 
     }
-    
+
 }
