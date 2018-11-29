@@ -42,7 +42,7 @@ public class FreeServiceOuterSum1C extends FreeServiceERP {
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail o1 = i.getOther1Indicator();
         IndicatorDetail o2 = i.getOther2Indicator();
-        IndicatorDetail o3 = i.getOther2Indicator();
+        IndicatorDetail o3 = i.getOther3Indicator();
         try {
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
