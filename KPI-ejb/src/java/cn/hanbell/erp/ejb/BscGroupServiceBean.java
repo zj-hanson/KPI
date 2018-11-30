@@ -47,13 +47,13 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        List<BscGroupShipment> resultData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        List<BscGroupShipment> resultData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "G");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -71,7 +71,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "J");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -89,7 +89,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "N");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -107,7 +107,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C4");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -125,7 +125,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -143,7 +143,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='P' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -161,7 +161,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='S' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -179,7 +179,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -197,7 +197,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -215,7 +215,7 @@ public class BscGroupServiceBean implements Serializable {
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getServerValue(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -239,7 +239,7 @@ public class BscGroupServiceBean implements Serializable {
     }
 
     //服务金额
-    protected List<BscGroupShipment> getServerValue(int y, int m, Date d, int type,LinkedHashMap<String, Object> map) {
+    protected List<BscGroupShipment> getServiceValue(int y, int m, Date d, int type,LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
