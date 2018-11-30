@@ -47,6 +47,9 @@ public class SalesOrderQuantity extends SalesOrder {
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
+        if (n_code_DA.contains("AA")) {
+            sb.append(" and left(d.itnbr,1)='3' ");
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -109,6 +112,9 @@ public class SalesOrderQuantity extends SalesOrder {
         //if (!"".equals(deptno)) {
         //    sb.append(" and h.depno IN (").append(deptno).append(")");
         //}
+        if (n_code_DA.contains("AA")) {
+            sb.append(" and left(d.itnbr,1)='3' ");
+        }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
