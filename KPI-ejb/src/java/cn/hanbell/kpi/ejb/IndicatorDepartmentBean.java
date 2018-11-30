@@ -42,4 +42,16 @@ public class IndicatorDepartmentBean extends SuperEJBForKPI<IndicatorDepartment>
         }
     }
 
+    public List<IndicatorDepartment> findByDeptnoTypeAndYear(String deptno, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("IndicatorDepartment.findByDeptnoTypeAndYear");
+        query.setParameter("deptno", deptno);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }

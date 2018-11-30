@@ -516,6 +516,26 @@
                         <p:column styleClass="Wid40"/>
                     </p:dataTable>
                 </p:tab>
+                <p:tab title="指标归集">
+                    <p:dataTable id="tableList3" value="#{productManagedBean.detailList3}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{productManagedBean.currentDetail3}" rowKey="#{item.formid}" >
+                        <p:ajax event="rowSelect"  update="formOne:tabView:tableList3" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="formOne:tabView:tableList3" oncomplete="" />
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="指标编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formid}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="指标部门"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60"/>
+                    </p:dataTable>
+                </p:tab>
                 <p:tab title="其他数据" rendered="#{productManagedBean.currentEntity.hasOther>0}">
                     <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
                         <p:row rendered="#{productManagedBean.currentEntity.hasOther>0}">

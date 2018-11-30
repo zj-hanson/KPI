@@ -85,6 +85,7 @@ public class MenuManagedBean implements Serializable {
     public void init() {
 
         boolean flag;
+        int y = userManagedBean.getY();
         moduleGrantList = new ArrayList<>();
         prgGrantList = new ArrayList<>();
         //KPI授權列表
@@ -218,7 +219,7 @@ public class MenuManagedBean implements Serializable {
             kpimenu = new DefaultSubMenu("部门KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "D");
+                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoTypeAndYear(r.getDeptno(), "D", y);
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
                     submenu = new DefaultSubMenu(r.getDept());
                     submenu.setIcon("menu");
@@ -237,7 +238,7 @@ public class MenuManagedBean implements Serializable {
             kpimenu = new DefaultSubMenu("产品KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoAndType(r.getDeptno(), "P");
+                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoTypeAndYear(r.getDeptno(), "P", y);
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
                     submenu = new DefaultSubMenu(r.getDept());
                     submenu.setIcon("menu");
