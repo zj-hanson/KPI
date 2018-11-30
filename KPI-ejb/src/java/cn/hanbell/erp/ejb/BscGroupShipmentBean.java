@@ -307,7 +307,10 @@ public class BscGroupShipmentBean implements Serializable {
         bakSql.append("select h.bakdate,isnull(sum(0 - d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
         bakSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         bakSql.append(" and d.issevdta='N' and h.facno='${facno}' ");
-        if (!"".equals(n_code_DA)) {
+        if (!"".equals(n_code_DA) && n_code_DA.equals("= 'AA'")) {
+            bakSql.append(" and d.n_code_DA ").append(n_code_DA);
+            bakSql.append(" and left(d.itnbr,1)='3' ");
+        }else{
             bakSql.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(n_code_DC)) {

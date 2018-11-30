@@ -17,7 +17,6 @@ import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
