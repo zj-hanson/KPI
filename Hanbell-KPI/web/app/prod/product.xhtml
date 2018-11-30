@@ -117,6 +117,13 @@
                 <p:tab title="指标查看">
                     <p:panelGrid id="plgTarget" styleClass="plgDetail Wid100">
                         <p:row>
+                            <p:column><p:outputLabel value="M01预测" for="fn01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn01" value="#{productManagedBean.currentEntity.forecastIndicator.n01}" title="fn01"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M01基准" for="bn01" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn01" value="#{productManagedBean.currentEntity.benchmarkIndicator.n01}" title="bn01"
@@ -145,6 +152,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M02预测" for="fn02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn02" value="#{productManagedBean.currentEntity.forecastIndicator.n02}" title="fn02"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M02基准" for="bn02" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn02" value="#{productManagedBean.currentEntity.benchmarkIndicator.n02}" title="bn02"
@@ -173,6 +187,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M03预测" for="fn03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn03" value="#{productManagedBean.currentEntity.forecastIndicator.n03}" title="fn03"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M03基准" for="bn03" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn03" value="#{productManagedBean.currentEntity.benchmarkIndicator.n03}" title="bn03"
@@ -201,6 +222,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M04预测" for="fn04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn04" value="#{productManagedBean.currentEntity.forecastIndicator.n04}" title="fn04"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M04基准" for="bn04" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn04" value="#{productManagedBean.currentEntity.benchmarkIndicator.n04}" title="bn04"
@@ -229,6 +257,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M05预测" for="fn05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn05" value="#{productManagedBean.currentEntity.forecastIndicator.n05}" title="fn05"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M05基准" for="bn05" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn05" value="#{productManagedBean.currentEntity.benchmarkIndicator.n05}" title="bn05"
@@ -257,6 +292,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M06预测" for="fn06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn06" value="#{productManagedBean.currentEntity.forecastIndicator.n06}" title="fn06"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M06基准" for="bn06" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn06" value="#{productManagedBean.currentEntity.benchmarkIndicator.n06}" title="bn06"
@@ -285,6 +327,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M07预测" for="fn07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn07" value="#{productManagedBean.currentEntity.forecastIndicator.n07}" title="fn07"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M07基准" for="bn07" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn07" value="#{productManagedBean.currentEntity.benchmarkIndicator.n07}" title="bn07"
@@ -313,6 +362,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M08预测" for="fn08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn08" value="#{productManagedBean.currentEntity.forecastIndicator.n08}" title="fn08"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M08基准" for="bn08" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn08" value="#{productManagedBean.currentEntity.benchmarkIndicator.n08}" title="bn08"
@@ -341,6 +397,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M09预测" for="fn09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn09" value="#{productManagedBean.currentEntity.forecastIndicator.n09}" title="fn09"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M09基准" for="bn09" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn09" value="#{productManagedBean.currentEntity.benchmarkIndicator.n09}" title="bn09"
@@ -369,6 +432,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M10预测" for="fn10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn10" value="#{productManagedBean.currentEntity.forecastIndicator.n10}" title="fn10"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M10基准" for="bn10" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn10" value="#{productManagedBean.currentEntity.benchmarkIndicator.n10}" title="bn10"
@@ -397,6 +467,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M11预测" for="fn11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn11" value="#{productManagedBean.currentEntity.forecastIndicator.n11}" title="fn11"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M11基准" for="bn11" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn11" value="#{productManagedBean.currentEntity.benchmarkIndicator.n11}" title="bn11"
@@ -425,6 +502,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="M12预测" for="fn12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn12" value="#{productManagedBean.currentEntity.forecastIndicator.n12}" title="fn12"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                            </p:column>
                             <p:column><p:outputLabel value="M12基准" for="bn12" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bn12" value="#{productManagedBean.currentEntity.benchmarkIndicator.n12}" title="bn12"
@@ -453,6 +537,11 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="全年预测" for="fnfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fnfy" value="#{productManagedBean.currentEntity.forecastIndicator.nfy}" title="fnfy"
+                                               symbol="#{productManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
                             <p:column><p:outputLabel value="全年基准" for="bnfy" /></p:column>
                             <p:column>
                                 <p:inputNumber id="bnfy" value="#{productManagedBean.currentEntity.benchmarkIndicator.nfy}" title="bnfy"

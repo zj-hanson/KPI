@@ -68,7 +68,7 @@
                             <p:column>#{castingRateHSReportBean.percentFormat(castingRateHSReportBean.indicator.actualIndicator.n10,10)}</p:column>
                             <p:column>#{castingRateHSReportBean.percentFormat(castingRateHSReportBean.indicator.actualIndicator.n11,11)}</p:column>
                             <p:column>#{castingRateHSReportBean.percentFormat(castingRateHSReportBean.indicator.actualIndicator.n12,12)}</p:column>
-                            <p:column>#{castingRateHSReportBean.percentFormat(castingRateHSReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                            <p:column>#{castingRateHSReportBean.percentFormat(castingRateHSReportBean.getNfy(castingRateHSReportBean.indicator.other2Indicator.nsy(), castingRateHSReportBean.indicator.other1Indicator.nsy()),0)}</p:column>
                         </p:row>
                         <p:row>
                             <p:column>#{castingRateHSReportBean.indicator.other1Label}</p:column>
