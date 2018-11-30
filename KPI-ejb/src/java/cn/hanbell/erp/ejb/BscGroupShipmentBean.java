@@ -43,13 +43,14 @@ public class BscGroupShipmentBean implements Serializable {
     }
 
     public void updataActualValue(int y, int m, Date d) {
-        queryParams.clear();
 
+        queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
         List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "G");
@@ -325,7 +326,7 @@ public class BscGroupShipmentBean implements Serializable {
             List bakResult = bakQuery.getResultList();
             Date shpdate;
             String protype, protypeno, shptype;
-            if (n_code_DA.contains("R")) {
+            if (n_code_DA.contains("R") && !n_code_DA.contains("RT")) {
                 protype = "R机体";
                 protypeno = "R";
                 shptype = "1";
@@ -769,7 +770,7 @@ public class BscGroupShipmentBean implements Serializable {
             List cdrResult = cdrQuery.getResultList();
             Date recdate;
             String protype, protypeno, shptype;
-            if (n_code_DA.contains("R")) {
+            if (n_code_DA.contains("R") && !n_code_DA.contains("RT")) {
                 protype = "R机体";
                 protypeno = "R";
                 shptype = "1";
