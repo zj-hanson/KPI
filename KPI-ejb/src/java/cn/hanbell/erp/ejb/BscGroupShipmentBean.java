@@ -291,7 +291,7 @@ public class BscGroupShipmentBean implements Serializable {
         shpSql.append("select h.shpdate,isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' ");
         shpSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         shpSql.append(" and d.issevdta='N' and h.facno='${facno}' ");
-        if (!"".equals(n_code_DA) && n_code_DA.equals("= 'AA'")) {
+        if (!"".equals(n_code_DA) && n_code_DA.contains("AA")) {
             shpSql.append(" and d.n_code_DA ").append(n_code_DA);
             shpSql.append(" and left(d.itnbr,1)='3' ");
         }else{
@@ -310,7 +310,7 @@ public class BscGroupShipmentBean implements Serializable {
         bakSql.append("select h.bakdate,isnull(sum(0 - d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
         bakSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         bakSql.append(" and d.issevdta='N' and h.facno='${facno}' ");
-        if (!"".equals(n_code_DA) && n_code_DA.equals("= 'AA'")) {
+        if (!"".equals(n_code_DA) && n_code_DA.contains("AA")) {
             bakSql.append(" and d.n_code_DA ").append(n_code_DA);
             bakSql.append(" and left(d.itnbr,1)='3' ");
         }else{
