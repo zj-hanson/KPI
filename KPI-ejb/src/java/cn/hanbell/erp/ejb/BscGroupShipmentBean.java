@@ -285,16 +285,14 @@ public class BscGroupShipmentBean implements Serializable {
         List<BscGroupShipment> temp;
         BigDecimal qty = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
-        BigDecimal orderNum = BigDecimal.ZERO;
-        BigDecimal orderamts = BigDecimal.ZERO;
         StringBuilder shpSql = new StringBuilder();
         shpSql.append("select h.shpdate,isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' ");
         shpSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         shpSql.append(" and d.issevdta='N' and h.facno='${facno}' ");
-        if (!"".equals(n_code_DA) && n_code_DA.contains("AA")) {
-            shpSql.append(" and d.n_code_DA ").append(n_code_DA);
+        if (n_code_DA.contains("AA")) {
             shpSql.append(" and left(d.itnbr,1)='3' ");
-        }else{
+        }
+        if (!"".equals(n_code_DA)) {
             shpSql.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(n_code_DC)) {
@@ -310,10 +308,10 @@ public class BscGroupShipmentBean implements Serializable {
         bakSql.append("select h.bakdate,isnull(sum(0 - d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
         bakSql.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         bakSql.append(" and d.issevdta='N' and h.facno='${facno}' ");
-        if (!"".equals(n_code_DA) && n_code_DA.contains("AA")) {
-            bakSql.append(" and d.n_code_DA ").append(n_code_DA);
+        if (n_code_DA.contains("AA")) {
             bakSql.append(" and left(d.itnbr,1)='3' ");
-        }else{
+        }
+        if (!"".equals(n_code_DA)) {
             bakSql.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(n_code_DC)) {
@@ -756,10 +754,10 @@ public class BscGroupShipmentBean implements Serializable {
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
-        if (!"".equals(n_code_DA) && n_code_DA.contains("AA")) {
-            sb.append(" and d.n_code_DA ").append(n_code_DA);
-            sb.append(" and left(d.itnbr,1)<>'3' ");
-        }else{
+        if (n_code_DA.contains("AA")) {
+            sb.append(" and left(d.itnbr,1)='3' ");
+        }
+        if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(n_code_CD)) {
