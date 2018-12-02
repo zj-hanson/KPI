@@ -76,7 +76,15 @@
                         </p:column>
                     </p:dataTable>
                 </div>
-             <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                <div style="width: 100%;color: gray; font-size: 15px;" >
+                    <p>
+                        备注：月跌涨比例 = (1月 - 本月 ) / 1月 * 100%
+                    </p>
+                    <p>
+                        年涨跌比例 = (今年平均 - 去年平均) / 去年平均 * 100%
+                    </p>
+                </div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
                     <p:repeat id="repSummary" value="#{materialsPriceReportBean.summaryList}" var="s" rendered="#{materialsPriceReportBean.summaryCount>0}">
                         <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid>
@@ -109,37 +117,29 @@
                     <h:inputHidden id="ac" value="#{materialsPriceReportBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    setColor();
+                });
+                var setColor = function () {
+                    var m = document.getElementById("formOne:m");
+                    if (m !== null) {
+                        var tr = $("tr.ui-widget-content");
+                        $(tr).each(function (i, t) {
+                            var c;
+                            if ($(t).find("td").length === 17) {
+                                c = $(t).find("td")[parseInt(m.value) + 1];
+                            } else {
+                                c = $(t).find("td")[m.value];
+                            }
+                            if (c !== null) {
+                                $(c).css("color", "red");
+                            }
+                        });
+                    }
+                };
+            </script>
         </h:form>
-        <div style="width: 100%;color: gray; font-size: 15px;" >
-            <p>
-                备注：月跌涨比例 = (1月 - 本月 ) / 1月 * 100%
-            </p>
-            <p>
-                年涨跌比例 = (今年平均 - 去年平均) / 去年平均 * 100%
-            </p>
-        </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                setColor();
-            });
-            var setColor = function () {
-                var m = document.getElementById("formOne:m");
-                if (m !== null) {
-                    var tr = $("tr.ui-widget-content");
-                    $(tr).each(function (i, t) {
-                        var c;
-                        if ($(t).find("td").length === 17) {
-                            c = $(t).find("td")[parseInt(m.value) + 1];
-                        } else {
-                            c = $(t).find("td")[m.value];
-                        }
-                        if (c !== null) {
-                            $(c).css("color", "red");
-                        }
-                    });
-                }
-            };
-        </script>
     </ui:define>
 
 </ui:composition>
