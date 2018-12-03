@@ -76,39 +76,49 @@
                         </p:column>
                     </p:dataTable>
                 </div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{materialsPriceReportBean.summaryList}" var="s" rendered="#{materialsPriceReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{materialsPriceReportBean.analysisList}" var="a" rendered="#{materialsPriceReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:inputHidden id="m" value="#{materialsPriceReportBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{materialsPriceReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{materialsPriceReportBean.analysisCount}"></h:inputHidden>
+                </div>
             </div>
-            <div><h:inputHidden id="m" value="#{materialsPriceReportBean.m}"></h:inputHidden></div>
+            <div style="width: 100%;color: gray; font-size: 15px;" >
+                <p>
+                    备注：月跌涨比例 = (1月 - 本月 ) / 1月 * 100%
+                </p>
+                <p>
+                    年涨跌比例 = (今年平均 - 去年平均) / 去年平均 * 100%
+                </p>
+            </div>
+            <h:outputScript name="bsc-materials-sheet.js" library="js"/>
         </h:form>
-        <div style="width: 100%;color: gray; font-size: 15px;" >
-            <p>
-                备注：月跌涨比例 = (1月 - 本月 ) / 1月 * 100%
-            </p>
-            <p>
-                年涨跌比例 = (今年平均 - 去年平均) / 去年平均 * 100%
-            </p>
-        </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                setColor();
-            });
-            var setColor = function () {
-                var m = document.getElementById("formOne:m");
-                if (m !== null) {
-                    var tr = $("tr.ui-widget-content");
-                    $(tr).each(function (i, t) {
-                        var c;
-                        if ($(t).find("td").length === 17) {
-                            c = $(t).find("td")[parseInt(m.value) + 1];
-                        } else {
-                            c = $(t).find("td")[m.value];
-                        }
-                        if (c !== null) {
-                            $(c).css("color", "red");
-                        }
-                    });
-                }
-            };
-        </script>
     </ui:define>
 
 </ui:composition>
