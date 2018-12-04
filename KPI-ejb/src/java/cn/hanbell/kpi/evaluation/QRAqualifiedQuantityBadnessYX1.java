@@ -22,51 +22,41 @@ import javax.naming.NamingException;
  *
  * @author C1879
  */
-public class FreeServiceOuterSum1G extends FreeServiceERP{
+public class QRAqualifiedQuantityBadnessYX1 extends QRAqualified{
 
-    IndicatorBean indicatorBean = lookupIndicatorBean();
+    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public FreeServiceOuterSum1G() {
+    public QRAqualifiedQuantityBadnessYX1() {
         super();
-        queryParams.put("formid", "A-空压机体服务成本");
-        queryParams.put("deptno", "1G000");
+        queryParams.put("formid", "R-圆型加工");
+        queryParams.put("deptno", "1P000");
     }
 
-    //差旅费+运费+服务领退料
+    //圆型件抽检不良数
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
         Field f;
         BigDecimal v1;
-        Double a1, a2, a3;
+        Double a1;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail o1 = i.getOther1Indicator();
-        IndicatorDetail o2 = i.getOther2Indicator();
-        IndicatorDetail o3 = i.getOther3Indicator();
         try {
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a1 = Double.valueOf(f.get(o1).toString());
-
-            f = o2.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            a2 = Double.valueOf(f.get(o2).toString());
-
-            f = o3.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            a3 = Double.valueOf(f.get(o3).toString());
-
-            v1 = BigDecimal.valueOf(a1 + a2 + a3);
             
+            v1 = BigDecimal.valueOf(a1);
+
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(FreeServiceOuterSum1G.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FreeServiceAllSum1G.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
     }
 
-    private IndicatorBean lookupIndicatorBean() {
+    private IndicatorBean lookupIndicatorBeanBean() {
         try {
             Context c = new InitialContext();
             return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");

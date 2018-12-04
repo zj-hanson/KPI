@@ -5,10 +5,7 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.web.BscChartManagedBean;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.faces.bean.ManagedBean;
@@ -53,30 +50,6 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
         //按换算率计算结果
         indicatorBean.divideByRate(indicator, 2);
 
-        actualAccumulated = new IndicatorDetail();
-        actualAccumulated.setParent(indicator);
-        actualAccumulated.setType("A");
-
-        benchmarkAccumulated = new IndicatorDetail();
-        benchmarkAccumulated.setParent(indicator);
-        benchmarkAccumulated.setType("B");
-
-        targetAccumulated = new IndicatorDetail();
-        targetAccumulated.setParent(indicator);
-        targetAccumulated.setType("T");
-
-        AP = new IndicatorDetail();
-        AP.setParent(indicator);
-        AP.setType("P");
-
-        BG = new IndicatorDetail();
-        BG.setParent(indicator);
-        BG.setType("P");
-
-        AG = new IndicatorDetail();
-        AG.setParent(indicator);
-        AG.setType("P");
-        
         chartModel = new LineChartModel();
         ChartSeries t = new ChartSeries();
         t.setLabel("目标");
@@ -94,12 +67,6 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
                 t.set("M10", getIndicator().getTargetIndicator().getN10().doubleValue());
                 t.set("M11", getIndicator().getTargetIndicator().getN11().doubleValue());
                 t.set("M12", getIndicator().getTargetIndicator().getN12().doubleValue());
-                break;
-            case "Q":
-                t.set("Q1", getIndicator().getTargetIndicator().getNq1().doubleValue());
-                t.set("Q2", getIndicator().getTargetIndicator().getNq2().doubleValue());
-                t.set("Q3", getIndicator().getTargetIndicator().getNq3().doubleValue());
-                t.set("Q4", getIndicator().getTargetIndicator().getNq4().doubleValue());
                 break;
         }
 
@@ -144,20 +111,6 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
                     a.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
                 }
                 break;
-            case "Q":
-                if (getIndicator().getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q1", getIndicator().getActualIndicator().getNq1().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q2", getIndicator().getActualIndicator().getNq2().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q3", getIndicator().getActualIndicator().getNq3().doubleValue());
-                }
-                if (getIndicator().getActualIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                    a.set("Q4", getIndicator().getActualIndicator().getNq4().doubleValue());
-                }
-                break;
         }
         getChartModel().addSeries(t);//目标
         getChartModel().addSeries(a);//实际
@@ -177,6 +130,14 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
         }
     }
 
+    public BigDecimal getNfy(BigDecimal a,BigDecimal b){
+        try {
+            return a.divide(b,2).multiply(BigDecimal.valueOf(100));
+        } catch (Exception e) {
+        }
+        return BigDecimal.ZERO;
+    }
+    
     @Override
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
