@@ -210,7 +210,7 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <navigation-rule>
+     <navigation-rule>
         <description>BSC汇报一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
@@ -230,7 +230,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>productionchart</from-outcome>
-            <to-view-id>/app/bsc/productionchart.xhtml</to-view-id>
+           <to-view-id>/app/bsc/productionchart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
