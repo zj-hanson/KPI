@@ -97,6 +97,9 @@
                 <p  style="height: 14px;#{(shipmentTopManagedBean.display)}">
                     R冷媒冷冻年/月客户排名没有去除销售折让、质量扣款金额
                 </p>
+                <p  style="height: 14px;#{(shipmentTopManagedBean.display=='display:none')?'display:block':'display:none'}">
+                    此出货销售统计表销售金额去除了销售折让、质量扣款金额
+                </p>
             </div>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
