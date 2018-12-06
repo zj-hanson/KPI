@@ -104,19 +104,19 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂订单台数", y);
-            indicatorBean.getEntityManager().clear();
-            getHtmlTable(indicators, y, m, d, true);
-            total = getSumIndicator();
-            total.setName("柯茂订单台数");
-            sb.append(getHtmlTableRow(total, y, m, d));
-
-            indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("涡旋产品订单台数", y);
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("涡旋订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂订单台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
