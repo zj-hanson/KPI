@@ -46,6 +46,8 @@ public class UserManagedBean implements Serializable {
     private SystemUser currentUser;
     private boolean status;
     private Date baseDate;
+    private int m;
+    private int y;
 
     private String company;
     private String userid;
@@ -70,6 +72,8 @@ public class UserManagedBean implements Serializable {
         c.setTime(BaseLib.getDate());
         c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
         baseDate = c.getTime();
+        m = c.get(Calendar.MONTH) + 1;
+        y = c.get(Calendar.YEAR);
     }
 
     public boolean checkUser() {
@@ -342,6 +346,20 @@ public class UserManagedBean implements Serializable {
      */
     public void setRoleGrantDeptList(List<RoleGrantModule> roleGrantDeptList) {
         this.roleGrantDeptList = roleGrantDeptList;
+    }
+
+    /**
+     * @return the m
+     */
+    public int getM() {
+        return m;
+    }
+
+    /**
+     * @return the y
+     */
+    public int getY() {
+        return y;
     }
 
 }

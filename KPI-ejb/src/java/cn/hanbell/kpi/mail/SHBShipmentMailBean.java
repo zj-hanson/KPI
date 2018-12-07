@@ -44,7 +44,9 @@ public class SHBShipmentMailBean extends ShipmentMail {
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getAmountTable());
+        sb.append(getSHBAmountTable());
+        sb.append("<div class=\"tableTitle\">单位：万元</div>");
+        sb.append(getComerAmountTable());
         sb.append("<div class=\"tableTitle\">单位：百万越南盾</div>");
         sb.append(getVHBAmountTable());
         return sb.toString();
@@ -69,7 +71,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R机体出货台数");
+            total.setName("R冷媒出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -135,7 +137,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getAmountTable() {
+    protected String getSHBAmountTable() {
         StringBuilder sb = new StringBuilder();
         Indicator total;
         try {
@@ -160,7 +162,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R机体出货金额");
+            total.setName("R冷媒出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
@@ -231,20 +233,6 @@ public class SHBShipmentMailBean extends ShipmentMail {
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("S涡旋出货金额");
-            sb.append(getHtmlTableRow(total, y, m, d));
-            sumList.add(total);
-            sum1 = sum1.add(getData().get("sum1"));
-            sum2 = sum2.add(getData().get("sum2"));
-
-            indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
-            indicatorBean.getEntityManager().clear();
-            indicators.stream().forEach((i) -> {
-                indicatorBean.divideByRate(i, 2);
-            });
-            getHtmlTable(indicators, y, m, d, true);
-            total = getSumIndicator();
-            total.setName("柯茂出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
@@ -321,6 +309,55 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
+
+            total = indicatorBean.getSumValue(sumList);
+            if (total != null) {
+                indicatorBean.updatePerformance(total);
+                total.setName("合计");
+                getData().put("sum1", sum1);
+                getData().put("sum2", sum2);
+                sb.append(getHtmlTableRow(total, y, m, d));
+            }
+
+            sb.append("</table></div>");
+        } catch (Exception ex) {
+            return ex.toString();
+        }
+        return sb.toString();
+    }
+
+    protected String getComerAmountTable() {
+        StringBuilder sb = new StringBuilder();
+        Indicator total;
+        try {
+            sb.append("<div class=\"tbl\"><table width=\"100%\">");
+            sb.append("<tr><th rowspan=\"2\" colspan=\"1\">公司别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
+            sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
+            sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+            sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append("</tr>");
+
+            sum1 = BigDecimal.ZERO;
+            sum2 = BigDecimal.ZERO;
+            sumList.clear();
+            salesOrder = new SalesOrderAmount();
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("柯茂出货金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
+
+            salesOrder = null;
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
