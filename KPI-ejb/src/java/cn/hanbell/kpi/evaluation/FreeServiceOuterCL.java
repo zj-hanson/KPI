@@ -32,7 +32,7 @@ public class FreeServiceOuterCL extends FreeServiceOuterOA {
         sb.append(" SELECT ISNULL(sum(a.totaltaxInclusiveRMB),0) FROM  ");
         sb.append(" ( select DISTINCT pi.serialNumber,h.appDept,h.totaltaxInclusiveRMB from HZ_CW028 h ");
         sb.append(" INNER JOIN  ProcessInstance pi on h.processSerialNumber=pi.serialNumber INNER JOIN WorkItem wi on pi.contextOID=wi.contextOID ");
-        sb.append(" where h.cost in ('0','1') and h.reimbursement ='1'  and pi.currentState = '3' AND h.facno='${facno}' ");
+        sb.append(" where h.cost in ('0','1') and h.reimbursement ='1'  and pi.currentState = '3' ");
         if (!"".equals(appDept)) {
             sb.append("  AND h.appDept ").append(appDept);
         }

@@ -32,7 +32,7 @@ public class SalesOrderAmountR1D3 extends SalesOrderAmount {
         amount1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
         queryParams.remove("n_code_CD");
-        queryParams.put("fanco", "G");
+        queryParams.put("facno", "G");
         amount2 = super.getValue(y, m, d, type, map);
         return amount1.add(amount2);
     }

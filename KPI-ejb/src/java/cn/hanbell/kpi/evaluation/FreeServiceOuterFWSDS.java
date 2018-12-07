@@ -14,8 +14,8 @@ public class FreeServiceOuterFWSDS extends FreeServiceOuterFW {
     public FreeServiceOuterFWSDS() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("hmark1", " ='HD' ");
-        queryParams.put("hmark2", " ='WY' ");
+        //queryParams.put("hmark1", " ='HD' ");
+        queryParams.put("hmark2", " IN('WY','SDS') ");
     }
     
 }
