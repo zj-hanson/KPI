@@ -108,7 +108,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("涡旋订单台数");
+            total.setName("S涡旋订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
