@@ -70,9 +70,16 @@ public class ExchangeRateReportBean implements Serializable {
     public ExchangeRateReportBean() {
     }
 
-    public Calendar rtndate() {
+    public Calendar getNowDateBegin() {
         Calendar c = Calendar.getInstance();
         c.setTime(getUserManagedBean().getBaseDate());
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        return c;
+    }
+
+    public Calendar getNowDateEnd() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
         return c;
     }
 
@@ -92,8 +99,8 @@ public class ExchangeRateReportBean implements Serializable {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
 
-        queryDateBegin = rtndate().getTime(); //new SimpleDateFormat("yyyy/MM/dd").format(c.getTime());
-        queryDateEnd = rtndate().getTime();
+        queryDateBegin = getNowDateBegin().getTime(); //new SimpleDateFormat("yyyy/MM/dd").format(c.getTime());
+        queryDateEnd = getNowDateEnd().getTime();
 
         map = new LinkedHashMap<>();
         list = new ArrayList<>();
@@ -103,8 +110,8 @@ public class ExchangeRateReportBean implements Serializable {
     public void initial() {
         displaySting = "none";
         remind = "block";
-        queryDateBegin = rtndate().getTime();
-        queryDateEnd = rtndate().getTime();
+        queryDateBegin = getNowDateBegin().getTime();
+        queryDateEnd = getNowDateEnd().getTime();
         list = new ArrayList<>();
         map = new LinkedHashMap<>();
         queryCurrency = "0";
@@ -154,7 +161,7 @@ public class ExchangeRateReportBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询开始日期不能大于结束日期！"));
             aa = false;
         }
-        if (queryDateEnd.after(rtndate().getTime())) {
+        if (queryDateEnd.after(new Date())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
         }
