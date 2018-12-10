@@ -373,6 +373,11 @@
             <to-view-id>/app/bsc/qraqualifiedfx.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>trialrunchart</from-outcome>
+            <to-view-id>/app/bsc/trialrunchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>模态开窗</description>

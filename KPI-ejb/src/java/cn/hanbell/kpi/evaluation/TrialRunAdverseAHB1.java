@@ -5,6 +5,10 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 
 /**
  *
@@ -15,4 +19,10 @@ public class TrialRunAdverseAHB1 extends TrialRunAdverseAH {
     public TrialRunAdverseAHB1() {
         super();
     }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(100));
+    }
+    
 }

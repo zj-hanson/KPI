@@ -8,13 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 机体出货台数 AB-1030R、AB-1200R
  */
-public class TrialRunAdverseAHShipA2V3 extends TrialRunAdverseAHShipA2{
+public class TrialRunAdverseAHShipmentA1V3 extends TrialRunAdverseAHShipmentA1 {
 
-    public TrialRunAdverseAHShipA2V3() {
+    public TrialRunAdverseAHShipmentA1V3() {
         super();
+        queryParams.put("facno", "'C'");
         queryParams.put("typecode", "1030");
     }
-    
-    
+
 }

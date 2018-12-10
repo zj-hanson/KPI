@@ -8,11 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 机体出货台数AB1320~2600
  */
-public class TrialRunAdverseAHShipA1V4 extends TrialRunAdverseAHShipA1{
-    public TrialRunAdverseAHShipA1V4(){
+public class TrialRunAdverseAHShipmentA1V4 extends TrialRunAdverseAHShipmentA1 {
+
+    public TrialRunAdverseAHShipmentA1V4() {
         super();
+        queryParams.put("facno", "'C'");
         queryParams.put("typecode", "1320");
     }
-    
+
 }
