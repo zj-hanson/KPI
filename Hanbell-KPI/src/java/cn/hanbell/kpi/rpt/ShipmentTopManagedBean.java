@@ -95,6 +95,8 @@ public class ShipmentTopManagedBean implements Serializable {
 
         if (indicatorChart.getDeptno().equals("1F330")) {
             display = "display:block";
+        } else if (indicatorChart.getDeptno().equals("1F310")) {
+            display = "display:block";
         } else {
             display = "display:none";
         }
@@ -165,6 +167,15 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("n_code_DC", "= 'L'");
                 getMap().put("n_code_DD", " IN ('00') ");
+                break;
+            case "1F310":
+                getMap().put("facno", "C,C4,N,G,J");
+                getMap().put("deptnoname", "制冷产品部");
+                getMap().put("daname", "空调热泵");
+                getMap().put("n_code_DA", "= 'R'");
+                getMap().put("n_code_DC", " IN ('R','H') ");
+                getMap().put("n_code_DD", " IN ('00') ");
+                getMap().put("type", "not");
                 break;
             case "1Q000":
                 getMap().put("facno", "C");
@@ -279,7 +290,10 @@ public class ShipmentTopManagedBean implements Serializable {
                 }
                 String deptno = indicatorChart.getDeptno();
                 List<ClientTable> list = null;
+                //1F330为冷冻排名 1F310为空调热泵排名
                 if ("1F330".equals(deptno)) {
+                    list = clientrank.getClientListRL(y, m, getMap());
+                } else if ("1F310".equals(deptno)) {
                     list = clientrank.getClientListRL(y, m, getMap());
                 } else {
                     list = clientrank.getClientList(y, m, getMap());

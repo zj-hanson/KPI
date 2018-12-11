@@ -116,18 +116,18 @@ public class MaterialsComplaintReportBean extends BscChartManagedBean {
         b.setLabel("同期");
         switch (getIndicator().getFormkind()) {
             case "M":
-                    b.set("M01", getIndicator().getBenchmarkIndicator().getN01().doubleValue());
-                    b.set("M02", getIndicator().getBenchmarkIndicator().getN02().doubleValue());          
-                    b.set("M03", getIndicator().getBenchmarkIndicator().getN03().doubleValue());
-                    b.set("M04", getIndicator().getBenchmarkIndicator().getN04().doubleValue());
-                    b.set("M05", getIndicator().getBenchmarkIndicator().getN05().doubleValue());
-                    b.set("M06", getIndicator().getBenchmarkIndicator().getN06().doubleValue());
-                    b.set("M07", getIndicator().getBenchmarkIndicator().getN07().doubleValue());
-                    b.set("M08", getIndicator().getBenchmarkIndicator().getN08().doubleValue());
-                    b.set("M09", getIndicator().getBenchmarkIndicator().getN09().doubleValue());
-                    b.set("M10", getIndicator().getBenchmarkIndicator().getN10().doubleValue());
-                    b.set("M11", getIndicator().getBenchmarkIndicator().getN11().doubleValue());
-                    b.set("M12", getIndicator().getBenchmarkIndicator().getN12().doubleValue());
+                b.set("M01", getIndicator().getBenchmarkIndicator().getN01().doubleValue());
+                b.set("M02", getIndicator().getBenchmarkIndicator().getN02().doubleValue());
+                b.set("M03", getIndicator().getBenchmarkIndicator().getN03().doubleValue());
+                b.set("M04", getIndicator().getBenchmarkIndicator().getN04().doubleValue());
+                b.set("M05", getIndicator().getBenchmarkIndicator().getN05().doubleValue());
+                b.set("M06", getIndicator().getBenchmarkIndicator().getN06().doubleValue());
+                b.set("M07", getIndicator().getBenchmarkIndicator().getN07().doubleValue());
+                b.set("M08", getIndicator().getBenchmarkIndicator().getN08().doubleValue());
+                b.set("M09", getIndicator().getBenchmarkIndicator().getN09().doubleValue());
+                b.set("M10", getIndicator().getBenchmarkIndicator().getN10().doubleValue());
+                b.set("M11", getIndicator().getBenchmarkIndicator().getN11().doubleValue());
+                b.set("M12", getIndicator().getBenchmarkIndicator().getN12().doubleValue());
                 break;
         }
 
@@ -149,6 +149,14 @@ public class MaterialsComplaintReportBean extends BscChartManagedBean {
             this.summaryCount = summaryList.size();
         }
 
+    }
+
+    public BigDecimal getNfy(BigDecimal a, BigDecimal b) {
+        try {
+            return b.divide(a, 2).multiply(BigDecimal.valueOf(10000));
+        } catch (Exception e) {
+        }
+        return BigDecimal.ZERO;
     }
 
     @Override

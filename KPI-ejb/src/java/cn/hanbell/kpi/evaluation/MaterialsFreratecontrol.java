@@ -52,7 +52,7 @@ public class MaterialsFreratecontrol extends Shipment {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf(a1 / a2 * 100);
+            v1 = BigDecimal.valueOf(a1 / a2 * 10000);
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
