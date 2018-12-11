@@ -22,17 +22,17 @@ import javax.naming.NamingException;
  *
  * @author C1879
  */
-public class MaterialsFreratecontrol extends Shipment {
+public class FreeServiceAllSum1A extends FreeServiceERP {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public MaterialsFreratecontrol() {
+    public FreeServiceAllSum1A() {
         super();
-        queryParams.put("formid", "R-运费比例控制");
-        queryParams.put("deptno", "1N000");
+        queryParams.put("formid", "A-服务综合成本");
+        queryParams.put("deptno", "1A000");
     }
 
-    //运费/总营业额*100
+        //厂外+质量扣款
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
@@ -52,11 +52,11 @@ public class MaterialsFreratecontrol extends Shipment {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf(a1 / a2 * 10000);
+            v1 = BigDecimal.valueOf(a1 + a2);
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(FreeServiceAllSum1B.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FreeServiceAllSum1A.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
     }

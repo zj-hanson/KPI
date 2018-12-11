@@ -924,7 +924,8 @@ public class ClientNowAndPastBean implements Serializable {
         String decode = map.get("decode") != null ? map.get("decode") : "";
         String depno = map.get("depno") != null ? map.get("depno") : "";
         String style = map.get("style") != null ? map.get("style") : "";
-
+        String type = map.get("type") != null ? map.get("type") : "";
+        
         StringBuilder sb = new StringBuilder();
         sb.append(" select  a.cusno as 'cusno',a.cusna as 'cusna',a.shpqy1 as 'shpqy1',b.shpamts as 'shpamts' from ( ");
         //台数
@@ -933,11 +934,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select h.cusno,sum(d.shpqy1) as num from cdrdta d inner join cdrhad h on d.shpno=h.shpno ");
         sb.append(" inner join cdrdmas t on t.cdrno =d.cdrno and t.itnbr = d.itnbr  and d.ctrseq = t.trseq ");
         sb.append(" where h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146')  ");
-        sb.append(" and t.dmark1 in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
+        sb.append(" and t.dmark1 ${type} in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
         sb.append(" and h.depno  in ( '1D000','1B100','1E100','1D100','1C100','1C000','1E000','1B000','1F100','1F000','1F500' ,'1V000','1T100')  ");
         sb.append(" and d.itnbr  in ( select itnbr from invmas where itcls in('3176','3177','3179','3180','3276','3279','3280','3083','4079','3676','3679','3680','3015')) ");
         sb.append(" and h.houtsta <> 'W' and d.issevdta='N' and h.facno = '${facno}' ");
-        sb.append(" and d.n_code_DD in ('00') ");
+        //sb.append(" and d.n_code_DD in ('00') ");
         sb.append(" and year(h.shpdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.shpdate) = ${m} ");
@@ -949,11 +950,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select bh.cusno,-sum(bd.bshpqy1) as num from cdrbhad bh right join cdrbdta bd on bh.bakno=bd.bakno  ");
         sb.append(" inner join cdrdmas t on t.cdrno =bd.cdrno  and t.itnbr = bd.itnbr and bd.ctrseq = t.trseq  ");
         sb.append(" where bh.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and t.dmark1 in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
+        sb.append(" and t.dmark1 ${type} in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
         sb.append(" and bh.depno in ( '1D000','1B100','1E100','1D100','1C100','1C000','1E000','1B000','1F100','1F000','1F500' ,'1V000','1T100') ");
         sb.append(" and bd.itnbr in ( select itnbr from invmas where itcls in('3176','3177','3179','3180','3276','3279','3280','3083','4079','3676','3679','3680','3015')) ");
         sb.append(" and bh.baksta <>'W' and bd.issevdta='N' and  bh.facno = '${facno}' ");
-        sb.append(" and bd.n_code_DD in ('00') ");
+        //sb.append(" and bd.n_code_DD in ('00') ");
         sb.append(" and year(bh.bakdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(bh.bakdate)= ${m} ");
@@ -969,11 +970,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select h.cusno,isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as num from cdrdta d  ");
         sb.append(" inner join cdrhad h on d.shpno=h.shpno inner join cdrdmas t on t.cdrno =d.cdrno and t.itnbr = d.itnbr  and d.ctrseq = t.trseq ");
         sb.append(" where h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and t.dmark1 in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
+        sb.append(" and t.dmark1 ${type} in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
         sb.append(" and h.depno  in ( '1D000','1B100','1E100','1D100','1C100','1C000','1E000','1B000','1F100','1F000','1F500' ,'1V000','1T100') ");
         sb.append(" and d.itnbr  in ( select itnbr from invmas where itcls in('3176','3177','3179','3180','3276','3279','3280','3083','4079','3676','3679','3680','3015')) ");
         sb.append(" and h.houtsta <> 'W' and d.issevdta='N' and h.facno = '${facno}' ");
-        sb.append(" and d.n_code_DD in ('00') ");
+        //sb.append(" and d.n_code_DD in ('00') ");
         sb.append(" and year(h.shpdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(h.shpdate) = ${m} ");
@@ -985,11 +986,11 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" select bh.cusno,isnull(convert(decimal(16,2),-sum((bd.bakamts * bh.ratio)/(bh.taxrate + 1))),0) as num from cdrbhad bh  ");
         sb.append(" right join cdrbdta bd on bh.bakno=bd.bakno inner join cdrdmas t on t.cdrno =bd.cdrno  and t.itnbr = bd.itnbr and bd.ctrseq = t.trseq ");
         sb.append(" where bh.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146')  ");
-        sb.append(" and t.dmark1 in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
+        sb.append(" and t.dmark1 ${type} in ('APZ','AVIP','AVP','BPZ','BVP','EXAP','EXBP','EXZP','LB','LBPL','LBPV','LBV','LT','LTG','LTL','LTS','LTVL','LTVS','RG','ZP','L') ");
         sb.append(" and bh.depno in ( '1D000','1B100','1E100','1D100','1C100','1C000','1E000','1B000','1F100','1F000','1F500' ,'1V000','1T100') ");
         sb.append(" and bd.itnbr in ( select itnbr from invmas where itcls in('3176','3177','3179','3180','3276','3279','3280','3083','4079','3676','3679','3680','3015')) ");
         sb.append(" and bh.baksta <>'W' and bd.issevdta='N' and  bh.facno = '${facno}' ");
-        sb.append(" and bd.n_code_DD in ('00') ");
+        //sb.append(" and bd.n_code_DD in ('00') ");
         sb.append(" and year(bh.bakdate) = ${y} ");
         if (style.equals("nowmonth")) {
             sb.append(" and month(bh.bakdate)= ${m} ");
@@ -1001,7 +1002,7 @@ public class ClientNowAndPastBean implements Serializable {
         sb.append(" z,cdrcus c where z.cusno=c.cusno) ");
         sb.append(" b where a.cusno=b.cusno  and a.cusna  =b.cusna ORDER BY shpamts DESC ");
 
-        return sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
+        return sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
     }
 
     // 返回ClientTable集合

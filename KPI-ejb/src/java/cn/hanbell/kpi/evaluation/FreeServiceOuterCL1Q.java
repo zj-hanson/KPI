@@ -5,9 +5,6 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.LinkedHashMap;
 
 /**
  *
@@ -18,7 +15,7 @@ public class FreeServiceOuterCL1Q extends FreeServiceOuterCL {
     public FreeServiceOuterCL1Q() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("depno", " like '%1Q' ");
+        queryParams.put("depno", " like '1Q%' ");
     }
    
 }

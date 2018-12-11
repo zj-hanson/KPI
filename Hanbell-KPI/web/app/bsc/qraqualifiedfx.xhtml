@@ -13,11 +13,6 @@
                     <div><h3 style="text-align: center"><span style="width: 100px"></span>
                            方形件加工合格率
                             <p:link value="返回" outcome="home" style="float: right"/>
-                            <p:selectOneRadio id="scale" value="#{qraQualifiedFx1ReportBean.scale}" label="小数位数" style="float:right">
-                                <f:selectItem itemLabel="0位" itemValue="0" />
-                                <f:selectItem itemLabel="2位" itemValue="2" />
-                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
-                            </p:selectOneRadio>
                         </h3>
                     </div>
                     <div><h4>#{qraQualifiedFx1ReportBean.indicator.name}</h4></div>
@@ -179,7 +174,7 @@
                     </p:repeat>
                 </div>
                 <div class="ui-g-12 ui-md-12"  style=" #{(qraQualifiedFx1ReportBean.summaryCount1 > 0)?'display:inline;width: 65%;':'' }" >
-                    <p:chart type="line" model="#{qraQualifiedFx1ReportBean.initLineChartModelSun('月份','指标')}" style="height:400px"
+                    <p:chart type="line" model="#{qraQualifiedFx1ReportBean.initLineChartModelSun('月份','指标')}" style="height:450px"
                              responsive="true" rendered="true" >
                     </p:chart>
                 </div>

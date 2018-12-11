@@ -14,7 +14,7 @@ public class FreeServiceWithinZLSDS extends FreeServiceWithinZL{
     public FreeServiceWithinZLSDS() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("remark1", " ='SDS' ");
+        queryParams.put("remark1", " IN('WY','SDS') ");
     }
     
     

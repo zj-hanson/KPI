@@ -13,11 +13,6 @@
                     <div><h3 style="text-align: center">
                             #{qraQualifiedYxReportBean.y} #{qraQualifiedYxReportBean.indicatorChart.name}
                             <p:link value="返回" outcome="home" style="float: right"/>
-                            <p:selectOneRadio id="scale" value="#{qraQualifiedYxReportBean.scale}" label="小数位数" style="float:right">
-                                <f:selectItem itemLabel="0位" itemValue="0" />
-                                <f:selectItem itemLabel="2位" itemValue="2" />
-                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
-                            </p:selectOneRadio>
                         </h3></div>
                     <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
                         <f:facet name="header">

@@ -72,7 +72,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     public BscChartManagedBean() {
         super(Indicator.class);
         this.decimalFormat = new DecimalFormat("#,###");
-        this.percentFormat = new DecimalFormat("##.##％");
+        this.percentFormat = new DecimalFormat("##.00％");
     }
 
     @PostConstruct
