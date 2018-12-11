@@ -427,9 +427,9 @@ public class ProcurementBean implements Serializable {
                     }
                 }
                 if (yearDouble != 0) {
-                    arr[8] = dfpercent.format(other3 / yearDouble * 100);
+                    arr[8] = dfpercent.format(other2 / yearDouble * 100);
                 } else {
-                    if (other3 == 0) {
+                    if (other2 == 0) {
                         arr[8] = dfpercent.format(0);
                     } else {
                         arr[8] = dfpercent.format(100);
