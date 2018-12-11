@@ -75,40 +75,40 @@ public class MaterialsComplaintReportBean extends BscChartManagedBean {
         a.setLabel("实际");
         switch (getIndicator().getFormkind()) {
             case "M":
-                if (getIndicator().getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 1) {
                     a.set("M01", getIndicator().getActualIndicator().getN01().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 2) {
                     a.set("M02", getIndicator().getActualIndicator().getN02().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 3) {
                     a.set("M03", getIndicator().getActualIndicator().getN03().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 4) {
                     a.set("M04", getIndicator().getActualIndicator().getN04().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 5) {
                     a.set("M05", getIndicator().getActualIndicator().getN05().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 6) {
                     a.set("M06", getIndicator().getActualIndicator().getN06().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 7) {
                     a.set("M07", getIndicator().getActualIndicator().getN07().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 8) {
                     a.set("M08", getIndicator().getActualIndicator().getN08().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 9) {
                     a.set("M09", getIndicator().getActualIndicator().getN09().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 10) {
                     a.set("M10", getIndicator().getActualIndicator().getN10().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 11) {
                     a.set("M11", getIndicator().getActualIndicator().getN11().doubleValue());
                 }
-                if (getIndicator().getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                if (m >= 12) {
                     a.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
                 }
                 break;
