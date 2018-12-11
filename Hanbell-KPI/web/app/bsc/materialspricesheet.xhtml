@@ -65,13 +65,13 @@
                         <p:column headerText="12月">
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n12,12)}" />
                         </p:column>
-                        <p:column headerText="今年平均">
+                        <p:column headerText="年均">
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.nfy,0) }" />
                         </p:column>
-                        <p:column headerText="去年平均">
+                        <p:column headerText="去年">
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.parent.benchmarkIndicator.nfy,0) }" />
                         </p:column>
-                        <p:column headerText="汇报当日">
+                        <p:column headerText="当日">
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,materialsPriceReportBean.getForecastValue(item.parent.forecastIndicator),0) }" />
                         </p:column>
                     </p:dataTable>
