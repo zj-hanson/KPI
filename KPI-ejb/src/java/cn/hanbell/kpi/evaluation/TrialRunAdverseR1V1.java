@@ -5,6 +5,10 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 /**
  *
  * @author C1749
@@ -15,5 +19,5 @@ public class TrialRunAdverseR1V1 extends TrialRunAdverseR {
         super();
         queryParams.put("STEPID", "冷媒");
         queryParams.put("typecode", "RC2");
-    }
+    }  
 }

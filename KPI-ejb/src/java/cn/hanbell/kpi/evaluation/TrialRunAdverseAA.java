@@ -16,9 +16,9 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class TrialRunAdverseAH extends TrialRun {
+public class TrialRunAdverseAA extends TrialRun {
 
-    public TrialRunAdverseAH() {
+    public TrialRunAdverseAA() {
         super();
     }
 
@@ -28,7 +28,7 @@ public class TrialRunAdverseAH extends TrialRun {
         StringBuilder sb = new StringBuilder();
         BigDecimal reslut = BigDecimal.ZERO;
         sb.append(" select count(*) from ( ");
-        sb.append(" SELECT DISTINCT PRODUCTCOMPID FROM PROCESS_TR A WHERE  A.TRRESULT='不合格' AND A.STEPID LIKE '%机体试车站%' ");
+        sb.append(" SELECT DISTINCT PRODUCTCOMPID FROM PROCESS_TR_JZ A WHERE 1=1 AND  TRRESULT = '不合格' AND TR_TIMES='1' AND A.STEPID LIKE '%机组试车站%' ");
         sb.append(" AND year(A.MODIFYTIME)=${y} and month(A.MODIFYTIME)=${m} ");
         sb.append(" ) as a ");
         String badnum = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
@@ -38,7 +38,7 @@ public class TrialRunAdverseAH extends TrialRun {
         sb.append(" SELECT A.PRODUCTORDERID, A.PRODUCTCOMPID, A.STEPID,B.PRODUCTMODEL,C.PRODUCTORDERTYPE, MIN(A.STEPSEQ),TRACKOUTTIME ");
         sb.append(" FROM PROCESS_STEP A INNER JOIN MPRODUCT B ON A.PRODUCTID=B.PRODUCTID ");
         sb.append(" INNER JOIN PROCESS_PRE C ON A.PRODUCTORDERID=C.PRODUCTORDERID ");
-        sb.append(" WHERE B.PRODUCTTYPE='机体装配' AND A.STEPID='机体试车站'  ");
+        sb.append(" WHERE A.STEPID='机组试车站'  ");
         sb.append(" AND year(A.TRACKOUTTIME)=${y} and month(A.TRACKOUTTIME)=${m} ");
         sb.append(" GROUP BY A.PRODUCTORDERID, A.PRODUCTCOMPID, A.STEPID,B.PRODUCTMODEL,C.PRODUCTORDERTYPE,TRACKOUTTIME ");
         sb.append(" ) as a ");
@@ -50,10 +50,10 @@ public class TrialRunAdverseAH extends TrialRun {
             Object o2 = query2.getSingleResult();
             BigDecimal value1 = BigDecimal.valueOf(Double.valueOf(o1.toString()));
             BigDecimal value2 = BigDecimal.valueOf(Double.valueOf(o2.toString()));
-            reslut = value1.divide(value2, 6, BigDecimal.ROUND_HALF_UP);
+            reslut = value1.divide(value2, 2, BigDecimal.ROUND_HALF_UP);
             
         } catch (Exception ex) {
-            Logger.getLogger(TrialRunAdverseAH.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TrialRunAdverseAA.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reslut;
     }

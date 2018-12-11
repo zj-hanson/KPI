@@ -9,12 +9,10 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class TrialRunAdverseAHShipA2V1 extends TrialRunAdverseAHShipA2{
-
-    public TrialRunAdverseAHShipA2V1() {
+public class TrialRunAdverseAHReachmentA1V2 extends TrialRunAdverseAHReachmentA1{
+    public TrialRunAdverseAHReachmentA1V2(){
         super();
-        queryParams.put("typecode", "480");
+        queryParams.put("typecode", "600");
     }
-    
     
 }

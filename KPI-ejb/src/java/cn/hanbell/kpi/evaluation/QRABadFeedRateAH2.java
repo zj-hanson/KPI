@@ -17,12 +17,12 @@ public class QRABadFeedRateAH2 extends QRABadFeedRate{
     public QRABadFeedRateAH2(){
         super();
         queryParams.put("SYSTEMID", "'QC_JLBLReport'");
-        queryParams.put("SEQUENCE", "'6'");
+        queryParams.put("SEQUENCE", " in ('4','5') ");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(10000));
+        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(1000000));
     }
     
     

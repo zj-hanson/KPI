@@ -8,11 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * 机体出货台数 AB-600R AB-780R
  */
-public class TrialRunAdverseAHShipA1V1 extends TrialRunAdverseAHShipA1{
-    public TrialRunAdverseAHShipA1V1(){
+public class TrialRunAdverseAHShipmentA1V2 extends TrialRunAdverseAHShipmentA1 {
+
+    public TrialRunAdverseAHShipmentA1V2() {
         super();
-        queryParams.put("typecode", "480");
+        queryParams.put("facno", "'C'");
+        queryParams.put("typecode", "600");
     }
-    
+
 }
