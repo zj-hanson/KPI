@@ -7,6 +7,7 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.web.BscChartManagedBean;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -153,7 +154,7 @@ public class MaterialsComplaintReportBean extends BscChartManagedBean {
 
     public BigDecimal getNfy(BigDecimal a, BigDecimal b) {
         try {
-            return b.divide(a, 2).multiply(BigDecimal.valueOf(10000));
+            return b.divide(a, 6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(10000));
         } catch (Exception e) {
         }
         return BigDecimal.ZERO;
