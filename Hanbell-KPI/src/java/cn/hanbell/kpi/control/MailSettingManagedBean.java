@@ -14,8 +14,6 @@ import cn.hanbell.kpi.entity.MailRecipient;
 import cn.hanbell.kpi.entity.MailSetting;
 import cn.hanbell.kpi.lazy.MailSettingModel;
 import cn.hanbell.kpi.web.FormMultiBean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -95,10 +93,8 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                     showErrorMsg("Error", "MailEJB设置错误");
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                Logger.getLogger(MailSettingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 showErrorMsg("Error", ex.toString());
             } catch (Exception ex) {
-                Logger.getLogger(MailSettingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 showErrorMsg("Error", ex.toString());
             }
         }
@@ -128,10 +124,8 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                     showErrorMsg("Error", "MailEJB或测试人员设置错误");
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                Logger.getLogger(MailSettingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 showErrorMsg("Error", ex.toString());
             } catch (Exception ex) {
-                Logger.getLogger(MailSettingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 showErrorMsg("Error", ex.toString());
             }
         }

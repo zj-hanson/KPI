@@ -11,10 +11,10 @@ import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.persistence.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -30,6 +30,8 @@ public abstract class Shipment implements Actual {
     protected BigDecimal arm235 = BigDecimal.ZERO;
     protected BigDecimal arm270 = BigDecimal.ZERO;
     protected BigDecimal arm423 = BigDecimal.ZERO;
+
+    protected final Logger log4j = LogManager.getLogger();
 
     public Shipment() {
         queryParams = new LinkedHashMap<>();
@@ -88,7 +90,7 @@ public abstract class Shipment implements Actual {
             Object o = query.getSingleResult();
             return (BigDecimal) o;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
@@ -153,7 +155,7 @@ public abstract class Shipment implements Actual {
             Object o = query.getSingleResult();
             return (BigDecimal) o;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
@@ -184,7 +186,7 @@ public abstract class Shipment implements Actual {
             Object o = query.getSingleResult();
             return (BigDecimal) o;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
@@ -232,7 +234,7 @@ public abstract class Shipment implements Actual {
             Object o = query.getSingleResult();
             return (BigDecimal) o;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
