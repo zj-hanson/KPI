@@ -204,10 +204,10 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                 break;
             case "3":
                 newEntity.setCoin("JPY");
-                newEntity.setCoinna("日圆");
+                newEntity.setCoinna("日元");
                 newEntity.setExcoin("RMB");
                 newEntity.setExcoinna("人民币");
-                newEntity.setExchangena("100日圆/人民币");
+                newEntity.setExchangena("100日元/人民币");
                 break;
             case "4":
                 newEntity.setCoin("RMB");
@@ -227,8 +227,8 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                 newEntity.setCoin("USD");
                 newEntity.setCoinna("美元");
                 newEntity.setExcoin("JPY");
-                newEntity.setExcoinna("日圆");
-                newEntity.setExchangena("美金/日圆");
+                newEntity.setExcoinna("日元");
+                newEntity.setExchangena("美金/日元");
                 break;
             case "7":
                 newEntity.setCoin("EUR");

@@ -7,9 +7,15 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.ClientNowAndPastBean;
+import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
+import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
+import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.entity.ClientTable;
+import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.IndicatorSummary;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,18 +41,31 @@ public class ShipmentTopManagedBean implements Serializable {
 
     @EJB
     protected ClientNowAndPastBean clientrank;
-
+    @EJB
+    protected IndicatorAnalysisBean indicatorAnalysisBean;
+    @EJB
+    protected IndicatorSummaryBean indicatorSummaryBean;
     @EJB
     protected IndicatorChartBean indicatorChartBean;
+    @EJB
+    protected IndicatorBean indicatorBean;
 
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
+
+    protected Indicator indicator;
 
     private Integer year;
     private Integer month;
     private LinkedHashMap<String, String> map;
     private List<ClientTable> clientlist;
     protected String display;
+    protected String deptno;
+
+    protected List<IndicatorAnalysis> analysisList;
+    protected List<IndicatorSummary> summaryList;
+    protected int analysisCount;
+    protected int summaryCount;
 
     FacesContext fc;
     ExternalContext ec;
@@ -90,18 +109,30 @@ public class ShipmentTopManagedBean implements Serializable {
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
+        map = new LinkedHashMap<>();
+        setClientlist(new ArrayList<>());
         year = findyear();
         month = findmonth();
-
-        if (indicatorChart.getDeptno().equals("1F330")) {
+        indicator = indicatorBean.findByFormidYearAndDeptno(indicatorChart.getFormid(), year, indicatorChart.getDeptno());
+        if (indicator != null) {
+            deptno = indicator.getAssociatedIndicator();
+        } else {
+            deptno = indicatorChart.getDeptno();
+        }
+        if (deptno.equals("1F330")) {
             display = "display:block";
-        } else if (indicatorChart.getDeptno().equals("1F310")) {
+        } else if (deptno.equals("1F310")) {
             display = "display:block";
         } else {
             display = "display:none";
         }
-        map = new LinkedHashMap<>();
-        setClientlist(new ArrayList<>());
+
+        //关联指标获取指标备注
+//        if (indicator == null) {
+//            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+//        }
+        finddeptno();
+
     }
 
     public void refreshxhtml() {
@@ -149,7 +180,6 @@ public class ShipmentTopManagedBean implements Serializable {
     }
 
     public void finddeptno() {
-        String deptno = indicatorChart.getDeptno();
         switch (deptno) {
             case "1F000":
                 getMap().put("facno", "C,C4,N,G,J");
@@ -269,7 +299,7 @@ public class ShipmentTopManagedBean implements Serializable {
         initial();
         try {
             if (createtitle()) {
-                finddeptno();
+
                 int m;
                 int y = getYear();
                 if (isCheckbox()) {
@@ -288,7 +318,6 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
-                String deptno = indicatorChart.getDeptno();
                 List<ClientTable> list = null;
                 //1F330为冷冻排名 1F310为空调热泵排名
                 if ("1F330".equals(deptno)) {
@@ -301,6 +330,17 @@ public class ShipmentTopManagedBean implements Serializable {
 
                 if (list.size() > 0) {
                     setClientlist(list);
+                    //根据指标ID加载指标说明、指标分析
+                    if (indicator != null) {
+                        analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), month);//指标分析
+                        if (getAnalysisList() != null) {
+                            this.analysisCount = getAnalysisList().size();
+                        }
+                        summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), month);//指标说明
+                        if (getSummaryList() != null) {
+                            this.summaryCount = getSummaryList().size();
+                        }
+                    }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
                 }
@@ -406,6 +446,34 @@ public class ShipmentTopManagedBean implements Serializable {
      */
     public void setDisplay(String display) {
         this.display = display;
+    }
+
+    /**
+     * @return the analysisList
+     */
+    public List<IndicatorAnalysis> getAnalysisList() {
+        return analysisList;
+    }
+
+    /**
+     * @return the summaryList
+     */
+    public List<IndicatorSummary> getSummaryList() {
+        return summaryList;
+    }
+
+    /**
+     * @return the analysisCount
+     */
+    public int getAnalysisCount() {
+        return analysisCount;
+    }
+
+    /**
+     * @return the summaryCount
+     */
+    public int getSummaryCount() {
+        return summaryCount;
     }
 
 }
