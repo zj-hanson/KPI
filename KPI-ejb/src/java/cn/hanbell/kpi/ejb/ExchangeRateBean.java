@@ -180,7 +180,7 @@ public class ExchangeRateBean extends SuperEJBForKPI<ExchangeRate> {
                 title = "欧元兑换人民币汇率";
                 break;
             case "3":
-                title = "日元兑换人民币汇率";
+                title = "100日元兑换人民币汇率";
                 break;
             case "4":
                 title = "人民币兑换台币汇率";

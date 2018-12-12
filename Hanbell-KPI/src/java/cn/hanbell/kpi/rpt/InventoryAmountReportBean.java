@@ -67,7 +67,7 @@ public class InventoryAmountReportBean extends BscSheetManagedBean{
         }
         //指标排序
         indicatorList.sort((Indicator o1, Indicator o2) -> {
-            if (o1.getSortid() < o2.getSortid()) {
+            if (o1.getSortid() > o2.getSortid()) {
                 return 1;
             } else {
                 return -1;

@@ -18,7 +18,7 @@ public class SalesOrderAmountKBA1 extends SalesOrderAmount {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("n_code_DC", " ='BA' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", " In ('00','02') ");
     }
 
 }

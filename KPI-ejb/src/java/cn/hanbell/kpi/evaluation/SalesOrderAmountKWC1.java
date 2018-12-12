@@ -17,7 +17,7 @@ public class SalesOrderAmountKWC1 extends SalesOrderAmount{
         queryParams.put("deptno", " '' ");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DC", " ='WC' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DD", " In ('00','02') ");
     }
 
 }
