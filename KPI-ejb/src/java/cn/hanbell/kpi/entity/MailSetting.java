@@ -52,10 +52,10 @@ public class MailSetting extends FormEntity {
     @Size(max = 400)
     @Column(name = "descript")
     private String descript;
-    @Size(max = 45)
+    @Size(max = 100)
     @Column(name = "mailClazz")
     private String mailClazz;
-    @Size(max = 100)
+    @Size(max = 200)
     @Column(name = "mailEJB")
     private String mailEJB;
     @Size(max = 200)

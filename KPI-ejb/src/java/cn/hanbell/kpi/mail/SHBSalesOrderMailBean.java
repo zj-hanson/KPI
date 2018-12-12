@@ -70,7 +70,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R冷媒订单台数");
+            total.setName("R制冷订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -160,7 +160,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R冷媒订单金额");
+            total.setName("R制冷订单金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));

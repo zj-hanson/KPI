@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -60,6 +62,8 @@ public abstract class MailNotification {
     protected DecimalFormat decimalFormat;
 
     protected Actual updateActual;
+
+    protected final Logger log4j = LogManager.getLogger();
 
     public MailNotification() {
         this.c = Calendar.getInstance();

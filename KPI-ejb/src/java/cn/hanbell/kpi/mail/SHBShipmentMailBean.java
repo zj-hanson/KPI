@@ -71,7 +71,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R冷媒出货台数");
+            total.setName("R制冷出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -162,7 +162,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R冷媒出货金额");
+            total.setName("R制冷出货金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
@@ -248,7 +248,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("R机体收费服务");
+            total.setName("R制冷收费服务");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));

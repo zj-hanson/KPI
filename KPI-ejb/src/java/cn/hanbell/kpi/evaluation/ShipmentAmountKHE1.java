@@ -5,9 +5,11 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,32 @@ public class ShipmentAmountKHE1 extends ShipmentAmount {
 
     @Override
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ISNULL(SUM(h.shpamt),0) FROM armbil h WHERE h.rkd='RQ51' AND h.facno='${facno}' AND h.depno IN (${deptno}) ");
+        sb.append(" AND year(h.bildat) = ${y} AND month(h.bildat)= ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" AND h.bildat<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" AND h.bildat= '${d}' ");
+                break;
+            default:
+                sb.append(" AND h.bildat<= '${d}' ");
+        }
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno).replace("${deptno}", deptno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
         return BigDecimal.ZERO;
     }
 
