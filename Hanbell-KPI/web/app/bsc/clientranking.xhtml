@@ -19,9 +19,9 @@
                 </h:selectBooleanCheckbox>
                 <p:inputText id="clientmonth" value="#{shipmentTopManagedBean.month}" title="月" />
                 <p:commandButton id="btnReset" value="重置" actionListener="#{shipmentTopManagedBean.refreshxhtml()}"  icon="ui-icon-refresh"
-                                 update="formOne"  />
+                                 update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-search"
-                                 update="formOne"/>
+                                 update="formOne:tblList,remarks" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
@@ -101,48 +101,48 @@
                     此出货销售统计表销售金额去除销售折让、质量扣款金额
                 </p>
             </div>
-            <c:if test="#{shipmentTopManagedBean.summaryCount != 0}">
-                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repSummary" value="#{shipmentTopManagedBean.summaryList}" var="s" rendered="#{shipmentTopManagedBean.summaryCount>0}">
-                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
-                            <h:panelGrid>
-                                <h:outputText id="summary"/>
-                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:repeat>
-                    <h:inputHidden id="sc" value="#{shipmentTopManagedBean.summaryCount}"></h:inputHidden>
-                </div>
-            </c:if>
-            <c:if test="#{shipmentTopManagedBean.analysisCount != 0 }">
-                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repAnalysis" value="#{shipmentTopManagedBean.analysisList}" var="a" rendered="#{shipmentTopManagedBean.analysisCount>0}">
-                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
-                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
-                                <h:outputText id="issueLabel" value="问题"/>
-                                <h:outputText id="factorLabel" value="原因"/>
-                                <h:outputText id="countermeasureLabel" value="对策"/>
-                                <h:outputText id="issue"/>
-                                <h:outputText id="factor"/>
-                                <h:outputText id="countermeasure"/>
-                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
-                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
-                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
-                            </h:panelGrid>
-                        </p:panel>
-                    </p:repeat>
-                    <h:inputHidden id="ac" value="#{shipmentTopManagedBean.analysisCount}"></h:inputHidden>
-                </div>
-            </c:if>
-            <div>
-                <h:inputHidden id="m" value="#{shipmentTopManagedBean.month}"></h:inputHidden>
-                <c:if test="#{shipmentTopManagedBean.summaryCount != 0 or shipmentTopManagedBean.analysisCount != 0 }">
-                    <h:outputScript name="bsc-analysis.js" library="js"/>
+            <p:panel id="remarks" style="height: 0px" >
+                <c:if test="#{shipmentTopManagedBean.summaryCount != 0 }">
+                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repSummary" value="#{shipmentTopManagedBean.summaryList}" var="s" rendered="#{shipmentTopManagedBean.summaryCount>0}">
+                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid>
+                                    <h:outputText id="summary"/>
+                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
                 </c:if>
-            </div>
+                <c:if test="#{shipmentTopManagedBean.analysisCount != 0}">
+                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repAnalysis" value="#{shipmentTopManagedBean.analysisList}" var="a" rendered="#{shipmentTopManagedBean.analysisCount>0}">
+                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                    <h:outputText id="issueLabel" value="问题"/>
+                                    <h:outputText id="factorLabel" value="原因"/>
+                                    <h:outputText id="countermeasureLabel" value="对策"/>
+                                    <h:outputText id="issue"/>
+                                    <h:outputText id="factor"/>
+                                    <h:outputText id="countermeasure"/>
+                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
+                </c:if>
+                <c:if test="#{shipmentTopManagedBean.analysisCount != 0  or shipmentTopManagedBean.summaryCount != 0 }">
+                    <h:outputScript name="bsc-clientranking.js" library="js"/>
+                    <h:inputHidden id="ac" value="#{shipmentTopManagedBean.analysisCount}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{shipmentTopManagedBean.summaryCount}"></h:inputHidden>
+                </c:if>
+            </p:panel>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
+
     </ui:define>
 </ui:composition>

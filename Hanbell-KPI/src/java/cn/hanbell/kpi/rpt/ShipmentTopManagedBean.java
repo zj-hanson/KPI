@@ -11,7 +11,7 @@ import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
-import cn.hanbell.kpi.entity.ClientTable;
+import cn.hanbell.kpi.entity.ClientRanking;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
@@ -58,7 +58,7 @@ public class ShipmentTopManagedBean implements Serializable {
     private Integer year;
     private Integer month;
     private LinkedHashMap<String, String> map;
-    private List<ClientTable> clientlist;
+    private List<ClientRanking> clientlist;
     protected String display;
     protected String deptno;
 
@@ -93,6 +93,10 @@ public class ShipmentTopManagedBean implements Serializable {
         getMap().put("futitle", "");
         getMap().put("year", "");
         getMap().put("style", "");
+        setAnalysisCount(0);
+        setSummaryCount(0);
+        analysisList = new ArrayList<>();
+        summaryList = new ArrayList<>();
     }
 
     @PostConstruct
@@ -126,12 +130,8 @@ public class ShipmentTopManagedBean implements Serializable {
         } else {
             display = "display:none";
         }
-
-        //关联指标获取指标备注
-//        if (indicator == null) {
-//            fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-//        }
         finddeptno();
+        initial();
 
     }
 
@@ -299,7 +299,6 @@ public class ShipmentTopManagedBean implements Serializable {
         initial();
         try {
             if (createtitle()) {
-
                 int m;
                 int y = getYear();
                 if (isCheckbox()) {
@@ -318,7 +317,7 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
-                List<ClientTable> list = null;
+                List<ClientRanking> list = null;
                 //1F330为冷冻排名 1F310为空调热泵排名
                 if ("1F330".equals(deptno)) {
                     list = clientrank.getClientListRL(y, m, getMap());
@@ -334,11 +333,11 @@ public class ShipmentTopManagedBean implements Serializable {
                     if (indicator != null) {
                         analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), month);//指标分析
                         if (getAnalysisList() != null) {
-                            this.analysisCount = getAnalysisList().size();
+                            setAnalysisCount(getAnalysisList().size());
                         }
                         summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), month);//指标说明
                         if (getSummaryList() != null) {
-                            this.summaryCount = getSummaryList().size();
+                            setSummaryCount(getSummaryList().size());
                         }
                     }
                 } else {
@@ -395,14 +394,14 @@ public class ShipmentTopManagedBean implements Serializable {
     /**
      * @return the clientlist
      */
-    public List<ClientTable> getClientlist() {
+    public List<ClientRanking> getClientlist() {
         return clientlist;
     }
 
     /**
      * @param clientlist the clientlist to set
      */
-    public void setClientlist(List<ClientTable> clientlist) {
+    public void setClientlist(List<ClientRanking> clientlist) {
         this.clientlist = clientlist;
     }
 
@@ -474,6 +473,20 @@ public class ShipmentTopManagedBean implements Serializable {
      */
     public int getSummaryCount() {
         return summaryCount;
+    }
+
+    /**
+     * @param analysisCount the analysisCount to set
+     */
+    public void setAnalysisCount(int analysisCount) {
+        this.analysisCount = analysisCount;
+    }
+
+    /**
+     * @param summaryCount the summaryCount to set
+     */
+    public void setSummaryCount(int summaryCount) {
+        this.summaryCount = summaryCount;
     }
 
 }

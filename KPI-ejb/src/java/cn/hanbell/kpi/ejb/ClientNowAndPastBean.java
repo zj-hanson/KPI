@@ -6,7 +6,7 @@
 package cn.hanbell.kpi.ejb;
 
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import cn.hanbell.kpi.entity.ClientTable;
+import cn.hanbell.kpi.entity.ClientRanking;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ public class ClientNowAndPastBean implements Serializable {
     @EJB
     private SuperEJBForERP erpEJB;
     private final DecimalFormat df;
+    @EJB
+    protected ClientTableBean clientTableBean;
 
     public ClientNowAndPastBean() {
         this.df = new DecimalFormat("#,##0.00");
@@ -266,7 +268,7 @@ public class ClientNowAndPastBean implements Serializable {
         return sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
     }
 
-    // 返回ClientTable集合
+    // 返回ClientRanking集合
     protected List getClient(int y, int m, String arr1, LinkedHashMap<String, String> map) {
         try {
             StringBuilder sb = new StringBuilder();
@@ -442,15 +444,15 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //当前
-    public List<ClientTable> getNowClient(int y, int m, LinkedHashMap<String, String> map) {
+    public List<ClientRanking> getNowClient(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         //查询当前值并赋予排名
         String[] arr = facno.split(",");
         //过渡list
-        List<ClientTable> list;
+        List<ClientRanking> list;
         //汇总返回list
-        List<ClientTable> returnlist = new ArrayList<>();
-        ClientTable ct;
+        List<ClientRanking> returnlist = new ArrayList<>();
+        ClientRanking ct;
         boolean aa;
         //总金额
         Double sumshpamts = 0.0;
@@ -461,7 +463,7 @@ public class ClientNowAndPastBean implements Serializable {
                 List result = getClient(y, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
-                        ct = new ClientTable();
+                        ct = new ClientRanking();
                         Object[] row = (Object[]) result.get(i);
                         ct.setCusno(row[0].toString());
                         ct.setCusna(row[1].toString());
@@ -495,7 +497,7 @@ public class ClientNowAndPastBean implements Serializable {
             int min;
             for (int i = 0; i < returnlist.size() - 1; i++) {
                 min = i;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getNowshpamts()) > Double.valueOf(returnlist.get(min).getNowshpamts())) {
                         min = j;
@@ -510,7 +512,7 @@ public class ClientNowAndPastBean implements Serializable {
             }
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setNowrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getNowshpqy1());
@@ -527,15 +529,15 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //去年同期
-    public List<ClientTable> getPastClient(int y, int m, LinkedHashMap<String, String> map) {
+    public List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         //查询去年同期值并赋予排名
         String[] arr = facno.split(",");
         //过渡list
-        List<ClientTable> list;
+        List<ClientRanking> list;
         //汇总返回list
-        List<ClientTable> returnlist = new ArrayList<>();
-        ClientTable ct;
+        List<ClientRanking> returnlist = new ArrayList<>();
+        ClientRanking ct;
         boolean aa;
         //总金额
         Double sumshpamts = 0.0;
@@ -546,7 +548,7 @@ public class ClientNowAndPastBean implements Serializable {
                List result = getClient(y - 1, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
-                        ct = new ClientTable();
+                        ct = new ClientRanking();
                         Object[] row = (Object[]) result.get(i);
                         ct.setCusno(row[0].toString());
                         ct.setCusna(row[1].toString());
@@ -580,7 +582,7 @@ public class ClientNowAndPastBean implements Serializable {
             int min;
             for (int i = 0; i < returnlist.size() - 1; i++) {
                 min = i;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getPastshpamts()) > Double.valueOf(returnlist.get(min).getPastshpamts())) {
                         min = j;
@@ -594,7 +596,7 @@ public class ClientNowAndPastBean implements Serializable {
             }
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setPastrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getPastshpqy1());
@@ -611,13 +613,13 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //得到查询结果
-    public List<ClientTable> getClientList(int y, int m, LinkedHashMap<String, String> map) {
-        List<ClientTable> list = new LinkedList<>();
+    public List<ClientRanking> getClientList(int y, int m, LinkedHashMap<String, String> map) {
+        List<ClientRanking> list = new LinkedList<>();
         //得到已经有排名的list
         //NowClient
-        List<ClientTable> nowList = getNowClient(y, m, map);
+        List<ClientRanking> nowList = getNowClient(y, m, map);
         //PastClient
-        List<ClientTable> pastList = getPastClient(y, m, map);
+        List<ClientRanking> pastList = getPastClient(y, m, map);
         //循环nowList 并与 pastList 合并客户
         //其他值
         int nowothershpqy1, pastothershpqy1;
@@ -629,7 +631,8 @@ public class ClientNowAndPastBean implements Serializable {
         Double top20pastshpamts = 0.0;
         try {
             if (nowList != null && !nowList.isEmpty()) {
-                ClientTable now, past;
+                ClientRanking now;
+                ClientRanking past;
                 boolean aa, bb;
                 for (int i = 0; i < nowList.size(); i++) {
                     now = nowList.get(i);
@@ -637,7 +640,7 @@ public class ClientNowAndPastBean implements Serializable {
                     bb = true;
                     //前20项台数金额累加 以计算其他值
                     if (i < 20) {
-                        ClientTable ct = new ClientTable();
+                        ClientRanking ct = new ClientRanking();
                         if (pastList != null && !pastList.isEmpty()) {
                             for (int j = 0; j < pastList.size(); j++) {
                                 past = pastList.get(j);
@@ -690,7 +693,7 @@ public class ClientNowAndPastBean implements Serializable {
                                 if (pastList.get(j).getCusna().equals("总计")) {
                                     pastothershpqy1 = Integer.parseInt(pastList.get(j).getPastshpqy1()) - top20pastshpqy1;
                                     pastothershpamts = Double.parseDouble(pastList.get(j).getPastshpamts()) - top20pastshpamts;
-                                    ClientTable ct = new ClientTable();
+                                    ClientRanking ct = new ClientRanking();
                                     ct.setCusna("其他");
                                     ct.setNowshpqy1(String.valueOf(nowothershpqy1));
                                     ct.setNowshpamts(df.format(nowothershpamts < 0 ? 0 : nowothershpamts));
@@ -712,7 +715,7 @@ public class ClientNowAndPastBean implements Serializable {
                                         ct.setGrowthrate("100");
                                     }
                                     list.add(ct);
-                                    ClientTable ctsum = new ClientTable();
+                                    ClientRanking ctsum = new ClientRanking();
                                     ctsum.setCusna(now.getCusna());
                                     ctsum.setNowshpqy1(now.getNowshpqy1());
                                     ctsum.setNowshpamts(df.format(Double.valueOf(now.getNowshpamts())));
@@ -736,7 +739,7 @@ public class ClientNowAndPastBean implements Serializable {
                             }
                             //去年同期无值则给固定值
                         } else {
-                            ClientTable ct = new ClientTable();
+                            ClientRanking ct = new ClientRanking();
                             ct.setCusna("其他");
                             ct.setNowshpqy1(String.valueOf(nowothershpqy1));
                             ct.setNowshpamts(df.format(nowothershpamts));
@@ -750,7 +753,7 @@ public class ClientNowAndPastBean implements Serializable {
                                 ct.setGrowthrate("100");
                             }
                             list.add(ct);
-                            ClientTable ctsum = new ClientTable();
+                            ClientRanking ctsum = new ClientRanking();
                             ctsum.setCusna(now.getCusna());
                             ctsum.setNowshpqy1(now.getNowshpqy1());
                             ctsum.setNowshpamts(df.format(Double.valueOf(now.getNowshpamts())));
@@ -1005,7 +1008,7 @@ public class ClientNowAndPastBean implements Serializable {
         return sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
     }
 
-    // 返回ClientTable集合
+    // 返回ClientRanking集合
     protected List getClientRT(int y, int m, String arr1, LinkedHashMap<String, String> map) {
         try {
             erpEJB.setCompany(arr1);
@@ -1024,15 +1027,15 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //当前
-    public List<ClientTable> getNowClientRL(int y, int m, LinkedHashMap<String, String> map) {
+    public List<ClientRanking> getNowClientRL(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         //查询当前值并赋予排名
         String[] arr = facno.split(",");
         //过渡list
-        List<ClientTable> list;
+        List<ClientRanking> list;
         //汇总返回list
-        List<ClientTable> returnlist = new ArrayList<>();
-        ClientTable ct;
+        List<ClientRanking> returnlist = new ArrayList<>();
+        ClientRanking ct;
         boolean aa;
         try {
             for (String arr1 : arr) {
@@ -1040,7 +1043,7 @@ public class ClientNowAndPastBean implements Serializable {
                 List result = getClientRT(y, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
-                        ct = new ClientTable();
+                        ct = new ClientRanking();
                         Object[] row = (Object[]) result.get(i);
                         ct.setCusno(row[0].toString());
                         ct.setCusna(row[1].toString());
@@ -1074,7 +1077,7 @@ public class ClientNowAndPastBean implements Serializable {
             int min;
             for (int i = 0; i < returnlist.size() - 1; i++) {
                 min = i;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getNowshpamts()) > Double.valueOf(returnlist.get(min).getNowshpamts())) {
                         min = j;
@@ -1090,7 +1093,7 @@ public class ClientNowAndPastBean implements Serializable {
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
                 Double sumshpamts = 0.0;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setNowrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getNowshpqy1());
@@ -1109,15 +1112,15 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //去年同期
-    public List<ClientTable> getPastClientRL(int y, int m, LinkedHashMap<String, String> map) {
+    public List<ClientRanking> getPastClientRL(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         //查询去年同期值并赋予排名
         String[] arr = facno.split(",");
         //过渡list
-        List<ClientTable> list;
+        List<ClientRanking> list;
         //汇总返回list
-        List<ClientTable> returnlist = new ArrayList<>();
-        ClientTable ct;
+        List<ClientRanking> returnlist = new ArrayList<>();
+        ClientRanking ct;
         boolean aa;
         try {
             for (String arr1 : arr) {
@@ -1125,7 +1128,7 @@ public class ClientNowAndPastBean implements Serializable {
                 List result = getClientRT(y - 1, m, arr1, map);
                 if (result != null && !result.isEmpty()) {
                     for (int i = 0; i < result.size(); i++) {
-                        ct = new ClientTable();
+                        ct = new ClientRanking();
                         Object[] row = (Object[]) result.get(i);
                         ct.setCusno(row[0].toString());
                         ct.setCusna(row[1].toString());
@@ -1161,7 +1164,7 @@ public class ClientNowAndPastBean implements Serializable {
             int min;
             for (int i = 0; i < returnlist.size() - 1; i++) {
                 min = i;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int j = i + 1; j < returnlist.size(); j++) {
                     if (Double.valueOf(returnlist.get(j).getPastshpamts()) > Double.valueOf(returnlist.get(min).getPastshpamts())) {
                         min = j;
@@ -1176,7 +1179,7 @@ public class ClientNowAndPastBean implements Serializable {
             if (returnlist != null && !returnlist.isEmpty()) {
                 int sumshpqy1 = 0;
                 Double sumshpamts = 0.0;
-                ct = new ClientTable();
+                ct = new ClientRanking();
                 for (int i = 0; i < returnlist.size(); i++) {
                     returnlist.get(i).setPastrank(String.valueOf(i + 1));
                     sumshpqy1 += Integer.parseInt(returnlist.get(i).getPastshpqy1());
@@ -1195,13 +1198,13 @@ public class ClientNowAndPastBean implements Serializable {
     }
 
     //得到查询结果
-    public List<ClientTable> getClientListRL(int y, int m, LinkedHashMap<String, String> map) {
-        List<ClientTable> list = new LinkedList<>();
+    public List<ClientRanking> getClientListRL(int y, int m, LinkedHashMap<String, String> map) {
+        List<ClientRanking> list = new LinkedList<>();
         //得到已经有排名的list
         //NowClient
-        List<ClientTable> nowList = getNowClientRL(y, m, map);
+        List<ClientRanking> nowList = getNowClientRL(y, m, map);
         //PastClient
-        List<ClientTable> pastList = getPastClientRL(y, m, map);
+        List<ClientRanking> pastList = getPastClientRL(y, m, map);
         //循环nowList 并与 pastList 合并客户
         //其他值
         int nowothershpqy1, pastothershpqy1;
@@ -1213,7 +1216,8 @@ public class ClientNowAndPastBean implements Serializable {
         Double top20pastshpamts = 0.0;
         try {
             if (nowList != null && !nowList.isEmpty()) {
-                ClientTable now, past;
+                ClientRanking now;
+                ClientRanking past;
                 boolean aa, bb;
                 for (int i = 0; i < nowList.size(); i++) {
                     now = nowList.get(i);
@@ -1221,7 +1225,7 @@ public class ClientNowAndPastBean implements Serializable {
                     bb = true;
                     //前20项台数金额累加 以计算其他值
                     if (i < 20) {
-                        ClientTable ct = new ClientTable();
+                        ClientRanking ct = new ClientRanking();
                         if (pastList != null && !pastList.isEmpty()) {
                             for (int j = 0; j < pastList.size(); j++) {
                                 past = pastList.get(j);
@@ -1274,7 +1278,7 @@ public class ClientNowAndPastBean implements Serializable {
                                 if (pastList.get(j).getCusna().equals("总计")) {
                                     pastothershpqy1 = Integer.parseInt(pastList.get(j).getPastshpqy1()) - top20pastshpqy1;
                                     pastothershpamts = Double.parseDouble(pastList.get(j).getPastshpamts()) - top20pastshpamts;
-                                    ClientTable ct = new ClientTable();
+                                    ClientRanking ct = new ClientRanking();
                                     ct.setCusna("其他");
                                     ct.setNowshpqy1(String.valueOf(nowothershpqy1));
                                     ct.setNowshpamts(df.format(nowothershpamts < 0 ? 0 : nowothershpamts));
@@ -1296,7 +1300,7 @@ public class ClientNowAndPastBean implements Serializable {
                                         ct.setGrowthrate("100");
                                     }
                                     list.add(ct);
-                                    ClientTable ctsum = new ClientTable();
+                                    ClientRanking ctsum = new ClientRanking();
                                     ctsum.setCusna(now.getCusna());
                                     ctsum.setNowshpqy1(now.getNowshpqy1());
                                     ctsum.setNowshpamts(df.format(Double.valueOf(now.getNowshpamts())));
@@ -1320,7 +1324,7 @@ public class ClientNowAndPastBean implements Serializable {
                             }
                             //去年同期无值则给固定值
                         } else {
-                            ClientTable ct = new ClientTable();
+                            ClientRanking ct = new ClientRanking();
                             ct.setCusna("其他");
                             ct.setNowshpqy1(String.valueOf(nowothershpqy1));
                             ct.setNowshpamts(df.format(nowothershpamts));
@@ -1334,7 +1338,7 @@ public class ClientNowAndPastBean implements Serializable {
                                 ct.setGrowthrate("100");
                             }
                             list.add(ct);
-                            ClientTable ctsum = new ClientTable();
+                            ClientRanking ctsum = new ClientRanking();
                             ctsum.setCusna(now.getCusna());
                             ctsum.setNowshpqy1(now.getNowshpqy1());
                             ctsum.setNowshpamts(df.format(Double.valueOf(now.getNowshpamts())));
