@@ -5,8 +5,11 @@
  */
 package cn.hanbell.kpi.mail;
 
+import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
 import cn.hanbell.erp.ejb.BscGroupServiceBean;
 import cn.hanbell.erp.ejb.BscGroupShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
+import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
@@ -28,6 +31,15 @@ public class GroupShipmentMailBean extends MailNotification {
 
     @EJB
     private BscGroupServiceBean bscGroupServiceBean;
+    
+    @EJB
+    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
+    
+    @EJB
+    private BscGroupVHServiceBean bscGroupVHServiceBean;
+    
+    @EJB
+    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
 
     public GroupShipmentMailBean() {
 
@@ -54,6 +66,9 @@ public class GroupShipmentMailBean extends MailNotification {
         try {
             bscGroupShipmentBean.updataActualValue(y, m, d);
             bscGroupServiceBean.updataActualValue(y, m, d);
+            bscGroupVHShipmentBean.updataActualValue(y, m, d);
+            bscGroupVHServiceBean.updataActualValue(y, m, d);
+            bscGroupHSShipmentBean.updataActualValue(y, m, d);
             return "更新集团报表数据成功";
         } catch (Exception ex) {
             return ex.toString();
