@@ -6,7 +6,7 @@
 package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.control.UserManagedBean;
-import cn.hanbell.kpi.ejb.ClientNowAndPastBean;
+import cn.hanbell.kpi.ejb.ClientTableBean;
 import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ShipmentTopManagedBean implements Serializable {
 
     @EJB
-    protected ClientNowAndPastBean clientrank;
+    protected ClientTableBean clientrank;
     @EJB
     protected IndicatorAnalysisBean indicatorAnalysisBean;
     @EJB
@@ -59,7 +59,6 @@ public class ShipmentTopManagedBean implements Serializable {
     private Integer month;
     private LinkedHashMap<String, String> map;
     private List<ClientRanking> clientlist;
-    protected String display;
     protected String deptno;
 
     protected List<IndicatorAnalysis> analysisList;
@@ -123,13 +122,6 @@ public class ShipmentTopManagedBean implements Serializable {
         } else {
             deptno = indicatorChart.getDeptno();
         }
-        if (deptno.equals("1F330")) {
-            display = "display:block";
-        } else if (deptno.equals("1F310")) {
-            display = "display:block";
-        } else {
-            display = "display:none";
-        }
         finddeptno();
         initial();
 
@@ -182,120 +174,74 @@ public class ShipmentTopManagedBean implements Serializable {
     public void finddeptno() {
         switch (deptno) {
             case "1F000":
-                getMap().put("facno", "C,C4,N,G,J");
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷产品");
                 getMap().put("n_code_DA", "= 'R'");
-                getMap().put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
-                getMap().put("n_code_DD", " IN ('00') ");
-                getMap().put("ogdkid", " IN ('RL01') ");
                 break;
             case "1F330":
-                getMap().put("facno", "C,C4,N,G,J");
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷冷冻");
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("n_code_DC", "= 'L'");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1F310":
-                getMap().put("facno", "C,C4,N,G,J");
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "空调热泵");
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("n_code_DC", " IN ('R','H') ");
-                getMap().put("n_code_DD", " IN ('00') ");
-                getMap().put("type", "not");
                 break;
             case "1Q000":
-                getMap().put("facno", "C");
                 getMap().put("deptnoname", "空压机组产品部");
                 getMap().put("daname", "空压机组");
                 getMap().put("n_code_DA", "= 'AA'");
-                getMap().put("depno", " IN ('1Q000','1Q100') ");
-                getMap().put("n_code_DD", " IN ('00','02') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
                 break;
             case "1G100":
-                getMap().put("facno", "C");
                 getMap().put("deptnoname", "空压机体营销一课");
                 getMap().put("daname", "A机体");
                 getMap().put("n_code_DA", "= 'AH'");
                 getMap().put("n_code_DC", " LIKE 'AJ%'");
-                getMap().put("depno", " IN ('1G110','1T100') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1G500":
-                getMap().put("facno", "C");
                 getMap().put("deptnoname", "空压机体营销二课");
                 getMap().put("daname", "SDS无油");
                 getMap().put("n_code_DA", "= 'AH'");
                 getMap().put("n_code_DC", " = 'SDS' ");
-                getMap().put("depno", " IN ('1G500') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1H000":
-                getMap().put("facno", "C");
                 getMap().put("deptnoname", "真空产品部");
                 getMap().put("daname", "真空泵");
                 getMap().put("n_code_DA", "= 'P'");
-                getMap().put("depno", " IN ('1H000','1H100') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "1U000":
-                getMap().put("facno", "C");
                 getMap().put("deptnoname", "涡旋产品部");
                 getMap().put("daname", "涡旋");
                 getMap().put("n_code_DA", "= 'S'");
-                getMap().put("depno", " IN ('1U000') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "5B000":
-                getMap().put("facno", "K");
                 getMap().put("deptnoname", "再生能源部");
                 getMap().put("daname", "再生能源");
                 getMap().put("n_code_DA", "= 'OH'");
-                getMap().put("depno", " IN ('5B000') ");
-                getMap().put("ogdkid", " IN ('RL01') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "5A000":
-                getMap().put("facno", "K");
                 getMap().put("deptnoname", "制冷机组产品部");
                 getMap().put("daname", "RT制冷");
                 getMap().put("n_code_DA", "= 'RT'");
-                getMap().put("depno", " IN ('5A000','5A100') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             case "50000":
-                getMap().put("facno", "K");
                 getMap().put("deptnoname", "柯茂");
                 getMap().put("daname", "离心机");
                 getMap().put("n_code_DA", " In('RT','OH') ");
-                getMap().put("depno", " IN ('5A000','5A100','5B000') ");
-                getMap().put("ogdkid", " IN ('RL01','RL03') ");
-                getMap().put("n_code_DD", " IN ('00') ");
                 break;
             default:
-                getMap().put("facno", "");
-                getMap().put("decode", "");
-                getMap().put("depno", "");
                 getMap().put("deptnoname", "");
                 getMap().put("daname", "");
                 getMap().put("n_code_DA", "");
-                getMap().put("ogdkid", "");
                 getMap().put("n_code_DC", "");
-                getMap().put("n_code_DD", "");
-
         }
     }
 
     public void findclient() {
+
         initial();
         try {
             if (createtitle()) {
@@ -317,16 +263,8 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
-                List<ClientRanking> list = null;
-                //1F330为冷冻排名 1F310为空调热泵排名
-                if ("1F330".equals(deptno)) {
-                    list = clientrank.getClientListRL(y, m, getMap());
-                } else if ("1F310".equals(deptno)) {
-                    list = clientrank.getClientListRL(y, m, getMap());
-                } else {
-                    list = clientrank.getClientList(y, m, getMap());
-                }
-
+                List<ClientRanking> list;
+                list = clientrank.getClientList(y, m, getMap());
                 if (list.size() > 0) {
                     setClientlist(list);
                     //根据指标ID加载指标说明、指标分析
@@ -431,20 +369,6 @@ public class ShipmentTopManagedBean implements Serializable {
      */
     public void setCheckbox(boolean checkbox) {
         this.checkbox = checkbox;
-    }
-
-    /**
-     * @return the display
-     */
-    public String getDisplay() {
-        return display;
-    }
-
-    /**
-     * @param display the display to set
-     */
-    public void setDisplay(String display) {
-        this.display = display;
     }
 
     /**
