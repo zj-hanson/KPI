@@ -14,7 +14,7 @@ import javax.persistence.Id;
  *
  * @author C1879 此对象用于查询销售统计表数据，数据库无此表
  */
-public class ClientTable implements Serializable {
+public class ClientRanking implements Serializable {
 
     private static long serialVersionUID = 1L;
 
@@ -85,10 +85,10 @@ public class ClientTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClientTable)) {
+        if (!(object instanceof ClientRanking)) {
             return false;
         }
-        ClientTable other = (ClientTable) object;
+        ClientRanking other = (ClientRanking) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
