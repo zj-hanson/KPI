@@ -58,7 +58,7 @@ public class TimerBean {
     @Resource
     TimerService timerService;
 
-    private final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger();
 
     public TimerBean() {
 
@@ -215,19 +215,20 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "*/2", hour = "*", persistent = false)
+    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
-            Calendar now = Calendar.getInstance();
-            Date date = new Date();
-            int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH));
-            now.set(Calendar.DATE, 31);
-            Date d = now.getTime();
+            log4j.info("Begin Execute Job updateERPBscGroupShipment");
+            Calendar c = Calendar.getInstance();
+            int y = c.get(Calendar.YEAR);
+            int m = (c.get(Calendar.MONTH) + 1);
+            Date d = c.getTime();
             bscGroupShipmentBean.updataActualValue(y, m, d);
             bscGroupServiceBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateERPBscGroupShipment");
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.info("Execute Job updateERPBscGroupShipment失败" + ex);
         }
     }
+
 }

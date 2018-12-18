@@ -7,7 +7,6 @@ package cn.hanbell.kpi.comm;
 
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
-import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
