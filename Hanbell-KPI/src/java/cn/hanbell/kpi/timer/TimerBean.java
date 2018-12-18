@@ -200,7 +200,7 @@ public class TimerBean {
             Object objRef = c.lookup(JNDIName);
             return (MailNotification) objRef;
         } catch (NamingException ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("getMailNotificationBean", ex);
         }
         return null;
     }
@@ -234,10 +234,28 @@ public class TimerBean {
             Date d = c.getTime();
             bscGroupShipmentBean.updataActualValue(y, m, d);
             bscGroupServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateERPBscGroupShipment");
+            log4j.info("End Execute Job updateSHBBscGroupShipment");
+            bscGroupHSShipmentBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateHansonBscGroupShipment");
         } catch (Exception ex) {
-            log4j.info("Execute Job updateERPBscGroupShipment失败" + ex);
+            log4j.error("Execute Job updateERPBscGroupShipment失败" + ex);
         }
     }
 
+    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
+    public void updateERPVHBscGroupShipment() {
+        try {
+            log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
+            Calendar now = Calendar.getInstance();
+            int y = now.get(Calendar.YEAR);
+            int m = (now.get(Calendar.MONTH));
+            Date d = now.getTime();
+            bscGroupVHShipmentBean.updataActualValue(y, m, d);
+            bscGroupVHServiceBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateERPVHBscGroupShipment");
+        } catch (Exception ex) {
+            log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
+        }
+    }
+    
 }
