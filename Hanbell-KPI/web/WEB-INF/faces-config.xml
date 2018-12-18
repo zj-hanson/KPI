@@ -152,6 +152,11 @@
             <to-view-id>/app/prod/exchange.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>clienttableSet</from-outcome>
+            <to-view-id>/app/prod/clienttableSet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>部门指标定义</description>

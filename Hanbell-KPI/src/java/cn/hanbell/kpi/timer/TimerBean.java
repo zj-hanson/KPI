@@ -5,8 +5,11 @@
  */
 package cn.hanbell.kpi.timer;
 
+import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
 import cn.hanbell.erp.ejb.BscGroupServiceBean;
 import cn.hanbell.erp.ejb.BscGroupShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
+import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
@@ -54,6 +57,12 @@ public class TimerBean {
     private BscGroupShipmentBean bscGroupShipmentBean;
     @EJB
     private BscGroupServiceBean bscGroupServiceBean;
+    @EJB
+    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
+    @EJB
+    private BscGroupVHServiceBean bscGroupVHServiceBean;
+    @EJB
+    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
 
     @Resource
     TimerService timerService;
