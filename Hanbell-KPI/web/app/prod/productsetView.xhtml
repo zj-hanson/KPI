@@ -634,7 +634,7 @@
                 </p:tab>
                 <p:tab title="关联部门">
                     <p:dataTable id="tableList" value="#{productSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
-                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail}" rowKey="#{item.id}" >
                         <p:ajax event="rowSelect"  update="formOne:tabView:tableList" oncomplete="" />
                         <p:ajax event="rowUnselect"  update="formOne:tabView:tableList" oncomplete="" />
                         <p:column styleClass="Wid10">

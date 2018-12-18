@@ -705,7 +705,7 @@
                         </p:row>
                     </p:panelGrid>
                     <p:dataTable id="tableList" value="#{productSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
-                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail}" rowKey="#{item.seq}" >
+                                 selectionMode="single" selection="#{productSetManagedBean.currentDetail}" rowKey="#{item.deptno}" >
                         <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
                         <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="" />
                         <p:column styleClass="Wid10">
@@ -734,7 +734,7 @@
                                              update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" process="@this" />
                         </f:facet>
                         <f:facet name="right">
-                            <p:commandButton id="btnSaveDetail2" widgetVar="btnSaveDetail2" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail2()}" icon="ui-icon-disk"
+                            <p:commandButton id="btnSaveDetail2" widgetVar="btnSaveDetail2" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail2()}" icon="ui-icon-check"
                                              onsuccess="PF('btnAddDetail2').enable();PF('btnDeleteDetail2').disable();PF('btnSaveDetail2').disable();"
                                              update="formOne:tabView:plgDetail2,formOne:tabView:tableList2" process="@this,formOne:tabView:plgDetail2"/>
                         </f:facet>
@@ -787,7 +787,7 @@
                                              update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" process="@this" />
                         </f:facet>
                         <f:facet name="right">
-                            <p:commandButton id="btnSaveDetail3" widgetVar="btnSaveDetail3" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail3()}" icon="ui-icon-disk"
+                            <p:commandButton id="btnSaveDetail3" widgetVar="btnSaveDetail3" value="确定" actionListener="#{productSetManagedBean.doConfirmDetail3()}" icon="ui-icon-check"
                                              onsuccess="PF('btnAddDetail3').enable();PF('btnDeleteDetail3').disable();PF('btnSaveDetail3').disable();"
                                              update="formOne:tabView:plgDetail3,formOne:tabView:tableList3" process="@this,formOne:tabView:plgDetail3"/>
                         </f:facet>

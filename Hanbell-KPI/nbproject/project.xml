@@ -8,18 +8,15 @@
             <web-module-libraries>
                 <library dirs="200">
                     <file>${libs.axis.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.JSF_2.2.8.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.PrimeFaces_6.2.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${libs.PrimeFaces_6.0.classpath}</file>
                 </library>
                 <library dirs="200">
-                    <file>${libs.PrimeFacesUltima.classpath}</file>
+                    <file>${libs.PrimeUtilma.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -30,6 +27,9 @@
                     <file>${libs.Hanbell-JDK.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library dirs="200">
+                    <file>${libs.Log4j2.classpath}</file>
+                </library>
                 <library dirs="100">
                     <file>${reference.KPI-ejb.dist}</file>
                 </library>
@@ -38,7 +38,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.org.eclipse.birt.runtime_4.5.0.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
