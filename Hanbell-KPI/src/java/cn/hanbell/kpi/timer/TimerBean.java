@@ -67,7 +67,7 @@ public class TimerBean {
     @Resource
     TimerService timerService;
 
-    private final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger();
 
     public TimerBean() {
 
@@ -200,7 +200,7 @@ public class TimerBean {
             Object objRef = c.lookup(JNDIName);
             return (MailNotification) objRef;
         } catch (NamingException ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("getMailNotificationBean", ex);
         }
         return null;
     }
@@ -224,51 +224,38 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "*/20", hour = "*", persistent = false)
+    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
-            Calendar now = Calendar.getInstance();
-            Date date = new Date();
-            int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH));
-            now.set(Calendar.DATE, 31);
-            Date d = now.getTime();
+            log4j.info("Begin Execute Job updateERPBscGroupShipment");
+            Calendar c = Calendar.getInstance();
+            int y = c.get(Calendar.YEAR);
+            int m = (c.get(Calendar.MONTH) + 1);
+            Date d = c.getTime();
             bscGroupShipmentBean.updataActualValue(y, m, d);
             bscGroupServiceBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateSHBBscGroupShipment");
+            bscGroupHSShipmentBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateHansonBscGroupShipment");
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("Execute Job updateERPBscGroupShipment失败" + ex);
         }
     }
 
-    @Schedule(minute = "*/20", hour = "*", persistent = false)
+    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
     public void updateERPVHBscGroupShipment() {
         try {
+            log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
             Calendar now = Calendar.getInstance();
-            Date date = new Date();
             int y = now.get(Calendar.YEAR);
             int m = (now.get(Calendar.MONTH));
-            now.set(Calendar.DATE, 31);
             Date d = now.getTime();
             bscGroupVHShipmentBean.updataActualValue(y, m, d);
             bscGroupVHServiceBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateERPVHBscGroupShipment");
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
         }
     }
-
-    @Schedule(minute = "*/2", hour = "*", persistent = false)
-    public void updateERPHSBscGroupShipment() {
-        try {
-            Calendar now = Calendar.getInstance();
-            Date date = new Date();
-            int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH));
-            now.set(Calendar.DATE, 30);
-            Date d = now.getTime();
-            bscGroupHSShipmentBean.updataActualValue(y, m, d);
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
 }

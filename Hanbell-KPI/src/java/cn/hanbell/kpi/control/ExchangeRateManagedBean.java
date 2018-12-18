@@ -11,7 +11,6 @@ import cn.hanbell.kpi.lazy.ExchangeRateModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
