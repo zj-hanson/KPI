@@ -55,6 +55,7 @@ public class BscGroupShipment implements Serializable {
     private BigDecimal ordamts;
 
     public BscGroupShipment() {
+        cusno = "";
         shpnum = BigDecimal.ZERO;
         shpamts = BigDecimal.ZERO;
         ordnum = BigDecimal.ZERO;
@@ -63,6 +64,7 @@ public class BscGroupShipment implements Serializable {
 
     public BscGroupShipment(String facno, Date soday, String protype, String protypeno, String shptype) {
         this.bscGroupShipmentPK = new BscGroupShipmentPK(facno, soday, protype, protypeno, shptype);
+        cusno = "";
         shpnum = BigDecimal.ZERO;
         shpamts = BigDecimal.ZERO;
         ordnum = BigDecimal.ZERO;
