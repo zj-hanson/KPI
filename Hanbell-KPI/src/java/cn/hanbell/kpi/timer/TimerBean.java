@@ -5,8 +5,11 @@
  */
 package cn.hanbell.kpi.timer;
 
+import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
 import cn.hanbell.erp.ejb.BscGroupServiceBean;
 import cn.hanbell.erp.ejb.BscGroupShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
+import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
@@ -54,6 +57,12 @@ public class TimerBean {
     private BscGroupShipmentBean bscGroupShipmentBean;
     @EJB
     private BscGroupServiceBean bscGroupServiceBean;
+    @EJB
+    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
+    @EJB
+    private BscGroupVHServiceBean bscGroupVHServiceBean;
+    @EJB
+    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
 
     @Resource
     TimerService timerService;
@@ -215,7 +224,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "*/2", hour = "*", persistent = false)
+    @Schedule(minute = "*/20", hour = "*", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
             Calendar now = Calendar.getInstance();
@@ -230,4 +239,36 @@ public class TimerBean {
             java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Schedule(minute = "*/20", hour = "*", persistent = false)
+    public void updateERPVHBscGroupShipment() {
+        try {
+            Calendar now = Calendar.getInstance();
+            Date date = new Date();
+            int y = now.get(Calendar.YEAR);
+            int m = (now.get(Calendar.MONTH));
+            now.set(Calendar.DATE, 31);
+            Date d = now.getTime();
+            bscGroupVHShipmentBean.updataActualValue(y, m, d);
+            bscGroupVHServiceBean.updataActualValue(y, m, d);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Schedule(minute = "*/2", hour = "*", persistent = false)
+    public void updateERPHSBscGroupShipment() {
+        try {
+            Calendar now = Calendar.getInstance();
+            Date date = new Date();
+            int y = now.get(Calendar.YEAR);
+            int m = (now.get(Calendar.MONTH));
+            now.set(Calendar.DATE, 30);
+            Date d = now.getTime();
+            bscGroupHSShipmentBean.updataActualValue(y, m, d);
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(TimerBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
