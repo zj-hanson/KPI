@@ -201,30 +201,45 @@
                     </p:panelGrid>
                 </div>
                 <div class="ui-g-12 ui-md-12">
-                    <p:chart type="line" model="#{shipmentChartReportBean.initLineChartModel('月份','指标')}" style="height:300px"
+                    <p:chart type="line" model="#{shipmentChartReportBean.initLineChartModel('月份','指标')}" style="height:400px"
                              responsive="true" >
                     </p:chart>
                 </div>
-                <div><h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden></div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{shipmentChartReportBean.summaryList}" var="s" rendered="#{shipmentChartReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{shipmentChartReportBean.analysisList}" var="a" rendered="#{shipmentChartReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{shipmentChartReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{shipmentChartReportBean.analysisCount}"></h:inputHidden>
+                </div>
             </div>
+            <h:outputScript name="bsc-analysis.js" library="js"/>
         </h:form>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                setColor();
-            });
-            var setColor = function () {
-                var m = document.getElementById("formOne:m");
-                if (m !== null) {
-                    var tr = $("tr.ui-widget-content");
-                    $(tr).each(function (i, t) {
-                        var c = $(t).find("td.ui-panelgrid-cell")[m.value];
-                        if (c !== null) {
-                            $(c).css("color", "red");
-                        }
-                    });
-                }
-            };
-        </script>
     </ui:define>
 
 </ui:composition>

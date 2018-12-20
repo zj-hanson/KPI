@@ -9,6 +9,7 @@ import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.ExchangeRateBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,11 +37,10 @@ import org.primefaces.model.chart.LineChartModel;
  */
 @ManagedBean(name = "exchangeRateReportBean")
 @ViewScoped
-public class ExchangeRateReportBean implements Serializable {
+public class ExchangeRateReportBean extends BscQueryTableManageBean implements Serializable {
 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
-
     @EJB
     protected ExchangeRateBean exchangeRateBean;
 
@@ -74,6 +74,12 @@ public class ExchangeRateReportBean implements Serializable {
         Calendar c = Calendar.getInstance();
         c.setTime(getUserManagedBean().getBaseDate());
         c.set(Calendar.DAY_OF_MONTH, 1);
+        return c;
+    }
+
+    public Calendar getDate() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(getUserManagedBean().getBaseDate());
         return c;
     }
 
@@ -147,6 +153,7 @@ public class ExchangeRateReportBean implements Serializable {
                 //yAxis.setLabel("");
                 displaySting = "block";
                 remind = "none";
+                super.getRemarkOne(indicatorChart, getDate().get(Calendar.YEAR), getDate().get(Calendar.MONTH)+1);
             } else {
                 displaySting = "none";
                 remind = "block";

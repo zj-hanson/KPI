@@ -68,7 +68,7 @@ public class ClientShipmentBean implements Serializable {
         if ("".equals(da.trim()) || "AH".equals(da.trim())) {
             queryParams.clear();
             queryParams.put("facno", "C");
-            queryParams.put("depno", " IN('1G110','1G500') ");
+            queryParams.put("depno", " IN('1G100','1G110','1G500') ");
             queryParams.put("n_code_DA", " ='AH' ");
             queryParams.put("ogdkid", " IN('RL01','RL03') ");
             list = getClientList(y, m, queryParams);
@@ -109,6 +109,7 @@ public class ClientShipmentBean implements Serializable {
             queryParams.put("facno", "K");
             queryParams.put("depno", " IN('5A000','5A100','5B000') ");
             queryParams.put("n_code_DA", " IN('RT','OH') ");
+            queryParams.put("n_code_DD", " IN ('02') ");
             queryParams.put("ogdkid", " IN('RL01','RL03') ");
             list = getClientList(y, m, queryParams);
             if (list != null && !list.isEmpty()) {
@@ -163,10 +164,11 @@ public class ClientShipmentBean implements Serializable {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         StringBuilder sb = new StringBuilder();
         //第一部分为整机出货
-        sb.append(" select  z.facno,z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.year,z.month,z.depno,z.n_code_DA,z.n_code_DC,z.n_code_CD,z.num  as 'shpqy1',z.shpamts  from ");
+        sb.append(" select  z.facno,z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.year,z.month,z.depno,z.n_code_DA,CASE z.n_code_DC when NULL THEN ' ' ELSE z.n_code_DC END as n_code_DC,");
+        sb.append("  CASE z.n_code_CD when NULL THEN ' ' ELSE z.n_code_CD END as n_code_CD,z.num  as 'shpqy1',z.shpamts  from ");
         sb.append(" (  select x.facno,x.cusno,x.year,x.month,x.depno,x.n_code_DA,x.n_code_DC,x.n_code_CD,sum(num) as num,sum(shpamts) AS shpamts from ");
         sb.append(" (  select h.facno,h.cusno,h.depno,year(h.shpdate) as 'year' ,month(h.shpdate) as 'month',d.n_code_DA,d.n_code_DC,d.n_code_CD, ");
-        sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' AND left(d.itnbr,1)='3' THEN shpqy1 ELSE 0 END ) as num, ");
+        sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as num, ");
         sb.append(" isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as shpamts ");
         sb.append("  from cdrdta d left join cdrhad h on d.shpno=h.shpno   where h.facno='${facno}' and h.houtsta <> 'W' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'   and d.n_code_DD ='00'");
@@ -177,7 +179,7 @@ public class ClientShipmentBean implements Serializable {
         sb.append(" group by  h.facno,h.cusno,h.depno,year(h.shpdate),month(h.shpdate),d.n_code_DA,d.n_code_DC,d.n_code_CD ");
         sb.append(" union all ");
         sb.append(" select  h.facno,h.cusno,h.depno,year(h.bakdate) as 'year',month(h.bakdate) as 'month',d.n_code_DA,d.n_code_DC,d.n_code_CD, ");
-        sb.append(" -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' AND left(d.itnbr,1)='3' THEN shpqy1 ELSE 0 END ) as num, ");
+        sb.append(" -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as num, ");
         sb.append("  isnull(convert(decimal(16,2),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as shpamts ");
         sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and  h.facno='${facno}' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
@@ -190,9 +192,10 @@ public class ClientShipmentBean implements Serializable {
         sb.append(" )  z,cdrcus c where z.cusno=c.cusno ");
 
         //如果算入后处理金额则单独处理，只算金额不算台数
-        if (!"".equals(n_code_DD)) {
+        if (!"".equals(n_code_DD) && !n_code_DA.contains("AH") ) {
             sb.append(" union all ");
-            sb.append(" select  z.facno,z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.year,z.month,z.depno,z.n_code_DA,z.n_code_DC,z.n_code_CD,0 as 'shpqy1', z.num  as 'shpamts' from ");
+            sb.append(" select  z.facno,z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.year,z.month,z.depno,z.n_code_DA,CASE z.n_code_DC when NULL THEN ' ' ELSE z.n_code_DC END as  n_code_DC,");
+            sb.append(" CASE z.n_code_CD when NULL THEN ' ' ELSE z.n_code_CD END as n_code_CD,0 as 'shpqy1', z.num  as 'shpamts' from  ");
             sb.append(" (  select x.facno,x.cusno,x.year,x.month,x.depno,x.n_code_DA,x.n_code_DC,x.n_code_CD,sum(num) as num  from ");
             sb.append(" (  select h.facno,h.cusno,h.depno,year(h.shpdate) as 'year' ,month(h.shpdate) as 'month',d.n_code_DA,d.n_code_DC,d.n_code_CD,");
             sb.append(" isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as num ");
@@ -218,9 +221,40 @@ public class ClientShipmentBean implements Serializable {
             sb.append(" )  x  group by x.facno,x.cusno,x.year,x.month,x.depno,x.n_code_DA,x.n_code_DC,x.n_code_CD ");
             sb.append(" )  z,cdrcus c where z.cusno=c.cusno ");
         }
+        //AH 中  AJ不算后处理  SDS算入后处理
+        if (n_code_DA.contains("AH")) {
+            sb.append(" union all ");
+            sb.append(" select  z.facno,z.cusno as 'cusno' ,c.cusna as 'cusna' ,z.year,z.month,z.depno,z.n_code_DA,CASE z.n_code_DC when NULL THEN ' ' ELSE z.n_code_DC END as  n_code_DC,");
+            sb.append(" CASE z.n_code_CD when NULL THEN ' ' ELSE z.n_code_CD END as n_code_CD,0 as 'shpqy1', z.num  as 'shpamts' from  ");
+            sb.append(" (  select x.facno,x.cusno,x.year,x.month,x.depno,x.n_code_DA,x.n_code_DC,x.n_code_CD,sum(num) as num  from ");
+            sb.append(" (  select h.facno,h.cusno,h.depno,year(h.shpdate) as 'year' ,month(h.shpdate) as 'month',d.n_code_DA,d.n_code_DC,d.n_code_CD,");
+            sb.append(" isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as num ");
+            sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno   where h.facno='${facno}'  and h.houtsta <> 'W' ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            if (!"".equals(n_code_DA)) {
+                sb.append(" and d.n_code_DA ").append(n_code_DA);
+            }
+            sb.append(" and d.n_code_DC='SDS' and d.n_code_DD = '02' ");
+            sb.append(" AND  year(h.shpdate)=${y} AND month(h.shpdate)=${m} ");
+            sb.append(" group by  h.facno,h.cusno,h.depno,year(h.shpdate),month(h.shpdate),d.n_code_DA,d.n_code_DC,d.n_code_CD ");
+            sb.append(" union all ");
+            sb.append(" select  h.facno,h.cusno,h.depno,year(h.bakdate) as 'year',month(h.bakdate) as 'month',d.n_code_DA,d.n_code_DC,d.n_code_CD, ");
+            sb.append(" isnull(convert(decimal(16,2),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as num ");
+            sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and  h.facno='${facno}' ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            if (!"".equals(n_code_DA)) {
+                sb.append(" and d.n_code_DA ").append(n_code_DA);
+            }
+            sb.append(" and d.n_code_DC='SDS' and d.n_code_DD = '02' ");
+            sb.append(" AND  year(h.bakdate)=${y} AND month(h.bakdate)=${m} ");
+            sb.append(" group by  h.facno,h.cusno,h.depno,d.n_code_DA,d.n_code_DC,d.n_code_CD,year(h.bakdate),month(h.bakdate) ");
+            sb.append(" )  x  group by x.facno,x.cusno,x.year,x.month,x.depno,x.n_code_DA,x.n_code_DC,x.n_code_CD ");
+            sb.append(" )  z,cdrcus c where z.cusno=c.cusno ");
+        }
         //getARM232Value 加扣款单独列出来 只算金额不算台数
         sb.append(" union all ");
-        sb.append(" SELECT a.facno,a.cusno as 'cusno',b.cusna as 'cusna',a.year,a.month,a.depno,a.n_code_DA,a.n_code_DC,a.n_code_CD,a.shpqy1 as 'shpqy1',a.shpamts as 'shpamts' FROM ");
+        sb.append(" SELECT a.facno,a.cusno as 'cusno',b.cusna as 'cusna',a.year,a.month,a.depno,a.n_code_DA,CASE a.n_code_DC when NULL THEN ' ' ELSE a.n_code_DC END as  n_code_DC, ");
+        sb.append(" CASE a.n_code_CD when NULL THEN ' ' ELSE a.n_code_CD END as  n_code_CD,a.shpqy1 as 'shpqy1',a.shpamts as 'shpamts' FROM");
         sb.append(" (SELECT h.facno,h.cusno AS 'cusno',d.depno,year(h.trdat) as 'year',month(h.trdat) as 'month',s.n_code_DA,s.n_code_DC,s.n_code_CD,0 AS shpqy1, ");
         sb.append(" ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) AS shpamts ");
         sb.append(" FROM armpmm h,armacq d,cdrdta s  WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq  ");
@@ -237,7 +271,8 @@ public class ClientShipmentBean implements Serializable {
         sb.append(" )a,cdrcus b where b.cusno  =a.cusno ");
         //getARM423Value 折让
         sb.append(" union all ");
-        sb.append(" SELECT a.facno,a.cusno as 'cusno',b.cusna as 'cusna',a.year,a.month,a.depno,a.n_code_DA,a.n_code_DC,a.n_code_CD,a.shpqy1 as 'shpqy1',a.shpamts as 'shpamts' FROM ");
+        sb.append(" SELECT a.facno,a.cusno as 'cusno',b.cusna as 'cusna',a.year,a.month,a.depno,a.n_code_DA,CASE a.n_code_DC when NULL THEN ' ' ELSE a.n_code_DC END as  n_code_DC, ");
+        sb.append(" CASE a.n_code_CD when NULL THEN ' ' ELSE a.n_code_CD END as  n_code_CD,a.shpqy1 as 'shpqy1',a.shpamts as 'shpamts' FROM ");
         sb.append(" (SELECT h.facno,d.ivocus AS 'cusno',h.depno,year(h.recdate) as 'year',month(h.recdate) as 'month',h.n_code_DA,h.n_code_DC,h.n_code_CD,0 AS shpqy1, ");
         sb.append(" ISNULL(sum(d.recamt),0) AS shpamts FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno ");
         sb.append(" AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
@@ -260,7 +295,12 @@ public class ClientShipmentBean implements Serializable {
             sb.append(" SELECT h.facno,h.cusno AS 'cusno',h.depno,year(h.bildat) as 'year',month(h.bildat) as 'month', ");
             sb.append(getDA(depno)).append(" as n_code_DA, ");
             sb.append(getDC(depno)).append(" as n_code_DC, ");
-            sb.append(" 'ARM270' as n_code_CD,0 AS shpqy1,ISNULL(sum(h.shpamt),0) AS shpamts FROM armbil h WHERE h.rkd='RQ11' ");
+            sb.append(" 'ARM270' as n_code_CD,0 AS shpqy1,ISNULL(sum(h.shpamt),0) AS shpamts FROM armbil h WHERE 1=1  ");
+            if (depno.contains("5B000")) {
+                sb.append(" and h.rkd='RQ51' ");
+            } else {
+                sb.append(" and h.rkd='RQ11' ");
+            }
             sb.append(" AND h.depno ").append(depno);
             sb.append(" and year(h.bildat) = ${y}   and month(h.bildat) =${m} ");
             sb.append(" group by  h.facno,h.cusno,h.depno,year(h.bildat),month(h.bildat) ");
@@ -308,11 +348,11 @@ public class ClientShipmentBean implements Serializable {
         if (depno.contains("1U")) {
             aa = "'S'";
         }
-        if (depno.contains("5B")) {
-            aa = "'OH'";
-        }
         if (depno.contains("5A")) {
             aa = "'RT'";
+        }
+        if (depno.contains("5B")) {
+            aa = "'OH'";
         }
         return aa;
     }

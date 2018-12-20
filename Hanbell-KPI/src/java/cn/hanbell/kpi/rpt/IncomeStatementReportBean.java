@@ -9,6 +9,7 @@ import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IncomeStatementBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "incomeStatementReportBean")
 @ViewScoped
-public class IncomeStatementReportBean implements Serializable {
+public class IncomeStatementReportBean extends BscQueryTableManageBean implements Serializable {
 
     @EJB
     protected IncomeStatementBean incomeStatementBean;
@@ -41,7 +42,7 @@ public class IncomeStatementReportBean implements Serializable {
     protected Date btndate;
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, String> statusMap;
-
+    
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
 
@@ -118,6 +119,7 @@ public class IncomeStatementReportBean implements Serializable {
                         : getdate().get(Calendar.YEAR) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
                 statusMap.put("th2title", checkbox ? (getdate().get(Calendar.YEAR) - 1) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月"
                         : (getdate().get(Calendar.YEAR) - 1) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
+                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
