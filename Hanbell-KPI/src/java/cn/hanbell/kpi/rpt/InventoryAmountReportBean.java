@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "inventoryAmountBean")
 @ViewScoped
-public class InventoryAmountReportBean extends BscSheetManagedBean{
+public class InventoryAmountReportBean extends BscSheetManagedBean {
 
     public InventoryAmountReportBean() {
     }
@@ -177,8 +177,18 @@ public class InventoryAmountReportBean extends BscSheetManagedBean{
         indicatorDetailList.add(sumIndicator.getBenchmarkIndicator());
         sumBG.setType("同比成长");
         indicatorDetailList.add(sumBG);
+
+        //根据指标ID加载指标说明、指标分析
+        analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
+        if (analysisList != null) {
+            this.analysisCount = analysisList.size();
+        }
+        summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
+        if (summaryList != null) {
+            this.summaryCount = summaryList.size();
+        }
     }
-    
+
     @Override
     public String format(String type, BigDecimal value, int i) {
         switch (type) {
@@ -190,6 +200,4 @@ public class InventoryAmountReportBean extends BscSheetManagedBean{
         }
     }
 
-    
-    
 }

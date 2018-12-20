@@ -28,9 +28,9 @@
                     <f:selectItem itemLabel="美金/台币" itemValue="8"/>
                 </p:selectOneMenu>
                 <p:commandButton id="btnReset" value="重置" actionListener="#{exchangeRateReportBean.initial()}"  icon="ui-icon-refresh"
-                                 update="formOne"  />
+                                 update="formOne" process="plgQuery" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{exchangeRateReportBean.queryExchangeRate()}"  icon="ui-icon-search"
-                                 update="formOne"/>
+                                 update="formOne" process="plgQuery"/>
                 <p:link  value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
 
@@ -40,7 +40,7 @@
                 <div style="display:#{exchangeRateReportBean.remind};padding-top: 10px;" align="right" >
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
                 </div>
-                <div style="width: 100%;height: 380px;display:#{exchangeRateReportBean.displaySting};" align="center" >                   
+                <div style="width: 100%;height: 380px;display:#{exchangeRateReportBean.displaySting};" align="center" >
                     <div class="ui-g-12 ui-md-12">
                         <p:chart type="line" model="#{exchangeRateReportBean.chartModel}" style="height:380px"
                                  responsive="true" >
@@ -83,6 +83,41 @@
                     </table>
                 </div>
             </div>
+            <div style="width: 100%;display:#{exchangeRateReportBean.displaySting};">
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{exchangeRateReportBean.summaryList}" var="s" rendered="#{exchangeRateReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{exchangeRateReportBean.analysisList}" var="a" rendered="#{exchangeRateReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:outputScript name="bsc-clientranking.js" library="js"/>
+                    <h:inputHidden id="sc" value="#{exchangeRateReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{exchangeRateReportBean.analysisCount}"></h:inputHidden>
+                </div>
+            </div>
+
         </h:form>
     </ui:define>
 

@@ -9,6 +9,7 @@ import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.ProcurementBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,11 +30,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "procurementReportBean")
 @ViewScoped
-public class ProcurementReportBean implements Serializable {
+public class ProcurementReportBean extends BscQueryTableManageBean implements Serializable {
 
     @EJB
     protected ProcurementBean procurementBean;
-
     @EJB
     protected IndicatorChartBean indicatorChartBean;
 
@@ -104,6 +104,7 @@ public class ProcurementReportBean implements Serializable {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");
                 statusMap.put("title", getdate().get(Calendar.YEAR) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月");
+                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "数据异常，请联系相关负责人处理！"));
             }

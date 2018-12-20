@@ -79,12 +79,12 @@ public class ClientTableReportBean implements Serializable {
 
     public void initial() {
         quantitySum = 0;
-        amountSum ="0";
+        amountSum = "0";
         display = "none";
         da = "";
         status1 = "";
         status2 = "";
-        btnDate= getQueryDate().getTime();
+        btnDate = getQueryDate().getTime();
     }
 
     public void query() {
@@ -92,27 +92,30 @@ public class ClientTableReportBean implements Serializable {
         status1 = "";
         status2 = "";
         quantitySum = 0;
-        amountSum ="0";
+        amountSum = "0";
         if (btnDate.after(getQueryDate().getTime())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
         } else {
-            List<ClientTable> list = clientShipmentBean.getClientListSum(getDate().get(Calendar.YEAR), (getDate().get(Calendar.MONTH) + 1), (da==null?"":da));
-            if (list != null && !list.isEmpty()) {
-                if (clientTableBean.queryClientIsExist(getDate().get(Calendar.YEAR), (getDate().get(Calendar.MONTH) + 1), da)) {
-                    status1 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + ("".equals(da) ? da : "所有部门") + "出货数据已存在，如点击更新则会删除该时间数据！！！慎重";
-                } else {
-                    status2 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + ("".equals(da) ? da : "所有部门") + "出货为新数据，请及时更新";
+            try {
+                List<ClientTable> list = clientShipmentBean.getClientListSum(getDate().get(Calendar.YEAR), (getDate().get(Calendar.MONTH) + 1), (da == null ? "" : da));
+                if (list != null && !list.isEmpty()) {
+                    if (clientTableBean.queryClientIsExist(getDate().get(Calendar.YEAR), (getDate().get(Calendar.MONTH) + 1), da)) {
+                        status1 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") + "出货数据已存在，如点击更新则会删除该时间数据！！！慎重";
+                    } else {
+                        status2 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") + "出货为新数据，请及时更新";
+                    }
+                    Double aaDouble = 0.0;
+                    for (ClientTable clientTable : list) {
+                        quantitySum += clientTable.getQuantity();
+                        aaDouble += clientTable.getAmount().doubleValue();
+                    }
+                    String bbString = new DecimalFormat("#,##0.00").format(aaDouble);
+                    amountSum = bbString;
+                    display = "block";
                 }
-                Double aaDouble = 0.0;
-                for (ClientTable clientTable : list) {
-                    quantitySum += clientTable.getQuantity();
-                    aaDouble += clientTable.getAmount().doubleValue();
-                }
-                String bbString=new DecimalFormat("#,##0.00").format(aaDouble);
-                amountSum=bbString;
-                display = "block";
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
             }
-
         }
 
     }
@@ -123,7 +126,7 @@ public class ClientTableReportBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "数据更新异常！"));
         }
-        display = "none";       
+        display = "none";
     }
 
     /**
