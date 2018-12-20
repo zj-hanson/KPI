@@ -47,12 +47,86 @@ public class BscGroupHSShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "H");
         queryParams.put("spdsc", " ='QT' ");
+        queryParams.put("cusno", " ='HSH00003' ");
         List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
 
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "H");
+        queryParams.put("spdsc", " ='QT' ");
+        queryParams.put("cusno", " ='HTW00001' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " ='QT' ");
+        queryParams.put("cusno", "  not in ('HSH00003','HTW00001') ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
         queryParams.put("spdsc", " ='HT' ");
+        queryParams.put("cusno", " ='HSH00003' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " ='HT' ");
+        queryParams.put("cusno", " ='HTW00001' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " ='HT' ");
+        queryParams.put("cusno", "  not in ('HSH00003','HTW00001') ");
         tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -69,7 +143,7 @@ public class BscGroupHSShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='C' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='H' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -80,6 +154,7 @@ public class BscGroupHSShipmentBean implements Serializable {
     protected List<BscGroupShipment> getShipment(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String spdsc = map.get("spdsc") != null ? map.get("spdsc").toString() : "";
+        String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";
         List<BscGroupShipment> data = new ArrayList<>();
         List<BscGroupShipment> temp;
         BigDecimal num = BigDecimal.ZERO;
@@ -94,10 +169,13 @@ public class BscGroupHSShipmentBean implements Serializable {
         if (!"".equals(spdsc)) {
             shpSql.append(" and substring(s.spdsc,1,2) ").append(spdsc);
         }
+        if (!"".equals(cusno)) {
+            shpSql.append(" AND h.cusno ").append(cusno);
+        }
         shpSql.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
         shpSql.append(" ) as a GROUP BY a.soday ");
         String cdrdta = shpSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
-        
+
         StringBuilder bakSql = new StringBuilder();
         bakSql.append(" select a.soday,isnull(sum(a.num),0),isnull(sum(a.shpamts),0) from ( ");
         bakSql.append(" SELECT  h.bakdate as soday, ");
@@ -107,6 +185,9 @@ public class BscGroupHSShipmentBean implements Serializable {
         bakSql.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and s.itcls=z.itcls and h.baksta not in ('W','N') ");
         if (!"".equals(spdsc)) {
             bakSql.append(" and substring(s.spdsc,1,2) ").append(spdsc);
+        }
+        if (!"".equals(cusno)) {
+            shpSql.append(" AND h.cusno ").append(cusno);
         }
         bakSql.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
         bakSql.append(" ) as a GROUP BY a.soday ");
@@ -122,11 +203,39 @@ public class BscGroupHSShipmentBean implements Serializable {
             if (spdsc.contains("QT")) {
                 protype = "球铁";
                 protypeno = "BI";
-                shptype = "5";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
             } else if (spdsc.contains("HT")) {
                 protype = "灰铁";
                 protypeno = "GI";
-                shptype = "5";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
             } else {
                 protype = "";
                 protypeno = "";
@@ -137,9 +246,10 @@ public class BscGroupHSShipmentBean implements Serializable {
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));
-                BscGroupShipment e = new BscGroupShipment("C", shpdate, protype, protypeno, shptype);
+                BscGroupShipment e = new BscGroupShipment("H", shpdate, protype, protypeno, shptype);
                 e.setShpnum(num);
                 e.setShpamts(amts);
+                e.setCusno(shptype);
                 data.add(e);
             }
             for (int i = 0; i < bakResult.size(); i++) {
@@ -147,9 +257,10 @@ public class BscGroupHSShipmentBean implements Serializable {
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));
-                BscGroupShipment e = new BscGroupShipment("C", shpdate, protype, protypeno, shptype);
+                BscGroupShipment e = new BscGroupShipment("H", shpdate, protype, protypeno, shptype);
                 e.setShpnum(num);
                 e.setShpamts(amts);
+                e.setCusno(shptype);
                 if (data.contains(e)) {
                     BscGroupShipment entity = data.get(data.indexOf(e));
                     entity.setShpnum(entity.getShpnum().add(num));
@@ -177,11 +288,12 @@ public class BscGroupHSShipmentBean implements Serializable {
         return data;
     }
 
-    //订单台数
+    //订单台数金额
     protected List<BscGroupShipment> getSalesOrder(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String spdsc = map.get("spdsc") != null ? map.get("spdsc").toString() : "";
+        String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";
         List<BscGroupShipment> data = new ArrayList<>();
         BigDecimal num = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
@@ -196,6 +308,9 @@ public class BscGroupHSShipmentBean implements Serializable {
         if (!"".equals(spdsc)) {
             sb.append(" and substring(s.spdsc,1,2) ").append(spdsc);
         }
+        if (!"".equals(cusno)) {
+            sb.append(" AND h.cusno ").append(cusno);
+        }
         sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)=${m} AND h.recdate<='${d}' ");
         sb.append(" ) as a GROUP BY a.soday ");
         String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
@@ -208,11 +323,39 @@ public class BscGroupHSShipmentBean implements Serializable {
             if (spdsc.contains("QT")) {
                 protype = "球铁";
                 protypeno = "BI";
-                shptype = "5";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
             } else if (spdsc.contains("HT")) {
                 protype = "灰铁";
                 protypeno = "GI";
-                shptype = "5";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
             } else {
                 protype = "";
                 protypeno = "";
@@ -223,9 +366,10 @@ public class BscGroupHSShipmentBean implements Serializable {
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));
-                BscGroupShipment e = new BscGroupShipment("C", recdate, protype, protypeno, shptype);
+                BscGroupShipment e = new BscGroupShipment("H", recdate, protype, protypeno, shptype);
                 e.setOrdnum(num);
                 e.setOrdamts(amts);
+                e.setCusno(shptype);
                 data.add(e);
             }
         } catch (Exception ex) {
