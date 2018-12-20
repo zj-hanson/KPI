@@ -141,6 +141,61 @@ public class BscGroupHSShipmentBean implements Serializable {
                 }
             }
         }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " not in ('HT','QT') ");
+        queryParams.put("cusno", " ='HSH00003' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " not in ('HT','QT') ");
+        queryParams.put("cusno", " ='HTW00001' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
+        queryParams.put("facno", "H");
+        queryParams.put("spdsc", " not in ('HT','QT') ");
+        queryParams.put("cusno", "  not in ('HSH00003','HTW00001') ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
+                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+
         if (resultData != null) {
             erpEJB.setCompany("C");
             erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='H' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
@@ -200,7 +255,7 @@ public class BscGroupHSShipmentBean implements Serializable {
             List bakResult = bakQuery.getResultList();
             Date shpdate;
             String protype, protypeno, shptype;
-            if (spdsc.contains("QT")) {
+            if ("='QT'".equals(spdsc.trim())) {
                 protype = "球铁";
                 protypeno = "BI";
                 if (null == cusno.trim()) {
@@ -218,9 +273,27 @@ public class BscGroupHSShipmentBean implements Serializable {
                             break;
                     }
                 }
-            } else if (spdsc.contains("HT")) {
+            } else if ("='HT'".equals(spdsc.trim())) {
                 protype = "灰铁";
                 protypeno = "GI";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
+            } else if (spdsc.contains("not")) {
+                protype = "其他";
+                protypeno = "OTH";
                 if (null == cusno.trim()) {
                     shptype = "";
                 } else {
@@ -320,7 +393,7 @@ public class BscGroupHSShipmentBean implements Serializable {
             List cdrResult = cdrQuery.getResultList();
             Date recdate;
             String protype, protypeno, shptype;
-            if (spdsc.contains("QT")) {
+            if ("='QT'".equals(spdsc.trim())) {
                 protype = "球铁";
                 protypeno = "BI";
                 if (null == cusno.trim()) {
@@ -338,9 +411,27 @@ public class BscGroupHSShipmentBean implements Serializable {
                             break;
                     }
                 }
-            } else if (spdsc.contains("HT")) {
+            } else if ("='HT'".equals(spdsc.trim())) {
                 protype = "灰铁";
                 protypeno = "GI";
+                if (null == cusno.trim()) {
+                    shptype = "";
+                } else {
+                    switch (cusno.trim()) {
+                        case "='HSH00003'":
+                            shptype = "S";
+                            break;
+                        case "='HTW00001'":
+                            shptype = "T";
+                            break;
+                        default:
+                            shptype = "";
+                            break;
+                    }
+                }
+            } else if (spdsc.contains("not")) {
+                protype = "其他";
+                protypeno = "OTH";
                 if (null == cusno.trim()) {
                     shptype = "";
                 } else {
