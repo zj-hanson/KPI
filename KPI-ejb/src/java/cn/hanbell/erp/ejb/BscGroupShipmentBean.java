@@ -746,11 +746,7 @@ public class BscGroupShipmentBean implements Serializable {
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
-        if ("='R'".equals(n_code_DA.trim())) {
-            sb.append(" and d.drecsta not in ('98','99','10') ");
-        } else {
-            sb.append(" and d.drecsta not in ('98','99') ");
-        }
+        sb.append(" and d.drecsta not in ('98','99','10') ");
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
@@ -859,11 +855,7 @@ public class BscGroupShipmentBean implements Serializable {
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
-        if ("='R'".equals(n_code_DA.trim())) {
-            sb.append(" and d.drecsta not in ('98','99','10') ");
-        } else {
-            sb.append(" and d.drecsta not in ('98','99') ");
-        }
+        sb.append(" and d.drecsta not in ('98','99','10') ");
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }

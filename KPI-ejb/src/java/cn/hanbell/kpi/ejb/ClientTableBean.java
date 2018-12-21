@@ -66,7 +66,7 @@ public class ClientTableBean extends SuperEJBForKPI<ClientTable> {
         try {
             Query query = getEntityManager().createNativeQuery(sql);
             int count = query.executeUpdate();
-            System.out.println("cn.hanbell.kpi.ejb.ClientTableBean.deleteClient()受影响行数："+count);
+            System.out.println("cn.hanbell.kpi.ejb.ClientTableBean.deleteClient()受影响行数：" + count);
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.ejb.ClientTableBean.deleteClient()" + e);
         }

@@ -9,6 +9,7 @@ import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.BalanceSheetBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "balanceSheetReportBean")
 @ViewScoped
-public class BalanceSheetReportBean implements Serializable {
+public class BalanceSheetReportBean extends BscQueryTableManageBean implements Serializable {
 
     @EJB
     protected BalanceSheetBean balanceSheetBean;
@@ -109,6 +110,7 @@ public class BalanceSheetReportBean implements Serializable {
                 statusMap.put("displaydiv2", "block");
                 statusMap.put("th1title", getdate().get(Calendar.YEAR) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月");
                 statusMap.put("th2title", (getdate().get(Calendar.YEAR) - 1) + "");
+                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
