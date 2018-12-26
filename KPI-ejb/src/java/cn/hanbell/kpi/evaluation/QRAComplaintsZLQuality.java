@@ -26,7 +26,7 @@ public class QRAComplaintsZLQuality extends QRAComplaints {
         String mis = map.get("mis") != null ? map.get("mis").toString() : ""; //MJS（3/6/12）
         int count = Integer.parseInt(mis);
         QRAComplaintsQualityOrder mKS = new QRAComplaintsQualityOrder();
-        varnr.append(" in(");
+        varnr.append("");
         List<String> list = mKS.getValue(y, m, d, type, map);
         List<String> newlist = new ArrayList<>();
         //去掉null和是%的制造号码
@@ -36,13 +36,17 @@ public class QRAComplaintsZLQuality extends QRAComplaints {
             }
         }
         //循环换成SQL能识别的类型
-        for (int i = 0; i < newlist.size(); i++) {
-            if (newlist.size() != (i + 1)) {
-                varnr.append("'").append(newlist.get(i)).append("',");
-            } else {
-                varnr.append("'").append(newlist.get(i)).append("') ");
+        if (!newlist.isEmpty()) {
+            varnr.append(" in(");
+            for (int i = 0; i < newlist.size(); i++) {
+                if (newlist.size() != (i + 1)) {
+                    varnr.append("'").append(newlist.get(i)).append("',");
+                } else {
+                    varnr.append("'").append(newlist.get(i)).append("') ");
+                }
             }
         }
+
         //循环mis次数得到制令
         int sum = 0;
         int year, month;
@@ -50,9 +54,18 @@ public class QRAComplaintsZLQuality extends QRAComplaints {
             if (i <= 0) {
                 year = y - 1;
                 month = 12 + i;
-                sum += getZLnum(varnr.toString(), month, year);
+                if (!"".equals(varnr.toString())) {
+                    sum += getZLnum(varnr.toString(), month, year);
+                } else {
+                    sum += 0;
+                }
             } else {
-                sum += getZLnum(varnr.toString(), i, y);
+                if (!"".equals(varnr.toString())) {
+                    sum += getZLnum(varnr.toString(), i, y);
+                } else {
+                    sum += 0;
+                }
+
             }
         }
 

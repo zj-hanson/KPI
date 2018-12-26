@@ -13,7 +13,7 @@ public class QRAComplaintsZLQualityR6Mis  extends QRAComplaintsZLQuality{
 
     public QRAComplaintsZLQualityR6Mis() {
         super();
-        queryParams.put("BQ197", "%R%");
+        queryParams.put("BQ197", "='R'");
         queryParams.put("BQ003", " in ('RLM') ");
         queryParams.put("BQ505", " in ('YX')  ");
         queryParams.put("mis", "6");
