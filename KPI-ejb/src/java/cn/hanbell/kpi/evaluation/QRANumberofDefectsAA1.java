@@ -22,13 +22,13 @@ import javax.naming.NamingException;
  *
  * @author C1749 空压机体AB480以下的达标率
  */
-public class TrialRunAdverseAHComplianceRateV3 extends QRAqualified {
+public class QRANumberofDefectsAA1 extends QRAqualified {
 
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
-    public TrialRunAdverseAHComplianceRateV3() {
+    public QRANumberofDefectsAA1() {
         super();
-        queryParams.put("formid", "TR-二级1030能效");
+        queryParams.put("formid", "空压机组不良点数");
         queryParams.put("deptno", "1M000");
     }
 
@@ -50,11 +50,12 @@ public class TrialRunAdverseAHComplianceRateV3 extends QRAqualified {
             f = o2.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
+
             if (a2 > 0) {
-                result = BigDecimal.valueOf(a1 / a2).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                result = BigDecimal.valueOf(a2 / a1).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(TrialRunAdverseAHComplianceRateV3.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QRANumberofDefectsAA1.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

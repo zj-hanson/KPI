@@ -13,7 +13,7 @@ public class QRAComplaintsQualityPenAA extends QRAComplaintsQualityPen {
 
     public QRAComplaintsQualityPenAA() {
         super();
-        queryParams.put("BQ197", " '=AA' ");
+        queryParams.put("BQ197", " ='AA' ");
         queryParams.put("BQ003"," in ('AJZ') ");
         queryParams.put("BQ505", " in ('YX','-1') ");
         queryParams.put("BQ110"," in ('Y') ");

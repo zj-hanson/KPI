@@ -14,11 +14,11 @@ public class QRAComplaintsQualityPenP1V3 extends QRAComplaintsQualityPen {
 
     public QRAComplaintsQualityPenP1V3() {
         super();
-        queryParams.put("BQ197", " '=P' ");
+        queryParams.put("BQ197", " ='P' ");
         queryParams.put("BQ003", " in ('PZK') ");
         queryParams.put("BQ505", " in ('YX','-1') ");
         queryParams.put("BQ110", " in ('Y') ");
-        queryParams.put("CA002", " 湿式 ");
+        queryParams.put("CA500", " 湿式 ");
     }
 
 }
