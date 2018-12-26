@@ -18,8 +18,6 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -362,7 +360,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 f.setAccessible(true);
                 total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
                 total = BigDecimal.ZERO;
             }
         }
@@ -384,7 +382,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     total = total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 0));
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
                 total = BigDecimal.ZERO;
             }
         }
@@ -416,7 +414,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
@@ -448,7 +446,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
@@ -466,6 +464,16 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             return "n" + c;
         } else {
             return "";
+        }
+    }
+
+    public int getRowCount(int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.getRowCountBySeq");
+        query.setParameter("seq", y);
+        if (query.getSingleResult() == null) {
+            return -1;
+        } else {
+            return Integer.parseInt(query.getSingleResult().toString());
         }
     }
 
@@ -511,7 +519,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 addValue(entity.getTargetIndicator(), t, entity.getFormkind());
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
-            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return entity;
     }
@@ -925,7 +933,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(entity.getActualIndicator(), BigDecimal.valueOf(Double.valueOf(f.get(si.getActualIndicator()).toString())));
                 }
             } catch (NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
     }
@@ -948,7 +956,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(o1, na);
                     indicatorDetailBean.update(o1);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
             if (entity.getOther2Interface() != null && !"".equals(entity.getOther2Interface())) {
@@ -963,7 +971,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(o2, na);
                     indicatorDetailBean.update(o2);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
             if (entity.getOther3Interface() != null && !"".equals(entity.getOther3Interface())) {
@@ -979,7 +987,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(detail, na);
                     indicatorDetailBean.update(detail);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
             if (entity.getOther4Interface() != null && !"".equals(entity.getOther4Interface())) {
@@ -994,7 +1002,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(o4, na);
                     indicatorDetailBean.update(o4);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
             if (entity.getOther5Interface() != null && !"".equals(entity.getOther5Interface())) {
@@ -1009,7 +1017,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(o5, na);
                     indicatorDetailBean.update(o5);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
             if (entity.getOther6Interface() != null && !"".equals(entity.getOther6Interface())) {
@@ -1024,7 +1032,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     setMethod.invoke(o6, na);
                     indicatorDetailBean.update(o6);
                 } catch (Exception ex) {
-                    Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                    log4j.error(ex);
                 }
             }
         }
@@ -1040,7 +1048,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 setMethod.invoke(a, na);
                 indicatorDetailBean.update(a);
             } catch (Exception ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
         return entity;
@@ -1061,7 +1069,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 setMethod.invoke(a, na);
                 indicatorDetailBean.update(a);
             } catch (Exception ex) {
-                Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
         return entity;
