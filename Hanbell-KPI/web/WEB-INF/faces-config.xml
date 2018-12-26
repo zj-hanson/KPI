@@ -79,6 +79,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>indicatorclone</from-outcome>
+            <to-view-id>/sys/indicatorclone.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>jobschedule</from-outcome>
             <to-view-id>/sys/jobschedule.xhtml</to-view-id>
             <redirect/>

@@ -8,6 +8,8 @@ package cn.hanbell.kpi.comm;
 import com.lightshell.comm.SuperEJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -21,6 +23,8 @@ public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
 
     @PersistenceContext(unitName = "KPI-ejbPU")
     private EntityManager em_shbkpi;
+
+    protected Logger log4j = LogManager.getLogger();
 
     public SuperEJBForKPI(Class<T> entityClass) {
         super(entityClass);

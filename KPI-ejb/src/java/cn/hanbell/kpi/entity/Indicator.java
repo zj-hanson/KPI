@@ -71,9 +71,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "Indicator.findRootByAssigned", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")
     ,
-        @NamedQuery(name = "Indicator.findRootByAssignedAndJobSchedule", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq AND i.jobSchedule = :jobschedule ORDER BY i.sortid ASC")
+    @NamedQuery(name = "Indicator.findRootByAssignedAndJobSchedule", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq AND i.jobSchedule = :jobschedule ORDER BY i.sortid ASC")
     ,
-    @NamedQuery(name = "Indicator.findRootByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")})
+    @NamedQuery(name = "Indicator.findRootByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")
+    ,
+    @NamedQuery(name = "Indicator.getRowCountBySeq", query = "SELECT COUNT(i) FROM Indicator i WHERE i.seq = :seq ")})
 public class Indicator extends SuperEntity {
 
     @JoinColumn(name = "formid", referencedColumnName = "formid", updatable = false, insertable = false)

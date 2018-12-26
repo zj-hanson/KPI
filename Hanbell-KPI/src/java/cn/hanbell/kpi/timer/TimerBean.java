@@ -226,7 +226,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
+    @Schedule(minute = "50", hour = "16,20,22", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
             log4j.info("Begin Execute Job updateERPBscGroupShipment");
@@ -244,7 +244,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "50", hour = "16,20,23", persistent = false)
+    @Schedule(minute = "50", hour = "17,21,23", persistent = false)
     public void updateERPVHBscGroupShipment() {
         try {
             log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
