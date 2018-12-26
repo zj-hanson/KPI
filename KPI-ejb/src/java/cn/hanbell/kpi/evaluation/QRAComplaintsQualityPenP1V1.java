@@ -14,7 +14,7 @@ public class QRAComplaintsQualityPenP1V1 extends QRAComplaintsQualityPen {
 
     public QRAComplaintsQualityPenP1V1() {
         super();
-        queryParams.put("BQ197", " '=P' ");
+        queryParams.put("BQ197", " ='P' ");
         queryParams.put("BQ003", " in ('PZK') ");
         queryParams.put("BQ505", " in ('YX','-1') ");
         queryParams.put("BQ110", " in ('Y') ");

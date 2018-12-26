@@ -264,11 +264,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>complaintschartabroad</from-outcome>
-            <to-view-id>/app/bsc/complaintschartabroad.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>complaintschartajz</from-outcome>
             <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
             <redirect/>
@@ -396,6 +391,11 @@
         <navigation-case>
             <from-outcome>onlinechart</from-outcome>
             <to-view-id>/app/bsc/onlinechart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>numberofdefectiveschart</from-outcome>
+            <to-view-id>/app/bsc/numberofdefectiveschart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

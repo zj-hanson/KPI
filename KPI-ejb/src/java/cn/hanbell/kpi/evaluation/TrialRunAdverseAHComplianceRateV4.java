@@ -20,8 +20,7 @@ import javax.naming.NamingException;
 
 /**
  *
- * @author C1749
- * 空压机体AB480以下的达标率
+ * @author C1749 空压机体AB480以下的达标率
  */
 public class TrialRunAdverseAHComplianceRateV4 extends QRAqualified {
 
@@ -38,7 +37,7 @@ public class TrialRunAdverseAHComplianceRateV4 extends QRAqualified {
         String mon;
         Field f;
         BigDecimal result = BigDecimal.ZERO;
-        Double a1,a2;
+        Double a1, a2;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail o1 = i.getOther1Indicator();
         IndicatorDetail o2 = i.getOther2Indicator();
@@ -47,13 +46,13 @@ public class TrialRunAdverseAHComplianceRateV4 extends QRAqualified {
             f = o1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a1 = Double.valueOf(f.get(o1).toString());
-            
+
             f = o2.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
-            
-            result = BigDecimal.valueOf(a1 / a2).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
-
+            if (a2 > 0) {
+                result = BigDecimal.valueOf(a1 / a2).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(TrialRunAdverseAHComplianceRateV4.class.getName()).log(Level.SEVERE, null, ex);
         }

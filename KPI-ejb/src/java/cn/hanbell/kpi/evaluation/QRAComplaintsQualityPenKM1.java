@@ -14,7 +14,7 @@ public class QRAComplaintsQualityPenKM1 extends QRAComplaintsQualityPen {
    
     public QRAComplaintsQualityPenKM1() {
         super();
-        queryParams.put("BQ197", " '=KM' ");
+        queryParams.put("BQ197", " ='KM' ");
         queryParams.put("BQ003"," in ('RTZ','WCZ') ");
         queryParams.put("BQ505", " in ('YX')  ");
         queryParams.put("BQ110"," in ('Y') ");
