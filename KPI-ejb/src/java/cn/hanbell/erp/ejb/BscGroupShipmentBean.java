@@ -406,16 +406,14 @@ public class BscGroupShipmentBean implements Serializable {
                 }
             }
             //出貨金額
-            if (!data.isEmpty()) {
-                if (map.get("n_code_DD") != null) {
-                    map.remove("n_code_DD");
-                    map.put("n_code_DD", " IN ('00','02') ");
-                }
-                for (BscGroupShipment e : data) {
-                    amts = getShipmentAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
-                    if (amts != null) {
-                        e.setShpamts(amts);
-                    }
+            if (map.get("n_code_DD") != null) {
+                map.remove("n_code_DD");
+                map.put("n_code_DD", " IN ('00','02') ");
+            }
+            for (BscGroupShipment e : data) {
+                amts = getShipmentAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
+                if (amts != null) {
+                    e.setShpamts(amts);
                 }
             }
         } catch (Exception ex) {
@@ -821,16 +819,14 @@ public class BscGroupShipmentBean implements Serializable {
                 e.setOrdamts(BigDecimal.ZERO);
                 data.add(e);
             }
-            if (!data.isEmpty()) {
-                if (map.get("n_code_DD") != null) {
-                    map.remove("n_code_DD");
-                    map.put("n_code_DD", " IN ('00','02') ");
-                }
-                for (BscGroupShipment e : data) {
-                    amts = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
-                    if (amts != null) {
-                        e.setOrdamts(amts);
-                    }
+            if (map.get("n_code_DD") != null) {
+                map.remove("n_code_DD");
+                map.put("n_code_DD", " IN ('00','02') ");
+            }
+            for (BscGroupShipment e : data) {
+                amts = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
+                if (amts != null) {
+                    e.setOrdamts(amts);
                 }
             }
         } catch (Exception ex) {
