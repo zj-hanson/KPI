@@ -269,7 +269,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
@@ -287,7 +287,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
@@ -305,7 +305,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
@@ -407,7 +407,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
@@ -425,7 +425,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
@@ -443,7 +443,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                             shptype = "T";
                             break;
                         default:
-                            shptype = "";
+                            shptype = "5";
                             break;
                     }
                 }
