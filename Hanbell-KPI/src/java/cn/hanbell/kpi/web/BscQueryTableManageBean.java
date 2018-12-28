@@ -37,28 +37,7 @@ public class BscQueryTableManageBean {
     protected int summaryCount;
 
     /**
-     * 根据汇报当月查询备注
-     * @param indicatorChart
-     * @param y
-     * @param m
-     */
-    protected void getRemarkTwo(IndicatorChart indicatorChart , int y, int m) {
-        indicator = indicatorBean.findByFormidYearAndDeptno(indicatorChart.getFormid(), y, indicatorChart.getDeptno());
-        if (indicator != null) {
-            //根据指标ID加载指标说明、指标分析
-            analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), m);//指标分析
-            if (getAnalysisList() != null) {
-                this.analysisCount = getAnalysisList().size();
-            }
-            summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), m);//指标说明
-            if (getSummaryList() != null) {
-                this.summaryCount = getSummaryList().size();
-            }
-        }
-    }
-
-    /**
-     * 根据查询时间查询备注
+     * 根据时间查询备注
      * @param indicatorChart
      * @param y
      * @param m
