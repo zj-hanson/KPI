@@ -310,6 +310,20 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
 
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("S收费服务金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("S涡旋收费服务");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            sum2 = sum2.add(getData().get("sum2"));
+
             total = indicatorBean.getSumValue(sumList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
