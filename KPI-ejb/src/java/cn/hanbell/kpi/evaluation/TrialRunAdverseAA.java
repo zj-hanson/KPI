@@ -50,12 +50,14 @@ public class TrialRunAdverseAA extends TrialRun {
             Object o2 = query2.getSingleResult();
             BigDecimal value1 = BigDecimal.valueOf(Double.valueOf(o1.toString()));
             BigDecimal value2 = BigDecimal.valueOf(Double.valueOf(o2.toString()));
-            reslut = value1.divide(value2, 2, BigDecimal.ROUND_HALF_UP);
-            
+            if(value2.compareTo(BigDecimal.ZERO)>0){
+               reslut = value1.divide(value2, 2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+               return reslut;
+            }
         } catch (Exception ex) {
             Logger.getLogger(TrialRunAdverseAA.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return reslut;
+        return BigDecimal.ZERO;
     }
 
 }
