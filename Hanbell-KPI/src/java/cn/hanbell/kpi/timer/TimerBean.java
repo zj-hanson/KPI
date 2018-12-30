@@ -250,7 +250,7 @@ public class TimerBean {
             log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
             Calendar now = Calendar.getInstance();
             int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH));
+            int m = (now.get(Calendar.MONTH)+1);
             Date d = now.getTime();
             bscGroupVHShipmentBean.updataActualValue(y, m, d);
             bscGroupVHServiceBean.updataActualValue(y, m, d);
