@@ -77,7 +77,6 @@ public abstract class MailNotification {
     }
 
     public void init() {
-        c = Calendar.getInstance();
         this.y = c.get(Calendar.YEAR);
         this.m = c.get(Calendar.MONTH) + 1;
         this.d = c.getTime();
