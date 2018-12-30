@@ -13,7 +13,6 @@ import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -148,12 +147,12 @@ public class IndicatorCloneManagedBean extends SuperSingleBean<Indicator> {
                     indicatorBean.update(newIndicator);
                 }
                 //找到新的子阶,重设新的PId
-                List<Indicator> newDetails = indicatorBean.findByPIdAndYear(refIndicator.getId(), y);
-                if (newDetails != null && !newDetails.isEmpty()) {
-                    for (Indicator nc : newDetails) {
+                List<Indicator> newChilds = indicatorBean.findByPIdAndYear(refIndicator.getId(), y);
+                if (newChilds != null && !newChilds.isEmpty()) {
+                    for (Indicator nc : newChilds) {
                         nc.setPid(newIndicator.getId());
                     }
-                    indicatorBean.update(newDetails);
+                    indicatorBean.update(newChilds);
                 }
             } else {
                 Indicator newIndicator = (Indicator) BeanUtils.cloneBean(refIndicator);

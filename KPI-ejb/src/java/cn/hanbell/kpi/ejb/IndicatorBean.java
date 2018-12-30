@@ -133,6 +133,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     }
 
     public void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {
+        getEntityManager().clear();
         //先算汇总字段再算每月字段,A和S类型会重算汇总
         id.setNfy(id.getNfy().divide(rate, scale, RoundingMode.HALF_UP));
         id.setNh2(id.getNh2().divide(rate, scale, RoundingMode.HALF_UP));
@@ -344,6 +345,31 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         //计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
             return na.divide(nb, scale + 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+        } else {
+            return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
+        }
+    }
+
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m, Date d) {
+        return getAccumulatedPerformance(a, fa, b, fb, m, d, 2);
+    }
+
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m, Date d, int scale) {
+        //fa,fb = true 表示需要按天折算
+        BigDecimal na, nb;
+        if (fa) {
+            na = getAccumulatedValue(a, m, d);
+        } else {
+            na = getAccumulatedValue(a, m);
+        }
+        if (fb) {
+            nb = getAccumulatedValue(b, m, d);
+        } else {
+            nb = getAccumulatedValue(b, m);
+        }
+        //计算
+        if (nb.compareTo(BigDecimal.ZERO) != 0) {
+            return na.divide(nb, scale + 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
