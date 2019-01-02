@@ -1062,17 +1062,19 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 }
             }
         }
-        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null) && (!"".equals(entity.getActualInterface()))) {
+        if ((entity != null) && (entity.getActualInterface() != null) && (!"".equals(entity.getActualInterface()))) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
                 uy = actualInterface.getUpdateYear(y, m);
                 um = actualInterface.getUpdateMonth(y, m);
-                actualInterface.setEJB(entity.getActualEJB());
-                BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
-                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(a, na);
-                indicatorDetailBean.update(a);
+                if (entity.getSeq() == uy) {
+                    actualInterface.setEJB(entity.getActualEJB());
+                    BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(a, na);
+                    indicatorDetailBean.update(a);
+                }
             } catch (Exception ex) {
                 log4j.error(ex);
             }
@@ -1083,17 +1085,19 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
         int uy, um;
-        if ((entity != null) && (entity.getSeq() == y) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
+        if ((entity != null) &&  (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
                 uy = actualInterface.getUpdateYear(y, m);
                 um = actualInterface.getUpdateMonth(y, m);
-                actualInterface.setEJB(entity.getActualEJB());
-                BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
-                Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(a, na);
-                indicatorDetailBean.update(a);
+                if (entity.getSeq() == uy) {
+                    actualInterface.setEJB(entity.getActualEJB());
+                    BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(a, na);
+                    indicatorDetailBean.update(a);
+                }
             } catch (Exception ex) {
                 log4j.error(ex);
             }
