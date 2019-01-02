@@ -76,7 +76,7 @@ public class ShipmentAmountT9 extends ShipmentAmount {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
+        sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.depno='1T100' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003') ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(decode)) {
