@@ -157,7 +157,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R冷媒出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -173,7 +173,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -189,7 +189,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组每日出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -205,7 +205,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -221,7 +221,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P每日出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -237,7 +237,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("涡旋产品出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -255,7 +255,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("R收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -271,7 +271,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体收费服务", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -287,7 +287,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -303,7 +303,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -319,7 +319,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -335,7 +335,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("S收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -384,7 +384,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
@@ -402,7 +402,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
             indicatorBean.getEntityManager().clear();
-            if (indicators != null) {
+            if (indicators.size() > 0 && indicators != null) {
                 indicators.stream().forEach((i) -> {
                     indicatorBean.divideByRate(i, 2);
                 });
