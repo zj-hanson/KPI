@@ -113,9 +113,13 @@ public abstract class SalesOrderMail extends MailNotification {
             //实际
             sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
             //目标
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m))).append("</td>");
+            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m, d))).append("</td>");
             //达成
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
+            // sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, false, t, true, m, d))).append("</td>");
             //同期
             //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
             //改成按天折算
