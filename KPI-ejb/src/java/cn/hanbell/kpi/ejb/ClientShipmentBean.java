@@ -275,7 +275,7 @@ public class ClientShipmentBean implements Serializable {
         sb.append(" CASE a.n_code_CD when NULL THEN ' ' ELSE a.n_code_CD END as  n_code_CD,a.shpqy1 as 'shpqy1',a.shpamts as 'shpamts' FROM ");
         sb.append(" (SELECT h.facno,d.ivocus AS 'cusno',h.depno,year(h.recdate) as 'year',month(h.recdate) as 'month',h.n_code_DA,h.n_code_DC,h.n_code_CD,0 AS shpqy1, ");
         sb.append(" ISNULL(sum(d.recamt),0) AS shpamts FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno ");
-        sb.append(" AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
+        sb.append(" AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno IN ('6001','6002') ");
         sb.append(" AND h.ogdkid  ").append(ogdkid);
         if (!"".equals(n_code_DA)) {
             sb.append(" and h.n_code_DA ").append(n_code_DA);
