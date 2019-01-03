@@ -355,7 +355,7 @@ public class BscGroupShipmentBean implements Serializable {
         sb.append(" ) ");
         sb.append(" AND year(h.shpdate) = ${y} AND month(h.shpdate)= ${m} AND h.shpdate<='${d}' GROUP BY h.shpdate ");
         sb.append(" UNION  ALL  ");
-        sb.append("SELECT h.recdate as soday,ISNULL(SUM(d.recamt),0) as amt FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
+        sb.append("SELECT h.recdate as soday,ISNULL(SUM(d.recamt),0) as amt FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno in ('6001','6002') ");
         sb.append(" AND h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND h.n_code_DA ").append(n_code_DA);
