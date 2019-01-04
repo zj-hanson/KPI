@@ -19,7 +19,7 @@ public class SalesOrderQuantityAA2TW extends SalesOrderQuantity{
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_CD", " ='WXTW' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
-        queryParams.put("n_code_DD", "  in ('00','02') ");
+        queryParams.put("n_code_DD", "  in ('00') ");
     }
 
 }
