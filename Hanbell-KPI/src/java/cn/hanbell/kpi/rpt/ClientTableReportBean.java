@@ -112,6 +112,8 @@ public class ClientTableReportBean implements Serializable {
                     String bbString = new DecimalFormat("#,##0.00").format(aaDouble);
                     amountSum = bbString;
                     display = "block";
+                }else{
+                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询该日期数据！"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
