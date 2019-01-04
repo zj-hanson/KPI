@@ -29,7 +29,7 @@ public class FreeServiceAllSum1G extends FreeServiceERP {
     public FreeServiceAllSum1G() {
         super();
         queryParams.put("formid", "A-空压机体综合成本");
-        queryParams.put("deptno", "1G000");
+        queryParams.put("deptno", "1G100");
     }
 
     //厂内+厂外+质量扣款

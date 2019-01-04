@@ -38,7 +38,7 @@ public class FreeServiceWithinKS extends FreeServiceERP {
 
         //领料SQL
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE  t.trtype='IAF' AND t.rescode IN ('1003','0003') and  facno ='${facno}' ");
+        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE  facno ='${facno}' AND t.prono='1' and  t.trtype='IAF'  AND t.rescode IN ('1003','0003')  ");
         if (!"".equals(hmark1)) {
             sb.append(" and t.hmark1 ").append(hmark1);
         }
@@ -51,7 +51,7 @@ public class FreeServiceWithinKS extends FreeServiceERP {
 
         sb.setLength(0);
         //退料SQL
-        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE t.trtype='IAG' AND t.rescode IN ('1004','0003')  and facno ='${facno}'  ");
+        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE  facno ='${facno}' AND t.prono='1' and t.trtype='IAG' AND t.rescode IN ('1004','0003') ");
         if (!"".equals(hmark1)) {
             sb.append(" and t.hmark1 ").append(hmark1);
         }

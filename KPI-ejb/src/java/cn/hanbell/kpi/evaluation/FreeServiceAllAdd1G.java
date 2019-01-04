@@ -14,7 +14,7 @@ public class FreeServiceAllAdd1G extends FreeServiceAllAdd{
     public FreeServiceAllAdd1G() {
         super();
         queryParams.put("OuterFormid", "A-空压机体服务成本");
-        queryParams.put("deptno", "1G000");
+        queryParams.put("deptno", "1G100");
         queryParams.put("WithinFormid", "A-空压机体维修成本");
     }
 
