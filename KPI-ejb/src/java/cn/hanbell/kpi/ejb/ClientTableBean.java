@@ -322,7 +322,11 @@ public class ClientTableBean extends SuperEJBForKPI<ClientTable> {
                             ct.setPastshpqy1("0");
                             ct.setPastshpamts("0");
                             ct.setDifferencevalue(df.format(Double.valueOf(now.getNowshpamts())));
-                            ct.setGrowthrate("100");
+                            if (Double.valueOf(now.getNowshpamts()) < 0.0) {
+                                ct.setGrowthrate("-100");
+                            } else {
+                                ct.setGrowthrate("100");
+                            }
                             list.add(ct);
                         }
                     }

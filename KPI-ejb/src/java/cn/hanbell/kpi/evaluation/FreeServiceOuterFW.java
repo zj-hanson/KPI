@@ -38,7 +38,7 @@ public class FreeServiceOuterFW extends FreeServiceERP{
 
         //领料SQL
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE   facno ='${facno}' and  t.trtype='IAF' AND t.rescode IN ('1001','1013') ");
+        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE  facno ='${facno}' AND t.prono='1' and  t.trtype='IAF' AND t.rescode IN ('1001','1013') ");
         if (!"".equals(hmark1)) {
             sb.append(" and t.hmark1 ").append(hmark1);
         }
@@ -51,7 +51,7 @@ public class FreeServiceOuterFW extends FreeServiceERP{
 
         sb.setLength(0);
         //退料SQL
-        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE   facno ='${facno}' and  t.trtype='IAG' AND t.rescode IN ('1002','1014') ");
+        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE facno ='${facno}' AND t.prono='1' and  t.trtype='IAG' AND t.rescode IN ('1002','1014') ");
         if (!"".equals(hmark1)) {
             sb.append(" and t.hmark1 ").append(hmark1);
         }
@@ -64,7 +64,7 @@ public class FreeServiceOuterFW extends FreeServiceERP{
 
         sb.setLength(0);
         //借出无法归还部分SQL
-        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE   facno ='${facno}' and  t.trtype='IAB'  AND t.rescode IN ('Z08') ");
+        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE   facno ='${facno}' AND t.prono='1' and  t.trtype='IAB'  AND t.rescode IN ('Z08') ");
         if (!"".equals(hmark1)) {
             sb.append(" and t.hmark1 ").append(hmark1);
         }

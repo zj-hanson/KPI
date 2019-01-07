@@ -29,7 +29,7 @@ public class FreeServiceWithinSum1G extends FreeServiceERP {
     public FreeServiceWithinSum1G() {
         super();
         queryParams.put("formid", "A-空压机体维修成本");
-        queryParams.put("deptno", "1G000");
+        queryParams.put("deptno", "1G100");
     }
 
     //客诉领退料+制令领退料

@@ -29,7 +29,7 @@ public class FreeServiceWithinSumSDS extends FreeServiceERP {
     public FreeServiceWithinSumSDS() {
         super();
         queryParams.put("formid", "A-无油机组维修成本");
-        queryParams.put("deptno", "1G000");
+        queryParams.put("deptno", "1G500");
     }
 
     //客诉领退料+制令领退料
