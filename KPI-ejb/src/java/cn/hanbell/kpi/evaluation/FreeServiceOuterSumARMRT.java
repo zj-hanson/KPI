@@ -22,23 +22,30 @@ import javax.naming.NamingException;
  *
  * @author C1879
  */
-public class FreeServiceAllAdd extends FreeServiceERP {
+public class FreeServiceOuterSumARMRT extends FreeServiceERP{
 
-    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
+    IndicatorBean indicatorBean = lookupIndicatorBean();
 
+    public FreeServiceOuterSumARMRT() {
+        super();
+        queryParams.put("formid", "A-离心机体服务成本");
+        queryParams.put("deptno", "1F000");
+    }
+
+    //差旅费+运费+服务领退料+质量扣款
+    //应财务、服务部要求
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String mon;
         Field f;
         BigDecimal v1;
-        Double a1, a2;
-        Indicator i1 = indicatorBean.findByFormidYearAndDeptno(map.get("OuterFormid").toString(), y, map.get("deptno").toString());
-        Indicator i2 = indicatorBean.findByFormidYearAndDeptno(map.get("WithinFormid").toString(), y, map.get("deptno").toString());
-
+        Double a1, a2, a3, a4;
+        Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
+        IndicatorDetail o1 = i.getOther1Indicator();
+        IndicatorDetail o2 = i.getOther2Indicator();
+        IndicatorDetail o3 = i.getOther3Indicator();
+        IndicatorDetail o4 = i.getOther4Indicator();
         try {
-            IndicatorDetail o1 = i1.getOther5Indicator();
-            IndicatorDetail o2 = i2.getActualIndicator();
-
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
@@ -48,16 +55,24 @@ public class FreeServiceAllAdd extends FreeServiceERP {
             f.setAccessible(true);
             a2 = Double.valueOf(f.get(o2).toString());
 
-            v1 = BigDecimal.valueOf(a1 + a2);
+            f = o3.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a3 = Double.valueOf(f.get(o3).toString());
+
+            f = o4.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a4 = Double.valueOf(f.get(o4).toString());
+
+            v1 = BigDecimal.valueOf(a1 + a2 + a3 + a4);
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(FreeServiceAllAdd.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FreeServiceOuterSumARM1B.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
     }
 
-    private IndicatorBean lookupIndicatorBeanBean() {
+    private IndicatorBean lookupIndicatorBean() {
         try {
             Context c = new InitialContext();
             return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");

@@ -172,7 +172,7 @@ public class ShipmentTopManagedBean implements Serializable {
     }
 
     public void finddeptno() {
-        switch (deptno) {
+        switch (getDeptno()) {
             case "1F000":
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷产品");
@@ -412,5 +412,13 @@ public class ShipmentTopManagedBean implements Serializable {
     public void setSummaryCount(int summaryCount) {
         this.summaryCount = summaryCount;
     }
+
+    /**
+     * @return the deptno
+     */
+    public String getDeptno() {
+        return deptno;
+    }
+    
 
 }

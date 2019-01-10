@@ -18,9 +18,10 @@ public class FreeServiceARMRT extends FreeServiceERP {
     public FreeServiceARMRT() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("ogdkid", "RL01");
+        queryParams.put("ogdkid", "('RL01','RL03')");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='RT' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override

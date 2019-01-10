@@ -57,7 +57,7 @@ public abstract class FreeServiceOuterOA implements Actual {
         sb.append(" SELECT ISNULL(sum(a.total),0) FROM  ");
         sb.append(" ( SELECT  DISTINCT h5.* FROM  HK_FW005 h5 INNER JOIN  ProcessInstance pi on h5.processSerialNumber=pi.serialNumber ");
         sb.append(" INNER JOIN WorkItem wi on pi.contextOID=wi.contextOID  where ( h5.fwno <> '' and h5.fwno <> '-') and (h5.kfno <> '' and h5.kfno <> '-') ");
-        sb.append(" and h5.total <> 0 and h5.type in ('1','2','3') and h5.mftype <> '' ");
+        sb.append(" AND pi.currentState =3 and h5.total <> 0 and h5.type in ('1','2','3') and h5.mftype <> '' ");
         if (!"".equals(applydept)) {
             sb.append("  and applydept ").append(applydept);
         }
@@ -85,7 +85,7 @@ public abstract class FreeServiceOuterOA implements Actual {
         sb.append(" SELECT ISNULL(sum(a.yf),0) FROM  ");
         sb.append(" ( SELECT DISTINCT h6.* FROM HK_FW006 h6 INNER JOIN ProcessInstance pi on h6.processSerialNumber=pi.serialNumber ");
         sb.append(" INNER JOIN WorkItem wi on pi.contextOID= wi.contextOID WHERE ( h6.fwno <> '' and  h6.fwno <> '-') and ( h6.kfno <> '' and  h6.kfno <> '-') ");
-        sb.append(" and h6.yf>0 and h6.rettype = 2 and h6.returntype in ('2','4','8') ");
+        sb.append(" AND pi.currentState =3 and h6.yf>0 and h6.rettype = 2 and h6.returntype in ('2','4','8') ");
         if (!"".equals(supportdept)) {
             sb.append("  and h6.supportdept ").append(supportdept);
         }

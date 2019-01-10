@@ -95,7 +95,7 @@
                     同比成长率 = (本年累计金额 - 去年同期累计金额)/去年同期累计金额*100%
                 </p>
                 <p  style="height: 14px;">
-                    此出货销售统计表销售金额去除销售折让、质量扣款金额
+                    此出货销售统计表销售金额去除销售折让、质量扣款金额<c:if test="#{shipmentTopManagedBean.deptno != '50000' }">、包含国际营销课出货数据</c:if>
                 </p>
             </div>
             <p:panel id="remarks" style="height: 0px" >

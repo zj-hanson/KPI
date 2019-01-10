@@ -36,6 +36,8 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
 
     protected IndicatorDetail sumOther1Accumulated;
     protected IndicatorDetail sumOther2Accumulated;
+    protected IndicatorDetail sumOther4Accumulated;
+    protected IndicatorDetail sumOther5Accumulated;
 
     public FreeServiceReportBean() {
     }
@@ -44,6 +46,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     public void init() {
         Boolean Other1 = false;
         Boolean Other2 = false;
+        Boolean Other4 = false;
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String id = request.getParameter("id");
         String mon;
@@ -138,6 +141,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         sumOther2Accumulated.setParent(sumIndicator);
         sumOther2Accumulated.setType("O2");
 
+        sumOther4Accumulated = new IndicatorDetail();
+        sumOther4Accumulated.setParent(sumIndicator);
+        sumOther4Accumulated.setType("O4");
+
+        setSumOther5Accumulated(new IndicatorDetail());
+        getSumOther5Accumulated().setParent(sumIndicator);
+        getSumOther5Accumulated().setType("O5");
+
         sumAP = new IndicatorDetail();
         sumAP.setParent(sumIndicator);
         sumAP.setType("P");
@@ -201,6 +212,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             }
             Other1 = false;
             Other2 = false;
+            Other4 = false;
             e.getTargetIndicator().setType("目标");
             indicatorDetailList.add(e.getTargetIndicator());
             if (e.getOther1Label() != null || e.getOther2Label() != null) {
@@ -215,6 +227,13 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                     Other2 = true;
                 }
                 if (e.getOther1Label().equals("厂内+厂外") || e.getOther2Label().equals("质量扣款")) {
+                    e.getActualIndicator().setType("当月合计");
+                } else if (e.getOther4Label() != null && e.getOther5Label() != null && e.getOther4Label().equals("质量扣款") && e.getOther5Label().equals("合计")) {
+                    e.getOther5Indicator().setType("当月");
+                    indicatorDetailList.add(e.getOther5Indicator());
+                    e.getOther4Indicator().setType("质量扣款");
+                    indicatorDetailList.add(e.getOther4Indicator());
+                    Other4 = true;
                     e.getActualIndicator().setType("当月合计");
                 } else {
                     e.getActualIndicator().setType("当月");
@@ -257,6 +276,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 indicatorDetailList.add(sumIndicator.getOther1Indicator());
                 sumIndicator.getOther2Indicator().setType("质量扣款");
                 indicatorDetailList.add(sumIndicator.getOther2Indicator());
+                sumIndicator.getActualIndicator().setType("当月合计");
+                indicatorDetailList.add(sumIndicator.getActualIndicator());
+            }
+            if (Other4) {
+                sumIndicator.getOther5Indicator().setType("当月");
+                indicatorDetailList.add(sumIndicator.getOther5Indicator());
+                sumIndicator.getOther4Indicator().setType("质量扣款");
+                indicatorDetailList.add(sumIndicator.getOther4Indicator());
                 sumIndicator.getActualIndicator().setType("当月合计");
                 indicatorDetailList.add(sumIndicator.getActualIndicator());
             } else {
@@ -365,8 +392,8 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             return null;
         }
         Indicator entity = null;
-        IndicatorDetail a, b, f, t, o1, o2;
-        IndicatorDetail sa, sb, sf, st, sp, so1, so2;
+        IndicatorDetail a, b, f, t, o1, o2, o4, o5;
+        IndicatorDetail sa, sb, sf, st, sp, so1, so2, so4, so5;
         try {
             entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
             entity.setId(-1);
@@ -392,6 +419,12 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             so2 = new IndicatorDetail();
             so2.setParent(entity);
             so2.setType("O2");
+            so4 = new IndicatorDetail();
+            so4.setParent(entity);
+            so4.setType("O4");
+            so5 = new IndicatorDetail();
+            so5.setParent(entity);
+            so5.setType("O5");
             entity.setActualIndicator(sa);
             entity.setBenchmarkIndicator(sb);
             entity.setForecastIndicator(sf);
@@ -399,6 +432,8 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             entity.setPerformanceIndicator(sp);
             entity.setOther1Indicator(so1);
             entity.setOther2Indicator(so2);
+            entity.setOther4Indicator(so4);
+            entity.setOther5Indicator(so5);
 
             for (int i = 0; i < indicators.size(); i++) {
                 a = indicators.get(i).getActualIndicator();
@@ -410,6 +445,12 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                     o2 = indicators.get(i).getOther2Indicator();
                     addValue(entity.getOther1Indicator(), o1, entity.getFormkind());
                     addValue(entity.getOther2Indicator(), o2, entity.getFormkind());
+                }
+                if (indicators.get(i).getOther4Label() != null && indicators.get(i).getOther5Label() != null) {
+                    o4 = indicators.get(i).getOther4Indicator();
+                    o5 = indicators.get(i).getOther5Indicator();
+                    addValue(entity.getOther4Indicator(), o4, entity.getFormkind());
+                    addValue(entity.getOther5Indicator(), o5, entity.getFormkind());
                 }
                 addValue(entity.getActualIndicator(), a, entity.getFormkind());
                 addValue(entity.getBenchmarkIndicator(), b, entity.getFormkind());
@@ -514,5 +555,35 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     public void setSumOther2Accumulated(IndicatorDetail sumOther2Accumulated) {
         this.sumOther2Accumulated = sumOther2Accumulated;
     }
+
+    /**
+     * @return the sumOther4Accumulated
+     */
+    public IndicatorDetail getSumOther4Accumulated() {
+        return sumOther4Accumulated;
+    }
+
+    /**
+     * @param sumOther4Accumulated the sumOther5Accumulated to set
+     */
+    public void setSumOther4Accumulated(IndicatorDetail sumOther4Accumulated) {
+        this.sumOther4Accumulated = sumOther4Accumulated;
+    }
+
+    /**
+     * @return the sumOther5Accumulated
+     */
+    public IndicatorDetail getSumOther5Accumulated() {
+        return sumOther5Accumulated;
+    }
+
+    /**
+     * @param sumOther5Accumulated the sumOther5Accumulated to set
+     */
+    public void setSumOther5Accumulated(IndicatorDetail sumOther5Accumulated) {
+        this.sumOther5Accumulated = sumOther5Accumulated;
+    }
+    
+    
 
 }
