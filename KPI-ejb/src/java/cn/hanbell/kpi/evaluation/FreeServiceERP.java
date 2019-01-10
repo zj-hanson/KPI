@@ -45,8 +45,8 @@ public abstract class FreeServiceERP implements Actual {
         BigDecimal armpmm = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ISNULL(-SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno='6001' ");
-        sb.append(" AND h.zlk='Y'  AND h.facno='${facno}' AND h.ogdkid='${ogdkid}' ");
+        sb.append("SELECT ISNULL(-SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno IN ('6001','6002') ");
+        sb.append(" AND h.zlk='Y'  AND h.facno='${facno}' AND h.ogdkid IN ${ogdkid} ");
         if (!"".equals(n_code_DA)) {
             sb.append(" AND h.n_code_DA ").append(n_code_DA);
         }

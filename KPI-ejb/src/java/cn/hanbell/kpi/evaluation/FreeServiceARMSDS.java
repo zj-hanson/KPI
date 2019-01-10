@@ -18,9 +18,10 @@ public class FreeServiceARMSDS extends FreeServiceERP {
     public FreeServiceARMSDS() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("ogdkid", "RL01");
+        queryParams.put("ogdkid", "('RL01','RL03')");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_DC", " ='SDS' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override

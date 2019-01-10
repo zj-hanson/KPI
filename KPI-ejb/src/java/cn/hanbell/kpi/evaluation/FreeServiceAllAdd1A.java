@@ -35,7 +35,7 @@ public class FreeServiceAllAdd1A extends FreeServiceAllAdd{
         Indicator i1 = indicatorBean.findByFormidYearAndDeptno(map.get("OuterFormid").toString(), y, map.get("deptno").toString());
 
         try {
-            IndicatorDetail o1 = i1.getActualIndicator();
+            IndicatorDetail o1 = i1.getOther5Indicator();
 
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
