@@ -56,7 +56,7 @@
                             <h:outputText value="#{inventoryAmountBean.format(item.type,item.n12,12) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="全年">                           
-                            <h:outputText value="#{(item.type == '同比成长')?'':inventoryAmountBean.format(item.type,item.nfy,0)}" ></h:outputText>
+                            <h:outputText value="#{(item.type == '同期相比')?'':inventoryAmountBean.format(item.type,item.nfy,0)}" ></h:outputText>
                         </p:column>
                     </p:dataTable>
                 </div>

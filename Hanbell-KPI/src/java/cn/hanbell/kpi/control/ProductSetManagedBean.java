@@ -121,7 +121,12 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
                         return;
                     }
                 }
-                indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                //当按天计算
+                if ("D".equals(currentEntity.getFormkind().trim())) {
+                    indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
+                } else {
+                    indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                }
                 currentEntity = indicatorBean.findById(currentEntity.getId());
                 indicatorBean.updatePerformance(currentEntity);
                 indicatorBean.update(currentEntity);

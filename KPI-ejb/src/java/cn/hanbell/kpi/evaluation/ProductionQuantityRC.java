@@ -24,7 +24,7 @@ public class ProductionQuantityRC extends ProductionQuantity {
         queryParams.put("linecode", " = 'RC' ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
+
         queryParams.put("itcls", " IN ('3176','3177','3179','3180','3276','3279','3280','3083','4079')");
 
     }

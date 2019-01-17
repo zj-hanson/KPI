@@ -142,15 +142,15 @@ public class InventoryAmountReportBean extends BscSheetManagedBean {
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
             }
-            e.getTargetIndicator().setType("目标值");
+            e.getTargetIndicator().setType("目标");
             indicatorDetailList.add(e.getTargetIndicator());
-            e.getActualIndicator().setType("实际值");
+            e.getActualIndicator().setType("实际");
             indicatorDetailList.add(e.getActualIndicator());
-            e.getPerformanceIndicator().setType("当月控制率");
+            e.getPerformanceIndicator().setType("控制率");
             indicatorDetailList.add(e.getPerformanceIndicator());
-            e.getBenchmarkIndicator().setType("去年同期值");
+            e.getBenchmarkIndicator().setType("去年同期");
             indicatorDetailList.add(e.getBenchmarkIndicator());
-            BG.setType("同比成长");
+            BG.setType("同期相比");
             indicatorDetailList.add(BG);
 
         }
@@ -167,15 +167,15 @@ public class InventoryAmountReportBean extends BscSheetManagedBean {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger("bscReportManagedBean").log(Level.SEVERE, null, ex);
         }
-        sumIndicator.getTargetIndicator().setType("目标值");
+        sumIndicator.getTargetIndicator().setType("目标");
         indicatorDetailList.add(sumIndicator.getTargetIndicator());
-        sumIndicator.getActualIndicator().setType("实际值");
+        sumIndicator.getActualIndicator().setType("实际");
         indicatorDetailList.add(sumIndicator.getActualIndicator());
-        sumIndicator.getPerformanceIndicator().setType("当月控制率");
+        sumIndicator.getPerformanceIndicator().setType("控制率");
         indicatorDetailList.add(sumIndicator.getPerformanceIndicator());
-        sumIndicator.getBenchmarkIndicator().setType("去年同期值");
+        sumIndicator.getBenchmarkIndicator().setType("去年同期");
         indicatorDetailList.add(sumIndicator.getBenchmarkIndicator());
-        sumBG.setType("同比成长");
+        sumBG.setType("同期相比");
         indicatorDetailList.add(sumBG);
 
         //根据指标ID加载指标说明、指标分析
@@ -192,8 +192,8 @@ public class InventoryAmountReportBean extends BscSheetManagedBean {
     @Override
     public String format(String type, BigDecimal value, int i) {
         switch (type) {
-            case "当月控制率":
-            case "同比成长":
+            case "控制率":
+            case "同期相比":
                 return percentFormat(value, i);
             default:
                 return format(value, i);

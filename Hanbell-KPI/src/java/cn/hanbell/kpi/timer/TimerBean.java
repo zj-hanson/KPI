@@ -65,7 +65,7 @@ public class TimerBean {
     private BscGroupHSShipmentBean bscGroupHSShipmentBean;
     @EJB
     private ClientTableBean clientTableBean;
-    
+
     @Resource
     TimerService timerService;
 
@@ -126,7 +126,11 @@ public class TimerBean {
             for (Indicator e : indicatorList) {
                 if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
                     try {
-                        indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                        if ("D".equals(e.getFormkind().trim())) {
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
+                        } else {
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                        }
                         log4j.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
                     } catch (Exception ex) {
                         log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
@@ -259,7 +263,7 @@ public class TimerBean {
             log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
         }
     }
-    
+
     @Schedule(hour = "5", dayOfMonth = "1", persistent = false)
     public void updateKPIClientTable() {
         try {

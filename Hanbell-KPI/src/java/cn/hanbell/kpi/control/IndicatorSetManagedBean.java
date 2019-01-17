@@ -9,6 +9,7 @@ import cn.hanbell.eap.entity.Department;
 import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorAssignmentBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
+import cn.hanbell.kpi.ejb.IndicatorDailyBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
 import cn.hanbell.kpi.ejb.IndicatorDetailBean;
 import cn.hanbell.kpi.ejb.IndicatorSetBean;
@@ -16,13 +17,16 @@ import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorAssignment;
+import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
+import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.lazy.IndicatorModel;
 import cn.hanbell.kpi.web.SuperMulti3Bean;
 import com.lightshell.comm.BaseLib;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +55,8 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
     @EJB
     protected IndicatorDetailBean indicatorDetailBean;
     @EJB
+    protected IndicatorDailyBean indicatorDailyBean;
+    @EJB
     protected IndicatorSetBean indicatorSetBean;
     @EJB
     protected IndicatorAnalysisBean indicatorAnalysisBean;
@@ -59,6 +65,7 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
 
     protected IndicatorAnalysis indicatorAnalysis;
     protected IndicatorSummary indicatorSummary;
+    protected IndicatorDaily indicatorDaily;
 
     protected List<IndicatorAnalysis> analysisList;
     protected List<IndicatorSummary> summaryList;
@@ -370,7 +377,7 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         detailEJB = indicatorDepartmentBean;
         detailEJB2 = indicatorAssignmentBean;
         detailEJB3 = indicatorSetBean;
-        model = new IndicatorModel(indicatorBean,this.userManagedBean);
+        model = new IndicatorModel(indicatorBean, this.userManagedBean);
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
@@ -614,6 +621,100 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
         }
     }
 
+    @Override
+    public void delete() {
+        try {
+            deleteIndicatorDaily(currentEntity.getActualIndicator());
+            deleteIndicatorDaily(currentEntity.getBenchmarkIndicator());
+            deleteIndicatorDaily(currentEntity.getForecastIndicator());
+            deleteIndicatorDaily(currentEntity.getPerformanceIndicator());
+            deleteIndicatorDaily(currentEntity.getTargetIndicator());
+            deleteIndicatorDaily(currentEntity.getOther1Indicator());
+            deleteIndicatorDaily(currentEntity.getOther2Indicator());
+            deleteIndicatorDaily(currentEntity.getOther3Indicator());
+            deleteIndicatorDaily(currentEntity.getOther4Indicator());
+            deleteIndicatorDaily(currentEntity.getOther5Indicator());
+            deleteIndicatorDaily(currentEntity.getOther6Indicator());
+            super.delete();
+        } catch (Exception e) {
+            showErrorMsg("Error", e.toString());
+        }
+    }
+
+    public void deleteIndicatorDaily(IndicatorDetail entity) {
+        if (entity != null) {
+            indicatorDailyBean.deleteByPid(entity.getId());
+        }
+    }
+
+    //查找天指标数据
+    public void queryIndicatorDaily(IndicatorDetail entity, int m) {
+        indicatorDaily = new IndicatorDaily();
+        indicatorDaily = indicatorDailyBean.findByPidDateAndType(entity.getId(), entity.getSeq(), m, entity.getType());
+    }
+
+    //修改天指标数据
+    public void updateIndicatorDaily() {
+        if (indicatorDaily != null) {
+            try {
+                indicatorDailyBean.update(indicatorDaily);
+                showInfoMsg("Info", "更新天指标数据成功");
+                IndicatorDetail detail = indicatorDetailBean.findById(indicatorDaily.getPid());
+                if (detail != null) {
+                    BigDecimal decimal = indicatorDaily.getTotal();
+                    int mth = indicatorDaily.getMth();
+                    Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorDailyColumn("N", mth).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(detail, decimal);
+                    indicatorDetailBean.update(detail);
+                    currentEntity = indicatorBean.findById(currentEntity.getId());
+                    setCurrentEntity(currentEntity);
+                }
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        } else {
+            showErrorMsg("Error", "没有可更新天指标");
+        }
+    }
+
+    public String getIndicatorDailyColumn(String formtype, int m) {
+        if (formtype.equals("N")) {
+            return "n" + String.format("%02d", m);
+        } else {
+            return "";
+        }
+    }
+
+    public int days(int year, int month) {
+        int days = 0;
+        if (month != 2) {
+            switch (month) {
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    days = 31;
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    days = 30;
+            }
+        } else {
+            // 闰年
+            if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+                days = 29;
+            } else {
+                days = 28;
+            }
+        }
+        return days;
+    }
+
     /**
      * @return the queryDeptno
      */
@@ -710,6 +811,20 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
      */
     public void setSummaryList(List<IndicatorSummary> summaryList) {
         this.summaryList = summaryList;
+    }
+
+    /**
+     * @return the indicatorDaily
+     */
+    public IndicatorDaily getIndicatorDaily() {
+        return indicatorDaily;
+    }
+
+    /**
+     * @param indicatorDaily the indicatorDaily to set
+     */
+    public void setIndicatorDaily(IndicatorDaily indicatorDaily) {
+        this.indicatorDaily = indicatorDaily;
     }
 
 }

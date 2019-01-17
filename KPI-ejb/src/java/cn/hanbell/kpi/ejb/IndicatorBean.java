@@ -25,9 +25,11 @@ import javax.persistence.Query;
 import org.apache.commons.beanutils.BeanUtils;
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.entity.IndicatorAssignment;
+import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -45,6 +47,9 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     @EJB
     private IndicatorDetailBean indicatorDetailBean;
+
+    @EJB
+    private IndicatorDailyBean indicatorDailyBean;
 
     @EJB
     private IndicatorSetBean indicatorSetBean;
@@ -393,6 +398,24 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return total;
     }
 
+    public BigDecimal getAccumulatedValue(IndicatorDaily entity, int d) {
+        String mon;
+        BigDecimal total = BigDecimal.ZERO;
+        Field f;
+        for (int i = 1; i <= d; i++) {
+            try {
+                mon = this.getIndicatorColumn("D", i);
+                f = entity.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                log4j.error(ex);
+                total = BigDecimal.ZERO;
+            }
+        }
+        return total;
+    }
+
     public BigDecimal getAccumulatedValue(IndicatorDetail entity, int m, Date d) {
         String mon;
         BigDecimal total = BigDecimal.ZERO;
@@ -480,6 +503,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public String getIndicatorColumn(String formtype, int m) {
         if (formtype.equals("N")) {
             return "n" + String.format("%02d", m);
+        } else if (formtype.equals("D")) {
+            return "d" + String.format("%02d", m);
         } else {
             return "";
         }
@@ -488,6 +513,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public String getIndicatorColumn(String formtype, String c) {
         if (formtype.equals("N")) {
             return "n" + c;
+        }else if (formtype.equals("D")) {
+            return "d" + c;
         } else {
             return "";
         }
@@ -624,6 +651,20 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDepartmentBean.persist(dept);
     }
 
+    public void persistIndicatorDaily(Indicator entity, IndicatorDetail detail) {
+        IndicatorDaily table;
+        if (entity != null) {
+            for (int i = 1; i <= 12; i++) {
+                table = new IndicatorDaily();
+                table.setPid(detail.getId());
+                table.setSeq(detail.getSeq());
+                table.setMth(i);
+                table.setType(detail.getType());
+                indicatorDailyBean.persist(table);
+            }
+        }
+    }
+
     @Override
     public Indicator update(Indicator entity) {
         indicatorDetailBean.update(entity.getTargetIndicator());
@@ -631,6 +672,24 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.update(entity.getForecastIndicator());
         indicatorDetailBean.update(entity.getActualIndicator());
         indicatorDetailBean.update(entity.getPerformanceIndicator());
+        if ("D".equals(entity.getFormkind())) {
+            //检查是否有天指标
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getTargetIndicator().getId(), entity.getTargetIndicator().getSeq())) {
+                persistIndicatorDaily(entity, entity.getTargetIndicator());
+            }
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getBenchmarkIndicator().getId(), entity.getBenchmarkIndicator().getSeq())) {
+                persistIndicatorDaily(entity, entity.getBenchmarkIndicator());
+            }
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getForecastIndicator().getId(), entity.getForecastIndicator().getSeq())) {
+                persistIndicatorDaily(entity, entity.getForecastIndicator());
+            }
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getActualIndicator().getId(), entity.getActualIndicator().getSeq())) {
+                persistIndicatorDaily(entity, entity.getActualIndicator());
+            }
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getPerformanceIndicator().getId(), entity.getPerformanceIndicator().getSeq())) {
+                persistIndicatorDaily(entity, entity.getPerformanceIndicator());
+            }
+        }
         if (entity.getHasOther() == 1) {
             if (entity.getOther1Indicator() == null) {
                 IndicatorDetail o1 = new IndicatorDetail();
@@ -640,6 +699,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o1);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther1Indicator(o1);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
             }
         }
         if (entity.getHasOther() == 2) {
@@ -660,6 +725,15 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o2);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther2Indicator(o2);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther2Indicator());
+                }
             }
         }
         if (entity.getHasOther() == 3) {
@@ -689,6 +763,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o3);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther3Indicator(o3);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther2Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther3Indicator());
+                }
             }
         }
         if (entity.getHasOther() == 4) {
@@ -727,6 +813,21 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o4);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther4Indicator(o4);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther2Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther3Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther4Indicator());
+                }
             }
         }
         if (entity.getHasOther() == 5) {
@@ -774,6 +875,24 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o5);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther5Indicator(o5);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther2Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther3Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther4Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(), entity.getOther5Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther5Indicator());
+                }
             }
         }
         if (entity.getHasOther() == 6) {
@@ -830,6 +949,27 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDetailBean.persist(o6);
                 indicatorDetailBean.getEntityManager().flush();
                 entity.setOther6Indicator(o6);
+            }
+            if ("D".equals(entity.getFormkind())) {
+                //检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther1Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther2Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther3Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther4Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(), entity.getOther5Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther5Indicator());
+                }
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther6Indicator().getId(), entity.getOther6Indicator().getSeq())) {
+                    persistIndicatorDaily(entity, entity.getOther6Indicator());
+                }
             }
         }
         return super.update(entity);
@@ -964,6 +1104,25 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public BigDecimal upadateActualofIndicatorDaily(IndicatorDetail entity, int uy, int um, Date d, int type, Actual a1) {
+        try {
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            IndicatorDaily daily = indicatorDailyBean.findByPidDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
+            if (daily != null) {
+                BigDecimal dayBigDecimal = a1.getValue(uy, um, d, type, a1.getQueryParams());
+                Method setMethod = daily.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("D", day).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(daily, dayBigDecimal);
+                indicatorDailyBean.update(daily);
+                return daily.getTotal();
+            }
+        } catch (Exception e) {
+        }
+        return BigDecimal.ZERO;
+
+    }
+
     public Indicator updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
         IndicatorDetail detail;
@@ -977,7 +1136,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther1EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o1, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     Method setMethod = o1.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o1, na);
                     indicatorDetailBean.update(o1);
@@ -992,7 +1156,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther2EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o2, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     Method setMethod = o2.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o2, na);
                     indicatorDetailBean.update(o2);
@@ -1007,7 +1176,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther3EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o3, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     detail = indicatorDetailBean.findById(o3.getId());
                     Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(detail, na);
@@ -1023,7 +1197,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther4EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o4, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     Method setMethod = o4.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o4, na);
                     indicatorDetailBean.update(o4);
@@ -1038,7 +1217,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther5EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o5, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     Method setMethod = o5.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o5, na);
                     indicatorDetailBean.update(o5);
@@ -1053,7 +1237,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther6EJB());
-                    BigDecimal na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(o6, uy, um, d, type, otherInterface);
+                    } else {
+                        na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
+                    }
                     Method setMethod = o6.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o6, na);
                     indicatorDetailBean.update(o6);
@@ -1070,7 +1259,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 um = actualInterface.getUpdateMonth(y, m);
                 if (entity.getSeq() == uy) {
                     actualInterface.setEJB(entity.getActualEJB());
-                    BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(a, uy, um, d, type, actualInterface);
+                    } else {
+                        na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    }
                     Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(a, na);
                     indicatorDetailBean.update(a);
@@ -1085,7 +1279,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
         int uy, um;
-        if ((entity != null) &&  (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
+        if ((entity != null) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
                 actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
@@ -1093,7 +1287,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 um = actualInterface.getUpdateMonth(y, m);
                 if (entity.getSeq() == uy) {
                     actualInterface.setEJB(entity.getActualEJB());
-                    BigDecimal na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    BigDecimal na;
+                    if ("D".equals(entity.getFormkind())) {
+                        na = upadateActualofIndicatorDaily(a, uy, um, d, type, actualInterface);
+                    } else {
+                        na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
+                    }
                     Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(a, na);
                     indicatorDetailBean.update(a);
