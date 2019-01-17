@@ -643,14 +643,14 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
 
     public void deleteIndicatorDaily(IndicatorDetail entity) {
         if (entity != null) {
-            indicatorDailyBean.deleteByPid(entity.getId());
+            indicatorDailyBean.deleteByPId(entity.getId());
         }
     }
 
     //查找天指标数据
     public void queryIndicatorDaily(IndicatorDetail entity, int m) {
         indicatorDaily = new IndicatorDaily();
-        indicatorDaily = indicatorDailyBean.findByPidDateAndType(entity.getId(), entity.getSeq(), m, entity.getType());
+        indicatorDaily = indicatorDailyBean.findByPIdDateAndType(entity.getId(), entity.getSeq(), m, entity.getType());
     }
 
     //修改天指标数据

@@ -60,7 +60,7 @@ public abstract class BscProductiontMail extends MailNotification {
     }
 
     protected IndicatorDaily findByPidDateAndType(IndicatorDetail entit, int m) {
-        return indicatorDailyBean.findByPidDateAndType(entit.getId(), entit.getSeq(), m, entit.getType());
+        return indicatorDailyBean.findByPIdDateAndType(entit.getId(), entit.getSeq(), m, entit.getType());
     }
 
     @Override

@@ -132,7 +132,7 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="thb"/>
     </properties>
   </persistence-unit>
-<!--  <persistence-unit name="PU_vhberp" transaction-type="JTA">
+  <persistence-unit name="PU_vhberp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/vhberp</jta-data-source>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
@@ -141,7 +141,7 @@
     <properties>
       <property name="eclipselink.canonicalmodel.subpackage" value="vhb"/>
     </properties>
-  </persistence-unit>-->
+  </persistence-unit>
   <persistence-unit name="PU-SHBEEPXT" transaction-type="JTA">
     <jta-data-source>jdbc/shbeep_xt</jta-data-source>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>

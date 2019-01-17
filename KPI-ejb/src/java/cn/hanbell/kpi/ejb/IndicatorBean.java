@@ -1109,7 +1109,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             Calendar c = Calendar.getInstance();
             c.setTime(d);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            IndicatorDaily daily = indicatorDailyBean.findByPidDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
+            IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 BigDecimal dayBigDecimal = a1.getValue(uy, um, d, type, a1.getQueryParams());
                 Method setMethod = daily.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("D", day).toUpperCase(), BigDecimal.class);

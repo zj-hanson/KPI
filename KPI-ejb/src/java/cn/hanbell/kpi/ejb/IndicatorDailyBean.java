@@ -23,7 +23,7 @@ public class IndicatorDailyBean extends SuperEJBForKPI<IndicatorDaily> {
         super(IndicatorDaily.class);
     }
 
-    public IndicatorDaily findByPidDateAndType(int pid, int seq, int m, String type) {
+    public IndicatorDaily findByPIdDateAndType(int pid, int seq, int m, String type) {
         Query query = getEntityManager().createNamedQuery("IndicatorDaily.findByPidDateAndType");
         query.setParameter("pid", pid);
         query.setParameter("seq", seq);
@@ -38,7 +38,7 @@ public class IndicatorDailyBean extends SuperEJBForKPI<IndicatorDaily> {
     }
 
     
-    public void deleteByPid(int pid) {
+    public void deleteByPId(int pid) {
         StringBuilder sb = new StringBuilder();
         sb.append(" DELETE FROM indicatordaily  WHERE pid = ${pid} ");
         String sql = sb.toString().replace("${pid}", String.valueOf(pid));
