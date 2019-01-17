@@ -43,8 +43,14 @@
                         <p:inputText id="name" value="#{mailSettingManagedBean.currentEntity.name}" title="name"
                                      required="true" requiredMessage="主旨不能为空."/>
                     </p:column>
-                    <p:column><p:outputLabel value="邮件接口" for="mailClazz" /></p:column>
+                    <p:column><p:outputLabel value="发送排程" for="jobSchedule" /></p:column>
                     <p:column>
+                        <p:inputText id="jobSchedule" value="#{mailSettingManagedBean.currentEntity.jobSchedule}" title="jobSchedule"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="邮件接口" for="mailClazz" /></p:column>
+                    <p:column colspan="3">
                         <p:inputText id="mailClazz" value="#{mailSettingManagedBean.currentEntity.mailClazz}" title="mailClazz"
                                      required="true" requiredMessage="请输入邮件接口"/>
                     </p:column>
