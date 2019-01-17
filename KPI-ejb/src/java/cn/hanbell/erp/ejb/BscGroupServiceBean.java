@@ -147,6 +147,26 @@ public class BscGroupServiceBean implements Serializable {
             }
         }
         queryParams.clear();
+        queryParams.put("facno", "C4");//目前A机组有重庆的数据，暂定这一个分公司。后续有其他分公司再添加。
+        queryParams.put("n_code_DA", " ='AA' ");
+        queryParams.put("decode", "1");
+        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setShpnum(BigDecimal.ZERO);
+                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
+                    a.setOrdnum(BigDecimal.ZERO);
+                    a.setOrdamts(BigDecimal.ZERO);
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='P' ");
         queryParams.put("ogdkid", " IN ('RL01') ");

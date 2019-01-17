@@ -10,30 +10,61 @@ body .ui-panelgrid .ui-panelgrid-cell {
     padding: 0px 4px;
 }
 
-body .plgChartData tr{
-    text-align: right;
-    font-size: 18px;
-    font-weight: 600;
+@media (max-width: 812px) {
+
+    body .plgChartData tr{
+        text-align: right;
+        font-size: 12px;
+    }
+
+    body .plgChartData td.ui-widget-header{
+        text-align: right;
+        font-size: 12px;
+    }
+
+    body .plgChartData td.ui-panelgrid-cell{
+        padding: 0px 0px;
+    }
+
+    body .plgSheetData tr{
+        text-align: right;
+        font-size: 12px;
+    }
+
+    body .plgSheetData tr.ui-widget-content td{
+        padding: 0px 0px;
+    }
+
 }
 
-body .plgChartData td.ui-widget-header{
-    text-align: right;
-    font-size: 18px;
-    font-weight: 600;
-}
+@media (min-width: 813px){
 
-body .plgChartData td.ui-panelgrid-cell{
-    padding: 2px 1px;
-}
+    body .plgChartData tr{
+        text-align: right;
+        font-size: 18px;
+        font-weight: 600;
+    }
 
-body .plgSheetData tr{
-    text-align: right;
-    font-size: 18px;
-    font-weight: 600;
-}
+    body .plgChartData td.ui-widget-header{
+        text-align: right;
+        font-size: 18px;
+        font-weight: 600;
+    }
 
-body .plgSheetData tr.ui-widget-content td{
-    padding: 2px 1px;
+    body .plgChartData td.ui-panelgrid-cell{
+        padding: 2px 1px;
+    }
+
+    body .plgSheetData tr{
+        text-align: right;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    body .plgSheetData tr.ui-widget-content td{
+        padding: 2px 1px;
+    }
+
 }
 
 .right{
