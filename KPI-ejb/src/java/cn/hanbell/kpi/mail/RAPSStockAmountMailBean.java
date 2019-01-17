@@ -162,7 +162,7 @@ public class RAPSStockAmountMailBean extends BscSheetMail {
                 }
             }
             sb.append("</tr>");
-            sb.append("<tr><td>本月控制</td>");
+            sb.append("<tr><td>控制率</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = p.getClass().getDeclaredField(col);
@@ -186,7 +186,7 @@ public class RAPSStockAmountMailBean extends BscSheetMail {
                 }
             }
             sb.append("</tr>");
-            sb.append("<tr><td>同比成长</td>");
+            sb.append("<tr><td>同期相比</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = BG.getClass().getDeclaredField(col);

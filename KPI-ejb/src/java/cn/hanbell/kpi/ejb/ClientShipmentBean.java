@@ -104,11 +104,25 @@ public class ClientShipmentBean implements Serializable {
                 }
             }
         }
-        if ("".equals(da.trim()) || "RT".equals(da.trim()) || "OH".equals(da.trim())) {
+        if ("".equals(da.trim()) || "RT".equals(da.trim())) {
             queryParams.clear();
             queryParams.put("facno", "K");
-            queryParams.put("depno", " IN('5A000','5A100','5B000') ");
-            queryParams.put("n_code_DA", " IN('RT','OH') ");
+            queryParams.put("depno", " IN('5A000','5A100') ");
+            queryParams.put("n_code_DA", " IN('RT') ");
+            queryParams.put("n_code_DD", " IN ('02') ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            list = getClientList(y, m, queryParams);
+            if (list != null && !list.isEmpty()) {
+                for (ClientTable clientTable : list) {
+                    clientList.add(clientTable);
+                }
+            }
+        }
+        if ("".equals(da.trim()) ||  "OH".equals(da.trim())) {
+            queryParams.clear();
+            queryParams.put("facno", "K");
+            queryParams.put("depno", " IN('5B000') ");
+            queryParams.put("n_code_DA", " IN('OH') ");
             queryParams.put("n_code_DD", " IN ('02') ");
             queryParams.put("ogdkid", " IN('RL01','RL03') ");
             list = getClientList(y, m, queryParams);

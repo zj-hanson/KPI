@@ -70,6 +70,7 @@
                     <p:column>
                         <p:selectOneMenu id="formkind" value="#{indicatorDefineManagedBean.currentEntity.formkind}" title="formkind"
                                          required="true" requiredMessage="请输入计算周期">
+                            <f:selectItem itemLabel="天" itemValue="D"/>
                             <f:selectItem itemLabel="月" itemValue="M"/>
                             <f:selectItem itemLabel="季" itemValue="Q"/>
                             <f:selectItem itemLabel="半年" itemValue="H"/>

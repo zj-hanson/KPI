@@ -20,13 +20,12 @@ public class ProductionQuantityVPZ extends ProductionQuantity {
         queryParams.put("facno", "C");
         //*生产地
         queryParams.put("prono", "1");
+        //制令等级
+        queryParams.put("typecode", "= '01' ");
         //*生产线别
         queryParams.put("linecode", " = 'VPZ' ");
         //制令种类
         queryParams.put("mankind", " = 'MOS' ");
-        //制令等级
-        queryParams.put("typecode", "= '01' ");
-    
 
     }
 }

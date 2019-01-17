@@ -278,8 +278,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 indicatorDetailList.add(sumIndicator.getOther2Indicator());
                 sumIndicator.getActualIndicator().setType("当月合计");
                 indicatorDetailList.add(sumIndicator.getActualIndicator());
-            }
-            if (Other4) {
+            }else if (Other4) {
                 sumIndicator.getOther5Indicator().setType("当月");
                 indicatorDetailList.add(sumIndicator.getOther5Indicator());
                 sumIndicator.getOther4Indicator().setType("质量扣款");

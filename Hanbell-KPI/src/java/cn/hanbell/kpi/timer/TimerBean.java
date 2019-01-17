@@ -118,17 +118,19 @@ public class TimerBean {
 
     @Timeout
     public void jobScheduler(Timer timer) {
-        String reportName = "";
+        log4j.info("Begin Execute Job Schedule " + timer.getInfo());
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
-        //KPI指标更新
         List<Indicator> indicatorList = indicatorBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
         if (indicatorList != null && !indicatorList.isEmpty()) {
-            log4j.info("Begin Execute KPI Update Job Schedule " + timer.getInfo());
             for (Indicator e : indicatorList) {
                 if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
                     try {
-                        indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                        if ("D".equals(e.getFormkind().trim())) {
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
+                        } else {
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                        }
                         log4j.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
                     } catch (Exception ex) {
                         log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
@@ -142,56 +144,58 @@ public class TimerBean {
                     }
                 }
             }
-            //部门指标来源产品指标，所以先算产品指标
-            log4j.info("updateIndicatorActualValue开始产品指标堆叠计算");
-            indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "P", c.get(Calendar.YEAR), timer.getInfo().toString());
-            if (indicatorList != null && !indicatorList.isEmpty()) {
-                for (Indicator e : indicatorList) {
-                    try {
-                        updateActual(e, c.get(Calendar.MONTH) + 1);
-                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                    } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
-                    }
-                }
-            }
-            log4j.info("updateIndicatorActualValue开始部门指标堆叠计算");
-            indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "D", c.get(Calendar.YEAR), timer.getInfo().toString());
-            if (indicatorList != null && !indicatorList.isEmpty()) {
-                for (Indicator e : indicatorList) {
-                    try {
-                        updateActual(e, c.get(Calendar.MONTH) + 1);
-                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
-                    } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
-                    }
-                }
-            }
-            log4j.info("End Execute KPI Update Job Schedule " + timer.getInfo());
         }
-        //KPI报表发送
-        List<MailSetting> mailSettingList = mailSettingBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
-        if (mailSettingList != null && !mailSettingList.isEmpty()) {
-            log4j.info("Begin Execute Send KPI Report Job Schedule " + timer.getInfo());
-            try {
-                for (MailSetting ms : mailSettingList) {
-                    reportName = ms.getName();
-                    MailNotification mn = getMailNotificationBean(ms.getMailEJB());
-                    if (mn != null) {
-                        mn.init();
-                        mn.setD(c.getTime());
-                        mn.setMailContent();
-                        mn.setMailSubject();
-                        mn.notify(new MailNotify());
-                        log4j.info(String.format("成功执行%s:发送报表%s", "sendKPIReport", reportName));
-                    } else {
-                        log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
-                    }
+        //部门指标来源产品指标，所以先算产品指标
+        log4j.info("updateIndicatorActualValue开始产品指标堆叠计算");
+        indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "P", c.get(Calendar.YEAR), timer.getInfo().toString());
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
                 }
-            } catch (Exception ex) {
-                log4j.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
             }
-            log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
+        }
+        log4j.info("updateIndicatorActualValue开始部门指标堆叠计算");
+        indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "D", c.get(Calendar.YEAR), timer.getInfo().toString());
+        if (indicatorList != null && !indicatorList.isEmpty()) {
+            for (Indicator e : indicatorList) {
+                try {
+                    updateActual(e, c.get(Calendar.MONTH) + 1);
+                    log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                } catch (Exception ex) {
+                    log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                }
+            }
+        }
+        log4j.info("End Execute Job Schedule " + timer.getInfo());
+    }
+
+    @Schedule(minute = "3", hour = "10", dayOfWeek = "Tue,Wed,Thu,Fri,Sat", persistent = false)
+    public void sendKPIReport() {
+        String reportName = "";
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1);
+        List<MailSetting> mailSettingList = mailSettingBean.findByStatus("V");
+        try {
+            for (MailSetting ms : mailSettingList) {
+                reportName = ms.getName();
+                MailNotification mn = getMailNotificationBean(ms.getMailEJB());
+                if (mn != null) {
+                    mn.init();
+                    mn.setD(c.getTime());
+                    mn.setMailContent();
+                    mn.setMailSubject();
+                    mn.notify(new MailNotify());
+                    log4j.info(String.format("成功执行%s:发送报表%s", "sendKPIReport", reportName));
+                } else {
+                    log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
+                }
+            }
+        } catch (Exception ex) {
+            log4j.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
         }
     }
 
@@ -250,7 +254,7 @@ public class TimerBean {
             log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
             Calendar now = Calendar.getInstance();
             int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH) + 1);
+            int m = (now.get(Calendar.MONTH)+1);
             Date d = now.getTime();
             bscGroupVHShipmentBean.updataActualValue(y, m, d);
             bscGroupVHServiceBean.updataActualValue(y, m, d);
@@ -283,5 +287,4 @@ public class TimerBean {
             log4j.error(String.format("客户排名历史表归档更新异常", "updateKPIClientTable"), e.toString());
         }
     }
-
 }

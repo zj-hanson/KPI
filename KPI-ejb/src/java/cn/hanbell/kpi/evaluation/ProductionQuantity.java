@@ -32,8 +32,8 @@ public class ProductionQuantity extends Production {
         BigDecimal manqty = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(manqty),0) from manmas where manstatus in ('B','C','D','E','H','I') ");
-        sb.append(" and  facno = '${facno}' and prono = '${prono}' ");
+        sb.append(" select isnull(sum(manqty),0) from manmas where  facno='${facno}' and prono='${prono}'  ");
+        sb.append(" and manstatus in ('B','C','D','E','H','I') ");
         if (!"".equals(linecode)) {
             sb.append(" and linecode ").append(linecode);
         }
