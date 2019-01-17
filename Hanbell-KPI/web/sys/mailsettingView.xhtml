@@ -50,14 +50,8 @@
                     <p:column>
                         <h:outputText id="name" value="#{mailSettingManagedBean.currentEntity.name}" title="name"/>
                     </p:column>
-                    <p:column><h:outputText value="发送排程"/></p:column>
-                    <p:column>
-                        <h:outputText id="jobSchedule" value="#{mailSettingManagedBean.newEntity.jobSchedule}" title="jobSchedule"/>
-                    </p:column>
-                </p:row>
-                <p:row>
                     <p:column><h:outputText value="邮件接口"/></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <h:outputText id="mailClazz" value="#{mailSettingManagedBean.currentEntity.mailClazz}" title="mailClazz"/>
                     </p:column>
                 </p:row>

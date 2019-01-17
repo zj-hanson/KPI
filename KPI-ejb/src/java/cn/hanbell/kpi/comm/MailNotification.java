@@ -268,5 +268,5 @@ public abstract class MailNotification {
     public HashMap<String, BigDecimal> getData() {
         return data;
     }
-    
+
 }

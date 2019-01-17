@@ -20,6 +20,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 /**
  *
@@ -31,8 +32,8 @@ public class HomePageManagedBean extends SuperQueryBean<Indicator> {
 
     @EJB
     private IndicatorBean indicatorBean;
-    private Calendar c = Calendar.getInstance();
-    private int y;
+
+    int y = Calendar.getInstance().get(Calendar.YEAR);
 
     public HomePageManagedBean() {
         super(Indicator.class);
@@ -40,8 +41,7 @@ public class HomePageManagedBean extends SuperQueryBean<Indicator> {
 
     @PostConstruct
     public void construct() {
-        c.setTime(userManagedBean.getBaseDate());
-        y = c.get(Calendar.YEAR);
+
     }
 
     public LineChartModel initLineChartModel(String id, String objno, String xTitle, String yTitle) {
@@ -73,7 +73,7 @@ public class HomePageManagedBean extends SuperQueryBean<Indicator> {
 
         chartModel.addSeries(t);
         chartModel.addSeries(a);
-        chartModel.setTitle(String.valueOf(y) + indicator.getName());
+        chartModel.setTitle(indicator.getName());
         chartModel.setLegendPosition("e");
         chartModel.setShowPointLabels(true);
         chartModel.setBreakOnNull(true);

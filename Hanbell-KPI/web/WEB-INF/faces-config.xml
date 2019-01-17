@@ -109,7 +109,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <!--KPI一级导航-->
     <navigation-rule>
         <description>KPI一级导航</description>
         <from-view-id>/*</from-view-id>
@@ -144,8 +143,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>clienttableSet</from-outcome>
-            <to-view-id>/app/prod/clienttableSet.xhtml</to-view-id>
+            <from-outcome>product</from-outcome>
+            <to-view-id>/app/prod/product.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>productset</from-outcome>
+            <to-view-id>/app/prod/productset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -154,13 +158,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>product</from-outcome>
-            <to-view-id>/app/prod/product.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>productset</from-outcome>
-            <to-view-id>/app/prod/productset.xhtml</to-view-id>
+            <from-outcome>clienttableSet</from-outcome>
+            <to-view-id>/app/prod/clienttableSet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -221,15 +220,9 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <!--BSC一级导航-->
     <navigation-rule>
-        <description>BSC一级导航</description>
+        <description>BSC汇报一级导航</description>
         <from-view-id>/*</from-view-id>
-        <navigation-case>
-            <from-outcome>clientranking</from-outcome>
-            <to-view-id>/app/bsc/clientranking.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
         <navigation-case>
             <from-outcome>shipmentchart</from-outcome>
             <to-view-id>/app/bsc/shipmentchart.xhtml</to-view-id>
@@ -238,6 +231,11 @@
         <navigation-case>
             <from-outcome>shipmentsheet</from-outcome>
             <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>clientranking</from-outcome>
+            <to-view-id>/app/bsc/clientranking.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -406,7 +404,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <!--模态开窗-->
     <navigation-rule>
         <description>模态开窗</description>
         <from-view-id>/*</from-view-id>

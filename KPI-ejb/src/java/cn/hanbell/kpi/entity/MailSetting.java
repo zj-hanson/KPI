@@ -24,26 +24,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "mailsetting")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MailSetting.findAll", query = "SELECT m FROM MailSetting m")
-    ,
-    @NamedQuery(name = "MailSetting.findById", query = "SELECT m FROM MailSetting m WHERE m.id = :id")
-    ,
-    @NamedQuery(name = "MailSetting.findByCompany", query = "SELECT m FROM MailSetting m WHERE m.company = :company")
-    ,
-    @NamedQuery(name = "MailSetting.findByFormid", query = "SELECT m FROM MailSetting m WHERE m.formid = :formid")
-    ,
-    @NamedQuery(name = "MailSetting.findByFormtype", query = "SELECT m FROM MailSetting m WHERE m.formtype = :formtype")
-    ,
-    @NamedQuery(name = "MailSetting.findByFormkind", query = "SELECT m FROM MailSetting m WHERE m.formkind = :formkind")
-    ,
-    @NamedQuery(name = "MailSetting.findByName", query = "SELECT m FROM MailSetting m WHERE m.name = :name")
-    ,
-    @NamedQuery(name = "MailSetting.findByMailClazz", query = "SELECT m FROM MailSetting m WHERE m.mailClazz = :mailClazz")
-    ,
-    @NamedQuery(name = "MailSetting.findByStatus", query = "SELECT m FROM MailSetting m WHERE m.status = :status")
-    ,
-    @NamedQuery(name = "MailSetting.findByJobScheduleAndStatus", query = "SELECT m FROM MailSetting m WHERE m.jobSchedule = :jobschedule AND m.status = :status")
-})
+    @NamedQuery(name = "MailSetting.findAll", query = "SELECT m FROM MailSetting m"),
+    @NamedQuery(name = "MailSetting.findById", query = "SELECT m FROM MailSetting m WHERE m.id = :id"),
+    @NamedQuery(name = "MailSetting.findByCompany", query = "SELECT m FROM MailSetting m WHERE m.company = :company"),
+    @NamedQuery(name = "MailSetting.findByFormid", query = "SELECT m FROM MailSetting m WHERE m.formid = :formid"),
+    @NamedQuery(name = "MailSetting.findByFormtype", query = "SELECT m FROM MailSetting m WHERE m.formtype = :formtype"),
+    @NamedQuery(name = "MailSetting.findByFormkind", query = "SELECT m FROM MailSetting m WHERE m.formkind = :formkind"),
+    @NamedQuery(name = "MailSetting.findByName", query = "SELECT m FROM MailSetting m WHERE m.name = :name"),
+    @NamedQuery(name = "MailSetting.findByMailClazz", query = "SELECT m FROM MailSetting m WHERE m.mailClazz = :mailClazz"),
+    @NamedQuery(name = "MailSetting.findByStatus", query = "SELECT m FROM MailSetting m WHERE m.status = :status")})
 public class MailSetting extends FormEntity {
 
     @Basic(optional = false)
@@ -69,9 +58,6 @@ public class MailSetting extends FormEntity {
     @Size(max = 200)
     @Column(name = "mailEJB")
     private String mailEJB;
-    @Size(max = 20)
-    @Column(name = "jobSchedule")
-    private String jobSchedule;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -139,20 +125,6 @@ public class MailSetting extends FormEntity {
      */
     public void setMailEJB(String mailEJB) {
         this.mailEJB = mailEJB;
-    }
-
-    /**
-     * @return the jobSchedule
-     */
-    public String getJobSchedule() {
-        return jobSchedule;
-    }
-
-    /**
-     * @param jobSchedule the jobSchedule to set
-     */
-    public void setJobSchedule(String jobSchedule) {
-        this.jobSchedule = jobSchedule;
     }
 
     public String getRemark() {

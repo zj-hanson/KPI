@@ -30,17 +30,6 @@ public class MailSettingBean extends SuperEJBForKPI<MailSetting> {
         super(MailSetting.class);
     }
 
-    public List<MailSetting> findByJobScheduleAndStatus(String jobschedule, String status) {
-        Query query = getEntityManager().createNamedQuery("MailSetting.findByJobScheduleAndStatus");
-        query.setParameter("jobschedule", jobschedule);
-        query.setParameter("status", status);
-        try {
-            return query.getResultList();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public MailSetting findByMailClazz(String mailClazz) {
         Query query = getEntityManager().createNamedQuery("MailSetting.findByMailClazz");
         query.setParameter("mailClazz", mailClazz);

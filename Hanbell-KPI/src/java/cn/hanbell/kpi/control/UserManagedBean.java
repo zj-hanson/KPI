@@ -45,7 +45,6 @@ public class UserManagedBean implements Serializable {
     private Company currentCompany;
     private SystemUser currentUser;
     private boolean status;
-    private Calendar c;
     private Date baseDate;
     private int m;
     private int y;
@@ -64,15 +63,17 @@ public class UserManagedBean implements Serializable {
 
     public UserManagedBean() {
         status = false;
-        c = Calendar.getInstance();
     }
 
     @PostConstruct
     public void construct() {
         companyList = companyBean.findBySystemName("KPI");
+        Calendar c = Calendar.getInstance();
         c.setTime(BaseLib.getDate());
         c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
-        setBaseDate(c.getTime());
+        baseDate = c.getTime();
+        m = c.get(Calendar.MONTH) + 1;
+        y = c.get(Calendar.YEAR);
     }
 
     public boolean checkUser() {
@@ -219,9 +220,6 @@ public class UserManagedBean implements Serializable {
      */
     public void setBaseDate(Date baseDate) {
         this.baseDate = baseDate;
-        c.setTime(baseDate);
-        m = c.get(Calendar.MONTH) + 1;
-        y = c.get(Calendar.YEAR);
     }
 
     /**
