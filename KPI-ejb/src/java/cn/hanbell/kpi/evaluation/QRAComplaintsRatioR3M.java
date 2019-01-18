@@ -32,7 +32,7 @@ public class QRAComplaintsRatioR3M extends QRAComplaintsRatio {
         queryParams.put("formid", "KS-冷媒MIS");
         queryParams.put("deptno", "1M000");
         queryParams.put("mis", "3");
-        queryParams.put("facno", "C");
+        queryParams.put("facno", "C,N,G,J,C4");
         //queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");

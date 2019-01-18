@@ -51,20 +51,8 @@ public class QRAComplaintsQualityPen extends QRAComplaintsKS {
             sb.append(" and (CA500  like 'PX%' or CA500  like 'PZ%') ");
         }
         sb.append(" and year(BQ021) = ${y} and month(BQ021)= ${m} ");
-        switch (type) {
-            case 2:
-                //月
-                sb.append(" and BQ021 <= '${d}' ");
-                break;
-            case 5:
-                //日
-                sb.append(" and BQ021 = '${d}' ");
-                break;
-            default:
-                sb.append(" and BQ021 <= '${d}' ");
-        }
         sb.append(") as a ");
-        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
                 
         Query query = superEJBForCRM.getEntityManager().createNativeQuery(sql);
         try {
