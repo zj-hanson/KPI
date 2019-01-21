@@ -42,7 +42,7 @@ public class QRAComplaintsQualityOrder {
         if(!"".equals(BQ197)){
             sb.append(" and  rtrim(BQ197) ").append(BQ197);
         }
-         if (!"".equals(BQ003)) {
+        if (!"".equals(BQ003)) {
             sb.append(" and BQ003 ").append(BQ003);
         }
         if (!"".equals(BQ505)) {
@@ -57,7 +57,8 @@ public class QRAComplaintsQualityOrder {
         try {
             reslut = query.getResultList();
             return reslut;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            Logger.getLogger(QRAComplaintsQualityOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reslut;
     }
