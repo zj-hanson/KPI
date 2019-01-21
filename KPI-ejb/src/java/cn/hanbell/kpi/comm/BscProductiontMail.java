@@ -392,7 +392,11 @@ public abstract class BscProductiontMail extends MailNotification {
                 total = BigDecimal.ZERO;
             }
         }
-        return total.divide(BigDecimal.valueOf(aa), 1, RoundingMode.HALF_UP);
+        if (aa == 0) {
+            return total;
+        } else {
+            return total.divide(BigDecimal.valueOf(aa), 1, RoundingMode.HALF_UP);
+        }
     }
 
     //IndicatorDaily两两相减

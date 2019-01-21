@@ -1007,7 +1007,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>0}">
                             <p:column styleClass="Wid20"><h:outputText value="Other1名称"/></p:column>
                             <p:column styleClass="Wid30">
-                                <p:inputText id="other1Label" value="#{productSetManagedBean.currentEntity.other1Label}" title="other1Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other1Label" value="#{productSetManagedBean.currentEntity.other1Label}" title="other1Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other1Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other1Label,productSetManagedBean.currentEntity.other1Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1020,7 +1020,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>1}">
                             <p:column><h:outputText value="Other2名称"/></p:column>
                             <p:column>
-                                <p:inputText id="other2Label" value="#{productSetManagedBean.currentEntity.other2Label}" title="other2Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other2Label" value="#{productSetManagedBean.currentEntity.other2Label}" title="other2Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other2Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other2Label,productSetManagedBean.currentEntity.other2Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1033,7 +1033,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>2}">
                             <p:column><h:outputText value="Other3名称"/></p:column>
                             <p:column>
-                                <p:inputText id="other3Label" value="#{productSetManagedBean.currentEntity.other3Label}" title="other3Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other3Label" value="#{productSetManagedBean.currentEntity.other3Label}" title="other3Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other3Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other3Label,productSetManagedBean.currentEntity.other3Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1046,7 +1046,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>3}">
                             <p:column><h:outputText value="Other4名称"/></p:column>
                             <p:column>
-                                <p:inputText id="other4Label" value="#{productSetManagedBean.currentEntity.other4Label}" title="other4Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other4Label" value="#{productSetManagedBean.currentEntity.other4Label}" title="other4Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other4Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other4Label,productSetManagedBean.currentEntity.other4Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1059,7 +1059,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>4}">
                             <p:column><h:outputText value="Other5名称"/></p:column>
                             <p:column>
-                                <p:inputText id="other5Label" value="#{productSetManagedBean.currentEntity.other5Label}" title="other5Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other5Label" value="#{productSetManagedBean.currentEntity.other5Label}" title="other5Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other5Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other5Label,productSetManagedBean.currentEntity.other5Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1072,7 +1072,7 @@
                         <p:row rendered="#{productSetManagedBean.currentEntity.hasOther>5}">
                             <p:column><h:outputText value="Other6名称"/></p:column>
                             <p:column>
-                                <p:inputText id="other6Label" value="#{productSetManagedBean.currentEntity.other6Label}" title="other6Label" styleClass="inputWithButton" disabled="true"/>
+                                <p:inputText id="other6Label" value="#{productSetManagedBean.currentEntity.other6Label}" title="other6Label" styleClass="inputWithButton" readonly="true"/>
                                 <p:commandButton id="other6Set"  actionListener="#{productSetManagedBean.setOtherIndicator(productSetManagedBean.currentEntity.other6Label,productSetManagedBean.currentEntity.other6Indicator)}" icon="ui-icon-add"
                                                  process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
                                 </p:commandButton>
@@ -1146,7 +1146,7 @@
                         <p:column><p:outputLabel value="M01" for="on01" /></p:column>
                         <p:column>
                             <p:inputNumber id="on01" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n01}" title="on01"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd01"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 1)}" icon="ui-icon-add" 
@@ -1156,7 +1156,7 @@
                         <p:column><p:outputLabel value="M02" for="on02" /></p:column>
                         <p:column>
                             <p:inputNumber id="on02" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n02}" title="on02"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd02"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 2)}" icon="ui-icon-add" 
@@ -1166,7 +1166,7 @@
                         <p:column><p:outputLabel value="M03" for="on03" /></p:column>
                         <p:column>
                             <p:inputNumber id="on03" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n03}" title="on03"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd03"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 3)}" icon="ui-icon-add"
@@ -1178,7 +1178,7 @@
                         <p:column><p:outputLabel value="M04" for="on04" /></p:column>
                         <p:column>
                             <p:inputNumber id="on04" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n04}" title="on04"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd04"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 4)}" icon="ui-icon-add"
@@ -1188,7 +1188,7 @@
                         <p:column><p:outputLabel value="M05" for="on05" /></p:column>
                         <p:column>
                             <p:inputNumber id="on05" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n05}" title="on05"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd05"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 5)}" icon="ui-icon-add"
@@ -1198,7 +1198,7 @@
                         <p:column><p:outputLabel value="M06" for="on06" /></p:column>
                         <p:column>
                             <p:inputNumber id="on06" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n06}" title="on06"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd06"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 6)}" icon="ui-icon-add"
@@ -1210,7 +1210,7 @@
                         <p:column><p:outputLabel value="M07" for="on07" /></p:column>
                         <p:column>
                             <p:inputNumber id="on07" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n07}" title="on07"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd07"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 7)}" icon="ui-icon-add"
@@ -1220,7 +1220,7 @@
                         <p:column><p:outputLabel value="M08" for="on08" /></p:column>
                         <p:column>
                             <p:inputNumber id="on08" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n08}" title="on08"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd08"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 8)}" icon="ui-icon-add"
@@ -1230,7 +1230,7 @@
                         <p:column><p:outputLabel value="M09" for="on09" /></p:column>
                         <p:column>
                             <p:inputNumber id="on09" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n09}" title="on09"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd09"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 9)}" icon="ui-icon-add"
@@ -1242,7 +1242,7 @@
                         <p:column><p:outputLabel value="M10" for="on10" /></p:column>
                         <p:column>
                             <p:inputNumber id="on10" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n10}" title="on10"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd10"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 10)}" icon="ui-icon-add"
@@ -1252,7 +1252,7 @@
                         <p:column><p:outputLabel value="M11" for="on11" /></p:column>
                         <p:column>
                             <p:inputNumber id="on11" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n11}" title="on11"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd11"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 11)}" icon="ui-icon-add"
@@ -1262,7 +1262,7 @@
                         <p:column><p:outputLabel value="M12" for="on12" /></p:column>
                         <p:column>
                             <p:inputNumber id="on12" style="width: 75%;display: inline-block" value="#{productSetManagedBean.otherIndicator.n12}" title="on12"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
                             <p:commandButton id="otherd12"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 12)}" icon="ui-icon-add"
@@ -1304,43 +1304,43 @@
                         <p:column><p:outputLabel value="D01" for="od01" /></p:column>
                         <p:column>
                             <p:inputNumber id="od01" value="#{productSetManagedBean.indicatorDaily.d01}" title="od01"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D02" for="od02" /></p:column>
                         <p:column>
                             <p:inputNumber id="od02" value="#{productSetManagedBean.indicatorDaily.d02}" title="od02"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}"  symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}"  symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D03" for="od03" /></p:column>
                         <p:column>
                             <p:inputNumber id="od03" value="#{productSetManagedBean.indicatorDaily.d03}" title="od03"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D04" for="od04" /></p:column>
                         <p:column>
                             <p:inputNumber id="od04" value="#{productSetManagedBean.indicatorDaily.d04}" title="od04"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D05" for="od05" /></p:column>
                         <p:column>
                             <p:inputNumber id="od05" value="#{productSetManagedBean.indicatorDaily.d05}" title="od05"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D06" for="od06" /></p:column>
                         <p:column>
                             <p:inputNumber id="od06" value="#{productSetManagedBean.indicatorDaily.d06}" title="od06"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D07" for="od07" /></p:column>
                         <p:column>
                             <p:inputNumber id="od07" value="#{productSetManagedBean.indicatorDaily.d07}" title="od07"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                     </p:row>
@@ -1348,43 +1348,43 @@
                         <p:column><p:outputLabel value="D08" for="od08" /></p:column>
                         <p:column>
                             <p:inputNumber id="od08" value="#{productSetManagedBean.indicatorDaily.d08}" title="od08"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D09" for="od09" /></p:column>
                         <p:column>
                             <p:inputNumber id="od09" value="#{productSetManagedBean.indicatorDaily.d09}" title="od09"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D10" for="od10" /></p:column>
                         <p:column>
                             <p:inputNumber id="od10" value="#{productSetManagedBean.indicatorDaily.d10}" title="od10"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D11" for="od11" /></p:column>
                         <p:column>
                             <p:inputNumber id="od11" value="#{productSetManagedBean.indicatorDaily.d11}" title="od11"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D12" for="od12" /></p:column>
                         <p:column>
                             <p:inputNumber id="od12" value="#{productSetManagedBean.indicatorDaily.d12}" title="od12"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D13" for="od13" /></p:column>
                         <p:column>
                             <p:inputNumber id="od13" value="#{productSetManagedBean.indicatorDaily.d13}" title="od13"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D14" for="od14" /></p:column>
                         <p:column>
                             <p:inputNumber id="od14" value="#{productSetManagedBean.indicatorDaily.d14}" title="od14"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                     </p:row>
@@ -1392,43 +1392,43 @@
                         <p:column><p:outputLabel value="D15" for="od15" /></p:column>
                         <p:column>
                             <p:inputNumber id="od15" value="#{productSetManagedBean.indicatorDaily.d15}" title="od15"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D16" for="od16" /></p:column>
                         <p:column>
                             <p:inputNumber id="od16" value="#{productSetManagedBean.indicatorDaily.d16}" title="od16"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D17" for="od17" /></p:column>
                         <p:column>
                             <p:inputNumber id="od17" value="#{productSetManagedBean.indicatorDaily.d17}" title="od17"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D18" for="od18" /></p:column>
                         <p:column>
                             <p:inputNumber id="od18" value="#{productSetManagedBean.indicatorDaily.d18}" title="od18"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D19" for="od19" /></p:column>
                         <p:column>
                             <p:inputNumber id="od19" value="#{productSetManagedBean.indicatorDaily.d19}" title="od19"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D20" for="od20" /></p:column>
                         <p:column>
                             <p:inputNumber id="od20" value="#{productSetManagedBean.indicatorDaily.d20}" title="od20"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D21" for="od21" /></p:column>
                         <p:column>
                             <p:inputNumber id="od21" value="#{productSetManagedBean.indicatorDaily.d21}" title="od21"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                     </p:row>
@@ -1436,44 +1436,44 @@
                         <p:column><p:outputLabel value="D22" for="od22" /></p:column>
                         <p:column>
                             <p:inputNumber id="od22" value="#{productSetManagedBean.indicatorDaily.d22}" title="od22"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D23" for="od23" /></p:column>
                         <p:column>
                             <p:inputNumber id="od23" value="#{productSetManagedBean.indicatorDaily.d23}" title="od23"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D24" for="od24" /></p:column>
                         <p:column>
                             <p:inputNumber id="od24" value="#{productSetManagedBean.indicatorDaily.d24}" title="od24"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D25" for="od25" /></p:column>
                         <p:column>
                             <p:inputNumber id="od25" value="#{productSetManagedBean.indicatorDaily.d25}" title="od25"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D26" for="od26" /></p:column>
                         <p:column>
                             <p:inputNumber id="od26" value="#{productSetManagedBean.indicatorDaily.d26}" title="od26"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
 
                         <p:column><p:outputLabel value="D27" for="od27" /></p:column>
                         <p:column>
                             <p:inputNumber id="od27" value="#{productSetManagedBean.indicatorDaily.d27}" title="od27"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column><p:outputLabel value="D28" for="od28" /></p:column>
                         <p:column>
                             <p:inputNumber id="od28" value="#{productSetManagedBean.indicatorDaily.d28}" title="od28"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                     </p:row>
@@ -1481,19 +1481,19 @@
                         <p:column  rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 28 }"><p:outputLabel value="D29" for="od29" /></p:column>
                         <p:column rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 28 }">
                             <p:inputNumber id="od29" value="#{productSetManagedBean.indicatorDaily.d29}" title="od29"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 29 }"><p:outputLabel value="D30" for="od30" /></p:column>
                         <p:column rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 29 }">
                             <p:inputNumber id="od30" value="#{productSetManagedBean.indicatorDaily.d30}" title="od30"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                         <p:column rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 30 }"><p:outputLabel value="D31" for="od31" /></p:column>
                         <p:column rendered="#{productSetManagedBean.days(productSetManagedBean.currentEntity.seq, productSetManagedBean.indicatorDaily.mth) > 30 }">
                             <p:inputNumber id="od31" value="#{productSetManagedBean.indicatorDaily.d31}" title="od31"
-                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" disabled="true">
+                                           symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                         </p:column>
                     </p:row>
