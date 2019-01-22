@@ -15,7 +15,7 @@ public class SalesOrderQuantityKHC2 extends SalesOrderQuantity{
         super();
         queryParams.put("facno", "K");
         queryParams.put("decode", "2");
-        queryParams.put("deptno", " '5A000','5A100' ");
+        queryParams.put("deptno", " '5C000' ");
         queryParams.put("ogdkid", "RL03");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='HC' ");

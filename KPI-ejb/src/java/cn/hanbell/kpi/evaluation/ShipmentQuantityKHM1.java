@@ -14,7 +14,7 @@ public class ShipmentQuantityKHM1 extends ShipmentQuantity {
     public ShipmentQuantityKHM1() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("deptno", " '5A000','5A100' ");
+        queryParams.put("deptno", " '5C000' ");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DC", " ='HM' ");

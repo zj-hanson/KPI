@@ -107,7 +107,7 @@ public class ClientShipmentBean implements Serializable {
         if ("".equals(da.trim()) || "RT".equals(da.trim())) {
             queryParams.clear();
             queryParams.put("facno", "K");
-            queryParams.put("depno", " IN('5A000','5A100') ");
+            queryParams.put("depno", " IN('5C000') ");
             queryParams.put("n_code_DA", " IN('RT') ");
             queryParams.put("n_code_DD", " IN ('02') ");
             queryParams.put("ogdkid", " IN('RL01','RL03') ");

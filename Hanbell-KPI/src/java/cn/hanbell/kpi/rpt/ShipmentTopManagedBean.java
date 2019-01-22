@@ -217,14 +217,19 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("daname", "涡旋");
                 getMap().put("n_code_DA", "= 'S'");
                 break;
+            case "5A000":
+                getMap().put("deptnoname", "制冷机组产品部");
+                getMap().put("daname", "RT制冷");
+                getMap().put("n_code_DA", "= 'RT'");
+                break;
             case "5B000":
                 getMap().put("deptnoname", "再生能源部");
                 getMap().put("daname", "再生能源");
                 getMap().put("n_code_DA", "= 'OH'");
                 break;
-            case "5A000":
-                getMap().put("deptnoname", "制冷机组产品部");
-                getMap().put("daname", "RT制冷");
+            case "5C000":
+                getMap().put("deptnoname", "涡轮产品部");
+                getMap().put("daname", "涡轮产品");
                 getMap().put("n_code_DA", "= 'RT'");
                 break;
             case "50000":
@@ -419,6 +424,5 @@ public class ShipmentTopManagedBean implements Serializable {
     public String getDeptno() {
         return deptno;
     }
-    
 
 }

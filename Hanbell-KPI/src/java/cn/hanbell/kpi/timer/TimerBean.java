@@ -126,7 +126,7 @@ public class TimerBean {
         if (indicatorList != null && !indicatorList.isEmpty()) {
             log4j.info("Begin Execute KPI Update Job Schedule " + timer.getInfo());
             for (Indicator e : indicatorList) {
-                if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
+                if ((e.getActualInterface() != null && !"".equals(e.getActualInterface())) || e.hashCode() > 0) {
                     try {
                         if ("D".equals(e.getFormkind().trim())) {
                             indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
