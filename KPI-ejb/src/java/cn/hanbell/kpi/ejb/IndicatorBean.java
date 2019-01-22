@@ -1118,6 +1118,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return daily.getTotal();
             }
         } catch (Exception e) {
+            log4j.error("upadateActualofIndicatorDaily"+e);
         }
         return BigDecimal.ZERO;
 

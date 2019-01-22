@@ -14,9 +14,9 @@ public class ShipmentQuantityKWL1 extends ShipmentQuantity {
     public ShipmentQuantityKWL1() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("deptno", " '5A000','5A100' ");
+        queryParams.put("deptno", " '5C000' ");
         queryParams.put("ogdkid", "RL01");
-        queryParams.put("n_code_DA", " ='RT' ");
+        queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("n_code_DC", " ='WL' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

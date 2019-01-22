@@ -14,9 +14,9 @@ public class SalesOrderQuantityKWL1 extends SalesOrderQuantity{
     public SalesOrderQuantityKWL1() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("deptno", " '5A000','5A100' ");
+        queryParams.put("deptno", " '5B000' ");
         queryParams.put("ogdkid", "RL01");
-        queryParams.put("n_code_DA", " ='RT' ");
+        queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("n_code_DC", " ='WL' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

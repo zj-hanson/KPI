@@ -124,7 +124,7 @@ public class TimerBean {
         List<Indicator> indicatorList = indicatorBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
         if (indicatorList != null && !indicatorList.isEmpty()) {
             for (Indicator e : indicatorList) {
-                if (e.getActualInterface() != null && !"".equals(e.getActualInterface())) {
+                if ((e.getActualInterface() != null && !"".equals(e.getActualInterface())) || e.hashCode() > 0) {
                     try {
                         if ("D".equals(e.getFormkind().trim())) {
                             indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
@@ -254,7 +254,7 @@ public class TimerBean {
             log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
             Calendar now = Calendar.getInstance();
             int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH)+1);
+            int m = (now.get(Calendar.MONTH) + 1);
             Date d = now.getTime();
             bscGroupVHShipmentBean.updataActualValue(y, m, d);
             bscGroupVHServiceBean.updataActualValue(y, m, d);
