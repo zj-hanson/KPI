@@ -62,6 +62,9 @@ public class QRAComplaintsQuality extends QRAComplaints {
                 sb.append(" and h.shpdate BETWEEN  '");
                 sb.append(BaseLib.formatDate("yyyyMMdd", pastYear));
                 sb.append("'  and  '");
+                calendar.add(Calendar.YEAR, 1);
+                calendar.add(Calendar.MONTH, -1);
+                Date nowYear = calendar.getTime();
                 sb.append(BaseLib.formatDate("yyyyMMdd", d));
                 sb.append("'  ");
                 String cdrdta = sb.toString().replace("${facno}", arr1);
@@ -87,7 +90,7 @@ public class QRAComplaintsQuality extends QRAComplaints {
                 sb.append(" and h.bakdate BETWEEN  '");
                 sb.append(BaseLib.formatDate("yyyyMMdd", pastYear));
                 sb.append("'  and  '");
-                sb.append(BaseLib.formatDate("yyyyMMdd", d));
+                sb.append(BaseLib.formatDate("yyyyMMdd", nowYear));
                 sb.append("'  ");
                 String cdrbdta = sb.toString().replace("${facno}", arr1);
 
@@ -101,8 +104,8 @@ public class QRAComplaintsQuality extends QRAComplaints {
                 num1 = (BigDecimal) o1;
                 num2 = (BigDecimal) o2;
                 avgShip = num1.subtract(num2);
-                avgShip.divide(BigDecimal.valueOf(12), 1, RoundingMode.HALF_UP);
-                result.add(avgShip);
+                avgShip = avgShip.divide(BigDecimal.valueOf(12), 1, RoundingMode.HALF_UP);
+                result = result.add(avgShip);
             }
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);

@@ -47,12 +47,24 @@ public class QRABadFeed implements Actual {
 
     @Override
     public int getUpdateMonth(int y, int m) {
-        return m;
+        int month;
+        if (m == 1) {
+            month = 12;
+        } else {
+            month = m - 1;
+        }
+        return month;
     }
 
     @Override
     public int getUpdateYear(int y, int m) {
-        return y;
+        int year;
+        if (m == 1) {
+            year = y - 1;
+        } else {
+            year = y;
+        }
+        return year;
     }
 
     @Override
