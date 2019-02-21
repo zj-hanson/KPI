@@ -8,6 +8,7 @@ package cn.hanbell.kpi.rpt;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.web.BscChartManagedBean;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -174,6 +175,10 @@ public class MaterialsProjectReportBean extends BscChartManagedBean {
             this.summaryCount = summaryList.size();
         }
 
+    }
+
+    public BigDecimal divideIndicator(BigDecimal o5, BigDecimal o6) {
+        return o5.subtract(o6).divide(o5, 6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
     }
 
     @Override

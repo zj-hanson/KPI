@@ -159,7 +159,6 @@ public class ProcurementBean implements Serializable {
 //        }
 //        sb.append(" AND year(h.podate) =").append(findYear(date) - 1);
 //        sb.append(" AND month(h.podate) <=").append(findMonth(date));
-
         sb.append(" select isnull(sum(case when year(h.podate)= ").append(findMonth(date) == 1 ? findYear(date) - 1 : findYear(date));
         sb.append(" and month(h.podate)= ").append(findMonth(date) == 1 ? 12 : findMonth(date) - 1);
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '上月', ");
@@ -167,8 +166,10 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(h.podate)= ").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date));
+        sb.append(" AND month(h.podate) <=").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date) - 1);
+        sb.append(" AND month(h.podate) <=").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from  purhad h,purdta d where h.pono=d.pono and h.prono=d.prono and h.facno=d.facno and hposta<>'W' ");
         if (!itnbrD.equals("")) {
@@ -182,8 +183,7 @@ public class ProcurementBean implements Serializable {
             sb.append(" and  h.hmark1 in ('DJ','FW','FY','GD','GJ','HC','LY','SBBY','SBWX','YF','ZJ') ");
         }
         sb.append(" AND year(h.podate) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(h.podate) <=").append(findMonth(date));
-        
+
         String sql = sb.toString().replace("${type}", type);
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
@@ -258,7 +258,6 @@ public class ProcurementBean implements Serializable {
 //        }
 //        sb.append(" AND year(trdat) =").append(findYear(date) - 1);
 //        sb.append(" AND month(trdat) <=").append(findMonth(date));
-
         sb.append(" select isnull(sum(case when year(trdat) = ").append(findMonth(date) == 1 ? findYear(date) - 1 : findYear(date));
         sb.append(" and month(trdat)= ").append(findMonth(date) == 1 ? 12 : findMonth(date) - 1);
         sb.append(" then acpamt ELSE 0 END),0) as '上月', ");
@@ -266,8 +265,10 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(trdat)= ").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date));
+        sb.append(" AND month(trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date) - 1);
+        sb.append(" AND month(trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from apmpyh  where facno='C' and prono='1' AND  pyhkind = '1' ");
         if (!itnbr.equals("")) {
@@ -277,7 +278,6 @@ public class ProcurementBean implements Serializable {
             sb.append(" AND vdrno ${type} in (").append(vdrno).append(")");
         }
         sb.append(" AND year(trdat) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(trdat) <=").append(findMonth(date));
 
         String sql = sb.toString().replace("${type}", type);
 
@@ -337,13 +337,14 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(trdat)= ").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date));
+        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date) - 1);
+        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from  purhad h,apmpyh d where h.facno=d.facno  AND h.prono=d.prono and   h.pono=d.pono  AND  d.pyhkind = '1' ");
         sb.append(" AND  h.hmark1 in ('DJ','FW','FY','GD','GJ','HC','LY','SBBY','SBWX','YF','ZJ') ");
         sb.append(" AND year(d.trdat) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
 
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sb.toString());

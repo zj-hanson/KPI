@@ -164,7 +164,7 @@
                             <p:column>#{materialsProjectReportBean.percentFormat(materialsProjectReportBean.indicator.actualIndicator.n10,10)}</p:column>
                             <p:column>#{materialsProjectReportBean.percentFormat(materialsProjectReportBean.indicator.actualIndicator.n11,11)}</p:column>
                             <p:column>#{materialsProjectReportBean.percentFormat(materialsProjectReportBean.indicator.actualIndicator.n12,12)}</p:column>
-                            <p:column>#{materialsProjectReportBean.percentFormat(materialsProjectReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                            <p:column>#{materialsProjectReportBean.percentFormat(materialsProjectReportBean.divideIndicator(materialsProjectReportBean.indicator.other5Indicator.nsy(),materialsProjectReportBean.indicator.other6Indicator.nsy()),0)}</p:column>
                         </p:row>
                         <p:row>
                             <p:column>基准值</p:column>
