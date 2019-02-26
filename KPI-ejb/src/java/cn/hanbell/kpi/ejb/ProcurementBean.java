@@ -159,7 +159,6 @@ public class ProcurementBean implements Serializable {
 //        }
 //        sb.append(" AND year(h.podate) =").append(findYear(date) - 1);
 //        sb.append(" AND month(h.podate) <=").append(findMonth(date));
-
         sb.append(" select isnull(sum(case when year(h.podate)= ").append(findMonth(date) == 1 ? findYear(date) - 1 : findYear(date));
         sb.append(" and month(h.podate)= ").append(findMonth(date) == 1 ? 12 : findMonth(date) - 1);
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '上月', ");
@@ -167,8 +166,10 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(h.podate)= ").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date));
+        sb.append(" AND month(h.podate) <=").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date) - 1);
+        sb.append(" AND month(h.podate) <=").append(findMonth(date));
         sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from  purhad h,purdta d where h.pono=d.pono and h.prono=d.prono and h.facno=d.facno and hposta<>'W' ");
         if (!itnbrD.equals("")) {
@@ -182,8 +183,7 @@ public class ProcurementBean implements Serializable {
             sb.append(" and  h.hmark1 in ('DJ','FW','FY','GD','GJ','HC','LY','SBBY','SBWX','YF','ZJ') ");
         }
         sb.append(" AND year(h.podate) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(h.podate) <=").append(findMonth(date));
-        
+
         String sql = sb.toString().replace("${type}", type);
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
@@ -258,7 +258,6 @@ public class ProcurementBean implements Serializable {
 //        }
 //        sb.append(" AND year(trdat) =").append(findYear(date) - 1);
 //        sb.append(" AND month(trdat) <=").append(findMonth(date));
-
         sb.append(" select isnull(sum(case when year(trdat) = ").append(findMonth(date) == 1 ? findYear(date) - 1 : findYear(date));
         sb.append(" and month(trdat)= ").append(findMonth(date) == 1 ? 12 : findMonth(date) - 1);
         sb.append(" then acpamt ELSE 0 END),0) as '上月', ");
@@ -266,8 +265,10 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(trdat)= ").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date));
+        sb.append(" AND month(trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date) - 1);
+        sb.append(" AND month(trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from apmpyh  where facno='C' and prono='1' AND  pyhkind = '1' ");
         if (!itnbr.equals("")) {
@@ -277,7 +278,6 @@ public class ProcurementBean implements Serializable {
             sb.append(" AND vdrno ${type} in (").append(vdrno).append(")");
         }
         sb.append(" AND year(trdat) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(trdat) <=").append(findMonth(date));
 
         String sql = sb.toString().replace("${type}", type);
 
@@ -337,13 +337,14 @@ public class ProcurementBean implements Serializable {
         sb.append(" and month(trdat)= ").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date));
+        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(trdat) = ").append(findYear(date) - 1);
+        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
         sb.append(" then acpamt ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from  purhad h,apmpyh d where h.facno=d.facno  AND h.prono=d.prono and   h.pono=d.pono  AND  d.pyhkind = '1' ");
         sb.append(" AND  h.hmark1 in ('DJ','FW','FY','GD','GJ','HC','LY','SBBY','SBWX','YF','ZJ') ");
         sb.append(" AND year(d.trdat) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
-        sb.append(" AND month(d.trdat) <=").append(findMonth(date));
 
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sb.toString());
@@ -446,11 +447,15 @@ public class ProcurementBean implements Serializable {
         jk1 = "'STW00007','STW00015','SXG00006','SXG00003','SXG00005','SXG00007','SXG00001','SXG00004','STW00033'";
         jk2 = "'STW00010','STW00001','STW00002','STW00013','SDM00001','STW00028','STW00029','STW00020','SDQ00002','STW00009','SDQ00004','SXG00011','SXG00009','STW00030','SXG00013','STW00024','STW00036','SDF00001'";
         jksum = jk1 + "," + jk2;
-        itnbrDj = " select itnbr from invmas where itcls in('3104','4503','4703','3504') ";
+        //2019年2月26日 陆夏玲要求加入'4304'，
+        itnbrDj = " select itnbr from invmas where itcls in('3104','4503','4703','3504','4304') ";
         itnbrZc = " select itnbr from invmas where itcls in('4009') ";
-        itnbrZj = " select itnbr from invmas where itcls in('1101','1102','1201','1202','1402','1801','1802','1E01','1E02','1K02')";
-        itnbrSgp = " select itnbr from invmas where itcls in('4010','4046','4047','4048','4049','5050','4052','4151','5061','5062','5063','5064','5065','4079','4507')";
-        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3016','3101','3102','3201','3202','3402','3801','3802')";
+        //2019年2月26日 陆夏玲要求加入'1401'，删除'1E01','1E02','1K02'，
+        itnbrZj = " select itnbr from invmas where itcls in('1101','1102','1201','1202','1401','1402','1801','1802')";
+        //2019年2月26日 陆夏玲要求去除5063（研发大类），新增4020
+        itnbrSgp = " select itnbr from invmas where itcls in('4010','4046','4047','4048','4049','5050','4052','4151','5061','5062','5064','5065','4079','4507','4020')";
+        //2019年2月26日 陆夏玲要求新增2401,3401，去除3016（9QC零件）
+        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3101','3102','3201','3202','3402','3801','3802','2401','3401')";    
         try {
             //销售额
             Double monthDouble = getSaleValue(date, "month");
@@ -501,19 +506,19 @@ public class ProcurementBean implements Serializable {
             List rkjk2 = getEnterWarehouseList(date, "", jk2, "");
             addRowForMap(rkjk2, rksummation, "入库进口2", monthDouble, yearDouble);
 
-            List rkdj = getPurchaseList(date, "not", jksum, itnbrDj);
+            List rkdj = getEnterWarehouseList(date, "not", jksum, itnbrDj);
             addRowForMap(rkdj, rksummation, "入库电机", monthDouble, yearDouble);
 
-            List rkzc = getPurchaseList(date, "not", jksum, itnbrZc);
+            List rkzc = getEnterWarehouseList(date, "not", jksum, itnbrZc);
             addRowForMap(rkzc, rksummation, "入库轴承", monthDouble, yearDouble);
 
-            List rkzj = getPurchaseList(date, "not", jksum, itnbrZj);
+            List rkzj = getEnterWarehouseList(date, "not", jksum, itnbrZj);
             addRowForMap(rkzj, rksummation, "入库铸件", monthDouble, yearDouble);
 
-            List rksgp = getPurchaseList(date, "not", jksum, itnbrSgp);
+            List rksgp = getEnterWarehouseList(date, "not", jksum, itnbrSgp);
             addRowForMap(rksgp, rksummation, "入库市购品", monthDouble, yearDouble);
 
-            List rkcjjg = getPurchaseList(date, "not", jksum, itnbrCjjg);
+            List rkcjjg = getEnterWarehouseList(date, "not", jksum, itnbrCjjg);
             addRowForMap(rkcjjg, rksummation, "入库粗精加工", monthDouble, yearDouble);
 
             addRowForMap(getWgpList(rksummation, rkjk1, rkjk2, rkdj, rkzc, rkzj, rksgp, rkcjjg), rksummation, "入库外购品", monthDouble, yearDouble);

@@ -18,7 +18,7 @@ public class FreeServiceOuterFW1G extends FreeServiceOuterFW {
     public FreeServiceOuterFW1G() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("hmark1", "='HD' ");
+//        queryParams.put("hmark1", "='HD' ");
         queryParams.put("hmark2", " ='AH' ");
     }
 

@@ -246,6 +246,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>productionsheet</from-outcome>
+            <to-view-id>/app/bsc/productionsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>productionsheet
+        <navigation-case>
             <from-outcome>processratiochart</from-outcome>
             <to-view-id>/app/bsc/processratiochart.xhtml</to-view-id>
             <redirect/>
