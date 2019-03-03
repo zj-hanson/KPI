@@ -4,19 +4,26 @@
                 template="./../../WEB-INF/template.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="content">
         <h:form id="formList" style="height: 700px" >
             <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid15,Wid20,Wid15,Wid20,Wid15,Wid15" styleClass="plgQuery Wid100" >
+            <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid15,Wid10,Wid15,Wid10,Wid15,Wid10,Wid10" styleClass="plgQuery Wid100" >
                 <f:facet name="header">
                     查询条件
                 </f:facet>
                 <h:outputLabel value="日期：" for="btnDate" />
-                <p:calendar id="btnDate" value="#{clientTableReportBean.btnDate}" title="开始日期" pattern="yyyy/MM/dd" />
+                <p:calendar id="btnDate" value="#{salesTableReportBean.btnDate}" title="开始日期" pattern="yyyy/MM/dd" />
+                <h:outputLabel value="更新项" for="type" />
+                <p:selectOneMenu id="type" value="#{salesTableReportBean.type}" style="width:100%;" title="更新项" >
+                    <f:selectItem itemLabel="出货" itemValue="Shipment"/>
+                    <f:selectItem itemLabel="订单" itemValue="SalesOrder"/>
+                    <f:selectItem itemLabel="收费服务" itemValue="ServiceAmount"/>
+                </p:selectOneMenu>
                 <h:outputLabel value="部门" for="da" />
-                <p:selectOneMenu id="da" value="#{clientTableReportBean.da}" style="width:100%;" title="部门" >
+                <p:selectOneMenu id="da" value="#{salesTableReportBean.da}" style="width:100%;" title="部门" >
                     <f:selectItem itemLabel="全部" itemValue=""/>
                     <f:selectItem itemLabel="制冷产品部" itemValue="R"/>
                     <f:selectItem itemLabel="空压机组产品部" itemValue="AA"/>
@@ -25,29 +32,30 @@
                     <f:selectItem itemLabel="涡旋产品部" itemValue="S"/>
                     <f:selectItem itemLabel="柯茂再生能源" itemValue="OH"/>
                     <f:selectItem itemLabel="柯茂涡轮产品部" itemValue="RT"/>
+                    <f:selectItem itemLabel="外销零件" itemValue="外销零件"/>
                 </p:selectOneMenu>
-                <p:commandButton id="initial" value="重置" actionListener="#{clientTableReportBean.initial()}" icon="ui-icon-refresh"
+                <p:commandButton id="initial" value="重置" actionListener="#{salesTableReportBean.initial()}" icon="ui-icon-refresh"
                                  update=":formList"/>
-                <p:commandButton id="query" value="查询" actionListener="#{clientTableReportBean.query()}" icon="ui-icon-search"
+                <p:commandButton id="query" value="查询" actionListener="#{salesTableReportBean.query()}" icon="ui-icon-search"
                                  update=":formList"/>
 
             </p:panelGrid>
             <p style="background-color: #2F4050;color: white;height: 40px;line-height: 40px;margin-top: 10px;" align="center"  >查询结果</p>
-            <div style="display: #{clientTableReportBean.display} ;height: 80px"  >
+            <div style="display: #{salesTableReportBean.display} ;height: 80px"  >
                 <p:panelGrid id="plgDetail2" columns="5" columnClasses="Wid15,Wid30,Wid15,Wid30,Wid20" styleClass="plgQuery2 Wid100"  style="height: 40px">
                     <h:outputLabel value="出货台数"/>
-                    <p:inputText id="quantitySum" value="#{clientTableReportBean.quantitySum}"/>
+                    <p:inputText id="quantitySum" value="#{salesTableReportBean.quantitySum}"/>
                     <h:outputLabel value="出货总金额"/>
-                    <p:inputText id="amountSum" value="#{clientTableReportBean.amountSum}"/>
-                    <p:commandButton id="updateClient" value="更新" actionListener="#{clientTableReportBean.updateClient()}" icon="ui-icon-search"
-                                     update=":formList" style="display:#{clientTableReportBean.display} " />
+                    <p:inputText id="amountSum" value="#{salesTableReportBean.amountSum}"/>
+                    <p:commandButton id="updateSales" value="更新" actionListener="#{salesTableReportBean.updateSales()}" icon="ui-icon-search"
+                                     update=":formList" style="display:#{salesTableReportBean.display} " />
                 </p:panelGrid>
             </div>
-            <div style="display: #{clientTableReportBean.display};margin-top: 20px;text-align: center;height: 500px">
-                <span style="color: red;font-size:23px" > #{clientTableReportBean.status1}</span>
-                <span style="color: green;font-size:23px" > #{clientTableReportBean.status2}</span>
+            <div style="display: #{salesTableReportBean.display};margin-top: 20px;text-align: center;height: 500px">
+                <span style="color: red;font-size:23px" > #{salesTableReportBean.status1}</span>
+                <span style="color: green;font-size:23px" > #{salesTableReportBean.status2}</span>
             </div>
-            <p:blockUI id="blockUI" block="formList" trigger="query,updateClient">
+            <p:blockUI id="blockUI" block="formList" trigger="query,updateSales">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
