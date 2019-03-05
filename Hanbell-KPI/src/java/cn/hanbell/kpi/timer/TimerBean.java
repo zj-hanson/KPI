@@ -16,6 +16,7 @@ import cn.hanbell.kpi.ejb.ClientTableBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.JobScheduleBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
+import cn.hanbell.kpi.ejb.SalesTableBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
@@ -65,6 +66,8 @@ public class TimerBean {
     private BscGroupHSShipmentBean bscGroupHSShipmentBean;
     @EJB
     private ClientTableBean clientTableBean;
+    @EJB
+    private SalesTableBean salesTableBean;
 
     @Resource
     TimerService timerService;
@@ -285,6 +288,30 @@ public class TimerBean {
             }
         } catch (Exception e) {
             log4j.error(String.format("客户排名历史表归档更新异常", "updateKPIClientTable"), e.toString());
+        }
+    }
+
+    @Schedule(minute = "30",hour = "5", dayOfMonth = "1", persistent = false)
+    public void updateKPISalesTable() {
+        try {
+            log4j.info("Begin Execute Job updateKPISalesTable");
+            Calendar now = Calendar.getInstance();
+            int year = now.get(Calendar.YEAR);
+            int month = (now.get(Calendar.MONTH) + 1);
+            //本月更新上个月
+            int y, m;
+            if (month == 1) {
+                m = 12;
+                y = year - 1;
+            } else {
+                m = month - 1;
+                y = year;
+            }
+            if (salesTableBean.updateSalesTable(y, m, "", "Shipment") && salesTableBean.updateSalesTable(y, m, "", "SalesOrder") && salesTableBean.updateSalesTable(y, m, "", "ServiceAmount")) {
+                log4j.info("End Execute Job updateKPISalesTable");
+            }
+        } catch (Exception e) {
+            log4j.error(String.format("出货、订单、收费服务历史表归档更新异常", "updateKPISalesTable"), e.toString());
         }
     }
 }
