@@ -109,7 +109,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     }
     
         //获得总台数
-    protected int getSumQuantity(int y, int m, LinkedHashMap<String, String> map,String type) {
+    protected Double getSumQuantity(int y, int m, LinkedHashMap<String, String> map,String type) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -130,9 +130,9 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         try {
             Query query = getEntityManager().createNativeQuery(sql);
             Object o1 = query.getSingleResult();
-            return Integer.parseInt(o1.toString());
+            return Double.parseDouble(o1.toString());
         } catch (Exception e) {
-            return 0;
+            return 0.0;
         }
     }
 
@@ -274,12 +274,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         List<ClientRanking> pastList = getPastClient(y - 1, m, map,type);
         //循环nowList 并与 pastList 合并客户
         //其他值
-        int nowothershpqy1, pastothershpqy1;
+        Double nowothershpqy1, pastothershpqy1;
         Double nowothershpamts, pastothershpamts;
         //TOP20总计
-        int top20nowshpqy1 = 0;
+        Double top20nowshpqy1 = 0.0;
         Double top20nowshpamts = 0.0;
-        int top20pastshpqy1 = 0;
+        Double top20pastshpqy1 = 0.0;
         Double top20pastshpamts = 0.0;
         try {
             if (nowList != null && !nowList.isEmpty()) {
@@ -308,9 +308,9 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                                     ct.setDifferencevalue(RTdifferencevalue(now.getNowshpamts(), past.getPastshpamts()));
                                     ct.setGrowthrate(RTgrowthrate(now.getNowshpamts(), past.getPastshpamts()));
                                     //合计TOP20
-                                    top20nowshpqy1 += Integer.parseInt(now.getNowshpqy1());
+                                    top20nowshpqy1 += Double.parseDouble(now.getNowshpqy1());
                                     top20nowshpamts += Double.parseDouble(now.getNowshpamts());
-                                    top20pastshpqy1 += Integer.parseInt(past.getPastshpqy1());
+                                    top20pastshpqy1 += Double.parseDouble(past.getPastshpqy1());
                                     top20pastshpamts += Double.parseDouble(past.getPastshpamts());
                                     if ((Double.parseDouble(now.getNowshpamts()) - Double.parseDouble(past.getPastshpamts())) < 0) {
                                         ct.setStyle("red");
@@ -321,7 +321,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                             }
                         }
                         if (aa) {
-                            top20nowshpqy1 += Integer.parseInt(now.getNowshpqy1());
+                            top20nowshpqy1 += Double.parseDouble(now.getNowshpqy1());
                             top20nowshpamts += Double.parseDouble(now.getNowshpamts());
                             ct.setCusno(now.getCusno());
                             ct.setCusna(now.getCusna());
@@ -341,13 +341,13 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                     }
                     //如果排名大于20 则有其他项
                     if (i >= 20 && now.getCusna().equals("总计")) {
-                        nowothershpqy1 = Integer.parseInt(now.getNowshpqy1()) - top20nowshpqy1;
+                        nowothershpqy1 = Double.parseDouble(now.getNowshpqy1()) - top20nowshpqy1;
                         nowothershpamts = Double.parseDouble(now.getNowshpamts()) - top20nowshpamts;
                         //去年同期有值时进行其他项计算
                         if (pastList != null && !pastList.isEmpty()) {
                             for (int j = 0; j < pastList.size(); j++) {
                                 if (pastList.get(j).getCusna().equals("总计")) {
-                                    pastothershpqy1 = Integer.parseInt(pastList.get(j).getPastshpqy1()) - top20pastshpqy1;
+                                    pastothershpqy1 = Double.parseDouble(pastList.get(j).getPastshpqy1()) - top20pastshpqy1;
                                     pastothershpamts = Double.parseDouble(pastList.get(j).getPastshpamts()) - top20pastshpamts;
                                     ClientRanking ct = new ClientRanking();
                                     ct.setCusna("其他");

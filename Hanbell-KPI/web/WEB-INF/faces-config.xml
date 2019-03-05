@@ -144,13 +144,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>clienttableSet</from-outcome>
-            <to-view-id>/app/prod/clienttableSet.xhtml</to-view-id>
+            <from-outcome>clienttableset</from-outcome>
+            <to-view-id>/app/prod/clienttableset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>salestableSet</from-outcome>
-            <to-view-id>/app/prod/salestableSet.xhtml</to-view-id>
+            <from-outcome>salestableset</from-outcome>
+            <to-view-id>/app/prod/salestableset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
