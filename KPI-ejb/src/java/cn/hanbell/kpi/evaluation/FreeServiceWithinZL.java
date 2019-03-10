@@ -40,7 +40,7 @@ public class FreeServiceWithinZL extends FreeServiceERP{
         sb.append(" manpih left outer join invmas t on t.itnbr=manpih.itnbrf left outer join manmas on manmas.facno=manpih.facno and  manmas.prono=manpih.prono and manmas.manno=manpih.manno ");
         sb.append(" where  (manpih.facno= manpid.facno) and (manpih.prono = manpid.prono) and (manpih.pisno = manpid.pisno)   AND (manpih.issstatus = 'C') ");
         sb.append(" and manpid.altitnbr <> '3188-GBR6254-FW' and manpih.facno = '${facno}' and manpih.prono='1'  and manpih.issdepno = '9900' ");
-        sb.append(" and manpid.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode='02' ");
+        sb.append(" and manpid.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode in ('02','05') ");
         if (!"".equals(remark1)) {
             sb.append(" AND  manmas.remark1 ").append(remark1);
         }
@@ -58,7 +58,7 @@ public class FreeServiceWithinZL extends FreeServiceERP{
         sb.append(" left outer join manmas on manmas.facno=manreh.facno and  manmas.prono=manreh.prono and manmas.manno=manreh.manno ");
         sb.append(" WHERE ( manreh.facno = manred.facno ) and( manreh.prono = manred.prono ) and( manreh.retno = manred.retno ) and  ( manreh.issstatus = 'C') ");
         sb.append(" and manred.altitnbr <>'3188-GBR6254-FW' and manreh.facno='${facno}' and manreh.prono='1' and manreh.retdepno='9900' ");
-        sb.append(" and manred.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode='02' ");
+        sb.append(" and manred.wareh not in ('EKF03','EKF01','EZK01','EZK03','EAKF03') and manmas.typecode in ('02','05') ");
         if (!"".equals(remark1)) {
             sb.append(" AND  manmas.remark1 ").append(remark1);
         }
