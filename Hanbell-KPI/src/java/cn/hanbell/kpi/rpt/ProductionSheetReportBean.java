@@ -192,21 +192,21 @@ public class ProductionSheetReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(e.getTargetIndicator());
             e.getActualIndicator().setType("制令实际");
             indicatorDetailList.add(e.getActualIndicator());
-            e.getPerformanceIndicator().setType("本月达成率");
+            e.getPerformanceIndicator().setType("本月达成");
             indicatorDetailList.add(e.getPerformanceIndicator());
             targetAccumulated.setType("目标累计");
             indicatorDetailList.add(targetAccumulated);
             actualAccumulated.setType("实际累计");
             indicatorDetailList.add(actualAccumulated);
-            AP.setType("累计达成率");
+            AP.setType("累计达成");
             indicatorDetailList.add(AP);
             e.getBenchmarkIndicator().setType("去年同期");
             indicatorDetailList.add(e.getBenchmarkIndicator());
             benchmarkAccumulated.setType("去年累计");
             indicatorDetailList.add(benchmarkAccumulated);
-            BG.setType("同比增长率");
+            BG.setType("同比增长");
             indicatorDetailList.add(BG);
-            AG.setType("累计增长率");
+            AG.setType("累计增长");
             indicatorDetailList.add(AG);
 
         }
@@ -245,21 +245,21 @@ public class ProductionSheetReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(sumIndicator.getTargetIndicator());
             sumIndicator.getActualIndicator().setType("制令实际");
             indicatorDetailList.add(sumIndicator.getActualIndicator());
-            sumIndicator.getPerformanceIndicator().setType("本月达成率");
+            sumIndicator.getPerformanceIndicator().setType("本月达成");
             indicatorDetailList.add(sumIndicator.getPerformanceIndicator());
             sumTargetAccumulated.setType("目标累计");
             indicatorDetailList.add(sumTargetAccumulated);
             sumActualAccumulated.setType("实际累计");
             indicatorDetailList.add(sumActualAccumulated);
-            sumAP.setType("累计达成率");
+            sumAP.setType("累计达成");
             indicatorDetailList.add(sumAP);
             sumIndicator.getBenchmarkIndicator().setType("去年同期");
             indicatorDetailList.add(sumIndicator.getBenchmarkIndicator());
             sumBenchmarkAccumulated.setType("同期累计");
             indicatorDetailList.add(sumBenchmarkAccumulated);
-            sumBG.setType("同比增长率");
+            sumBG.setType("同比增长");
             indicatorDetailList.add(sumBG);
-            sumAG.setType("累计增长率");
+            sumAG.setType("累计增长");
             indicatorDetailList.add(sumAG);
 
             //根据指标ID加载指标说明、指标分析
@@ -281,10 +281,10 @@ public class ProductionSheetReportBean extends BscSheetManagedBean {
      public String format(String type, BigDecimal value, int i) {
         switch (type) {
             case "P":
-            case "本月达成率":
-            case "累计达成率":
-            case "同比增长率":
-            case "累计增长率":
+            case "本月达成":
+            case "累计达成":
+            case "同比增长":
+            case "累计增长":
                 return percentFormat(value, i);
             default:
                 return format(value, i);
