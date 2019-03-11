@@ -55,9 +55,6 @@
                         <p:column headerText="M12">
                             <h:outputText value="#{inventoryAmountBean.format(item.type,item.n12,12) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="全年">                           
-                            <h:outputText value="#{(item.type == '同期相比')?'':inventoryAmountBean.format(item.type,item.nfy,0)}" ></h:outputText>
-                        </p:column>
                     </p:dataTable>
                 </div>
             </div>
@@ -93,7 +90,7 @@
                 <h:inputHidden id="sc" value="#{inventoryAmountBean.summaryCount}"></h:inputHidden>
                 <h:inputHidden id="ac" value="#{inventoryAmountBean.analysisCount}"></h:inputHidden>
             </div>
-            <h:outputScript name="bsc-analysis-sheet.js" library="js"/>
+            <h:outputScript name="bsc-analysis-sheet1.js" library="js"/>
         </h:form>
     </ui:define>
 
