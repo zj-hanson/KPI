@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class QRAHansonRotor extends QRABadFeed {
+public class QRAHansonRotor extends QRAConnMES {
 
     public QRAHansonRotor() {
         super();
@@ -43,7 +43,7 @@ public class QRAHansonRotor extends QRABadFeed {
                 Object[] row = (Object[]) o1.get(i);
                 Double value1 = Double.valueOf(row[0].toString());
                 Double value2 = Double.valueOf(row[1].toString());
-                result = BigDecimal.valueOf(value1 / value2).setScale(6, BigDecimal.ROUND_HALF_UP);
+                result = BigDecimal.ONE.subtract(BigDecimal.valueOf(value1 / value2).setScale(2, BigDecimal.ROUND_HALF_UP));
             }
         } catch (Exception ex) {
             Logger.getLogger(QRAHansonRotor.class.getName()).log(Level.SEVERE, null, ex);

@@ -11,19 +11,19 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author C1749 空压机组上线合格率
+ * @author C1749
  */
-public class QRAOnLineNumberAH1 extends QRABadFeedRate {
+public class QRACubicElementAmountPP extends QRACubicElementAmount {
 
-    public QRAOnLineNumberAH1() {
+    public QRACubicElementAmountPP() {
         super();
-        queryParams.put("SYSTEMID", "'QC_SXBLReport'");
-        queryParams.put("SEQUENCE", " in ('4','5') ");
+        queryParams.put("genre1", "P");
+        queryParams.put("SOURCEDPIP", "真空");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(100));
+        return super.getValue(y, m, d, type, map); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -420,6 +420,26 @@
             <to-view-id>/app/bsc/numberofdefectiveschart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>percentofpass</from-outcome>
+            <to-view-id>/app/bsc/percentofpass.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>percentofpassr</from-outcome>
+            <to-view-id>/app/bsc/percentofpassr.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>percentofpassp</from-outcome>
+            <to-view-id>/app/bsc/percentofpassp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>percentofpassjz</from-outcome>
+            <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--模态开窗-->
     <navigation-rule>

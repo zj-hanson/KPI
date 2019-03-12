@@ -6,30 +6,33 @@
 package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
-import cn.hanbell.kpi.comm.SuperEJBForMES;
+import cn.hanbell.kpi.comm.SuperEJBForHFTYS;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import javax.naming.InitialContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author C1749
+ * @author C1749 合肥通用所连接
  */
-public class QRABadFeed implements Actual {
+public abstract class QRAConnHFTYS implements Actual {
 
-    protected SuperEJBForMES superEJB;
+    protected SuperEJBForHFTYS superEJB;
     protected LinkedHashMap<String, Object> queryParams;
+    protected final Logger log4j = LogManager.getLogger();
 
-    public QRABadFeed() {
+    public QRAConnHFTYS() {
         queryParams = new LinkedHashMap<>();
     }
 
-    public SuperEJBForMES getSuperEJB() {
+    public SuperEJBForHFTYS getSuperEJB() {
         return superEJB;
     }
 
-    public void setSuperEJB(SuperEJBForMES superEJB) {
+    public void setSuperEJB(SuperEJBForHFTYS superEJB) {
         this.superEJB = superEJB;
     }
 
@@ -37,7 +40,7 @@ public class QRABadFeed implements Actual {
     public void setEJB(String JNDIName) throws Exception {
         InitialContext c = new InitialContext();
         Object objRef = c.lookup(JNDIName);
-        superEJB = (SuperEJBForMES) objRef;
+        superEJB = (SuperEJBForHFTYS) objRef;
     }
 
     @Override

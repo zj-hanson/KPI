@@ -11,14 +11,14 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author C1749 空压机组上线合格率
+ * @author C1749 冷媒进料合格率
  */
-public class QRAOnLineNumberAH1 extends QRABadFeedRate {
+public class QRAIQCPercentOfPassR1 extends QRAIQCPercentOfPass {
 
-    public QRAOnLineNumberAH1() {
+    public QRAIQCPercentOfPassR1() {
         super();
-        queryParams.put("SYSTEMID", "'QC_SXBLReport'");
-        queryParams.put("SEQUENCE", " in ('4','5') ");
+        queryParams.put("SYSTEMID", "'QC_JLBLReport'");
+        queryParams.put("SEQUENCE", " in ('1','2') ");
     }
 
     @Override

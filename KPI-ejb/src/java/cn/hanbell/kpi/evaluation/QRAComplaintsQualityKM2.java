@@ -14,8 +14,8 @@ public class QRAComplaintsQualityKM2 extends QRAComplaintsQuality {
 
     public QRAComplaintsQualityKM2() {
         super();
-        queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", " ='RT' ");
+        queryParams.put("facno", "K");
+        queryParams.put("n_code_DA", " in('RT','OH') ");
         queryParams.put("n_code_DC", "in ('WL') ");
         queryParams.put("n_code_DD", " ='00' ");
     }

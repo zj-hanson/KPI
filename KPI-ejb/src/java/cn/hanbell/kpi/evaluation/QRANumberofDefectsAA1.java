@@ -52,7 +52,7 @@ public class QRANumberofDefectsAA1 extends QRAqualified {
             a2 = Double.valueOf(f.get(o2).toString());
 
             if (a2 > 0) {
-                result = BigDecimal.valueOf(a2 / a1).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                result = BigDecimal.valueOf(a2 / a1).setScale(2, BigDecimal.ROUND_HALF_UP);
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(QRANumberofDefectsAA1.class.getName()).log(Level.SEVERE, null, ex);
