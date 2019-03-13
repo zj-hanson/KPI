@@ -11,12 +11,14 @@ import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
+import cn.hanbell.kpi.ejb.SalesTableBean;
 import cn.hanbell.kpi.entity.ClientRanking;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorSummary;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -41,6 +43,8 @@ public class ShipmentTopManagedBean implements Serializable {
 
     @EJB
     protected ClientTableBean clientrank;
+    @EJB
+    protected SalesTableBean salesTableBean;
     @EJB
     protected IndicatorAnalysisBean indicatorAnalysisBean;
     @EJB
@@ -71,7 +75,10 @@ public class ShipmentTopManagedBean implements Serializable {
     protected IndicatorChart indicatorChart;
     private boolean checkbox;
 
+    private final DecimalFormat df;
+
     public ShipmentTopManagedBean() {
+        this.df = new DecimalFormat("#,###");
     }
 
     public int findyear() {
@@ -96,6 +103,10 @@ public class ShipmentTopManagedBean implements Serializable {
         setSummaryCount(0);
         analysisList = new ArrayList<>();
         summaryList = new ArrayList<>();
+    }
+
+    public String dfShpqy1(String a) {
+        return df.format(Double.parseDouble(a));
     }
 
     @PostConstruct
@@ -269,7 +280,8 @@ public class ShipmentTopManagedBean implements Serializable {
                     }
                 }
                 List<ClientRanking> list;
-                list = clientrank.getClientList(y, m, getMap());
+                list = salesTableBean.getClientList(y, m, map);
+                //list = clientrank.getClientList(y, m, getMap());
                 if (list.size() > 0) {
                     setClientlist(list);
                     //根据指标ID加载指标说明、指标分析

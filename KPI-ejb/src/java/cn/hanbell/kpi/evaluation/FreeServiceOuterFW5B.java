@@ -16,13 +16,13 @@ import javax.persistence.Query;
  *
  * @author C1879
  */
-public class FreeServiceOuterFW5AB extends FreeServiceOuterFW {
+public class FreeServiceOuterFW5B extends FreeServiceOuterFW {
 
-    public FreeServiceOuterFW5AB() {
+    public FreeServiceOuterFW5B() {
         super();
         queryParams.put("facno", "K");
 //        queryParams.put("hmark1", "='HD' ");
-//        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY') ");
+        queryParams.put("hmark2", " ='OH' ");
     }
 
     @Override
