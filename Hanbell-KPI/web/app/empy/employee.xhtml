@@ -1,0 +1,1479 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formOne" rendered="#{!employeeManagedBean.deny}">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{employeeManagedBean.update()}" icon="ui-icon-save"
+                                     rendered="#{employeeManagedBean.doEdit}" process="@this,formOne:tabView:plgTarget" update="formOne:tabView"/>
+                    <p:commandButton id="btnVerify" value="审核" actionListener="#{employeeManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{employeeManagedBean.doCfm}" process="@this" update="toolbar">
+                        <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUnverify" value="还原" actionListener="#{employeeManagedBean.unverify()}" icon="ui-icon-check"
+                                     rendered="#{employeeManagedBean.doUnCfm}" process="@this" update="toolbar">
+                        <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+            </p:toolbar>
+            <p:accordionPanel>
+                <p:tab title="#{employeeManagedBean.currentEntity.name}-查看">
+                    <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                        <p:row>
+                            <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="name" value="#{employeeManagedBean.currentEntity.name}" title="Name"/>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="seq" value="#{employeeManagedBean.currentEntity.seq}" title="seq"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="指标定义"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="descript" value="#{employeeManagedBean.currentEntity.descript}" title="descript" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="考核部门"/></p:column>
+                            <p:column>
+                                <h:outputText id="deptno" value="#{employeeManagedBean.currentEntity.deptno}" title="deptno"  />
+                            </p:column>
+                            <p:column><h:outputText value="部门名称"/></p:column>
+                            <p:column>
+                                <h:outputText id="deptname" value="#{employeeManagedBean.currentEntity.deptname}" title="deptname" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="指标类型"/></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="formtype" value="#{employeeManagedBean.currentEntity.formtype}" title="formtype"
+                                                 required="true" requiredMessage="请输入指标类型" disabled="true">
+                                    <f:selectItem itemLabel="数字" itemValue="N"/>
+                                    <f:selectItem itemLabel="文字" itemValue="S"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column><h:outputText value="计算周期"/></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="formkind" value="#{employeeManagedBean.currentEntity.formkind}" title="formkind"
+                                                 required="true" requiredMessage="请输入计算周期" disabled="true">
+                                    <f:selectItem itemLabel="天" itemValue="D"/>
+                                    <f:selectItem itemLabel="月" itemValue="M"/>
+                                    <f:selectItem itemLabel="季" itemValue="Q"/>
+                                    <f:selectItem itemLabel="半年" itemValue="H"/>
+                                    <f:selectItem itemLabel="一年" itemValue="Y"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="计算方式" /></p:column>
+                            <p:column>
+                                <p:selectOneMenu id="valuemode" value="#{employeeManagedBean.currentEntity.valueMode}" title="valuemode"
+                                                 required="true" requiredMessage="请输入计算方式" disabled="true">
+                                    <f:selectItem itemLabel="手动输入" itemValue="I"/>
+                                    <f:selectItem itemLabel="求和" itemValue="S"/>
+                                    <f:selectItem itemLabel="平均值" itemValue="A"/>
+                                    <f:selectItem itemLabel="表达式" itemValue="E"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column><h:outputText value="数字格式"/></p:column>
+                            <p:column>
+                                <h:outputText id="symbol" value="#{employeeManagedBean.currentEntity.symbol}" title="symbol" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="单位"/></p:column>
+                            <p:column>
+                                <h:outputText id="unit" value="#{employeeManagedBean.currentEntity.unit}" title="unit" />
+                            </p:column>
+                            <p:column><h:outputText value="换算率"/></p:column>
+                            <p:column>
+                                <h:outputText id="rate" value="#{employeeManagedBean.currentEntity.rate}" title="rate" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="关联指标"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="associatedIndicator" value="#{employeeManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputText value="备注"/></p:column>
+                            <p:column colspan="3">
+                                <h:outputText id="remark" value="#{employeeManagedBean.currentEntity.remark}" title="Remark" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="指标查看">
+                    <p:panelGrid id="plgTarget" styleClass="plgDetail Wid100">
+                        <p:row >
+                            <p:column><p:outputLabel value="M01预测" for="fn01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n01}" title="fn01"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"  >
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd01"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 1)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd01" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M01基准" for="bn01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n01}" title="bn01"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd01"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 1)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd01" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M01目标" for="tn01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n01}" title="tn01"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td01"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 1)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td01" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M01实际" for="an01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n01}" title="an01"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy,pn01,pnfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad01"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 1)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad01" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M01达成" for="pn01" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n01}" title="pn01"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd01"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 1)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd01" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M02预测" for="fn02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n02}" title="fn02"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd02"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 2)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd02" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M02基准" for="bn02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n02}" title="bn02"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd02"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 2)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd02" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M02目标" for="tn02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n02}" title="tn02"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td02"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 2)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td02" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M02实际" for="an02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n02}" title="an02"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy,pn02,pnfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad02"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 2)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad02" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M02达成" for="pn02" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n02}" title="pn02"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd02"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 2)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd02" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M03预测" for="fn03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n03}" title="fn03"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd03"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 3)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd03" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M03基准" for="bn03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n03}" title="bn03"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd03"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 3)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd03" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M03目标" for="tn03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n03}" title="tn03"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td03"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 3)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td03" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M03实际" for="an03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n03}" title="an03"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad03"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 3)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad03" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M03达成" for="pn03" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n03}" title="pn03"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd03"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 3)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd03" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M04预测" for="fn04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n04}" title="fn04"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd04"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 4)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd04" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M04基准" for="bn04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n04}" title="bn04"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd04"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 4)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd04" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M04目标" for="tn04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n04}" title="tn04"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td04"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 4)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td04" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M04实际" for="an04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n04}" title="an04"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad04"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 4)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad04" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M04达成" for="pn04" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n04}" title="pn04"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd04"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 4)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd04" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M05预测" for="fn05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n05}" title="fn05"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd05"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator,5)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd05" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M05基准" for="bn05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n05}" title="bn05"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd05"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 5)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd05" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M05目标" for="tn05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n05}" title="tn05"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td05"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 5)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td05" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M05实际" for="an05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n05}" title="an05"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad05"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 5)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad05" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M05达成" for="pn05" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n05}" title="pn05"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd05"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 5)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd05" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M06预测" for="fn06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n06}" title="fn06"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd06"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 6)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd06" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M06基准" for="bn06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n06}" title="bn06"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd06"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 6)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd06" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M06目标" for="tn06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n06}" title="tn06"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td06"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 6)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td06" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M06实际" for="an06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n06}" title="an06"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad06"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 6)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad06" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M06达成" for="pn06" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n06}" title="pn06"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd06"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 6)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd06" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M07预测" for="fn07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n07}" title="fn07"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd07"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 7)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd07" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M07基准" for="bn07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n07}" title="bn07"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd07"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 7)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd07" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M07目标" for="tn07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n07}" title="tn07"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td07"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 7)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td07" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M07实际" for="an07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n07}" title="an07"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad07"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 7)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad07" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M07达成" for="pn07" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n07}" title="pn07"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd07"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 7)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd07" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M08预测" for="fn08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n08}" title="fn08"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd08"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 8)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd08" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M08基准" for="bn08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n08}" title="bn08"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd08"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 8)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd08" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M08目标" for="tn08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n08}" title="tn08"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td08"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 8)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td08" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M08实际" for="an08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n08}" title="an08"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad08"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 8)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad08" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M08达成" for="pn08" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n08}" title="pn08"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd08"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 8)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd08" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M09预测" for="fn09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n09}" title="fn09"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd09"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 9)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd09" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M09基准" for="bn09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n09}" title="bn09"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd09"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 9)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd09" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M09目标" for="tn09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n09}" title="tn09"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td09"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 9)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td09" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M09实际" for="an09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n09}" title="an09"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad09"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 9)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad09" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M09达成" for="pn09" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n09}" title="pn09"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd09"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 9)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd09" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M10预测" for="fn10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n10}" title="fn10"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd10"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 10)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd10" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M10基准" for="bn10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n10}" title="bn10"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd10"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 10)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd10" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M10目标" for="tn10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n10}" title="tn10"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td10"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 10)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td10" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M10实际" for="an10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n10}" title="an10"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad10"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 10)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad10" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M10达成" for="pn10" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n10}" title="pn10"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd10"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 10)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd10" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M11预测" for="fn11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n11}" title="fn11"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd11"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 11)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd11" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M11基准" for="bn11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n11}" title="bn11"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd11"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 11)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd11" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M11目标" for="tn11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n11}" title="tn11"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td11"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 11)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td11" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M11实际" for="an11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n11}" title="an11"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad11"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 11)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad11" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M11达成" for="pn11" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n11}" title="pn11"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd11"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 11)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd11" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="M12预测" for="fn12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fn12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.forecastIndicator.n12}" title="fn12"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="fnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="fd12"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.forecastIndicator, 12)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="fd12" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M12基准" for="bn12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bn12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.n12}" title="bn12"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="bnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="bd12"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.benchmarkIndicator, 12)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="bd12" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M12目标" for="tn12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tn12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.targetIndicator.n12}" title="tn12"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="tnfy" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="td12"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.targetIndicator, 12)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="td12" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M12实际" for="an12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="an12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.actualIndicator.n12}" title="an12"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                                    <p:ajax process="@this" update="anfy" listener="#{employeeManagedBean.updatePerformance}" />
+                                </p:inputNumber>
+                                &nbsp;
+                                <p:commandButton id="ad12"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.actualIndicator, 12)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="ad12" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="M12达成" for="pn12" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pn12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.currentEntity.performanceIndicator.n12}" title="pn12"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                                &nbsp;
+                                <p:commandButton id="pd12"   actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.currentEntity.performanceIndicator, 12)}" icon="ui-icon-add"
+                                                 process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="pd12" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="全年预测" for="fnfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="fnfy" value="#{employeeManagedBean.currentEntity.forecastIndicator.nfy}" title="fnfy"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="全年基准" for="bnfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="bnfy" value="#{employeeManagedBean.currentEntity.benchmarkIndicator.nfy}" title="bnfy"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="全年目标" for="tnfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="tnfy" value="#{employeeManagedBean.currentEntity.targetIndicator.nfy}" title="tnfy"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="全年实际" for="anfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="anfy" value="#{employeeManagedBean.currentEntity.actualIndicator.nfy}" title="anfy"
+                                               symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="全年达成" for="pnfy" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="pnfy" value="#{employeeManagedBean.currentEntity.performanceIndicator.nfy}" title="pnfy"
+                                               symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+                <p:tab title="关联部门">
+                    <p:dataTable id="tableList" value="#{employeeManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{employeeManagedBean.currentDetail}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="formOne:tabView:tableList" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="formOne:tabView:tableList" oncomplete="" />
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="关联部门"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid20">
+                            <f:facet name="header">
+                                <h:outputText value="部门名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptname}"/>
+                        </p:column>
+                        <p:column styleClass="Wid70"/>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="指标分配">
+                    <p:dataTable id="tableList2" value="#{employeeManagedBean.detailList2}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{employeeManagedBean.currentDetail2}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="" oncomplete="" />
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="指标名称"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="产品"/>
+                            </f:facet>
+                            <h:outputText value="#{item.product}"/>
+                        </p:column>
+                        <p:column styleClass="Wid40"/>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="指标归集">
+                    <p:dataTable id="tableList3" value="#{employeeManagedBean.detailList3}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{employeeManagedBean.currentDetail3}" rowKey="#{item.formid}" >
+                        <p:ajax event="rowSelect"  update="formOne:tabView:tableList3" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="formOne:tabView:tableList3" oncomplete="" />
+                        <p:column styleClass="Wid30">
+                            <f:facet name="header">
+                                <h:outputText value="指标编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formid}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10">
+                            <f:facet name="header">
+                                <h:outputText value="指标部门"/>
+                            </f:facet>
+                            <h:outputText value="#{item.deptno}"/>
+                        </p:column>
+                        <p:column styleClass="Wid60"/>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="其他数据" rendered="#{employeeManagedBean.currentEntity.hasOther>0}">
+                    <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
+                        <p:row rendered="#{employeeManagedBean.currentEntity.hasOther>0}">
+                            <p:column styleClass="Wid20"><h:outputText value="Other1名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="other1Label" value="#{employeeManagedBean.currentEntity.other1Label}" title="other1Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other1Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other1Label,employeeManagedBean.currentEntity.other1Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="Other1计算接口"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="other1Interface" value="#{employeeManagedBean.currentEntity.other1Interface}" title="other1Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row  rendered="#{employeeManagedBean.currentEntity.hasOther>1}">
+                            <p:column><h:outputText value="Other2名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other2Label" value="#{employeeManagedBean.currentEntity.other2Label}" title="other2Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other2Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other2Label,employeeManagedBean.currentEntity.other2Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other2计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other2Interface" value="#{employeeManagedBean.currentEntity.other2Interface}" title="other2Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{employeeManagedBean.currentEntity.hasOther>2}">
+                            <p:column><h:outputText value="Other3名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other3Label" value="#{employeeManagedBean.currentEntity.other3Label}" title="other3Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other3Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other3Label,employeeManagedBean.currentEntity.other3Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other3计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other3Interface" value="#{employeeManagedBean.currentEntity.other3Interface}" title="other3Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{employeeManagedBean.currentEntity.hasOther>3}">
+                            <p:column><h:outputText value="Other4名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other4Label" value="#{employeeManagedBean.currentEntity.other4Label}" title="other4Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other4Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other4Label,employeeManagedBean.currentEntity.other4Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other4计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other4Interface" value="#{employeeManagedBean.currentEntity.other4Interface}" title="other4Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{employeeManagedBean.currentEntity.hasOther>4}">
+                            <p:column><h:outputText value="Other5名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other5Label" value="#{employeeManagedBean.currentEntity.other5Label}" title="other5Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other5Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other5Label,employeeManagedBean.currentEntity.other5Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other5计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other5Interface" value="#{employeeManagedBean.currentEntity.other5Interface}" title="other5Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{employeeManagedBean.currentEntity.hasOther>5}">
+                            <p:column><h:outputText value="Other6名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other6Label" value="#{employeeManagedBean.currentEntity.other6Label}" title="other6Label" styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="other6Set"  actionListener="#{employeeManagedBean.setOtherIndicator(employeeManagedBean.currentEntity.other6Label,employeeManagedBean.currentEntity.other6Indicator)}" icon="ui-icon-add"
+                                                 process="@this,formOne:tabView:plgOther" update="formOne:dlgOther" oncomplete="PF('dlgOther').show();" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><h:outputText value="Other6计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other6Interface" value="#{employeeManagedBean.currentEntity.other6Interface}" title="other6Interface"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+                <p:tab title="指标说明">
+                    <p:toolbar id="summaryToolbar" styleClass="detailToolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="btnAddIndicatorSummary" widgetVar="btnAddIndicatorSummary" value="添加"
+                                             actionListener="#{employeeManagedBean.createIndicatorSummary()}" icon="ui-icon-plus"
+                                             process="@this" update="formOne:dlgIndicatorSummary" oncomplete="PF('dlgIndicatorSummary').show();"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="summaryList" value="#{employeeManagedBean.summaryList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{employeeManagedBean.indicatorSummary}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="formOne:dlgIndicatorSummary" oncomplete="PF('dlgIndicatorSummary').show();" />
+                        <p:ajax event="rowUnselect"  update="formOne:dlgIndicatorSummary" oncomplete="" />
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="月份"/>
+                            </f:facet>
+                            <h:outputText value="#{item.m}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid80">
+                            <f:facet name="header">
+                                <h:outputText value="标题"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="指标分析">
+                    <p:toolbar id="analysisToolbar" styleClass="detailToolbar">
+                        <f:facet name="right">
+                            <p:commandButton id="btnAddIndicatorAnalysis" widgetVar="btnAddIndicatorAnalysis" value="添加"
+                                             actionListener="#{employeeManagedBean.createIndicatorAnalysis()}" icon="ui-icon-plus"
+                                             process="@this" update="formOne:dlgIndicatorAnalysis" oncomplete="PF('dlgIndicatorAnalysis').show();"/>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:dataTable id="analysisList" value="#{employeeManagedBean.analysisList}" var="item" styleClass="tableList Mtop10"
+                                 selectionMode="single" selection="#{employeeManagedBean.indicatorAnalysis}" rowKey="#{item.id}" >
+                        <p:ajax event="rowSelect"  update="formOne:dlgIndicatorAnalysis" oncomplete="PF('dlgIndicatorAnalysis').show();" />
+                        <p:ajax event="rowUnselect"  update="formOne:dlgIndicatorAnalysis" oncomplete="" />
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="月份"/>
+                            </f:facet>
+                            <h:outputText value="#{item.m}"/>
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: right">
+                            <f:facet name="header">
+                                <h:outputText value="序号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seq}"/>
+                        </p:column>
+                        <p:column styleClass="Wid80">
+                            <f:facet name="header">
+                                <h:outputText value="标题"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <p:dialog id="dlgOther" widgetVar="dlgOther" width="60%">
+                <p:panelGrid id="plgOtherIndicator"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="6">#{employeeManagedBean.otherLabel}</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><p:outputLabel value="M01" for="on01" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on01" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n01}" title="on01"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd01"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 1)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd01" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }" >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M02" for="on02" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on02" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n02}" title="on02"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd02"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 2)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd02" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M03" for="on03" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on03" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n03}" title="on03"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd03"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 3)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd03" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M04" for="on04" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on04" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n04}" title="on04"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd04"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 4)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd04" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M05" for="on05" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on05" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n05}" title="on05"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd05"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 5)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd05" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M06" for="on06" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on06" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n06}" title="on06"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd06"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 6)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd06" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M07" for="on07" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on07" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n07}" title="on07"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd07"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 7)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd07" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M08" for="on08" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on08" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n08}" title="on08"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd08"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 8)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd08" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M09" for="on09" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on09" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n09}" title="on09"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd09"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 9)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd09" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="M10" for="on10" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on10" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n10}" title="on10"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd10"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 10)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd10" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M11" for="on11" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on11" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n11}" title="on11"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd11"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 11)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd11" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column><p:outputLabel value="M12" for="on12" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="on12" style="width: 75%;display: inline-block" value="#{employeeManagedBean.otherIndicator.n12}" title="on12"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                            &nbsp;
+                            <p:commandButton id="otherd12"  actionListener="#{employeeManagedBean.queryIndicatorDaily(employeeManagedBean.otherIndicator, 12)}" icon="ui-icon-add"
+                                             process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd12" style="background-color: #1AB394" rendered="#{employeeManagedBean.currentEntity.formkind=='D' }"  >
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="6">
+                                <p:commandButton id="saveOther"  actionListener="#{employeeManagedBean.updateOtherIndicator()}" icon="ui-icon-save" value="保存" style="float: right"
+                                                 process="@this,formOne:dlgOther" oncomplete="PF('dlgOther').hide();"  disabled="true" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog id="dlgDaily" widgetVar="dlgDaily" width="80%" >
+                <p:panelGrid id="plgIndicatorDaily"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="14">#{employeeManagedBean.indicatorDaily.mth}月份
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==1}">Target数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==2}">Benchmark数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==3}">Forecast数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==4}">Actual数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==5}">Performance数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==6}">Other1数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==7}">Other2数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==8}">Other3数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==9}">Other4数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==10}">Other5数据</c:if>
+                                <c:if test="#{employeeManagedBean.indicatorDaily.seq==11}">Other6数据</c:if>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row style="height: 50px" >
+                        <p:column><p:outputLabel value="D01" for="od01" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od01" value="#{employeeManagedBean.indicatorDaily.d01}" title="od01"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D02" for="od02" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od02" value="#{employeeManagedBean.indicatorDaily.d02}" title="od02"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}"  symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D03" for="od03" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od03" value="#{employeeManagedBean.indicatorDaily.d03}" title="od03"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D04" for="od04" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od04" value="#{employeeManagedBean.indicatorDaily.d04}" title="od04"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D05" for="od05" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od05" value="#{employeeManagedBean.indicatorDaily.d05}" title="od05"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D06" for="od06" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od06" value="#{employeeManagedBean.indicatorDaily.d06}" title="od06"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D07" for="od07" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od07" value="#{employeeManagedBean.indicatorDaily.d07}" title="od07"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row style="height: 50px" >
+                        <p:column><p:outputLabel value="D08" for="od08" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od08" value="#{employeeManagedBean.indicatorDaily.d08}" title="od08"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D09" for="od09" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od09" value="#{employeeManagedBean.indicatorDaily.d09}" title="od09"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D10" for="od10" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od10" value="#{employeeManagedBean.indicatorDaily.d10}" title="od10"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D11" for="od11" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od11" value="#{employeeManagedBean.indicatorDaily.d11}" title="od11"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D12" for="od12" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od12" value="#{employeeManagedBean.indicatorDaily.d12}" title="od12"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D13" for="od13" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od13" value="#{employeeManagedBean.indicatorDaily.d13}" title="od13"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D14" for="od14" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od14" value="#{employeeManagedBean.indicatorDaily.d14}" title="od14"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row style="height: 50px" >
+                        <p:column><p:outputLabel value="D15" for="od15" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od15" value="#{employeeManagedBean.indicatorDaily.d15}" title="od15"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D16" for="od16" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od16" value="#{employeeManagedBean.indicatorDaily.d16}" title="od16"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D17" for="od17" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od17" value="#{employeeManagedBean.indicatorDaily.d17}" title="od17"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D18" for="od18" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od18" value="#{employeeManagedBean.indicatorDaily.d18}" title="od18"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D19" for="od19" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od19" value="#{employeeManagedBean.indicatorDaily.d19}" title="od19"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D20" for="od20" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od20" value="#{employeeManagedBean.indicatorDaily.d20}" title="od20"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D21" for="od21" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od21" value="#{employeeManagedBean.indicatorDaily.d21}" title="od21"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row style="height: 50px" >
+                        <p:column><p:outputLabel value="D22" for="od22" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od22" value="#{employeeManagedBean.indicatorDaily.d22}" title="od22"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D23" for="od23" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od23" value="#{employeeManagedBean.indicatorDaily.d23}" title="od23"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D24" for="od24" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od24" value="#{employeeManagedBean.indicatorDaily.d24}" title="od24"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D25" for="od25" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od25" value="#{employeeManagedBean.indicatorDaily.d25}" title="od25"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D26" for="od26" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od26" value="#{employeeManagedBean.indicatorDaily.d26}" title="od26"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+
+                        <p:column><p:outputLabel value="D27" for="od27" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od27" value="#{employeeManagedBean.indicatorDaily.d27}" title="od27"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column><p:outputLabel value="D28" for="od28" /></p:column>
+                        <p:column>
+                            <p:inputNumber id="od28" value="#{employeeManagedBean.indicatorDaily.d28}" title="od28"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <p:row style="height: 50px"  rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 28 }" >
+                        <p:column  rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 28 }"><p:outputLabel value="D29" for="od29" /></p:column>
+                        <p:column rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 28 }">
+                            <p:inputNumber id="od29" value="#{employeeManagedBean.indicatorDaily.d29}" title="od29"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 29 }"><p:outputLabel value="D30" for="od30" /></p:column>
+                        <p:column rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 29 }">
+                            <p:inputNumber id="od30" value="#{employeeManagedBean.indicatorDaily.d30}" title="od30"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                        <p:column rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 30 }"><p:outputLabel value="D31" for="od31" /></p:column>
+                        <p:column rendered="#{employeeManagedBean.days(employeeManagedBean.currentEntity.seq, employeeManagedBean.indicatorDaily.mth) > 30 }">
+                            <p:inputNumber id="od31" value="#{employeeManagedBean.indicatorDaily.d31}" title="od31"
+                                           symbol="#{employeeManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
+                            </p:inputNumber>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="14">
+                                <p:commandButton id="saveDaily"  actionListener="#{employeeManagedBean.updateIndicatorDaily()}" icon="ui-icon-save" value="保存" style="float: right"
+                                                 process="@this,formOne:dlgDaily" update="formOne:tabView:plgTarget,formOne:dlgOther" oncomplete="PF('dlgDaily').hide();" disabled="true" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog id="dlgIndicatorSummary" widgetVar="dlgIndicatorSummary" width="80%">
+                <p:panelGrid id="plgIndicatorSummary" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">#{employeeManagedBean.currentEntity.seq}年#{employeeManagedBean.indicatorSummary.m}月指标说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column styleClass="Wid20"><p:outputLabel value="标题" for="titleSummary" /></p:column>
+                        <p:column styleClass="Wid80">
+                            <p:inputText id="titleSummary" value="#{employeeManagedBean.indicatorSummary.title}" title="SummaryTitle"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{employeeManagedBean.indicatorSummary.summary}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer" rendered="#{employeeManagedBean.doEdit}">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="updateIndicatorSummary"  actionListener="#{employeeManagedBean.updateIndicatorSummary()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                </p:commandButton>
+                                <p:commandButton id="deleteIndicatorSummary"  actionListener="#{employeeManagedBean.deleteIndicatorSummary()}" value="删除" icon="ui-icon-trash" style="float: right"
+                                                 process="@this" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                    <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog id="dlgIndicatorAnalysis" widgetVar="dlgIndicatorAnalysis" width="80%">
+                <p:panelGrid id="plgIndicatorAnalysis"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3">#{employeeManagedBean.currentEntity.seq}年#{employeeManagedBean.indicatorAnalysis.m}月指标分析</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:inputText id="titleAnalysis" value="#{employeeManagedBean.indicatorAnalysis.title}" title="AnalysisTitle"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorIssue" value="#{employeeManagedBean.indicatorAnalysis.issue}" height="500"/>
+                        </p:column>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorFactor" value="#{employeeManagedBean.indicatorAnalysis.factor}" height="500"/>
+                        </p:column>
+                        <p:column style="width: 33.33%">
+                            <p:editor widgetVar="editorCountermeasure" value="#{employeeManagedBean.indicatorAnalysis.countermeasure}" height="500"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer" rendered="#{employeeManagedBean.doEdit}">
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton id="updateIndicatorAnalysis"  actionListener="#{employeeManagedBean.updateIndicatorAnalysis()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="formOne:dlgIndicatorAnalysis" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">
+                                </p:commandButton>
+                                <p:commandButton id="deleteIndicatorAnalysis"  actionListener="#{employeeManagedBean.deleteIndicatorAnalysis()}" value="删除" icon="ui-icon-trash" style="float: right"
+                                                 process="@this" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">
+                                    <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{employeeManagedBean.deny}">
+            <h1 style="text-align: center">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

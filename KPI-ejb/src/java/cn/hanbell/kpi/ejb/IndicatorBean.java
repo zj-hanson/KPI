@@ -135,6 +135,13 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         divideByRate(i.getBenchmarkIndicator(), i.getRate(), scale);
         divideByRate(i.getForecastIndicator(), i.getRate(), scale);
         divideByRate(i.getTargetIndicator(), i.getRate(), scale);
+        if (i.getOther1Indicator() != null) {
+            divideByRate(i.getOther1Indicator(), i.getRate(), scale);
+        }
+        if (i.getOther2Indicator() != null) {
+            divideByRate(i.getOther2Indicator(), i.getRate(), scale);
+        }
+
     }
 
     public void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {
@@ -513,7 +520,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public String getIndicatorColumn(String formtype, String c) {
         if (formtype.equals("N")) {
             return "n" + c;
-        }else if (formtype.equals("D")) {
+        } else if (formtype.equals("D")) {
             return "d" + c;
         } else {
             return "";
@@ -1118,7 +1125,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return daily.getTotal();
             }
         } catch (Exception e) {
-            log4j.error("upadateActualofIndicatorDaily"+e);
+            log4j.error("upadateActualofIndicatorDaily" + e);
         }
         return BigDecimal.ZERO;
 
@@ -1126,6 +1133,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     public Indicator updateActual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
+        String userid = entity.getUserid();
         IndicatorDetail detail;
         int uy, um;
         //先计算Other
@@ -1137,6 +1145,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther1EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o1, uy, um, d, type, otherInterface);
@@ -1157,6 +1166,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther2EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o2, uy, um, d, type, otherInterface);
@@ -1177,6 +1187,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther3EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o3, uy, um, d, type, otherInterface);
@@ -1198,6 +1209,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther4EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o4, uy, um, d, type, otherInterface);
@@ -1218,6 +1230,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther5EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o5, uy, um, d, type, otherInterface);
@@ -1238,6 +1251,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther6EJB());
+                    otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(o6, uy, um, d, type, otherInterface);
@@ -1260,6 +1274,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 um = actualInterface.getUpdateMonth(y, m);
                 if (entity.getSeq() == uy) {
                     actualInterface.setEJB(entity.getActualEJB());
+                    actualInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
                         na = upadateActualofIndicatorDaily(a, uy, um, d, type, actualInterface);

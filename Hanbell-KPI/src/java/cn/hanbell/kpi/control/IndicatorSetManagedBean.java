@@ -74,6 +74,8 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
 
     protected String queryDeptno;
     protected String queryDeptname;
+    protected String queryUserid;
+    protected String queryUsername;
     protected int queryYear;
 
     public IndicatorSetManagedBean() {
@@ -439,6 +441,12 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
             if (queryDeptname != null && !"".equals(queryDeptname)) {
                 model.getFilterFields().put("deptname", queryDeptname);
             }
+            if (getQueryUserid() != null && !"".equals(queryUserid)) {
+                model.getFilterFields().put("userid", queryUserid);
+            }
+            if (getQueryUsername() != null && !"".equals(queryUsername)) {
+                model.getFilterFields().put("username", queryUsername);
+            }
             if (queryYear > 2016) {
                 model.getFilterFields().put("seq", queryYear);
             }
@@ -741,6 +749,34 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
      */
     public void setQueryDeptname(String queryDeptname) {
         this.queryDeptname = queryDeptname;
+    }
+
+    /**
+     * @return the queryUserid
+     */
+    public String getQueryUserid() {
+        return queryUserid;
+    }
+
+    /**
+     * @param queryUserid the queryUserid to set
+     */
+    public void setQueryUserid(String queryUserid) {
+        this.queryUserid = queryUserid;
+    }
+
+    /**
+     * @return the queryUsername
+     */
+    public String getQueryUsername() {
+        return queryUsername;
+    }
+
+    /**
+     * @param queryUsername the queryUsername to set
+     */
+    public void setQueryUsername(String queryUsername) {
+        this.queryUsername = queryUsername;
     }
 
     /**

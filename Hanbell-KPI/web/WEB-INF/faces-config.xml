@@ -159,6 +159,16 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>employee</from-outcome>
+            <to-view-id>/app/empy/employee.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>employeeset</from-outcome>
+            <to-view-id>/app/empy/employeeset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>product</from-outcome>
             <to-view-id>/app/prod/product.xhtml</to-view-id>
             <redirect/>
@@ -254,7 +264,7 @@
             <from-outcome>productionsheet</from-outcome>
             <to-view-id>/app/bsc/productionsheet.xhtml</to-view-id>
             <redirect/>
-        </navigation-case>productionsheet
+        </navigation-case>
         <navigation-case>
             <from-outcome>processratiochart</from-outcome>
             <to-view-id>/app/bsc/processratiochart.xhtml</to-view-id>
