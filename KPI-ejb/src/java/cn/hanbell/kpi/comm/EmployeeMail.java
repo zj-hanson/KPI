@@ -69,7 +69,7 @@ public abstract class EmployeeMail extends MailNotification {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<tr>");
-            sb.append("<td style=\"text-align:center;\" rowspan=\"").append(indicatorList.size() + 1).append("\" colspan=\"1\" >").append(name).append("</td>");
+            sb.append("<td style=\"text-align:center;\" rowspan=\"").append(indicatorList.size()==1?1:indicatorList.size()+ 1).append("\" colspan=\"1\" >").append(name).append("</td>");
             for (Indicator i : indicatorList) {
                 indicatorBean.divideByRate(i, 2);
                 sb.append(getHtmlTableRow(i, y, m, d));
@@ -81,10 +81,17 @@ public abstract class EmployeeMail extends MailNotification {
                     sumList.add(sumIndicator);
                     sum1 = sum1.add(getData().get("sum1"));
                     sum2 = sum2.add(getData().get("sum2"));
-                    sumIndicator.setUsername("合计");
+                    sumIndicator.setUsername("小计");
                     sb.append("<tr style=\"font-weight:bold;\">");
                     sb.append(getHtmlTableRow(sumIndicator, y, m, d));
                     sb.append("</tr>");
+                }
+            }else{
+                 sumIndicator = indicatorBean.getSumValue(indicatorList);
+                if (sumIndicator != null) {
+                    sumList.add(sumIndicator);
+                    sum1 = sum1.add(getData().get("sum1"));
+                    sum2 = sum2.add(getData().get("sum2"));
                 }
             }
         } catch (Exception ex) {
