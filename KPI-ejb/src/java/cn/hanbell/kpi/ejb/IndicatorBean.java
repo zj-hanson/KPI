@@ -513,7 +513,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public String getIndicatorColumn(String formtype, String c) {
         if (formtype.equals("N")) {
             return "n" + c;
-        }else if (formtype.equals("D")) {
+        } else if (formtype.equals("D")) {
             return "d" + c;
         } else {
             return "";
@@ -1118,7 +1118,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return daily.getTotal();
             }
         } catch (Exception e) {
-            log4j.error("upadateActualofIndicatorDaily"+e);
+            log4j.error("upadateActualofIndicatorDaily" + e);
         }
         return BigDecimal.ZERO;
 

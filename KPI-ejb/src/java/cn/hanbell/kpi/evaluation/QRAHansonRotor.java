@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class QRAHansonRotor extends QRAConnMES {
+public class QRAHansonRotor extends QRAAConnMES {
 
     public QRAHansonRotor() {
         super();

@@ -14,7 +14,7 @@ import javax.persistence.Query;
  *
  * @author C1749 三次元完工入库总数
  */
-public class QRACubicElementAmount extends QRAqualified {
+public class QRACubicElementAmount extends QRAAConnERP {
 
     public QRACubicElementAmount() {
         super();

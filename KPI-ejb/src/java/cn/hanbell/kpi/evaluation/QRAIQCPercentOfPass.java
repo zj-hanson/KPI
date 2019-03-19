@@ -15,7 +15,7 @@ import javax.persistence.Query;
  *
  * @author C1749 进料合格率统计
  */
-public class QRAIQCPercentOfPass extends QRAConnMES {
+public class QRAIQCPercentOfPass extends QRAAConnMES {
 
     public QRAIQCPercentOfPass() {
         super();

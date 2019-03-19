@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author C1749 MES中的不合格单数据
+ * @author C1749 三次元MES中的不合格单数据
  */
 public class QRACubicElementAmountBad {
 

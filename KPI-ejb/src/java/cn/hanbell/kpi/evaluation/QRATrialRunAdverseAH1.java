@@ -19,7 +19,7 @@ import javax.persistence.Query;
  *
  * @author C1749 空压机体试车MES数据集合不良数
  */
-public class QRATrialRunAdverseAH1 extends QRAConnMES {
+public class QRATrialRunAdverseAH1 extends QRAAConnMES {
 
     SuperEJBForMES superMES = lookupSuperEJBForMESBean();
 

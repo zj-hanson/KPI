@@ -7,7 +7,6 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.SuperEJBForMES;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -20,7 +19,7 @@ import javax.persistence.Query;
  *
  * @author C1749 冷媒试车MES数据集合不良数
  */
-public class QRATrialRunAdverseR1 extends QRAConnMES {
+public class QRATrialRunAdverseR1 extends QRAAConnMES {
 
     SuperEJBForMES superMES = lookupSuperEJBForMESBean();
 

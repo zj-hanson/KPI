@@ -19,7 +19,7 @@ import javax.persistence.Query;
  *
  * @author C1749 真是试车合格率
  */
-public class QRATrialRunAdverseP1 extends QRAConnMES {
+public class QRATrialRunAdverseP1 extends QRAAConnMES {
 
     SuperEJBForMES superMES = lookupSuperEJBForMESBean();
 

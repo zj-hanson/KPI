@@ -12,6 +12,7 @@ import cn.hanbell.kpi.web.BscChartManagedBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -51,10 +52,12 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
     protected List<IndicatorSet> indicatorSetList;
     protected List<IndicatorDetail> indicatorDetailList;
 
+    protected final DecimalFormat floatFormat;
+
     protected boolean hasOther;
 
     public QRAPercentOfPassReportBean() {
-
+        this.floatFormat = new DecimalFormat("##.##");
     }
 
     @Override
@@ -212,6 +215,11 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(jlScore, v);
                 //试车实际分数
+//                if (indicator.getFormid().equals("QRA-机组物料")) {
+//                    v = (BigDecimal.ONE.subtract(this.getAccumulatedValue(indicator.getOther2Indicator(), i))).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 4));
+//                    setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+//                    setMethod.invoke(trScore, v);
+//                } else {}
                 v = this.getAccumulatedValue(indicator.getOther2Indicator(), i).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 4))
                         .divide(BigDecimal.valueOf(100));
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -231,18 +239,11 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
                         .divide(BigDecimal.valueOf(100));
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(tzScore, v);
-                //出货实际分数 机组和真空的统计方式不一致 需统计缺点数
-                if (indicator.getFormid().equals("QRA-机组物料") || indicator.getFormid().equals("QRA-真空物料")) {
-                    v = (BigDecimal.ONE.subtract(this.getAccumulatedValue(indicator.getOther6Indicator(), i))).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 12))
-                            .divide(BigDecimal.valueOf(10));
-                    setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(chScore, v);
-                } else {
-                    v = this.getAccumulatedValue(indicator.getOther6Indicator(), i).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 12))
-                            .divide(BigDecimal.valueOf(100));
-                    setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(chScore, v);
-                }
+                //出货实际分数
+                v = this.getAccumulatedValue(indicator.getOther6Indicator(), i).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 12))
+                        .divide(BigDecimal.valueOf(100));
+                setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(chScore, v);
                 //合计
                 v = this.getGrowth(jlScore, trScore, bsScore, olScore, tzScore, chScore, i, 2);
                 setMethod = sumAG.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -356,6 +357,15 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
         summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
         if (summaryList != null) {
             this.summaryCount = summaryList.size();
+        }
+    }
+
+    @Override
+    public String doubleformat(BigDecimal value, int i) {
+        if (value == null || value.compareTo(BigDecimal.ZERO) == 0) {
+            return "";
+        } else {
+            return floatFormat.format(value);
         }
     }
 
