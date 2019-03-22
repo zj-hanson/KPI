@@ -67,10 +67,10 @@ public class ShipmentMailBean extends ShipmentMail {
         sb.append("<div class=\"tbl\"><table width=\"100%\">");
         sb.append("<tr><th rowspan=\"2\" colspan=\"1\">种类</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
         sb.append("<th rowspan=\"1\" colspan=\"8\">本月累計</th><th rowspan=\"1\" colspan=\"5\">年累計</th>");
-        sb.append("<th rowspan=\"2\" colspan=\"1\">(年)比重%</th></tr>");
+        sb.append("<th rowspan=\"2\" colspan=\"1\">年比重</th></tr>");
         sb.append("<tr><th colspan=\"1\">實際</th><th colspan=\"1\">目標</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成長率</th>");
-        sb.append("<th colspan=\"1\">預計訂單量</th><th colspan=\"1\">實際催貨量</th><th colspan=\"1\">未來幾天催貨量</th>");
-        sb.append("<th colspan=\"1\">本年出貨量</th><th colspan=\"1\">目標</th>");
+        sb.append("<th colspan=\"1\">預計訂單</th><th colspan=\"1\">實際催貨</th><th colspan=\"1\">未來幾天催貨</th>");
+        sb.append("<th colspan=\"1\">本年出貨</th><th colspan=\"1\">目標</th>");
         sb.append("<th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成長率</th>");
         sb.append("</tr>");
         return sb.toString();
@@ -152,69 +152,136 @@ public class ShipmentMailBean extends ShipmentMail {
             if (indicator.getId() != -1) {
                 sumAdditionalData("sum1", num1);
             }
-            sb.append("<tr>");
-            //种类
-            sb.append("<td>").append(indicator.getName()).append("</td>");
-            //本日
-            sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
-            //当月
-            //实际出货量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
-            //目标
-            f = t.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
-            //达成
-            f = p.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //去年同期
-            f = b.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
-            //成长率
-            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
-            //预计订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
-            //实际催货订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
-            //未来几天催货订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
-            //累计
-            //实际本年出货量
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
-            //年度目标
-            f = t.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
-            //年度达成率
-            f = p.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //去年同期
-            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
-            //成长率
-            //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
-            //年度比重
-            if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
-                sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(100)))).append("</td>");
+            if (indicator.getName().equals("合计")) {
+                sb.append("<tr>");
+                //种类
+                sb.append("<td style='background-color:#ff8e67';>").append(indicator.getName()).append("</td>");
+                //本日
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                //当月
+                //实际出货量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                //目标
+                f = t.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //达成
+                f = p.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                f = b.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                //成长率
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
+                //预计订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                //实际催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                //未来几天催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                //累计
+                //实际本年出货量
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                //年度目标
+                f = t.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //年度达成率
+                f = p.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                //成长率
+                //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+                //年度比重
+                if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
+                    sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
+                            .multiply(BigDecimal.valueOf(100)))).append("</td>");
+                } else {
+                    sb.append("<td>").append("").append("</td>");
+                }
+                sb.append("</tr>");
             } else {
-                sb.append("<td>").append("").append("</td>");
+                sb.append("<tr>");
+                //种类
+                sb.append("<td>").append(indicator.getName()).append("</td>");
+                //本日
+                sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                //当月
+                //实际出货量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                //目标
+                f = t.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //达成
+                f = p.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                f = b.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                //成长率
+                sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
+                //预计订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                //实际催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                //未来几天催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                //累计
+                //实际本年出货量
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                //年度目标
+                f = t.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //年度达成率
+                f = p.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                //成长率
+                //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+                //年度比重
+                if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
+                    sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
+                            .multiply(BigDecimal.valueOf(100)))).append("</td>");
+                } else {
+                    sb.append("<td>").append("").append("</td>");
+                }
+                sb.append("</tr>");
             }
-            sb.append("</tr>");
+
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);
         }
@@ -248,80 +315,149 @@ public class ShipmentMailBean extends ShipmentMail {
             if (indicator.getId() != -1) {
                 sumAdditionalData("sum1", num1);
             }
-            sb.append("<tr>");
-            //种类
-            sb.append("<td>").append(indicator.getName()).append("</td>");
-            //本日
-            sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
-            //当月
-            //实际出货量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
-            //目标
-            f = t.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
-            //达成
-            f = p.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //去年同期
-            f = b.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
-            //成长率
-            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
-            //预计订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
-            //实际催货订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
-            //未来几天催货订单量
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
-            //累计
-            //实际本年出货量
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
-            //年度目标
-            f = t.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
-            //年度达成率
-            f = p.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //去年同期
-            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
-            //成长率
-            //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
-            //年度比重
-            if (sumType) {
-                if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
-                    sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
-                            .multiply(BigDecimal.valueOf(100)))).append("</td>");
+            if (indicator.getName().equals("小计") || indicator.getName().equals("合计")) {
+                sb.append("<tr>");
+                //种类
+                sb.append("<td style='background-color:#ff8e67';>").append(indicator.getName()).append("</td>");
+                //本日
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                //当月
+                //实际出货量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                //目标
+                f = t.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //达成
+                f = p.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                f = b.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                //成长率
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
+                //预计订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                //实际催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                //未来几天催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                //累计
+                //实际本年出货量
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                //年度目标
+                f = t.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //年度达成率
+                f = p.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                //成长率
+                //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+                //年度比重
+                if (sumType) {
+                    if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
+                        sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
+                                .multiply(BigDecimal.valueOf(100)))).append("</td>");
+                    } else {
+                        sb.append("<td>").append("").append("</td>");
+                    }
                 } else {
                     sb.append("<td>").append("").append("</td>");
                 }
+                sb.append("</tr>");
             } else {
-                sb.append("<td>").append("").append("</td>");
+                sb.append("<tr>");
+                //种类
+                sb.append("<td>").append(indicator.getName()).append("</td>");
+                //本日
+                sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                //当月
+                //实际出货量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                //目标
+                f = t.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //达成
+                f = p.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                f = b.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                //成长率
+                sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
+                //预计订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                //实际催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                //未来几天催货订单量
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                //累计
+                //实际本年出货量
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                //年度目标
+                f = t.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                //年度达成率
+                f = p.getClass().getDeclaredField("nfy");
+                f.setAccessible(true);
+                sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
+                //去年同期
+                //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                //成长率
+                //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
+                //改成按天折算
+                sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+                //年度比重
+                if (sumType) {
+                    if (sumAllValue.compareTo(BigDecimal.ZERO) != 0) {
+                        sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(sumAllValue, 4, BigDecimal.ROUND_HALF_UP)
+                                .multiply(BigDecimal.valueOf(100)))).append("</td>");
+                    } else {
+                        sb.append("<td>").append("").append("</td>");
+                    }
+                } else {
+                    sb.append("<td>").append("").append("</td>");
+                }
+                sb.append("</tr>");
             }
 
-            sb.append("</tr>");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);
         }
         return sb.toString();
     }
-
 
     public void getSumBzValue(String aa) {
         String[] arr = aa.split(",");
@@ -356,9 +492,14 @@ public class ShipmentMailBean extends ShipmentMail {
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
+        sb.append("<div class=\"tableTitle\" style='text-align:center'>出货统计報表(依产品别)</div>");
+        sb.append("<div class=\"tableTitle\">单位：吨</div>");
+        sb.append(getVarietyTonTable());
+        sb.append("<div class=\"tableTitle\">单位：万元</div>");
+        sb.append(getVarietyAmtsTable());
         sb.append("<div class=\"tableTitle\">預估訂單量: 客戶提供的意向訂單量&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月實際出貨量: 本月累计出貨量</div>");
-        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">实际催货訂單: 客戶已通知截至昨日需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計目標: 本年月累计至本月目标的目标值</div>");
-        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">未来几天催货訂單: 客戶已通知今日起需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計達成率: (年累計實際/ 年累計目標) ×100%</div>");
+        sb.append("<div class=\"tableTitle\"><span>实际催货訂單: 客戶已通知截至昨日需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計目標: 本年月累计至本月目标的目标值</div>");
+        sb.append("<div class=\"tableTitle\"><span>未来几天催货訂單: 客戶已通知今日起需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計達成率: (年累計實際/ 年累計目標) ×100%</div>");
         sb.append("<div class=\"tableTitle\">本月目標: 與查詢日期同月日累計至月底的目標值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年比重 ：(年实际/年合计) ×100%。</div>");
         sb.append("<div class=\"tableTitle\">本月達成率: (本月實際/ 本月目標) ×100%   </div>");
         sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：因當日出貨單會延後確認，故報表抓取截至昨日之出貨數據。</span></div>");
@@ -457,6 +598,7 @@ public class ShipmentMailBean extends ShipmentMail {
             return ex.toString();
         }
         sb.append("</table></div>");
+        sb.append("");
         return sb.toString();
 
     }
@@ -517,6 +659,46 @@ public class ShipmentMailBean extends ShipmentMail {
         }
         sb.append("</table></div>");
         return sb.toString();
+    }
+
+    //按产品别分类 重量
+    protected String getVarietyTonTable() {
+        getSumBzValue("汉声依种类别出货重量");
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHeadTable());
+        this.indicators.clear();
+        this.indicators = indicatorBean.findByCategoryAndYear("汉声依种类别出货重量", y);
+        indicatorBean.getEntityManager().clear();
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
+                this.divideByRateOther(i, 2);
+            }
+            sb.append(getHtmlTable(this.indicators, y, m, d, true));
+            sb.append("</table></div>");
+            return sb.toString();
+        } else {
+            return "汉声依种类别出货重量";
+        }
+    }
+
+    //按产品别分类 金额
+    protected String getVarietyAmtsTable() {
+        getSumBzValue("汉声依种类别出货金额");
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHeadTable());
+        this.indicators.clear();
+        this.indicators = indicatorBean.findByCategoryAndYear("汉声依种类别出货金额", y);
+        indicatorBean.getEntityManager().clear();
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
+                this.divideByRateOther(i, 2);
+            }
+            sb.append(getHtmlTable(this.indicators, y, m, d, true));
+            sb.append("</table></div>");
+            return sb.toString();
+        } else {
+            return "汉声依种类别出货金额";
+        }
     }
 
     public Indicator getAllSumValue(List<Indicator> indicators) {
