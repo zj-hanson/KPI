@@ -57,18 +57,10 @@ public class QRACubicElementAmount extends QRAAConnERP {
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
             Object o1 = query.getSingleResult();
-            result = (BigDecimal) o1;
-            //实例化MES不良数据的类 调用getBadValue方法得到不良数据
-            QRACubicElementAmountBad qb = new QRACubicElementAmountBad();
-            Badresult = qb.getBadValue(y, m, d, type, map);
-            //判断分母不为零的情况下返回实际合格率
-            if(result.compareTo(BigDecimal.ZERO)!=0){
-            //不良数除总入库数再乘以100
-            result = Badresult.divide(result).multiply(BigDecimal.valueOf(100));
+            result = BigDecimal.valueOf(Double.valueOf(o1.toString()));
             return result;
-            }
         } catch (Exception ex) {
-            log4j.error("QRACubicElementAmount", ex);
+            log4j.error("QRACubicElementAmount异常", ex);
         }
         return BigDecimal.ZERO;
     }

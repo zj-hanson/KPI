@@ -5,34 +5,22 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.comm.SuperEJBForCRM;
-import cn.hanbell.kpi.comm.SuperEJBForMES;
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.Query;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author C1749 三次元MES中的不合格单数据
  */
-public class QRACubicElementAmountBad {
-
-    SuperEJBForMES superMES = lookupSuperEJBForMESBean();
-    protected final Logger log4j = LogManager.getLogger();
+public class QRACubicElementAmountBad extends QRAAConnMES{
 
     public QRACubicElementAmountBad() {
-
+        super();
     }
-
-    public BigDecimal getBadValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String SOURCEDPIP = map.get("SOURCEDPIP") != null ? map.get("SOURCEDPIP").toString() : "";//所属物料
         BigDecimal result1 = BigDecimal.ZERO;//圆形件精加工数
         BigDecimal result2 = BigDecimal.ZERO;//方形件精加工数
@@ -76,8 +64,8 @@ public class QRACubicElementAmountBad {
             sb.append(" and b.SOURCEDPIP like'").append(SOURCEDPIP).append("%' ");
         }
         String fxsql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
-        Query query1 = superMES.getEntityManager().createNativeQuery(yxsql);
-        Query query2 = superMES.getEntityManager().createNativeQuery(fxsql);
+        Query query1 = superEJB.getEntityManager().createNativeQuery(yxsql);
+        Query query2 = superEJB.getEntityManager().createNativeQuery(fxsql);
         try {
             Object o1 = query1.getSingleResult();
             Object o2 = query2.getSingleResult();
@@ -90,15 +78,5 @@ public class QRACubicElementAmountBad {
         //总数等于圆型 + 方型 的数量
         return BigDecimal.ZERO;
     }
-
-    private SuperEJBForMES lookupSuperEJBForMESBean() {
-        try {
-            Context c = new InitialContext();
-            return (SuperEJBForMES) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
-        } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
+    
 }

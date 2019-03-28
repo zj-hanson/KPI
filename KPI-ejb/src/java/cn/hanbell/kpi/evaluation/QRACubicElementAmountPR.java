@@ -5,7 +5,9 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import cn.hanbell.kpi.comm.Actual;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -18,12 +20,28 @@ public class QRACubicElementAmountPR extends QRACubicElementAmount {
     public QRACubicElementAmountPR() {
         super();
         queryParams.put("genre1", "R");
-        queryParams.put("SOURCEDPIP", "冷媒");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Actual erp = (Actual) QRACubicElementAmountBadR.class.newInstance();
+            BigDecimal badev = erp.getValue(y, m, d, type, erp.getQueryParams());
+            BigDecimal allem = super.getValue(y, m, d, type, map);
+            return badev.divide(allem).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        } catch (Exception ex) {
+            log4j.error("QRACubicElementAmountPR", ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+}
+
+class QRACubicElementAmountBadR extends QRACubicElementAmountBad {
+
+    public QRACubicElementAmountBadR() {
+        super();
+        queryParams.put("SOURCEDPIP", "冷媒");
     }
 
 }
