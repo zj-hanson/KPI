@@ -69,9 +69,9 @@ public class ServiceTimeMailBean extends ServiceMail {
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
-                    sb.append(getHtmlTableRow1(i, y, m, d, "#D3D7D4"));
+                    sb.append(getHtmlTableRow(i, y, m, d, "#D3D7D4"));
                 } else {
-                    sb.append(getHtmlTableRow1(i, y, m, d, "#FFFFFF"));
+                    sb.append(getHtmlTableRow(i, y, m, d, "#FFFFFF"));
                 }
             }
             sb.append("</table></div>");
@@ -82,7 +82,7 @@ public class ServiceTimeMailBean extends ServiceMail {
     }
 
     @Override
-    protected String getHtmlTableRow1(Indicator e, int y, int m, Date d, String color) throws Exception {
+    protected String getHtmlTableRow(Indicator e, int y, int m, Date d, String color) throws Exception {
         //获取需要取值栏位
         String col;
         StringBuilder sb = new StringBuilder();

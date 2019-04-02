@@ -19,14 +19,9 @@ import java.util.List;
  * @author C1879
  */
 public abstract class ServiceMail extends MailNotification {
-
-    protected Indicator sumIndicator;
+   
     protected Indicator indicator;
-    protected IndicatorDetail other1Accumulated;
-    protected IndicatorDetail other2Accumulated;
-    protected IndicatorDetail YieldRate;
-    protected IndicatorDetail AccumulatedRate;
-
+    protected String color;
     public ServiceMail() {
 
     }
@@ -59,9 +54,11 @@ public abstract class ServiceMail extends MailNotification {
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
-                    sb.append(getHtmlTableRow1(i, y, m, d, "#D3D7D4"));
+                    color="#D3D7D4";
+                    sb.append(getHtmlTableRow(i, y, m, d));
                 } else {
-                    sb.append(getHtmlTableRow1(i, y, m, d, "#FFFFFF"));
+                    color="#FFFFFF";
+                    sb.append(getHtmlTableRow(i, y, m, d));
                 }
             }
             sb.append("</table></div>");
@@ -73,10 +70,10 @@ public abstract class ServiceMail extends MailNotification {
 
     @Override
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getHtmlTableRow(indicator, y, m, d, color);
     }
 
-    protected String getHtmlTableRow1(Indicator e, int y, int m, Date d, String color) throws Exception {
+    protected String getHtmlTableRow(Indicator e, int y, int m, Date d, String color) throws Exception {
         //获取需要取值栏位
         String col, mon;
         StringBuilder sb = new StringBuilder();
@@ -98,20 +95,6 @@ public abstract class ServiceMail extends MailNotification {
             o3o4.setParent(e);
             o3o4.setType("跨区服务金额占比");
             for (int i = getM(); i > 0; i--) {
-                //顺序计算的话会导致累计值重复累加
-                //o1值累计
-//                if (o1 != null) {
-//                    v = indicatorBean.getAccumulatedValue(o1, i);
-//                    setMethod = other1Accumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-//                    setMethod.invoke(other1Accumulated, v);
-//                }
-//                if (o2 != null) {
-//                    //o2值累计
-//                    v = indicatorBean.getAccumulatedValue(o2, i);
-//                    setMethod = other2Accumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-//                    setMethod.invoke(other2Accumulated, v);
-//                }
-
                 //---o1/o2
                 v = getAccumulatedValue(o1, o2, i);
                 setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -264,13 +247,6 @@ public abstract class ServiceMail extends MailNotification {
             log4j.error(ex);
         }
         return total1;
-    }
-
-    /**
-     * @return the sumIndicator
-     */
-    public Indicator getSumIndicator() {
-        return sumIndicator;
     }
 
     @Override
