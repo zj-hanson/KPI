@@ -512,6 +512,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             return "n" + String.format("%02d", m);
         } else if (formtype.equals("D")) {
             return "d" + String.format("%02d", m);
+        } else if (formtype.equals("NQ")) {
+            return "nq"  + String.valueOf(m);
         } else {
             return "";
         }
