@@ -5,74 +5,72 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.ejb.IndicatorBean;
-import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.entity.IndicatorDetail;
-import java.lang.reflect.Field;
+import cn.hanbell.kpi.comm.Actual;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  *
  * @author C1749
  */
-public class QRAComplaintActualAA1V2 extends QRAAConnERP{
-    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
+public class QRAComplaintActualAA1V2 extends QRAAConnERP {
 
     public QRAComplaintActualAA1V2() {
         super();
-        queryParams.put("formid", "KS-机组保内");
-        queryParams.put("deptno", "1M000");
     }
 
-    //Other1(客诉) Other2 （移动平均）
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        String mon;
-        Field f;
-        double t = 0;
-        Double a1, a2;
-        Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
-        IndicatorDetail a = i.getActualIndicator();
-        IndicatorDetail o1 = i.getOther1Indicator();
-        IndicatorDetail o2 = i.getOther2Indicator();
         try {
-            mon = indicatorBean.getIndicatorColumn("N", m);
-            f = o1.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            a1 = Double.valueOf(f.get(o1).toString());
-
-            f = o2.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            a2 = Double.valueOf(f.get(o2).toString());  
-            if(a2 != 0){
-                t = (a1 / a2) * 1000000;
-                System.out.println(t);
-                return  BigDecimal.valueOf(t).divide(BigDecimal.ONE, 3, RoundingMode.HALF_UP);
-            }else{
-                System.out.println("");
+            BigDecimal result = BigDecimal.ZERO;
+            //CRM的客诉台数
+            Actual crm = (Actual) QRAComplaintCountAA1V2.class.newInstance();
+            BigDecimal ev = crm.getValue(y, m, d, type, crm.getQueryParams());
+            //KPI的移动平均出货台数
+            Actual kpi = (Actual) QRAComplaintShipmentAA1V2.class.newInstance();
+            BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
+            //PPM的客诉率 乘以100万
+            if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
+                result = ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1000000));
             }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
+            return result;
+        } catch (Exception ex) {
+            log4j.error("数据为0！", ex);
         }
         return BigDecimal.ZERO;
     }
 
-    private IndicatorBean lookupIndicatorBeanBean() {
-        try {
-            Context c = new InitialContext();
-            return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
+}
+
+class QRAComplaintCountAA1V2 extends QRAComplaintActual1 {
+
+    public QRAComplaintCountAA1V2() {
+        super();
+        queryParams.put("BQ197", " ='AA' ");
+        queryParams.put("BQ003"," in ('AJZ') ");
+        queryParams.put("BQ505", " in ('YX','-1') ");
+        queryParams.put("BQ110"," in ('Y') ");
+    }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        return super.getValue(y, m, d, type, map); 
+    }
+    
+
+}
+
+class QRAComplaintShipmentAA1V2 extends QRAComplaintActual2 {
+
+    public QRAComplaintShipmentAA1V2() {
+        super();
+        queryParams.put("n_code_DA", "AA");
+    }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        return super.getValue(y, m, d, type, map);
     }
     
 }

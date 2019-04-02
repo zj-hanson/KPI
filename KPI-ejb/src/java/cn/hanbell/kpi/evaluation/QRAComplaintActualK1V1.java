@@ -12,64 +12,66 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author C1749 A机体三次元合格率
+ * @author C1749
  */
-public class QRACubicElementAmountPAH extends QRACubicElementAmount {
+public class QRAComplaintActualK1V1 extends QRAAConnERP {
 
-    public QRACubicElementAmountPAH() {
+    public QRAComplaintActualK1V1() {
         super();
-        queryParams.put("genre1", "AH");
-        queryParams.put("SOURCEDPIP", "空压");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         try {
             BigDecimal result = BigDecimal.ZERO;
-            //MES的加工不良数
-            Actual crm = (Actual) QRACubicElementAmountBadPAH1.class.newInstance();
+            
+            //CRM的客诉笔数
+            Actual crm = (Actual) QRAComplaintCountK1V1.class.newInstance();
             BigDecimal ev = crm.getValue(y, m, d, type, crm.getQueryParams());
-            //ERP的加工入库总数
-            Actual kpi = (Actual) QRACubicElementAmountAH1.class.newInstance();
+            //KPI的移动平均出货台数
+            Actual kpi = (Actual) QRAComplaintShipmentK1V1.class.newInstance();
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
-            //合格率
+            //客诉率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
                 result = ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             }
             return result;
         } catch (Exception ex) {
-            log4j.error("QRACubicElementAmountPAH-getValue()！", ex);
+            log4j.error("数据为0！", ex);
         }
         return BigDecimal.ZERO;
-
     }
 
 }
 
-class QRACubicElementAmountBadPAH1 extends QRACubicElementAmountBad {
+class QRAComplaintCountK1V1 extends QRAComplaintActual1 {
 
-    public QRACubicElementAmountBadPAH1() {
+    public QRAComplaintCountK1V1() {
         super();
-        queryParams.put("SOURCEDPIP", "空压");
+        queryParams.put("BQ197", " ='KM' ");
+        queryParams.put("BQ003"," in ('RTZ','WCZ') ");
+        queryParams.put("BQ505", " in ('YX')  ");
+        queryParams.put("BQ110"," in ('Y') ");
+    }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        return super.getValue(y, m, d, type, map); 
+    }
+    
+
+}
+
+class QRAComplaintShipmentK1V1 extends QRAComplaintActual2 {
+
+    public QRAComplaintShipmentK1V1() {
+        super();
+        queryParams.put("n_code_DA", "OH");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return super.getValue(y, m, d, type, map);
     }
-
-}
-
-class QRACubicElementAmountAH1 extends QRACubicElementAmount {
-
-    public QRACubicElementAmountAH1() {
-        super();
-        queryParams.put("genre1", "AH");
-    }
-
-    @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map);
-    }
-
+    
 }

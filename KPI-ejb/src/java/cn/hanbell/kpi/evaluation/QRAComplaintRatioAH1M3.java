@@ -7,16 +7,16 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1749 A机体6MIS 客诉笔数
+ * @author C1749 A机体12MIS客诉笔数
  */
-public class QRAComplaintRatioAH1M2 extends QRAComplaintCount2 {
+public class QRAComplaintRatioAH1M3 extends QRAComplaintCount2 {
 
-    public QRAComplaintRatioAH1M2() {
+    public QRAComplaintRatioAH1M3() {
         super();
         queryParams.put("BQ197", "='AH'");
         queryParams.put("BQ003", " in ('AJT') ");
         queryParams.put("BQ505", " in ('YX','-1') ");
-        queryParams.put("mis", "6");
+        queryParams.put("mis", "12");
     }
 
 }

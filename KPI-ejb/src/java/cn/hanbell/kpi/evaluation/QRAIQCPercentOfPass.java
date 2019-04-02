@@ -43,7 +43,9 @@ public class QRAIQCPercentOfPass extends QRAAConnMES {
             List o1 = query1.getResultList();
             BigDecimal fenmujl = BigDecimal.valueOf(Double.valueOf(o1.get(0).toString()));//总进料数
             BigDecimal fenzijl = BigDecimal.valueOf(Double.valueOf(o1.get(1).toString()));//不良进料
-            result = BigDecimal.ONE.subtract(fenzijl.divide(fenmujl, 3, BigDecimal.ROUND_HALF_UP));
+            if(fenmujl != null && fenmujl.compareTo(BigDecimal.ZERO) != 0){
+                result = BigDecimal.ONE.subtract(fenzijl.divide(fenmujl, 3, BigDecimal.ROUND_HALF_UP));
+            }
         } catch (Exception ex) {
             log4j.error("QRAIQCPercentOfPass", ex);
         }
