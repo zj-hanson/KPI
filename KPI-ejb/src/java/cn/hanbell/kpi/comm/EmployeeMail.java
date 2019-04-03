@@ -62,7 +62,7 @@ public abstract class EmployeeMail extends MailNotification {
         return sb.toString();
     }
 
-    protected String getHtmlTable1(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum, String name) {
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum, String name) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
         getData().put("sum2", BigDecimal.ZERO);
