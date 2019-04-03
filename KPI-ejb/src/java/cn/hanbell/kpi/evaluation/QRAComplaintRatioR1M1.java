@@ -10,7 +10,7 @@ package cn.hanbell.kpi.evaluation;
  * @author C1749 3mis客诉笔数
  *
  */
-public class QRAComplaintRatioR1M1 extends QRAComplaintCount2 {
+public class QRAComplaintRatioR1M1 extends QRAComplaintOrder {
 
     public QRAComplaintRatioR1M1() {
         super();

@@ -28,11 +28,11 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class QRAComplaintAvg extends SuperEJBForKPI<SalesTable> implements Actual {
+public class QRAShipmentAvgAll extends SuperEJBForKPI<SalesTable> implements Actual {
 
     protected LinkedHashMap<String, Object> queryParams;
 
-    public QRAComplaintAvg() {
+    public QRAShipmentAvgAll() {
         super(SalesTable.class);
         queryParams = new LinkedHashMap<>();
     }

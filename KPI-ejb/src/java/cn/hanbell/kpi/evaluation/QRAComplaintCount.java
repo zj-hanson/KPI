@@ -21,12 +21,12 @@ import javax.persistence.Query;
  *
  * @author C1749 有效客诉笔数
  */
-public class QRAComplaintActual1 implements Actual {
+public class QRAComplaintCount implements Actual {
 
     protected SuperEJBForCRM superCRM = lookupSuperEJBForCRM();
     protected LinkedHashMap<String, Object> queryParams;
 
-    public QRAComplaintActual1() {
+    public QRAComplaintCount() {
         super();
         queryParams = new LinkedHashMap<>();
     }
@@ -71,7 +71,7 @@ public class QRAComplaintActual1 implements Actual {
             ksship = Integer.parseInt(o.toString());
             return BigDecimal.valueOf((int) ksship);
         } catch (Exception ex) {
-            Logger.getLogger(QRAComplaintActual1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QRAComplaintCount.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
     }

@@ -22,11 +22,11 @@ import javax.persistence.Query;
  * @author C1749
  * 查询所有制令明细的制造号码
  */
-public class QRAComplaintCount1 {
+public class QRAComplaintCountAll {
 
     SuperEJBForCRM superEJBForCRM = lookupSuperEJBForCRMBean();
 
-    public QRAComplaintCount1() {
+    public QRAComplaintCountAll() {
     }
 
     public List<String> getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
@@ -58,7 +58,7 @@ public class QRAComplaintCount1 {
             reslut = query.getResultList();
             return reslut;
         } catch (Exception ex) {
-            Logger.getLogger(QRAComplaintCount1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QRAComplaintCountAll.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reslut;
     }

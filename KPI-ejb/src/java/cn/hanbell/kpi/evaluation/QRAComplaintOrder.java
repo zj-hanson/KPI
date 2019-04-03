@@ -22,12 +22,12 @@ import javax.persistence.Query;
  *
  * @author C1749 得到mis制令台数总和
  */
-public class QRAComplaintCount2 implements Actual {
+public class QRAComplaintOrder implements Actual {
 
     protected SuperEJBForERP superEJB = lookupSuperEJBForERP();
     protected LinkedHashMap<String, Object> queryParams;
 
-    public QRAComplaintCount2() {
+    public QRAComplaintOrder() {
         queryParams = new LinkedHashMap<>();
     }
 
@@ -36,7 +36,7 @@ public class QRAComplaintCount2 implements Actual {
         String mis = map.get("mis") != null ? map.get("mis").toString() : ""; //MJS（3/6/12）
         StringBuilder sb = new StringBuilder();
         int count = 0;
-        QRAComplaintCount1 mKS = new QRAComplaintCount1();
+        QRAComplaintCountAll mKS = new QRAComplaintCountAll();
         List<String> list = mKS.getValue(y, m, d, type, map);
         try {
             for (int i = 0; i < list.size(); i++) {

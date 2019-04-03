@@ -26,10 +26,10 @@ public class QRAComplaintActualP1V3 extends QRAAConnERP {
             BigDecimal result = BigDecimal.ZERO;
 
             //CRM的客诉笔数
-            Actual crm = (Actual) QRAComplaintCountP1V3.class.newInstance();
+            Actual crm = (Actual) QRAComplaintCountP3.class.newInstance();
             BigDecimal ev = crm.getValue(y, m, d, type, crm.getQueryParams());
             //KPI的移动平均出货台数
-            Actual kpi = (Actual) QRAComplaintShipmentP1V3.class.newInstance();
+            Actual kpi = (Actual) QRAShipmentAvgP3.class.newInstance();
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //客诉率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
@@ -44,9 +44,9 @@ public class QRAComplaintActualP1V3 extends QRAAConnERP {
 
 }
 
-class QRAComplaintCountP1V3 extends QRAComplaintActual1 {
+class QRAComplaintCountP3 extends QRAComplaintCount {
 
-    public QRAComplaintCountP1V3() {
+    public QRAComplaintCountP3() {
         super();
         queryParams.put("BQ197", " ='P' ");
         queryParams.put("BQ003", " in ('PZK') ");
@@ -62,9 +62,9 @@ class QRAComplaintCountP1V3 extends QRAComplaintActual1 {
 
 }
 
-class QRAComplaintShipmentP1V3 extends QRAComplaintActual2 {
+class QRAShipmentAvgP3 extends QRAShipmentAvg {
 
-    public QRAComplaintShipmentP1V3() {
+    public QRAShipmentAvgP3() {
         super();
         queryParams.put("n_code_DA", "P");
         queryParams.put("n_code_DC", "PL");

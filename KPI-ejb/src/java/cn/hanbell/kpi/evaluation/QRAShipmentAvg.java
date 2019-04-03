@@ -26,11 +26,11 @@ import javax.persistence.Query;
  *
  * @author C1749 移动平均出货台数
  */
-public class QRAComplaintActual2 extends SuperEJBForKPI<SalesTable> implements Actual {
+public class QRAShipmentAvg extends SuperEJBForKPI<SalesTable> implements Actual {
 
     protected LinkedHashMap<String, Object> queryParams;
 
-    public QRAComplaintActual2() {
+    public QRAShipmentAvg() {
         super(SalesTable.class);
         queryParams = new LinkedHashMap<>();
     }
