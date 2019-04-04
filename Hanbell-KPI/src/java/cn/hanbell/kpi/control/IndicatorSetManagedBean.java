@@ -671,7 +671,7 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
                 if (detail != null) {
                     BigDecimal decimal = indicatorDaily.getTotal();
                     int mth = indicatorDaily.getMth();
-                    Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorDailyColumn("N", mth).toUpperCase(), BigDecimal.class);
+                    Method setMethod = detail.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", mth).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(detail, decimal);
                     indicatorDetailBean.update(detail);
                     currentEntity = indicatorBean.findById(currentEntity.getId());
@@ -682,14 +682,6 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
             }
         } else {
             showErrorMsg("Error", "没有可更新天指标");
-        }
-    }
-
-    public String getIndicatorDailyColumn(String formtype, int m) {
-        if (formtype.equals("N")) {
-            return "n" + String.format("%02d", m);
-        } else {
-            return "";
         }
     }
 

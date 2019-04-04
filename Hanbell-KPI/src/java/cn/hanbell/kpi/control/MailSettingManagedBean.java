@@ -78,6 +78,64 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
         super.init();
     }
 
+    public void moveDown() {
+        if (currentDetail != null) {
+            int i, n, m;
+            n = currentDetail.getSeq();
+            i = detailList.indexOf(currentDetail);
+            if (i < detailList.size() - 1) {
+                MailRecipient mr = detailList.get(i + 1);
+                m = mr.getSeq();
+                mr.setSeq(-1);
+                currentDetail.setSeq(m);
+                this.doConfirmDetail();
+                mr.setSeq(n);
+                currentDetail = mr;
+                this.doConfirmDetail();
+                //重新排序
+                detailList.sort((MailRecipient o1, MailRecipient o2) -> {
+                    if (o1.getSeq() > o2.getSeq()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+                showInfoMsg("Info", "MoveDown");
+            } else {
+                showWarnMsg("Warn", "已是最后");
+            }
+        }
+    }
+
+    public void moveUp() {
+        if (currentDetail != null) {
+            int i, n, m;
+            n = currentDetail.getSeq();
+            i = detailList.indexOf(currentDetail);
+            if (i > 0) {
+                MailRecipient mr = detailList.get(i - 1);
+                m = mr.getSeq();
+                mr.setSeq(-1);
+                currentDetail.setSeq(m);
+                this.doConfirmDetail();
+                mr.setSeq(n);
+                currentDetail = mr;
+                this.doConfirmDetail();
+                //重新排序
+                detailList.sort((MailRecipient o1, MailRecipient o2) -> {
+                    if (o1.getSeq() > o2.getSeq()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+                showInfoMsg("Info", "MoveUp");
+            } else {
+                showWarnMsg("Warn", "已是最前");
+            }
+        }
+    }
+
     public void sendMail() {
         if (queryDateBegin != null && currentEntity != null) {
             try {
@@ -98,6 +156,12 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                 showErrorMsg("Error", ex.toString());
             }
         }
+    }
+
+    public void setMailBean(String JNDIName) throws Exception {
+        InitialContext c = new InitialContext();
+        Object objRef = c.lookup(JNDIName);
+        mailBean = (MailNotification) objRef;
     }
 
     public void testMail() {
@@ -129,12 +193,6 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                 showErrorMsg("Error", ex.toString());
             }
         }
-    }
-
-    public void setMailBean(String JNDIName) throws Exception {
-        InitialContext c = new InitialContext();
-        Object objRef = c.lookup(JNDIName);
-        mailBean = (MailNotification) objRef;
     }
 
     /**

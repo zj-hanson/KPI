@@ -130,6 +130,10 @@
                             <h:outputText value="#{item.mailadd}"/>
                         </p:column>
                     </p:dataTable>
+                    <p:contextMenu for="tableList">
+                        <p:menuitem value="Up" icon="arrow-upward" actionListener="#{mailSettingManagedBean.moveUp}" process="@this"  update="tableList"/>
+                        <p:menuitem value="Down" icon="arrow-downward" actionListener="#{mailSettingManagedBean.moveDown}" process="@this"  update="tableList"/>
+                    </p:contextMenu>
                 </p:tab>
             </p:tabView>
         </h:form>
