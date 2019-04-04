@@ -159,6 +159,16 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>employee</from-outcome>
+            <to-view-id>/app/empy/employee.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>employeeset</from-outcome>
+            <to-view-id>/app/empy/employeeset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>product</from-outcome>
             <to-view-id>/app/prod/product.xhtml</to-view-id>
             <redirect/>
@@ -386,11 +396,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>feedstockchart</from-outcome>
-            <to-view-id>/app/bsc/feedstockchart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>qraqualifiedyx</from-outcome>
             <to-view-id>/app/bsc/qraqualifiedyx.xhtml</to-view-id>
             <redirect/>
@@ -406,18 +411,23 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>trialrunchart</from-outcome>
-            <to-view-id>/app/bsc/trialrunchart.xhtml</to-view-id>
+            <from-outcome>percentofpass</from-outcome>
+            <to-view-id>/app/bsc/percentofpass.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>onlinechart</from-outcome>
-            <to-view-id>/app/bsc/onlinechart.xhtml</to-view-id>
+            <from-outcome>percentofpassr</from-outcome>
+            <to-view-id>/app/bsc/percentofpassr.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>numberofdefectiveschart</from-outcome>
-            <to-view-id>/app/bsc/numberofdefectiveschart.xhtml</to-view-id>
+            <from-outcome>percentofpassp</from-outcome>
+            <to-view-id>/app/bsc/percentofpassp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>percentofpassjz</from-outcome>
+            <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
