@@ -48,7 +48,7 @@
                     <f:facet name="header" >
                         <h:outputText value="#{shipmentTopManagedBean.map.futitle}台数" style="text-align: center"/>
                     </f:facet>
-                    <h:outputText  value="#{item.nowshpqy1}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                    <h:outputText  value="#{shipmentTopManagedBean.dfShpqy1(item.nowshpqy1)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
@@ -66,7 +66,7 @@
                     <f:facet name="header">
                         <h:outputText value="去年同期台数"/>
                     </f:facet>
-                    <h:outputText value="#{item.pastshpqy1}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                    <h:outputText value="#{shipmentTopManagedBean.dfShpqy1(item.pastshpqy1)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
