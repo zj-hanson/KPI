@@ -513,7 +513,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         } else if (formtype.equals("D")) {
             return "d" + String.format("%02d", m);
         } else if (formtype.equals("NQ")) {
-            return "nq"  + String.valueOf(m);
+            return "nq" + String.valueOf(m);
         } else {
             return "";
         }
@@ -1130,7 +1130,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o1, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o1, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1151,7 +1151,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o2, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o2, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1172,7 +1172,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o3, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o3, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1194,7 +1194,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o4, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o4, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1215,7 +1215,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o5, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o5, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1236,7 +1236,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     otherInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(o6, uy, um, d, type, otherInterface);
+                        na = updateActualOfIndicatorDaily(o6, uy, um, d, type, otherInterface);
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
@@ -1259,7 +1259,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     actualInterface.getQueryParams().put("userid", userid);
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(a, uy, um, d, type, actualInterface);
+                        na = updateActualOfIndicatorDaily(a, uy, um, d, type, actualInterface);
                     } else {
                         na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
                     }
@@ -1287,7 +1287,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     actualInterface.setEJB(entity.getActualEJB());
                     BigDecimal na;
                     if ("D".equals(entity.getFormkind())) {
-                        na = upadateActualOfIndicatorDaily(a, uy, um, d, type, actualInterface);
+                        na = updateActualOfIndicatorDaily(a, uy, um, d, type, actualInterface);
                     } else {
                         na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
                     }
@@ -1302,7 +1302,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return entity;
     }
 
-    public BigDecimal upadateActualOfIndicatorDaily(IndicatorDetail entity, int uy, int um, Date d, int type, Actual a1) {
+    public BigDecimal updateActualOfIndicatorDaily(IndicatorDetail entity, int uy, int um, Date d, int type, Actual a1) {
         try {
             Calendar c = Calendar.getInstance();
             c.setTime(d);
@@ -1315,8 +1315,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 indicatorDailyBean.update(daily);
                 return daily.getTotal();
             }
-        } catch (Exception e) {
-            log4j.error("upadateActualofIndicatorDaily" + e);
+        } catch (Exception ex) {
+            log4j.error("upadateActualofIndicatorDaily" + ex);
         }
         return BigDecimal.ZERO;
 
