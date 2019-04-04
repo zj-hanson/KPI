@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <div><h3 style="text-align: center">
+                            <span style="float: left">单位:#{qraPercentOfPassReportBean.indicator.unit}</span>#{qraPercentOfPassReportBean.y} #{qraPercentOfPassReportBean.indicatorChart.name}
+                            <p:link value="返回" outcome="home" style="float: right"/>
+                            <p:selectOneRadio id="scale" value="#{qraPercentOfPassReportBean.scale}" label="小数位数" style="float:right">
+                                <f:selectItem itemLabel="0位" itemValue="0" />
+                                <f:selectItem itemLabel="2位" itemValue="2" />
+                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                            </p:selectOneRadio>
+                        </h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="plgChartData Wid100">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>项目</p:column>
+                                <p:column>分值占比</p:column>
+                                <p:column>基准项</p:column>
+                                <p:column>基准值</p:column>
+                                <p:column>实际</p:column>
+                                <p:column>1月</p:column>
+                                <p:column>2月</p:column>
+                                <p:column>3月</p:column>
+                                <p:column>4月</p:column>
+                                <p:column>5月</p:column>
+                                <p:column>6月</p:column>
+                                <p:column>7月</p:column>
+                                <p:column>8月</p:column>
+                                <p:column>9月</p:column>
+                                <p:column>10月</p:column>
+                                <p:column>11月</p:column>
+                                <p:column>12月</p:column>
+                                <p:column>年移动平均</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column rowspan="2">进料合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n02,2)}</p:column>
+                            <p:column>合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n01,1)}</p:column>
+                            <p:column>实际合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n02,2)}</p:column>
+                            <p:column>实际分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">试车合格率</p:column>
+                            <p:column rowspan="8">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n04,4)}</p:column>
+                            <p:column>合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n03,3)}</p:column>
+                            <p:column>实际合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n04,4)}</p:column>
+                            <p:column>实际分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">维修机试车合格率</p:column>
+                            <p:column rowspan="2">合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Target.n01,1)}</p:column>
+                            <p:column rowspan="2">实际合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n01,1)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n02,2)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n03,3)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n04,4)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n05,5)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n06,6)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n07,7)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n08,8)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n09,9)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n10,10)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n11,11)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.n12,12)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other1Actual.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">干泵试车合格率</p:column>
+                            <p:column rowspan="2">合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Target.n01,1)}</p:column>
+                            <p:column rowspan="2">实际合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n01,1)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n02,2)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n03,3)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n04,4)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n05,5)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n06,6)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n07,7)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n08,8)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n09,9)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n10,10)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n11,11)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.n12,12)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other2Actual.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">旋片泵试车合格率</p:column>
+                            <p:column rowspan="2">合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Target.n01,1)}</p:column>
+                            <p:column rowspan="2">实际合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n01,1)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n02,2)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n03,3)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n04,4)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n05,5)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n06,6)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n07,7)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n08,8)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n09,9)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n10,10)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n11,11)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.n12,12)}</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.other3Actual.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">三次元合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n06,6)}</p:column>
+                            <p:column>合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n05,5)}</p:column>
+                            <p:column>实际合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n06,6)}</p:column>
+                            <p:column>实际分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">上线合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n08,8)}</p:column>
+                            <p:column>合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n07,7)}</p:column>
+                            <p:column>实际合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.nfy,0)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n08,8)}</p:column>
+                            <p:column>实际分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column rowspan="2">入库、出货合格率</p:column>
+                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n10,10)}</p:column>
+                            <p:column>合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n09,9)}</p:column>
+                            <p:column>实际合格率</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.nfy,0)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n10,10)}</p:column>
+                            <p:column>实际分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="5">合计</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.nfy,0)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart type="line" model="#{qraPercentOfPassReportBean.initLineChartModel('月份','指标')}" style="height:380px"
+                             responsive="true" >
+                    </p:chart>
+                </div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{qraPercentOfPassReportBean.summaryList}" var="s" rendered="#{qraPercentOfPassReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{shipmentChartReportBean.analysisList}" var="a" rendered="#{shipmentChartReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:inputHidden id="m" value="#{shipmentChartReportBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{shipmentChartReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{shipmentChartReportBean.analysisCount}"></h:inputHidden>
+                </div>
+            </div>
+            <h:outputScript name="bsc-analysis2.js" library="js"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
