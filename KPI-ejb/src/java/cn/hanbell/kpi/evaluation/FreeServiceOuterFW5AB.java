@@ -34,14 +34,14 @@ public class FreeServiceOuterFW5AB extends FreeServiceOuterFW {
 
         StringBuilder sb = new StringBuilder();
         //领料
-        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE  facno ='K' AND t.prono='1' and  t.trtype='IAP' AND t.iocode='2' ");
+        sb.append(" select isnull(sum(t.tramt),0) FROM invtrnh t WHERE  facno ='K' AND t.prono='1' and  t.trtype='IAP' AND depno<>'K0000009' AND t.iocode='2' ");
         sb.append(" AND year(t.trdate) = ${y} and month(t.trdate)= ${m} ");
 
         String iap2sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
 
         sb.setLength(0);
         //退料
-        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE facno ='${facno}' AND t.prono='1' and  t.trtype='IAP' AND t.iocode='1' ");
+        sb.append(" select isnull(-sum(t.tramt),0) FROM invtrnh t WHERE facno ='K' AND t.prono='1' and  t.trtype='IAP' AND depno<>'K0000009' AND t.iocode='1' ");
         sb.append(" AND year(t.trdate) = ${y} and month(t.trdate)= ${m} ");
 
         String iap1sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);

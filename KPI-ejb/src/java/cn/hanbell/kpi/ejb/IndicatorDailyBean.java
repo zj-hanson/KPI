@@ -45,9 +45,9 @@ public class IndicatorDailyBean extends SuperEJBForKPI<IndicatorDaily> {
         try {
                 Query query = getEntityManager().createNativeQuery(sql);
                 int count = query.executeUpdate();
-                System.out.println("cn.hanbell.kpi.ejb.ClientTableBean.deleteClient()受影响行数：" + count);
+                System.out.println("cn.hanbell.kpi.ejb.IndicatorDailyBean.deleteByPId()受影响行数：" + count);
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.ClientTableBean.deleteClient()" + e);
+            System.out.println("cn.hanbell.kpi.ejb.IndicatorDailyBean.deleteByPId()" + e);
         }
 
     }

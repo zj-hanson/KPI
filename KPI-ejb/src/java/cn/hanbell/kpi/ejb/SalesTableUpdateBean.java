@@ -707,7 +707,7 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(getDC(depno)).append(" as n_code_DC, ");
             sb.append(" '00' as  n_code_DD,mancode,'ARM270' as hmark1,'ARM270' as hmark2 FROM armbil h WHERE 1=1 ");
             if (depno.contains("5B000")) {
-                sb.append(" and h.rkd='RQ51' ");
+                sb.append(" and h.rkd in ('RQ51','RQ11') ");
             } else {
                 sb.append(" and h.rkd='RQ11' ");
             }
