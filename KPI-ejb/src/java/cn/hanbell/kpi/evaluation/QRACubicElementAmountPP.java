@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1749 真空三次元合格率
  */
-public class QRACubicElementAmountPP extends QRAAConnERP {
+public class QRACubicElementAmountPP extends QRA {
 
     public QRACubicElementAmountPP() {
         super();

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1749
  */
-public class QRAComplaintActualP1V3 extends QRAAConnERP {
+public class QRAComplaintActualP1V3 extends QRA {
 
     public QRAComplaintActualP1V3() {
         super();

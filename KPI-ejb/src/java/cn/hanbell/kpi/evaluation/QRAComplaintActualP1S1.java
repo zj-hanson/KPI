@@ -22,7 +22,7 @@ import javax.naming.NamingException;
  *
  * @author C1749
  */
-public class QRAComplaintActualP1S1 extends QRAAConnERP{
+public class QRAComplaintActualP1S1 extends QRA{
     IndicatorBean indicatorBean = lookupIndicatorBeanBean();
 
     public QRAComplaintActualP1S1() {

@@ -10,21 +10,21 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author C1749
- * 查询所有制令明细的制造号码
+ * @author C1749 查询所有制令明细的制造号码
  */
 public class QRAComplaintCountAll {
 
-    SuperEJBForCRM superEJBForCRM = lookupSuperEJBForCRMBean();
+    SuperEJBForCRM superEJBForCRM = lookupSuperEJBForCRM();
+    protected final Logger log4j = LogManager.getLogger();
 
     public QRAComplaintCountAll() {
     }
@@ -39,7 +39,7 @@ public class QRAComplaintCountAll {
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.CA009 as num from ( ");
         sb.append(" select  DISTINCT CA009,BQ001 from SERBQ,SERCA where BQ001= CA001  ");
-        if(!"".equals(BQ197)){
+        if (!"".equals(BQ197)) {
             sb.append(" and  rtrim(BQ197) ").append(BQ197);
         }
         if (!"".equals(BQ003)) {
@@ -58,17 +58,17 @@ public class QRAComplaintCountAll {
             reslut = query.getResultList();
             return reslut;
         } catch (Exception ex) {
-            Logger.getLogger(QRAComplaintCountAll.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error("QRAComplaintCountAll Exception", ex);
         }
         return reslut;
     }
 
-    private SuperEJBForCRM lookupSuperEJBForCRMBean() {
+    private SuperEJBForCRM lookupSuperEJBForCRM() {
         try {
             Context c = new InitialContext();
             return (SuperEJBForCRM) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForCRM!cn.hanbell.kpi.comm.SuperEJBForCRM");
         } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            log4j.error("QRAComplaintCountAll Exception", ne);
             throw new RuntimeException(ne);
         }
     }

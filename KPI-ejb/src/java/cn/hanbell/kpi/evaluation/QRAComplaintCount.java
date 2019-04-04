@@ -5,30 +5,21 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.comm.Actual;
-import cn.hanbell.kpi.comm.SuperEJBForCRM;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.Query;
 
 /**
  *
  * @author C1749 有效客诉笔数
  */
-public class QRAComplaintCount implements Actual {
-
-    protected SuperEJBForCRM superCRM = lookupSuperEJBForCRM();
-    protected LinkedHashMap<String, Object> queryParams;
+public class QRAComplaintCount extends QRA {
 
     public QRAComplaintCount() {
         super();
-        queryParams = new LinkedHashMap<>();
     }
 
     //当月有效客诉
@@ -65,7 +56,7 @@ public class QRAComplaintCount implements Actual {
         sb.append(" and year(BQ021) = ${y} and month(BQ021)= ${m} ");
         sb.append(") as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
-        Query query = superCRM.getEntityManager().createNativeQuery(sql);
+        Query query = superEJBForCRM.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
             ksship = Integer.parseInt(o.toString());
@@ -74,11 +65,6 @@ public class QRAComplaintCount implements Actual {
             Logger.getLogger(QRAComplaintCount.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BigDecimal.ZERO;
-    }
-
-    @Override
-    public LinkedHashMap<String, Object> getQueryParams() {
-        return queryParams;
     }
 
     @Override
@@ -103,22 +89,6 @@ public class QRAComplaintCount implements Actual {
             year = y;
         }
         return year;
-    }
-
-    protected SuperEJBForCRM lookupSuperEJBForCRM() {
-        try {
-            Context c = new InitialContext();
-            return (SuperEJBForCRM) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForCRM!cn.hanbell.kpi.comm.SuperEJBForCRM");
-        } catch (NamingException ne) {
-            throw new RuntimeException(ne);
-        }
-    }
-
-    @Override
-    public void setEJB(String JNDIName) throws Exception {
-        InitialContext c = new InitialContext();
-        Object objRef = c.lookup("java:global/KPI/KPI-ejb/SuperEJBForCRM!cn.hanbell.kpi.comm.SuperEJBForCRM");
-        superCRM = (SuperEJBForCRM) objRef;
     }
 
 }

@@ -5,34 +5,21 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.comm.Actual;
-import cn.hanbell.kpi.comm.SuperEJBForKPI;
-import cn.hanbell.kpi.ejb.IndicatorBean;
-import cn.hanbell.kpi.entity.SalesTable;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
  *
  * @author C1749 移动平均出货台数
  */
-public class QRAShipmentAvg extends SuperEJBForKPI<SalesTable> implements Actual {
-
-    protected LinkedHashMap<String, Object> queryParams;
+public class QRAShipmentAvg extends QRA {
 
     public QRAShipmentAvg() {
-        super(SalesTable.class);
-        queryParams = new LinkedHashMap<>();
+        super();
     }
 
     @Override
@@ -63,7 +50,7 @@ public class QRAShipmentAvg extends SuperEJBForKPI<SalesTable> implements Actual
         sb.append(BaseLib.formatDate("yyyyMMdd", d));
         sb.append("'  ");
         String sql = sb.toString();
-        Query query = this.getEntityManager().createNativeQuery(sql);
+        Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
             Object o1 = query.getSingleResult();
             result = (BigDecimal) o1;
@@ -75,28 +62,6 @@ public class QRAShipmentAvg extends SuperEJBForKPI<SalesTable> implements Actual
             log4j.error("QRAComplaintActual2", ex);
         }
         return BigDecimal.ZERO;
-    }
-
-    @Override
-    public void setEJB(String JNDIName) throws Exception {
-
-    }
-
-    @Override
-    public EntityManager getEntityManager() {
-        try {
-            Context c = new InitialContext();
-            IndicatorBean indicatorBean = (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
-            return indicatorBean.getEntityManager();
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
-    @Override
-    public LinkedHashMap<String, Object> getQueryParams() {
-        return queryParams;
     }
 
     @Override

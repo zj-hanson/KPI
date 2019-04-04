@@ -29,7 +29,6 @@ import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorSet;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 
 /**
  *
@@ -1316,7 +1315,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("upadateActualofIndicatorDaily" + ex);
+            log4j.error("updateActualOfIndicatorDaily" + ex);
         }
         return BigDecimal.ZERO;
 

@@ -9,15 +9,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Query;
 
 /**
  *
  * @author C1749
  */
-public class QRAHansonRotor extends QRAAConnMES {
+public class QRAHansonRotor extends QRA {
 
     public QRAHansonRotor() {
         super();
@@ -36,7 +34,7 @@ public class QRAHansonRotor extends QRAAConnMES {
             sb.append("${m}").append("'");
         }
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
-        Query query1 = superEJB.getEntityManager().createNativeQuery(sql);
+        Query query1 = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             List o1 = query1.getResultList();
             for (int i = 0; i < o1.size(); i++) {
@@ -46,7 +44,7 @@ public class QRAHansonRotor extends QRAAConnMES {
                 result = BigDecimal.ONE.subtract(BigDecimal.valueOf(value1 / value2).setScale(2, BigDecimal.ROUND_HALF_UP));
             }
         } catch (Exception ex) {
-            Logger.getLogger(QRAHansonRotor.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return result;
     }

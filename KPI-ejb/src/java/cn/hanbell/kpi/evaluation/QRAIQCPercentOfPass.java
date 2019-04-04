@@ -15,7 +15,7 @@ import javax.persistence.Query;
  *
  * @author C1749 进料合格率统计
  */
-public class QRAIQCPercentOfPass extends QRAAConnMES {
+public class QRAIQCPercentOfPass extends QRA {
 
     public QRAIQCPercentOfPass() {
         super();
@@ -38,12 +38,12 @@ public class QRAIQCPercentOfPass extends QRAAConnMES {
         }
         sb.append(" AND year(REPORTYEAR) = ${y} ORDER BY SEQUENCE ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
-        Query query1 = superEJB.getEntityManager().createNativeQuery(sql);
+        Query query1 = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             List o1 = query1.getResultList();
             BigDecimal fenmujl = BigDecimal.valueOf(Double.valueOf(o1.get(0).toString()));//总进料数
             BigDecimal fenzijl = BigDecimal.valueOf(Double.valueOf(o1.get(1).toString()));//不良进料
-            if(fenmujl != null && fenmujl.compareTo(BigDecimal.ZERO) != 0){
+            if (fenmujl != null && fenmujl.compareTo(BigDecimal.ZERO) != 0) {
                 result = BigDecimal.ONE.subtract(fenzijl.divide(fenmujl, 3, BigDecimal.ROUND_HALF_UP));
             }
         } catch (Exception ex) {
