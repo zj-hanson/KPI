@@ -132,6 +132,8 @@
 }
 
 .ui-g {
+    -ms-flex-wrap: wrap;
+
     &.form-group {
         > div {
             padding: 12px 16px;

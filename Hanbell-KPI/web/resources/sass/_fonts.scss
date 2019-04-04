@@ -5,7 +5,7 @@
   font-weight: 300;
   src: url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.eot']}"); /* IE9 Compat Modes */
   src: local('Roboto Light'), local('Roboto-Light'),
-       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.eot']}?#iefix") format('embedded-opentype'), /* IE6-IE8 */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.eot']}#iefix") format('embedded-opentype'), /* IE6-IE8 */
        url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.woff2']}") format('woff2'), /* Super Modern Browsers */
        url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.woff']}") format('woff'), /* Modern Browsers */
        url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.ttf']}") format('truetype'), /* Safari, Android, iOS */

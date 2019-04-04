@@ -65,6 +65,7 @@ body {
         
         .topbar-right {
             padding: 15px;
+            position: relative;
             
             #menu-button {
                 color: $accentTextColor;
@@ -88,7 +89,7 @@ body {
                 }
                 
                 i {
-                    @include material-icon("chevron_left");
+                    @include material-icon("\e5cb");
                     @include transition(all .3s);
                     font-size: 36px;
                 }
@@ -102,17 +103,23 @@ body {
             
             #topbar-menu-button {
                 display: none;
-                float: right;
                 color: #ffffff;
                 vertical-align: middle;
                 height: 36px;
-                margin: 5px 10px 0 0;
+                position: absolute;
+                top: 20px;
+                right: 25px;
 
                 @include transition(all .3s);
                 
                 i {
                     @include transition(color .5s);
                     font-size: 36px;
+                    color: $accentTextColor;
+
+                    &:hover {
+                      color: darken($accentTextColor, 10%);
+                    }
                 }
             }
             
@@ -123,21 +130,18 @@ body {
                         top: -10px;
                         font-size: $fontSize;
                         background-color: transparent;
-                        border-width: 0 0 1px 0;
-                        padding: 2px 2px 1px 2px;
-                        border-color: #ffffff;
+                        border-width: 0;
+                        padding: 2px;
                         color: #ffffff;
                         
                         &:focus {
                             outline: 0 none;
-                            border-bottom-width: 2px;
                         }
                     }
                     
                     input:focus ~ label {
                       top:-5px;
                       font-size:12px;
-                      color: $primaryColor;
                     }
                     
                     input.ui-state-filled ~ label {
@@ -146,7 +150,22 @@ body {
                     
                     label {
                         color: #ffffff;
-                        top: 8px;
+                        top: 10px;
+                    }
+                }
+            }
+            
+            .rightpanel-btn {
+                float: right;
+                margin-top: 4px;
+                
+                i {
+                    font-size: 36px;
+                    color: #ffffff;
+                    @include transition(all .3s);
+
+                    &:hover {
+                      color: #e8e8e8;
                     }
                 }
             }
@@ -277,10 +296,49 @@ body {
                         > a {
                             color: $accentTextColor;
                             background-color: $accentColor;
+                            
+                            .menuitem-badge {
+                                background-color: $accentTextColor;
+                                color: $accentColor;
+                            }
                         }
                     }
                 }
             }                    
+        }
+        
+        .layout-menu-tooltip {
+            display:none;
+            padding: 0 5px;
+            position: absolute;
+            left: 76px;
+            top: 7px;
+            z-index: 101;
+            line-height: 1;
+            
+            .layout-menu-tooltip-text {
+               padding: 6px 8px;
+               font-weight: 700;
+               background-color: lighten($darkMenuBgColor, 10%);
+               color: #ffffff;
+               min-width: 75px;
+               white-space: nowrap;
+               text-align: center;
+               @include overlay-content-shadow();
+            }
+            
+            .layout-menu-tooltip-arrow {
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                top: 50%;
+                left: 0;
+                margin-top: -5px;
+                border-width: 5px 5px 5px 0;
+                border-right-color: lighten($darkMenuBgColor, 10%);
+            }
         }
     }
         
@@ -307,7 +365,7 @@ body {
                 #menu-button {
                     i {
                         font-size: 36px !important;
-                        @include material-icon("chevron_right");
+                        @include material-icon("\e5cc");
                     }
                 }
             }
@@ -362,6 +420,30 @@ body {
                 span {
                     display: inline-block;
                     vertical-align: middle;
+                }
+                
+                .menuitem-badge {
+                    position: absolute;
+                    right: 35px;
+                    top: 12px;
+                    background-color: $accentColor;
+                    color: $accentTextColor;
+                    @include border-radius(50%);
+                    display: block;
+                    font-size: 14px;
+                    line-height: 20px;
+                    width: 19px;
+                    height: 19px;
+                    text-align: center;
+                }
+            }
+            
+            &.amber-badge {
+                a {
+                    .menuitem-badge {
+                        background-color: #FFC107;
+                        color: #212121;
+                    }
                 }
             }
             
@@ -448,6 +530,324 @@ body {
             }
         }
     }
+    
+    .layout-rightpanel {
+        position: fixed;
+        top: 75px;
+        height: 100%;
+        right: -240px;
+        width: 240px;
+        z-index: 100;
+        background-color: #ffffff;
+        @include box-sizing(border-box);
+        @include transition(right .3s);
+        @include shadow(0 2px 10px 0 rgba(0, 0, 0, 0.3));
+
+        &.layout-rightpanel-active {
+            right: 0;
+            -webkit-transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+            transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .layout-rightpanel-content {
+            padding: 14px;
+        }
+        
+        .nano {
+            .right-panel-scroll-content {
+                display: block;
+                height: 100%;
+                position: relative;
+
+                .layout-rightpanel-content {
+                    padding-bottom: 120px;
+                }
+            }
+            
+            & > .nano-pane > .nano-slider {
+                background-color: #aaa;
+                opacity: 0.3;
+            }
+        }
+    }
+    
+    &.layout-rtl {
+        
+        .ultima-menu {  
+            li {
+                a {
+                    direction: rtl;
+
+                    i {
+                        &:last-child {
+                            float: left;
+                        }
+
+                        &:first-child {
+                            float: right;
+                            margin-left: 12px;
+                            margin-right: 0px;
+                        }
+                    }
+
+                    img {
+                        &:first-child {
+                            float: right;
+                        }
+                        
+                        ~ span {
+                            float: right;
+                            padding-top: 8px;
+                            padding-right: 10px;
+                        }
+                    }
+                }
+                
+                .menuitem-badge {
+                    left: 35px;
+                    right: auto;
+                }
+            }
+        }
+        
+        .layout-menu {
+            right: 0;
+            direction: rtl;
+            margin-right: 0px;
+            transition: margin-right 0.3s;
+            -webkit-box-shadow: -3px 0 6px rgba(0,0,0,0.3);
+            -moz-box-shadow: -3px 0 6px rgba(0,0,0,0.3);
+            box-shadow: -3px 0 6px rgba(0,0,0,0.3);
+            
+            > .nano {
+                > .nano-content {
+                    
+                    .ultima-menu {  
+                            li {
+                                ul {
+                                    li {
+                                        a {
+                                            padding: 8px 32px 8px 16px;
+                                        }
+
+                                        ul {
+                                            li {
+                                                a {
+                                                    padding-left: 16px;
+                                                    padding-right: 48px;  
+                                                }
+                                            }
+
+                                            ul {
+                                                li {
+                                                    a {
+                                                        padding-left: 16px;
+                                                        padding-right: 64px; 
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                }
+                
+                > .nano-pane {
+                    right: auto;
+                    left: 0;
+                }
+            }
+        }
+        
+        .layout-main {
+            transition: margin-right 0.3s;
+        }
+        
+        &.menu-layout-static {
+            .layout-main {
+                margin-left: 0;
+                margin-right: 250px;
+            }
+            
+            &.layout-menu-static-inactive {
+                .layout-menu {
+                    margin-left: 0;
+                    margin-right: -250px;
+                }
+                
+                .layout-main {
+                    margin-right: 0px;
+                }
+                
+                .topbar {
+                    .topbar-right {
+                        #menu-button {
+                           i {
+                               transform: rotate(0deg);
+                           }
+                        }
+                    }
+                }
+            }
+        }
+        
+        &.menu-layout-overlay {
+            .layout-menu {
+                margin-left: 0px;
+                margin-right: -250px;
+            }
+            
+            &.layout-menu-overlay-active {
+                .topbar {
+                    .topbar-right {
+                        #menu-button {
+                           i {
+                               transform: rotate(0deg);
+                           }
+                        }
+                    }
+                }
+                
+                .layout-menu {
+                    margin-right: 0px;
+                }
+            }
+        }
+        
+        &.menu-layout-horizontal {
+            .layout-main {
+                margin-right: 0px;
+            }
+            
+            .layout-menu {
+                > .nano {
+                    > .nano-content {
+                        .ultima-menu {                            
+                            > li {
+                                float: right;
+                                
+                                > ul {
+                                    left: auto;
+                                    
+                                    li {
+                                        ul {
+                                            li {
+                                                a {
+                                                    padding-left: 16px;
+                                                    padding-right: 32px;
+                                                }
+                                            }
+                                            
+                                            ul {
+                                                li {
+                                                    a {
+                                                        padding-left: 16px;
+                                                        padding-right: 48px;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            li {
+                                a {  
+                                    .menuitem-badge {
+                                        right: 29px;
+                                        left: auto;
+                                    }
+                                    
+                                    i {
+                                        &:last-child {
+                                            margin-right: 3px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        .topbar {
+            
+            .topbar-left {
+                float: right;
+            }
+            
+            .topbar-right {
+                .topbar-items {
+                    float: left;
+                    
+                    > li {
+                        > a {
+                            .topbar-badge {
+                                right: auto;
+                            }
+                        }
+                        
+                        > ul {
+                            right: auto;
+                            
+                            li {
+                                a {
+                                    span {
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    .search-item {
+                        input {
+                            direction: rtl;
+                        }
+                        
+                        label {
+                            left: auto;
+                            right: 43px;
+                        }
+                    }
+                }
+                
+                #menu-button {
+                   margin-right: 0px;
+                   left: 13px;
+                   float: right;
+                   
+                   i {
+                       transform: rotate(180deg);
+                   }
+                }
+                
+                .rightpanel-btn {
+                    float: left;
+                }
+            }
+        }
+        
+        .layout-rightpanel {
+            @include transition(left .3s);
+            right: auto;
+            left: -240px;
+            
+            &.layout-rightpanel-active {
+                left: 0;
+                right: auto;
+            }
+            
+            > .nano {                
+                > .nano-pane {
+                    right: auto;
+                    left: 0;
+                }
+            }
+        }
+    }
 }
 
 .ajax-loader {
@@ -464,6 +864,7 @@ body {
             margin: 0;
             padding: 5px 0 0 0;
             list-style-type: none;
+            margin-right: 2px;
             
             > li {
                 float: right;
@@ -538,6 +939,12 @@ body {
                         vertical-align: middle;
                         margin-right: 12px;
                     }
+                }
+            }
+            
+            .search-item {                    
+                input {
+                    background-image: linear-gradient(to bottom, #ffffff, #ffffff), linear-gradient(to bottom, desaturate(lighten($primaryColor,25%), 25%), desaturate(lighten($primaryColor,25%), 25%));
                 }
             }
         }
@@ -721,6 +1128,24 @@ body {
                             }
                         }
                     }
+                    
+                    li {
+                        a {
+                            .menuitem-badge {
+                                left: 29px;
+                                top: 3px;
+                            }
+                        }
+                        
+                        &.active-menuitem {
+                            a {
+                                .menuitem-badge {
+                                    color: $accentColor;
+                                    background-color: $accentTextColor;
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 &.layout-menu-dark {
@@ -762,6 +1187,402 @@ body {
             
             .layout-mask {
                 display: none;
+            }
+        }
+        
+        &.layout-menu-slim {
+            .topbar {
+                left: 75px;
+                width: calc(100% - 75px);
+                
+                .topbar-left {
+                    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+                    background-color: $primaryColor;
+                }
+                .topbar-right {
+                    #menu-button { 
+                        display: none;
+                    }
+                }
+            }
+            
+            .layout-main {
+                margin-left: 75px;
+            }
+            
+            .layout-menu {
+                width: 75px;
+                overflow: visible;
+                z-index: 100;
+                top: 0px;
+                
+                .profile {
+                    width: 75px;
+                    height: 75px;
+                    padding: 17px;
+                    cursor: pointer;
+                    
+                    .profile-image {
+                        width: 40px;
+                        height: 40px;
+                        background-size: 40px 40px;
+                    }
+                    
+                    #profile-options {
+                        width: 75px;
+                        height: 75px;
+                    }
+                    
+                    i, span {
+                        display: none;
+                    }
+                }
+                
+                &.layout-menu-dark {    
+                    ul.ultima-menu {    
+                        background-color: $darkMenuBgColor;
+                                
+                        li {
+                            a {
+                                color: #ffffff;
+                                
+                                &:hover {
+                                    background-color: $darkMenuHoverColor;
+                                    
+                                    i {
+                                        color: #ffffff;
+                                    }
+                                }
+                            }
+                            
+                            &.active-menuitem {
+                                > a {
+                                    color: $accentTextColor;
+                                    background-color: $accentColor;
+                                }
+                            }
+                            
+                            ul {
+                                background-color: $darkMenuBgColor;
+                            }
+                        }
+                    }                    
+                }
+                
+                .profile + ul {
+                    
+                    &#profile-menu {
+                        margin-top: 0;
+                        
+                        > li {
+                            &:first-child {
+                                margin: 14px 0px 0px 0px;
+                            }
+                            &:last-child {
+                                margin: 0px 0px 14px 0px;
+                            }
+                        }
+                        
+                        > li {
+                            > a {
+                                i:last-child {
+                                    display: inline-block;
+                                    margin-left: 12px;
+                                }
+                            }
+                        }
+                    }
+                    
+                    li {
+                        ul {
+                            li {
+                                a {
+                                    padding-left: 32px;
+                                }
+                            }
+                            
+                            ul {
+                                li {
+                                    a {
+                                        padding-left: 48px;
+                                    }
+                                }
+                                
+                                ul {
+                                    li {
+                                        a {
+                                            padding-left: 64px;
+                                        }
+                                    }
+                                    
+                                    ul {
+                                        li {
+                                            a {
+                                                padding: 80px;
+                                            }
+                                        }
+                                        
+                                        ul {
+                                            li {
+                                                a {
+                                                    padding: 96px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                .nano {
+                    overflow: visible;
+                    
+                    .nano-content {
+                        overflow: visible;
+                        margin-right: 0px !important;
+                        outline: none;
+                        
+                        > ul:last-child {
+                            &.ultima-menu {
+                                margin: 16px 0px 0px 0px;
+                                padding: 0;
+                            }
+                        }
+                    }
+                    
+                    .nano-pane {
+                        display: none !important;
+                    }
+                }
+                
+                .ultima-menu {
+                    padding: 0;
+                    
+                    li {
+                        a {
+                            .menuitem-badge {
+                                top: 4px;
+                                right: 18px;
+                            }
+                        }
+                    }
+                    
+                    > li {
+                        position: relative;
+                        
+                        > a {
+                            text-align: center;
+                            padding-left: 0;
+                            padding-right: 0;
+                            padding-top: 9px;
+                            padding-bottom: 9px;
+                            
+                            i:first-child {
+                                font-size: 24px;
+                                margin-right: 0;
+                            }
+                            
+                            span:not(.menuitem-badge), i:last-child {
+                                display: none;
+                            }
+                            
+                            &:hover + .layout-menu-tooltip {
+                                display: block;
+                            }
+                        }
+                        
+                        > ul {
+                            @include overlay-content-shadow();
+                            background-color: #ffffff;
+                            position: absolute;
+                            top: 0;
+                            left: 76px;
+                            min-width: 210px;
+                            
+                            li {
+                                a {
+                                    padding-left: 16px;
+                                }
+                                
+                                ul {
+                                    li {
+                                        a {
+                                            padding-left: 32px;
+                                        }
+                                    }
+                                    
+                                    ul {
+                                        li {
+                                            a {
+                                                padding-left: 48px;
+                                            }
+                                        }
+                                        
+                                        ul {
+                                            li {
+                                                a {
+                                                    padding-left: 64px;
+                                                }
+                                            }
+                                            
+                                            ul {
+                                                li {
+                                                    a {
+                                                        padding: 80px;
+                                                    }
+                                                }
+                                                
+                                                ul {
+                                                    li {
+                                                        a {
+                                                            padding: 96px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            &.submenu-top {
+                                top: auto;
+                                bottom: 0px;
+                            }
+                        }
+                        
+                        &.active-menuitem {
+                            > a {
+                                &:hover + .layout-menu-tooltip {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            &.layout-menu-dark {
+                .layout-menu {
+                    > li {
+                        > ul {
+                            background-color: $darkMenuBgColor;
+                        }
+                    }
+                }
+            }
+            
+            .layout-content {
+                margin-left: 75px;
+            }
+            
+            .layout-footer {
+                margin-left: 75px;
+            }
+        }
+        
+        &.layout-rtl {
+            &.menu-layout-horizontal {
+                .layout-menu {
+                    > .nano {
+                        > .nano-content { 
+                            ul.ultima-menu {
+                                > li {
+                                    > ul {
+                                        li {
+                                            a {
+                                                padding: 10px 16px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            &.layout-menu-slim {
+                .topbar {
+                    left: auto;
+                    right: 75px;
+                }
+                
+                .layout-main {
+                    margin-left: 0;
+                    margin-right: 75px;
+                }
+
+                .layout-menu {
+                    .layout-menu-tooltip {
+                        left: auto;
+                        right: 76px;
+
+                        .layout-menu-tooltip-arrow {
+                            left: auto;
+                            right: 0;
+                            border-width: 5px 0px 5px 5px;
+                            border-left-color: lighten($darkMenuBgColor, 10%);
+                            border-right-color: transparent;
+                        }
+                    }
+
+                    > .nano {
+                        > .nano-content.menu-scroll-content {
+                            margin-left: 0px !important;
+
+                            .ultima-menu li ul li {
+                                a {
+                                    padding-right: 16px;
+                                }
+
+                                ul li {
+                                    a {
+                                        padding-right: 32px;
+                                    }
+
+                                    ul li a {
+                                        padding-right: 48px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .ultima-menu {
+                        > li {
+                            > ul {
+                                left: auto;
+                                right: 76px;
+                            }
+                            
+                            > a {
+                                i {
+                                    &:first-child {
+                                        margin-left: 0px;
+                                    }
+                                }
+                            }
+                        }
+
+                        li {
+                            a {
+                                .menuitem-badge {
+                                    right: auto;
+                                    left: 18px;
+                                }
+                                
+                                i {
+                                    &:first-child {
+                                        float: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -814,6 +1635,7 @@ body {
             .topbar-right {
                 #topbar-menu-button {
                     display: block;
+                    margin-right: 40px;
                 }
                 
                 .topbar-items {
@@ -916,12 +1738,7 @@ body {
                                 width: 100%;
                                 box-sizing: border-box;
                                 padding-right:16px;
-                                border-color: $dividerColor;
                                 color: $textColor;
-                                
-                                &:focus {
-                                    border-color: $dividerColor;
-                                }
                             }
                             
                             input:focus ~ label,
@@ -964,6 +1781,136 @@ body {
                         display: block;
                     }
                 }
+                
+                .rightpanel-btn {
+                    margin-left: 35px;
+                }
+            }
+        }
+
+        &.layout-rtl {
+            &.menu-layout-static {
+                .layout-menu {
+                    margin-left: 0px;
+                    margin-right: -265px;
+                }
+
+                .layout-main {
+                    margin-right: 0px;
+                }
+                
+                .topbar {
+                    .topbar-right {
+                        #menu-button {
+                            i {
+                               transform: rotate(0deg);
+                            }
+                        }
+                    }
+                }
+            
+                &.layout-menu-static-active {
+                    .layout-menu {
+                        margin-right: 0px;
+                    }
+
+                    .topbar {
+                        .topbar-right {
+                            #menu-button {
+                                i {
+                                   transform: rotate(180deg);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.menu-layout-horizontal {
+                .layout-menu {
+                    > .nano {
+                        > .nano-content {
+                            .ultima-menu {
+                                > li {
+                                    float: none;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .topbar {
+                .topbar-right {
+                    #topbar-menu-button {
+                        right:auto;
+                        margin-right: 0px;
+                        margin-left: 40px;
+                    }
+
+                    .topbar-items {
+                        right: auto;
+
+                        &.topbar-items-visible {
+                            direction: rtl;
+                        }
+
+                        > li {
+                            &.search-item {
+                                input {
+                                    padding-right: 30px;
+                                }
+                            }
+
+                            > a {
+                                .topbar-badge {
+                                    left:auto;
+                                    right: 28px;
+                                }
+
+                                i {
+                                    margin-left: 10px;
+                                    margin-right: 0px;
+                                }
+                                
+                                span {
+                                    float: none;
+                                }
+                            }
+                        }
+
+                        > li.active-top-menu {
+                            > ul {
+                                li {
+                                    a {
+                                        padding-right: 32px;
+                                        padding-left: 16px;
+                                        
+                                        i {
+                                            margin-left: 12px;
+                                            margin-right: 0px;
+                                            
+                                            &:first-child {
+                                                padding-left: 0px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        > li.profile-item {
+                            .profile-image {
+                                margin-left: 8px;
+                                margin-right: -2px;
+                            }
+                        }
+                    }
+                    
+                    .rightpanel-btn {
+                        margin-left: 0px;
+                    }
+                }
             }
         }
     }
@@ -971,12 +1918,46 @@ body {
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
     .layout-wrapper {
-        
-        .topbar {
-                        
+        .topbar {        
             .logo {
                 background: url("\#{resource['ultima-layout:images/logo2x.png']}") top left no-repeat;
                 background-size: 200px 30px;
+            }
+        }
+    }
+}
+
+@media (max-width: 399px) {
+    .layout-wrapper {
+        .topbar {
+            .topbar-right {
+                #topbar-menu-button {
+                    right: 10px;
+                    margin-right: 25px;
+                }
+                
+                .rightpanel-btn {
+                    position: absolute;
+                    right: 5px;
+                }
+            }
+        }
+        
+        &.layout-rtl {
+            .topbar {
+                .topbar-right {
+                    #topbar-menu-button {
+                        left: 10px;
+                        margin-right: 0px;
+                        margin-left: 25px;
+                    }
+                    
+                    .rightpanel-btn {
+                        right: auto;
+                        left: 5px;
+                        margin-left: 0px;
+                    }
+                }
             }
         }
     }
