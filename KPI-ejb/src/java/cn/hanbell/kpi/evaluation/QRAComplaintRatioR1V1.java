@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1749 R冷媒 3MIS的客诉比率
  */
-public class QRAComplaintRatioR1V1 extends QRAAConnERP {
+public class QRAComplaintRatioR1V1 extends QRA {
 
     public QRAComplaintRatioR1V1() {
         super();

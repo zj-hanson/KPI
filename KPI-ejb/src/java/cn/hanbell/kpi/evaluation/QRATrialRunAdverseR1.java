@@ -5,33 +5,16 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.comm.SuperEJBForMES;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.Query;
 
 /**
  *
  * @author C1749 冷媒试车MES数据集合不良数
  */
-public class QRATrialRunAdverseR1 extends QRAAConnMES {
-
-    SuperEJBForMES superMES = lookupSuperEJBForMESBean();
-
-    private SuperEJBForMES lookupSuperEJBForMESBean() {
-        try {
-            Context c = new InitialContext();
-            return (SuperEJBForMES) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
-        } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
+public class QRATrialRunAdverseR1 extends QRA {
 
     public QRATrialRunAdverseR1() {
         super();
@@ -93,8 +76,8 @@ public class QRATrialRunAdverseR1 extends QRAAConnMES {
         }
         sb.append(" AND year(A.MODIFYTIME)=${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
         String quaSql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
-        Query query1 = superMES.getEntityManager().createNativeQuery(totalSql);
-        Query query2 = superMES.getEntityManager().createNativeQuery(quaSql);
+        Query query1 = superEJBForMES.getEntityManager().createNativeQuery(totalSql);
+        Query query2 = superEJBForMES.getEntityManager().createNativeQuery(quaSql);
         try {
             Object o1 = query1.getSingleResult();
             Object o2 = query2.getSingleResult();

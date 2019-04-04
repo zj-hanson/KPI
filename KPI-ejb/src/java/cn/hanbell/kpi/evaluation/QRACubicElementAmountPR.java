@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1749 R冷媒的三次元合格率
  */
-public class QRACubicElementAmountPR extends QRAAConnERP {
+public class QRACubicElementAmountPR extends QRA {
     
 
     public QRACubicElementAmountPR() {

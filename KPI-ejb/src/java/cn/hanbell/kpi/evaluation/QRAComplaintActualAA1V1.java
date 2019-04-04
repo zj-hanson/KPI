@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1749
  */
-public class QRAComplaintActualAA1V1 extends QRAAConnERP {
+public class QRAComplaintActualAA1V1 extends QRA {
 
     public QRAComplaintActualAA1V1() {
         super();
@@ -48,16 +48,15 @@ class QRAComplaintCountAA1 extends QRAComplaintCount {
     public QRAComplaintCountAA1() {
         super();
         queryParams.put("BQ197", " ='AA' ");
-        queryParams.put("BQ003"," in ('AJZ') ");
+        queryParams.put("BQ003", " in ('AJZ') ");
         queryParams.put("BQ505", " in ('YX','-1') ");
-        queryParams.put("BQ110"," in ('Y') ");
+        queryParams.put("BQ110", " in ('Y') ");
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map); 
+        return super.getValue(y, m, d, type, map);
     }
-    
 
 }
 
@@ -72,5 +71,5 @@ class QRAShipmentAvgAA1 extends QRAShipmentAvg {
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return super.getValue(y, m, d, type, map);
     }
-    
+
 }
