@@ -17,6 +17,14 @@ body {
                         i:last-child {
                             font-size: 18px;
                         }
+                        
+                        .menuitem-badge {
+                            top: 10px;
+                            font-size: 12px;
+                            line-height: 18px;
+                            width: 17px;
+                            height: 17px;
+                        }
                     }
                     
                     ul {
@@ -203,6 +211,18 @@ body {
             font-size: $c-inputFontSize;
         }
         
+        .md-inputfield {
+            .ui-message {
+                &.ui-message-error {
+                    font-size: $c-errorMessageFontSize;
+
+                    .ui-message-error-icon {
+                        font-size: $c-errorMessageIconFontSize;
+                    }
+                }
+            }
+        }
+        
         .ui-chkbox {
             line-height: 18px;
             width: 18px;
@@ -329,7 +349,7 @@ body {
             .ui-paginator-next {
                 padding: 0 6px;
                 vertical-align: middle;
-                @include material-icon("navigate_next");
+                @include material-icon("\e409");
                 font-size: 20px;
                 
                 &:before {
@@ -341,7 +361,7 @@ body {
             .ui-paginator-last {
                 padding: 0 6px;
                 vertical-align: middle;
-                @include material-icon("last_page");
+                @include material-icon("\e5dd");
                 font-size: 20px;
                 
                 &:before {
@@ -353,7 +373,7 @@ body {
             .ui-paginator-prev {
                 padding: 0 6px;
                 vertical-align: middle;
-                @include material-icon("navigate_before");
+                @include material-icon("\e408");
                 font-size: 20px;
                 
                 &:before {
@@ -365,7 +385,7 @@ body {
             .ui-paginator-first {
                 padding: 0 6px;
                 vertical-align: middle;
-                @include material-icon("first_page");
+                @include material-icon("\e5dc");
                 font-size: 20px;
                 
                 &:before {
@@ -533,7 +553,7 @@ body {
                 .ui-icon {
                     height: $c-iconFontSize;
                     width: $c-iconFontSize;
-                    margin-top: -8px;
+                    margin-top: -2px;
                 }
             }
             
@@ -994,7 +1014,10 @@ body {
                 }
             }
                         
-            &.ui-tree-horizontal {                
+            &.ui-tree-horizontal { 
+                .ui-treenode-children {
+                    padding: 0;
+                }
                 .ui-treenode-content { 
                     .ui-tree-toggler {
                         margin-right: 0;

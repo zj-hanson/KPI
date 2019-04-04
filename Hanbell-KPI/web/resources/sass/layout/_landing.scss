@@ -28,14 +28,17 @@
                 li {
                     float: left;
                     display: block;
-                    margin-left: 30px;
+                    margin-left: 20px;
                     
                     a {
                         color: #ffffff;
                     }
                     
                     i {
-                        display: none;
+                        font-size: 20px;
+                        position: relative;
+                        top: 4px;
+                        padding-right: 3px;
                     }
                 }
                 

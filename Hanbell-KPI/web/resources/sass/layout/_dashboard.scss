@@ -106,6 +106,99 @@
         }
     }
     
+    .chat {
+        .ui-panel-content {
+            padding: 0 !important;
+        }
+        ul {
+            padding: 12px;
+            margin: 0;
+            list-style-type: none;
+            
+            li {
+                padding: 6px 0;
+                img {
+                    width: 36px;
+                    float: left;
+                }
+                
+                span {
+                    padding: 6px 12px;
+                    float: left;
+                    display: inline-block;
+                    margin: 4px 0;
+                    @include border-radius(10px);
+                }
+                
+                &.message-from {
+                    img, span {
+                        float: left;
+                    }
+                    
+                    img {
+                        margin-right: 8px;
+                    }
+                    
+                    span {
+                        background-color: #BBDEFB;
+                        color: #000000;
+                    }
+                }
+                
+                &.message-own {
+                    img, span {
+                        float: right;
+                    }
+                    
+                    img {
+                        margin-left: 8px;
+                    }
+                    
+                    span {
+                        background: #FFECB3;
+                        color: #000000;
+                    }
+                }
+            }
+        }
+        
+        .new-message {
+            height: 40px;
+            border-top: 1px solid #dce2e7;
+            color: #afafc0;
+            
+            .message-attachment {
+                display: inline-block;
+                border-right: 1px solid #dce2e7;
+                width: 40px;
+                line-height: 40px;
+                height: 100%;
+                text-align: center;
+                
+                i {
+                    line-height: inherit;
+                    font-size: 24px;
+                }
+            }
+            
+            .message-input {
+                position: relative;
+                top: -4px;
+                width: calc(100% - 100px);
+                display: inline-block;
+                
+                input {
+                    border: 0 none;
+                    font-size: 14px;
+                    width: 100%;
+                    background-color: transparent;
+                    outline: 0 none;
+                    color: $textSecondaryColor;
+                }
+            }
+        }
+    }
+    
     .task-list {
         overflow: hidden;
         
@@ -306,4 +399,107 @@
             @include content-shadow();
         }
     }    
+}
+
+.layout-rightpanel {    
+    .layout-rightpanel-header {
+        background: url("\#{resource['ultima-layout:images/dashboard/sidebar-image.jpg']}") center;
+        height: 118px;
+        padding: 14px;
+        @include box-sizing(border-box);
+        
+        .weather-day, .weather-date {
+            color: #ffffff;
+            left: 14px;
+            font-size: 18px;
+            font-weight: 700;
+            padding-bottom: 4px;
+        }
+    }
+    
+    .layout-rightpanel-content {
+        padding: 14px;
+        
+        h1 {
+            font-size: 18px;
+            margin: 0 0 4px 0;
+        }
+        
+        h2 {
+            font-size: 16px;
+            margin: 0;
+            color: $textSecondaryColor;
+            font-weight: normal;
+        }
+        
+        .weather-today {
+            text-align: center;
+            margin-top: 28px;
+            
+            .weather-today-value {
+                font-size: 36px;
+                vertical-align: middle;
+                margin-right: 14px;
+            }
+            
+            img {
+                vertical-align: middle;
+            }
+        }
+        
+        .weekly-weather {
+            list-style-type: none;
+            margin: 28px 0 0 0;
+            padding: 0;
+            
+            li {
+                padding: 8px 14px;
+                border-bottom: 1px solid #d8dae2;
+                position: relative;
+                
+                .weekly-weather-value {
+                    position: absolute;
+                    right: 40px;
+                }
+                
+                img {
+                    width: 24px;
+                    position: absolute;
+                    right: 0px;
+                    top: 4px;
+                }
+            }
+        }
+    }
+}
+
+.layout-rtl {
+    .layout-rightpanel {    
+        .layout-rightpanel-header {
+            direction: rtl;
+            
+            .weather-day, .weather-date {
+                right: 14px;
+                left: auto;
+            }
+        }
+
+        .layout-rightpanel-content {
+            .weekly-weather {
+                direction: rtl;
+                
+                li {
+                    .weekly-weather-value {
+                        left: 40px;
+                        right: auto;
+                    }
+
+                    img {
+                        left: 0px;
+                        right: auto;
+                    }
+                }
+            }
+        }
+    }
 }
