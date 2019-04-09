@@ -230,14 +230,14 @@ public class BscGroupHSShipmentBean implements Serializable {
         shpSql.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
         shpSql.append(" ) as a GROUP BY a.soday ");
         String cdrdta = shpSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
-
+        //销退
         StringBuilder bakSql = new StringBuilder();
         bakSql.append(" select a.soday,isnull(sum(a.num),0),isnull(sum(a.shpamts),0) from ( ");
         bakSql.append(" SELECT  h.bakdate as soday, ");
         bakSql.append(" cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end,0) as decimal(12,2)) as num, ");
         bakSql.append(" cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as shpamts ");
-        bakSql.append(" from cdrbdta d,cdrbhad h,invmas s,bsc_zlitcls z ");
-        bakSql.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and s.itcls=z.itcls and h.baksta not in ('W','N') ");
+        bakSql.append(" from cdrbdta d,cdrbhad h,invmas s");
+        bakSql.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
         if (!"".equals(spdsc)) {
             bakSql.append(" and substring(s.spdsc,1,2) ").append(spdsc);
         }
@@ -245,6 +245,19 @@ public class BscGroupHSShipmentBean implements Serializable {
             shpSql.append(" AND h.cusno ").append(cusno);
         }
         bakSql.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
+        //质量扣款
+        bakSql.append(" UNION ALL ");
+        bakSql.append(" select  a.bildat as soday, ");
+        bakSql.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(12,2)) as num, ");
+        bakSql.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
+        bakSql.append(" where a.facno=d.facno  and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr  ");
+        if (!"".equals(spdsc)) {
+            bakSql.append(" and substring(s.spdsc,1,2) ").append(spdsc);
+        }
+        if (!"".equals(cusno)) {
+            shpSql.append(" AND a.ivocus ").append(cusno);
+        }
+        bakSql.append(" and year(a.bildat) = ${y} and month(a.bildat) = ${m} and a.bildat<='${d}' ");
         bakSql.append(" ) as a GROUP BY a.soday ");
         String cdrbdta = bakSql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
