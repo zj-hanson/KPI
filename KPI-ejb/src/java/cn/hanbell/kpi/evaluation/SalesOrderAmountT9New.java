@@ -22,7 +22,6 @@ public class SalesOrderAmountT9New extends SalesOrderAmount {
     public SalesOrderAmountT9New() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
         queryParams.put("n_code_DD", " ='01' ");//00是整机-01是零件-02是后处理
     }
@@ -87,12 +86,11 @@ public class SalesOrderAmountT9New extends SalesOrderAmount {
         BigDecimal tram2 = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
-        sb.append(" WHERE  h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') ");
-//        if (!"".equals(decode)) {
-//            sb.append(" and h.decode ='").append(decode).append("' ");
-//        }
-        sb.append(" and d.n_code_DA <> 'QT' ");
+        sb.append(" WHERE  h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and h.depno not like '1A%' ");
+        sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') and d.n_code_DA <> 'QT' ");
+        if (!"".equals(n_code_DA)) {
+            sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
         if (!"".equals(n_code_CD)) {
             sb.append(" and d.n_code_CD ").append(n_code_CD);
         }
