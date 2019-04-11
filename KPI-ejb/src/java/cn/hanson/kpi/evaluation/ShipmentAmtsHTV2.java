@@ -14,7 +14,7 @@ public class ShipmentAmtsHTV2 extends ShipmentAmts {
     public ShipmentAmtsHTV2() {
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", "灰铁");
-        queryParams.put("cusno", "T");
+        queryParams.put("protype", "in ('HT')");
+        queryParams.put("cusno", "in ('HTW00001')");
     }
 }

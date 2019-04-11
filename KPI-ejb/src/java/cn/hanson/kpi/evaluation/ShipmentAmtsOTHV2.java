@@ -14,7 +14,7 @@ public class ShipmentAmtsOTHV2 extends ShipmentAmts {
     public ShipmentAmtsOTHV2() {
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", "其他");
-        queryParams.put("cusno", "T");
+        queryParams.put("protype", " not in ('HT','QT')");
+        queryParams.put("cusno", "in ('HTW00001')");
     }
 }
