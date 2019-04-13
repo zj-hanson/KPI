@@ -34,8 +34,8 @@ public class ProductionPlanOrder extends Production {
         BigDecimal value98 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(d.cdrqy1),0) as totcdrqy from cdrhmas h, cdrdmas d ");
-        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98')");
+        sb.append(" select isnull(sum(d.cdrqy1-(CASE WHEN d.drecsta in ('99','98') AND left(convert(char(12),d.enddate,112),8)=h.recdate  then d.cdrqy1 ELSE 0 END )),0) ");
+        sb.append(" from cdrhmas h, cdrdmas d where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
