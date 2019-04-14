@@ -14,6 +14,6 @@ public class ShipmentAmtsQT extends ShipmentAmts {
     public ShipmentAmtsQT() {
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", "球铁");
+        queryParams.put("protype", "in ('QT')");
     }
 }

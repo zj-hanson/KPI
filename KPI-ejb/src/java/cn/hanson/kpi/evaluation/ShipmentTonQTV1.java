@@ -14,8 +14,8 @@ public class ShipmentTonQTV1 extends ShipmentTon{
     public ShipmentTonQTV1(){
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", "球铁");
-        queryParams.put("cusno", "S");
+        queryParams.put("protype", "in ('QT')");
+        queryParams.put("cusno", "in ('HSH00003')");
     }
     
 }

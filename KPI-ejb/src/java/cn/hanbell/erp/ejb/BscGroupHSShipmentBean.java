@@ -248,8 +248,8 @@ public class BscGroupHSShipmentBean implements Serializable {
         //质量扣款
         bakSql.append(" UNION ALL ");
         bakSql.append(" select  a.bildat as soday, ");
-        bakSql.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(12,2)) as num, ");
-        bakSql.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
+        bakSql.append(" cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(12,2)) as num, ");
+        bakSql.append(" cast((  a.losamts/(1+a.taxrate) ) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
         bakSql.append(" where a.facno=d.facno  and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr  ");
         if (!"".equals(spdsc)) {
             bakSql.append(" and substring(s.spdsc,1,2) ").append(spdsc);
