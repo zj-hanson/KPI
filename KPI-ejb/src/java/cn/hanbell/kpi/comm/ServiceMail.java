@@ -26,7 +26,7 @@ public abstract class ServiceMail extends MailNotification {
 
     }
 
-    protected String servicecss = "<style type='text/css'>body{font-size:14px;}div.content{margin:auto;text-align:center;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;text-align:left;}th{border:1px solid #000000;text-align:center;font-weight:bold;}td{border:1px solid #000000;text-align:right;}.title{font-size:14px;font-weight:bold;}.foot{font-size:14px;color:Red;}.divFoot{text-align:right;font-weight:bold;height:20px;width:100%;}.divFoot1{text-align:left;height:20px;width:100%;font-weight:bold;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
+    protected String servicecss = "<style type='text/css'>body{font-size:14px;font-weight:bold;}div.content{margin:auto;text-align:center;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;text-align:left;}th{border:1px solid #000000;text-align:center;font-weight:bold;}td{border:1px solid #000000;text-align:right;}.title{font-size:14px;font-weight:bold;}.foot{font-size:14px;color:Red;}.divFoot{text-align:right;font-weight:bold;height:20px;width:100%;}.divFoot1{text-align:left;height:20px;width:100%;font-weight:bold;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
 
     @Override
     protected String getMailHead() {

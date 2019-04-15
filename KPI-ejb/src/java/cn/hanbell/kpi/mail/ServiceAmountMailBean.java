@@ -50,6 +50,7 @@ public class ServiceAmountMailBean extends ServiceMail {
             }
         });
         StringBuilder sb = new StringBuilder();
+        sb.append("<div class=\"content\">统计内容为：当月服务员报销核准的数据，报销对应的服务案可能是非本月发生的</div>");
         sb.append("<div class=\"tableTitle\">单位：元</div>");
         sb.append(getHtmlTable(indicators, y, m, d, true));
         return sb.toString();
