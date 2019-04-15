@@ -34,7 +34,7 @@ public class ProductionPlanOrder extends Production {
         BigDecimal value98 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(d.cdrqy1-(CASE WHEN d.drecsta in ('99','98') AND left(convert(char(12),d.enddate,112),8)=h.recdate  then d.cdrqy1 ELSE 0 END )),0) ");
+        sb.append(" select isnull(sum(d.cdrqy1-(CASE WHEN d.drecsta in ('99','98') AND convert(VARCHAR(8),d.enddate,112)=h.recdate  then d.cdrqy1 ELSE 0 END )),0) ");
         sb.append(" from cdrhmas h, cdrdmas d where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -74,7 +74,7 @@ public class ProductionPlanOrder extends Production {
         if (!"".equals(itcls)) {
             sb.append(" and d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
         }
-        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate < '${d}' and left(convert(char(12),d.enddate,112),8)= '${d}'");
+        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate < '${d}' and convert(VARCHAR(8),d.enddate,112)= '${d}'");
 
         String sql2 = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
