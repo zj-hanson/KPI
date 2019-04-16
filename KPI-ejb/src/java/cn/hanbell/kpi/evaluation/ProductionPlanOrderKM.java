@@ -43,7 +43,7 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(d.cdrqy1),0) as totcdrqy from cdrhmas h, cdrdmas d ");
-        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98')");
+        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98') and d.n_code_DD <> 'ZZ' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -105,7 +105,7 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" select day(h.recdate),isnull(sum(d.cdrqy1),0) as totcdrqy from cdrhmas h, cdrdmas d ");
-        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98')");
+        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98') and d.n_code_DD <> 'ZZ' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
