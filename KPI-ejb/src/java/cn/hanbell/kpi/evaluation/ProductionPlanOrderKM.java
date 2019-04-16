@@ -6,6 +6,7 @@
 package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
@@ -76,12 +77,14 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
             if (list != null && !list.isEmpty()) {
                 if (!"".equals(id) && !"true".equals(noUpdate)) {
                     Indicator entity = indicatorBean.findById(Integer.valueOf(id));
-                    if (entity != null || entity.getOther4Indicator() != null) {
+                    if (entity != null && entity.getOther4Indicator() != null) {
                         IndicatorDetail salesOrder = entity.getOther4Indicator();
+                        IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
                         for (int i = 0; i < list.size(); i++) {
                             Object[] row = (Object[]) list.get(i);
-                            updateValue(m, Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), salesOrder);
+                            updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
                         }
+                        indicatorDailyBean.update(daily);
                     }
                 }
             }

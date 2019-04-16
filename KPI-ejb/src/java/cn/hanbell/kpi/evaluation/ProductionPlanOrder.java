@@ -13,7 +13,6 @@ import cn.hanbell.kpi.entity.IndicatorDetail;
 import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -85,14 +84,16 @@ public class ProductionPlanOrder extends Production {
             //更新本月以往天数订单
             List list = getLastValue(y, m, d, map);
             if (list != null && !list.isEmpty()) {
-                if (!"".equals(id)&& !"true".equals(noUpdate)) {
+                if (!"".equals(id) && !"true".equals(noUpdate)) {
                     Indicator entity = indicatorBean.findById(Integer.valueOf(id));
-                    if (entity != null || entity.getOther4Indicator() != null) {
+                    if (entity != null && entity.getOther4Indicator() != null) {
                         IndicatorDetail salesOrder = entity.getOther4Indicator();
+                        IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
                         for (int i = 0; i < list.size(); i++) {
                             Object[] row = (Object[]) list.get(i);
-                            updateValue(m,Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())),salesOrder);
+                            updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
                         }
+                        indicatorDailyBean.update(daily);
                     }
                 }
             }
@@ -103,13 +104,11 @@ public class ProductionPlanOrder extends Production {
         return value;
     }
 
-    public void updateValue(int m, int day,BigDecimal na,IndicatorDetail salesOrder) {
+    public void updateValue(int day, BigDecimal na, IndicatorDaily daily) {
         String col = "setD" + String.format("%02d", day);
         try {
-            IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
             Method setMethod = daily.getClass().getDeclaredMethod(col, BigDecimal.class);
             setMethod.invoke(daily, na);
-            indicatorDailyBean.update(daily);
         } catch (Exception ex) {
             Logger.getLogger(ProductionPlanOrder.class.getName()).log(Level.SEVERE, null, ex);
         }

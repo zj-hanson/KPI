@@ -1282,7 +1282,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     public Indicator updateActualManual(int id, int y, int m, Date d, int type) {
         Indicator entity = findById(id);
-        String userid= entity.getUserid();
+        String userid = entity.getUserid();
         int uy, um;
         if ((entity != null) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
@@ -1316,9 +1316,9 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             Calendar c = Calendar.getInstance();
             c.setTime(d);
             int day = c.get(Calendar.DAY_OF_MONTH);
+            BigDecimal dayBigDecimal = a1.getValue(uy, um, d, type, a1.getQueryParams());
             IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
-                BigDecimal dayBigDecimal = a1.getValue(uy, um, d, type, a1.getQueryParams());
                 Method setMethod = daily.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("D", day).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, dayBigDecimal);
                 indicatorDailyBean.update(daily);
