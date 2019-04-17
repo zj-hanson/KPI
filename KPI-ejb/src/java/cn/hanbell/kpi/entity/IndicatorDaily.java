@@ -534,6 +534,41 @@ public class IndicatorDaily extends SuperDetailEntity {
         return true;
     }
 
+    public void setDataOfZero() {
+        this.d01 = BigDecimal.ZERO;
+        this.d02 = BigDecimal.ZERO;
+        this.d03 = BigDecimal.ZERO;
+        this.d04 = BigDecimal.ZERO;
+        this.d05 = BigDecimal.ZERO;
+        this.d06 = BigDecimal.ZERO;
+        this.d07 = BigDecimal.ZERO;
+        this.d08 = BigDecimal.ZERO;
+        this.d09 = BigDecimal.ZERO;
+        this.d10 = BigDecimal.ZERO;
+        this.d11 = BigDecimal.ZERO;
+        this.d12 = BigDecimal.ZERO;
+        this.d13 = BigDecimal.ZERO;
+        this.d14 = BigDecimal.ZERO;
+        this.d15 = BigDecimal.ZERO;
+        this.d16 = BigDecimal.ZERO;
+        this.d17 = BigDecimal.ZERO;
+        this.d18 = BigDecimal.ZERO;
+        this.d19 = BigDecimal.ZERO;
+        this.d20 = BigDecimal.ZERO;
+        this.d21 = BigDecimal.ZERO;
+        this.d22 = BigDecimal.ZERO;
+        this.d23 = BigDecimal.ZERO;
+        this.d24 = BigDecimal.ZERO;
+        this.d25 = BigDecimal.ZERO;
+        this.d26 = BigDecimal.ZERO;
+        this.d27 = BigDecimal.ZERO;
+        this.d28 = BigDecimal.ZERO;
+        this.d29 = BigDecimal.ZERO;
+        this.d30 = BigDecimal.ZERO;
+        this.d31 = BigDecimal.ZERO;
+        this.total = BigDecimal.ZERO;
+    }
+
     @Override
     public String toString() {
         return "cn.hanbell.kpi.entity.IndicatorDaily[ id=" + id + " ]";
