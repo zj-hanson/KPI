@@ -5,12 +5,16 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import cn.hanbell.kpi.ejb.crm.DSALPBean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.Query;
 
 /**
@@ -18,6 +22,8 @@ import javax.persistence.Query;
  * @author C1879
  */
 public class EmployeeSalesOrderAmount extends SalesOrder {
+
+    DSALPBean dsalpBean = lookupDsalpBean();
 
     public EmployeeSalesOrderAmount() {
         super();
@@ -29,6 +35,7 @@ public class EmployeeSalesOrderAmount extends SalesOrder {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String userid = map.get("userid") != null ? map.get("userid").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
         BigDecimal tram = BigDecimal.ZERO;
@@ -43,6 +50,9 @@ public class EmployeeSalesOrderAmount extends SalesOrder {
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
@@ -72,6 +82,10 @@ public class EmployeeSalesOrderAmount extends SalesOrder {
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (tram.compareTo(BigDecimal.ZERO) != 0) {
+            map.put("type", "SalesOrder");
+            dsalpBean.addDsalpList(y, m, d, map);
+        }
         return tram;
     }
 
@@ -80,4 +94,13 @@ public class EmployeeSalesOrderAmount extends SalesOrder {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private DSALPBean lookupDsalpBean() {
+        try {
+            Context c = new InitialContext();
+            return (DSALPBean) c.lookup("java:global/KPI/KPI-ejb/DSALPBean!cn.hanbell.kpi.ejb.crm.DSALPBean");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
 }

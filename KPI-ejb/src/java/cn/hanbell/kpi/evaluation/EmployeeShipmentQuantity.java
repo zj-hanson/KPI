@@ -29,6 +29,7 @@ public class EmployeeShipmentQuantity extends Shipment {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String userid = map.get("userid") != null ? map.get("userid").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
         BigDecimal shpqy1 = BigDecimal.ZERO;
@@ -43,6 +44,9 @@ public class EmployeeShipmentQuantity extends Shipment {
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
