@@ -5,12 +5,16 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import cn.hanbell.kpi.ejb.crm.DSALPBean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.Query;
 
 /**
@@ -18,6 +22,8 @@ import javax.persistence.Query;
  * @author C1879
  */
 public class EmployeeShipmentAmount extends Shipment {
+
+    DSALPBean dsalpBean = lookupDsalpBean();
 
     public EmployeeShipmentAmount() {
         super();
@@ -29,6 +35,7 @@ public class EmployeeShipmentAmount extends Shipment {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String userid = map.get("userid") != null ? map.get("userid").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
 
         BigDecimal shp1 = BigDecimal.ZERO;
@@ -43,6 +50,9 @@ public class EmployeeShipmentAmount extends Shipment {
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
+        }
+        if (!"".equals(n_code_DC)) {
+            sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
@@ -108,6 +118,10 @@ public class EmployeeShipmentAmount extends Shipment {
             this.arm232 = this.getARM232Value(y, m, d, type, getQueryParams());
             this.arm270 = this.getARM270Value(y, m, d, type, getQueryParams());
             this.arm423 = this.getARM423Value(y, m, d, type, getQueryParams());
+        }
+        if (shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423).compareTo(BigDecimal.ZERO) != 0) {
+            map.put("type", "Shipment");
+            dsalpBean.addDsalpList(y, m, d, map);
         }
         return shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423);
     }
@@ -199,7 +213,7 @@ public class EmployeeShipmentAmount extends Shipment {
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno in ('6001','6002') ");
-        sb.append(" AND h.facno='${facno}' AND h.ogdkid in ${ogdkid} ");
+        sb.append(" AND h.facno='${facno}' AND h.ogdkid  ${ogdkid} ");
         if (!"".equals(userid)) {
             sb.append(" and d.mancode ='").append(userid).append("' ");
         }
@@ -232,6 +246,16 @@ public class EmployeeShipmentAmount extends Shipment {
             log4j.error(ex);
         }
         return BigDecimal.ZERO;
+    }
+
+    private DSALPBean lookupDsalpBean() {
+        try {
+            Context c = new InitialContext();
+            return (DSALPBean) c.lookup("java:global/KPI/KPI-ejb/DSALPBean!cn.hanbell.kpi.ejb.crm.DSALPBean");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 
 }

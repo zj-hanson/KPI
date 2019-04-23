@@ -154,18 +154,23 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>crmdsalp</from-outcome>
+            <to-view-id>/app/prod/crmdsalp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>exchange</from-outcome>
             <to-view-id>/app/prod/exchange.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>employee</from-outcome>
-            <to-view-id>/app/empy/employee.xhtml</to-view-id>
+            <to-view-id>/app/empl/employee.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>employeeset</from-outcome>
-            <to-view-id>/app/empy/employeeset.xhtml</to-view-id>
+            <to-view-id>/app/empl/employeeset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

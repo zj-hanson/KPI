@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../../WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"  autoUpdate="true" />
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+                <h:outputLabel value="更新项" for="type" />
+                <p:selectOneMenu id="type" value="#{dsalpReportBean.type}" style="width:100%;" title="更新项" >
+                    <f:selectItem itemLabel="出货" itemValue="Shipment"/>
+                    <f:selectItem itemLabel="订单" itemValue="SalesOrder"/>
+                </p:selectOneMenu>
+                <h:outputLabel value="部门" for="da" />
+                <p:selectOneMenu id="da" value="#{dsalpReportBean.da}" style="width:100%;" title="部门" >
+                    <f:selectItem itemLabel="制冷产品部" itemValue="R"/>
+                    <!--                    <f:selectItem itemLabel="空压机组产品部" itemValue="AA"/>
+                                        <f:selectItem itemLabel="空压机体产品部" itemValue="AH"/>
+                                        <f:selectItem itemLabel="真空产品部" itemValue="P"/>
+                                        <f:selectItem itemLabel="涡旋产品部" itemValue="S"/>
+                                        <f:selectItem itemLabel="柯茂再生能源" itemValue="OH"/>
+                                        <f:selectItem itemLabel="柯茂涡轮产品部" itemValue="RT"/>-->
+                </p:selectOneMenu>
+                <h:outputLabel value="查询日期" for="queryDateBegin" />
+                <p:calendar id="queryDateBegin" value="#{dsalpReportBean.btnDate}" title="查询日期" pattern="yyyy/MM/dd"
+                            required="true" requiredMessage="请录入查询日期"/>
+                <p:column styleClass="Wid20"><p:outputLabel value="绩效人员" for="userid" /></p:column>
+                <p:column styleClass="Wid30">
+                    <p:inputText id="userid" readonly="true" value="#{dsalpReportBean.userid}" title="userid" styleClass="inputWithButton" style="width: 200px"
+                                 />
+                    <p:inputText id="username" readonly="true" value="#{dsalpReportBean.username}"  title="username" style="width: 200px" styleClass="inputWithButton"
+                                />
+                    <p:commandButton id="btnSystemUserSelect" actionListener="#{dsalpReportBean.view}" icon="ui-icon-search"
+                                     process="@this"  >
+                        <p:ajax event="dialogReturn" listener="#{dsalpReportBean.handleDialogReturnUserWhenDetailNew}"
+                                process="@this" update="userid,username" />
+                    </p:commandButton>
+                </p:column>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad"  value="刷新" actionListener="#{dsalpReportBean.init()}"  icon="ui-icon-sync"
+                                     update=":formList" />
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnupate" value="更新" actionListener="#{dsalpReportBean.updateSales()}" icon="ui-icon-plus"
+                                       update=":formList"/>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{dsalpReportBean.reset()}"  icon="ui-icon-refresh"
+                                       update=":formList" />
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{dsalpReportBean.query()}"  icon="ui-icon-search"
+                                      update=":formList" />
+                </f:facet>
+            </p:toolbar>
+            <p:panel style="height:590px">
+                <p:dataTable value="#{dsalpReportBean.dsalplist}" var="ds"  tableStyleClass="tableList" scrollable="true" scrollHeight="460"  >
+                    <f:facet name="header">
+                        CRM资料导入查询
+                    </f:facet>
+                    <p:column styleClass="Wid05">
+                        <f:facet name="header">
+                            <h:outputText value="公司"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds002}"/>
+                    </p:column>
+                    <p:column styleClass="Wid05">
+                        <f:facet name="header">
+                            <h:outputText value="区域"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds004}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="业务员"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds019}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="时间"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds006}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="客户"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds009}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="事业部"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds015}"/>
+                    </p:column>
+                    <p:column styleClass="Wid10">
+                        <f:facet name="header">
+                            <h:outputText value="产品"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds016}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="台数"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds011}"/>
+                    </p:column>
+                    <p:column styleClass="Wid15">
+                        <f:facet name="header">
+                            <h:outputText value="金额"/>
+                        </f:facet>
+                        <h:outputText value="#{ds.ds012}"/>
+                    </p:column>
+                    <p:columnGroup type="footer"  >
+                        <p:row>
+                            <p:column  style="text-align:right" footerText="#{dsalpReportBean.type}总计:"/>
+                            <p:column  style="text-align:right" footerText="台数：#{dsalpReportBean.quantitySum}" />
+                            <p:column  style="text-align:right" footerText="金额：#{dsalpReportBean.amountSum}" />
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </p:panel>
+               <div style="display:#{dsalpReportBean.display};margin-top: 10px;text-align: center;">
+                    <span style="color: red;font-size:23px" > #{dsalpReportBean.status1}</span><span style="color: green;font-size:23px" > #{dsalpReportBean.status2}</span>                   
+                </div>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
