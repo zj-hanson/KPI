@@ -534,7 +534,7 @@ public class IndicatorDaily extends SuperDetailEntity {
         return true;
     }
 
-    public void setDataOfZero() {
+    public void clearDate() {
         this.d01 = BigDecimal.ZERO;
         this.d02 = BigDecimal.ZERO;
         this.d03 = BigDecimal.ZERO;

@@ -80,7 +80,7 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
                     if (entity != null && entity.getOther4Indicator() != null) {
                         IndicatorDetail salesOrder = entity.getOther4Indicator();
                         IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
-                        daily.setDataOfZero();
+                        daily.clearDate();
                         for (int i = 0; i < list.size(); i++) {
                             Object[] row = (Object[]) list.get(i);
                             updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
