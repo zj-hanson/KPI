@@ -108,13 +108,17 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
             if ((zcmap != null && !zcmap.isEmpty()) || (fzmap != null && !fzmap.isEmpty())) {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");
-                statusMap.put("th1title", getdate().get(Calendar.YEAR) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月");
-                statusMap.put("th2title", (getdate().get(Calendar.YEAR) - 1) + "");
-                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1);
+                statusMap.put("th2title", getTitle(getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1, getdate().getActualMaximum(Calendar.DATE)));
+                statusMap.put("th1title", getTitle( getdate().get(Calendar.YEAR), 1, 1));
+                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
         }
+    }
+
+    private String getTitle(int y, int m, int d) {
+        return y + "年" + m + "月" + d + "日";
     }
 
     /**

@@ -19,7 +19,7 @@ public class EmployeeSalesOrderQuantityR_N extends EmployeeSalesOrderQuantity {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DD", " ='00 ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override
