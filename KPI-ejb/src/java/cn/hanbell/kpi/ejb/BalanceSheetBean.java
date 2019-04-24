@@ -85,8 +85,8 @@ public class BalanceSheetBean implements Serializable {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
                     String[] arr = new String[4];
-                    arr[0] = df.format(Double.parseDouble(row[1].toString()));
-                    arr[1] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[0] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
                         arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
@@ -103,8 +103,8 @@ public class BalanceSheetBean implements Serializable {
                 for (int i = 0; i < list.size(); i++) {
                     Object[] row = (Object[]) list.get(i);
                     String[] arr = new String[4];
-                    arr[0] = df.format(Double.parseDouble(row[1].toString()));
-                    arr[1] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[0] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
                         arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
@@ -166,8 +166,8 @@ public class BalanceSheetBean implements Serializable {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
                     String[] arr = new String[4];
-                    arr[0] = df.format(Double.parseDouble(row[1].toString()));
-                    arr[1] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[0] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
                         arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
@@ -184,8 +184,8 @@ public class BalanceSheetBean implements Serializable {
                 for (int i = 0; i < list.size(); i++) {
                     Object[] row = (Object[]) list.get(i);
                     String[] arr = new String[4];
-                    arr[0] = df.format(Double.parseDouble(row[1].toString()));
-                    arr[1] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[0] = df.format(Double.parseDouble(row[2].toString()));
+                    arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
                         arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);

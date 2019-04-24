@@ -17,7 +17,7 @@ public class EmployeeShipmentAmountAA extends EmployeeShipmentAmount {
         queryParams.put("deptno", "('1Q000','1Q100')");
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DD", " IN ('00','02') ");
-        queryParams.put("ogdkid", "('RL01','RL03')");
+        queryParams.put("ogdkid", "IN ('RL01','RL03')");
     }
 
 }
