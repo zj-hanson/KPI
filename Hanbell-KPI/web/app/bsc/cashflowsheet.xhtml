@@ -1,0 +1,425 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <h:form id="formOne" style="height: 100%">
+            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
+                <p:outputLabel value="请输入查询日期*" for="btndate" />
+                <p:calendar id="btndate" value="#{cashFlowSheetReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
+                <p:outputLabel style="visibility: hidden"/>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{cashFlowSheetReportBean.btnreset()}"  icon="ui-icon-refresh"
+                                 update="formOne" process="plgQuery" />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{cashFlowSheetReportBean.btnquery()}"  icon="ui-icon-search"
+                                 update="formOne" process="plgQuery"/>
+
+                <p:link  value="返回"  outcome="home" style="float: left"/>
+
+            </p:panelGrid>
+            <div>
+                <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                    <f:facet name="header"  >
+                        <p:row >
+                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >上海汉钟精机股份有限公司<br/>现金流量表</p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid >
+                <div style="display:#{cashFlowSheetReportBean.statusMap.displaydiv1};padding-top: 10px;" align="right" >
+                    <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 25px" >No records found.</span>
+                </div>
+                <div style="display:#{cashFlowSheetReportBean.statusMap.displaydiv2};" align="right">
+                    <script type="text/javascript">
+                        $(function () {
+                            $(".table tr[name != btitle]").hover(function () {
+                                $(this).css("background-color", "#1AB394");
+                                $(this).css("color", "white");
+                            }, function () {
+                                $(this).css("background-color", "");
+                                $(this).css("color", "black");
+                            });
+                        });
+                        $(function () {
+                            $(".table tr[name = btitle]").hover(function () {
+                                $(this).css("background-color", "black");
+                                $(this).css("color", "white");
+                            }, function () {
+                                $(this).css("background-color", "#E8E8E8");
+                                $(this).css("color", "firebrick");
+                            });
+                        });
+                    </script>
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;width: 100%;text-align: center;font-size: 18px">
+                        <caption style="padding-right: 30px;background-color:#2F4050;text-align: right;color: white;font-weight:bold"><p:column  >单位：万元</p:column></caption>
+                        <thead style="background-color: #E8E8E8;"  >
+                            <tr style="height: 45px;">
+                                <th style="width: 35%">项目</th>
+                                <th style="width: 16%">#{cashFlowSheetReportBean.statusMap.th1title}</th>
+                                <th style="width: 16%">#{cashFlowSheetReportBean.statusMap.th2title}</th>
+                                <th style="width: 16%">增减额</th>
+                                <th style="width: 16%">变动幅度</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table" style="cursor:pointer;">
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('2')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('3')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('4')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('5')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('6')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('7')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('8')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('9')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('10')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="background-color:#E8E8E8;color: firebrick;font-weight: bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('1')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('13')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('14')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('15')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('17')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('18')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('19')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('21')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: right;background-color: #E8E8E8;color: firebrick;font-weight: bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('22')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left">二、#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('24')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('25')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('27')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('28')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('29')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('30')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr style="font-weight:bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('31')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick;font-weight: bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('32')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left">三、#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick;font-weight: bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('33')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick;font-weight: bold">
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('34')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('35')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('36')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <c:forEach items="#{cashFlowSheetReportBean.map.get('37')}" var="item"  varStatus="st" >
+                                    <c:if test="${st.first}">
+                                        <td style="text-align: left;padding-left: 2.0em">#{item}</td>
+                                    </c:if>
+                                    <c:if test="${!st.first}">
+                                        <td style="text-align: right">#{item}</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="width: 100%;display:#{cashFlowSheetReportBean.statusMap.displaydiv2};">
+                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repSummary" value="#{cashFlowSheetReportBean.summaryList}" var="s" rendered="#{cashFlowSheetReportBean.summaryCount>0}">
+                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid>
+                                    <h:outputText id="summary"/>
+                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
+                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repAnalysis" value="#{cashFlowSheetReportBean.analysisList}" var="a" rendered="#{cashFlowSheetReportBean.analysisCount>0}">
+                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                    <h:outputText id="issueLabel" value="问题"/>
+                                    <h:outputText id="factorLabel" value="原因"/>
+                                    <h:outputText id="countermeasureLabel" value="对策"/>
+                                    <h:outputText id="issue"/>
+                                    <h:outputText id="factor"/>
+                                    <h:outputText id="countermeasure"/>
+                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
+                    <div>
+                        <h:outputScript name="bsc-clientranking.js" library="js"/>
+                        <h:inputHidden id="sc" value="#{cashFlowSheetReportBean.summaryCount}"></h:inputHidden>
+                        <h:inputHidden id="ac" value="#{cashFlowSheetReportBean.analysisCount}"></h:inputHidden>
+                    </div>
+                </div>
+            </div>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -22,6 +22,8 @@ public class ProductionQuantityS extends ProductionQuantity {
         queryParams.put("prono", "1");
         //*生产线别
         queryParams.put("linecode", " = 'SJ' ");
+        //制令种类
+        queryParams.put("mankind", " IN('MOS','WOS') ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
         
