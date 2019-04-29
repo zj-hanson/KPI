@@ -34,7 +34,7 @@ public class QRACubicElementAmountPAH extends QRACubicElementAmount {
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //合格率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
-                result = ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+                result = BigDecimal.ONE.subtract(ev.divide(ov).setScale(4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
             }
             return result;
         } catch (Exception ex) {

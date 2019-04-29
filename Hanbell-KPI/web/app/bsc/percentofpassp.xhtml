@@ -23,9 +23,9 @@
                         <f:facet name="header">
                             <p:row>
                                 <p:column>项目</p:column>
-                                <p:column>分值占比</p:column>
-                                <p:column>基准项</p:column>
-                                <p:column>基准值</p:column>
+                                <p:column>分数占比</p:column>
+                                <p:column>目标项</p:column>
+                                <p:column>目标值</p:column>
                                 <p:column>实际</p:column>
                                 <p:column>1月</p:column>
                                 <p:column>2月</p:column>
@@ -298,7 +298,11 @@
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.nfy,0)}</p:column>
                         </p:row>
                         <p:row>
-                            <p:column colspan="5">合计</p:column>
+                            <p:column>合计</p:column>
+                            <p:column>100</p:column>
+                            <p:column>总目标分数</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.mbTotal,1)}</p:column>
+                            <p:column>总实际分数</p:column>
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n01,1)}</p:column>
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n02,2)}</p:column>
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n03,3)}</p:column>
@@ -312,6 +316,27 @@
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n11,11)}</p:column>
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n12,12)}</p:column>
                             <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.nfy,0)}</p:column>
+                            <p:column></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>达成率</p:column>
+                            <p:column></p:column>
+                            <p:column></p:column>
+                            <p:column></p:column>
+                            <p:column></p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n01,1)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n02,2)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n03,3)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n04,4)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n05,5)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n06,6)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n07,7)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n08,8)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n09,9)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n10,10)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n11,11)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n12,12)}</p:column>
+                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.nfy,0)}</p:column>
                             <p:column></p:column>
                         </p:row>
                     </p:panelGrid>

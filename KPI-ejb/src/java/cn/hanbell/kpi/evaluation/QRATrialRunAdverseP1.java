@@ -90,7 +90,7 @@ public class QRATrialRunAdverseP1 extends QRA {
                 result = BigDecimal.valueOf(quaResult);
             }
         } catch (Exception ex) {
-            log4j.error("QRATrialRunAdverseR1", ex);
+            log4j.error("QRATrialRunAdverseP1", ex);
         }
         result = BigDecimal.ONE.subtract(result).setScale(5, BigDecimal.ROUND_HALF_UP);
         return result;

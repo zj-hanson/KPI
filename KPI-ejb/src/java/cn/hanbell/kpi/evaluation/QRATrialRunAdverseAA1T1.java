@@ -21,7 +21,7 @@ public class QRATrialRunAdverseAA1T1 extends QRATrialRunAdverseAA1 {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map); //To change body of generated methods, choose Tools | Templates.
+        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(100)); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
