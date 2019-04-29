@@ -371,6 +371,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>cashflowsheet</from-outcome>
+            <to-view-id>/app/bsc/cashflowsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>materialsaccproject</from-outcome>
             <to-view-id>/app/bsc/materialsaccproject.xhtml</to-view-id>
             <redirect/>

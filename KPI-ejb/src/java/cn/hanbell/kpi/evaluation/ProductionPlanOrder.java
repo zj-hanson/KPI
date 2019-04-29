@@ -29,10 +29,6 @@ import javax.persistence.Query;
  */
 public class ProductionPlanOrder extends Production {
 
-    IndicatorDailyBean indicatorDailyBean = lookupIndicatorDailyBeanBean();
-
-    IndicatorBean indicatorBean = lookupIndicatorBeanBean();
-
     public ProductionPlanOrder() {
     }
 
@@ -82,19 +78,21 @@ public class ProductionPlanOrder extends Production {
             Object o = query.getSingleResult();
             value = (BigDecimal) o;
             //更新本月以往天数订单
-            List list = getLastValue(y, m, d, map);
-            if (list != null && !list.isEmpty()) {
-                if (!"".equals(id) && !"true".equals(noUpdate)) {
-                    Indicator entity = indicatorBean.findById(Integer.valueOf(id));
-                    if (entity != null && entity.getOther4Indicator() != null) {
-                        IndicatorDetail salesOrder = entity.getOther4Indicator();
-                        IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
-                        daily.clearDate();
-                        for (int i = 0; i < list.size(); i++) {
-                            Object[] row = (Object[]) list.get(i);
-                            updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
+            if (type == 5) {
+                List list = getLastValue(y, m, d, map);
+                if (list != null && !list.isEmpty()) {
+                    if (!"".equals(id) && !"true".equals(noUpdate)) {
+                        Indicator entity = indicatorBean.findById(Integer.valueOf(id));
+                        if (entity != null && entity.getOther4Indicator() != null) {
+                            IndicatorDetail salesOrder = entity.getOther4Indicator();
+                            IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
+                            daily.clearDate();
+                            for (int i = 0; i < list.size(); i++) {
+                                Object[] row = (Object[]) list.get(i);
+                                updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
+                            }
+                            indicatorDailyBean.update(daily);
                         }
-                        indicatorDailyBean.update(daily);
                     }
                 }
             }
@@ -103,16 +101,6 @@ public class ProductionPlanOrder extends Production {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
         return value;
-    }
-
-    public void updateValue(int day, BigDecimal na, IndicatorDaily daily) {
-        String col = "setD" + String.format("%02d", day);
-        try {
-            Method setMethod = daily.getClass().getDeclaredMethod(col, BigDecimal.class);
-            setMethod.invoke(daily, na);
-        } catch (Exception ex) {
-            Logger.getLogger(ProductionPlanOrder.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public List getLastValue(int y, int m, Date d, LinkedHashMap<String, Object> map) {
@@ -149,26 +137,6 @@ public class ProductionPlanOrder extends Production {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
-    }
-
-    private IndicatorBean lookupIndicatorBeanBean() {
-        try {
-            Context c = new InitialContext();
-            return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
-    private IndicatorDailyBean lookupIndicatorDailyBeanBean() {
-        try {
-            Context c = new InitialContext();
-            return (IndicatorDailyBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorDailyBean!cn.hanbell.kpi.ejb.IndicatorDailyBean");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
     }
 
 }

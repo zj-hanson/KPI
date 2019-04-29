@@ -471,14 +471,14 @@ public class SalesTableUpdateBean implements Serializable {
                 sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
                 sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 ");
                 sb.append(" from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
-                sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.n_code_DA <> 'QT' ");
+                sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and h.depno not like '1A%' ");
                 sb.append(" and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
                 sb.append(" union all ");
                 sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,'WXLJ' AS hmark1,hmark2 from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-                sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.n_code_DA <> 'QT' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
+                sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and h.depno not like '1A%' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.bakdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             } else {

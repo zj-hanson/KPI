@@ -206,4 +206,48 @@ public class BalanceSheetBean implements Serializable {
         return null;
     }
 
+    //现金流量表
+    public LinkedHashMap<String, String[]> getCashFlowMap(Date date) {
+        LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT itemname,seq, ");
+        sb.append(" isnull(sum(case when yea=${y} AND mon BETWEEN 1 and ${m} then adjamt ELSE 0 END),0), ");
+        sb.append(" isnull(sum(case when yea=").append(findyear(date) - 1);
+        sb.append(" AND mon BETWEEN 1 and ${m} then adjamt ELSE 0 END),0), ");
+        sb.append(" isnull(sum(case when yea=${y} AND mon BETWEEN 1 and ${m} then adjamt ELSE 0 END),0)- ");
+        sb.append(" isnull(sum(case when yea=").append(findyear(date) - 1);
+        sb.append(" AND mon BETWEEN 1 and ${m} then adjamt ELSE 0 END),0) ");
+        sb.append(" FROM acccashmas m ,acccash h WHERE  m.itemno=h.itemno AND m.report=h.report AND facno='C' AND coin='RMB' and h.report='2' ");
+        sb.append(" GROUP BY itemname,facno,seq,h.report,m.itemno,coin ORDER BY seq ASC ");
+
+        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        erpEJB.setCompany("C");
+        try {
+            Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+            List result = query.getResultList();
+            if (result != null && !result.isEmpty()) {
+                for (int i = 0; i < result.size(); i++) {
+                    Object[] row = (Object[]) result.get(i);
+                    String[] arr = new String[5];
+                    arr[0] = row[0].toString();
+                    arr[1] = df.format(Double.parseDouble(row[2].toString())/10000);
+                    arr[2] = df.format(Double.parseDouble(row[3].toString())/10000);
+                    arr[3] = df.format(Double.parseDouble(row[4].toString())/10000);
+                    if (Double.parseDouble(row[3].toString()) != 0.00) {
+                        arr[4] = dfpercent.format(Double.parseDouble(row[4].toString()) / Double.parseDouble(row[3].toString()) * 100);
+                    } else {
+                        if (Double.parseDouble(row[4].toString()) == 0.00) {
+                            arr[4] = dfpercent.format(0);
+                        } else {
+                            arr[4] = dfpercent.format(100);
+                        }
+                    }
+                    map.put(row[1].toString(), arr);
+                }
+                return map;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }
