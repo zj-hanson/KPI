@@ -12,6 +12,7 @@ import cn.hanbell.kpi.web.BscChartManagedBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +35,9 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
     protected IndicatorDetail olScore;//上线分数
     protected IndicatorDetail tzScore;//涂装分数
     protected IndicatorDetail chScore;//出货分数
+    protected BigDecimal mbTotal;//目标分数的合计 计算2、4、6、8、10、12月份合计的数据
     protected IndicatorDetail sumAG;//合计
+    protected IndicatorDetail sumPerformance;//实际合格率（合计）
 
     protected IndicatorDetail other1Score;//关联指标other1分数
     protected IndicatorDetail other2Score;//关联指标other2分数
@@ -200,6 +203,10 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
         sumAG.setParent(indicator);
         sumAG.setType("合计");
 
+        sumPerformance = new IndicatorDetail();
+        sumPerformance.setParent(indicator);
+        sumPerformance.setType("达成率");
+
         //计算指标实际分数
         try {
             //计算各类别的实际分数
@@ -214,12 +221,6 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
                         .divide(BigDecimal.valueOf(100));
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(jlScore, v);
-                //试车实际分数
-//                if (indicator.getFormid().equals("QRA-机组物料")) {
-//                    v = (BigDecimal.ONE.subtract(this.getAccumulatedValue(indicator.getOther2Indicator(), i))).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 4));
-//                    setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-//                    setMethod.invoke(trScore, v);
-//                } else {}
                 v = this.getAccumulatedValue(indicator.getOther2Indicator(), i).multiply(this.getAccumulatedValue(indicator.getForecastIndicator(), 4))
                         .divide(BigDecimal.valueOf(100));
                 setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
@@ -246,8 +247,22 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
                 setMethod.invoke(chScore, v);
                 //合计
                 v = this.getGrowth(jlScore, trScore, bsScore, olScore, tzScore, chScore, i, 2);
-                setMethod = sumAG.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod = this.sumAG.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(sumAG, v);
+
+                //计算合计分数的目标值 
+                try {
+                    mbTotal = BigDecimal.ZERO;//初始化目标值//计算指标月份是2、4、6、8、10、12的合计
+                    for (int im = 2; im <= 12; im = im + 2) {
+                        mbTotal = mbTotal.add(this.getAccumulatedValue(indicator.getTargetIndicator(), im));
+                    }
+                } catch (Exception ex) {
+                    log4j.error("mbTotal异常", ex);
+                }
+                //达成率 达成率 = (当月的总实际分数 / 总目标分数 ) * 100%
+                v = this.getGrowth(jlScore, trScore, bsScore, olScore, tzScore, chScore, i, 2).divide(mbTotal, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+                setMethod = this.sumPerformance.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumPerformance, v);
 
             }
         } catch (Exception ex) {
@@ -341,9 +356,53 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
                 }
                 break;
         }
+        //目标值
+        ChartSeries ac = new ChartSeries();
+        ac.setLabel("目标值");
+        switch (getIndicator().getFormkind()) {
+            case "M":
+                if (getIndicator().getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M01", getIndicator().getActualIndicator().getN01().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M02", getIndicator().getActualIndicator().getN02().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M03", getIndicator().getActualIndicator().getN03().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M04", getIndicator().getActualIndicator().getN04().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M05", getIndicator().getActualIndicator().getN05().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M06", getIndicator().getActualIndicator().getN06().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M07", getIndicator().getActualIndicator().getN07().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M08", getIndicator().getActualIndicator().getN08().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M09", getIndicator().getActualIndicator().getN09().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M10", getIndicator().getActualIndicator().getN10().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M11", getIndicator().getActualIndicator().getN11().doubleValue());
+                }
+                if (getIndicator().getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    ac.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
+                }
+                break;
+        }
 
         getChartModel().addSeries(t);//实际分数折线图
         getChartModel().addSeries(b);//基准值折线图
+        getChartModel().addSeries(ac);//基准值折线图
         getChartModel().setTitle(getIndicator().getName());
         getChartModel().setLegendPosition("e");
         getChartModel().setShowPointLabels(true);
@@ -632,6 +691,22 @@ public class QRAPercentOfPassReportBean extends BscChartManagedBean {
 
     public void setHasOther(boolean hasOther) {
         this.hasOther = hasOther;
+    }
+
+    public BigDecimal getMbTotal() {
+        return mbTotal;
+    }
+
+    public void setMbTotal(BigDecimal mbTotal) {
+        this.mbTotal = mbTotal;
+    }
+
+    public IndicatorDetail getSumPerformance() {
+        return sumPerformance;
+    }
+
+    public void setSumPerformance(IndicatorDetail sumPerformance) {
+        this.sumPerformance = sumPerformance;
     }
 
 }

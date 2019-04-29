@@ -7,6 +7,7 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -34,7 +35,7 @@ public class QRACubicElementAmountPR extends QRA {
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //合格率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
-                result = ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+                result = BigDecimal.ONE.subtract(ev.divide(ov).setScale(4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
             }
             return result;
         } catch (Exception ex) {
