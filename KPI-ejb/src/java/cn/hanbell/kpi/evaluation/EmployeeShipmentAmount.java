@@ -121,7 +121,11 @@ public class EmployeeShipmentAmount extends Shipment {
         }
         if (shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423).compareTo(BigDecimal.ZERO) != 0) {
             map.put("type", "Shipment");
-            dsalpBean.addDsalpList(y, m, d, map);
+            try {
+                dsalpBean.addDsalpList(y, m, d, map);
+            } catch (Exception ex) {
+                Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423);
     }

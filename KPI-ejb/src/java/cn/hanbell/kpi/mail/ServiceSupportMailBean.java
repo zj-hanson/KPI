@@ -8,6 +8,7 @@ package cn.hanbell.kpi.mail;
 import cn.hanbell.kpi.comm.ServiceMail;
 import cn.hanbell.kpi.entity.Indicator;
 import com.lightshell.comm.BaseLib;
+import java.util.Date;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -47,7 +48,7 @@ public class ServiceSupportMailBean extends ServiceMail {
             }
         });
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd",  new Date())).append("</div>");
         sb.append(getHtmlTable(indicators, y, m, d, true));
         return sb.toString();
     }

@@ -95,7 +95,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
     }
 
     //依指标自动更新进入此方法
-    public void addDsalpList(int y, int m, Date date, LinkedHashMap<String, Object> map) {
+    public void addDsalpList(int y, int m, Date date, LinkedHashMap<String, Object> map) throws Exception {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         try {
             if (n_code_DA.contains("R")) {
@@ -279,7 +279,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append("quantity,amount,n_code_DA,n_code_DC,n_code_DD,e.username AS manname FROM ( ");
         //第一部分为整机出货销退
         sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno, ");
-        sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as quantity, ");
+        sb.append(" isnull(sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ),0) as quantity, ");
         sb.append(" isnull(convert(decimal(16,6),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
@@ -296,7 +296,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode ");
         sb.append(" union all ");
         sb.append("  select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,");
-        sb.append(" -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as quantity, ");
+        sb.append(" isnull(-sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ),0)quantity, ");
         sb.append(" isnull(convert(decimal(16,6),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode  from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and h.facno='${facno}'");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
@@ -314,8 +314,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
 
         //如果算入后处理金额则单独处理，只算金额不算台数
         if (n_code_DD.contains("'02'")) {
-            sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno, ");
-            sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as quantity, ");
+            sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
             sb.append(" isnull(convert(decimal(16,6),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
@@ -332,8 +331,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
             }
             sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode ");
             sb.append(" union all ");
-            sb.append("  select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,");
-            sb.append(" -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as quantity, ");
+            sb.append("  select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,");
             sb.append(" isnull(convert(decimal(16,6),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode  from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and h.facno='${facno}'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'");
