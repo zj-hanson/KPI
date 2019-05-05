@@ -56,7 +56,7 @@ public class ServiceClosingQuarterMailBean extends ServiceMail {
         });
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"content\">统计内容包含：客诉、赠送、技术支持、统包服务、巡检、收费服务及新机调试</div>");
-        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd",  new Date())).append("</div>");
         sb.append(getHtmlTable(indicators, y, m, d, true));
         return sb.toString();
 

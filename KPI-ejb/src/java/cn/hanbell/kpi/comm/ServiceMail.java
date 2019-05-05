@@ -19,9 +19,10 @@ import java.util.List;
  * @author C1879
  */
 public abstract class ServiceMail extends MailNotification {
-   
+
     protected Indicator indicator;
     protected String color;
+
     public ServiceMail() {
 
     }
@@ -54,10 +55,10 @@ public abstract class ServiceMail extends MailNotification {
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
-                    color="#D3D7D4";
+                    color = "#D3D7D4";
                     sb.append(getHtmlTableRow(i, y, m, d));
                 } else {
-                    color="#FFFFFF";
+                    color = "#FFFFFF";
                     sb.append(getHtmlTableRow(i, y, m, d));
                 }
             }
@@ -248,16 +249,5 @@ public abstract class ServiceMail extends MailNotification {
         }
         return total1;
     }
-
-    @Override
-    public void setD(Date d) {
-        super.setD(d);
-        if (m == 1) {
-            y--;
-            m = 12;
-        } else {
-            m--;
-        }
-    }
-
+    
 }

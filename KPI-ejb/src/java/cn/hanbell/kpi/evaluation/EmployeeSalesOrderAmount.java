@@ -84,7 +84,11 @@ public class EmployeeSalesOrderAmount extends SalesOrder {
         }
         if (tram.compareTo(BigDecimal.ZERO) != 0) {
             map.put("type", "SalesOrder");
-            dsalpBean.addDsalpList(y, m, d, map);
+            try {
+                dsalpBean.addDsalpList(y, m, d, map);
+            } catch (Exception ex) {
+                Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return tram;
     }

@@ -53,7 +53,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
         });
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
         sb.append(getHtmlTable(indicators, y, m, d, true));
         return sb.toString();
 
