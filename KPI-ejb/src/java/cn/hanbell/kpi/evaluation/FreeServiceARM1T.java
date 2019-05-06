@@ -12,21 +12,22 @@ import java.util.LinkedHashMap;
 /**
  *
  * @author C1879
+ * 质量扣款
  */
-public class FreeServiceARM1H extends FreeServiceERP {
+public class FreeServiceARM1T extends FreeServiceERP{
 
-    public FreeServiceARM1H() {
+    public FreeServiceARM1T() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("ogdkid", "('RL01')");
-        queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("ogdkid", "('RL01','RL03')");
+//        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getARM423Value(y, m, d, type, map);
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {        
+       return super.getARM423Value(y, m, d, type, map);
     }
-
+    
 }
