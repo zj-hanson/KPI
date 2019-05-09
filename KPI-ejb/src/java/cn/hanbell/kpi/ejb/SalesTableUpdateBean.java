@@ -550,7 +550,7 @@ public class SalesTableUpdateBean implements Serializable {
                 sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity,isnull(convert(decimal(16,4),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
                 sb.append(" WHERE  h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-                sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') and d.n_code_DA <> 'QT' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
+                sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') and h.depno not like '1A%' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" AND  year(h.recdate)=${y} AND month(h.recdate)=${m} ");
                 sb.append(" GROUP BY d.facno,itnbrcus,h.cusno,h.recdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,hmark1,hmark2 ");
             } else {

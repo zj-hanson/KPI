@@ -225,8 +225,8 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");;
 
-            sb.append("<tr><td>计划与完工差异累计</td>");
-            daily = dailySubtract(Other2Accumulated, targetAccumulated);
+            sb.append("<tr><td>计划与工令差异累计</td>");
+            daily = dailySubtract(Other1Accumulated, targetAccumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
                 f = daily.getClass().getDeclaredField(col);
@@ -289,7 +289,7 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");
 
-            sb.append("<tr><td>与计划累计差异</td>");
+            sb.append("<tr><td>计划与交货差异累计</td>");
             daily = dailySubtract(Other3Accumulated, targetAccumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
@@ -304,8 +304,24 @@ public abstract class BscProductiontMail extends MailNotification {
                 }
             }
             sb.append("<td></td><td></td></tr>");
+            
+            sb.append("<tr><td>工令与交货差异累计</td>");
+            daily = dailySubtract(Other3Accumulated, Other1Accumulated);
+            for (int i = 1; i <= days(y, m); i++) {
+                col = indicatorBean.getIndicatorColumn("D", i);
+                f = daily.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i < day) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(daily))).append("</td>");
+                } else if (i == day) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(daily))).append("</td>");
+                } else {
+                    sb.append("<td></td>");
+                }
+            }
+            sb.append("<td></td><td></td></tr>");
 
-            sb.append("<tr><td>接单数量</td>");
+            sb.append("<tr><td>接单数</td>");
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
                 f = o4Daily.getClass().getDeclaredField(col);
