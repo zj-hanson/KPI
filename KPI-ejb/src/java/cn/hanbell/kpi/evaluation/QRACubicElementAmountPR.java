@@ -20,7 +20,6 @@ public class QRACubicElementAmountPR extends QRA {
 
     public QRACubicElementAmountPR() {
         super();
-        queryParams.put("genre1", "R");
     }
 
     @Override
@@ -35,11 +34,11 @@ public class QRACubicElementAmountPR extends QRA {
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //合格率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
-                result = BigDecimal.ONE.subtract(ev.divide(ov).setScale(4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
+                result = BigDecimal.ONE.subtract(ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
             }
             return result;
         } catch (Exception ex) {
-            log4j.error("QRACubicElementAmountPR-getValue()！", ex);
+            log4j.error("QRACubicElementAmountPR-getValue()!", ex);
         }
         return BigDecimal.ZERO;
     }

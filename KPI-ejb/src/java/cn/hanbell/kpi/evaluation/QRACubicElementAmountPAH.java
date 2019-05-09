@@ -14,12 +14,10 @@ import java.util.LinkedHashMap;
  *
  * @author C1749 A机体三次元合格率
  */
-public class QRACubicElementAmountPAH extends QRACubicElementAmount {
+public class QRACubicElementAmountPAH extends QRA {
 
     public QRACubicElementAmountPAH() {
         super();
-        queryParams.put("genre1", "AH");
-        queryParams.put("SOURCEDPIP", "空压");
     }
 
     @Override
@@ -34,11 +32,11 @@ public class QRACubicElementAmountPAH extends QRACubicElementAmount {
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //合格率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
-                result = BigDecimal.ONE.subtract(ev.divide(ov).setScale(4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
+                result = BigDecimal.ONE.subtract(ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100));
             }
             return result;
         } catch (Exception ex) {
-            log4j.error("QRACubicElementAmountPAH-getValue()！", ex);
+            log4j.error("QRACubicElementAmountPAH-getValue()!", ex);
         }
         return BigDecimal.ZERO;
 
