@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.ejb;
+package cn.hanbell.kpi.ejb.erp;
 
-import cn.hanbell.erp.entity.BscGroupShipment;
+import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
