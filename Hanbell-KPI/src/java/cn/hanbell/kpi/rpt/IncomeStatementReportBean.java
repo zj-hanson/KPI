@@ -42,7 +42,8 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
     protected Date btndate;
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, String> statusMap;
-    
+    protected String facno;
+
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
 
@@ -80,6 +81,14 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
         }
         map = new LinkedHashMap<>();
         statusMap = new LinkedHashMap<>();
+        if (indicatorChart.getRemark().contains("汉钟")) {
+            statusMap.put("title", "上海汉钟精机股份有限公司");
+            facno = "CK";
+        }
+        if (indicatorChart.getRemark().contains("柯茂")) {
+            statusMap.put("title", "上海柯茂机械有限公司");
+            facno = "K";
+        }
         checkbox = true;
         statusMap.put("title", checkbox ? "(当月)" : "(年度累计)");
         statusMap.put("displaydiv1", "block");
@@ -107,10 +116,9 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
         }
         if (aa) {
             if (checkbox) {
-                map = incomeStatementBean.monthMap(btndate);
-
+                map = incomeStatementBean.monthMap(btndate,facno);
             } else {
-                map = incomeStatementBean.yearMap(btndate);
+                map = incomeStatementBean.yearMap(btndate,facno);
             }
             if (map != null && !map.isEmpty()) {
                 statusMap.put("displaydiv1", "none");
@@ -119,7 +127,7 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
                         : getdate().get(Calendar.YEAR) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
                 statusMap.put("th2title", checkbox ? (getdate().get(Calendar.YEAR) - 1) + "年" + (getdate().get(Calendar.MONTH) + 1) + "月"
                         : (getdate().get(Calendar.YEAR) - 1) + "年1～" + (getdate().get(Calendar.MONTH) + 1) + "月");
-                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1);
+                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }

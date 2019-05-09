@@ -182,6 +182,9 @@ public class ProcurementBean implements Serializable {
         if (type.equals("SC")) {
             sb.append(" and  h.hmark1 in ('DJ','FW','FY','GD','GJ','HC','LY','SBBY','SBWX','YF','ZJ') ");
         }
+        //2019年5月7日添加此逻辑 原因：因税改—— 3月部分采购单据在4月初重新打单，此部分不应该计入整年或4月份统计中
+        sb.append(" AND  (d.pono>'PC119042743' or  d.pono <'PC119040001') ");
+        
         sb.append(" AND year(h.podate) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
 
         String sql = sb.toString().replace("${type}", type);
@@ -443,8 +446,8 @@ public class ProcurementBean implements Serializable {
 
     public LinkedHashMap<String, String[]> getMapTable(Date date) {
         String jk1, jk2, jksum, itnbrDj, itnbrZc, itnbrZj, itnbrSgp, itnbrCjjg;
-
-        jk1 = "'STW00007','STW00015','SXG00006','SXG00003','SXG00005','SXG00007','SXG00001','SXG00004','STW00033'";
+        //2019年5月7日 陆夏玲要求 进口1加入厂商 'STW00035'
+        jk1 = "'STW00007','STW00015','SXG00006','SXG00003','SXG00005','SXG00007','SXG00001','SXG00004','STW00033','STW00035'";
         jk2 = "'STW00010','STW00001','STW00002','STW00013','SDM00001','STW00028','STW00029','STW00020','SDQ00002','STW00009','SDQ00004','SXG00011','SXG00009','STW00030','SXG00013','STW00024','STW00036','SDF00001'";
         jksum = jk1 + "," + jk2;
         //2019年2月26日 陆夏玲要求加入'4304'，

@@ -18,8 +18,9 @@ public class FreeServiceARM1U extends FreeServiceERP {
     public FreeServiceARM1U() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("ogdkid", "('RL01','RL03')");
+        queryParams.put("ogdkid", "('RL01')");
         queryParams.put("n_code_DA", "='S' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
         queryParams.put("n_code_DD", " ='00' ");  
     }
 

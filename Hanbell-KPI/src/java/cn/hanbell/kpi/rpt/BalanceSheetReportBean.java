@@ -42,6 +42,7 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
     protected LinkedHashMap<String, String[]> zcmap;
     protected LinkedHashMap<String, String[]> fzmap;
     protected LinkedHashMap<String, String> statusMap;
+    protected String facno;
 
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
@@ -78,9 +79,17 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
+        statusMap = new LinkedHashMap<>();
+        if (indicatorChart.getRemark().contains("汉钟")) {
+            statusMap.put("title", "上海汉钟精机股份有限公司");
+            facno = "CK";
+        }
+        if (indicatorChart.getRemark().contains("柯茂")) {
+            statusMap.put("title", "上海柯茂机械有限公司");
+            facno = "K";
+        }
         zcmap = new LinkedHashMap<>();
         fzmap = new LinkedHashMap<>();
-        statusMap = new LinkedHashMap<>();
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
@@ -103,13 +112,13 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
             aa = false;
         }
         if (aa) {
-            zcmap = balanceSheetBean.assetMap(btndate);
-            fzmap = balanceSheetBean.liabilitiesMap(btndate);
+            zcmap = balanceSheetBean.assetMap(btndate, facno);
+            fzmap = balanceSheetBean.liabilitiesMap(btndate, facno);
             if ((zcmap != null && !zcmap.isEmpty()) || (fzmap != null && !fzmap.isEmpty())) {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");
-                statusMap.put("th2title", getTitle(getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH)+1, getdate().getActualMaximum(Calendar.DATE)));
-                statusMap.put("th1title", getTitle( getdate().get(Calendar.YEAR), 1, 1));
+                statusMap.put("th2title", getTitle(getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1, getdate().getActualMaximum(Calendar.DATE)));
+                statusMap.put("th1title", getTitle(getdate().get(Calendar.YEAR), 1, 1));
                 super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));

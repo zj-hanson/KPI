@@ -113,7 +113,8 @@ public class ShipmentAmountT9New extends ShipmentAmount {
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return shpamts.subtract(bshpamts);
+        this.arm235=this.getARM235Value(y, m, d, type, map);
+        return shpamts.subtract(bshpamts).add(arm235);
     }
-
+    
 }

@@ -51,25 +51,25 @@ public class IncomeStatementBean implements Serializable {
         return df.format(Double.parseDouble(a));
     }
 
-    public LinkedHashMap<String, String[]> yearMap(Date date) {
+    public LinkedHashMap<String, String[]> yearMap(Date date,String facno) {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.seq,a.tyear/10000 as tyear,a.tyrate/100 as tyrate,a.lyear/10000 as lyear,a.lyrate/100 as lyrate,");
         sb.append(" (a.tyear-a.lyear)/10000 as changeyear,b.dradj/10000 as dradj,b.cradj/100 as cradj from accinmon a, ");
-        sb.append(" (select seq,dradj,cradj from accinmon where facno = 'CK' and accyear = ${y}  and accmon = 1 ) b ");
-        sb.append("  where a.facno = 'CK' and a.seq = b.seq and a.accyear = ${y}  and a.accmon = ${m} ");
+        sb.append(" (select seq,dradj,cradj from accinmon where facno = '${facno}' and accyear = ${y}  and accmon = 1 ) b ");
+        sb.append("  where a.facno = '${facno}' and a.seq = b.seq and a.accyear = ${y}  and a.accmon = ${m} ");
         sb.append(" union all ");
         sb.append(" select 999 as seq,(a.tyear-b.tyear)/10000 as tyear,(a.tyrate-b.tyrate)  as tyrate,(a.lyear-b.lyear)/10000 as lyear,(a.lyrate-b.lyrate) as lyrate, ");
         sb.append(" (a.changeyear-b.changeyear)/10000 as changeyear,(a.dradj-b.dradj)/10000 as dradj,(a.cradj-b.cradj) as cradj  from ");
         sb.append(" (select a.seq,a.tyear,a.tyrate/100 as tyrate,a.lyear,a.lyrate/100 as lyrate,(a.tyear-a.lyear) as changeyear,b.dradj,b.cradj/100 as cradj from accinmon a, ");
-        sb.append(" (select seq,dradj,cradj from accinmon where facno = 'CK' and accyear = ${y}  and accmon = 1) b ");
-        sb.append(" where a.facno = 'CK' and a.seq = b.seq and a.seq = 1 and a.accyear = ${y}  and a.accmon = ${m} ) a, ");
+        sb.append(" (select seq,dradj,cradj from accinmon where facno = '${facno}' and accyear = ${y}  and accmon = 1) b ");
+        sb.append(" where a.facno = '${facno}' and a.seq = b.seq and a.seq = 1 and a.accyear = ${y}  and a.accmon = ${m} ) a, ");
         sb.append(" ( select a.seq,a.tyear,a.tyrate/100 as tyrate,a.lyear,a.lyrate/100 as lyrate,(a.tyear-a.lyear) as changeyear,b.dradj,b.cradj/100 as cradj from accinmon a, ");
-        sb.append(" (select seq,dradj,cradj from accinmon where facno = 'CK' and accyear = ${y}  and accmon = 1) b ");
-        sb.append(" where a.facno = 'CK' and a.seq = b.seq and a.seq = 2 and a.accyear = ${y}  and a.accmon = ${m} ) b ");
-        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        sb.append(" (select seq,dradj,cradj from accinmon where facno = '${facno}' and accyear = ${y}  and accmon = 1) b ");
+        sb.append(" where a.facno = '${facno}' and a.seq = b.seq and a.seq = 2 and a.accyear = ${y}  and a.accmon = ${m} ) b ");
+        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany("C");
+        erpEJB.setCompany(facno.equals("CK")?"C":facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
         try {
             List result = query.getResultList();
@@ -112,21 +112,21 @@ public class IncomeStatementBean implements Serializable {
         return null;
     }
 
-    public LinkedHashMap<String, String[]> monthMap(Date date) {
+    public LinkedHashMap<String, String[]> monthMap(Date date,String facno) {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select seq,tmon/10000  as tmon,tmrate/100 as tmrate,lmon/10000 as lmon,lmrate/100 as lmrate ,(tmon-lmon)/10000 as changemon from accinmon ");
-        sb.append(" where facno='CK' and accyear = ${y}  and accmon = ${m} ");
+        sb.append(" where facno='${facno}' and accyear = ${y}  and accmon = ${m} ");
         sb.append(" union all ");
         sb.append(" select 999 as seq,(a.tmon-b.tmon)/10000 as tmon,(a.tmrate-b.tmrate)/100 as tmrate, ");
         sb.append(" (a.lmon-b.lmon)/10000 as lmon,(a.lmrate-b.lmrate)/100 as lmrate,(a.changemon -b.changemon)/10000 as changemon from ");
         sb.append(" (select seq,tmon,tmrate,lmon,lmrate ,(tmon-lmon) as changemon  from accinmon ");
-        sb.append(" where facno = 'CK'  and accyear = ${y}  and accmon = ${m} and seq = 1 )  a , ");
-        sb.append(" (select seq,tmon,tmrate,lmon,lmrate ,(tmon-lmon) as changemon from accinmon where facno='CK' ");
+        sb.append(" where facno = '${facno}'  and accyear = ${y}  and accmon = ${m} and seq = 1 )  a , ");
+        sb.append(" (select seq,tmon,tmrate,lmon,lmrate ,(tmon-lmon) as changemon from accinmon where facno='${facno}' ");
         sb.append(" and accyear = ${y}  and accmon = ${m} and seq = 2 )  b ");
-        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany("C");
+        erpEJB.setCompany(facno.equals("CK")?"C":facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
         try {
             List result = query.getResultList();
