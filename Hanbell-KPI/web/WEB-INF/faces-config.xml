@@ -440,6 +440,11 @@
             <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartp</from-outcome>
+            <to-view-id>/app/bsc/complaintschartp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--模态开窗-->
     <navigation-rule>
