@@ -114,7 +114,7 @@ public class BscGroupVHServiceBean implements Serializable {
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
         }
-        sb.append(" and year(h.bakdate)=2018  and month(h.bakdate)=11 group by h.bakdate ");
+        sb.append(" and year(h.bakdate)=${y}  and month(h.bakdate)=${m} group by h.bakdate ");
         sb.append(" ) as a GROUP BY soday ");
         String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
