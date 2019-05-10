@@ -5,11 +5,11 @@
  */
 package cn.hanbell.kpi.mail;
 
-import cn.hanbell.kpi.ejb.erp.BscGroupHSShipmentBean;
-import cn.hanbell.kpi.ejb.erp.BscGroupServiceBean;
-import cn.hanbell.kpi.ejb.erp.BscGroupShipmentBean;
-import cn.hanbell.kpi.ejb.erp.BscGroupVHServiceBean;
-import cn.hanbell.kpi.ejb.erp.BscGroupVHShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupServiceBean;
+import cn.hanbell.erp.ejb.BscGroupShipmentBean;
+import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
+import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
