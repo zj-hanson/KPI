@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="formOne" >
+            <div>
+                <p:panelGrid>
+                    <button id="btn" style="float: left;background-color: #cccccc;border-radius: 5px;border: 0;width: 90px;height: 38px;color: white;font-size: 16px" >刷新</button>
+                    <p:link  value="返回"  outcome="home" style="float: right"/>
+                </p:panelGrid>
+            </div>
+            <div style="padding-top: 90px;" align="center" >
+                <div  style="width: 60%;text-align: left;padding-bottom: 5px;" ><span id="sj1" style="font-size: 24px" >当前时间：</span></div>
+                <table  cellspacing="0" border="2" style="table-layout:fixed;width: 60%;height: 800px;text-align: center;font-size: 44px;border:2px solid #CFEBF6;">
+                    <tbody class="table">
+                        <tr style="background-color: #A9D8E8;color: #666666">
+                            <th>库号</th>
+                            <th>占用储位数</th>
+                        </tr>
+                        <c:forEach items="#{storageReportBean.occupylist}" var="item" >
+                            <tr  style="background-color: #E8F9FF;color: #666666;font-size: 36px;">
+                                <td>#{item[0]}</td>
+                                <td>#{item[1]}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <div  style="width: 60%;text-align: right;font-size: 10px" ><span id="sj2" >60</span>秒后刷新数据列表</div>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var s;
+                    countTime();
+                    $('#btn').click(function () {
+                        window.location.reload();
+                    });
+                });
+                function countTime() {
+                    var ss = document.getElementById("sj2").innerHTML;
+                    var myDate = new Date();
+                    var year = myDate.getFullYear();
+                    var month = myDate.getMonth() + 1;
+                    var date = myDate.getDate();
+                    var h = myDate.getHours();
+                    var m = myDate.getMinutes();
+                    var s = myDate.getSeconds();
+                    var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
+                    if (ss === "00") {
+                        ss = 60;
+                        window.location.reload();
+                    }
+                    ss = parseInt(ss) - 1;
+                    document.getElementById("sj1").innerHTML = "当前时间：" + now;
+                    document.getElementById("sj2").innerHTML = getNow(ss);
+                    setTimeout(countTime, 1000);
+                }
+                function getNow(s) {
+                    return parseInt(s) > 9 ? s : '0' + s;
+                }
+            </script>
+        </h:form>
+    </ui:define>
+</ui:composition>
