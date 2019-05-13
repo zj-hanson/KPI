@@ -57,6 +57,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq")
     ,
+    @NamedQuery(name = "Indicator.findByPIdAndSeqAndFormid", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.formid LIKE :formid")
+    ,
     @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno")
     ,
     @NamedQuery(name = "Indicator.findByDeptno", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno")

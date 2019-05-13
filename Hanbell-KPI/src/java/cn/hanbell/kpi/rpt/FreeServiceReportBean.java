@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     protected IndicatorDetail sumOther2Accumulated;
     protected IndicatorDetail sumOther4Accumulated;
     protected IndicatorDetail sumOther5Accumulated;
+    //R合计
+    protected Indicator RsumIndicator;
+    protected List<Indicator> RindicatorList;
+    protected IndicatorDetail RsumActualAccumulated;
+    protected IndicatorDetail RsumTargetAccumulated;
+    protected IndicatorDetail RsumOther1Accumulated;
+    protected IndicatorDetail RsumOther2Accumulated;
+    protected IndicatorDetail RsumAP;
 
     public FreeServiceReportBean() {
     }
@@ -161,8 +170,13 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         BigDecimal v;
         Method setMethod;
         //计算每个指标的累计
+        int lji = 0;
+        RindicatorList = new ArrayList<>();
         for (Indicator e : indicatorList) {
-
+            lji++;
+            if (lji < 7) {
+                RindicatorList.add(e);
+            }
             actualAccumulated = new IndicatorDetail();
             actualAccumulated.setParent(e);
             actualAccumulated.setType("A");
@@ -250,9 +264,84 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(actualAccumulated);
             AP.setType("累计控制");
             indicatorDetailList.add(AP);
+            //重庆综合服务后加上合计
+            if (lji == 6 && e.getFormid().equals("A-重庆综合成本")) {
+                //计算产品合计
+                RsumIndicator = getSumValue(RindicatorList);
+                RsumIndicator.setName("R冷媒合计");
+                //合计本月达成
+                indicatorBean.updatePerformance(RsumIndicator);
 
+                RsumActualAccumulated = new IndicatorDetail();
+                RsumActualAccumulated.setParent(RsumIndicator);
+                RsumActualAccumulated.setType("A");
+
+                RsumTargetAccumulated = new IndicatorDetail();
+                RsumTargetAccumulated.setParent(RsumIndicator);
+                RsumTargetAccumulated.setType("T");
+
+                RsumOther1Accumulated = new IndicatorDetail();
+                RsumOther1Accumulated.setParent(RsumIndicator);
+                RsumOther1Accumulated.setType("O1");
+
+                RsumOther2Accumulated = new IndicatorDetail();
+                RsumOther2Accumulated.setParent(RsumIndicator);
+                RsumOther2Accumulated.setType("O2");
+
+                RsumAP = new IndicatorDetail();
+                RsumAP.setParent(RsumIndicator);
+                RsumAP.setType("P");
+
+                //合计累计控制
+                try {
+                    for (int i = getM(); i > 0; i--) {
+                        //实际值累计
+                        v = indicatorBean.getAccumulatedValue(RsumIndicator.getActualIndicator(), i);
+                        setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(RsumActualAccumulated, v);
+                        //目标值累计
+                        v = indicatorBean.getAccumulatedValue(RsumIndicator.getTargetIndicator(), i);
+                        setMethod = getTargetAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(RsumTargetAccumulated, v);
+
+                        v = indicatorBean.getAccumulatedPerformance(RsumIndicator.getTargetIndicator(), RsumIndicator.getActualIndicator(), i);
+                        setMethod = RsumAP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(RsumAP, v);
+                    }
+                    //按当前月份累计值重设全年累计
+                    f = RsumTargetAccumulated.getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    RsumTargetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(RsumTargetAccumulated).toString())));
+
+                    f = RsumActualAccumulated.getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    RsumActualAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(RsumActualAccumulated).toString())));
+
+                    RsumIndicator.getTargetIndicator().setType("目标");
+                    indicatorDetailList.add(RsumIndicator.getTargetIndicator());
+                    if (Other1 && Other2) {
+                        RsumIndicator.getOther1Indicator().setType("当月");
+                        indicatorDetailList.add(RsumIndicator.getOther1Indicator());
+                        RsumIndicator.getOther2Indicator().setType("质量扣款");
+                        indicatorDetailList.add(RsumIndicator.getOther2Indicator());
+                        RsumIndicator.getActualIndicator().setType("当月合计");
+                        indicatorDetailList.add(RsumIndicator.getActualIndicator());
+                    }
+                    RsumIndicator.getPerformanceIndicator().setType("当月控制");
+                    indicatorDetailList.add(RsumIndicator.getPerformanceIndicator());
+                    RsumTargetAccumulated.setType("目标累计");
+                    indicatorDetailList.add(RsumTargetAccumulated);
+                    RsumActualAccumulated.setType("当月累计");
+                    indicatorDetailList.add(RsumActualAccumulated);
+                    RsumAP.setType("累计控制");
+                    indicatorDetailList.add(RsumAP);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
+                    log4j.error("FreeServiceReportBean__R合计", ex);
+                }
+            }
         }
         //产品合计逻辑
+
         try {
             for (int i = getM(); i > 0; i--) {
                 //合计累计达成
@@ -278,7 +367,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 indicatorDetailList.add(sumIndicator.getOther2Indicator());
                 sumIndicator.getActualIndicator().setType("当月合计");
                 indicatorDetailList.add(sumIndicator.getActualIndicator());
-            }else if (Other4) {
+            } else if (Other4) {
                 sumIndicator.getOther5Indicator().setType("当月");
                 indicatorDetailList.add(sumIndicator.getOther5Indicator());
                 sumIndicator.getOther4Indicator().setType("质量扣款");
@@ -309,7 +398,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             }
 
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
-            log4j.error("bscReportManagedBean", ex);
+            log4j.error("FreeServiceReportBean", ex);
         }
     }
 
@@ -321,6 +410,28 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 return percentFormat(value, i);
             default:
                 return format(value, i);
+        }
+    }
+    
+    public String formatnfy(String type, BigDecimal value, int i) {
+        switch (type) {
+            case "目标累计":
+            case "当月累计":
+            case "累计控制":
+                return "";
+            default:
+                return format(type, value, i);
+        }
+    }
+
+    @Override
+    public String percentFormat(BigDecimal value, int i) {
+        if (value == null) {
+            return "";
+        } else if (i <= m) {
+            return indicatorBean.percentFormat(value);
+        } else {
+           return "";
         }
     }
 
@@ -458,7 +569,8 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
 
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
-            Logger.getLogger(IndicatorBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IndicatorBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return entity;
     }
@@ -582,7 +694,5 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     public void setSumOther5Accumulated(IndicatorDetail sumOther5Accumulated) {
         this.sumOther5Accumulated = sumOther5Accumulated;
     }
-    
-    
 
 }
