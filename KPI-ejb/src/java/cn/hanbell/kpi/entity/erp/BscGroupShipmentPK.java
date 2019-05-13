@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.entity;
+package cn.hanbell.kpi.entity.erp;
 
 import java.io.Serializable;
 import java.util.Date;
