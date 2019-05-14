@@ -27,15 +27,15 @@ import javax.ejb.LocalBean;
 public class GroupShipmentMailBean extends MailNotification {
 
     @EJB
-    private GroupShipmentBean bscGroupShipmentBean;
+    private GroupShipmentBean groupShipmentBean;
     @EJB
-    private GroupServiceBean bscGroupServiceBean;
+    private GroupServiceBean groupServiceBean;
     @EJB
-    private GroupHSShipmentBean bscGroupHSShipmentBean;
+    private GroupHSShipmentBean groupHSShipmentBean;
     @EJB
-    private GroupVHShipmentBean bscGroupVHShipmentBean;
+    private GroupVHShipmentBean groupVHShipmentBean;
     @EJB
-    private GroupVHServiceBean bscGroupVHServiceBean;
+    private GroupVHServiceBean groupVHServiceBean;
 
     public GroupShipmentMailBean() {
 
@@ -60,11 +60,11 @@ public class GroupShipmentMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
-            bscGroupShipmentBean.updataActualValue(y, m, d);
-            bscGroupServiceBean.updataActualValue(y, m, d);
-            bscGroupVHShipmentBean.updataActualValue(y, m, d);
-            bscGroupVHServiceBean.updataActualValue(y, m, d);
-            bscGroupHSShipmentBean.updataActualValue(y, m, d);
+            groupShipmentBean.updataActualValue(y, m, d);
+            groupServiceBean.updataActualValue(y, m, d);
+            groupVHShipmentBean.updataActualValue(y, m, d);
+            groupVHServiceBean.updataActualValue(y, m, d);
+            groupHSShipmentBean.updataActualValue(y, m, d);
             return "更新集团报表数据成功";
         } catch (Exception ex) {
             return ex.toString();
