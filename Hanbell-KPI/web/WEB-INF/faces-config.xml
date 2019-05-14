@@ -351,11 +351,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>inventoryamountsheet1</from-outcome>
-            <to-view-id>/app/bsc/inventoryamountsheet1.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>freeservicesheet</from-outcome>
             <to-view-id>/app/bsc/freeservicesheet.xhtml</to-view-id>
             <redirect/>
@@ -441,8 +436,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>complaintschartp</from-outcome>
-            <to-view-id>/app/bsc/complaintschartp.xhtml</to-view-id>
+            <from-outcome>storageoccupy</from-outcome>
+            <to-view-id>/app/bsc/storageoccupy.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>storageunoccupied</from-outcome>
+            <to-view-id>/app/bsc/storageunoccupied.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

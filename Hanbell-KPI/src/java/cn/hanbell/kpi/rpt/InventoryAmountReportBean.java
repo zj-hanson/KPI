@@ -195,8 +195,21 @@ public class InventoryAmountReportBean extends BscSheetManagedBean {
             case "控制率":
             case "同期相比":
                 return percentFormat(value, i);
+            case "去年同期":
+                return i > m ? "" : format(value, i);
             default:
                 return format(value, i);
+        }
+    }
+
+    @Override
+    public String percentFormat(BigDecimal value, int i) {
+        if (value == null) {
+            return "";
+        } else if (i <= m) {
+            return indicatorBean.percentFormat(value);
+        } else {
+            return "";
         }
     }
 

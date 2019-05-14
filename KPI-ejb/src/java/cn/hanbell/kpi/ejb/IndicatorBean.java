@@ -276,6 +276,19 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public List<Indicator>  findByPIdAndSeqAndFormid(int pid, int y ,String value) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findByPIdAndSeqAndFormid");
+        query.setParameter("pid", pid);
+        query.setParameter("seq", y);
+        query.setParameter("formid", "%"+value+"%");
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            System.out.println("cn.hanbell.kpi.ejb.IndicatorBean.findByPIdAndSeqAndFormid()"+ex);
+            return null;
+        }
+    }
+
     public List<Indicator> findRootByCompany(String company, String objtype, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findRootByCompany");
         query.setParameter("company", company);
