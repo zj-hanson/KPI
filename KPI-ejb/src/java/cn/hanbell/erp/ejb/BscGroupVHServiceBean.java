@@ -5,8 +5,9 @@
  */
 package cn.hanbell.erp.ejb;
 
-import cn.hanbell.erp.entity.BscGroupShipment;
+
 import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;

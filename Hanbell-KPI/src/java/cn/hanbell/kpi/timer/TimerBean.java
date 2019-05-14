@@ -5,11 +5,6 @@
  */
 package cn.hanbell.kpi.timer;
 
-import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
-import cn.hanbell.erp.ejb.BscGroupServiceBean;
-import cn.hanbell.erp.ejb.BscGroupShipmentBean;
-import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
-import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.ClientTableBean;
@@ -17,6 +12,11 @@ import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.JobScheduleBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.ejb.SalesTableBean;
+import cn.hanbell.kpi.ejb.erp.GroupHSShipmentBean;
+import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
+import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
+import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
+import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
@@ -55,15 +55,15 @@ public class TimerBean {
     @EJB
     private MailSettingBean mailSettingBean;
     @EJB
-    private BscGroupShipmentBean bscGroupShipmentBean;
+    private GroupShipmentBean groupShipmentBean;
     @EJB
-    private BscGroupServiceBean bscGroupServiceBean;
+    private GroupServiceBean groupServiceBean;
     @EJB
-    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
+    private GroupHSShipmentBean groupHSShipmentBean;
     @EJB
-    private BscGroupVHServiceBean bscGroupVHServiceBean;
+    private GroupVHShipmentBean groupVHShipmentBean;
     @EJB
-    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
+    private GroupVHServiceBean groupVHServiceBean;
     @EJB
     private ClientTableBean clientTableBean;
     @EJB
@@ -241,10 +241,10 @@ public class TimerBean {
             int y = c.get(Calendar.YEAR);
             int m = (c.get(Calendar.MONTH) + 1);
             Date d = c.getTime();
-            bscGroupShipmentBean.updataActualValue(y, m, d);
-            bscGroupServiceBean.updataActualValue(y, m, d);
+            groupShipmentBean.updataActualValue(y, m, d);
+            groupServiceBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateSHBBscGroupShipment");
-            bscGroupHSShipmentBean.updataActualValue(y, m, d);
+            groupHSShipmentBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateHansonBscGroupShipment");
         } catch (Exception ex) {
             log4j.error("Execute Job updateERPBscGroupShipment失败" + ex);
@@ -259,8 +259,8 @@ public class TimerBean {
             int y = now.get(Calendar.YEAR);
             int m = (now.get(Calendar.MONTH) + 1);
             Date d = now.getTime();
-            bscGroupVHShipmentBean.updataActualValue(y, m, d);
-            bscGroupVHServiceBean.updataActualValue(y, m, d);
+            groupVHShipmentBean.updataActualValue(y, m, d);
+            groupVHServiceBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateERPVHBscGroupShipment");
         } catch (Exception ex) {
             log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
@@ -291,7 +291,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "30",hour = "5", dayOfMonth = "1", persistent = false)
+    @Schedule(minute = "30", hour = "5", dayOfMonth = "1", persistent = false)
     public void updateKPISalesTable() {
         try {
             log4j.info("Begin Execute Job updateKPISalesTable");
@@ -314,4 +314,5 @@ public class TimerBean {
             log4j.error(String.format("出货、订单、收费服务历史表归档更新异常", "updateKPISalesTable"), e.toString());
         }
     }
+
 }

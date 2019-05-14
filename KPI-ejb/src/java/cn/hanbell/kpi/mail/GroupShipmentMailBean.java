@@ -5,12 +5,12 @@
  */
 package cn.hanbell.kpi.mail;
 
-import cn.hanbell.erp.ejb.BscGroupHSShipmentBean;
-import cn.hanbell.erp.ejb.BscGroupServiceBean;
-import cn.hanbell.erp.ejb.BscGroupShipmentBean;
-import cn.hanbell.erp.ejb.BscGroupVHServiceBean;
-import cn.hanbell.erp.ejb.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.comm.MailNotification;
+import cn.hanbell.kpi.ejb.erp.GroupHSShipmentBean;
+import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
+import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
+import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
+import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
 import java.util.List;
@@ -27,19 +27,15 @@ import javax.ejb.LocalBean;
 public class GroupShipmentMailBean extends MailNotification {
 
     @EJB
-    private BscGroupShipmentBean bscGroupShipmentBean;
-
+    private GroupShipmentBean bscGroupShipmentBean;
     @EJB
-    private BscGroupServiceBean bscGroupServiceBean;
-    
+    private GroupServiceBean bscGroupServiceBean;
     @EJB
-    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
-    
+    private GroupHSShipmentBean bscGroupHSShipmentBean;
     @EJB
-    private BscGroupVHServiceBean bscGroupVHServiceBean;
-    
+    private GroupVHShipmentBean bscGroupVHShipmentBean;
     @EJB
-    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
+    private GroupVHServiceBean bscGroupVHServiceBean;
 
     public GroupShipmentMailBean() {
 
@@ -73,7 +69,6 @@ public class GroupShipmentMailBean extends MailNotification {
         } catch (Exception ex) {
             return ex.toString();
         }
-
     }
 
 }
