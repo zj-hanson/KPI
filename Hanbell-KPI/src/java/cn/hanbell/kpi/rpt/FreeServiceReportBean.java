@@ -28,7 +28,7 @@ import org.apache.commons.beanutils.BeanUtils;
  *
  * @author C1879
  */
-@ManagedBean(name = "freeserveReportBean")
+@ManagedBean(name = "freeServiceReportBean")
 @ViewScoped
 public class FreeServiceReportBean extends BscSheetManagedBean {
 

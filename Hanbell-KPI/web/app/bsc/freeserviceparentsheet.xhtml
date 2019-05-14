@@ -11,60 +11,60 @@
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center">
-                            <span style="float: left">单位:#{freeserveReportBean.indicator.unit}</span>#{freeserveReportBean.y}&nbsp;&nbsp;#{freeserveReportBean.indicatorChart.name}
+                            <span style="float: left">单位:#{freeServiceReportBean.indicator.unit}</span>#{freeServiceReportBean.y}&nbsp;&nbsp;#{freeServiceReportBean.indicatorChart.name}
                             <p:link value="返回" outcome="home" style="float: right"/>
-                            <p:selectOneRadio id="scale" value="#{freeserveReportBean.scale}" style="float:right" >
+                            <p:selectOneRadio id="scale" value="#{freeServiceReportBean.scale}" style="float:right" >
                                 <f:selectItem itemLabel="0位" itemValue="0" />
                                 <f:selectItem itemLabel="2位" itemValue="2" />
                                 <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{freeserveReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                    <p:dataTable var="item" value="#{freeServiceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
                         <p:column headerText="产品" groupRow="true">
-                            <h:outputText value="#{freeserveReportBean.getNewName(item.parent.name)}" />
+                            <h:outputText value="#{freeServiceReportBean.getNewName(item.parent.name)}" />
                         </p:column>
                         <p:column headerText="类别">
                             <h:outputText value="#{item.type}" />
                         </p:column>
                         <p:column headerText="1月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n01,1)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n01,1)}" />
                         </p:column>
                         <p:column headerText="2月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n02,2)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n02,2)}" />
                         </p:column>
                         <p:column headerText="3月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n03,3)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n03,3)}" />
                         </p:column>
                         <p:column headerText="4月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n04,4)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n04,4)}" />
                         </p:column>
                         <p:column headerText="5月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n05,5)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n05,5)}" />
                         </p:column>
                         <p:column headerText="6月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n06,6)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n06,6)}" />
                         </p:column>
                         <p:column headerText="7月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n07,7)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n07,7)}" />
                         </p:column>
                         <p:column headerText="8月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n08,8)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n08,8)}" />
                         </p:column>
                         <p:column headerText="9月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n09,9)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n09,9)}" />
                         </p:column>
                         <p:column headerText="10月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n10,10)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n10,10)}" />
                         </p:column>
                         <p:column headerText="11月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n11,11)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n11,11)}" />
                         </p:column>
                         <p:column headerText="12月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n12,12)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n12,12)}" />
                         </p:column>
                         <p:column headerText="全年">
-                            <h:outputText value="#{freeserveReportBean.formatnfy(item.type,item.nfy,0)}" />
+                            <h:outputText value="#{freeServiceReportBean.formatnfy(item.type,item.nfy,0)}" />
                         </p:column>
                     </p:dataTable>
                     <p:panelGrid id="plgChartData1"  styleClass="plgChartData Wid100" style="table-layout: fixed;" >
@@ -72,138 +72,138 @@
                             <p:column rowspan="9">境外</p:column>
                         </p:row>
                         <p:row style="background-color:#F4F4F4 ">
-                            <p:column>#{freeserveReportBean.glIndicator.other1Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other1Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other1Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other1Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row>
-                            <p:column>#{freeserveReportBean.glIndicator.other2Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other2Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other2Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other2Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row style="background-color:#F4F4F4 ">
-                            <p:column>#{freeserveReportBean.glIndicator.other3Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other3Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other3Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other3Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row>
-                            <p:column>#{freeserveReportBean.glIndicator.other4Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other4Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other4Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other4Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row style="background-color:#F4F4F4 ">
-                            <p:column>#{freeserveReportBean.glIndicator.other5Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other5Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other5Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other5Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row>
-                            <p:column>#{freeserveReportBean.glIndicator.other6Label}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.other6Indicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.glIndicator.other6Label}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.other6Indicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row style="background-color:#F4F4F4 ">
                             <p:column>当月合计</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.n12,12)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glIndicator.actualIndicator.nfy,0)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glIndicator.actualIndicator.nfy,0)}</p:column>
                         </p:row>
                         <p:row>
                             <p:column>累计</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n01,1)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n02,2)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n03,3)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n04,4)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n05,5)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n06,6)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n07,7)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n08,8)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n09,9)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n10,10)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n11,11)}</p:column>
-                            <p:column>#{freeserveReportBean.format(freeserveReportBean.glActualAccumulated.n12,12)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n01,1)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n02,2)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n03,3)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n04,4)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n05,5)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n06,6)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n07,7)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n08,8)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n09,9)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n10,10)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n11,11)}</p:column>
+                            <p:column>#{freeServiceReportBean.format(freeServiceReportBean.glActualAccumulated.n12,12)}</p:column>
                             <p:column></p:column>
                         </p:row>
                     </p:panelGrid>
                 </div>
             </div>
             <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                <p:repeat id="repSummary" value="#{freeserveReportBean.summaryList}" var="s" rendered="#{freeserveReportBean.summaryCount>0}">
+                <p:repeat id="repSummary" value="#{freeServiceReportBean.summaryList}" var="s" rendered="#{freeServiceReportBean.summaryCount>0}">
                     <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                         <h:panelGrid>
                             <h:outputText id="summary"/>
@@ -213,7 +213,7 @@
                 </p:repeat>
             </div>
             <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                <p:repeat id="repAnalysis" value="#{freeserveReportBean.analysisList}" var="a" rendered="#{freeserveReportBean.analysisCount>0}">
+                <p:repeat id="repAnalysis" value="#{freeServiceReportBean.analysisList}" var="a" rendered="#{freeServiceReportBean.analysisCount>0}">
                     <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                         <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                             <h:outputText id="issueLabel" value="问题"/>
@@ -230,9 +230,9 @@
                 </p:repeat>
             </div>
             <div>
-                <h:inputHidden id="m" value="#{freeserveReportBean.m}"></h:inputHidden>
-                <h:inputHidden id="sc" value="#{freeserveReportBean.summaryCount}"></h:inputHidden>
-                <h:inputHidden id="ac" value="#{freeserveReportBean.analysisCount}"></h:inputHidden>
+                <h:inputHidden id="m" value="#{freeServiceReportBean.m}"></h:inputHidden>
+                <h:inputHidden id="sc" value="#{freeServiceReportBean.summaryCount}"></h:inputHidden>
+                <h:inputHidden id="ac" value="#{freeServiceReportBean.analysisCount}"></h:inputHidden>
             </div>
             <h:outputScript name="bsc-analysis-sheet.js" library="js"/>
         </h:form>
