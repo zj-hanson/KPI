@@ -11,66 +11,66 @@
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center">
-                            <span style="float: left">单位:#{freeserveReportBean.indicator.unit}</span>#{freeserveReportBean.y}&nbsp;&nbsp;#{freeserveReportBean.indicatorChart.name}
+                            <span style="float: left">单位:#{freeServiceReportBean.indicator.unit}</span>#{freeServiceReportBean.y}&nbsp;&nbsp;#{freeServiceReportBean.indicatorChart.name}
                             <p:link value="返回" outcome="home" style="float: right"/>
-                            <p:selectOneRadio id="scale" value="#{freeserveReportBean.scale}" style="float:right" >
+                            <p:selectOneRadio id="scale" value="#{freeServiceReportBean.scale}" style="float:right" >
                                 <f:selectItem itemLabel="0位" itemValue="0" />
                                 <f:selectItem itemLabel="2位" itemValue="2" />
                                 <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{freeserveReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" style="border: 1" >
+                    <p:dataTable var="item" value="#{freeServiceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" style="border: 1" >
                         <p:column headerText="产品" groupRow="true">
-                            <h:outputText value="#{freeserveReportBean.getNewName(item.parent.name)}" />
+                            <h:outputText value="#{freeServiceReportBean.getNewName(item.parent.name)}" />
                         </p:column>
                         <p:column headerText="类别">
                             <h:outputText value="#{item.type}" />
                         </p:column>
                         <p:column headerText="1月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n01,1)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n01,1)}" />
                         </p:column>
                         <p:column headerText="2月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n02,2)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n02,2)}" />
                         </p:column>
                         <p:column headerText="3月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n03,3)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n03,3)}" />
                         </p:column>
                         <p:column headerText="4月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n04,4)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n04,4)}" />
                         </p:column>
                         <p:column headerText="5月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n05,5)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n05,5)}" />
                         </p:column>
                         <p:column headerText="6月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n06,6)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n06,6)}" />
                         </p:column>
                         <p:column headerText="7月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n07,7)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n07,7)}" />
                         </p:column>
                         <p:column headerText="8月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n08,8)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n08,8)}" />
                         </p:column>
                         <p:column headerText="9月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n09,9)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n09,9)}" />
                         </p:column>
                         <p:column headerText="10月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n10,10)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n10,10)}" />
                         </p:column>
                         <p:column headerText="11月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n11,11)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n11,11)}" />
                         </p:column>
                         <p:column headerText="12月">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.n12,12)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n12,12)}" />
                         </p:column>
                         <p:column headerText="全年">
-                            <h:outputText value="#{freeserveReportBean.format(item.type,item.nfy,0)}" />
+                            <h:outputText value="#{freeServiceReportBean.formatnfy(item.type,item.nfy,0)}" />
                         </p:column>
                     </p:dataTable>
                 </div>
             </div>
             <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                <p:repeat id="repSummary" value="#{freeserveReportBean.summaryList}" var="s" rendered="#{freeserveReportBean.summaryCount>0}">
+                <p:repeat id="repSummary" value="#{freeServiceReportBean.summaryList}" var="s" rendered="#{freeServiceReportBean.summaryCount>0}">
                     <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                         <h:panelGrid>
                             <h:outputText id="summary"/>
@@ -80,7 +80,7 @@
                 </p:repeat>
             </div>
             <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                <p:repeat id="repAnalysis" value="#{freeserveReportBean.analysisList}" var="a" rendered="#{freeserveReportBean.analysisCount>0}">
+                <p:repeat id="repAnalysis" value="#{freeServiceReportBean.analysisList}" var="a" rendered="#{freeServiceReportBean.analysisCount>0}">
                     <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                         <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                             <h:outputText id="issueLabel" value="问题"/>
@@ -97,9 +97,9 @@
                 </p:repeat>
             </div>
             <div>
-                <h:inputHidden id="m" value="#{freeserveReportBean.m}"></h:inputHidden>
-                <h:inputHidden id="sc" value="#{freeserveReportBean.summaryCount}"></h:inputHidden>
-                <h:inputHidden id="ac" value="#{freeserveReportBean.analysisCount}"></h:inputHidden>
+                <h:inputHidden id="m" value="#{freeServiceReportBean.m}"></h:inputHidden>
+                <h:inputHidden id="sc" value="#{freeServiceReportBean.summaryCount}"></h:inputHidden>
+                <h:inputHidden id="ac" value="#{freeServiceReportBean.analysisCount}"></h:inputHidden>
             </div>
             <h:outputScript name="bsc-analysis-sheet.js" library="js"/>
         </h:form>
