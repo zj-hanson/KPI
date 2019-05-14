@@ -68,6 +68,26 @@ public class CompanyGrantManagedBean extends SuperSingleBean<CompanyGrant> {
     }
 
     @Override
+    protected boolean doBeforePersist() throws Exception {
+        CompanyGrant e = companyGrantBean.findByCompanyAndUserid(newEntity.getCompany(), newEntity.getUserid());
+        if (e != null) {
+            showErrorMsg("Error", "用户已授权");
+            return false;
+        }
+        return super.doBeforePersist();
+    }
+
+    @Override
+    protected boolean doBeforeUpdate() throws Exception {
+        CompanyGrant e = companyGrantBean.findByCompanyAndUserid(currentEntity.getCompany(), currentEntity.getUserid());
+        if (e != null) {
+            showErrorMsg("Error", "用户已授权");
+            return false;
+        }
+        return super.doBeforeUpdate();
+    }
+
+    @Override
     public void handleDialogReturnWhenEdit(SelectEvent event) {
         if (event.getObject() != null && currentEntity != null) {
             SystemUser e = (SystemUser) event.getObject();

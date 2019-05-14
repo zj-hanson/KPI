@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.ejb;
+package cn.hanbell.kpi.ejb.erp;
 
-import cn.hanbell.erp.entity.BscGroupShipment;
+
 import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,14 +29,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class BscGroupHSShipmentBean implements Serializable {
+public class GroupHSShipmentBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
-    public BscGroupHSShipmentBean() {
+    public GroupHSShipmentBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
@@ -369,7 +370,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupHSShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupHSShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -477,7 +478,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                 data.add(e);
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupHSShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupHSShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }

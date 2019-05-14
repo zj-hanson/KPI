@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.ejb;
+package cn.hanbell.kpi.ejb.erp;
 
-import cn.hanbell.erp.entity.BscGroupShipment;
+
 import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,14 +29,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class BscGroupVHShipmentBean implements Serializable {
+public class GroupVHShipmentBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
-    public BscGroupVHShipmentBean() {
+    public GroupVHShipmentBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
@@ -270,7 +271,7 @@ public class BscGroupVHShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -334,7 +335,7 @@ public class BscGroupVHShipmentBean implements Serializable {
             shp1 = (BigDecimal) o1;
             bshp1 = (BigDecimal) o2;
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return shp1.subtract(bshp1);
     }
@@ -415,7 +416,7 @@ public class BscGroupVHShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -454,7 +455,7 @@ public class BscGroupVHShipmentBean implements Serializable {
             Object o1 = query.getSingleResult();
             result = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
 

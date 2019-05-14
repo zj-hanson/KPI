@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.erp.ejb;
+package cn.hanbell.kpi.ejb.erp;
 
-import cn.hanbell.erp.entity.BscGroupShipment;
+
 import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,14 +29,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class BscGroupShipmentBean implements Serializable {
+public class GroupShipmentBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
-    public BscGroupShipmentBean() {
+    public GroupShipmentBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
@@ -540,7 +541,7 @@ public class BscGroupShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -622,7 +623,7 @@ public class BscGroupShipmentBean implements Serializable {
             Object o1 = query1.getSingleResult();
             shp1 = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return shp1;
     }
@@ -732,7 +733,7 @@ public class BscGroupShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -792,7 +793,7 @@ public class BscGroupShipmentBean implements Serializable {
             Object o1 = query1.getSingleResult();
             result = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(BscGroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GroupShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
 
