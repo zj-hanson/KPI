@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-
-
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
@@ -92,7 +90,6 @@ public class BscGroupVHServiceBean implements Serializable {
         }
     }
 
-    //服务金额
     protected List<BscGroupShipment> getServiceValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
