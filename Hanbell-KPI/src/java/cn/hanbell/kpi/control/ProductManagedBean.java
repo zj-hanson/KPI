@@ -5,8 +5,11 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.ejb.IndicatorgrantBean;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.entity.Indicatorgrant;
 import cn.hanbell.kpi.entity.RoleGrantModule;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class ProductManagedBean extends IndicatorSetManagedBean {
 
+    @EJB
+    protected IndicatorgrantBean indicatorgrantBean;
+
+    protected Indicatorgrant indicatorgrant;
     private IndicatorDetail otherIndicator;
     private String otherLabel;
     private boolean deny = true;
@@ -41,6 +48,20 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
                     deny = false;
                 }
             }
+            //指标修改权限设置
+            indicatorgrant = indicatorgrantBean.findByUseridAndFormid(userManagedBean.getUserid(), currentEntity.getFormid());
+            if (indicatorgrant == null || "N".equals(indicatorgrant.getStatus())) {
+                indicatorgrant = indicatorgrantBean.findByUseridAndFormid(userManagedBean.getUserid(),"");
+            }
+            if (indicatorgrant == null || "N".equals(indicatorgrant.getStatus())) {
+                    indicatorgrant = new Indicatorgrant();
+                    indicatorgrant.setForecast(false);
+                    indicatorgrant.setBenchmark(false);
+                    indicatorgrant.setTarget(false);
+                    indicatorgrant.setPerformance(false);
+                    indicatorgrant.setActual(false);
+                    indicatorgrant.setOther(false);
+             }
         }
         detailList = detailEJB.findByPId(id);
         detailList2 = detailEJB2.findByPId(id);
@@ -48,6 +69,26 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
         summaryList = indicatorSummaryBean.findByPId(id);
         analysisList = indicatorAnalysisBean.findByPId(id);
         this.doEdit = true;
+    }
+
+    //得出对应的权限值
+    public boolean queryIndicatorGrant(int seq) {
+        switch (seq) {
+            case 0:
+                return true;
+            case 1:
+                return !indicatorgrant.getTarget();
+            case 2:
+                return !indicatorgrant.getBenchmark();
+            case 3:
+                return !indicatorgrant.getForecast();
+            case 4:
+                return !indicatorgrant.getActual();
+            case 5:
+                return !indicatorgrant.getPerformance();
+            default:
+                return !indicatorgrant.getOther();
+        }
     }
 
     public void setOtherIndicator(String label, IndicatorDetail otherIndicator) {
@@ -99,6 +140,20 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
      */
     public boolean isDeny() {
         return deny;
+    }
+
+    /**
+     * @return the indicatorgrant
+     */
+    public Indicatorgrant getIndicatorgrant() {
+        return indicatorgrant;
+    }
+
+    /**
+     * @param indicatorgrant the indicatorgrant to set
+     */
+    public void setIndicatorgrant(Indicatorgrant indicatorgrant) {
+        this.indicatorgrant = indicatorgrant;
     }
 
 }

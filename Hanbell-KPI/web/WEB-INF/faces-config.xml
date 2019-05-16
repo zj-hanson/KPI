@@ -79,6 +79,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>indicatorgrant</from-outcome>
+            <to-view-id>/sys/indicatorgrant.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>indicatorclone</from-outcome>
             <to-view-id>/sys/indicatorclone.xhtml</to-view-id>
             <redirect/>
@@ -433,16 +438,6 @@
         <navigation-case>
             <from-outcome>percentofpassjz</from-outcome>
             <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>storageoccupy</from-outcome>
-            <to-view-id>/app/bsc/storageoccupy.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>storageunoccupied</from-outcome>
-            <to-view-id>/app/bsc/storageunoccupied.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

@@ -675,7 +675,6 @@ public class IndicatorSetManagedBean extends SuperMulti3Bean<Indicator, Indicato
                     setMethod.invoke(detail, decimal);
                     indicatorDetailBean.update(detail);
                     currentEntity = indicatorBean.findById(currentEntity.getId());
-                    setCurrentEntity(currentEntity);
                 }
             } catch (Exception ex) {
                 showErrorMsg("Error", ex.getMessage());
