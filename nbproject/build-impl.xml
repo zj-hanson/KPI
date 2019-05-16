@@ -205,6 +205,10 @@ exists or setup the property manually. For example like this:
             <property location="${build.dir}" name="dist.ear.dir"/>
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
         </ant>
+        <ant antfile="${project.Hanbell-KANBAN}/build.xml" inheritall="false" target="dist-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
+            <property name="deploy.on.save" value="${build.deploy.on.save}"/>
+        </ant>
         <ant antfile="${project.Hanbell-KPI}/build.xml" inheritall="false" target="dist-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
@@ -226,8 +230,9 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="init,deps-jar,pre-pre-compile,pre-compile" name="-do-compile-deps">
         <copyfiles files="${reference.Hanbell-KPI.dist-ear}" todir="${build.dir}//"/>
-        <copyfiles files="${reference.KPI-ejb.dist-ear}" todir="${build.dir}//"/>
         <copyfiles files="${reference.EAP-ejb.dist-ear}" todir="${build.dir}//"/>
+        <copyfiles files="${reference.KPI-ejb.dist-ear}" todir="${build.dir}//"/>
+        <copyfiles files="${reference.Hanbell-KANBAN.dist-ear}" todir="${build.dir}//"/>
     </target>
     <target name="post-compile">
         <!-- Empty placeholder for easier customization. -->
@@ -305,6 +310,7 @@ exists or setup the property manually. For example like this:
     <target name="-run-deploy-am" unless="no.deps">
         <!-- Task to deploy to the Access Manager runtime. -->
         <ant antfile="${project.EAP-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
+        <ant antfile="${project.Hanbell-KANBAN}/build.xml" inheritall="false" target="-run-deploy-am"/>
         <ant antfile="${project.Hanbell-KPI}/build.xml" inheritall="false" target="-run-deploy-am"/>
         <ant antfile="${project.KPI-ejb}/build.xml" inheritall="false" target="-run-deploy-am"/>
     </target>
@@ -502,20 +508,7 @@ exists or setup the property manually. For example like this:
         <antcall target="-run-debug-appclient"/>
     </target>
     <target depends="init,-init-debug-args,-debug-appclient-deploy,-as-retrieve-option-workaround,-init-debug-macros,-debug-appclient-start-nbjpda,-debug-appclient-pregfv3,-debug-appclient,connect-debugger" name="-run-debug-appclient"/>
-    <target name="-init-debug-args">
-        <property name="version-output" value="java version &quot;${ant.java.version}"/>
-        <condition property="have-jdk-older-than-1.4">
-            <or>
-                <contains string="${version-output}" substring="java version &quot;1.0"/>
-                <contains string="${version-output}" substring="java version &quot;1.1"/>
-                <contains string="${version-output}" substring="java version &quot;1.2"/>
-                <contains string="${version-output}" substring="java version &quot;1.3"/>
-            </or>
-        </condition>
-        <condition else="-Xdebug" property="debug-args-line" value="-Xdebug -Xnoagent -Djava.compiler=none">
-            <istrue value="${have-jdk-older-than-1.4}"/>
-        </condition>
-    </target>
+    <target name="-init-debug-args"/>
     <target depends="init,-init-debug-args,-as-retrieve-option-workaround,-init-run-macros" name="-init-debug-macros">
         <condition else="dt_socket" property="debug-transport-by-os" value="dt_shmem">
             <os family="windows"/>
@@ -540,8 +533,7 @@ exists or setup the property manually. For example like this:
             <sequential>
                 <ear2:run-appclient subprojectname="@{subprojectname}">
                     <customize>
-                        <jvmarg value="-Xrunjdwp:transport=${debug-transport-appclient},address=${jpda.address.appclient}"/>
-                        <jvmarg line="${debug-args-line}"/>
+                        <jvmarg value="-agentlib:jdwp=transport=${debug-transport-appclient},address=${jpda.address.appclient}"/>
                     </customize>
                 </ear2:run-appclient>
             </sequential>
@@ -550,8 +542,7 @@ exists or setup the property manually. For example like this:
             <sequential>
                 <ear2:run-appclient-pregfv3>
                     <customize>
-                        <jvmarg value="-Xrunjdwp:transport=${debug-transport-appclient},address=${jpda.address.appclient}"/>
-                        <jvmarg line="${debug-args-line}"/>
+                        <jvmarg value="-agentlib:jdwp=transport=${debug-transport-appclient},address=${jpda.address.appclient}"/>
                     </customize>
                 </ear2:run-appclient-pregfv3>
             </sequential>
@@ -632,6 +623,10 @@ exists or setup the property manually. For example like this:
             </not>
         </condition>
         <ant antfile="${project.EAP-ejb}/build.xml" inheritall="false" target="clean-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
+            <property name="deploy.on.save" value="${build.deploy.on.save}"/>
+        </ant>
+        <ant antfile="${project.Hanbell-KANBAN}/build.xml" inheritall="false" target="clean-ear">
             <property location="${build.dir}" name="dist.ear.dir"/>
             <property name="deploy.on.save" value="${build.deploy.on.save}"/>
         </ant>

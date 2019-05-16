@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.ejb.erp;
 
-
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
