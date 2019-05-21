@@ -22,9 +22,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class SPorductionMailBean extends BscProductiontMail {
+public class AJZProductionMailBean extends BscProductiontMail {
 
-    public SPorductionMailBean() {
+    public AJZProductionMailBean() {
         
     }
 
@@ -32,11 +32,11 @@ public class SPorductionMailBean extends BscProductiontMail {
     public void init() {
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
-    }   
+    }    
     
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-S涡旋每日生产", y, "1P000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-A机组每日生产", y, "1P000");
         if (indicator == null) {
             throw new UnsupportedOperationException("Not found 每日生产");
         }

@@ -22,9 +22,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class KMPorductionMailBean extends BscProductiontMail {
+public class KWCProductionMailBean extends BscProductiontMail {
 
-    public KMPorductionMailBean() {
+    public KWCProductionMailBean() {
         
     }
 
@@ -36,7 +36,7 @@ public class KMPorductionMailBean extends BscProductiontMail {
     
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-柯茂每日生产", y, "1P000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-螺杆机组每日生产", y, "1P000");
         if (indicator == null) {
             throw new UnsupportedOperationException("Not found 每日生产");
         }

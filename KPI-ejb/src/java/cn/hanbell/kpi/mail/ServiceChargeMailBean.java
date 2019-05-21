@@ -20,8 +20,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author C1879
- * RAPSK 免费服务金额
+ * @author C1879 RAPSK 免费服务金额
  */
 @Stateless
 @LocalBean
@@ -60,7 +59,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "A-RAPS出货", "11000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndSeqAndFormid(indicator.getId(), y,"收费服务");
+        indicators = indicatorBean.findByPIdAndSeqAndFormid(indicator.getId(), y, "收费服务");
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -101,7 +100,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
                     sb.append(getHtmlTableRow(i, y, m, d, "#FFFFFF"));
                 }
             }
-            sb.append(getHtmlTableRow(sumIndicator, y, m, d, "#FFFFFF"));
+            sb.append(getHtmlTableRowSum(sumIndicator, y, m, d, "#FFFFFF"));
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
@@ -112,6 +111,247 @@ public class ServiceChargeMailBean extends BscSheetMail {
     @Override
     protected String getHtmlTableRow(Indicator e, int y, int m, Date d) throws Exception {
         return super.getHtmlTableRow(e, y, m, d); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    protected String getHtmlTableRowSum(Indicator e, int y, int m, Date d, String color) throws Exception {
+        //获取需要取值栏位
+        String col, mon;
+        StringBuilder sb = new StringBuilder();
+        IndicatorDetail a = e.getActualIndicator();
+        IndicatorDetail b = e.getBenchmarkIndicator();
+        IndicatorDetail p = e.getPerformanceIndicator();
+        IndicatorDetail t = e.getTargetIndicator();
+        Field f;
+        mon = indicatorBean.getIndicatorColumn("N", getM());
+        BigDecimal v;
+        Method setMethod;
+        try {
+            actualAccumulated = new IndicatorDetail();
+            actualAccumulated.setParent(e);
+            actualAccumulated.setType("A");
+
+            benchmarkAccumulated = new IndicatorDetail();
+            benchmarkAccumulated.setParent(e);
+            benchmarkAccumulated.setType("B");
+
+            targetAccumulated = new IndicatorDetail();
+            targetAccumulated.setParent(e);
+            targetAccumulated.setType("T");
+
+            AP = new IndicatorDetail();
+            AP.setParent(e);
+            AP.setType("P");
+
+            BG = new IndicatorDetail();
+            BG.setParent(e);
+            BG.setType("P");
+
+            AG = new IndicatorDetail();
+            AG.setParent(e);
+            AG.setType("P");
+
+            for (int i = getM(); i > 0; i--) {
+                //顺序计算的话会导致累计值重复累加
+                //实际值累计
+                v = indicatorBean.getAccumulatedValue(e.getActualIndicator(), i);
+                setMethod = actualAccumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(actualAccumulated, v);
+                //同期值累计
+                v = indicatorBean.getAccumulatedValue(e.getBenchmarkIndicator(), i);
+                setMethod = benchmarkAccumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(benchmarkAccumulated, v);
+                //目标值累计
+                v = indicatorBean.getAccumulatedValue(e.getTargetIndicator(), i);
+                setMethod = targetAccumulated.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(targetAccumulated, v);
+                //累计达成
+                v = indicatorBean.getAccumulatedPerformance(e.getActualIndicator(), e.getTargetIndicator(), i);
+                setMethod = AP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(AP, v);
+                //同比成长率
+                v = indicatorBean.getGrowth(e.getActualIndicator(), e.getBenchmarkIndicator(), i);
+                setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(BG, v);
+                //累计成长率
+                v = indicatorBean.getGrowth(actualAccumulated, benchmarkAccumulated, i);
+                setMethod = AG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(AG, v);
+            }
+            //按当前月份累计值重设全年累计
+            f = actualAccumulated.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            actualAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(actualAccumulated).toString())));
+
+            f = benchmarkAccumulated.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            benchmarkAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(benchmarkAccumulated).toString())));
+
+            f = targetAccumulated.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
+
+            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"10\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName().replace("服务收费", "")).append("</td>");
+            sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">目标</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = t.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(t))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(t)).equals("0") ? "" : decimalFormat.format(f.get(t))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
+                }
+            }
+            sb.append("<td>").append(decimalFormat.format(t.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = targetAccumulated.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(targetAccumulated))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(targetAccumulated)).equals("0") ? "" : decimalFormat.format(f.get(targetAccumulated))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(targetAccumulated))).append("</td>");
+                }
+            }
+            sb.append("<td></td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\">");
+            sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">实际</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = a.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(a))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(a)).equals("0") ? "" : decimalFormat.format(f.get(a))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(a))).append("</td>");
+                }
+            }
+            sb.append("<td>").append(decimalFormat.format(a.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = actualAccumulated.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(actualAccumulated))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(actualAccumulated)).equals("0") ? "" : decimalFormat.format(f.get(actualAccumulated))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(actualAccumulated))).append("</td>");
+                }
+            }
+            sb.append("<td></td>");
+            sb.append("</tr>");
+
+            sb.append("<tr style=\"background:").append(color).append(";\">");
+            sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">去年同期</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = b.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(b))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(b)).equals("0") ? "" : decimalFormat.format(f.get(b))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
+                }
+            }
+            sb.append("<td>").append(decimalFormat.format(b.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = benchmarkAccumulated.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(benchmarkAccumulated))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(decimalFormat.format(f.get(benchmarkAccumulated)).equals("0") ? "" : decimalFormat.format(f.get(benchmarkAccumulated))).append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(benchmarkAccumulated))).append("</td>");
+                }
+            }
+            sb.append("<td></td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:yellow;\"><td rowspan=\"1\" colspan=\"2\" style=\"text-align: center;\">当月达成率</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = p.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(p))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(percentFormat(f.get(p)).equals("0.00%") ? "" : percentFormat(f.get(p))).append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
+                }
+            }
+            sb.append("<td>").append(percentFormat(p.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:yellow;\"><td rowspan=\"1\" colspan=\"2\" style=\"text-align: center;\">累计达成率</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = AP.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(AP))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(percentFormat(f.get(AP)).equals("0.00%") ? "" : percentFormat(f.get(AP))).append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(AP))).append("</td>");
+                }
+            }
+            sb.append("<td></td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td rowspan=\"1\" colspan=\"2\" style=\"text-align: center;\">月同比成长率</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = BG.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(BG))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(percentFormat(f.get(BG)).equals("0.00%") ? "" : percentFormat(f.get(BG))).append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(BG))).append("</td>");
+                }
+            }
+            sb.append("<td>").append(percentFormat(BG.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td rowspan=\"1\" colspan=\"2\" style=\"text-align: center;\">累计同比成长率</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = AG.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(AG))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(percentFormat(f.get(AG)).equals("0.00%") ? "" : percentFormat(f.get(AG))).append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(AG))).append("</td>");
+                }
+            }
+            sb.append("<td></td>");
+            sb.append("</tr>");
+
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            throw new Exception(ex);
+        }
+        return sb.toString();
     }
 
     protected String getHtmlTableRow(Indicator e, int y, int m, Date d, String color) throws Exception {
@@ -193,7 +433,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
 
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"10\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName().replace("服务收费", "")).append("</td>");
             sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">目标</td>");
-            sb.append("<td  style=\"text-align: center;\">服务</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = t.getClass().getDeclaredField(col);
@@ -208,7 +448,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
             }
             sb.append("<td>").append(decimalFormat.format(t.getNfy())).append("</td>");
             sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">服务累计</td>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = targetAccumulated.getClass().getDeclaredField(col);
@@ -225,7 +465,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\">");
             sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">实际</td>");
-            sb.append("<td  style=\"text-align: center;\">服务</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = a.getClass().getDeclaredField(col);
@@ -240,7 +480,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
             }
             sb.append("<td>").append(decimalFormat.format(a.getNfy())).append("</td>");
             sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">服务累计</td>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = actualAccumulated.getClass().getDeclaredField(col);
@@ -258,7 +498,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
 
             sb.append("<tr style=\"background:").append(color).append(";\">");
             sb.append("<td rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">去年同期</td>");
-            sb.append("<td  style=\"text-align: center;\">服务</td>");
+            sb.append("<td  style=\"text-align: center;\">金额</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = b.getClass().getDeclaredField(col);
@@ -273,7 +513,7 @@ public class ServiceChargeMailBean extends BscSheetMail {
             }
             sb.append("<td>").append(decimalFormat.format(b.getNfy())).append("</td>");
             sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">服务累计</td>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: center;\">金额累计</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = benchmarkAccumulated.getClass().getDeclaredField(col);

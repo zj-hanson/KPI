@@ -22,9 +22,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class PJZPorductionMailBean extends BscProductiontMail {
+public class PJZProductionMailBean extends BscProductiontMail {
 
-    public PJZPorductionMailBean() {
+    public PJZProductionMailBean() {
         
     }
 
