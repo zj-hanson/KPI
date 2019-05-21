@@ -22,9 +22,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class KORCPorductionMailBean extends BscProductiontMail {
+public class KORCProductionMailBean extends BscProductiontMail {
 
-    public KORCPorductionMailBean() {
+    public KORCProductionMailBean() {
         
     }
 
