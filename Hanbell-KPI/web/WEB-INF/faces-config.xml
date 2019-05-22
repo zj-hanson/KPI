@@ -35,6 +35,16 @@
         <description>入口导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
+            <from-outcome>deny</from-outcome>
+            <to-view-id>/deny.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>error</from-outcome>
+            <to-view-id>/error.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>home</from-outcome>
             <to-view-id>/home.xhtml</to-view-id>
             <redirect/>
@@ -54,16 +64,7 @@
             <to-view-id>/404.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>deny</from-outcome>
-            <to-view-id>/deny.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>error</from-outcome>
-            <to-view-id>/error.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
+
     </navigation-rule>
     <navigation-rule>
         <description>系统模块一级导航</description>
@@ -99,11 +100,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>systemrole</from-outcome>
-            <to-view-id>/sys/systemrole.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>rolegrant</from-outcome>
             <to-view-id>/sys/rolegrant.xhtml</to-view-id>
             <redirect/>
@@ -113,11 +109,47 @@
             <to-view-id>/sys/usergrant.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>systemrole</from-outcome>
+            <to-view-id>/sys/systemrole.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+
     </navigation-rule>
     <!--KPI一级导航-->
     <navigation-rule>
         <description>KPI一级导航</description>
         <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>category</from-outcome>
+            <to-view-id>/app/prod/category.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>clienttableset</from-outcome>
+            <to-view-id>/app/prod/clienttableset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>crmdsalp</from-outcome>
+            <to-view-id>/app/prod/crmdsalp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>exchange</from-outcome>
+            <to-view-id>/app/prod/exchange.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>employee</from-outcome>
+            <to-view-id>/app/empl/employee.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>employeeset</from-outcome>
+            <to-view-id>/app/empl/employeeset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
         <navigation-case>
             <from-outcome>indicator</from-outcome>
             <to-view-id>/app/dept/indicator.xhtml</to-view-id>
@@ -144,41 +176,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>category</from-outcome>
-            <to-view-id>/app/prod/category.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>clienttableset</from-outcome>
-            <to-view-id>/app/prod/clienttableset.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>salestableset</from-outcome>
-            <to-view-id>/app/prod/salestableset.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>crmdsalp</from-outcome>
-            <to-view-id>/app/prod/crmdsalp.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>exchange</from-outcome>
-            <to-view-id>/app/prod/exchange.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>employee</from-outcome>
-            <to-view-id>/app/empl/employee.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>employeeset</from-outcome>
-            <to-view-id>/app/empl/employeeset.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>product</from-outcome>
             <to-view-id>/app/prod/product.xhtml</to-view-id>
             <redirect/>
@@ -186,6 +183,11 @@
         <navigation-case>
             <from-outcome>productset</from-outcome>
             <to-view-id>/app/prod/productset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>salestableset</from-outcome>
+            <to-view-id>/app/prod/salestableset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -251,43 +253,33 @@
         <description>BSC一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
+            <from-outcome>balancesheet</from-outcome>
+            <to-view-id>/app/bsc/balancesheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>cashflowsheet</from-outcome>
+            <to-view-id>/app/bsc/cashflowsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>clientranking</from-outcome>
             <to-view-id>/app/bsc/clientranking.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>shipmentchart</from-outcome>
-            <to-view-id>/app/bsc/shipmentchart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>shipmentsheet</from-outcome>
-            <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>productionchart</from-outcome>
-            <to-view-id>/app/bsc/productionchart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>productionsheet</from-outcome>
-            <to-view-id>/app/bsc/productionsheet.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>processratiochart</from-outcome>
-            <to-view-id>/app/bsc/processratiochart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>processscrapchart</from-outcome>
-            <to-view-id>/app/bsc/processscrapchart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>castingratehs</from-outcome>
             <to-view-id>/app/bsc/castingratehs.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartajz</from-outcome>
+            <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartb</from-outcome>
+            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -300,11 +292,7 @@
             <to-view-id>/app/bsc/complaintschartmis.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartajz</from-outcome>
-            <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
+
         <navigation-case>
             <from-outcome>complaintschartc</from-outcome>
             <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
@@ -313,6 +301,37 @@
         <navigation-case>
             <from-outcome>complaintschartpzk</from-outcome>
             <to-view-id>/app/bsc/complaintschartpzk.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>complaintschartp</from-outcome>
+            <to-view-id>/app/bsc/complaintschartp.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>consumptioncutter</from-outcome>
+            <to-view-id>/app/bsc/consumptioncutter.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>exchangerate</from-outcome>
+            <to-view-id>/app/bsc/exchangerate.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>energyconsumptionsheet</from-outcome>
+            <to-view-id>/app/bsc/energyconsumptionsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>freeservicesheet</from-outcome>
+            <to-view-id>/app/bsc/freeservicesheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>freeserviceparentsheet</from-outcome>
+            <to-view-id>/app/bsc/freeserviceparentsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -326,53 +345,13 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>incomestatement</from-outcome>incomestatement
+            <from-outcome>incomestatement</from-outcome>
             <to-view-id>/app/bsc/incomestatement.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>productivity</from-outcome>
-            <to-view-id>/app/bsc/productivity.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>consumptioncutter</from-outcome>
-            <to-view-id>/app/bsc/consumptioncutter.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartb</from-outcome>
-            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>energyconsumptionsheet</from-outcome>
-            <to-view-id>/app/bsc/energyconsumptionsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>inventoryamountsheet</from-outcome>
             <to-view-id>/app/bsc/inventoryamountsheet.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>freeservicesheet</from-outcome>
-            <to-view-id>/app/bsc/freeservicesheet.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>exchangerate</from-outcome>
-            <to-view-id>/app/bsc/exchangerate.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>balancesheet</from-outcome>
-            <to-view-id>/app/bsc/balancesheet.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>cashflowsheet</from-outcome>
-            <to-view-id>/app/bsc/cashflowsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -401,23 +380,28 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>procurementsheet</from-outcome>
-            <to-view-id>/app/bsc/procurementsheet.xhtml</to-view-id>
+            <from-outcome>productivity</from-outcome>
+            <to-view-id>/app/bsc/productivity.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>qraqualifiedyx</from-outcome>
-            <to-view-id>/app/bsc/qraqualifiedyx.xhtml</to-view-id>
+            <from-outcome>productionchart</from-outcome>
+            <to-view-id>/app/bsc/productionchart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>qraqualifiedfx</from-outcome>
-            <to-view-id>/app/bsc/qraqualifiedfx.xhtml</to-view-id>
+            <from-outcome>productionsheet</from-outcome>
+            <to-view-id>/app/bsc/productionsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>freeserviceparentsheet</from-outcome>
-            <to-view-id>/app/bsc/freeserviceparentsheet.xhtml</to-view-id>
+            <from-outcome>processratiochart</from-outcome>
+            <to-view-id>/app/bsc/processratiochart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>processscrapchart</from-outcome>
+            <to-view-id>/app/bsc/processscrapchart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -438,6 +422,31 @@
         <navigation-case>
             <from-outcome>percentofpassjz</from-outcome>
             <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>procurementsheet</from-outcome>
+            <to-view-id>/app/bsc/procurementsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>qraqualifiedyx</from-outcome>
+            <to-view-id>/app/bsc/qraqualifiedyx.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>qraqualifiedfx</from-outcome>
+            <to-view-id>/app/bsc/qraqualifiedfx.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>shipmentchart</from-outcome>
+            <to-view-id>/app/bsc/shipmentchart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>shipmentsheet</from-outcome>
+            <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
