@@ -28,18 +28,22 @@
                 <p:tab title="#{productManagedBean.currentEntity.name}-查看">
                     <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
                         <p:row>
+                            <p:column styleClass="Wid20"><h:outputText value="指标编号"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="formid" value="#{productManagedBean.currentEntity.formid}" title="formid"/>
+                            </p:column>
                             <p:column styleClass="Wid20"><h:outputText value="指标名称"/></p:column>
                             <p:column styleClass="Wid30">
-                                <h:outputText id="name" value="#{productManagedBean.currentEntity.name}" title="Name"/>
+                                <p:inputText id="name" value="#{productManagedBean.currentEntity.name}" title="Name" disabled="#{!productManagedBean.indicatorgrant.actual}"/>
                             </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column styleClass="Wid20"><h:outputText value="年度"/></p:column>
                             <p:column styleClass="Wid30">
                                 <h:outputText id="seq" value="#{productManagedBean.currentEntity.seq}" title="seq"/>
                             </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column><h:outputText value="指标定义"/></p:column>
-                            <p:column colspan="3">
+                            <p:column styleClass="Wid20"><h:outputText value="指标定义"/></p:column>
+                            <p:column styleClass="Wid30">
                                 <h:outputText id="descript" value="#{productManagedBean.currentEntity.descript}" title="descript" />
                             </p:column>
                         </p:row>
@@ -1153,7 +1157,7 @@
                         <p:row>
                             <p:column colspan="6">
                                 <p:commandButton id="saveOther"  actionListener="#{productManagedBean.updateOtherIndicator()}" icon="ui-icon-save" value="保存" style="float: right"
-                                                 process="@this,formOne:dlgOther" oncomplete="PF('dlgOther').hide();"  disabled="true" >
+                                                 process="@this,formOne:dlgOther" oncomplete="PF('dlgOther').hide();"  disabled="#{!productManagedBean.indicatorgrant.other}" >
                                 </p:commandButton>
                             </p:column>
                         </p:row>
