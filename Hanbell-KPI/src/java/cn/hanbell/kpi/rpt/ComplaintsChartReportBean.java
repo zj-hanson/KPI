@@ -36,7 +36,14 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
     protected IndicatorDetail twelveMIS;
     protected IndicatorDetail twelveMISRatio;
     protected IndicatorDetail period;
+    BigDecimal benchmark1;
+    BigDecimal benchmark2;
+    BigDecimal benchmark3;
+    BigDecimal benchmark4;
+    BigDecimal benchmark5;
+    BigDecimal benchmark6;
 
+    Indicator thisMIS;
     protected LineChartModel chartMIS;
     protected boolean hasMIS;
 
@@ -51,7 +58,7 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
         String formid = indicator.getAssociatedIndicator();
         if (formid != null && !"".equals(formid)) {
             Indicator lastMIS = indicatorBean.findByFormidYearAndDeptno(formid, y - 1, indicator.getDeptno());
-            Indicator thisMIS = indicatorBean.findByFormidYearAndDeptno(formid, y, indicator.getDeptno());
+            thisMIS = indicatorBean.findByFormidYearAndDeptno(formid, y, indicator.getDeptno());
             if (lastMIS != null && thisMIS != null) {
                 hasMIS = true;
                 String mon;
@@ -80,7 +87,40 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                 period = new IndicatorDetail();
                 period.setParent(thisMIS);
                 period.setType("P");
+
                 try {
+                    //去年这个月的数据
+                    //3mis台数
+                    mon = indicatorBean.getIndicatorColumn("N", getM());
+                    f = lastMIS.getOther1Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark1 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther1Indicator()).toString()));
+
+                    //3mis比率
+                    f = lastMIS.getOther2Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark2 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther2Indicator()).toString()));
+
+                    //6mis台数
+                    f = lastMIS.getOther3Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark3 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther3Indicator()).toString()));
+
+                    //6mis比率
+                    f = lastMIS.getOther4Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark4 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther4Indicator()).toString()));
+
+                    //12mis台数
+                    f = lastMIS.getOther5Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark5 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther5Indicator()).toString()));
+
+                    //12mis比率
+                    f = lastMIS.getOther6Indicator().getClass().getDeclaredField(mon);
+                    f.setAccessible(true);
+                    benchmark6 = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther6Indicator()).toString()));
+
                     j = 12 - getM();
                     //今年向后位移
                     for (int i = getM(); i > 0; i--) {
@@ -212,7 +252,7 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                     mr12.setLabel("12MIS");
                     switch (getIndicator().getFormkind()) {
                         case "M":
-                            mr12.set(period.getN01().intValue() > getM() ? "E" + period.getN01().toString() : period.getN01(), twelveMISRatio.getN02().doubleValue());
+                            mr12.set(period.getN01().intValue() > getM() ? "E" + period.getN01().toString() : period.getN01(), twelveMISRatio.getN01().doubleValue());
                             mr12.set(period.getN02(), twelveMISRatio.getN02().doubleValue());
                             mr12.set(period.getN03(), twelveMISRatio.getN03().doubleValue());
                             mr12.set(period.getN04(), twelveMISRatio.getN04().doubleValue());
@@ -221,12 +261,11 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                             mr12.set(period.getN07(), twelveMISRatio.getN07().doubleValue());
                             mr12.set(period.getN08(), twelveMISRatio.getN08().doubleValue());
                             mr12.set(period.getN09(), twelveMISRatio.getN09().doubleValue());
-                            mr12.set(period.getN10(), sixMISRatio.getN10().doubleValue());
+                            mr12.set(period.getN10(), twelveMISRatio.getN10().doubleValue());
                             mr12.set(period.getN11(), twelveMISRatio.getN11().doubleValue());
                             mr12.set(period.getN12(), twelveMISRatio.getN12().doubleValue());
                             break;
                     }
-
                     chartMIS.addSeries(mr3);//3mis
                     chartMIS.addSeries(mr6);//6mis
                     chartMIS.addSeries(mr12);//12mis
@@ -248,7 +287,6 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
         chartMIS.getAxes().put(AxisType.X, new CategoryAxis(xTitle));
         yAxis = chartMIS.getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
-
         return chartMIS;
     }
 
@@ -321,4 +359,61 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
     public void setHasMIS(boolean hasMIS) {
         this.hasMIS = hasMIS;
     }
+
+    public Indicator getThisMIS() {
+        return thisMIS;
+    }
+
+    public void setThisMIS(Indicator thisMIS) {
+        this.thisMIS = thisMIS;
+    }
+
+    public BigDecimal getBenchmark1() {
+        return benchmark1;
+    }
+
+    public void setBenchmark1(BigDecimal benchmark1) {
+        this.benchmark1 = benchmark1;
+    }
+
+    public BigDecimal getBenchmark2() {
+        return benchmark2;
+    }
+
+    public void setBenchmark2(BigDecimal benchmark2) {
+        this.benchmark2 = benchmark2;
+    }
+
+    public BigDecimal getBenchmark3() {
+        return benchmark3;
+    }
+
+    public void setBenchmark3(BigDecimal benchmark3) {
+        this.benchmark3 = benchmark3;
+    }
+
+    public BigDecimal getBenchmark4() {
+        return benchmark4;
+    }
+
+    public void setBenchmark4(BigDecimal benchmark4) {
+        this.benchmark4 = benchmark4;
+    }
+
+    public BigDecimal getBenchmark5() {
+        return benchmark5;
+    }
+
+    public void setBenchmark5(BigDecimal benchmark5) {
+        this.benchmark5 = benchmark5;
+    }
+
+    public BigDecimal getBenchmark6() {
+        return benchmark6;
+    }
+
+    public void setBenchmark6(BigDecimal benchmark6) {
+        this.benchmark6 = benchmark6;
+    }
+
 }

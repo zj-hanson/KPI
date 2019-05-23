@@ -54,7 +54,7 @@ var setColor = function () {
         if (misData !== undefined && misData !== null) {
             var tr = $(misData).find("tr.ui-widget-content");
             $(tr).each(function (i, t) {
-                var c = $(t).find("td.ui-panelgrid-cell")[12];
+                var c = $(t).find("td.ui-panelgrid-cell")[13];
                 if (c !== null) {
                     $(c).css("color", "red");
                 }

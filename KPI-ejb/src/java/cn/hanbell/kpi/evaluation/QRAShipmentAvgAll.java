@@ -47,7 +47,7 @@ public class QRAShipmentAvgAll extends SuperEJBForKPI<SalesTable> implements Act
         try {
             for (int i = 0; i < 12; i++) {
                 sb.setLength(0);
-                sb.append(" SELECT  sum(quantity) as num from salestable WHERE 1=1 and  type='Shipment' ");
+                sb.append(" SELECT  sum(quantity) as num FROM salestable WHERE 1=1 and  type='Shipment' ");
                 if (!"".equals(n_code_DA)) {
                     sb.append(" and n_code_DA = '").append(n_code_DA).append("' ");
                 }
@@ -64,7 +64,7 @@ public class QRAShipmentAvgAll extends SuperEJBForKPI<SalesTable> implements Act
                 calendar.add(Calendar.YEAR, 1);
                 calendar.add(Calendar.MONTH, -1 - i);
                 Date nowYear = calendar.getTime();
-                sb.append(" and date_format(cdrdate, '%Y%m') BETWEEN  '");
+                sb.append(" and DATE_FORMAT(cdrdate,'%Y%m') BETWEEN  '");
                 sb.append(BaseLib.formatDate("yyyyMM", pastYear));
                 sb.append("'  and  '");
                 sb.append(BaseLib.formatDate("yyyyMM", nowYear));
