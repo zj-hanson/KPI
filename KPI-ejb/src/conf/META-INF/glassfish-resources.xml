@@ -21,4 +21,14 @@
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:module/hbkpitest" object-type="user" pool-name="mysql_hbkpitest_rootPool"/>
+    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="net.sourceforge.jtds.jdbcx.JtdsDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="jtds_sybase_eproerp922_shbPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+        <property name="serverName" value="192.168.1.5"/>
+        <property name="portNumber" value="5000"/>
+        <property name="databaseName" value="eproerp922"/>
+        <property name="User" value="shb"/>
+        <property name="Password" value="shbmis"/>
+        <property name="URL" value="jdbc:jtds:sybase://192.168.1.5:5000/eproerp922"/>
+        <property name="driverClass" value="net.sourceforge.jtds.jdbc.Driver"/>
+    </jdbc-connection-pool>
+    <jdbc-resource enabled="true" jndi-name="java:module/jdbc/thberp1" object-type="user" pool-name="jtds_sybase_eproerp922_shbPool"/>
 </resources>

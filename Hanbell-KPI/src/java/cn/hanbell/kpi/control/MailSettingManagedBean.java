@@ -171,9 +171,15 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
                 if (mailBean != null && recipient != null && !"".equals(recipient)) {
                     mailBean.init();
                     //清除设定的收件人,重设为测试人员
-                    mailBean.getTo().clear();
-                    mailBean.getCc().clear();
-                    mailBean.getBcc().clear();
+                    if (!mailBean.getTo().isEmpty()) {
+                        mailBean.getTo().clear();
+                    }
+                    if (!mailBean.getCc().isEmpty()) {
+                        mailBean.getCc().clear();
+                    }
+                    if (!mailBean.getBcc().isEmpty()) {
+                        mailBean.getBcc().clear();
+                    }
                     if (recipient.contains("@")) {
                         mailBean.getTo().add(recipient);
                     } else {
