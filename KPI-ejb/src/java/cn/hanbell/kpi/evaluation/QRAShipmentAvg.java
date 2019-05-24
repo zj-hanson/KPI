@@ -5,9 +5,7 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import javax.persistence.Query;
@@ -35,20 +33,24 @@ public class QRAShipmentAvg extends QRA {
         if (!"".equals(n_code_DC)) {
             sb.append(" and n_code_DC = '").append(n_code_DC).append("' ");
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(d);
-        calendar.add(Calendar.YEAR, -1);
-        Date pastDay = calendar.getTime();
-        sb.append(" and cdrdate BETWEEN  '");
-        sb.append(BaseLib.formatDate("yyyyMMdd", pastDay));
-        sb.append("'  and  '");
-        calendar.clear();
-        calendar.add(Calendar.YEAR, 1);
-        calendar.add(Calendar.MONTH, -1);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        Date nowDay = calendar.getTime();
-        sb.append(BaseLib.formatDate("yyyyMMdd", d));
-        sb.append("'  ");
+        sb.append(" and DATE_FORMAT(cdrdate,'%Y-%m-%d') BETWEEN ");
+        sb.append(" date_add(curdate()-day(curdate())+1,interval -12 month) ");
+        sb.append(" and ");
+        sb.append(" last_day(date_sub(now(),interval 1 month)) ");
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(d);
+//        calendar.add(Calendar.YEAR, -1);
+//        Date pastDay = calendar.getTime();
+//        sb.append(" and cdrdate BETWEEN  '");
+//        sb.append(BaseLib.formatDate("yyyyMMdd", pastDay));
+//        sb.append("'  and  '");
+//        calendar.clear();
+//        calendar.add(Calendar.YEAR, 1);
+//        calendar.add(Calendar.MONTH, -1);
+//        calendar.add(Calendar.DAY_OF_MONTH, -1);
+//        Date nowDay = calendar.getTime();
+//        sb.append(BaseLib.formatDate("yyyyMMdd", d));
+//        sb.append("'  ");
         String sql = sb.toString();
         Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {

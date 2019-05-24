@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.ejb.erp;
 
-
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
@@ -34,9 +33,28 @@ public class GroupShipmentBean implements Serializable {
     @EJB
     private SuperEJBForERP erpEJB;
 
+    private List<BscGroupShipment> bsList;
+
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
     public GroupShipmentBean() {
+    }
+
+    public List findNeedRow(int y, int m, Date d) {
+        erpEJB.setCompany("C");
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT facno,soday,protypeno,shptype,cusno,isnull(sum(shpnum),0) as shpnum,isnull(sum(shpamts),0) as shpamts,isnull(sum(ordnum),0) as ordnum,isnull(sum(ordamts),0) as ordamts FROM bsc_groupshipment b ");
+        sb.append(" where year(soday) = ${y} and month(soday) = ${m} and soday <= '${d}' ");
+        sb.append(" GROUP BY facno,soday,protypeno,shptype,cusno ");
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
+        Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+        try {
+            List resultList = query.getResultList();
+            return resultList;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
@@ -439,7 +457,6 @@ public class GroupShipmentBean implements Serializable {
 //        }
 //        sb.append(" and c.apmamt > 0 and convert(VARCHAR(6),c.shpdate,112) = convert(VARCHAR(6),h.shpdate,112) ");
 //        sb.append(" and year(c.shpdate) = ${y} AND month(c.shpdate)= ${m} and c.shpdate <= '${d}' ");
-
         //getARM270Value 其它项金额 关联部门
         if (!"".equals(depno)) {
             sb.append(" union all ");
@@ -661,8 +678,17 @@ public class GroupShipmentBean implements Serializable {
         if (!"".equals(n_code_DC)) {
             sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
-        if (!"".equals(n_code_DD)) {
-            sb.append(" and d.n_code_DD ").append(n_code_DD);
+//        if (!"".equals(n_code_DD)) {
+//            sb.append(" and d.n_code_DD ").append(n_code_DD);
+//        }
+        switch (n_code_DA) {
+            case "AA":
+            case "RT":
+            case "OH":
+                sb.append(" and d.n_code_DD in ('00','02') ");
+                break;
+            default: //可选
+                sb.append(" and d.n_code_DD in ('00') ");
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate<='${d}' group by h.recdate");
         String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
@@ -723,6 +749,8 @@ public class GroupShipmentBean implements Serializable {
             if (!data.isEmpty()) {
                 if (map.get("n_code_DD") != null) {
                     map.remove("n_code_DD");
+                    map.put("n_code_DD", " IN ('00') ");
+                } else {
                     map.put("n_code_DD", " IN ('00') ");
                 }
                 for (BscGroupShipment e : data) {

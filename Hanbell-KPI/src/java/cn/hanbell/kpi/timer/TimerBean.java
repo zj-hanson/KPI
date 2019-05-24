@@ -68,7 +68,6 @@ public class TimerBean {
     private ClientTableBean clientTableBean;
     @EJB
     private SalesTableBean salesTableBean;
-
     @Resource
     TimerService timerService;
 
