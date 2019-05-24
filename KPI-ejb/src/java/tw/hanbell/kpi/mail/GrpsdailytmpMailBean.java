@@ -5,6 +5,7 @@
  */
 package tw.hanbell.kpi.mail;
 
+import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ import tw.hanbell.kpi.ejb.erp.GrpsdailytmpBean;
  */
 @Stateless
 @LocalBean
-public class GrpsdailytmpMailBean extends GrpsdailytmpMail {
+public class GrpsdailytmpMailBean extends MailNotification {
 
     @EJB
     private GrpsdailytmpBean grpsdailytmpBean;
@@ -63,7 +64,7 @@ public class GrpsdailytmpMailBean extends GrpsdailytmpMail {
 
     @Override
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
-        return  " ";
+        return " ";
     }
 
 }
