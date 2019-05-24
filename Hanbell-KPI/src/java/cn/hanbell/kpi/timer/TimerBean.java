@@ -17,8 +17,6 @@ import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
 import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
 import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
 import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
-import tw.hanbell.kpi.ejb.erp.GrpsdailytmpBean;
-import tw.hanbell.kpi.ejb.erp.MailNotificationBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
@@ -70,11 +68,6 @@ public class TimerBean {
     private ClientTableBean clientTableBean;
     @EJB
     private SalesTableBean salesTableBean;
-    @EJB
-    private GrpsdailytmpBean grpsdailytmpBean;
-    @EJB
-    private MailNotificationBean mailBean;
-
     @Resource
     TimerService timerService;
 
@@ -270,37 +263,6 @@ public class TimerBean {
             log4j.info("End Execute Job updateERPVHBscGroupShipment");
         } catch (Exception ex) {
             log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
-        }
-    }
-
-    @Schedule(minute = "30", hour = "8,9", persistent = false)
-    public void updateERPTHBGrpsdailytmp() {
-        boolean flag;
-        try {
-            mailBean.getTo().clear();
-            Calendar now = Calendar.getInstance();
-            int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH) + 1);
-            Date d = now.getTime();
-            flag = grpsdailytmpBean.updateActualList(y,m,d);
-            if (flag == true) {
-                mailBean.getTo().add("C1749@hanbell.com.cn");
-                mailBean.setMailContent("<div style=\"text-align:center;width:100%\">资料上传成功！</div>");
-                mailBean.notify(new MailNotify());
-                log4j.info("Info", "报表邮件发送成功");
-            } else {
-                mailBean.getTo().add("C1749@hanbell.com.cn");
-                mailBean.setMailContent("<div style=\"text-align:center;width:100%\">资料上传失败！</div>");
-                mailBean.notify(new MailNotify());
-                log4j.info("Info", "报表邮件发送失败");
-            }
-        } catch (Exception ex) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<div style=\"text-align:center;width:100%\">资料上传失败！</div>").append("<div style=\"text-align:center;width:100%\">").append(ex.toString()).append("</div>");
-            mailBean.getTo().add("C1749@hanbell.com.cn");
-            mailBean.setMailContent(sb.toString());
-            mailBean.notify(new MailNotify());
-            ex.printStackTrace();
         }
     }
 

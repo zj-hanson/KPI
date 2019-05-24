@@ -7,7 +7,6 @@ package tw.hanbell.kpi.ejb.erp;
 
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
-import com.lightshell.comm.BaseLib;
 import tw.hanbell.kpi.entity.erp.Grpsdailytmp;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -40,8 +39,11 @@ public class GrpsdailytmpBean implements Serializable {
 
     }
 
-    public boolean updateActualList(int y, int m, Date d) {
-        boolean flag = false;
+    public void init() {
+    }
+
+    public int updateActualList(int y, int m, Date d) {
+        int count = 0;
         try {
             String hangrp = "";
             String trdate = "";
@@ -66,7 +68,7 @@ public class GrpsdailytmpBean implements Serializable {
                     if (o[4] != null) {
                         intertragrp = o[4].toString();
                     } else {
-                        intertragrp = hangrp;
+                        intertragrp = " ";
                     }
                     gt = new Grpsdailytmp(hangrp, trdate, series, type, intertragrp);
                     gt.setSaleqty(BigDecimal.valueOf(Double.valueOf(o[5].toString())));
@@ -90,13 +92,16 @@ public class GrpsdailytmpBean implements Serializable {
                 for (Grpsdailytmp e : grpsdailytmpList) {
                     erpEJB.getEntityManager().persist(e);
                 }
-                flag = true;
             }
-            return flag;
+            if (grpsdailytmpList.size() > 0) {
+                count = grpsdailytmpList.size();
+            } else {
+                count = 0;
+            }
         } catch (NumberFormatException ex) {
-            ex.getLocalizedMessage();
+            count = -1;
         }
-        return flag;
+        return count;
     }
 
 }
