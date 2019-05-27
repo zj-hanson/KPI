@@ -139,7 +139,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
                 v = getAccumulatedValue(pasta, pastt, i);
                 setMethod = pastdc.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(pastdc, v);
-                // 平均维修天数
+                // 平均维修天数 按工作时长8小时计算为一天
                 v = getAvgDay(gs, nowa, i);
                 setMethod = avgday.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(avgday, v);
@@ -320,7 +320,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             f.setAccessible(true);
             totala = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
             if (totala.compareTo(BigDecimal.ZERO) != 0) {
-                return totalgs.divide(BigDecimal.valueOf(24), 4, RoundingMode.HALF_UP).divide(totala, 4, RoundingMode.HALF_UP);
+                return totalgs.divide(BigDecimal.valueOf(8), 4, RoundingMode.HALF_UP).divide(totala, 4, RoundingMode.HALF_UP);
             } else {
                 return BigDecimal.ZERO;
             }
@@ -333,7 +333,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
     private BigDecimal getAvgDay(BigDecimal a, BigDecimal b) {
         try {
             if (b.compareTo(BigDecimal.ZERO) != 0) {
-                return a.divide(BigDecimal.valueOf(24), 4, RoundingMode.HALF_UP).divide(b, 4, RoundingMode.HALF_UP);
+                return a.divide(BigDecimal.valueOf(8), 4, RoundingMode.HALF_UP).divide(b, 4, RoundingMode.HALF_UP);
             } else {
                 return BigDecimal.ZERO;
             }
