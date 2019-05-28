@@ -9,7 +9,6 @@ import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.crm.DSALP;
 import com.lightshell.comm.BaseLib;
 import com.lightshell.comm.SuperEJB;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -193,7 +192,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
                         st.setDs011(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));//台数
                         st.setDs012(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));//金额
                         st.setDs015(row[10].toString());//事业部别
-                        st.setDs016(row[11].toString());//产品别
+                        st.setDs016(getDs016(row[11].toString()));//产品别
                         st.setDs017(row[12].toString());//整机/零件
                         st.setDs019(row[13].toString());//业务员姓名
                         returnlist.add(st);
@@ -208,6 +207,16 @@ public class DSALPBean extends SuperEJB<DSALP> {
 
     }
 
+    //ERP产品别转换成CRM产品别存档
+    private String getDs016(String dc){
+        switch(dc){
+            case "RT":
+                return "RT(S)";
+            default: 
+                return dc;           
+        }
+    }
+    
     private List getSalesOrder(int y, int m, Date date, LinkedHashMap<String, Object> map, String facno) {
         String userid = map.get("userid") != null ? map.get("userid").toString() : "";
         String status = map.get("status") != null ? map.get("status").toString() : "";
