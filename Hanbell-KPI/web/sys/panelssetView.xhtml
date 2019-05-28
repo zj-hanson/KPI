@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" autoUpdate="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="panels" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{panelsManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{panelsManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{panelsManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{panelsManagedBean.hasNext}"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">绩效KPI维护－查看</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="看板名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="pdname" value="#{panelsManagedBean.currentEntity.pdname}" title="pdname"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="关联指标"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="formid" value="#{panelsManagedBean.currentEntity.formid}" title="formid"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="考核部门"/></p:column>
+                    <p:column>
+                        <h:outputText id="deptno" value="#{panelsManagedBean.currentEntity.deptno}" title="deptno"  />
+                    </p:column>
+                    <p:column><h:outputText value="部门名称"/></p:column>
+                    <p:column>
+                        <h:outputText id="deptname" value="#{panelsManagedBean.currentEntity.deptname}" title="deptname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="单位"/></p:column>
+                    <p:column>
+                        <h:outputText id="unit" value="#{panelsManagedBean.currentEntity.unit}" title="unit" />
+                    </p:column>
+                    <p:column><h:outputText value="换算率"/></p:column>
+                    <p:column>
+                        <h:outputText id="rate" value="#{panelsManagedBean.currentEntity.rate}" title="rate" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="API"/></p:column>
+                    <p:column>
+                        <h:outputText id="api" value="#{panelsManagedBean.currentEntity.api}" title="api"/>
+                    </p:column>
+                    <p:column><h:outputText value="排序"/></p:column>
+                    <p:column>
+                        <h:outputText id="sortid" value="#{panelsManagedBean.currentEntity.sortid}" title="sortid"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="hasOther" for="hasOther" /></p:column>
+                    <p:column>
+                        <h:outputText id="hasOther" value="#{panelsManagedBean.currentEntity.hasOther}" title="hasOther"/>
+                    </p:column>
+                    <p:column><h:outputText value="备注"/></p:column>
+                    <p:column>
+                        <h:outputText id="remark" value="#{panelsManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabView" styleClass="tabView">
+                <p:tab title="看板数据" rendered="#{panelsManagedBean.currentEntity.hasOther>0}">
+                    <p:panelGrid id="plgOther" styleClass="plgDetail Wid100">
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>0}">
+                            <p:column styleClass="Wid20"><h:outputText value="Other1名称"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <p:inputText id="other1Label" value="#{panelsManagedBean.currentEntity.other1Label}" title="other1Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column styleClass="Wid20"><h:outputText value="Other1计算接口"/></p:column>
+                            <p:column styleClass="Wid30">
+                                <h:outputText id="other1Interface" value="#{panelsManagedBean.currentEntity.other1Interface}" title="other1Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>1}">
+                            <p:column><h:outputText value="Other2名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other2Label" value="#{panelsManagedBean.currentEntity.other2Label}" title="other2Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column><h:outputText value="Other2计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other2Interface" value="#{panelsManagedBean.currentEntity.other2Interface}" title="other2Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>2}">
+                            <p:column><h:outputText value="Other3名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other3Label" value="#{panelsManagedBean.currentEntity.other3Label}" title="other3Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column><h:outputText value="Other3计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other3Interface" value="#{panelsManagedBean.currentEntity.other3Interface}" title="other3Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>3}">
+                            <p:column><h:outputText value="Other4名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other4Label" value="#{panelsManagedBean.currentEntity.other4Label}" title="other4Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column><h:outputText value="Other4计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other4Interface" value="#{panelsManagedBean.currentEntity.other4Interface}" title="other4Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>4}">
+                            <p:column><h:outputText value="Other5名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other5Label" value="#{panelsManagedBean.currentEntity.other5Label}" title="other5Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column><h:outputText value="Other5计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other5Interface" value="#{panelsManagedBean.currentEntity.other5Interface}" title="other5Interface"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{panelsManagedBean.currentEntity.hasOther>5}">
+                            <p:column><h:outputText value="Other6名称"/></p:column>
+                            <p:column>
+                                <p:inputText id="other6Label" value="#{panelsManagedBean.currentEntity.other6Label}" title="other6Label" styleClass="inputWithButton" readonly="true"/>
+                            </p:column>
+                            <p:column><h:outputText value="Other6计算接口"/></p:column>
+                            <p:column>
+                                <h:outputText id="other6Interface" value="#{panelsManagedBean.currentEntity.other6Interface}" title="other6Interface"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

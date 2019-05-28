@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="./../WEB-INF/template.xhtml">
+    <ui:define name="title">汉钟精机 | Middleware</ui:define>
+    <ui:define name="content">
+        <h:form id="formOne" >
+            <div id="djs"><h:outputText id="second" value="#{storageBean.getFormat(storageBean.second)}" />秒后刷新数据</div>
+            <p:poll listener="#{storageBean.increment()}" update="second" interval="1" />
+            <p:panel class="ui-panel-sg" style="background-color: #2f4050;" id="pnl" header="#{storageBean.panels.pdname}">
+                <p:dataTable var="item" value="#{storageBean.paneldatas}" id="listtable" style="margin: -8px -14px;" scrollable="false" >
+                    <p:column headerText="库号" style="height: 50px;">
+                        <h:outputText value="#{item.pdname}" />
+                    </p:column>
+                    <p:column headerText="占用储位数">
+                        <h:outputText value="#{storageBean.getFormat(item.value1)}" />
+                    </p:column>
+                </p:dataTable>
+                <p:poll listener="#{storageBean.queryPanelDataList()}" update="listtable" interval="60" />
+            </p:panel>
+            <p:draggable for="pnl" />
+            <p:resizable for="pnl" />
+            <p:notificationBar position="bottom" effect="slide" styleClass="bottom" widgetVar="bar" rendered="true" >
+                <h:outputText value="******************待开发******************" style="font-size:36px;" />
+            </p:notificationBar>
+            <p:contextMenu for="pnl" id="contextMenu" >
+                <p:menuitem value="返回主页" outcome="home" icon="ui-icon-home"  />
+                <p:menuitem value="手动刷新" actionListener="#{storageBean.queryPanelDataList()}" icon="ui-icon-sync" update="listtable,second" />
+                <p:menuitem id="barshow" value="显示工具栏" onclick="PF('bar').show();"  icon="ui-icon-carat-1-n"/>
+                <p:menuitem id="barhide" value="隐藏工具栏" onclick="PF('bar').hide();"  icon="ui-icon-carat-1-s"/>
+            </p:contextMenu>
+        </h:form>
+    </ui:define>
+</ui:composition>
