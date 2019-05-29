@@ -1,14 +1,51 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./WEB-INF/template.xhtml">
-
+                template="./WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="title">汉钟精机 | Middleware</ui:define>
     <ui:define name="head">
-        head
     </ui:define>
 
-    <ui:define name="content">
-        这里是功能菜单
-    </ui:define>
+    <ui:define name="content" >
+        <h:form id="form">
+            <p:dataGrid var="item" value="#{homeBean.panelses}" columns="4" layout="grid"  rows="12" paginator="true" paginatorPosition="bottom"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="6,12,16" styleClass="ui-panelgrid-blank">
+                <f:facet name="header" >
+                    电子信息看板
+                </f:facet>
+                <p:panel id="pnl"  style="text-align:center">
+                    <p:column><p:outputLabel style="font-size: 23px;line-height: 30px" >#{item.pdname}</p:outputLabel></p:column>
+                    <p:panelGrid  columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid"  styleClass="ui-panelgrid-blank">
+                        <h:outputText rendered="#{item.hasOther>0}" value="#{item.other1Label}"/>
+                        <h:outputText rendered="#{item.hasOther>0}" value="#{homeBean.getFormat(item.other1)}" />
 
+                        <h:outputText rendered="#{item.hasOther>1}" value="#{item.other2Label}"/>
+                        <h:outputText rendered="#{item.hasOther>1}" value="#{homeBean.getFormat(item.other2)}" />
+
+                        <h:outputText rendered="#{item.hasOther>2}" value="#{item.other3Label}"/>
+                        <h:outputText rendered="#{item.hasOther>2}" value="#{homeBean.getFormat(item.other3)}" />
+
+                        <h:outputText rendered="#{item.hasOther>3}" value="#{item.other4Label}"/>
+                        <h:outputText rendered="#{item.hasOther>3}" value="#{homeBean.getFormat(item.other4)}" />
+
+                        <h:outputText rendered="#{item.hasOther>4}" value="#{item.other5Label}"/>
+                        <h:outputText rendered="#{item.hasOther>4}" value="#{homeBean.getFormat(item.other5)}" />
+
+                        <h:outputText rendered="#{item.hasOther>5}" value="#{item.other6Label}"/>
+                        <h:outputText rendered="#{item.hasOther>5}" value="#{homeBean.getFormat(item.other6)}" />
+                        <f:facet name="header" >
+                            <p:button outcome="#{item.api}"  title="查看详情" icon="ui-icon-search" style="margin:0 auto;">
+                                <f:param name="id" value="#{item.id}" />
+                            </p:button>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:panel>
+            </p:dataGrid>
+        </h:form>
+    </ui:define>
 </ui:composition>
