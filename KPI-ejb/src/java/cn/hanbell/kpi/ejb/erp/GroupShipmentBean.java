@@ -681,14 +681,10 @@ public class GroupShipmentBean implements Serializable {
 //        if (!"".equals(n_code_DD)) {
 //            sb.append(" and d.n_code_DD ").append(n_code_DD);
 //        }
-        switch (n_code_DA) {
-            case "AA":
-            case "RT":
-            case "OH":
-                sb.append(" and d.n_code_DD in ('00','02') ");
-                break;
-            default: //可选
-                sb.append(" and d.n_code_DD in ('00') ");
+        if(n_code_DA.contains("AA") || n_code_DA.contains("RT") || n_code_DA.contains("OH")){
+            sb.append(" and d.n_code_DD in ('00','02') ");
+        }else{
+            sb.append(" and d.n_code_DD in ('00') ");
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate<='${d}' group by h.recdate");
         String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
