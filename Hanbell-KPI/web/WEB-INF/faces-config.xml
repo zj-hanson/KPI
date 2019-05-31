@@ -355,6 +355,16 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>inventoryamount</from-outcome>
+            <to-view-id>/app/bsc/inventoryamount.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>inventoryamountda</from-outcome>
+            <to-view-id>/app/bsc/inventoryamountda.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>materialsaccproject</from-outcome>
             <to-view-id>/app/bsc/materialsaccproject.xhtml</to-view-id>
             <redirect/>
@@ -427,6 +437,11 @@
         <navigation-case>
             <from-outcome>procurementsheet</from-outcome>
             <to-view-id>/app/bsc/procurementsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>inventoryamountdc</from-outcome>
+            <to-view-id>/app/bsc/inventoryamountdc.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
