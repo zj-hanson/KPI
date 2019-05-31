@@ -345,7 +345,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
 
     private BigDecimal getGrowth(BigDecimal a, BigDecimal b) {
         if (b.compareTo(BigDecimal.ZERO) != 0) {
-            return b.subtract(a).divide(b, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+            return a.subtract(b).divide(b, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
             if (a.compareTo(BigDecimal.ZERO) != 0) {
                 return BigDecimal.ONE.multiply(BigDecimal.valueOf(100d));
