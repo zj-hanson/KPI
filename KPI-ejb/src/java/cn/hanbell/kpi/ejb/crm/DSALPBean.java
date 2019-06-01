@@ -182,18 +182,18 @@ public class DSALPBean extends SuperEJB<DSALP> {
                         Object[] row = (Object[]) list.get(i);
                         st.setDs002(row[0].toString());//公司别
                         st.setDs003(type);//单据类型
-                        st.setDs004(row[1].toString());//区域
+                        st.setDs004(row[1] == null ? "null" : row[1].toString());//区域
                         st.setDs005(row[2].toString());//业务员no
                         st.setDs006(row[3].toString());//单据日期 yyyyMMdd
-                        st.setDs007(row[4].toString());//机型
+                        st.setDs007(row[4] == null ? "null" : row[4].toString());//机型
                         st.setDs008(row[5].toString());//客户代号
                         st.setDs009(row[6].toString());//客户名称
                         st.setDs010(row[7].toString());//部门
                         st.setDs011(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));//台数
                         st.setDs012(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));//金额
-                        st.setDs015(row[10].toString());//事业部别
-                        st.setDs016(getDs016(row[11].toString()));//产品别
-                        st.setDs017(row[12].toString());//整机/零件
+                        st.setDs015(row[10] == null ? "null" : row[10].toString());//事业部别
+                        st.setDs016(getDs016(row[11] == null ? "null" : row[11].toString()));//产品别
+                        st.setDs017(row[12] == null ? "null" : row[12].toString());//整机/零件
                         st.setDs019(row[13].toString());//业务员姓名
                         returnlist.add(st);
                     }
@@ -208,15 +208,15 @@ public class DSALPBean extends SuperEJB<DSALP> {
     }
 
     //ERP产品别转换成CRM产品别存档
-    private String getDs016(String dc){
-        switch(dc){
+    private String getDs016(String dc) {
+        switch (dc) {
             case "RT":
                 return "RT(S)";
-            default: 
-                return dc;           
+            default:
+                return dc;
         }
     }
-    
+
     private List getSalesOrder(int y, int m, Date date, LinkedHashMap<String, Object> map, String facno) {
         String userid = map.get("userid") != null ? map.get("userid").toString() : "";
         String status = map.get("status") != null ? map.get("status").toString() : "";
@@ -227,7 +227,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" ,n_code_DA,n_code_DC,n_code_DD,e.username AS manname FROM ( select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno, ");
         sb.append(" isnull(sum(d.cdrqy1),0) AS quantity,isnull(convert(decimal(16,6),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
         sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
-        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') and  h.facno='${facno}' ");
+        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' and d.drecsta not in ('10') AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') and  h.facno='${facno}' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
         }
@@ -245,7 +245,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" isnull(convert(decimal(16,6),-sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
         sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') and  h.facno='${facno}' ");
-        sb.append(" and d.drecsta in ('98','99','10') ");
+        sb.append(" and d.drecsta in ('98','99') ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
         }
