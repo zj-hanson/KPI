@@ -47,26 +47,12 @@ public abstract class Service implements Actual {
 
     @Override
     public int getUpdateMonth(int y, int m) {
-        //每月月初自动更新上个月的数据
-        int month;
-        if (m == 1) {
-            month = 12;
-        } else {
-            month = m - 1;
-        }
-        return month;
+        return m;
     }
 
     @Override
     public int getUpdateYear(int y, int m) {
-        //每月月初自动更新上个月的数据
-        int year;
-        if (m == 1) {
-            year = y - 1;
-        } else {
-            year = y;
-        }
-        return year;
+        return y;
     }
 
 }
