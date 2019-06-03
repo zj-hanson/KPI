@@ -48,7 +48,7 @@ public class QRACubicElementAmount implements Actual {
         sb.append(" ( sfcwad.prono = manmas.prono ) and ");
         sb.append(" ( invmas.itnbr = manmas.itnbrf ) ");
         sb.append(" and sfcwah.facno = 'C' and sfcwah.prono = '1' and sfcwah.stats <>'3' ");
-        sb.append(" and manmas.typecode in ('01','02','05') and manmas.linecode in ('FX','YX') and manmas.itnbrf not like '%GB%' ");
+        sb.append(" and manmas.typecode in ('01','02','05') and manmas.linecode in ('FX','YX') and manmas.itnbrf not like '%-GB%' ");
         if (!"".equals(genre1)) {
             if (genre1.equals("R")) {//取ERPinvmas表里的genre1（产品别）判断
                 sb.append(" and (invmas.genre1 = 'R'  or invmas.genre1 = 'L' or invmas.genre1 = 'RG' or invmas.genre1 = 'RT' ) ");
