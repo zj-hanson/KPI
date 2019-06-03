@@ -91,7 +91,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
         sb.append("</div>");//对应Head中的div.content
-        sb.append("<div class=\"divFoot1\">维修平均天数：维修工时 / 24H / 维修完工台数</div>");
+        sb.append("<div class=\"divFoot1\">维修平均天数：维修工时 / 8H / 维修完工台数</div>");
         sb.append("<div class=\"divFoot1\">同比成长率：(实际完工台数 - 同期完工台数) / 同期完工台数*100%</div>");
         sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复</div>");
         sb.append("<div class=\"divFoot\">报表管理员</div>");
@@ -345,7 +345,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
 
     private BigDecimal getGrowth(BigDecimal a, BigDecimal b) {
         if (b.compareTo(BigDecimal.ZERO) != 0) {
-            return b.subtract(a).divide(b, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+            return a.subtract(b).divide(b, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
             if (a.compareTo(BigDecimal.ZERO) != 0) {
                 return BigDecimal.ONE.multiply(BigDecimal.valueOf(100d));

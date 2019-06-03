@@ -201,6 +201,19 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
         }
     }
 
+    @Override
+    public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFormId != null && !"".equals(queryFormId)) {
+                model.getFilterFields().put("formid", queryFormId);
+            }
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("name", queryName);
+            }
+        }
+    }
+    
     /**
      * @return the recipient
      */

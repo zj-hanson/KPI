@@ -33,6 +33,10 @@ body.layout-compact .ui-panel .ui-panel-titlebar {
     border-bottom: 1px solid #BDBDBD;
 }
 
+body.layout-compact .ui-panel .ui-panel-content{
+    height: auto;
+}
+
 body .ui-panelgrid .ui-panelgrid-cell {
     font-size: 16px;
     padding: 5px 16px;
