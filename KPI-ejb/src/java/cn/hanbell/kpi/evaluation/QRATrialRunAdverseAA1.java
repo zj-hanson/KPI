@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -35,17 +35,18 @@ public class QRATrialRunAdverseAA1 extends QRA {
         sb.append(" INNER JOIN  PROCESS_TR_JZ D on A.PRODUCTORDERID=D.PRODUCTORDERID ");
         sb.append(" WHERE 1=1 AND A.STEPID='机组试车站'  ");
         sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' ");
-        sb.append(" AND D.PRODUCTID not like '%GB%' ");
+        sb.append(" AND D.PRODUCTID not like '%-GB%' and A.PROCESSSTATUS = '已完成' ");
         sb.append(" AND year(A.MODIFYTIME) = ${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
         sb.append(" GROUP BY A.PRODUCTORDERID, A.PRODUCTCOMPID, A.STEPID,B.PRODUCTMODEL,A.PRODUCTID,C.PRODUCTORDERTYPE,D.TRRESULT,A.MODIFYTIME,A.MODIFYTIME ");
         sb.append(" ) as a ");
         sb.append(" )as b ");
         String totalSql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         sb.setLength(0);
-        //MES不良试车数
+        //MES不良试车数 最小试车记录为不良
         sb.append(" select count(1) from ( ");
-        sb.append(" SELECT * FROM PROCESS_TR_JZ A WHERE   TR_TIMES='1' AND A.STEPID LIKE '%机组试车站%' and A.TRRESULT='不合格' ");
-        sb.append(" AND year(A.MODIFYTIME)=${y} and month(A.MODIFYTIME)=${m}  ");
+        sb.append(" SELECT PRODUCTCOMPID,EQPID,MIN(STEPSEQ),TRRESULT,MODIFYTIME FROM PROCESS_TR_JZ A WHERE  TR_TIMES='1' AND A.STEPID = '机组试车站' and A.TRRESULT='不合格' ");
+        sb.append(" AND A.PRODUCTID not like '%-GB%' AND year(A.MODIFYTIME)=${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m}  ");
+        sb.append(" GROUP BY PRODUCTCOMPID,EQPID,TRRESULT,MODIFYTIME ");
         sb.append(" )as a ");
         String quaSql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query1 = superEJBForMES.getEntityManager().createNativeQuery(totalSql);

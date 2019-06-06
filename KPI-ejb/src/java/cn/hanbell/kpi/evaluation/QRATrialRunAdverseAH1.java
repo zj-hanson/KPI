@@ -34,8 +34,8 @@ public class QRATrialRunAdverseAH1 extends QRA {
         sb.append(" INNER JOIN PROCESS_PRE C ON A.PRODUCTORDERID=C.PRODUCTORDERID ");
         sb.append(" INNER JOIN  PROCESS_TR D on A.PRODUCTORDERID=D.PRODUCTORDERID ");
         sb.append(" WHERE 1=1 AND A.STEPID='机体试车站'  ");
-        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' ");
-        sb.append(" AND D.PRODUCTID not like '%GB%' ");
+        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' and A.PROCESSSTATUS = '已完成' ");
+        sb.append(" AND D.PRODUCTID not like '%-GB%' ");
         sb.append(" AND year(A.MODIFYTIME) = ${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
         sb.append(" GROUP BY A.PRODUCTORDERID, A.PRODUCTCOMPID, A.STEPID,B.PRODUCTMODEL,A.PRODUCTID,C.PRODUCTORDERTYPE,D.TRRESULT,A.MODIFYTIME,A.MODIFYTIME ");
         sb.append(" ) as a ");
@@ -44,7 +44,7 @@ public class QRATrialRunAdverseAH1 extends QRA {
         sb.setLength(0);
         //MES不良试车数
         sb.append(" SELECT  count(1)  FROM  PROCESS_TR A INNER JOIN MPRODUCT B ON A.PRODUCTID=B.PRODUCTID WHERE 1=1 ");
-        sb.append(" and A.PRODUCTID not like '%GB%' and A.TR_TIMES='1' AND A.STEPID LIKE '%机体试车站%'  AND  A.TRRESULT='不合格' ");
+        sb.append(" and A.PRODUCTID not like '%-GB%' and A.TR_TIMES='1' AND A.STEPID = '机体试车站'  AND  A.TRRESULT='不合格' ");
         sb.append(" AND year(A.MODIFYTIME)=${y} and month(dateadd(hour,-8,A.MODIFYTIME))=${m} ");
         String quaSql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query1 = superEJBForMES.getEntityManager().createNativeQuery(totalSql);

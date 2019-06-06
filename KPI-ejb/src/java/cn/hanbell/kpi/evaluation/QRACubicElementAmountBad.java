@@ -74,7 +74,7 @@ public class QRACubicElementAmountBad implements Actual {
         sb.append(" and F.PRODUCTID not like '%-GB%' ");
         sb.append(" and B.RESPONSIBILITYTYPE = '厂内责任' ");
         sb.append(" and B.RESPONSIBILITYDP like '%方型%' ");
-        sb.append(" and A.PROJECTSTATE = '单据结案' ");
+        //sb.append(" and A.PROJECTSTATE = '单据结案' ");
         sb.append(" and A.PROJECTCREATEUSERID in (SELECT USERID FROM MPROCESSUSERGROUP_USER WHERE GROUPID ='GU001') ");
         //sb.append(" and (B.ANALYSISJUDGEMENTRESULT like '特采%' or ANALYSISJUDGEMENTRESULT like '自行重工%' or ANALYSISJUDGEMENTRESULT like '就地报废%') ");
         //sb.append(" and year(A.PROJECTCREATETIME)=${y} and month(dateadd(HOUR,-8,A.PROJECTCREATETIME))=${m} ");次月8点之前算上个月的数据
