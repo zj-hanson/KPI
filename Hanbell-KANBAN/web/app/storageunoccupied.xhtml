@@ -13,11 +13,17 @@
             <p:poll listener="#{storageBean.increment()}" update="second" interval="1" />
             <p:panel class="ui-panel-sg" style="background-color: #2f4050;" id="pnl" header="#{storageBean.panels.pdname}" >
                 <p:dataTable var="item" value="#{storageBean.paneldatas}"  id="listtable" style="margin: -8px -14px;" scrollable="false" >
-                    <p:column headerText="线别" style="height: 90px" >
+                    <p:column headerText="线别" style="height: 150px" >
                         <h:outputText value="#{item.pdname}"/>
                     </p:column>
                     <p:column headerText="空储位个数">
-                        <h:outputText value="#{storageBean.getFormat(item.value1)}" />
+                        <h:outputText  value="#{storageBean.getFormat(item.value1)}" />
+                    </p:column>
+                    <p:column headerText="低储位数">
+                        <h:outputText  value="#{storageBean.getFormat(item.value2)}" />
+                    </p:column>
+                    <p:column headerText="高储位数">
+                        <h:outputText value="#{storageBean.getFormat(item.value3)}" />
                     </p:column>
                 </p:dataTable>
                 <p:poll listener="#{storageBean.queryPanelDataList()}" update="listtable" interval="60" />

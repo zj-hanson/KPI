@@ -28,8 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicatordetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorDetail.findAll", query = "SELECT i FROM IndicatorDetail i"),
-    @NamedQuery(name = "IndicatorDetail.findById", query = "SELECT i FROM IndicatorDetail i WHERE i.id = :id"),
+    @NamedQuery(name = "IndicatorDetail.findAll", query = "SELECT i FROM IndicatorDetail i")
+    ,
+    @NamedQuery(name = "IndicatorDetail.findById", query = "SELECT i FROM IndicatorDetail i WHERE i.id = :id")
+    ,
     @NamedQuery(name = "IndicatorDetail.findByPId", query = "SELECT i FROM IndicatorDetail i WHERE i.pid = :pid")})
 public class IndicatorDetail extends SuperDetailEntity {
 
@@ -371,11 +373,34 @@ public class IndicatorDetail extends SuperDetailEntity {
             }
         }
     }
+
     //增加合计值
-    public BigDecimal nsy(){
-        BigDecimal a =BigDecimal.ZERO;
+    public BigDecimal nsy() {
+        BigDecimal a = BigDecimal.ZERO;
         a = this.n01.add(this.n02).add(this.n03).add(this.n04).add(this.n05).add(this.n06).add(this.n07).add(this.n08).add(this.n09).add(this.n10).add(this.n11).add(this.n12);
         return a;
+    }
+
+    public void initialize() {
+        this.n01 = BigDecimal.ZERO;
+        this.n02 = BigDecimal.ZERO;
+        this.n03 = BigDecimal.ZERO;
+        this.n04 = BigDecimal.ZERO;
+        this.n05 = BigDecimal.ZERO;
+        this.n06 = BigDecimal.ZERO;
+        this.n07 = BigDecimal.ZERO;
+        this.n08 = BigDecimal.ZERO;
+        this.n09 = BigDecimal.ZERO;
+        this.n10 = BigDecimal.ZERO;
+        this.n11 = BigDecimal.ZERO;
+        this.n12 = BigDecimal.ZERO;
+        this.nq1 = BigDecimal.ZERO;
+        this.nq2 = BigDecimal.ZERO;
+        this.nq3 = BigDecimal.ZERO;
+        this.nq4 = BigDecimal.ZERO;
+        this.nh1 = BigDecimal.ZERO;
+        this.nh2 = BigDecimal.ZERO;
+        this.nfy = BigDecimal.ZERO;
     }
 
 }

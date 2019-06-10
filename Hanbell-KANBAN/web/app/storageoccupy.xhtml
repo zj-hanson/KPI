@@ -13,7 +13,7 @@
             <p:poll listener="#{storageBean.increment()}" update="second" interval="1" />
             <p:panel class="ui-panel-sg" style="background-color: #2f4050;" id="pnl" header="#{storageBean.panels.pdname}">
                 <p:dataTable var="item" value="#{storageBean.paneldatas}" id="listtable" style="margin: -8px -14px;" scrollable="false" >
-                    <p:column headerText="库号" style="height: 50px;">
+                    <p:column headerText="库号">
                         <h:outputText value="#{item.pdname}" />
                     </p:column>
                     <p:column headerText="占用储位数">
