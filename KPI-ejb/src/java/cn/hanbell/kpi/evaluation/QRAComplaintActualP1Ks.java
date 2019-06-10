@@ -8,20 +8,24 @@ package cn.hanbell.kpi.evaluation;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-
 /**
  *
- * @author C1749 真空进料合格率
+ * @author C1749
  */
-public class QRAIQCPercentOfPassP1 extends QRAIQCPercentOfPass{
-    public QRAIQCPercentOfPassP1(){
+public class QRAComplaintActualP1Ks extends QRAComplaintCount{
+
+    public QRAComplaintActualP1Ks() {
         super();
-        queryParams.put("SYSTEMID", "'QC_JLBLReport'");
-        queryParams.put("SEQUENCE", " in ('19','20') ");
+        queryParams.put("BQ197", " ='P' ");
+        queryParams.put("BQ003", " in ('PZK') ");
+        queryParams.put("BQ505", " in ('YX','-1') ");
+        queryParams.put("BQ110", " in ('Y') ");
     }
+
+    //真空总客诉台数
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map).multiply(BigDecimal.valueOf(100));
+        return super.getValue(y, m, d, type, map);
     }
     
 }

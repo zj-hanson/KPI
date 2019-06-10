@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 /**
  *
  * @author C1749
+ * 涡旋客诉实际值
  */
 public class QRAComplaintActualS1V1 extends QRA{
     public QRAComplaintActualS1V1(){

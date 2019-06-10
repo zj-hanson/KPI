@@ -47,12 +47,12 @@ public class QRACubicElementAmountBad implements Actual {
         sb.append(" LEFT JOIN (SELECT PROJECTID,MODIFYTIME from FLOW_PROJECT_HISTORY where PREVIOUSNODE = 'UQFN0002' and  EFFECTIVEFLAG = 'Y' and ADDFLAG = 'N') HIS on HIS.PROJECTID = A.PROJECTID ");
         sb.append(" and F.PROJECTID = HIS.PROJECTID and B.PROJECTID = HIS.PROJECTID ");
         sb.append(" where A.PROJECTID like 'QC%' and SOURCESTEPIP  like '圆型件精研KAPP%' ");
-        sb.append(" and F.DEFECTID in ('QCZZCXBL','QCZZDCBL') ");
+        //sb.append(" and F.DEFECTID in ('QCZZCXBL','QCZZDCBL') ");
         sb.append(" and F.PRODUCTID not like '%-GB%' ");
         sb.append(" and D.ROLEGROUPID like 'UQFG0003%' ");
         sb.append(" and B.RESPONSIBILITYTYPE = '厂内责任' ");
         sb.append(" and B.RESPONSIBILITYDP like '%圆型%' ");
-        sb.append(" and A.PROJECTSTATE = '单据结案' ");
+        //sb.append(" and A.PROJECTSTATE = '单据结案' ");
         sb.append(" and year(A.PROJECTCREATETIME)=${y} and month(A.PROJECTCREATETIME)=${m} ");
         sb.append(" ) as a where a.FINALQCRESULT = '不合格' ");
         if (!"".equals(SOURCEDPIP)) {//判断所属的物料
@@ -74,9 +74,9 @@ public class QRACubicElementAmountBad implements Actual {
         sb.append(" and F.PRODUCTID not like '%-GB%' ");
         sb.append(" and B.RESPONSIBILITYTYPE = '厂内责任' ");
         sb.append(" and B.RESPONSIBILITYDP like '%方型%' ");
-        sb.append(" and A.PROJECTSTATE = '单据结案' ");
+        //sb.append(" and A.PROJECTSTATE = '单据结案' ");
         sb.append(" and A.PROJECTCREATEUSERID in (SELECT USERID FROM MPROCESSUSERGROUP_USER WHERE GROUPID ='GU001') ");
-        sb.append(" and (B.ANALYSISJUDGEMENTRESULT like '特采%' or ANALYSISJUDGEMENTRESULT like '自行重工%' or ANALYSISJUDGEMENTRESULT like '就地报废%') ");
+        //sb.append(" and (B.ANALYSISJUDGEMENTRESULT like '特采%' or ANALYSISJUDGEMENTRESULT like '自行重工%' or ANALYSISJUDGEMENTRESULT like '就地报废%') ");
         //sb.append(" and year(A.PROJECTCREATETIME)=${y} and month(dateadd(HOUR,-8,A.PROJECTCREATETIME))=${m} ");次月8点之前算上个月的数据
         sb.append(" and year(A.PROJECTCREATETIME)=${y} and month(A.PROJECTCREATETIME)=${m} ");
         sb.append(" )as b where  b.FINALQCRESULT = '不合格' ");

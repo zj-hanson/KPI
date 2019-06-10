@@ -117,6 +117,7 @@
                         <f:facet name="header">
                             <p:row>
                                 <p:column>名称</p:column>
+                                <p:column>#{complaintsChartReportBean.m}月</p:column>
                                 <p:column>#{complaintsChartReportBean.period.getN01()}月</p:column>
                                 <p:column>#{complaintsChartReportBean.period.getN02()}月</p:column>
                                 <p:column>#{complaintsChartReportBean.period.getN03()}月</p:column>
@@ -133,6 +134,7 @@
                         </f:facet>
                         <p:row>
                             <p:column>3MIS台数</p:column>
+                            <p:column>#{complaintsChartReportBean.benchmark1}</p:column>
                             <p:column>#{complaintsChartReportBean.threeMIS.n01}</p:column>
                             <p:column>#{complaintsChartReportBean.threeMIS.n02}</p:column>
                             <p:column>#{complaintsChartReportBean.threeMIS.n03}</p:column>
@@ -148,6 +150,7 @@
                         </p:row>
                         <p:row>
                             <p:column>3MIS比率</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.benchmark2)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n01)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n02)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.threeMISRatio.n03)}</p:column>
@@ -163,6 +166,7 @@
                         </p:row>
                         <p:row>
                             <p:column>6MIS台数</p:column>
+                            <p:column>#{complaintsChartReportBean.benchmark3}</p:column>
                             <p:column>#{complaintsChartReportBean.sixMIS.n01}</p:column>
                             <p:column>#{complaintsChartReportBean.sixMIS.n02}</p:column>
                             <p:column>#{complaintsChartReportBean.sixMIS.n03}</p:column>
@@ -178,6 +182,7 @@
                         </p:row>
                         <p:row>
                             <p:column>6MIS比率</p:column>
+                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.benchmark4)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n01)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n02)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n03)}</p:column>
@@ -190,36 +195,6 @@
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n10)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n11)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n12)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>12MIS台数</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n01}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n02}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n03}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n04}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n05}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n06}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n07}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n08}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n09}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n10}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n11}</p:column>
-                            <p:column>#{complaintsChartReportBean.twelveMIS.n12}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>12MIS比率</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n01)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n02)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n03)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n04)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n05)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n06)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n07)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n08)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n09)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n10)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n11)}</p:column>
-                            <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n12)}</p:column>
                         </p:row>
                     </p:panelGrid>
                 </div>

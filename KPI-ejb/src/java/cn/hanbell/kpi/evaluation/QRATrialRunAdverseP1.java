@@ -37,7 +37,7 @@ public class QRATrialRunAdverseP1 extends QRA {
         sb.append(" WHERE 1=1 ");
         if (!"".equals(STEPID)) {
             if ("P".equals(STEPID)) {
-                sb.append(" AND (A.STEPID like  '%P%') ");
+                sb.append(" AND (A.STEPID like  '%P%试车站') ");
             }
             if ("干泵".equals(STEPID)) {
                 sb.append(" AND (A.STEPID like  '%P机体试车站%') ");
@@ -50,8 +50,8 @@ public class QRATrialRunAdverseP1 extends QRA {
             }
         }
 
-        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' ");
-        sb.append(" AND D.PRODUCTID not like '%GB%' ");
+        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' and A.PROCESSSTATUS = '已完成' ");
+        sb.append(" AND D.PRODUCTID not like '%-GB%' ");
         sb.append(" AND year(A.MODIFYTIME) = ${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
         sb.append(" GROUP BY A.PRODUCTORDERID, A.PRODUCTCOMPID, A.STEPID,B.PRODUCTMODEL,A.PRODUCTID,C.PRODUCTORDERTYPE,D.TRRESULT,A.MODIFYTIME,A.MODIFYTIME ");
         sb.append(" ) as a ");
@@ -63,7 +63,7 @@ public class QRATrialRunAdverseP1 extends QRA {
         sb.append(" where 1=1  ");
         if (!"".equals(STEPID)) {
             if ("P".equals(STEPID)) {
-                sb.append(" AND (A.STEPID like  '%P%') ");
+                sb.append(" AND (A.STEPID like  '%P%试车站') ");
             }
             if ("干泵".equals(STEPID)) {
                 sb.append(" AND (A.STEPID like  '%P机体试车站%') ");
@@ -75,7 +75,7 @@ public class QRATrialRunAdverseP1 extends QRA {
                 sb.append(" AND (A.STEPID like  '%P机组试车站%') ");
             }
         }
-        sb.append(" AND A.PRODUCTCOMPID not like '%GB%' AND A.TR_TIMES = '1'  AND A.TRRESULT='不合格' ");
+        sb.append(" AND A.PRODUCTCOMPID not like '%-GB%' AND A.TR_TIMES = '1'  AND A.TRRESULT='不合格' ");
         sb.append(" AND year(A.MODIFYTIME)=${y} AND month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
         String quaSql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query1 = superEJBForMES.getEntityManager().createNativeQuery(totalSql);
