@@ -35,8 +35,8 @@ public class QRATrialRunAdverseR1 extends QRA {
         sb.append(" INNER JOIN PROCESS_PRE C ON A.PRODUCTORDERID=C.PRODUCTORDERID ");
         sb.append(" INNER JOIN  PROCESS_TR D on A.PRODUCTORDERID=D.PRODUCTORDERID ");
         sb.append(" WHERE 1=1 AND A.STEPID='冷媒试车站'  ");
-        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' ");
-        sb.append(" AND D.PRODUCTID not like '%GB%' ");
+        sb.append(" AND C.PRODUCTORDERTYPE='一般制令' and D.TR_TIMES = '1' and A.PROCESSSTATUS = '已完成' ");
+        sb.append(" AND D.PRODUCTID not like '%-GB%' ");
         if (!"".equals(itnbrType)) {
             if ("RC1".equals(itnbrType)) {
                 sb.append(" AND (A.PRODUCTID not like '31342-%' and  A.PRODUCTID  not like '31343-%' and A.PRODUCTID not like '31344-%' ");
@@ -60,7 +60,7 @@ public class QRATrialRunAdverseR1 extends QRA {
         //MES不良试车数
         sb.append(" SELECT COUNT(*) NUM  FROM PROCESS_TR A ");
         sb.append(" LEFT JOIN MPRODUCT B on A.PRODUCTID=B.PRODUCTID ");
-        sb.append(" WHERE  A.STEPID LIKE '%冷媒试车站%'   AND A.TRRESULT='不合格'  AND A.TR_TIMES='1' and A.PRODUCTCOMPID not like '%GB%' ");
+        sb.append(" WHERE  A.STEPID LIKE '%冷媒试车站%'   AND A.TRRESULT='不合格'  AND A.TR_TIMES='1' and A.PRODUCTCOMPID not like '%-GB%' ");
         if (!"".equals(itnbrType)) {
             if ("RC1".equals(itnbrType)) {
                 sb.append(" AND (A.PRODUCTID not like '31342-%' or A.PRODUCTID  not like '31343-%' or A.PRODUCTID not like '31344-%' ");
