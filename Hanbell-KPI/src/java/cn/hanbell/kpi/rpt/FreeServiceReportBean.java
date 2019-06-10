@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,16 +39,12 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     protected IndicatorDetail sumOther2Accumulated;
     protected IndicatorDetail sumOther4Accumulated;
     protected IndicatorDetail sumOther5Accumulated;
-    //R合计
-    protected Indicator RsumIndicator;
+
     protected List<Indicator> RindicatorList;
-    protected IndicatorDetail RsumActualAccumulated;
-    protected IndicatorDetail RsumTargetAccumulated;
-    protected IndicatorDetail RsumOther1Accumulated;
-    protected IndicatorDetail RsumOther2Accumulated;
     protected IndicatorDetail RsumAP;
 
     public FreeServiceReportBean() {
+        RindicatorList = new ArrayList<>();
     }
 
     @Override
@@ -126,6 +123,20 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         for (Indicator e : indicatorList) {
             //按换算率计算结果
             this.divideByRate(e, 2);
+            RindicatorList.clear();
+            RindicatorList = indicatorBean.findByPId(e.getId());
+            if (RindicatorList.size() > 0) {
+                for (Indicator e1 : RindicatorList) {
+                    //按换算率计算结果
+                    this.divideByRate(e1, 2);
+                }
+                e.getActualIndicator().initialize();
+                e.getBenchmarkIndicator().initialize();
+                e.getTargetIndicator().initialize();
+                e.getForecastIndicator().initialize();
+                e = getSumIndicator(RindicatorList, e);
+                indicatorBean.updatePerformance(e);
+            }
         }
 
         //计算产品合计
@@ -170,7 +181,6 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         Method setMethod;
         //计算每个指标的累计
         for (Indicator e : indicatorList) {
-
             actualAccumulated = new IndicatorDetail();
             actualAccumulated.setParent(e);
             actualAccumulated.setType("A");
@@ -259,7 +269,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             AP.setType("累计控制");
             indicatorDetailList.add(AP);
 
-                    }
+        }
         //产品合计逻辑
         try {
             for (int i = getM(); i > 0; i--) {
@@ -331,7 +341,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 return format(value, i);
         }
     }
-    
+
     public String formatnfy(String type, BigDecimal value, int i) {
         switch (type) {
             case "目标累计":
@@ -350,7 +360,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         } else if (i <= m) {
             return indicatorBean.percentFormat(value);
         } else {
-           return "";
+            return "";
         }
     }
 
@@ -488,6 +498,36 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
 
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+            Logger.getLogger(IndicatorBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return entity;
+    }
+
+    public Indicator getSumIndicator(List<Indicator> indicators, Indicator entity) {
+        if (indicators.isEmpty()) {
+            return null;
+        }
+        IndicatorDetail a, b, f, t, o1, o2;
+        try {
+            for (int i = 0; i < indicators.size(); i++) {
+                a = indicators.get(i).getActualIndicator();
+                b = indicators.get(i).getBenchmarkIndicator();
+                f = indicators.get(i).getForecastIndicator();
+                t = indicators.get(i).getTargetIndicator();
+                if (indicators.get(i).getOther1Label() != null && indicators.get(i).getOther2Label() != null) {
+                    o1 = indicators.get(i).getOther1Indicator();
+                    o2 = indicators.get(i).getOther2Indicator();
+                    addValue(entity.getOther1Indicator(), o1, entity.getFormkind());
+                    addValue(entity.getOther2Indicator(), o2, entity.getFormkind());
+                }
+                addValue(entity.getActualIndicator(), a, entity.getFormkind());
+                addValue(entity.getBenchmarkIndicator(), b, entity.getFormkind());
+                addValue(entity.getForecastIndicator(), f, entity.getFormkind());
+                addValue(entity.getTargetIndicator(), t, entity.getFormkind());
+
+            }
+        } catch (Exception ex) {
             Logger.getLogger(IndicatorBean.class
                     .getName()).log(Level.SEVERE, null, ex);
         }

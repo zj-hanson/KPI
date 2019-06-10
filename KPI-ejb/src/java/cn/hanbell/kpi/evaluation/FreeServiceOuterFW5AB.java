@@ -25,10 +25,21 @@ public class FreeServiceOuterFW5AB extends FreeServiceOuterFW {
 //        queryParams.put("hmark2", " IN('RTZ','RZ','ZSNY') ");
     }
 
+    //2019年6月5日免费服务离心机服务领退料并入柯茂
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal rt = super.getValue(y, m, d, type, map);
+        BigDecimal fj =getfjValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.put("facno", "C");
+        queryParams.put("hmark1", " <> 'CK' ");
+        queryParams.put("hmark2", " ='CM' ");
+        BigDecimal cm = super.getValue(y, m, d, type, map);
+        return rt.add(cm).add(fj); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public BigDecimal getfjValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        BigDecimal o1 = BigDecimal.ZERO;
         BigDecimal o2 = BigDecimal.ZERO;
         BigDecimal o3 = BigDecimal.ZERO;
 
@@ -53,13 +64,12 @@ public class FreeServiceOuterFW5AB extends FreeServiceOuterFW {
             Object p1 = query1.getSingleResult();
             Object p2 = query2.getSingleResult();
             
-            o1 = super.getValue(y, m, d, type, map);
             o2 = (BigDecimal) p1;
             o3 = (BigDecimal) p2;
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return o1.add(o2).subtract(o3);
+        return o2.subtract(o3);
     }
 
 }
