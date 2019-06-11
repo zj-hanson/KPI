@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,11 +39,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
     protected IndicatorDetail sumOther4Accumulated;
     protected IndicatorDetail sumOther5Accumulated;
 
-    protected List<Indicator> RindicatorList;
-    protected IndicatorDetail RsumAP;
-
     public FreeServiceReportBean() {
-        RindicatorList = new ArrayList<>();
     }
 
     @Override
@@ -119,14 +114,13 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 return 1;
             }
         });
-
+        List<Indicator> list;
         for (Indicator e : indicatorList) {
             //按换算率计算结果
             this.divideByRate(e, 2);
-            RindicatorList.clear();
-            RindicatorList = indicatorBean.findByPId(e.getId());
-            if (RindicatorList.size() > 0) {
-                for (Indicator e1 : RindicatorList) {
+            list = indicatorBean.findByPId(e.getId());
+            if (list.size() > 0) {
+                for (Indicator e1 : list) {
                     //按换算率计算结果
                     this.divideByRate(e1, 2);
                 }
@@ -134,7 +128,13 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 e.getBenchmarkIndicator().initialize();
                 e.getTargetIndicator().initialize();
                 e.getForecastIndicator().initialize();
-                e = getSumIndicator(RindicatorList, e);
+                if (e.getOther1Indicator() != null) {
+                    e.getOther1Indicator().initialize();
+                }
+                if (e.getOther2Indicator() != null) {
+                    e.getOther2Indicator().initialize();
+                }
+                e = getSumIndicator(list, e);
                 indicatorBean.updatePerformance(e);
             }
         }
