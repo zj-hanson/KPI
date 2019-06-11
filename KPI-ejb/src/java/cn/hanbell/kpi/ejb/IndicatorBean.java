@@ -693,6 +693,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.update(entity.getForecastIndicator());
         indicatorDetailBean.update(entity.getActualIndicator());
         indicatorDetailBean.update(entity.getPerformanceIndicator());
+        indicatorDetailBean.getEntityManager().flush();
         if ("D".equals(entity.getFormkind())) {
             //检查是否有天指标
             if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getTargetIndicator().getId(), entity.getTargetIndicator().getSeq())) {

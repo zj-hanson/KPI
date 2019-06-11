@@ -68,23 +68,9 @@ public class ServiceChargeMailBean extends BscSheetMail {
                 return -1;
             }
         });
-        List<Indicator> indicatorList;
         for (Indicator e : indicators) {
             //按换算率计算结果
             indicatorBean.divideByRate(e, 2);
-            indicatorList = indicatorBean.findByPId(e.getId());
-            if (indicatorList.size() > 0) {
-                for (Indicator e1 : indicatorList) {
-                    //按换算率计算结果
-                    indicatorBean.divideByRate(e1, 2);
-                }
-                e.getActualIndicator().initialize();
-                e.getBenchmarkIndicator().initialize();
-                e.getTargetIndicator().initialize();
-                e.getForecastIndicator().initialize();
-                e = getSumIndicator(indicatorList, e);
-                indicatorBean.updatePerformance(e);
-            }
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：").append(indicator.getUnit()).append("</div>");
@@ -362,27 +348,6 @@ public class ServiceChargeMailBean extends BscSheetMail {
             throw new Exception(ex);
         }
         return sb.toString();
-    }
-
-    public Indicator getSumIndicator(List<Indicator> list, Indicator entity) {
-        if (list.isEmpty()) {
-            return null;
-        }
-        IndicatorDetail a, b, f, t;
-        try {
-            for (int i = 0; i < list.size(); i++) {
-                a = list.get(i).getActualIndicator();
-                b = list.get(i).getBenchmarkIndicator();
-                f = list.get(i).getForecastIndicator();
-                t = list.get(i).getTargetIndicator();
-                indicatorBean.addValue(entity.getActualIndicator(), a, entity.getFormkind());
-                indicatorBean.addValue(entity.getBenchmarkIndicator(), b, entity.getFormkind());
-                indicatorBean.addValue(entity.getForecastIndicator(), f, entity.getFormkind());
-                indicatorBean.addValue(entity.getTargetIndicator(), t, entity.getFormkind());
-            }
-        } catch (Exception ex) {          
-        }
-        return entity;
     }
 
     @Override
