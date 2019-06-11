@@ -18,7 +18,7 @@
                 <p:inputText id="clientmonth" value="#{inventoryManagerBean.month}" title="月" />
                 <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryManagerBean.resetQuery()}"  icon="ui-icon-refresh"
                                  update="formOne" />
-                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.findDataBaseIstment()}"  icon="ui-icon-search"
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.DCQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList,remarks" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
@@ -58,7 +58,7 @@
                     <f:facet name="header">
                         <h:outputText value="差异"/>
                     </f:facet>
-                    <h:outputText value="#{item.difference}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.difference}" style="#{(item.wareh == '合计')?'color:red':'' };#{(item.difference < 0)?'color:red':''}"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
