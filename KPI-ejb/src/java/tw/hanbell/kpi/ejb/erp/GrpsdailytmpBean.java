@@ -64,9 +64,18 @@ public class GrpsdailytmpBean implements Serializable {
                     hangrp = o[0].toString();
                     trdate = o[1].toString().substring(0, 10);
                     series = o[2].toString();
-                    type = o[3].toString();
+                    if(o[3].toString().equals("T") || o[3].toString().equals("S")){
+                        type = "5";
+                    }else{
+                        type = o[3].toString();
+                    }
+                    
                     if (o[4] != null) {
-                        intertragrp = o[4].toString();
+                        if(o[4].toString().equals("5")){
+                            intertragrp = " ";
+                        }else{
+                            intertragrp = o[4].toString();
+                        }
                     } else {
                         intertragrp = " ";
                     }
