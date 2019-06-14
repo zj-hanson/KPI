@@ -232,7 +232,7 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "20", hour = "9,16,20,22", persistent = false)
+    @Schedule(minute = "50", hour = "9,16,20,22", persistent = false)
     public void updateERPBscGroupShipment() {
         try {
             log4j.info("Begin Execute Job updateERPBscGroupShipment");
