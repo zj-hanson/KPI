@@ -39,9 +39,9 @@ import org.apache.poi.hssf.util.CellRangeAddress;
  */
 @Stateless
 @LocalBean
-public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
+public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
 
-    public AveragePriceFileRMailBean() {
+    public RAveragePriceFileMailBean() {
 
     }
 
@@ -89,7 +89,7 @@ public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
                 File file = getFile(indicator, getTitle(), list);
                 addAttachments(file);
             } catch (IOException ex) {
-                Logger.getLogger(AveragePriceFileRMailBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RAveragePriceFileMailBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return BaseLib.formatDate("yyyy-MM-dd hh:mm:ss", new Date());
@@ -189,23 +189,23 @@ public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
     }
 
     public List<Map<String, Object>> getParentList(List<Indicator> indicatorList) {
-        List<Map<String, Object>> ParentList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> parentList = new ArrayList<Map<String, Object>>();
         sumlistIndicators = new ArrayList<>();
         try {
             for (Indicator i : indicatorList) {
-                ParentList.add(getSonList(i));
+                parentList.add(getChildList(i));
             }
             //合计
             sumIndicator = indicatorBean.getSumValue(sumlistIndicators);
-            ParentList.add(getSonList(sumIndicator));
-            return ParentList;
+            parentList.add(getChildList(sumIndicator));
+            return parentList;
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.mail.AveragePriceFJRMailBean.getParentList()" + e.toString());
         }
-        return ParentList;
+        return parentList;
     }
 
-    public Map<String, Object> getSonList(Indicator e) throws NoSuchMethodException, InvocationTargetException, Exception {
+    public Map<String, Object> getChildList(Indicator e) throws NoSuchMethodException, InvocationTargetException, Exception {
         //获取需要取值栏位
         Map<String, Object> map = new LinkedHashMap<>();
         String col, mon;
@@ -297,7 +297,7 @@ public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
                 }
             }
             arr1[14] = decimalFormat.format(q.getNfy());
-            arr1[15] = percentFormat(getPertformance(q.getNfy(), tq.getNfy()));
+            arr1[15] = percentFormat(getPerformance(q.getNfy(), tq.getNfy()));
             list.add(arr1);
 
             String[] arr2 = new String[16];
@@ -314,7 +314,7 @@ public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
                 }
             }
             arr2[14] = decimalFormat.format(a.getNfy());
-            arr2[15] = percentFormat(getPertformance(a.getNfy(), ta.getNfy()));
+            arr2[15] = percentFormat(getPerformance(a.getNfy(), ta.getNfy()));
             list.add(arr2);
 
             String[] arr3 = new String[16];
@@ -331,7 +331,7 @@ public class AveragePriceFileRMailBean extends AveragePriceRMailBean {
                 }
             }
             arr3[14] = decimalFormat.format(getAvgPrice(q.getNfy(), a.getNfy()));
-            arr3[15] = percentFormat(getPertformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())));
+            arr3[15] = percentFormat(getPerformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())));
             list.add(arr3);
 
             map.put(e.getName().replace("R销售均价", ""), list);
