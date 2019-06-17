@@ -324,6 +324,11 @@
             <to-view-id>/app/bsc/energyconsumptionsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+          <navigation-case>
+            <from-outcome>freeservicechart</from-outcome>
+            <to-view-id>/app/bsc/freeservicechart.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
         <navigation-case>
             <from-outcome>freeservicesheet</from-outcome>
             <to-view-id>/app/bsc/freeservicesheet.xhtml</to-view-id>
