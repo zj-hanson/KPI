@@ -22,14 +22,14 @@ import java.util.List;
  *
  * @author C1879 R冷媒均价
  */
-public abstract class AveragePriceRMailBean extends MailNotification {
+public abstract class RAveragePriceMailBean extends MailNotification {
 
     protected Indicator indicator;
     protected Indicator sumIndicator;
     protected List<Indicator> sumlistIndicators;
     protected String servicecss = "<style type='text/css'>body{font-size:14px;font-weight:bold;}div.content{margin:auto;text-align:center;}div.tbl{margin-bottom:20px;}table{margin:auto;border-spacing:0px;border:1px solid #A2C0DA;}th,td{padding:5px;border-collapse:collapse;text-align:left;}th{border:1px solid #000000;text-align:center;font-weight:bold;}td{border:1px solid #000000;text-align:right;}.title{font-size:14px;font-weight:bold;}.foot{font-size:14px;color:Red;}.divFoot{text-align:right;font-weight:bold;height:20px;width:100%;}.divFoot1{text-align:left;height:20px;width:100%;font-weight:bold;}div.tableTitle{float:left;font-size:14px;font-weight:bold;text-align:left;}</style>";
 
-    public AveragePriceRMailBean() {
+    public RAveragePriceMailBean() {
 
     }
 
@@ -197,7 +197,7 @@ public abstract class AveragePriceRMailBean extends MailNotification {
                 }
             }
             sb.append("<td>").append(decimalFormat.format(q.getNfy())).append("</td>");
-            sb.append("<td>").append(percentFormat(getPertformance(q.getNfy(), tq.getNfy()))).append("</td>");
+            sb.append("<td>").append(percentFormat(getPerformance(q.getNfy(), tq.getNfy()))).append("</td>");
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: right;\">金额</td>");
             sb.append("<td>").append(decimalFormat.format(ta.getNfy())).append("</td>");
@@ -214,7 +214,7 @@ public abstract class AveragePriceRMailBean extends MailNotification {
                 }
             }
             sb.append("<td>").append(decimalFormat.format(a.getNfy())).append("</td>");
-            sb.append("<td>").append(percentFormat(getPertformance(a.getNfy(), ta.getNfy()))).append("</td>");
+            sb.append("<td>").append(percentFormat(getPerformance(a.getNfy(), ta.getNfy()))).append("</td>");
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: right;\">平均售价</td>");
             sb.append("<td>").append(decimalFormat.format(getAvgPrice(tq.getNfy(), ta.getNfy()))).append("</td>");
@@ -231,7 +231,7 @@ public abstract class AveragePriceRMailBean extends MailNotification {
                 }
             }
             sb.append("<td>").append(decimalFormat.format(getAvgPrice(q.getNfy(), a.getNfy()))).append("</td>");
-            sb.append("<td>").append(percentFormat(getPertformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())))).append("</td>");
+            sb.append("<td>").append(percentFormat(getPerformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())))).append("</td>");
             sb.append("</tr>");
 
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
@@ -240,7 +240,7 @@ public abstract class AveragePriceRMailBean extends MailNotification {
         return sb.toString();
     }
 
-    public BigDecimal getPertformance(BigDecimal a1, BigDecimal a2) {
+    public BigDecimal getPerformance(BigDecimal a1, BigDecimal a2) {
         //计算
         if (a2.compareTo(BigDecimal.ZERO) != 0) {
             return a1.divide(a2, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
