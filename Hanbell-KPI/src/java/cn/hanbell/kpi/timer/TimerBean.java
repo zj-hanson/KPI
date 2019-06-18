@@ -232,40 +232,6 @@ public class TimerBean {
         }
     }
 
-    @Schedule(minute = "50", hour = "9,16,20,22", persistent = false)
-    public void updateERPBscGroupShipment() {
-        try {
-            log4j.info("Begin Execute Job updateERPBscGroupShipment");
-            Calendar c = Calendar.getInstance();
-            int y = c.get(Calendar.YEAR);
-            int m = (c.get(Calendar.MONTH) + 1);
-            Date d = c.getTime();
-            groupShipmentBean.updataActualValue(y, m, d);
-            groupServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateSHBBscGroupShipment");
-            groupHSShipmentBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateHansonBscGroupShipment");
-        } catch (Exception ex) {
-            log4j.error("Execute Job updateERPBscGroupShipment失败" + ex);
-        }
-    }
-
-    @Schedule(minute = "50", hour = "17,21,23", persistent = false)
-    public void updateERPVHBscGroupShipment() {
-        try {
-            log4j.info("Begin Execute Job updateERPVHBscGroupShipment");
-            Calendar now = Calendar.getInstance();
-            int y = now.get(Calendar.YEAR);
-            int m = (now.get(Calendar.MONTH) + 1);
-            Date d = now.getTime();
-            groupVHShipmentBean.updataActualValue(y, m, d);
-            groupVHServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateERPVHBscGroupShipment");
-        } catch (Exception ex) {
-            log4j.error("Execute Job updateERPVHBscGroupShipment" + ex);
-        }
-    }
-
     @Schedule(hour = "5", dayOfMonth = "1", persistent = false)
     public void updateKPIClientTable() {
         try {

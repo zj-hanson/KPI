@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.hanbell.kpi.mail;
+package vn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.MailNotification;
-import cn.hanbell.kpi.ejb.erp.GroupHSShipmentBean;
-import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
-import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
 import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
 import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
@@ -24,16 +21,14 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class GroupShipmentMailBean extends MailNotification {
+public class GroupVNShipmentMailBean extends MailNotification {
 
     @EJB
-    private GroupShipmentBean groupShipmentBean;
+    private GroupVHShipmentBean groupVHShipmentBean;
     @EJB
-    private GroupServiceBean groupServiceBean;
-    @EJB
-    private GroupHSShipmentBean groupHSShipmentBean;
+    private GroupVHServiceBean groupVHServiceBean;
 
-    public GroupShipmentMailBean() {
+    public GroupVNShipmentMailBean() {
 
     }
 
@@ -56,11 +51,9 @@ public class GroupShipmentMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
-            groupShipmentBean.updataActualValue(y, m, d);
-            groupServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateSHBBscGroupShipment");
-            groupHSShipmentBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateHansonBscGroupShipment");
+            groupVHShipmentBean.updataActualValue(y, m, d);
+            groupVHServiceBean.updataActualValue(y, m, d);
+            log4j.info("End Execute Job updateERPVHBscGroupShipment");
             return "更新集团报表数据成功";
         } catch (Exception ex) {
             return ex.toString();
