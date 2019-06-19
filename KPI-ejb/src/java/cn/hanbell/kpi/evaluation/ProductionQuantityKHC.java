@@ -21,8 +21,8 @@ public class ProductionQuantityKHC extends ProductionQuantity {
         //*生产地
         queryParams.put("prono", "1");
         //*生产线别
-        //顾迪华2019年6月19日提出更改生产线别01 改 RT 水机生产线
-        queryParams.put("linecode", " = 'RT' ");
+        //陆夏玲2019年6月19日提出更改生产线别01 改 IN('AT','ORC','RT')
+        queryParams.put("linecode", " IN('AT','ORC','RT') ");
         //制令种类
         queryParams.put("mankind", "");
         //制令等级

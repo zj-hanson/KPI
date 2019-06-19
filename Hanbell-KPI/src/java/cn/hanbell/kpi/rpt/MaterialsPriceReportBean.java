@@ -153,6 +153,10 @@ public class MaterialsPriceReportBean extends BscSheetManagedBean {
                 return format(value, i);
         }
     }
+    
+    public String getName(String name){
+        return name.replace("价格趋势", "");
+    }
 
     //月涨跌比例数本月与1月比较
     protected BigDecimal getGrowth(IndicatorDetail e, int i) {
