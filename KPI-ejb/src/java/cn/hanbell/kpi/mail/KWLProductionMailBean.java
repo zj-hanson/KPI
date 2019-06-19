@@ -6,13 +6,6 @@
 package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.BscProductiontMail;
-import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.entity.IndicatorDaily;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -36,7 +29,7 @@ public class KWLProductionMailBean extends BscProductiontMail {
         
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-气源热泵每日生产", y, "1P000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-气源热泵每日生产", y, "1N000");
         if (indicator == null) {
             throw new UnsupportedOperationException("Not found 每日生产");
         }

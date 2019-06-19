@@ -29,7 +29,7 @@ public class RProductionMailBean extends BscProductiontMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-R冷媒每日生产", y, "1P000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-R冷媒每日生产", y, "1N000");
         if (indicator == null) {
             throw new UnsupportedOperationException("Not found 每日生产");
         }

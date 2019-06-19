@@ -15,7 +15,8 @@ public class ProductionQuantityKM extends ProductionQuantity {
         super();
         queryParams.put("facno", "K");
         queryParams.put("prono", "1");
-        queryParams.put("linecode", " = '01' ");
+        //顾迪华2019年6月19日提出更改生产线别01 改 AT\ORC\RT
+        queryParams.put("linecode", " IN('AT','ORC','RT') ");
         queryParams.put("typecode", "= '01' ");
         queryParams.put("itcls", " in ('3H80','3W76','3W80')");
         queryParams.put("itnbrf", " and itnbrf not in (select itnbr from invmas where itcls in ('3176','3179','3180')) ");
