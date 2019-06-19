@@ -21,7 +21,8 @@ public class ProductionQuantityKBA extends ProductionQuantity {
         //*生产地
         queryParams.put("prono", "1");
         //*生产线别
-        queryParams.put("linecode", " = '01' ");
+        //陆夏玲2019年6月19日提出更改生产线别01 IN('AT','ORC','RT')
+        queryParams.put("linecode", " IN('AT','ORC','RT') ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //

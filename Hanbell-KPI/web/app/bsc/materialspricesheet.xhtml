@@ -23,7 +23,7 @@
                     </div>
                     <p:dataTable var="item" value="#{materialsPriceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
                         <p:column headerText="" groupRow="true" styleClass="plgSheetData Wid5">
-                            <div style="text-align: center"> <h:outputText value="#{item.parent.name}" /></div>
+                            <div style="text-align: center"> <h:outputText value="#{materialsPriceReportBean.getName(item.parent.name)}" /></div>
                         </p:column>
                         <p:column headerText="类别" styleClass="plgSheetData Wid10" >
                             <div style="text-align: left"><h:outputText value="#{item.type}"  /></div>
