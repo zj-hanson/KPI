@@ -202,11 +202,11 @@ public class GroupVHShipmentBean implements Serializable {
                 shptype = "1";
             } else if (hmark1.contains("DR")) {
                 protype = "压缩机DORIN";
-                protypeno = "D";
+                protypeno = "DR";
                 shptype = "1";
             } else if (hmark1.contains("CDU")) {
                 protype = "机组CDU";
-                protypeno = "S";
+                protypeno = "CDU";
                 shptype = "2";
             } else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
@@ -214,7 +214,7 @@ public class GroupVHShipmentBean implements Serializable {
                 shptype = "2";
             } else if (hmark1.contains("SDS")) {
                 protype = "空压机SDS";
-                protypeno = "AS";
+                protypeno = "SDS";
                 shptype = "2";
             } else if (hmark1.contains("P")) {
                 protype = "真空泵";
@@ -375,11 +375,11 @@ public class GroupVHShipmentBean implements Serializable {
                 shptype = "1";
             } else if (hmark1.contains("DR")) {
                 protype = "压缩机DORIN";
-                protypeno = "D";
+                protypeno = "DR";
                 shptype = "1";
             } else if (hmark1.contains("CDU")) {
                 protype = "机组CDU";
-                protypeno = "S";
+                protypeno = "CDU"; 
                 shptype = "2";
             } else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
@@ -387,7 +387,7 @@ public class GroupVHShipmentBean implements Serializable {
                 shptype = "2";
             } else if (hmark1.contains("SDS")) {
                 protype = "空压机SDS";
-                protypeno = "AS";
+                protypeno = "SDS";
                 shptype = "2";
             } else if (hmark1.contains("P")) {
                 protype = "真空泵";
