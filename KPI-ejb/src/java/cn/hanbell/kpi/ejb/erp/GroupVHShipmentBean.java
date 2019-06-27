@@ -163,33 +163,50 @@ public class GroupVHShipmentBean implements Serializable {
         BigDecimal qty = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append(" select h.shpdate,isnull(sum(d.shpqy1),0) from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno  ");
+//        sb.append(" select h.shpdate,isnull(sum(d.shpqy1),0) from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno  ");
+//        sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
+//        sb.append(" and h.facno='${facno}' ");
+//        if (!"".equals(hmark1)) {
+//            sb.append(" and e.hmark1 ").append(hmark1);
+//        }
+//        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' group by h.shpdate ");
+//        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+//                .replace("${facno}", facno);
+//
+//        sb.setLength(0);
+//        sb.append(" select h.bakdate,-isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
+//        sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
+//        sb.append(" and h.facno='${facno}' ");
+//        if (!"".equals(hmark1)) {
+//            sb.append(" and e.hmark1 ").append(hmark1);
+//        }
+//        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' group by h.bakdate ");
+        sb.append(" select a.soday,sum(num) from ( ");
+        sb.append(" select h.facno,h.shpdate as soday,e.hmark1,sum(d.shpqy1) as num  from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno ");
         sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
         }
-        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' group by h.shpdate ");
-        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno);
-
-        sb.setLength(0);
-        sb.append(" select h.bakdate,isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
+        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
+        sb.append(" GROUP BY h.facno,h.shpdate,e.hmark1 ");
+        sb.append(" union all  ");
+        sb.append(" select h.facno,h.bakdate as soday,e.hmark1, -sum(d.bshpqy1) as num from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
         sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
         }
-        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' group by h.bakdate ");
-        String cdrbdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
+        sb.append(" group by h.facno,h.bakdate,e.hmark1 ");
+        sb.append(" ) a group by a.soday ");
+        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
 
         erpEJB.setCompany(facno);
         Query query1 = erpEJB.getEntityManager().createNativeQuery(cdrdta);
-        Query query2 = erpEJB.getEntityManager().createNativeQuery(cdrbdta);
         try {
             List shpResult = query1.getResultList();
-            List bakResult = query2.getResultList();
             Date shpdate;
             String protype, protypeno, shptype;
             if (hmark1.contains("R") && !hmark1.contains("DR")) {
@@ -234,20 +251,20 @@ public class GroupVHShipmentBean implements Serializable {
                 e.setShpamts(BigDecimal.ZERO);
                 data.add(e);
             }
-            for (int i = 0; i < bakResult.size(); i++) {
-                Object o[] = (Object[]) bakResult.get(i);
-                shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
-                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("V", shpdate, protype, protypeno, shptype);
-                e.setShpnum(qty);
-                e.setShpamts(BigDecimal.ZERO);
-                if (data.contains(e)) {
-                    BscGroupShipment entity = data.get(data.indexOf(e));
-                    entity.setShpnum(entity.getShpnum().add(qty));
-                } else {
-                    data.add(e);
-                }
-            }
+//            for (int i = 0; i < bakResult.size(); i++) {
+//                Object o[] = (Object[]) bakResult.get(i);
+//                shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
+//                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
+//                BscGroupShipment e = new BscGroupShipment("V", shpdate, protype, protypeno, shptype);
+//                e.setShpnum(qty);
+//                e.setShpamts(BigDecimal.ZERO);
+//                if (data.contains(e)) {
+//                    BscGroupShipment entity = data.get(data.indexOf(e));
+//                    entity.setShpnum(entity.getShpnum().add(qty));
+//                } else {
+//                    data.add(e);
+//                }
+//            }
             //订单
             temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
             if (temp != null && !temp.isEmpty()) {
