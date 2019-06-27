@@ -174,7 +174,7 @@ public class GroupVHShipmentBean implements Serializable {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        sb.append(" select h.bakdate,isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
+        sb.append(" select h.bakdate,-isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
         sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(hmark1)) {
