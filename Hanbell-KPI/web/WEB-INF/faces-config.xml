@@ -324,7 +324,7 @@
             <to-view-id>/app/bsc/energyconsumptionsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-          <navigation-case>
+        <navigation-case>
             <from-outcome>freeservicechart</from-outcome>
             <to-view-id>/app/bsc/freeservicechart.xhtml</to-view-id>
             <redirect/>
@@ -357,6 +357,11 @@
         <navigation-case>
             <from-outcome>inventoryamountsheet</from-outcome>
             <to-view-id>/app/bsc/inventoryamountsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>inventoryamount1Nsheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryamount1Nsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
