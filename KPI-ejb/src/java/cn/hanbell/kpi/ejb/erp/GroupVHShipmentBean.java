@@ -221,11 +221,14 @@ public class GroupVHShipmentBean implements Serializable {
                 protype = "压缩机DORIN";
                 protypeno = "DR";
                 shptype = "1";
-            } else if (hmark1.contains("CDU")) {
-                protype = "机组CDU";
-                protypeno = "CDU";
-                shptype = "2";
-            } else if (hmark1.contains("A")) {
+            } 
+            //20190702 取消CDU产品别归到代理品
+//            else if (hmark1.contains("CDU")) {
+//                protype = "机组CDU";
+//                protypeno = "CDU";
+//                shptype = "2";
+//            }
+            else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
                 protypeno = "A";
                 shptype = "2";
