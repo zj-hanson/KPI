@@ -96,6 +96,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
     }
 
     public File getFile(Indicator indicator, String[] title, List<Map<String, Object>> list) throws FileNotFoundException, IOException {
+        String filename = y + "年" + m + "月" + mailSubject;
         HSSFWorkbook workbook = new HSSFWorkbook();
         Short bgcolor = null;
         // 生成一个表格
@@ -116,7 +117,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 } else {
                     cell.setCellStyle(createStyles(workbook, IndexedColors.WHITE.getIndex()).get("title"));
                     if (j == 0 && i == 5) {
-                        cell.setCellValue(mailSubject);
+                        cell.setCellValue( y + "年"  + mailSubject);
                     } else {
                         cell.setCellValue("");
                     }
@@ -161,8 +162,8 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 }
 
             }
-        }
-        String finalFilePath = "../" + mailSubject + ".xls";//最终保存的文件路径
+        }      
+        String finalFilePath = "../" + filename + ".xls";//最终保存的文件路径
         FileOutputStream out = null;
         File file = new File(finalFilePath);
         // 如果文件存在,则删除已有的文件,重新创建一份新的
