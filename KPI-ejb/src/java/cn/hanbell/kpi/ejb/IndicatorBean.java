@@ -276,15 +276,15 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public List<Indicator>  findByPIdAndSeqAndFormid(int pid, int y ,String value) {
+    public List<Indicator> findByPIdAndSeqAndFormid(int pid, int y, String value) {
         Query query = getEntityManager().createNamedQuery("Indicator.findByPIdAndSeqAndFormid");
         query.setParameter("pid", pid);
         query.setParameter("seq", y);
-        query.setParameter("formid", "%"+value+"%");
+        query.setParameter("formid", "%" + value + "%");
         try {
             return query.getResultList();
         } catch (Exception ex) {
-            System.out.println("cn.hanbell.kpi.ejb.IndicatorBean.findByPIdAndSeqAndFormid()"+ex);
+            System.out.println("cn.hanbell.kpi.ejb.IndicatorBean.findByPIdAndSeqAndFormid()" + ex);
             return null;
         }
     }

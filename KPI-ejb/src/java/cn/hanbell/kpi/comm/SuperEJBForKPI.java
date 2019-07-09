@@ -24,7 +24,7 @@ public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
     @PersistenceContext(unitName = "KPI-ejbPU")
     private EntityManager em_shbkpi;
 
-    protected Logger log4j = LogManager.getLogger();
+    protected Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public SuperEJBForKPI(Class<T> entityClass) {
         super(entityClass);

@@ -30,7 +30,7 @@ public class InventoryStatementBean implements Serializable {
     @EJB
     private SuperEJBForERP erpEJB;
 
-    protected Logger log4j = LogManager.getLogger();
+    protected Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public InventoryStatementBean() {
 
