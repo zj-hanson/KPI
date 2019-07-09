@@ -23,7 +23,7 @@
         <!--建立一个默认的root的logger-->
         <root level="INFO">
             <appender-ref ref="Console"/>
-            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="KPI"/>
         </root>
         <Logger name="cn.hanbell.kpi" level="INFO" additivity="false">
             <appender-ref ref="KPI" />
