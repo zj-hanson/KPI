@@ -27,7 +27,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -113,7 +113,7 @@ public class DsalpReportBean implements Serializable {
                 }
                 setDeleteList(dsalpBean.findByParams(getType(), getUserid(), getDa(), btnDate));
                 if (dsalplist != null && !dsalplist.isEmpty()) {
-                  
+
                     if (deletelist != null && !deletelist.isEmpty()) {
                         setStatus1(new SimpleDateFormat("yyyy年MM月").format(getQueryDate().getTime()) + getDa() + " (" + getType() + ") 业务员" + getUsername() + "数据已存在，如点击更新则会重新覆盖该时间数据！！！慎重");
                     } else {
@@ -156,7 +156,7 @@ public class DsalpReportBean implements Serializable {
         options.put("draggable", false);
         options.put("resizable", false);
         options.put("contentHeight", 650);
-        RequestContext.getCurrentInstance().openDialog("sysuserSelect", options, null);
+        PrimeFaces.current().dialog().openDynamic("sysuserSelect", options, null);
     }
 
     public void handleDialogReturnUserWhenDetailNew(SelectEvent event) {
@@ -315,8 +315,6 @@ public class DsalpReportBean implements Serializable {
         return dsalplist;
     }
 
-    
-    
     /**
      * @param dsalplist the dsalplist to set
      */

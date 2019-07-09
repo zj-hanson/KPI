@@ -39,7 +39,7 @@ public abstract class SuperQueryBean<T extends BaseEntity> extends SuperSingleMa
 
     protected Map<String, String[]> params;//页面传参
 
-    protected final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     /**
      * @param entityClass

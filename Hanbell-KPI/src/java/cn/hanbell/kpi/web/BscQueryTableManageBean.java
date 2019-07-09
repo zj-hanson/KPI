@@ -12,8 +12,6 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorSummary;
-import com.sun.mail.imap.protocol.ID;
-import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 

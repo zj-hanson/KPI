@@ -63,7 +63,7 @@ public abstract class MailNotification {
 
     protected Actual updateActual;
 
-    protected final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public MailNotification() {
         this.c = Calendar.getInstance();
@@ -268,5 +268,5 @@ public abstract class MailNotification {
     public HashMap<String, BigDecimal> getData() {
         return data;
     }
-    
+
 }

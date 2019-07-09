@@ -24,12 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "jobschedule")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "JobSchedule.findAll", query = "SELECT j FROM JobSchedule j")
-    , @NamedQuery(name = "JobSchedule.findById", query = "SELECT j FROM JobSchedule j WHERE j.id = :id")
-    , @NamedQuery(name = "JobSchedule.findByFormid", query = "SELECT j FROM JobSchedule j WHERE j.formid = :formid")
-    , @NamedQuery(name = "JobSchedule.findByFormkind", query = "SELECT j FROM JobSchedule j WHERE j.formkind = :formkind")
-    , @NamedQuery(name = "JobSchedule.findByDescription", query = "SELECT j FROM JobSchedule j WHERE j.description = :description")
-    , @NamedQuery(name = "JobSchedule.findByStatus", query = "SELECT j FROM JobSchedule j WHERE j.status = :status")})
+    @NamedQuery(name = "JobSchedule.findAll", query = "SELECT j FROM JobSchedule j"),
+    @NamedQuery(name = "JobSchedule.findById", query = "SELECT j FROM JobSchedule j WHERE j.id = :id"),
+    @NamedQuery(name = "JobSchedule.findByFormid", query = "SELECT j FROM JobSchedule j WHERE j.formid = :formid"),
+    @NamedQuery(name = "JobSchedule.findByFormkind", query = "SELECT j FROM JobSchedule j WHERE j.formkind = :formkind"),
+    @NamedQuery(name = "JobSchedule.findByDescription", query = "SELECT j FROM JobSchedule j WHERE j.description = :description"),
+    @NamedQuery(name = "JobSchedule.findByStatus", query = "SELECT j FROM JobSchedule j WHERE j.status = :status")})
 public class JobSchedule extends FormEntity {
 
     @Size(max = 10)
@@ -57,7 +57,6 @@ public class JobSchedule extends FormEntity {
     @Size(max = 45)
     @Column(name = "m")
     private String m;
-    @Size(max = 45)
     @Size(max = 45)
     @Column(name = "y")
     private String y;
