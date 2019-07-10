@@ -15,6 +15,6 @@ public class ProductionPlanShipmentKORC extends ProductionPlanShipment {
         super();
         queryParams.put("facno", "K");
         queryParams.put("n_code_DC", " ='BA' ");
-        queryParams.put("itcls", " in ('3B80') ");
+        queryParams.put("itcls", " IN ('3B76','3B79','3B80') ");
     }
 }

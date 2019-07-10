@@ -28,7 +28,7 @@ public class ProductionQuantityKWL extends ProductionQuantity {
         //品号大类
         queryParams.put("itcls", " IN ('3W76','3W79','3W80')");
 
-        queryParams.put("itnbrf", " and itnbrf in (select itnbr from borgrp where (itnbrgrp  like 'KMAT%' OR itnbrgrp = 'DA01')) ");
+        queryParams.put("itnbrf", " and (itnbrgrp  like 'KMAT%' OR itnbrgrp = 'DA01' OR itnbrgrp LIKE  'KMAD%') ");
 
     }
 }
