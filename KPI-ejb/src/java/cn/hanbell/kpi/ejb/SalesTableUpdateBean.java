@@ -371,6 +371,8 @@ public class SalesTableUpdateBean implements Serializable {
                         st.setItnbrcus(row[2] == null ? "null" : row[2].toString());
                         st.setCusno(row[3].toString());
                         st.setCusna(row[4].toString());
+                        st.setParentcusno(row[3].toString());
+                        st.setParentcusna(row[4].toString());
                         st.setCdrdate(df.parse(row[5].toString()));
                         st.setDeptno(row[6].toString());
                         st.setQuantity(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));

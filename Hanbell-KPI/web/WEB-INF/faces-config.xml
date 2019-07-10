@@ -195,6 +195,11 @@
             <to-view-id>/app/prod/salestableset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>parentcompany</from-outcome>
+            <to-view-id>/app/prod/parentcompany.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>部门指标定义</description>
