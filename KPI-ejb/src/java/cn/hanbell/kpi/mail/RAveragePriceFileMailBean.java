@@ -25,8 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -89,14 +87,14 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 File file = getFile(indicator, getTitle(), list);
                 addAttachments(file);
             } catch (IOException ex) {
-                Logger.getLogger(RAveragePriceFileMailBean.class.getName()).log(Level.SEVERE, null, ex);
+                log4j.error(ex);
             }
         }
         return BaseLib.formatDate("yyyy-MM-dd hh:mm:ss", new Date());
     }
 
     public File getFile(Indicator indicator, String[] title, List<Map<String, Object>> list) throws FileNotFoundException, IOException {
-        String filename = y + "年" + m + "月" + mailSubject;
+        String filename = String.format("%d年%d月%s", y, m, mailSubject);
         HSSFWorkbook workbook = new HSSFWorkbook();
         Short bgcolor = null;
         // 生成一个表格
@@ -117,11 +115,10 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 } else {
                     cell.setCellStyle(createStyles(workbook, IndexedColors.WHITE.getIndex()).get("title"));
                     if (j == 0 && i == 5) {
-                        cell.setCellValue( y + "年"  + mailSubject);
+                        cell.setCellValue(y + "年" + mailSubject);
                     } else {
                         cell.setCellValue("");
                     }
-
                 }
             }
         }
@@ -160,9 +157,8 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                         cell.setCellValue(cellStrings[k]);
                     }
                 }
-
             }
-        }      
+        }
         String finalFilePath = "../" + filename + ".xls";//最终保存的文件路径
         FileOutputStream out = null;
         File file = new File(finalFilePath);
@@ -190,7 +186,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
     }
 
     public List<Map<String, Object>> getParentList(List<Indicator> indicatorList) {
-        List<Map<String, Object>> parentList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> parentList = new ArrayList<>();
         sumlistIndicators = new ArrayList<>();
         try {
             for (Indicator i : indicatorList) {
@@ -201,7 +197,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
             parentList.add(getChildList(sumIndicator));
             return parentList;
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.mail.AveragePriceFJRMailBean.getParentList()" + e.toString());
+            log4j.error(e);
         }
         return parentList;
     }
