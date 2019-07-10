@@ -123,7 +123,7 @@ public class GroupServiceBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "C");
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", " IN ('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
@@ -142,7 +142,7 @@ public class GroupServiceBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "C4");//目前A机组有重庆的数据，暂定这一个分公司。后续有其他分公司再添加。
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
@@ -161,7 +161,7 @@ public class GroupServiceBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "G");
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
@@ -180,7 +180,7 @@ public class GroupServiceBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "N");
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
@@ -199,7 +199,7 @@ public class GroupServiceBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "J");
-        queryParams.put("ogdkid", " ='RL01' ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
@@ -219,7 +219,7 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -237,7 +237,7 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='S' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -255,7 +255,7 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -273,7 +273,7 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='OH' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -291,7 +291,7 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='RT' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
+        queryParams.put("ogdkid", " IN('RL01','RL03') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {

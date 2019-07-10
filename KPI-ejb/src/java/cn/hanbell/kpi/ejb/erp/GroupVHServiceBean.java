@@ -84,7 +84,7 @@ public class GroupVHServiceBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -125,15 +125,15 @@ public class GroupVHServiceBean implements Serializable {
             String protype, protypeno, shptype;
             if (hmark1.contains("O")) {
                 protype = "其他代理品";
-                protypeno = "Z";
+                protypeno = "O";
                 shptype = "21";
             } else if (hmark1.contains("R") && !hmark1.contains("DR")) {
                 protype = "R/CDU/Dorin服务收费";
-                protypeno = "Z";
+                protypeno = "SR";
                 shptype = "21";
             } else if (hmark1.contains("A")) {
                 protype = "空压机服务收费";
-                protypeno = "Z";
+                protypeno = "SA";
                 shptype = "21";
             } else {
                 protype = "";

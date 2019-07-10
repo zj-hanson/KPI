@@ -12,16 +12,10 @@ import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.JobScheduleBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
 import cn.hanbell.kpi.ejb.SalesTableBean;
-import cn.hanbell.kpi.ejb.erp.GroupHSShipmentBean;
-import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
-import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
-import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
-import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -54,16 +48,6 @@ public class TimerBean {
     private JobScheduleBean jobScheduleBean;
     @EJB
     private MailSettingBean mailSettingBean;
-    @EJB
-    private GroupShipmentBean groupShipmentBean;
-    @EJB
-    private GroupServiceBean groupServiceBean;
-    @EJB
-    private GroupHSShipmentBean groupHSShipmentBean;
-    @EJB
-    private GroupVHShipmentBean groupVHShipmentBean;
-    @EJB
-    private GroupVHServiceBean groupVHServiceBean;
     @EJB
     private ClientTableBean clientTableBean;
     @EJB
@@ -225,10 +209,12 @@ public class TimerBean {
             indicatorBean.updateActual(entity, m);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
+            log4j.info(String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         } else {
             indicatorBean.updateActual(entity, m);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
+            log4j.info(String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         }
     }
 
