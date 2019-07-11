@@ -6,10 +6,10 @@
 package cn.hanbell.kpi.comm;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -23,12 +23,15 @@ public class MailNotify {
 
     protected MailNotification notification;
 
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
+
     public MailNotify() {
 
     }
 
     protected void init() {
         if (email == null) {
+            System.setProperty("mail.mime.splitlongparameters", "false");
             email = new HtmlEmail();
             email.setHostName(smtpHost);
             email.setSmtpPort(smptPort);
@@ -64,7 +67,7 @@ public class MailNotify {
             }
             email.send();
         } catch (EmailException ex) {
-            Logger.getLogger(MailNotify.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
     }
 
