@@ -107,9 +107,9 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         }
         return false;
     }
-    
-        //获得总台数
-    protected Double getSumQuantity(int y, int m, LinkedHashMap<String, String> map,String type) {
+
+    //获得总台数
+    protected Double getSumQuantity(int y, int m, LinkedHashMap<String, String> map, String type) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -137,7 +137,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     }
 
     //获得总金额
-    protected Double getSumAmount(int y, int m, LinkedHashMap<String, String> map,String type) {
+    protected Double getSumAmount(int y, int m, LinkedHashMap<String, String> map, String type) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
@@ -165,13 +165,18 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     }
 
     // 返回当前ClientRanking集合getNowClient
-    protected List<ClientRanking> getNowClient(int y, int m, LinkedHashMap<String, String> map,String type){         
+    protected List<ClientRanking> getNowClient(int y, int m, LinkedHashMap<String, String> map, String type) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
+        String status = map.get("status") != null ? map.get("status") : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        if (status.equals("true")) {
+            sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
         sb.append(" AND n_code_DA ").append(n_code_DA);
         if (!"".equals(n_code_DC)) {
             sb.append(" AND n_code_DC ").append(n_code_DC);
@@ -182,7 +187,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } else {
             sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
         }
-        sb.append(" GROUP BY cusno ORDER BY sum(amount) desc LIMIT 20 ");
+        if (status.equals("true")) {
+            sb.append(" GROUP BY parentcusno ORDER BY sum(amount) desc LIMIT 20 ");
+        } else {
+            sb.append(" GROUP BY cusno ORDER BY sum(amount) desc LIMIT 20 ");
+        }
 
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
         try {
@@ -203,8 +212,8 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 }
                 ct = new ClientRanking();
                 ct.setCusna("总计");
-                ct.setNowshpqy1(String.valueOf(getSumQuantity(y, m, map,type)));
-                ct.setNowshpamts(String.valueOf(getSumAmount(y, m, map,type)));
+                ct.setNowshpqy1(String.valueOf(getSumQuantity(y, m, map, type)));
+                ct.setNowshpamts(String.valueOf(getSumAmount(y, m, map, type)));
                 list.add(ct);
             }
             return list;
@@ -215,13 +224,18 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     }
 
     // 返回同期ClientRanking集合
-    protected List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map,String type) {
+    protected List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map, String type) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
+        String status = map.get("status") != null ? map.get("status") : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        if (status.equals("true")) {
+            sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
         sb.append(" AND n_code_DA ").append(n_code_DA);
         if (!"".equals(n_code_DC)) {
             sb.append(" AND n_code_DC ").append(n_code_DC);
@@ -232,8 +246,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } else {
             sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
         }
-        sb.append(" GROUP BY cusno ORDER BY sum(amount) desc ");
-
+        if (status.equals("true")) {
+            sb.append(" GROUP BY parentcusno ORDER BY sum(amount) desc ");
+        } else {
+            sb.append(" GROUP BY cusno ORDER BY sum(amount) desc");
+        }
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
         try {
             ClientRanking ct;
@@ -253,8 +270,8 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 }
                 ct = new ClientRanking();
                 ct.setCusna("总计");
-                ct.setPastshpqy1(String.valueOf(getSumQuantity(y, m, map,type)));
-                ct.setPastshpamts(String.valueOf(getSumAmount(y, m, map,type)));
+                ct.setPastshpqy1(String.valueOf(getSumQuantity(y, m, map, type)));
+                ct.setPastshpamts(String.valueOf(getSumAmount(y, m, map, type)));
                 list.add(ct);
             }
             return list;
@@ -265,13 +282,13 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     }
 
     public List<ClientRanking> getClientList(int y, int m, LinkedHashMap<String, String> map) {
-        String type= "Shipment";
+        String type = "Shipment";
         List<ClientRanking> list = new ArrayList<>();
         //得到已经有排名的list
         //NowClient
-        List<ClientRanking> nowList = getNowClient(y, m, map,type);
+        List<ClientRanking> nowList = getNowClient(y, m, map, type);
         //PastClient
-        List<ClientRanking> pastList = getPastClient(y - 1, m, map,type);
+        List<ClientRanking> pastList = getPastClient(y - 1, m, map, type);
         //循环nowList 并与 pastList 合并客户
         //其他值
         Double nowothershpqy1, pastothershpqy1;
@@ -453,6 +470,5 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     protected String RTgrowthrate(String a, String b) {
         return df.format((Double.parseDouble(a) - Double.parseDouble(b)) / Double.parseDouble(b) * 100);
     }
-
 
 }

@@ -25,8 +25,8 @@ public class ProductionQuantityKBA extends ProductionQuantity {
         queryParams.put("linecode", " IN('AT','ORC','RT') ");
         //制令等级
         queryParams.put("typecode", "= '01' ");
-        //
-        queryParams.put("itcls", " IN ('3B80')");
+        //陆夏玲2019年7月8日提出新增品号'3B76','3B79'
+        queryParams.put("itcls", " IN ('3B76','3B79','3B80')");
 
     }
 }
