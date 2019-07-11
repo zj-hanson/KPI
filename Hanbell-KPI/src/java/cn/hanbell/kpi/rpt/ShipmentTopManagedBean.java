@@ -73,7 +73,8 @@ public class ShipmentTopManagedBean implements Serializable {
     FacesContext fc;
     ExternalContext ec;
     protected IndicatorChart indicatorChart;
-    private boolean checkbox;
+    protected boolean checkbox;
+    protected boolean status;
 
     private final DecimalFormat df;
 
@@ -188,84 +189,71 @@ public class ShipmentTopManagedBean implements Serializable {
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷产品");
                 getMap().put("n_code_DA", "= 'R'");
-                getMap().put("deptno", "= '1F000'");
                 break;
             case "1F330":
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "制冷冷冻");
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("n_code_DC", "= 'L'");
-                getMap().put("deptno", "= '1F000'");
                 break;
             case "1F310":
                 getMap().put("deptnoname", "制冷产品部");
                 getMap().put("daname", "空调热泵");
                 getMap().put("n_code_DA", "= 'R'");
                 getMap().put("n_code_DC", " IN ('R','H') ");
-                getMap().put("deptno", "= '1F000'");
                 break;
             case "1Q000":
                 getMap().put("deptnoname", "空压机组产品部");
                 getMap().put("daname", "空压机组");
                 getMap().put("n_code_DA", "= 'AA'");
-                getMap().put("deptno", "= '1Q000'");
                 break;
             case "1G100":
                 getMap().put("deptnoname", "空压机体营销一课");
                 getMap().put("daname", "A机体");
                 getMap().put("n_code_DA", "= 'AH'");
                 getMap().put("n_code_DC", " LIKE 'AJ%'");
-                getMap().put("deptno", "= '1G000'");
                 break;
             case "1G500":
                 getMap().put("deptnoname", "空压机体营销二课");
                 getMap().put("daname", "SDS无油");
                 getMap().put("n_code_DA", "= 'AH'");
                 getMap().put("n_code_DC", " = 'SDS' ");
-                getMap().put("deptno", "= '1G000'");
                 break;
             case "1H000":
                 getMap().put("deptnoname", "真空产品部");
                 getMap().put("daname", "真空泵");
                 getMap().put("n_code_DA", "= 'P'");
-                getMap().put("deptno", "= '1H000'");
                 break;
             case "1U000":
                 getMap().put("deptnoname", "涡旋产品部");
                 getMap().put("daname", "涡旋");
                 getMap().put("n_code_DA", "= 'S'");
-                getMap().put("deptno", "= '1U000'");
                 break;
             case "5A000":
                 getMap().put("deptnoname", "制冷机组产品部");
                 getMap().put("daname", "RT制冷");
                 getMap().put("n_code_DA", "= 'RT'");
-                getMap().put("deptno", "= '50000'");
                 break;
             case "5B000":
                 getMap().put("deptnoname", "再生能源部");
                 getMap().put("daname", "再生能源");
                 getMap().put("n_code_DA", "= 'OH'");
-                getMap().put("deptno", "= '50000'");
                 break;
             case "5C000":
                 getMap().put("deptnoname", "涡轮产品部");
                 getMap().put("daname", "涡轮产品");
                 getMap().put("n_code_DA", "= 'RT'");
-                getMap().put("deptno", "= '50000'");
                 break;
             case "50000":
                 getMap().put("deptnoname", "柯茂");
                 getMap().put("daname", "离心机");
                 getMap().put("n_code_DA", " In('RT','OH') ");
-                getMap().put("deptno", "= '50000'");
                 break;
             default:
                 getMap().put("deptnoname", "");
                 getMap().put("daname", "");
                 getMap().put("n_code_DA", "");
                 getMap().put("n_code_DC", "");
-                getMap().put("deptno", "");
         }
     }
 
@@ -291,6 +279,11 @@ public class ShipmentTopManagedBean implements Serializable {
                             m = getMonth();
                         }
                     }
+                }
+                if(isStatus()){
+                    getMap().put("status", "true");
+                }else{
+                    getMap().put("status", "false");
                 }
                 List<ClientRanking> list;
                 list = salesTableBean.getClientList(y, m, map);
@@ -449,5 +442,21 @@ public class ShipmentTopManagedBean implements Serializable {
     public String getDeptno() {
         return deptno;
     }
+
+    /**
+     * @return the status
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    
 
 }

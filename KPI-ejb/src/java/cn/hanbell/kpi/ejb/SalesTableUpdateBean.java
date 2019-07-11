@@ -371,20 +371,20 @@ public class SalesTableUpdateBean implements Serializable {
                         st.setItnbrcus(row[2] == null ? "null" : row[2].toString());
                         st.setCusno(row[3].toString());
                         st.setCusna(row[4].toString());
-                        st.setParentcusno(row[3].toString());
-                        st.setParentcusna(row[4].toString());
-                        st.setCdrdate(df.parse(row[5].toString()));
-                        st.setDeptno(row[6].toString());
-                        st.setQuantity(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
-                        st.setAmount(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
-                        st.setNcodeDA(row[9] == null ? n_code_DA : row[9].toString());
-                        st.setNcodeCD(row[10] == null ? "null" : row[10].toString());
-                        st.setNcodeDC(row[11] == null ? "null" : row[11].toString());
-                        st.setNcodeDD(row[12] == null ? "null" : row[12].toString());
-                        st.setMancode(row[13].toString());
-                        st.setManname(row[14].toString());
-                        st.setHmark1(row[15] == null ? "null" : row[15].toString());
-                        st.setHmark2(row[16] == null ? "null" : row[16].toString());
+                        st.setParentcusno(row[5] == null ? "null" : row[5].toString());
+                        st.setParentcusna(row[6] == null ? "null" : row[6].toString());
+                        st.setCdrdate(df.parse(row[7].toString()));
+                        st.setDeptno(row[8].toString());
+                        st.setQuantity(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
+                        st.setAmount(BigDecimal.valueOf(Double.parseDouble(row[10].toString())));
+                        st.setNcodeDA(row[11] == null ? n_code_DA : row[11].toString());
+                        st.setNcodeCD(row[12] == null ? "null" : row[12].toString());
+                        st.setNcodeDC(row[13] == null ? "null" : row[13].toString());
+                        st.setNcodeDD(row[14] == null ? "null" : row[14].toString());
+                        st.setMancode(row[15].toString());
+                        st.setManname(row[16].toString());
+                        st.setHmark1(row[17] == null ? "null" : row[17].toString());
+                        st.setHmark2(row[18] == null ? "null" : row[18].toString());
                         returnlist.add(st);
                     }
                 }
@@ -405,7 +405,7 @@ public class SalesTableUpdateBean implements Serializable {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         StringBuilder sb = new StringBuilder();
 
-        sb.append(" SELECT facno,'ServiceAmount' AS type,itnbrcus,a.cusno,s.cusna,cdrdate,depno,quantity,amount ");
+        sb.append(" SELECT facno,'ServiceAmount' AS type,itnbrcus,a.cusno,s.cusna,o.code,o.cdesc,cdrdate,depno,quantity,amount ");
         sb.append(" ,n_code_DA,n_code_CD,n_code_DC,n_code_DD,mancode,e.username AS manname,hmark1,hmark2 FROM (");
         if (!"1T100".equals(n_code_DA)) {
             sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
@@ -499,7 +499,7 @@ public class SalesTableUpdateBean implements Serializable {
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.bakdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             }
         }
-        sb.append(" ) a,cdrcus s ,secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
+        sb.append(" ) a,cdrcus s LEFT OUTER JOIN miscode o on s.cusgroup = o.code and o.ckind= 'CB',secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
         String sql = sb.toString().replace("${facno}", arrString).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
 
         try {
@@ -519,7 +519,7 @@ public class SalesTableUpdateBean implements Serializable {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         StringBuilder sb = new StringBuilder();
 
-        sb.append(" SELECT facno,'SalesOrder' AS type,itnbrcus,a.cusno,s.cusna,cdrdate,depno,quantity,amount ");
+        sb.append(" SELECT facno,'SalesOrder' AS type,itnbrcus,a.cusno,s.cusna,o.code,o.cdesc,cdrdate,depno,quantity,amount ");
         sb.append(" ,n_code_DA,n_code_CD,n_code_DC,n_code_DD,mancode,e.username AS manname,hmark1,hmark2 FROM (");
         if (!"1T100".equals(n_code_DA)) {
             sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,isnull(sum(d.cdrqy1),0) AS quantity, ");
@@ -565,7 +565,7 @@ public class SalesTableUpdateBean implements Serializable {
             }
         }
 
-        sb.append(" ) a,cdrcus s ,secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
+        sb.append(" ) a,cdrcus s LEFT OUTER JOIN miscode o on s.cusgroup = o.code and o.ckind= 'CB' ,secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
 
         String sql = sb.toString().replace("${facno}", arrString).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
 
@@ -587,7 +587,7 @@ public class SalesTableUpdateBean implements Serializable {
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD") : "";
         StringBuilder sb = new StringBuilder();
 
-        sb.append("SELECT facno,'Shipment' AS type,itnbrcus,a.cusno,s.cusna,cdrdate,depno,quantity,amount ");
+        sb.append("SELECT facno,'Shipment' AS type,itnbrcus,a.cusno,s.cusna,o.code,o.cdesc,cdrdate,depno,quantity,amount ");
         sb.append(",n_code_DA,n_code_CD,n_code_DC,n_code_DD,mancode,e.username AS manname,hmark1,hmark2 FROM ( ");
         //第一部分为整机出货销退
         sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno, ");
@@ -717,7 +717,7 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" and year(h.bildat) = ${y}   and month(h.bildat) =${m} ");
             sb.append(" group by  h.facno,h.cusno,h.depno,h.bildat,mancode ");
         }
-        sb.append(" ) a,cdrcus s ,secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
+        sb.append(" ) a,cdrcus s LEFT OUTER JOIN miscode o on s.cusgroup = o.code and o.ckind= 'CB',secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
 
         String sql = sb.toString().replace("${facno}", arrString).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
 

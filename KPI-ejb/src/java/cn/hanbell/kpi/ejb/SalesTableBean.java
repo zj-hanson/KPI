@@ -166,17 +166,17 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
 
     // 返回当前ClientRanking集合getNowClient
     protected List<ClientRanking> getNowClient(int y, int m, LinkedHashMap<String, String> map, String type) {
-        String deptno = map.get("deptno") != null ? map.get("deptno") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
+        String status = map.get("status") != null ? map.get("status") : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT cusno,cusna,sum(quantity),sum(amount) FROM ");
-        sb.append(" (SELECT (CASE WHEN p.cusno IS NOT NULL THEN p.parentcusno ELSE s.cusno end) as cusno, ");
-        sb.append(" (CASE WHEN p.cusno IS NOT  NULL THEN p.parentcusna ELSE s.cusna end ) as cusna,s.quantity,s.amount FROM  SalesTable s ");
-        sb.append(" LEFT JOIN  (SELECT cusno,cusna,parentcusno,parentcusna FROM ParentCompany where deptno ${deptno} ");
-        sb.append(" ) p ON s.cusno=p.cusno where type='${type}'  ");
+        if (status.equals("true")) {
+            sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
         sb.append(" AND n_code_DA ").append(n_code_DA);
         if (!"".equals(n_code_DC)) {
             sb.append(" AND n_code_DC ").append(n_code_DC);
@@ -187,9 +187,13 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } else {
             sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
         }
-        sb.append(" ) a GROUP BY cusno ORDER BY sum(amount) desc LIMIT 20 ");
+        if (status.equals("true")) {
+            sb.append(" GROUP BY parentcusno ORDER BY sum(amount) desc LIMIT 20 ");
+        } else {
+            sb.append(" GROUP BY cusno ORDER BY sum(amount) desc LIMIT 20 ");
+        }
 
-        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${deptno}", deptno);
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
         try {
             ClientRanking ct;
             List<ClientRanking> list = new ArrayList<>();
@@ -221,17 +225,17 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
 
     // 返回同期ClientRanking集合
     protected List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map, String type) {
-        String deptno = map.get("deptno") != null ? map.get("deptno") : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
         String style = map.get("style") != null ? map.get("style") : "";
+        String status = map.get("status") != null ? map.get("status") : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT cusno,cusna,sum(quantity),sum(amount) FROM ");
-        sb.append(" (SELECT (CASE WHEN p.cusno IS NOT NULL THEN p.parentcusno ELSE s.cusno end) as cusno, ");
-        sb.append(" (CASE WHEN p.cusno IS NOT  NULL THEN p.parentcusna ELSE s.cusna end ) as cusna,s.quantity,s.amount FROM  SalesTable s ");
-        sb.append(" LEFT JOIN  (SELECT cusno,cusna,parentcusno,parentcusna FROM ParentCompany where deptno ${deptno} ");
-        sb.append(" ) p ON s.cusno=p.cusno where type='${type}'  ");
+        if (status.equals("true")) {
+            sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
         sb.append(" AND n_code_DA ").append(n_code_DA);
         if (!"".equals(n_code_DC)) {
             sb.append(" AND n_code_DC ").append(n_code_DC);
@@ -242,9 +246,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } else {
             sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
         }
-        sb.append(" ) a GROUP BY cusno ORDER BY sum(amount) desc ");
-
-        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${deptno}", deptno);;
+        if (status.equals("true")) {
+            sb.append(" GROUP BY parentcusno ORDER BY sum(amount) desc ");
+        } else {
+            sb.append(" GROUP BY cusno ORDER BY sum(amount) desc");
+        }
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
         try {
             ClientRanking ct;
             List<ClientRanking> list = new ArrayList<>();
