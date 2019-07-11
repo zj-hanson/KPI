@@ -62,7 +62,7 @@ public class ProductionPlanComplete extends Production {
             sb.append(" and m.itcls ").append(itcls);
         }
         if (!"".equals(itnbrf)) {
-            sb.append(" and m.itnbrf  ").append(itnbrf);
+            sb.append(itnbrf);
         }
         sb.append(" and year(h.fshdat) = ${y} and month(h.fshdat)= ${m} ");
         switch (type) {
@@ -143,7 +143,7 @@ public class ProductionPlanComplete extends Production {
             sb.append(" and m.itcls ").append(itcls);
         }
         if (!"".equals(itnbrf)) {
-            sb.append(" and m.itnbrf  ").append(itnbrf);
+            sb.append(itnbrf);
         }
         sb.append(" and year(h.fshdat) = ${y} and month(h.fshdat)= ${m} and h.fshdat< '${d}' GROUP BY day(h.fshdat) ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))

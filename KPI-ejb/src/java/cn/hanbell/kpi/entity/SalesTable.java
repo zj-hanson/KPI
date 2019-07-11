@@ -26,7 +26,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "salestable")
 @NamedQueries({
-    @NamedQuery(name = "SalesTable.findAll", query = "SELECT s FROM SalesTable s")})
+    @NamedQuery(name = "SalesTable.findAll", query = "SELECT s FROM SalesTable s")
+})
 public class SalesTable extends SuperEntity {
 
     @Basic(optional = false)
@@ -35,7 +36,7 @@ public class SalesTable extends SuperEntity {
     @Column(name = "facno")
     private String facno;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 20)
     @Column(name = "type")
     private String type;
@@ -49,26 +50,33 @@ public class SalesTable extends SuperEntity {
     private String cusno;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 30)
     @Column(name = "cusna")
     private String cusna;
+    @Size(max = 20)
+    @Column(name = "parentcusno")
+    private String parentcusno;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Size(max = 30)
+    @Column(name = "parentcusna")
+    private String parentcusna;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cdrdate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date cdrdate;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 10)
     @Column(name = "deptno")
     private String deptno;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "quantity")
     private BigDecimal quantity;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "amount")
     private BigDecimal amount;
     @Size(max = 10)
@@ -107,29 +115,6 @@ public class SalesTable extends SuperEntity {
     @Size(max = 20)
     @Column(name = "hmark2")
     private String hmark2;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
-    @Column(name = "status")
-    private String status;
-    @Size(max = 20)
-    @Column(name = "creator")
-    private String creator;
-    @Column(name = "credate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date credate;
-    @Size(max = 20)
-    @Column(name = "optuser")
-    private String optuser;
-    @Column(name = "optdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date optdate;
-    @Size(max = 20)
-    @Column(name = "cfmuser")
-    private String cfmuser;
-    @Column(name = "cfmdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cfmdate;
 
     public SalesTable() {
     }
@@ -189,6 +174,22 @@ public class SalesTable extends SuperEntity {
 
     public void setCusna(String cusna) {
         this.cusna = cusna;
+    }
+
+    public String getParentcusno() {
+        return parentcusno;
+    }
+
+    public void setParentcusno(String parentcusno) {
+        this.parentcusno = parentcusno;
+    }
+
+    public String getParentcusna() {
+        return parentcusna;
+    }
+
+    public void setParentcusna(String parentcusna) {
+        this.parentcusna = parentcusna;
     }
 
     public Date getCdrdate() {
@@ -343,5 +344,5 @@ public class SalesTable extends SuperEntity {
     public String toString() {
         return "cn.hanbell.kpi.entity.SalesTable[ id=" + id + " ]";
     }
-    
+
 }

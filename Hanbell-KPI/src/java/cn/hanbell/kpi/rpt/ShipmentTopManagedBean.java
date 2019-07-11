@@ -73,7 +73,8 @@ public class ShipmentTopManagedBean implements Serializable {
     FacesContext fc;
     ExternalContext ec;
     protected IndicatorChart indicatorChart;
-    private boolean checkbox;
+    protected boolean checkbox;
+    protected boolean status;
 
     private final DecimalFormat df;
 
@@ -279,6 +280,11 @@ public class ShipmentTopManagedBean implements Serializable {
                         }
                     }
                 }
+                if(isStatus()){
+                    getMap().put("status", "true");
+                }else{
+                    getMap().put("status", "false");
+                }
                 List<ClientRanking> list;
                 list = salesTableBean.getClientList(y, m, map);
                 //list = clientrank.getClientList(y, m, getMap());
@@ -436,5 +442,21 @@ public class ShipmentTopManagedBean implements Serializable {
     public String getDeptno() {
         return deptno;
     }
+
+    /**
+     * @return the status
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    
 
 }
