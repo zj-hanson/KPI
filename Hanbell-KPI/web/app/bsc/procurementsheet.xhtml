@@ -9,7 +9,7 @@
     <ui:define name="content">
 
         <h:form id="formOne" style="height: 100%">
-            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
+            <p:growl id="growl" showSummary="false" showDetail="true" />
             <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{procurementReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
