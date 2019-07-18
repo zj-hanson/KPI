@@ -144,7 +144,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             row.setHeight((short) 400);
             Cell cell0 = row.createCell(0);
             cell0.setCellStyle(style.get("cell"));
-            cell0.setCellValue(cp.getNcodeCD());
+            cell0.setCellValue(cp.getNcodeDC());
             Cell cell1 = row.createCell(1);
             cell1.setCellStyle(style.get("cell"));
             cell1.setCellValue(cp.getKfno());
