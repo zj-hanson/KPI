@@ -147,7 +147,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'Z' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -397,11 +397,14 @@ public class GroupVHShipmentBean implements Serializable {
                 protype = "压缩机DORIN";
                 protypeno = "DR";
                 shptype = "1";
-            } else if (hmark1.contains("CDU")) {
-                protype = "机组CDU";
-                protypeno = "CDU"; 
-                shptype = "2";
-            } else if (hmark1.contains("A")) {
+            } 
+            ////20190702 取消CDU产品别归到代理品
+//            else if (hmark1.contains("CDU")) {
+//                protype = "机组CDU";
+//                protypeno = "CDU";    
+//                shptype = "2";
+//            } 
+            else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
                 protypeno = "A";
                 shptype = "2";
