@@ -6,9 +6,9 @@
 package cn.hanbell.kpi.mail;
 
 import cn.hanbell.eap.ejb.CustomerComplaintBean;
-import cn.hanbell.eap.ejb.CustomerComplaintDetailBean;
+import cn.hanbell.eap.ejb.CustomerComplaintMaterialBean;
 import cn.hanbell.eap.entity.CustomerComplaint;
-import cn.hanbell.eap.entity.CustomerComplaintDetail;
+import cn.hanbell.eap.entity.CustomerComplaintMaterial;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.entity.Indicator;
 import com.lightshell.comm.BaseLib;
@@ -48,7 +48,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     @EJB
     protected CustomerComplaintBean customerComplaintBean;
     @EJB
-    protected CustomerComplaintDetailBean customerComplaintDetailBean;
+    protected CustomerComplaintMaterialBean complaintMaterialBean;
 
     public CustomerComplaintFileMailBean() {
 
@@ -61,7 +61,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     }
 
     public String[] getCuscomPlaintTitle() {
-        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "结案时间"};
+        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
     public String[] getCuscomPlaintDetailTitle() {
@@ -69,7 +69,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     }
 
     private int[] getCuscomPlaintWidth() {
-        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 20};
+        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20};
     }
 
     private int[] getCuscomPlaintDetailWidth() {
@@ -90,9 +90,9 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     protected String getMailBody() {
         List<CustomerComplaint> plaintlist = customerComplaintBean.findOverdate(d);
         if (plaintlist != null && !plaintlist.isEmpty()) {
-            List<CustomerComplaintDetail> plaintDetailList = new ArrayList<>();
+            List<CustomerComplaintMaterial> plaintDetailList = new ArrayList<>();
             for (int i = 0; i < plaintlist.size(); i++) {
-                List<CustomerComplaintDetail> list = customerComplaintDetailBean.findKfno(plaintlist.get(i).getKfno());
+                List<CustomerComplaintMaterial> list = complaintMaterialBean.findKfno(plaintlist.get(i).getKfno());
                 if (list != null && !list.isEmpty()) {
                     plaintDetailList.addAll(list);
                 }
@@ -110,7 +110,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
         return BaseLib.formatDate("yyyy-MM-dd HH:mm", new Date());
     }
 
-    public File getFile(List<CustomerComplaint> complaintlist, List<CustomerComplaintDetail> complaintDetailLis) throws FileNotFoundException, IOException {
+    public File getFile(List<CustomerComplaint> complaintlist, List<CustomerComplaintMaterial> complaintMaterialList) throws FileNotFoundException, IOException {
         String filename = y + "年" + m + "月" + mailSubject;
         HSSFWorkbook workbook = new HSSFWorkbook();
         //获得表格样式
@@ -162,25 +162,28 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell5.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
             Cell cell6 = row.createCell(6);
             cell6.setCellStyle(style.get("cell"));
-            cell6.setCellValue(cp.getClcost().toString());
+            cell6.setCellValue(cp.getMaterialcost().toString());
             Cell cell7 = row.createCell(7);
             cell7.setCellStyle(style.get("cell"));
-            cell7.setCellValue(cp.getRgcost().toString());
+            cell7.setCellValue(cp.getLabourcost().toString());
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(cp.getYscost().toString());
+            cell8.setCellValue(cp.getTansportexpense().toString());
             Cell cell9 = row.createCell(9);
             cell9.setCellStyle(style.get("cell"));
-            cell9.setCellValue(cp.getClvcost().toString());
+            cell9.setCellValue(cp.getTravelexpense().toString());
             Cell cell10 = row.createCell(10);
             cell10.setCellStyle(style.get("cell"));
-            cell10.setCellValue(cp.getReparations() != null ? cp.getReparations().toString() : "");
+            cell10.setCellValue(cp.getClaimamount().toString());
             Cell cell11 = row.createCell(11);
             cell11.setCellStyle(style.get("cell"));
-            cell11.setCellValue(cp.getOther() != null ? cp.getOther().toString() : "");
+            cell11.setCellValue(cp.getOthercost().toString());
             Cell cell12 = row.createCell(12);
             cell12.setCellStyle(style.get("cell"));
-            cell12.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
+            cell12.setCellValue(cp.getTotalamount().toString());
+            Cell cell13 = row.createCell(13);
+            cell13.setCellStyle(style.get("cell"));
+            cell13.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
         }
         //表格二
         String[] title2 = getCuscomPlaintDetailTitle();
@@ -191,8 +194,8 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell.setCellStyle(style.get("head"));
             cell.setCellValue(title2[i]);
         }
-        for (int i = 0; i < complaintDetailLis.size(); i++) {
-            CustomerComplaintDetail cpd = complaintDetailLis.get(i);
+        for (int i = 0; i < complaintMaterialList.size(); i++) {
+            CustomerComplaintMaterial cpd = complaintMaterialList.get(i);
             row = sheet2.createRow(i + 1);
             row.setHeight((short) 400);
             Cell cell0 = row.createCell(0);
