@@ -369,7 +369,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                                     ClientRanking ct = new ClientRanking();
                                     ct.setCusna("其他");
                                     ct.setNowshpqy1(String.valueOf(nowothershpqy1));
-                                    ct.setNowshpamts(df.format(nowothershpamts < 0 ? 0 : nowothershpamts));
+                                    ct.setNowshpamts(df.format(Math.ceil(nowothershpamts)==0 ? 0 : nowothershpamts));
                                     ct.setPastshpqy1(String.valueOf(pastothershpqy1));
                                     if (new DecimalFormat("#").format(pastothershpamts).equals("0")) {
                                         ct.setPastshpamts("0");
