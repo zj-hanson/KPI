@@ -32,7 +32,7 @@ public abstract class ShipmentAmts extends Shipment {
         sb.append(" select isnull(sum(a.shpamts),0) from ( ");
         sb.append(" select d.itnbr,d.shpno,d.trseq,s.itcls,s.itdsc,h.shpdate,isnull(d.shpqy1,0),isnull(d.shpqy2,0) as shpqy2,d.unpris,s.rate2, ");
         sb.append(" cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else d.shpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) as decimal(10,4)) as shpamts,'2' , ");
+        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else (case when h.tax = '1' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) end) as decimal(10,4)) as shpamts,'2' , ");
         sb.append(" left(convert(char(12),h.shpdate,112),6),h.moveno ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.shpno=d.shpno and d.itnbr=s.itnbr ");
@@ -60,7 +60,7 @@ public abstract class ShipmentAmts extends Shipment {
         //销退
         sb.append(" select d.itnbr,d.bakno,d.trseq,s.itcls,s.itdsc,h.bakdate,-1*isnull(d.bshpqy1,0),-1*isnull(d.bshpqy2,0) as shpqy2,d.unpris,s.rate2, ");
         sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) as decimal(10,4)) as shpamts,'1' , ");
+        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else (case when h.tax = '1' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) end) as decimal(10,4)) as shpamts,'1' , ");
         sb.append(" left(convert(char(12),h.bakdate,112),6),h.bakno ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
         sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
@@ -87,7 +87,10 @@ public abstract class ShipmentAmts extends Shipment {
         //折让
         sb.append(" select  d.itnbr,d.bakno,d.trseq,s.itcls,s.itdsc,a.bildat,-1*isnull(d.bshpqy1,0),-1*isnull(d.bshpqy2,0) as shpqy2,d.unpris,s.rate2, ");
         sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(10,4)) as shpamts,'1' , ");
+        //<--20190729 修改逻辑 判断出货单是否应税 否则就不在除以税率
+        //sb.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(10,4)) as shpamts,'1' , ");
+        sb.append(" -1*cast((case when a.taxkd = '1' then a.losamts else a.losamts/(1+a.taxrate) end) as decimal(10,4)) as shpamts,'1' , ");
+        //-->
         sb.append(" left(convert(char(12),a.bildat,112),6),a.recno ");
         sb.append(" from armblos a,cdrbdta d,invmas s ");
         sb.append(" where a.facno=d.facno ");

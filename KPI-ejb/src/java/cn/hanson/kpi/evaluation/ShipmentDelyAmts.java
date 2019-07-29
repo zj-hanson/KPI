@@ -37,7 +37,7 @@ public abstract class ShipmentDelyAmts extends Shipment {
         sb.append(" select d.shpno,h.indate,left(convert(char(12),h.indate,112),6) as yearmon,d.itnbr,s.itcls,d.trseq,h.shpdate, ");
         sb.append(" cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else d.shpqy1 end)  as decimal(17,2)) as shpqy, ");
         sb.append(" d.unpris,s.rate2,h.ratio, ");
-        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) as decimal(17,2)) as shpamts, ");
+        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else (case when h.tax = '1' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) end) as decimal(17,2)) as shpamts, ");
         sb.append(" (case when h.cusno in ('HSH00003') then 'SHB' when h.cusno in ('HTW00001') then 'THB' else 'OTHER' end) as cdrcus, ");
         sb.append(" (case when left(s.spdsc,2)='HT' then 'HT' when left(s.spdsc,2)='QT'then 'QT' else 'OTH' end) as material ");
         sb.append(" from cdrdta d left join invmas s on s.itnbr=d.itnbr ,cdrhad h   ");
