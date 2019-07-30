@@ -219,7 +219,7 @@ public class GroupHSShipmentBean implements Serializable {
         sb.append(" select a.soday,isnull(sum(a.num),0),isnull(sum(a.shpamts),0) from ( ");
         sb.append(" select h.shpdate as soday, ");
         sb.append(" cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else d.shpqy1 end,0) as decimal(12,2)) as num,");
-        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as shpamts ");
+        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else (case when h.tax = '1' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.shpno=d.shpno and d.itnbr=s.itnbr  and h.houtsta not in ('W','N') ");
         if (!"".equals(spdsc)) {
@@ -233,7 +233,7 @@ public class GroupHSShipmentBean implements Serializable {
         //销退
         sb.append(" SELECT  h.bakdate as soday, ");
         sb.append(" -1*cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end,0) as decimal(12,2)) as num, ");
-        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as shpamts ");
+        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else (case when h.tax = '1' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s");
         sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
         if (!"".equals(spdsc)) {
@@ -247,7 +247,7 @@ public class GroupHSShipmentBean implements Serializable {
         sb.append(" UNION ALL ");
         sb.append(" select  a.bildat as soday, ");
         sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(12,2)) as num, ");
-        sb.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
+        sb.append(" -1*cast((case when a.taxkd = '1' then a.losamts else a.losamts/(1+a.taxrate) end) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
         sb.append(" where a.facno=d.facno  and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr  ");
         if (!"".equals(spdsc)) {
             sb.append(" and substring(s.spdsc,1,2) ").append(spdsc);
