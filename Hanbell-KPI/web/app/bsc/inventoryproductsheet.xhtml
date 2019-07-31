@@ -8,7 +8,6 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
@@ -18,77 +17,86 @@
                 <p:inputText id="clientmonth" value="#{inventoryManagerBean.month}" title="月" />
                 <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryManagerBean.resetQuery()}"  icon="ui-icon-refresh"
                                  update="formOne" />
-                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.DCQuery()}"  icon="ui-icon-search"
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.inventoryProductQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList,remarks" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <p:dataTable id="tblList" value="#{inventoryManagerBean.inventoryList}" var="item" tableStyleClass="plgSheetData"
-                         rowSelectMode="single" rowKey="item.id">
+            <p:dataTable id="tblList" value="#{inventoryManagerBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData"
+                         rowSelectMode="single" rowKey="item.id" editable="true">
                 <f:facet name="header">
                     <span style="font-size: 21px;" >各库别之产品别库存金额表</span>
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
                 <p:column styleClass="Wid20" style="text-align: center;">
-                    <f:facet name="header">
+                    <f:facet name="header" >
                         <h:outputText value="库别"/>
                     </f:facet>
-                    <h:outputText value="#{item.whdsc}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[0]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+                
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="AA"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionAA}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[1]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
                     <f:facet name="header" >
-                        <h:outputText value="AH" style="text-align: center"/>
+                        <h:outputText value="AH"/>
                     </f:facet>
-                    <h:outputText  value="#{item.divisionAH}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[2]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
-                        <h:outputText value="AD"/>
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
+                        <h:outputText value="SDS"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionAD}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[3]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: center" >
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="R"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionR}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[4]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="RT"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionRT}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[5]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="L"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionL}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[6]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="P"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionP}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[7]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="S"/>
                     </f:facet>
-                    <h:outputText value="#{item.divisionS}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[8]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: right;">
-                    <f:facet name="header">
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
                         <h:outputText value="合计"/>
                     </f:facet>
-                    <h:outputText value="#{item.total}" style="#{(item.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item[9]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
             </p:dataTable>
             <p:panel id="remarks" style="height: 0px" >
@@ -133,6 +141,5 @@
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
-
     </ui:define>
 </ui:composition>

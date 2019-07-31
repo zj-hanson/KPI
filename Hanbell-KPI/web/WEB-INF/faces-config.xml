@@ -181,6 +181,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>inventoryproductedit</from-outcome>
+            <to-view-id>/app/prod/inventoryproductedit.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>product</from-outcome>
             <to-view-id>/app/prod/product.xhtml</to-view-id>
             <redirect/>
@@ -365,18 +370,18 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>inventoryamount</from-outcome>
-            <to-view-id>/app/bsc/inventoryamount.xhtml</to-view-id>
+            <from-outcome>inventorydepartmentsheet</from-outcome>
+            <to-view-id>/app/bsc/inventorydepartmentsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>inventoryamountda</from-outcome>
-            <to-view-id>/app/bsc/inventoryamountda.xhtml</to-view-id>
+            <from-outcome>inventoryindicatorsheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryindicatorsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>inventoryamountdc</from-outcome>
-            <to-view-id>/app/bsc/inventoryamountdc.xhtml</to-view-id>
+            <from-outcome>inventoryproductsheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryproductsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

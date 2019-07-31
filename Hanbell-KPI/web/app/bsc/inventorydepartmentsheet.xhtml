@@ -16,7 +16,7 @@
                 </f:facet>
                 <p:outputLabel for="type" value="事业部" style="font-size:18px" />
                 <p:selectOneMenu id="type" value="#{inventoryManagerBean.type}" style="width:600px;font-size: 18px">
-                    <f:selectItem itemLabel="--请选择--" itemValue="" />
+                    <f:selectItem itemLabel="--请选择--" itemValue="N" />
                     <f:selectItem itemLabel="生产目标" itemValue="SC" />
                     <f:selectItem itemLabel="服务目标" itemValue="FW" />
                     <f:selectItem itemLabel="营业目标" itemValue="YY" />
@@ -24,7 +24,7 @@
                 </p:selectOneMenu>
                 <p:outputLabel for="genre" value="产品别" style="font-size:18px" />
                 <p:selectOneMenu id="genre" value="#{inventoryManagerBean.genre}" style="width:600px;font-size: 18px">
-                    <f:selectItem itemLabel="--请选择--" itemValue="" />
+                    <f:selectItem itemLabel="--请选择--" itemValue="N" />
                     <f:selectItems value="#{inventoryManagerBean.cities}" />
                 </p:selectOneMenu>
                 <p:outputLabel value="请输入查询的年份" for="clientyear" style="font-size:18px" />
@@ -39,15 +39,15 @@
                 <f:facet name="right">
                     <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryManagerBean.resetQuery()}"  icon="ui-icon-refresh"
                                      update="formOne" />
-                    <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.DAQuery()}"  icon="ui-icon-search"
-                                     update="formOne:tblList,remarks" />
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.inventoryDepartmentQuery()}"  icon="ui-icon-search"
+                                     update="formOne:tblList" />
                 </f:facet>
             </p:toolbar>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <p:dataTable id="tblList" value="#{inventoryManagerBean.inventoryStatementsList}" var="item" tableStyleClass="plgSheetData"
+            <p:dataTable id="tblList" value="#{inventoryManagerBean.inventoryDepartmentsList}" var="item" tableStyleClass="plgSheetData"
                          rowSelectMode="single" rowKey="item.id">
                 <f:facet name="header">
-                    <span style="font-size: 21px;" >物料库存状况表</span>
+                    <span style="font-size: 21px;" >各事业部物料库存状况表</span>
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
@@ -55,77 +55,39 @@
                     <f:facet name="header">
                         <h:outputText value="库别"/>
                     </f:facet>
-                    <h:outputText value="#{item.wareh}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.inventoryDepartmentPK.whdsc}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="#{inventoryManagerBean.date3}"/>
                     </f:facet>
-                    <h:outputText value="#{item.amount1}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.n01}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header" >
                         <h:outputText value="#{inventoryManagerBean.date2}" style="text-align: center"/>
                     </f:facet>
-                    <h:outputText  value="#{item.amount2}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText  value="#{item.n02}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="#{inventoryManagerBean.date1}"/>
                     </f:facet>
-                    <h:outputText value="#{item.amount3}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.n03}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: center" >
                     <f:facet name="header">
                         <h:outputText value="差异"/>
                     </f:facet>
-                    <h:outputText value="#{item.difference}" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.difference}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="占比"/>
                     </f:facet>
-                    <h:outputText value="#{item.proportion}%" style="#{(item.wareh == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{item.proportion}%" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
             </p:dataTable>
-            <p:panel id="remarks" style="height: 0px" >
-                <c:if test="#{inventoryManagerBean.summaryCount != 0 }">
-                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repSummary" value="#{inventoryManagerBean.summaryList}" var="s" rendered="#{inventoryManagerBean.summaryCount>0}">
-                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid>
-                                    <h:outputText id="summary"/>
-                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                </c:if>
-                <c:if test="#{inventoryManagerBean.analysisCount != 0}">
-                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repAnalysis" value="#{inventoryManagerBean.analysisList}" var="a" rendered="#{inventoryManagerBean.analysisCount>0}">
-                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
-                                    <h:outputText id="issueLabel" value="问题"/>
-                                    <h:outputText id="factorLabel" value="原因"/>
-                                    <h:outputText id="countermeasureLabel" value="对策"/>
-                                    <h:outputText id="issue"/>
-                                    <h:outputText id="factor"/>
-                                    <h:outputText id="countermeasure"/>
-                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
-                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
-                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                </c:if>
-                <c:if test="#{inventoryManagerBean.analysisCount != 0  or inventoryManagerBean.summaryCount != 0 }">
-                    <h:outputScript name="bsc-clientranking.js" library="js"/>
-                    <h:inputHidden id="ac" value="#{inventoryManagerBean.analysisCount}"></h:inputHidden>
-                    <h:inputHidden id="sc" value="#{inventoryManagerBean.summaryCount}"></h:inputHidden>
-                </c:if>
-            </p:panel>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
