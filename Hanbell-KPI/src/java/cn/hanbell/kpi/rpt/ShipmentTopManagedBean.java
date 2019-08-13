@@ -246,7 +246,7 @@ public class ShipmentTopManagedBean implements Serializable {
                 break;
             case "50000":
                 getMap().put("deptnoname", "柯茂");
-                getMap().put("daname", "离心机");
+                getMap().put("daname", "柯茂");
                 getMap().put("n_code_DA", " In('RT','OH') ");
                 break;
             default:
