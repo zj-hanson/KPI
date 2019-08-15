@@ -82,7 +82,7 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
         statusMap = new LinkedHashMap<>();
         if (indicatorChart.getRemark().contains("汉钟")) {
             statusMap.put("title", "上海汉钟精机股份有限公司");
-            facno = "CK";
+            facno = "C";
         }
         if (indicatorChart.getRemark().contains("柯茂")) {
             statusMap.put("title", "上海柯茂机械有限公司");
