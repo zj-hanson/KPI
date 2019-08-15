@@ -39,13 +39,12 @@ public class InventoryAmountA2 extends Inventory {
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         // 公用物料部分
-        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
+        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
-        sb.append(" AND indicatorno = 'C10' ");// 待指标数据都归档完成之前用这个逻辑（ERP需维护每个指标对应的库别）
-        // if (!"".equals(indicatorno)) {
-        // sb.append(" AND indicatorno = '").append(indicatorno).append("'");
-        // }
+        if (!"".equals(indicatorno)) {
+            sb.append(" AND indicatorno = 'C05'");
+        }
         if (!"".equals(categories)) {
             sb.append(" AND categories = '").append(categories).append("'");
         }
@@ -73,7 +72,7 @@ public class InventoryAmountA2 extends Inventory {
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct  ");
+        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct  ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
         if (!"".equals(categories)) {
@@ -106,7 +105,7 @@ public class InventoryAmountA2 extends Inventory {
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
+        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct ");
         sb.append(" where 1=1  ");
         if (!"".equals(indicatorno)) {
             switch (indicatorno) {
@@ -151,18 +150,18 @@ public class InventoryAmountA2 extends Inventory {
         BigDecimal result = BigDecimal.ZERO;
         // 生产性物料 RT、AD和P部分的数据
         sb.append(" select ifnull(sum(a.num),0) from ( ");
-        // indicatorno暂时写成B20
+        // indicatorno暂时写成B20 后续改为“按物料归类”
         sb.append(
-                " select sum(amount+amamount) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                " select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
         sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
         }
-        sb.append(" AND genre NOT IN ('RT','P','AD') ");
+        //sb.append(" AND genre NOT IN ('RT','P','AD') ");
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         // 借厂商部分
         sb.append(" UNION ALL ");
-        sb.append(" select sum(amount+amamount) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
+        sb.append(" select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
         }
@@ -189,7 +188,7 @@ public class InventoryAmountA2 extends Inventory {
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         sb.append(
-                " SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
+                " SELECT ifnull(sum(amount+ifnull(amamount,0)),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
         sb.append(" AND wareh = 'SCZZ' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);

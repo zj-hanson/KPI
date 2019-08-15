@@ -61,25 +61,25 @@
                     <f:facet name="header">
                         <h:outputText value="#{inventoryManagerBean.date3}"/>
                     </f:facet>
-                    <h:outputText value="#{item.n01}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.n01)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header" >
                         <h:outputText value="#{inventoryManagerBean.date2}" style="text-align: center"/>
                     </f:facet>
-                    <h:outputText  value="#{item.n02}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText  value="#{inventoryManagerBean.format(item.n02)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="#{inventoryManagerBean.date1}"/>
                     </f:facet>
-                    <h:outputText value="#{item.n03}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.n03)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: center" >
                     <f:facet name="header">
                         <h:outputText value="差异"/>
                     </f:facet>
-                    <h:outputText value="#{item.difference}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.difference)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
                 <p:column styleClass="Wid20" style="text-align: right;">
                     <f:facet name="header">

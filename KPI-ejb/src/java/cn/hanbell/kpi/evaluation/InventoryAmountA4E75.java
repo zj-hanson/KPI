@@ -7,15 +7,15 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1749
+ * @author C1749 国际营销借出未归库存金额
  */
-public class InventoryAmountA4E55 extends InventoryAmountA4 {
+public class InventoryAmountA4E75 extends InventoryAmountA4 {
 
-    public InventoryAmountA4E55() {
+    public InventoryAmountA4E75() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("trtype", "CA");
-        queryParams.put("deptno", "1C");
+        queryParams.put("deptno", "1T");
 
     }
 

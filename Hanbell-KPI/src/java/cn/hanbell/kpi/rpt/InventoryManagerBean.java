@@ -20,6 +20,7 @@ import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.entity.InventoryDepartment;
 import cn.hanbell.kpi.entity.InventoryIndicator;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,13 +92,13 @@ public class InventoryManagerBean implements Serializable {
     ExternalContext ec;
     protected IndicatorChart indicatorChart;
 
-    private final DecimalFormat format;
+    protected final DecimalFormat Format;
 
     // 下拉选项集合
     private Map<String, String> cities = new HashMap<String, String>();
 
     public InventoryManagerBean() {
-        this.format = new DecimalFormat("#,###.##");
+        this.Format = new DecimalFormat("#,###.##");
 
     }
 
@@ -314,10 +315,6 @@ public class InventoryManagerBean implements Serializable {
         cal.clear();
     }
 
-    public String dfAmount(String a) {
-        return format.format(Double.parseDouble(a));
-    }
-
     public UserManagedBean getUserManagedBean() {
         return userManagedBean;
     }
@@ -516,6 +513,10 @@ public class InventoryManagerBean implements Serializable {
 
     public void setInventoryProductList(List<String[]> inventoryProductList) {
         this.inventoryProductList = inventoryProductList;
+    }
+
+    public String format(BigDecimal b) {
+        return Format.format(b);
     }
 
 }

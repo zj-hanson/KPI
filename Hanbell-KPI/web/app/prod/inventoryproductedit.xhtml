@@ -62,6 +62,7 @@
                             <f:selectItem itemLabel="列管资产" itemValue="8"/>
                             <f:selectItem itemLabel="包装物" itemValue="A"/>
                             <f:selectItem itemLabel="低质易耗品" itemValue="B"/>
+                            <f:selectItem itemLabel="出租商品" itemValue="L"/>
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>
@@ -142,14 +143,14 @@
                     <f:facet name="header" >
                         <h:outputText value="金额"/>
                     </f:facet>
-                    <h:outputText id="amount" value="#{item.amount}"/>
+                    <h:outputText id="amount" value="#{inventoryProductEditManagerBean.format(item.amount)}"/>
                 </p:column>
 
                 <p:column styleClass="Wid15">
                     <f:facet name="header">
                         <h:outputText value="调整金额"/>
                     </f:facet>
-                    <h:outputText id="amamount"  value="#{item.amamount}" style="width: 100%" />
+                    <h:outputText id="amamount"  value="#{item.amamount}" />
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -235,6 +236,7 @@
                                 <f:selectItem itemLabel="列管资产" itemValue="8"/>
                                 <f:selectItem itemLabel="包装物" itemValue="A"/>
                                 <f:selectItem itemLabel="低质易耗品" itemValue="B"/>
+                                <f:selectItem itemLabel="出租商品" itemValue="L"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -260,7 +262,7 @@
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="库存金额：" /></p:column>
                         <p:column colspan="3">
-                            <p:inputNumber value="#{inventoryProductEditManagerBean.newEntity.amamount}" required="true" requiredMessage="请输入新增的库存金额" />
+                            <p:inputNumber value="#{inventoryProductEditManagerBean.newEntity.amount}" required="true" requiredMessage="请输入新增的库存金额" />
                         </p:column>
                     </p:row>
                     <f:facet name="footer" rendered="#{inventoryProductEditManagerBean.doEdit}" >
@@ -325,7 +327,7 @@
                         <f:facet name="header" >
                             <h:outputText value="金额"/>
                         </f:facet>
-                        <h:outputText id="amount" value="#{item.amount}"/>
+                        <h:outputText id="amount" value="#{inventoryProductEditManagerBean.format(item.amount)}"/>
                     </p:column>
 
                     <p:column styleClass="Wid15">

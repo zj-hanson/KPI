@@ -38,12 +38,12 @@ public class InventoryIndicatorBean implements Serializable {
     protected int y;
     protected int m;
     protected Date d;
-    protected DecimalFormat decimalFormat;
+    protected final DecimalFormat Format;
     protected Logger log4j = LogManager.getLogger();
 
     public InventoryIndicatorBean() {
         this.c = Calendar.getInstance();
-        this.decimalFormat = new DecimalFormat("#,###");
+        this.Format = new DecimalFormat("###,###.##");
         indicators = new ArrayList<>();
     }
 
@@ -259,7 +259,6 @@ public class InventoryIndicatorBean implements Serializable {
                 for (Indicator i : indicators) {
                     this.divideByRateOther(i, 2);
                 }
-                ;
                 InventoryAmtList.addAll(getHtmlTable(this.indicators, y, m, d, true));
             }
             return InventoryAmtList;
@@ -294,14 +293,6 @@ public class InventoryIndicatorBean implements Serializable {
 
     public void setIndicators(List<Indicator> indicators) {
         this.indicators = indicators;
-    }
-
-    public DecimalFormat getDecimalFormat() {
-        return decimalFormat;
-    }
-
-    public void setDecimalFormat(DecimalFormat decimalFormat) {
-        this.decimalFormat = decimalFormat;
     }
 
 }

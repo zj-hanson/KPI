@@ -35,7 +35,7 @@ public class InventoryAmountA1 extends Inventory {
                     sb.append(" select ifnull(sum(a.num),0) from ( ");
                     // indicatorno暂时写成B20
                     sb.append(
-                            " select sum(amount+amamount) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                            " select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B05' ");
                     sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
                     if (!indicatorno.equals("") && indicatorno.contains("B20")) {
                         sb.append(" AND itclscode <> '2' ");
@@ -47,7 +47,7 @@ public class InventoryAmountA1 extends Inventory {
                     // 借厂商部分
                     sb.append(" UNION ALL ");
                     sb.append(
-                            " select sum(amount+amamount) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
+                            " select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
                     if (!indicatorno.equals("") && indicatorno.contains("B20")) {
                         sb.append(" AND itclscode <> '2' ");
                     } else {
@@ -59,12 +59,12 @@ public class InventoryAmountA1 extends Inventory {
                     break;
                 case "B40":// 如果中类编号是B40 生产在制品
                     sb.append(
-                            " SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
+                            " SELECT ifnull(sum(amount+ifnull(amamount,0)),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
                     sb.append(" AND wareh = 'SCZZ' AND genre NOT IN ('RT','P','AD') ");
                     sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
                     break;
                 case "B50":// 如果中类编号是B50（加工刀片库存（含刀柄））就直接选择库号
-                    sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
+                    sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct ");
                     sb.append(" WHERE facno = '${facno}' ");
                     sb.append(" AND categories = 'A1' ");
                     sb.append(" AND indicatorno = 'B50' ");

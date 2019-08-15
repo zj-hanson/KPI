@@ -27,7 +27,7 @@ public class InventoryAmountA5 extends Inventory {
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct   ");
+        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct   ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
         if (!"".equals(categories)) {

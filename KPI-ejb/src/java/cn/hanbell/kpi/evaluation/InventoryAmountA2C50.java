@@ -24,7 +24,6 @@ public class InventoryAmountA2C50 extends InventoryAmountA2 {
         queryParams.put("deptno", "1H000");
         queryParams.put("facno", "C");
         queryParams.put("categories", "A2");
-        queryParams.put("indicatorno", "C10");
         queryParams.put("genre", "='P'");
     }
 
@@ -46,8 +45,7 @@ public class InventoryAmountA2C50 extends InventoryAmountA2 {
             v1 = BigDecimal.valueOf(a1);// 真空出租库存的实际值
             BigDecimal scValue = getProductValue(y, m, d, type, map);// 生产性的P
             BigDecimal sczzValue = getgetProductZZValue(y, m, d, type, map);// 生产在制的P
-            fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
-            result = super.getValue(y, m, d, type, map).add(scValue).add(sczzValue).subtract(v1).add(fgsValue);
+            result = super.getValue(y, m, d, type, map).add(scValue).add(sczzValue).subtract(v1);
             return result;
         } catch (Exception ex) {
             log4j.error("InventoryAmountA2C50--getValue()异常", ex.toString());

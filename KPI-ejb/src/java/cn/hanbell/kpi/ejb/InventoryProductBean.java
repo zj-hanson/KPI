@@ -79,17 +79,25 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         String prono = map.get("prono") != null ? map.get("prono") : "";
         StringBuilder sb = new StringBuilder();
-        sb.append(
-                " SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,a.genre,a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount   ");
-        sb.append(
-                " FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh      ");
+        sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
+        sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+        sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
+        sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
         sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
         sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
-        sb.append(" where a.prono = '${prono}'  ");
+        sb.append(" where a.facno='${facno}' and a.prono = '${prono}'  ");
         sb.append(" AND a.genre NOT LIKE '%,%' AND a.genre NOT LIKE 'QT' ");
         sb.append(" and a.yearmon='${y}${m}'  ");
-        sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode,d.genreno,h.genzls ");
-        sb.append(" ORDER BY a.wareh,a.genre,a.itclscode ");
+        sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+        sb.append(" a.itclscode,d.genreno,h.genzls ");
+        sb.append(" UNION ALL ");
+        sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc, ");
+        sb.append(" (case when  a.genre <> '' then  a.genre else  'R' end ), ");
+        sb.append(" a.itclscode,'' AS genreno,'' AS genzls,sum(a.amount) AS amount,'' AS amamount ");
+        sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
+        sb.append(" where a.facno<>'${facno}' and a.prono = '${prono}' ");
+        sb.append(" and a.yearmon='${y}${m}'  ");
+        sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode ");
         String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${prono}", String.valueOf(prono))
                 .replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(getMon(m)));
         try {
@@ -124,15 +132,21 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                     ip.setDeptno(row[3] != null ? row[3].toString() : "");
                     ip.setWareh(row[4].toString());
                     ip.setWhdsc(row[5].toString());
-                    ip.setGenre(row[6].toString());
-                    ip.setItclscode(row[7].toString());
+                    //兴塔的空压机体整机归为空压机组库存(兴塔成品仓库）
+                    String genre = row[6] != null ? row[6].toString() : "";
+                    String itclscode = row[7].toString();
+                    if (row[4].toString().equals("EW01") && genre.equals("AJ") && itclscode.equals("2")) {
+                        ip.setGenre("A");
+                    } else {
+                        ip.setGenre(genre);
+                    }
+                    ip.setItclscode(itclscode);
                     ip.setCategories(row[8] != null ? row[8].toString() : "");
                     ip.setIndicatorno(row[9] != null ? row[9].toString() : "");
                     ip.setAmount(BigDecimal.valueOf(Double.valueOf(row[10].toString())));
                     ip.setAmamount(BigDecimal.ZERO);
                     ipResultList.add(ip);
                 }
-
                 if (!ipResultList.isEmpty()) {
                     this.getEntityManager()
                             .createNativeQuery("delete from inventoryproduct where yearmon ='" + y + getMon(m) + "'").executeUpdate();
@@ -154,14 +168,14 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         StringBuilder sb = new StringBuilder();
         sb.append(" select whdsc, ");
-        sb.append(" ifnull(sum(CASE when genre =  'A'  then amount + amamount end),0) as 'AA', ");
-        sb.append(" ifnull(sum(CASE when genre =  'AJ'  then amount + amamount end),0) as 'AH', ");
-        sb.append(" ifnull(sum(CASE when genre =  'AD'  then amount + amamount end),0) as 'SDS', ");
-        sb.append(" ifnull(sum(CASE when (genre = 'R' or genre = 'RG') then amount + amamount end),0) as 'R', ");
-        sb.append(" ifnull(sum(CASE when genre =  'RT'  then amount + amamount end),0) as 'RT', ");
-        sb.append(" ifnull(sum(CASE when genre = 'L'  then amount + amamount end),0) as 'L', ");
-        sb.append(" ifnull(sum(CASE when genre = 'P'  then amount + amamount end),0) as 'P', ");
-        sb.append(" ifnull(sum(CASE when genre = 'S'  then amount + amamount end),0) as 'S' ");
+        sb.append(" ifnull(sum(CASE when genre =  'A'  then amount + ifnull(amamount,0) end),0) as 'AA', ");
+        sb.append(" ifnull(sum(CASE when genre =  'AJ'  then amount + ifnull(amamount,0) end),0) as 'AH', ");
+        sb.append(" ifnull(sum(CASE when genre =  'AD'  then amount + ifnull(amamount,0) end),0) as 'SDS', ");
+        sb.append(" ifnull(sum(CASE when (genre = 'R' or genre = 'RG') then amount + ifnull(amamount,0) end),0) as 'R', ");
+        sb.append(" ifnull(sum(CASE when genre =  'RT'  then amount + ifnull(amamount,0) end),0) as 'RT', ");
+        sb.append(" ifnull(sum(CASE when genre = 'L'  then amount + ifnull(amamount,0) end),0) as 'L', ");
+        sb.append(" ifnull(sum(CASE when genre = 'P'  then amount + ifnull(amamount,0) end),0) as 'P', ");
+        sb.append(" ifnull(sum(CASE when genre = 'S'  then amount + ifnull(amamount,0) end),0) as 'S' ");
         sb.append(" from inventoryproduct where facno = '${facno}' and yearmon = '${y}${m}' ");
         sb.append(" GROUP BY whdsc ");
         String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${y}", String.valueOf(y))

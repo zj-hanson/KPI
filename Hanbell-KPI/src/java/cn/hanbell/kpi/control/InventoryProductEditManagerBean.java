@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.InventoryProduct;
 import cn.hanbell.kpi.lazy.inventoryProductModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -36,8 +37,11 @@ public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryPr
 
     protected List<InventoryProduct> editInventoryProductList;
 
+    protected final DecimalFormat Format;
+
     public InventoryProductEditManagerBean() {
         super(InventoryProduct.class);
+        this.Format = new DecimalFormat("###,###.##");
     }
 
     @Override
@@ -121,22 +125,14 @@ public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryPr
         // 取到当前修改的集合
         List<InventoryProduct> list = getEditInventoryProductList();
         if (!list.isEmpty()) {
-            BigDecimal isEqual = BigDecimal.ZERO;
-            for (InventoryProduct data : list) {
-                isEqual = isEqual.add(data.getEditamount() != null ? data.getEditamount() : BigDecimal.ZERO);
+            for (InventoryProduct ip : list) {
+                ip.setAmamount(ip.getEditamount());
+                ip.setEditamount(BigDecimal.ZERO);
+                ip.setOptuser(getUserManagedBean().getCurrentUser().getUsername());
+                ip.setOptdateToNow();
+                inventoryProductBean.update(ip);
             }
-            if (isEqual.compareTo(BigDecimal.ZERO) == 0) {
-                for (InventoryProduct ip : list) {
-                    ip.setAmamount(ip.getEditamount());
-                    ip.setEditamount(BigDecimal.ZERO);
-                    ip.setOptuser(getUserManagedBean().getCurrentUser().getUsername());
-                    ip.setOptdateToNow();
-                    inventoryProductBean.update(ip);
-                }
-                showErrorMsg("Error", "更新数据成功！！！");
-            } else {
-                showErrorMsg("Error", "更新的合计不为0，请确认数据的准确性！！！");
-            }
+            showErrorMsg("Error", "更新数据成功！！！");
         } else {
             showErrorMsg("Error", "更新数据失败，请重试！！！");
         }
@@ -219,6 +215,10 @@ public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryPr
 
     public void setEditInventoryProductList(List<InventoryProduct> editInventoryProductList) {
         this.editInventoryProductList = editInventoryProductList;
+    }
+
+    public String format(BigDecimal b) {
+        return Format.format(b);
     }
 
 }

@@ -21,12 +21,10 @@ public class InventoryAmountA1B50 extends InventoryAmountA1 {
         queryParams.put("facno", "C");
         queryParams.put("prono", "1");
         queryParams.put("indicatorno", "B50");
-
     }
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-
         return super.getValue(y, m, d, type, map); // To change body of generated methods, choose Tools | Templates.
     }
 }

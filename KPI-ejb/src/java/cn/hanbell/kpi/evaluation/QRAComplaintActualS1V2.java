@@ -33,7 +33,7 @@ public class QRAComplaintActualS1V2 extends QRA{
             BigDecimal ov = kpi.getValue(y, m, d, type, kpi.getQueryParams());
             //客诉率
             if (ov != null && ov.compareTo(BigDecimal.ZERO) != 0) {
-                result = ev.divide(ov, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1000000));
+                result = ev.divide(ov, 6, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(1000000));
             }
             return result;
         } catch (Exception ex) {

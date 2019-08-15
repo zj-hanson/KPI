@@ -68,25 +68,25 @@
                     <h:outputText value="#{item.responsible}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: center">
-                    <h:outputText value="#{item.target}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.target)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.actual}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.actual)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference1}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.difference1)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.upactual}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.upactual)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference2}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.difference2)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.benchmark}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.benchmark)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference3}"/>
+                    <h:outputText value="#{inventoryManagerBean.format(item.difference3)}"/>
                 </p:column>
             </p:dataTable>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">

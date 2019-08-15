@@ -47,12 +47,11 @@ public class InventoryAmountA2C13 extends InventoryAmountA2 {
             result = super.getValue(y, m, d, type, map).multiply(v1).setScale(2, BigDecimal.ROUND_HALF_UP);
             fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
             fgsZjValue = getFgsZjValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
-            ;
             // 分公司 = 公用分摊部分数据 + 汉钟分公司库的数据 + 分公司自己本身的整机部分数据
             result = result.add(fgsValue).add(fgsZjValue);
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2C10--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2C13--getValue()异常", ex.toString());
         }
         return result;
     }

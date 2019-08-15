@@ -26,9 +26,8 @@ public class InventoryAmountA2C60 extends InventoryAmountA2 {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
-        return super.getValue(y, m, d, type, map).add(fgsValue); // To change body of generated methods, choose Tools |
-        // Templates.
+        //fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return super.getValue(y, m, d, type, map); 
     }
 
 }

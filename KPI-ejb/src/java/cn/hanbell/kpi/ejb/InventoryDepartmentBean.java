@@ -55,26 +55,24 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
         InventoryDepartment ibu;
-        sb.append(
-                " select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount - a.amamount) ,0)  ");
+        sb.append(" select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount + ifnull(a.amamount,0)) ,0)  ");
         sb.append(" from inventoryproduct a  WHERE a.facno = '${facno}'  ");
         sb.append(" AND a.yearmon = '${y}${m}' ");
         sb.append(" GROUP BY a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre ");
         String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${y}", String.valueOf(y))
                 .replace("${m}", String.valueOf(getMon(m)));
         try {
-            superEJBForERP.setCompany(facno);
-            Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
+            Query query = this.getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
                     facno = row[0] != null ? row[0].toString() : " ";
-                    String creyear = row[1] != null ? row[2].toString() : " ";
-                    String wareh = row[2] != null ? row[3].toString() : " ";
-                    String whdsc = row[3] != null ? row[4].toString() : " ";
-                    String categories = row[4] != null ? row[5].toString() : " ";
-                    String genre = row[6] != null ? row[6].toString() : " ";
+                    String creyear = row[1] != null ? row[1].toString() : " ";
+                    String wareh = row[2] != null ? row[2].toString() : " ";
+                    String whdsc = row[3] != null ? row[3].toString() : " ";
+                    String categories = row[4] != null ? row[4].toString() : " ";
+                    String genre = row[5] != null ? row[5].toString() : " ";
                     ibu = new InventoryDepartment(facno, "1", creyear, wareh, whdsc, categories, genre);
                     switch (m) {
                         case 1:
@@ -160,9 +158,9 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     String categories = ib.getInventoryDepartmentPK().getCategories();
                     String genre = ib.getInventoryDepartmentPK().getGenre();
                     // 循环每一行数据 判断当前插入数据 数据库是否存在 如果存在就更新数据 不存在就插入新的数据行
-                    List flagList = findByPk(facno, prono, creyear, wareh, whdsc, categories, genre);
+                    List<InventoryDepartment> flagList = findByPk(facno, prono, creyear, wareh, whdsc, categories, genre);
                     if (!flagList.isEmpty() && flagList.size() > 0) {
-                        InventoryDepartment a = newList.get(newList.indexOf(ib));
+                        InventoryDepartment a = flagList.get(0);
                         switch (m) {
                             case 1:
                                 a.setN01(ib.getN01());
@@ -218,6 +216,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
 
     // 获取KPI的数据源 为KPI的系统最终显示的数据源
     private List getDataList(String type, String genre, int y, int m) {
+
         StringBuilder sb = new StringBuilder();
         sb.append(" select whdsc, ");
         sb.append("sum(n").append(getMon(m - 2)).append("),");
@@ -244,7 +243,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
         }
         if (!genre.equals("N") && !genre.equals("")) {
-            sb.append(" and genre = '").append(genre).append("'");
+            if (genre.equals("R")) {
+                sb.append(" and genre in ('R','RG') ");
+            } else {
+                sb.append(" and genre = '").append(genre).append("'");
+            }
         }
         sb.append(" GROUP BY whdsc ");
         // 服务在制和生产在制的数据
@@ -268,7 +271,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             // 取到产品别
             if (!genre.equals("N") && !genre.equals("")) {
-                sb.append(" and genre = '").append(genre).append("'");
+                if (genre.equals("R")) {
+                    sb.append(" and genre in ('R','RG') ");
+                } else {
+                    sb.append(" and genre = '").append(genre).append("'");
+                }
             }
             sb.append(" GROUP BY whdsc ");
         }
@@ -284,7 +291,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     sb.append(" from inventorydepartment WHERE 1=1  ");
                     sb.append(" AND whdsc LIKE ('借厂商%') ");
                     if (!genre.equals("")) {
-                        sb.append(" and genre = '").append(genre).append("'");
+                        if (genre.equals("R")) {
+                            sb.append(" and genre in ('R','RG') ");
+                        } else {
+                            sb.append(" and genre = '").append(genre).append("'");
+                        }
                     }
                     sb.append(" GROUP BY whdsc ");
                     break;
@@ -297,7 +308,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     sb.append(" from inventorydepartment WHERE 1=1  ");
                     sb.append(" AND whdsc IN ('借客户','借员工') ");
                     if (!genre.equals("N") && !genre.equals("")) {
-                        sb.append(" and genre = '").append(genre).append("'");
+                        if (genre.equals("R")) {
+                            sb.append(" and genre in ('R','RG') ");
+                        } else {
+                            sb.append(" and genre = '").append(genre).append("'");
+                        }
                     }
                     sb.append(" GROUP BY whdsc ");
                     break;
