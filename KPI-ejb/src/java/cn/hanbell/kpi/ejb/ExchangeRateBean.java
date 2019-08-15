@@ -37,18 +37,17 @@ public class ExchangeRateBean extends SuperEJBForKPI<ExchangeRate> {
         this.doubledf = new DecimalFormat("0.00％");
     }
 
-    public boolean queryRateIsExist(ExchangeRate rate) {
+    public ExchangeRate queryExchangeRate(ExchangeRate rate) {
         Query query = getEntityManager().createQuery(" SELECT e FROM ExchangeRate e WHERE e.rpttype = :rpttype and e.rateday = :rateday ");
         try {
             query.setParameter("rpttype", rate.getRpttype());
             query.setParameter("rateday", rate.getRateday());
-            if (query.getResultList().isEmpty()) {
-                return false;
-            }
+            Object o = query.getSingleResult();
+            return (ExchangeRate) o;
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.ejb.ExchangeRateBean.queryRateIsExist()" + e);
         }
-        return true;
+        return null;
     }
 
     public List<String[]> getlList(String queryCurrency, Date queryDateBegin, Date queryDateEnd) {

@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +26,6 @@ import javax.faces.bean.SessionScoped;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-
 import org.primefaces.event.FileUploadEvent;
 
 /**
@@ -40,8 +40,6 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
     protected ExchangeRateBean exchangeRateBean;
 
     protected String queryCurrency;
-    protected Date queryDateBegin;
-    protected Date queryDateEnd;
     protected BigDecimal rate;
     protected int id;
 
@@ -53,9 +51,9 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
     protected boolean doBeforePersist() throws Exception {
         if (newEntity != null) {
             setDefaultValue();
-            if (exchangeRateBean.queryRateIsExist(newEntity)) {
-                showErrorMsg("Error", "添加失败当前日期已有该货币汇率数据");
-                return false;
+            ExchangeRate exchangeRate = exchangeRateBean.queryExchangeRate(newEntity);
+            if (exchangeRate != null) {
+                exchangeRateBean.update(newEntity);
             }
         }
         return super.doBeforePersist();
@@ -124,45 +122,43 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
     @Override
     public void handleFileUploadWhenNew(FileUploadEvent event) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat dmf=new DecimalFormat("#");
         List<ExchangeRate> addlist = new ArrayList<>();
-
         String a = "";
         String b = "";
         super.handleFileUploadWhenNew(event);
         if (this.fileName != null) {
-            ExchangeRate e;
-            if (addlist != null) {
-                addlist.clear();
-            }
             try {
                 InputStream is = new FileInputStream(getAppResPath() + "/" + fileName);
                 Workbook excel = WorkbookFactory.create(is);
                 Sheet sheet = excel.getSheetAt(0);
 
                 int cols = sheet.getRow(0).getLastCellNum();
-                for (int i = 0; i < cols; i++) {
+                for (int i = 1; i < cols; i++) {
                     for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
                         a = df.format(sheet.getRow(0).getCell(i).getDateCellValue());
                         b = j + "";
                         newEntity = new ExchangeRate();
                         newEntity.setRateday(sheet.getRow(0).getCell(i).getDateCellValue());
                         newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j).getCell(i).getNumericCellValue())));
-                        newEntity.setRpttype(j + "");
+                        newEntity.setRpttype(dmf.format(sheet.getRow(j).getCell(0).getNumericCellValue()));
                         setDefaultValue();
-                        if (exchangeRateBean.queryRateIsExist(newEntity)) {
-                            showErrorMsg("Error", "添加数据库失败;Excel表格中时间栏为：" + df.format(sheet.getRow(0).getCell(i).getDateCellValue()) + "第" + j + "行已有该货币汇率数据");
-                            addlist.clear();
-                            return;
-                        }
                         addlist.add(newEntity);
                     }
                 }
                 newEntity = new ExchangeRate();
                 //导入数据
-                if (addlist != null && !addlist.isEmpty()) {
+                if (!addlist.isEmpty()) {
                     try {
+                        ExchangeRate exchangeRate;
                         for (int i = 0; i < addlist.size(); i++) {
-                            exchangeRateBean.persist(addlist.get(i));
+                            exchangeRate = exchangeRateBean.queryExchangeRate(addlist.get(i));
+                            if (exchangeRate != null) {
+                                exchangeRate.setRate(addlist.get(i).getRate());
+                                exchangeRateBean.update(exchangeRate);
+                            } else {
+                                exchangeRateBean.persist(addlist.get(i));
+                            }
                         }
                         showInfoMsg("Info", "数据导入成功");
                     } catch (Exception el) {
@@ -172,7 +168,9 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
                 }
             } catch (Exception ex) {
                 showErrorMsg("Error", "导入失败,找不到文件或格式错误----" + ex.toString());
-                showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
+                if (!"".equals(a) && !"".equals(b)) {
+                    showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
+                }
             }
             //将导入文件删除掉
             File file = new File(getAppResPath() + "/" + fileName);

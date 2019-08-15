@@ -51,14 +51,14 @@ public class BalanceSheetBean implements Serializable {
         StringBuilder sb = new StringBuilder();
 
         sb.append(" select 998 AS seq,sum(end1/10000) as now,sum(begin1/10000 ) as past,sum((end1-begin1)/10000 ) as difference ");
-        sb.append(" from accbalmon where facno='${facno}'AND  seq in(3,9,10,13,15) and accyear=${y}  and accmon=${m} ");
+        sb.append(" from accbalmon where facno='CK' AND  seq in(3,9,10,13,15) and accyear=${y}  and accmon=${m} ");
         sb.append(" union all ");
         sb.append(" select 999 AS seq,sum(end1/10000 ) as now,sum(begin1/10000 ) as past,sum((end1-begin1)/10000 ) as difference ");
-        sb.append("  from accbalmon where facno='${facno}' AND seq in(19,20,21,40,41,42,43,44) and accyear=${y} and accmon=${m} ");
+        sb.append("  from accbalmon where facno='CK' AND seq in(19,20,21,40,41,42,43,44) and accyear=${y} and accmon=${m} ");
 
-        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany(facno.equals("CK")?"C":facno);
+        erpEJB.setCompany(facno);
         try {
             Query query = erpEJB.getEntityManager().createNativeQuery(sql);
             return query.getResultList();
@@ -73,11 +73,11 @@ public class BalanceSheetBean implements Serializable {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select seq,(end1/10000 ) as now,(begin1/10000 ) as past,((end1-begin1)/10000 ) as difference ");
-        sb.append(" from accbalmon  where facno='${facno}' and accyear=${y}  and accmon=${m} ");
+        sb.append(" from accbalmon  where facno='CK' and accyear=${y}  and accmon=${m} ");
 
-        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany(facno.equals("CK")?"C":facno);
+        erpEJB.setCompany(facno);
         try {
             Query query = erpEJB.getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
@@ -129,17 +129,17 @@ public class BalanceSheetBean implements Serializable {
         StringBuilder sb = new StringBuilder();
 
         sb.append(" select 998 AS seq,sum(end2/10000 ) as now,sum(begin2/10000 ) as past,sum((end2-begin2)/10000 ) as difference ");
-        sb.append(" from accbalmon where facno='${facno}' AND  seq in(3,9,11,12) and accyear=${y} and accmon=${m} ");
+        sb.append(" from accbalmon where facno='CK' AND  seq in(3,9,11,12) and accyear=${y} and accmon=${m} ");
         sb.append(" union all ");
         sb.append(" select 999 AS seq,sum(end2/10000 ) as now,sum(begin2/10000 ) as past,sum((end2-begin2)/10000 ) as difference ");
-        sb.append(" from accbalmon where facno='${facno}' AND  seq in(20,21,22,23,24,25,26) and accyear=${y} and accmon=${m}");
+        sb.append(" from accbalmon where facno='CK' AND  seq in(20,21,22,23,24,25,26) and accyear=${y} and accmon=${m}");
         sb.append(" union all ");
         sb.append(" select 1000 AS seq,sum(end2/10000 ) as now,sum(begin2/10000 ) as past,sum((end2-begin2)/10000 ) as difference ");
-        sb.append(" from accbalmon where facno='${facno}' AND  seq in(43,44) and accyear=${y} and accmon=${m}");
+        sb.append(" from accbalmon where facno='CK' AND  seq in(43,44) and accyear=${y} and accmon=${m}");
 
-        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany(facno.equals("CK")?"C":facno);
+        erpEJB.setCompany(facno);
         try {
             Query query = erpEJB.getEntityManager().createNativeQuery(sql);
             return query.getResultList();
@@ -154,11 +154,11 @@ public class BalanceSheetBean implements Serializable {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select seq,end2/10000 as now,begin2/10000 as past,(end2-begin2)/10000 as difference ");
-        sb.append(" from accbalmon where facno='${facno}' and accyear=${y} and accmon=${m} ");
+        sb.append(" from accbalmon where facno='CK' and accyear=${y} and accmon=${m} ");
 
-        String sql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
 
-        erpEJB.setCompany(facno.equals("CK")?"C":facno);
+        erpEJB.setCompany(facno);
         try {
             Query query = erpEJB.getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();

@@ -32,7 +32,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
 
     public SalesTableBean() {
         super(SalesTable.class);
-        this.df = new DecimalFormat("#,##0.00");
+        this.df = new DecimalFormat("#,###");
     }
 
     public boolean querySalesTableIsExist(int y, int m, String daString, String typeString) {
@@ -369,7 +369,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                                     ClientRanking ct = new ClientRanking();
                                     ct.setCusna("其他");
                                     ct.setNowshpqy1(String.valueOf(nowothershpqy1));
-                                    ct.setNowshpamts(df.format(Math.ceil(nowothershpamts)==0 ? 0 : nowothershpamts));
+                                    ct.setNowshpamts(df.format(Math.ceil(nowothershpamts) == 0 ? 0 : nowothershpamts));
                                     ct.setPastshpqy1(String.valueOf(pastothershpqy1));
                                     if (new DecimalFormat("#").format(pastothershpamts).equals("0")) {
                                         ct.setPastshpamts("0");
@@ -468,7 +468,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
 
     // 同比成长率 = (本年累计金额 - 去年同期累计金额)/去年同期累计金额*100
     protected String RTgrowthrate(String a, String b) {
-        return df.format((Double.parseDouble(a) - Double.parseDouble(b)) / Double.parseDouble(b) * 100);
+        DecimalFormat dmf = new DecimalFormat("#,###0.00");
+        if (Double.parseDouble(b) < 0) {
+            return df.format(100);
+        } else {
+            return dmf.format((Double.parseDouble(a) - Double.parseDouble(b)) / Double.parseDouble(b) * 100);
+        }
     }
 
 }
