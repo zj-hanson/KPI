@@ -67,7 +67,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "InventoryDepartment.findByProportion", query = "SELECT i FROM InventoryDepartment i WHERE i.proportion = :proportion")
     ,
-    @NamedQuery(name = "InventoryDepartment.findByPk", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.facno = :facno and i.inventoryDepartmentPK.prono = :prono and i.inventoryDepartmentPK.creyear = :creyear and "
+    @NamedQuery(name = "InventoryDepartment.findByPK", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.facno = :facno and i.inventoryDepartmentPK.prono = :prono and i.inventoryDepartmentPK.creyear = :creyear and "
             + "i.inventoryDepartmentPK.wareh = :wareh and i.inventoryDepartmentPK.whdsc = :whdsc and i.inventoryDepartmentPK.categories = :categories and i.inventoryDepartmentPK.genre = :genre")})
 public class InventoryDepartment implements Serializable {
 

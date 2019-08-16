@@ -45,12 +45,12 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         queryStringParams.put("prono", "1");
-        List<InventoryDepartment> resultData = getNowMonResultList(y, m, queryStringParams);
+        List<InventoryDepartment> resultData = getDataForInventoryproductList(y, m, queryStringParams);
         return resultData;
     }
 
     // 获取ERP的当前月的库存金额明细
-    private List<InventoryDepartment> getNowMonResultList(int y, int m, LinkedHashMap<String, String> map) {
+    private List<InventoryDepartment> getDataForInventoryproductList(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
@@ -119,16 +119,16 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             return DataList;
         } catch (Exception ex) {
-            System.out.println("在执行InventoryDepartmentBean.getNowMonResultList()方法时失败！！！" + ex.toString());
+            System.out.println("在执行InventoryDepartmentBean.getDataForInventoryproductList()方法时失败！！！" + ex.toString());
         }
         return null;
 
     }
 
-    // 获取KPI数据库的InvamountDepartment表的List 目的：为了判断当前表中是否存在相同数据
-    private List<InventoryDepartment> findByPk(String facno, String prono, String creyear, String wareh, String whdsc,
+    // 为了判断当前表中是否存在相同数据
+    private List<InventoryDepartment> findByPK(String facno, String prono, String creyear, String wareh, String whdsc,
             String categories, String genre) {
-        Query query = this.getEntityManager().createNamedQuery("InventoryDepartment.findByPk");
+        Query query = this.getEntityManager().createNamedQuery("InventoryDepartment.findByPK");
         query.setParameter("facno", facno);
         query.setParameter("prono", prono);
         query.setParameter("creyear", creyear);
@@ -158,7 +158,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     String categories = ib.getInventoryDepartmentPK().getCategories();
                     String genre = ib.getInventoryDepartmentPK().getGenre();
                     // 循环每一行数据 判断当前插入数据 数据库是否存在 如果存在就更新数据 不存在就插入新的数据行
-                    List<InventoryDepartment> flagList = findByPk(facno, prono, creyear, wareh, whdsc, categories, genre);
+                    List<InventoryDepartment> flagList = findByPK(facno, prono, creyear, wareh, whdsc, categories, genre);
                     if (!flagList.isEmpty() && flagList.size() > 0) {
                         InventoryDepartment a = flagList.get(0);
                         switch (m) {
