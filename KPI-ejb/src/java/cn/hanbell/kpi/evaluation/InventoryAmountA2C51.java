@@ -22,9 +22,4 @@ public class InventoryAmountA2C51 extends InventoryAmountA2 {
         queryParams.put("genre", "='P'");
     }
 
-    @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return super.getValue(y, m, d, type, map);
-    }
-
 }

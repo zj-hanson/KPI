@@ -38,12 +38,12 @@ public class InventoryIndicatorBean implements Serializable {
     protected int y;
     protected int m;
     protected Date d;
-    protected final DecimalFormat Format;
+    protected final DecimalFormat doubleFormat;
     protected Logger log4j = LogManager.getLogger();
 
     public InventoryIndicatorBean() {
         this.c = Calendar.getInstance();
-        this.Format = new DecimalFormat("###,###.##");
+        this.doubleFormat = new DecimalFormat("###,###.##");
         indicators = new ArrayList<>();
     }
 

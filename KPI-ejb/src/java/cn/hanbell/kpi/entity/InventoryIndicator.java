@@ -36,7 +36,7 @@ public class InventoryIndicator implements Serializable {
     protected BigDecimal benchmark;
     // 差异3
     private BigDecimal difference3;
-
+    
     public String getId() {
         return id;
     }

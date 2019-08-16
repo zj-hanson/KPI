@@ -45,7 +45,7 @@ public class InventoryAmountA4 extends Inventory {
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA4--getValue)()异常", ex.toString());
+            log4j.error("InventoryAmountA4.getValue)()异常", ex.toString());
         }
         return result;
     }

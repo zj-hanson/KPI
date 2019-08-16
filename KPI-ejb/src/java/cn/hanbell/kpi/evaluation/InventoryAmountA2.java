@@ -39,7 +39,7 @@ public class InventoryAmountA2 extends Inventory {
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         // 公用物料部分
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
         if (!"".equals(indicatorno)) {
@@ -59,7 +59,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getValue()异常", ex.toString());
         }
         return result;
     }
@@ -72,7 +72,7 @@ public class InventoryAmountA2 extends Inventory {
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct  ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct  ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
         if (!"".equals(categories)) {
@@ -92,7 +92,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getFgsValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getFgsValue()异常", ex.toString());
         }
         return result;
     }
@@ -105,7 +105,7 @@ public class InventoryAmountA2 extends Inventory {
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
         sb.append(" where 1=1  ");
         if (!"".equals(indicatorno)) {
             switch (indicatorno) {
@@ -135,7 +135,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getFgsZjValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getFgsZjValue()异常", ex.toString());
         }
         return result;
     }
@@ -152,7 +152,7 @@ public class InventoryAmountA2 extends Inventory {
         sb.append(" select ifnull(sum(a.num),0) from ( ");
         // indicatorno暂时写成B20 后续改为“按物料归类”
         sb.append(
-                " select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
         sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
@@ -161,7 +161,7 @@ public class InventoryAmountA2 extends Inventory {
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         // 借厂商部分
         sb.append(" UNION ALL ");
-        sb.append(" select ifnull(sum(amount+ifnull(amamount,0)),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
+        sb.append(" select ifnull(sum(amount+amamount),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
         }
@@ -174,7 +174,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getProductValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getProductValue()异常", ex.toString());
         }
         return result;
     }
@@ -188,7 +188,7 @@ public class InventoryAmountA2 extends Inventory {
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         sb.append(
-                " SELECT ifnull(sum(amount+ifnull(amamount,0)),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
+                " SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
         sb.append(" AND wareh = 'SCZZ' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
@@ -202,7 +202,7 @@ public class InventoryAmountA2 extends Inventory {
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getgetProductZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getgetProductZZValue()异常", ex.toString());
         }
         return result;
     }

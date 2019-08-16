@@ -21,13 +21,13 @@
                         <p:outputLabel value="请输入查询年月" for="queryYearmon"/>
                     </p:column>
                     <p:column styleClass="Wid30">
-                        <p:inputText id="queryYearmon" value="#{inventoryProductEditManagerBean.queryYearmon}" title="查询年月"/>
+                        <p:inputText id="queryYearmon" value="#{inventoryProductManagerdBean.queryYearmon}" title="查询年月"/>
                     </p:column>
                     <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询库别" for="queryWhdsc"/>
                     </p:column>
                     <p:column styleClass="Wid30">
-                        <p:inputText id="queryWhdsc" value="#{inventoryProductEditManagerBean.queryWhdsc}" title="查询库别"/>
+                        <p:inputText id="queryWhdsc" value="#{inventoryProductManagerdBean.queryWhdsc}" title="查询库别"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -35,7 +35,7 @@
                         <p:outputLabel value="请输入查询产品别" for="queryGenre" />
                     </p:column>
                     <p:column styleClass="Wid30">
-                        <p:selectOneMenu id="queryGenre" value="#{inventoryProductEditManagerBean.queryGenre}" style="width:20%;" title="产品别" requiredMessage="请输入产品别" >
+                        <p:selectOneMenu id="queryGenre" value="#{inventoryProductManagerdBean.queryGenre}" style="width:20%;" title="产品别" requiredMessage="请输入产品别" >
                             <f:selectItem itemLabel="R" itemValue="R"/>
                             <f:selectItem itemLabel="L" itemValue="L"/>
                             <f:selectItem itemLabel="RG" itemValue="RG"/>
@@ -51,7 +51,7 @@
                         <p:outputLabel value="请输入查询归类码" for="queryItclscode" />
                     </p:column>
                     <p:column styleClass="Wid30">
-                        <p:selectOneMenu id="queryItclscode"  value="#{inventoryProductEditManagerBean.queryItclscode}" style="width:80%;" title="查询归类码" >
+                        <p:selectOneMenu id="queryItclscode"  value="#{inventoryProductManagerdBean.queryItclscode}" style="width:80%;" title="查询归类码" >
                             <f:selectItem itemLabel="成品类" itemValue="1"/>
                             <f:selectItem itemLabel="半成品类" itemValue="2"/>
                             <f:selectItem itemLabel="原料类" itemValue="3"/>
@@ -69,29 +69,29 @@
             </p:panelGrid>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
-                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{inventoryProductEditManagerBean.init()}" icon="ui-icon-sync"
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{inventoryProductManagerdBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
                 </f:facet>
                 <f:facet name="right">
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
-                        <p:menuitem id="btnUpdate" value="修改" actionListener="#{inventoryProductEditManagerBean.queryEdit()}" icon="ui-icon-update"
+                        <p:menuitem id="btnUpdate" value="修改" actionListener="#{inventoryProductManagerdBean.queryEdit()}" icon="ui-icon-update"
                                     update="formEdit" oncomplete="PF('InventoryProductEdit').show();"/>
-                        <p:menuitem id="btnAddIndicatorSummary" value="添加" actionListener="#{inventoryProductEditManagerBean.create()}" icon="ui-icon-plus"
+                        <p:menuitem id="btnAddIndicatorSummary" value="添加" actionListener="#{inventoryProductManagerdBean.create()}" icon="ui-icon-plus"
                                     process="@this" update="formOne:InventoryProductAdd" oncomplete="PF('InventoryProductAdd').show();"/>
-                        <p:menuitem id="btnDelete" value="删除" icon="ui-icon-trash" actionListener="#{inventoryProductEditManagerBean.delete()}"
+                        <p:menuitem id="btnDelete" value="删除" icon="ui-icon-trash" actionListener="#{inventoryProductManagerdBean.delete()}"
                                     rendered="true" update=":formList">
                             <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
                         </p:menuitem>
                     </p:splitButton>
-                    <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryProductEditManagerBean.reset()}" icon="ui-icon-refresh"
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryProductManagerdBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
-                    <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryProductEditManagerBean.query()}" icon="ui-icon-search"
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryProductManagerdBean.query()}" icon="ui-icon-search"
                                      update=":formList"/>
                 </f:facet>
             </p:toolbar>
-            <p:dataTable  value="#{inventoryProductEditManagerBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+            <p:dataTable  value="#{inventoryProductManagerdBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                          lazy="true" selectionMode="single" selection="#{inventoryProductEditManagerBean.currentEntity}" rowKey="#{item.id}" >
+                          lazy="true" selectionMode="single" selection="#{inventoryProductManagerdBean.currentEntity}" rowKey="#{item.id}" >
                 <f:facet name="header">
                     <span style="font-size: 21px;" >各库别之产品别库存金额表</span>
                 </f:facet>
@@ -143,7 +143,7 @@
                     <f:facet name="header" >
                         <h:outputText value="金额"/>
                     </f:facet>
-                    <h:outputText id="amount" value="#{inventoryProductEditManagerBean.format(item.amount)}"/>
+                    <h:outputText id="amount" value="#{inventoryProductManagerdBean.format(item.amount)}"/>
                 </p:column>
 
                 <p:column styleClass="Wid15">
@@ -169,29 +169,29 @@
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="公司别：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.facno}" required="true" requiredMessage="请输入公司别" />
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.facno}" required="true" requiredMessage="请输入公司别" />
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="日期：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.yearmon}" required="true" requiredMessage="请输入日期"/>
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.yearmon}" required="true" requiredMessage="请输入日期"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="库号：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.wareh}" required="true" requiredMessage="请输入库号" />
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.wareh}" required="true" requiredMessage="请输入库号" />
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="库别：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.whdsc}" required="true" requiredMessage="请输入库别" />
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.whdsc}" required="true" requiredMessage="请输入库别" />
                         </p:column>
                     </p:row>
 
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="产品别：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:selectOneMenu id="genre"  value="#{inventoryProductEditManagerBean.newEntity.genre}" required="true" style="width:100%;" title="产品别" >
+                            <p:selectOneMenu id="genre"  value="#{inventoryProductManagerdBean.newEntity.genre}" required="true" style="width:100%;" title="产品别" >
                                 <f:selectItem itemLabel="请选择" itemValue="0"/>
                                 <f:selectItem itemLabel="R" itemValue="R"/>
                                 <f:selectItem itemLabel="L" itemValue="L"/>
@@ -206,7 +206,7 @@
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="库存性质：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:selectOneMenu id="trtype"  value="#{inventoryProductEditManagerBean.newEntity.trtype}" required="true" style="width:100%;" title="库存性质" >
+                            <p:selectOneMenu id="trtype"  value="#{inventoryProductManagerdBean.newEntity.trtype}" required="true" style="width:100%;" title="库存性质" >
                                 <f:selectItem itemLabel="请选择" itemValue="0"/>
                                 <f:selectItem itemLabel="正常物料" itemValue="ZC"/>
                                 <f:selectItem itemLabel="借客户" itemValue="CA"/>
@@ -220,11 +220,11 @@
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="部门代号：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.deptno}" />
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.deptno}" />
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="归类码：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:selectOneMenu id="itclscode"  value="#{inventoryProductEditManagerBean.newEntity.itclscode}" required="true" style="width:100%;" title="归类码" >
+                            <p:selectOneMenu id="itclscode"  value="#{inventoryProductManagerdBean.newEntity.itclscode}" required="true" style="width:100%;" title="归类码" >
                                 <f:selectItem itemLabel="请选择" itemValue="0"/>
                                 <f:selectItem itemLabel="成品类" itemValue="1"/>
                                 <f:selectItem itemLabel="半成品类" itemValue="2"/>
@@ -243,7 +243,7 @@
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="大类编号：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:selectOneMenu id="categories"  value="#{inventoryProductEditManagerBean.newEntity.categories}" required="true" style="width:100%;" title="归类码" >
+                            <p:selectOneMenu id="categories"  value="#{inventoryProductManagerdBean.newEntity.categories}" required="true" style="width:100%;" title="归类码" >
                                 <f:selectItem itemLabel="请选择" itemValue="0"/>
                                 <f:selectItem itemLabel="生产目标" itemValue="A1"/>
                                 <f:selectItem itemLabel="营业目标" itemValue="A2"/>
@@ -255,20 +255,20 @@
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="指标编号：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductEditManagerBean.newEntity.indicatorno}"/>
+                            <p:inputText value="#{inventoryProductManagerdBean.newEntity.indicatorno}"/>
                         </p:column>
                     </p:row>
 
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="库存金额：" /></p:column>
                         <p:column colspan="3">
-                            <p:inputNumber value="#{inventoryProductEditManagerBean.newEntity.amount}" required="true" requiredMessage="请输入新增的库存金额" />
+                            <p:inputNumber value="#{inventoryProductManagerdBean.newEntity.amount}" required="true" requiredMessage="请输入新增的库存金额" />
                         </p:column>
                     </p:row>
-                    <f:facet name="footer" rendered="#{inventoryProductEditManagerBean.doEdit}" >
+                    <f:facet name="footer" rendered="#{inventoryProductManagerdBean.doEdit}" >
                         <p:row>
                             <p:column colspan="4">
-                                <p:commandButton id="updateIndicatorSummary"  actionListener="#{inventoryProductEditManagerBean.persist()}" value="保存" icon="ui-icon-save" style="float: right"
+                                <p:commandButton id="updateIndicatorSummary"  actionListener="#{inventoryProductManagerdBean.persist()}" value="保存" icon="ui-icon-save" style="float: right"
                                                  process="formOne:InventoryProductAdd" update="formList,formOne:InventoryProductValue" >
                                 </p:commandButton>
                             </p:column>
@@ -282,12 +282,12 @@
                 <p:panelGrid id="InventoryProductEditValue" styleClass="plgDetail Wid100">
                     <p:toolbar>
                         <f:facet name="right">
-                        <p:commandButton id="btnQueryEdit" value="保存" actionListener="#{inventoryProductEditManagerBean.updateEdit()}" icon="ui-icon-search"
+                        <p:commandButton id="btnQueryEdit" value="保存" actionListener="#{inventoryProductManagerdBean.updateEdit()}" icon="ui-icon-search"
                                          update="formEdit"/>
                     </f:facet>
                     </p:toolbar>
                 </p:panelGrid>
-                <p:dataTable id="editTableList"  value="#{inventoryProductEditManagerBean.editInventoryProductList}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                <p:dataTable id="editTableList"  value="#{inventoryProductManagerdBean.editInventoryProductList}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              lazy="true" rowKey="item.id" >
                     <f:facet name="header">
@@ -327,7 +327,7 @@
                         <f:facet name="header" >
                             <h:outputText value="金额"/>
                         </f:facet>
-                        <h:outputText id="amount" value="#{inventoryProductEditManagerBean.format(item.amount)}"/>
+                        <h:outputText id="amount" value="#{inventoryProductManagerdBean.format(item.amount)}"/>
                     </p:column>
 
                     <p:column styleClass="Wid15">

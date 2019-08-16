@@ -31,7 +31,7 @@ public class InventoryAmountA3 extends Inventory {
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct  ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct  ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND categories = 'A3'  ");
         if (!"".equals(indicatorno)) {
@@ -65,7 +65,7 @@ public class InventoryAmountA3 extends Inventory {
             }
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getValue()异常", ex.toString());
         }
         return result;
     }
@@ -76,7 +76,7 @@ public class InventoryAmountA3 extends Inventory {
         String prono = map.get("prono") != null ? map.get("prono").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct  WHERE  ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct  WHERE  ");
         sb.append(" facno = '${facno}' ");
         sb.append(" AND trtype = 'ZZ' AND wareh = 'FWZZ' ");
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
@@ -87,7 +87,7 @@ public class InventoryAmountA3 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getFWZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getFWZZValue()异常", ex.toString());
         }
         return result;
 
@@ -99,7 +99,7 @@ public class InventoryAmountA3 extends Inventory {
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct WHERE 1=1  ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct WHERE 1=1  ");
         if (!"".equals(indicatorno)) {
             switch (indicatorno) {
                 case "D20":
@@ -127,7 +127,7 @@ public class InventoryAmountA3 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getFWZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getFWZZValue()异常", ex.toString());
         }
         return result;
     }

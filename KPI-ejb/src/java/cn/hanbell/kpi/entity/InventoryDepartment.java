@@ -106,6 +106,7 @@ public class InventoryDepartment implements Serializable {
     private BigDecimal proportion;
 
     public InventoryDepartment() {
+        
     }
 
     public InventoryDepartment(InventoryDepartmentPK inventoryDepartmentPK) {
@@ -115,6 +116,18 @@ public class InventoryDepartment implements Serializable {
     public InventoryDepartment(String facno, String prono, String creyear, String wareh, String whdsc, String categories,
             String genre) {
         this.inventoryDepartmentPK = new InventoryDepartmentPK(facno, prono, creyear, wareh, whdsc, categories, genre);
+        this.n01 = BigDecimal.ZERO;
+        this.n02 = BigDecimal.ZERO;
+        this.n03 = BigDecimal.ZERO;
+        this.n04 = BigDecimal.ZERO;
+        this.n05 = BigDecimal.ZERO;
+        this.n06 = BigDecimal.ZERO;
+        this.n07 = BigDecimal.ZERO;
+        this.n08 = BigDecimal.ZERO;
+        this.n09 = BigDecimal.ZERO;
+        this.n10 = BigDecimal.ZERO;
+        this.n11 = BigDecimal.ZERO;
+        this.n12 = BigDecimal.ZERO;
     }
 
     public InventoryDepartmentPK getInventoryDepartmentPK() {

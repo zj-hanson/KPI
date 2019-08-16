@@ -55,7 +55,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
         InventoryDepartment ibu;
-        sb.append(" select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount + ifnull(a.amamount,0)) ,0)  ");
+        sb.append(" select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount + a.amamount) ,0)  ");
         sb.append(" from inventoryproduct a  WHERE a.facno = '${facno}'  ");
         sb.append(" AND a.yearmon = '${y}${m}' ");
         sb.append(" GROUP BY a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre ");
@@ -119,7 +119,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             return DataList;
         } catch (Exception ex) {
-            System.out.println("在执行InventoryDepartmentBean的getNowMonResultList（）方法时失败！！！" + ex.toString());
+            System.out.println("在执行InventoryDepartmentBean.getNowMonResultList()方法时失败！！！" + ex.toString());
         }
         return null;
 
@@ -324,7 +324,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
-            log4j.error("getDataList()异常！", ex);
+            log4j.error("InventoryDepartmentBean.getDataList()异常！", ex);
         }
         return null;
     }
@@ -384,7 +384,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             tempList.add(ibu1);
             return tempList;
         } catch (Exception ex) {
-            log4j.error("getBusinessUnitsResultList()异常！", ex);
+            log4j.error("InventoryDepartmentBean.getInventoryDepartmentResultList()异常！", ex);
         }
         return null;
     }

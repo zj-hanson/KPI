@@ -106,7 +106,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryProductBean-getDataForERPList()异常！！！", ex.toString());
+            log4j.error("InventoryProductBean.getDataForERPList()异常！！！", ex.toString());
         }
         return null;
     }
@@ -157,7 +157,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             }
             return true;
         } catch (Exception ex) {
-            log4j.error("InventoryProductBean-updateInventoryProduct()方法异常！！", ex.toString());
+            log4j.error("InventoryProductBean.updateInventoryProduct()方法异常！！", ex.toString());
         }
         return false;
     }
@@ -168,14 +168,14 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         StringBuilder sb = new StringBuilder();
         sb.append(" select whdsc, ");
-        sb.append(" ifnull(sum(CASE when genre =  'A'  then amount + ifnull(amamount,0) end),0) as 'AA', ");
-        sb.append(" ifnull(sum(CASE when genre =  'AJ'  then amount + ifnull(amamount,0) end),0) as 'AH', ");
-        sb.append(" ifnull(sum(CASE when genre =  'AD'  then amount + ifnull(amamount,0) end),0) as 'SDS', ");
-        sb.append(" ifnull(sum(CASE when (genre = 'R' or genre = 'RG') then amount + ifnull(amamount,0) end),0) as 'R', ");
-        sb.append(" ifnull(sum(CASE when genre =  'RT'  then amount + ifnull(amamount,0) end),0) as 'RT', ");
-        sb.append(" ifnull(sum(CASE when genre = 'L'  then amount + ifnull(amamount,0) end),0) as 'L', ");
-        sb.append(" ifnull(sum(CASE when genre = 'P'  then amount + ifnull(amamount,0) end),0) as 'P', ");
-        sb.append(" ifnull(sum(CASE when genre = 'S'  then amount + ifnull(amamount,0) end),0) as 'S' ");
+        sb.append(" ifnull(sum(CASE when genre =  'A'  then amount + amamount end),0) as 'AA', ");
+        sb.append(" ifnull(sum(CASE when genre =  'AJ'  then amount + amamount end),0) as 'AH', ");
+        sb.append(" ifnull(sum(CASE when genre =  'AD'  then amount + amamount end),0) as 'SDS', ");
+        sb.append(" ifnull(sum(CASE when (genre = 'R' or genre = 'RG') then amount + amamount end),0) as 'R', ");
+        sb.append(" ifnull(sum(CASE when genre =  'RT'  then amount + amamount end),0) as 'RT', ");
+        sb.append(" ifnull(sum(CASE when genre = 'L'  then amount + amamount end),0) as 'L', ");
+        sb.append(" ifnull(sum(CASE when genre = 'P'  then amount + amamount end),0) as 'P', ");
+        sb.append(" ifnull(sum(CASE when genre = 'S'  then amount + amamount end),0) as 'S' ");
         sb.append(" from inventoryproduct where facno = '${facno}' and yearmon = '${y}${m}' ");
         sb.append(" GROUP BY whdsc ");
         String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${y}", String.valueOf(y))
@@ -185,7 +185,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryProductBean--getDataforKPIInvamountProductList()异常！！！", ex.toString());
+            log4j.error("InventoryProductBean.getDataforKPIInvamountProductList()异常！！！", ex.toString());
         }
         return null;
     }
@@ -253,7 +253,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             }
             return dataResultList;
         } catch (Exception ex) {
-            log4j.error("InventoryProductBean--setDisplayInvamountProductList()异常！！！", ex.toString());
+            log4j.error("InventoryProductBean.getDisplayInvamountProductList()异常！！！", ex.toString());
         }
         return null;
     }

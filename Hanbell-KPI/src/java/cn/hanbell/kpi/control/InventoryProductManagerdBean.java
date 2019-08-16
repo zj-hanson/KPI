@@ -23,9 +23,9 @@ import javax.faces.context.FacesContext;
  *
  * @author C1749
  */
-@ManagedBean(name = "inventoryProductEditManagerBean")
+@ManagedBean(name = "inventoryProductManagerdBean")
 @SessionScoped
-public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryProduct> {
+public class InventoryProductManagerdBean extends SuperSingleBean<InventoryProduct> {
 
     @EJB
     protected InventoryProductBean inventoryProductBean;
@@ -37,11 +37,11 @@ public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryPr
 
     protected List<InventoryProduct> editInventoryProductList;
 
-    protected final DecimalFormat Format;
+    protected final DecimalFormat doubleFormat;
 
-    public InventoryProductEditManagerBean() {
+    public InventoryProductManagerdBean() {
         super(InventoryProduct.class);
-        this.Format = new DecimalFormat("###,###.##");
+        this.doubleFormat = new DecimalFormat("###,###.##");
     }
 
     @Override
@@ -218,7 +218,7 @@ public class InventoryProductEditManagerBean extends SuperSingleBean<InventoryPr
     }
 
     public String format(BigDecimal b) {
-        return Format.format(b);
+        return doubleFormat.format(b);
     }
 
 }

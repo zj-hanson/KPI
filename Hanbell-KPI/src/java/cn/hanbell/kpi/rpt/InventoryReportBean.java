@@ -44,9 +44,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author C1749
  *
  */
-@ManagedBean(name = "inventoryManagerBean")
+@ManagedBean(name = "inventoryReportBean")
 @ViewScoped
-public class InventoryManagerBean implements Serializable {
+public class InventoryReportBean implements Serializable {
 
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
@@ -92,13 +92,13 @@ public class InventoryManagerBean implements Serializable {
     ExternalContext ec;
     protected IndicatorChart indicatorChart;
 
-    protected final DecimalFormat Format;
+    protected final DecimalFormat doubleFormat;
 
     // 下拉选项集合
     private Map<String, String> cities = new HashMap<String, String>();
 
-    public InventoryManagerBean() {
-        this.Format = new DecimalFormat("#,###.##");
+    public InventoryReportBean() {
+        this.doubleFormat = new DecimalFormat("#,###.##");
 
     }
 
@@ -516,7 +516,7 @@ public class InventoryManagerBean implements Serializable {
     }
 
     public String format(BigDecimal b) {
-        return Format.format(b);
+        return doubleFormat.format(b);
     }
 
 }

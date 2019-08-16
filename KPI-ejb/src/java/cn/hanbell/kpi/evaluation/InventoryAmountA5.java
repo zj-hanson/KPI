@@ -27,7 +27,7 @@ public class InventoryAmountA5 extends Inventory {
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT ifnull(sum(amount+ifnull(amamount,0)),0) FROM inventoryproduct   ");
+        sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct   ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
         if (!"".equals(categories)) {
@@ -45,7 +45,7 @@ public class InventoryAmountA5 extends Inventory {
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA4--getValue)()异常", ex.toString());
+            log4j.error("InventoryAmountA4.getValue)()异常", ex.toString());
         }
         return result;
     }
