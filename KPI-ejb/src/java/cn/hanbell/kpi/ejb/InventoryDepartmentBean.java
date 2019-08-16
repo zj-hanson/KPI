@@ -45,12 +45,12 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         queryStringParams.put("prono", "1");
-        List<InventoryDepartment> resultData = getDataForInventoryproductList(y, m, queryStringParams);
+        List<InventoryDepartment> resultData = getDataForInventoryProductList(y, m, queryStringParams);
         return resultData;
     }
 
     // 获取ERP的当前月的库存金额明细
-    private List<InventoryDepartment> getDataForInventoryproductList(int y, int m, LinkedHashMap<String, String> map) {
+    private List<InventoryDepartment> getDataForInventoryProductList(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
@@ -119,7 +119,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             return DataList;
         } catch (Exception ex) {
-            System.out.println("在执行InventoryDepartmentBean.getDataForInventoryproductList()方法时失败！！！" + ex.toString());
+            System.out.println("在执行InventoryDepartmentBean.getDataForInventoryProductList()方法时失败！！！" + ex.toString());
         }
         return null;
 
