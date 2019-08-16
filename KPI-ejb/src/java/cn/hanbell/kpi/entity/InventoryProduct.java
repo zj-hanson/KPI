@@ -171,6 +171,9 @@ public class InventoryProduct extends SuperEntity {
         this.wareh = wareh;
         this.whdsc = whdsc;
         this.genre = genre;
+        this.amount = BigDecimal.ZERO;
+        this.amamount = BigDecimal.ZERO;
+        this.editamount = BigDecimal.ZERO;
     }
 
     public Integer getId() {

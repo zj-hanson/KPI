@@ -181,8 +181,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>inventoryproductedit</from-outcome>
-            <to-view-id>/app/prod/inventoryproductedit.xhtml</to-view-id>
+            <from-outcome>inventoryproduct</from-outcome>
+            <to-view-id>/app/prod/inventoryproduct.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

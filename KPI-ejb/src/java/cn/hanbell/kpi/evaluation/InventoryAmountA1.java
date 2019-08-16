@@ -35,7 +35,7 @@ public class InventoryAmountA1 extends Inventory {
                     sb.append(" select ifnull(sum(a.num),0) from ( ");
                     // indicatorno暂时写成B20
                     sb.append(
-                            " select sum(amount+amamount) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                            " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B05' ");
                     sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
                     if (!indicatorno.equals("") && indicatorno.contains("B20")) {
                         sb.append(" AND itclscode <> '2' ");
@@ -47,7 +47,7 @@ public class InventoryAmountA1 extends Inventory {
                     // 借厂商部分
                     sb.append(" UNION ALL ");
                     sb.append(
-                            " select sum(amount+amamount) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
+                            " select ifnull(sum(amount+amamount),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
                     if (!indicatorno.equals("") && indicatorno.contains("B20")) {
                         sb.append(" AND itclscode <> '2' ");
                     } else {
@@ -81,7 +81,7 @@ public class InventoryAmountA1 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA1类异常", ex.toString());
+            log4j.error("InventoryAmountA1.getValue()类异常", ex.toString());
         }
         return result;
 

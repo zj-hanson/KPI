@@ -17,6 +17,9 @@ public class InventoryAmountA2C52 extends InventoryAmountA2 {
 
     public InventoryAmountA2C52() {
         super();
+        queryParams.put("facno", "C");
+        queryParams.put("categories", "A2");
+        queryParams.put("genre", "='P'");
     }
 
     @Override

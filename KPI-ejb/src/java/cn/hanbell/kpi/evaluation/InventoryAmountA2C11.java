@@ -47,7 +47,7 @@ public class InventoryAmountA2C11 extends InventoryAmountA2 {
             result = super.getValue(y, m, d, type, map).multiply(v1).setScale(2, BigDecimal.ROUND_HALF_UP);
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2C20--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2C11--getValue()异常", ex.toString());
         }
         return result;
     }

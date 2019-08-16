@@ -20,15 +20,7 @@ public class InventoryAmountA2C20 extends InventoryAmountA2 {
         queryParams.put("facno", "C");
         queryParams.put("prono", "1");
         queryParams.put("categories", "A2");
-        queryParams.put("indicatorno", "C10");
         queryParams.put("genre", "='AJ'");
-    }
-
-    @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
-        return super.getValue(y, m, d, type, map).add(fgsValue); // To change body of generated methods, choose Tools |
-        // Templates.
     }
 
 }

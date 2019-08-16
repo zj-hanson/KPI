@@ -11,12 +11,12 @@
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询的年份" for="clientyear" />
-                <p:inputText id="clientyear" value="#{inventoryManagerBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
+                <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
                 <p:outputLabel value="请输入查询的月份" for="clientmonth" />
-                <p:inputText id="clientmonth" value="#{inventoryManagerBean.month}" title="月" />
-                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryManagerBean.resetQuery()}"  icon="ui-icon-refresh"
+                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" />
+                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.resetQuery()}"  icon="ui-icon-refresh"
                                  update="formOne" />
-                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.inventoryIndicatorQuery()}"  icon="ui-icon-search"
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryIndicatorQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
@@ -32,7 +32,7 @@
                     background-color: #00FF00 !important;
                 }
             </style>
-            <p:dataTable rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}" id="tblList" value="#{inventoryManagerBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData">
+            <p:dataTable rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}" id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData">
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
                 <p:columnGroup type="header">
@@ -68,25 +68,25 @@
                     <h:outputText value="#{item.responsible}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: center">
-                    <h:outputText value="#{item.target}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.target)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.actual}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.actual)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference1}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.difference1)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.upactual}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.upactual)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference2}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.difference2)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.benchmark}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.benchmark)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">
-                    <h:outputText value="#{item.difference3}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.difference3)}"/>
                 </p:column>
             </p:dataTable>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">

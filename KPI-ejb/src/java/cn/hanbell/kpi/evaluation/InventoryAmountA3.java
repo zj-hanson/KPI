@@ -65,7 +65,7 @@ public class InventoryAmountA3 extends Inventory {
             }
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getValue()异常", ex.toString());
         }
         return result;
     }
@@ -87,7 +87,7 @@ public class InventoryAmountA3 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getFWZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getFWZZValue()异常", ex.toString());
         }
         return result;
 
@@ -127,7 +127,7 @@ public class InventoryAmountA3 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA3--getFWZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA3.getFWZZValue()异常", ex.toString());
         }
         return result;
     }

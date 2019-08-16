@@ -28,8 +28,8 @@ public class InventoryAmountA2C70 extends InventoryAmountA2 {
         BigDecimal result = BigDecimal.ZERO;
         BigDecimal scValue = getProductValue(y, m, d, type, map);// 生产性的RT
         BigDecimal sczzValue = getgetProductZZValue(y, m, d, type, map);// 生产在制的RT
-        fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
-        result = super.getValue(y, m, d, type, map).add(scValue).add(sczzValue).add(fgsValue);
+        //fgsValue = getFgsValue(y, m, d, type, map).setScale(2, BigDecimal.ROUND_HALF_UP);
+        result = super.getValue(y, m, d, type, map).add(scValue).add(sczzValue);
         return result;
     }
 

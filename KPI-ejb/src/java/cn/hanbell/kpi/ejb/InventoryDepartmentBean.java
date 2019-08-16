@@ -45,36 +45,34 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         queryStringParams.put("prono", "1");
-        List<InventoryDepartment> resultData = getNowMonResultList(y, m, queryStringParams);
+        List<InventoryDepartment> resultData = getDataForInventoryProductList(y, m, queryStringParams);
         return resultData;
     }
 
     // 获取ERP的当前月的库存金额明细
-    private List<InventoryDepartment> getNowMonResultList(int y, int m, LinkedHashMap<String, String> map) {
+    private List<InventoryDepartment> getDataForInventoryProductList(int y, int m, LinkedHashMap<String, String> map) {
         String facno = map.get("facno") != null ? map.get("facno") : "";
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
         InventoryDepartment ibu;
-        sb.append(
-                " select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount - a.amamount) ,0)  ");
+        sb.append(" select a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre,ifnull(sum(a.amount + a.amamount) ,0)  ");
         sb.append(" from inventoryproduct a  WHERE a.facno = '${facno}'  ");
         sb.append(" AND a.yearmon = '${y}${m}' ");
         sb.append(" GROUP BY a.facno,substring(a.yearmon,1,4),a.wareh,a.whdsc,a.categories,a.genre ");
         String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${y}", String.valueOf(y))
                 .replace("${m}", String.valueOf(getMon(m)));
         try {
-            superEJBForERP.setCompany(facno);
-            Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
+            Query query = this.getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     Object[] row = (Object[]) result.get(i);
                     facno = row[0] != null ? row[0].toString() : " ";
-                    String creyear = row[1] != null ? row[2].toString() : " ";
-                    String wareh = row[2] != null ? row[3].toString() : " ";
-                    String whdsc = row[3] != null ? row[4].toString() : " ";
-                    String categories = row[4] != null ? row[5].toString() : " ";
-                    String genre = row[6] != null ? row[6].toString() : " ";
+                    String creyear = row[1] != null ? row[1].toString() : " ";
+                    String wareh = row[2] != null ? row[2].toString() : " ";
+                    String whdsc = row[3] != null ? row[3].toString() : " ";
+                    String categories = row[4] != null ? row[4].toString() : " ";
+                    String genre = row[5] != null ? row[5].toString() : " ";
                     ibu = new InventoryDepartment(facno, "1", creyear, wareh, whdsc, categories, genre);
                     switch (m) {
                         case 1:
@@ -121,16 +119,16 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             return DataList;
         } catch (Exception ex) {
-            System.out.println("在执行InventoryDepartmentBean的getNowMonResultList（）方法时失败！！！" + ex.toString());
+            System.out.println("在执行InventoryDepartmentBean.getDataForInventoryProductList()方法时失败！！！" + ex.toString());
         }
         return null;
 
     }
 
-    // 获取KPI数据库的InvamountDepartment表的List 目的：为了判断当前表中是否存在相同数据
-    private List<InventoryDepartment> findByPk(String facno, String prono, String creyear, String wareh, String whdsc,
+    // 为了判断当前表中是否存在相同数据
+    private List<InventoryDepartment> findByPK(String facno, String prono, String creyear, String wareh, String whdsc,
             String categories, String genre) {
-        Query query = this.getEntityManager().createNamedQuery("InventoryDepartment.findByPk");
+        Query query = this.getEntityManager().createNamedQuery("InventoryDepartment.findByPK");
         query.setParameter("facno", facno);
         query.setParameter("prono", prono);
         query.setParameter("creyear", creyear);
@@ -160,9 +158,9 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     String categories = ib.getInventoryDepartmentPK().getCategories();
                     String genre = ib.getInventoryDepartmentPK().getGenre();
                     // 循环每一行数据 判断当前插入数据 数据库是否存在 如果存在就更新数据 不存在就插入新的数据行
-                    List flagList = findByPk(facno, prono, creyear, wareh, whdsc, categories, genre);
+                    List<InventoryDepartment> flagList = findByPK(facno, prono, creyear, wareh, whdsc, categories, genre);
                     if (!flagList.isEmpty() && flagList.size() > 0) {
-                        InventoryDepartment a = newList.get(newList.indexOf(ib));
+                        InventoryDepartment a = flagList.get(0);
                         switch (m) {
                             case 1:
                                 a.setN01(ib.getN01());
@@ -218,6 +216,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
 
     // 获取KPI的数据源 为KPI的系统最终显示的数据源
     private List getDataList(String type, String genre, int y, int m) {
+
         StringBuilder sb = new StringBuilder();
         sb.append(" select whdsc, ");
         sb.append("sum(n").append(getMon(m - 2)).append("),");
@@ -244,7 +243,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
         }
         if (!genre.equals("N") && !genre.equals("")) {
-            sb.append(" and genre = '").append(genre).append("'");
+            if (genre.equals("R")) {
+                sb.append(" and genre in ('R','RG') ");
+            } else {
+                sb.append(" and genre = '").append(genre).append("'");
+            }
         }
         sb.append(" GROUP BY whdsc ");
         // 服务在制和生产在制的数据
@@ -268,7 +271,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             }
             // 取到产品别
             if (!genre.equals("N") && !genre.equals("")) {
-                sb.append(" and genre = '").append(genre).append("'");
+                if (genre.equals("R")) {
+                    sb.append(" and genre in ('R','RG') ");
+                } else {
+                    sb.append(" and genre = '").append(genre).append("'");
+                }
             }
             sb.append(" GROUP BY whdsc ");
         }
@@ -284,7 +291,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     sb.append(" from inventorydepartment WHERE 1=1  ");
                     sb.append(" AND whdsc LIKE ('借厂商%') ");
                     if (!genre.equals("")) {
-                        sb.append(" and genre = '").append(genre).append("'");
+                        if (genre.equals("R")) {
+                            sb.append(" and genre in ('R','RG') ");
+                        } else {
+                            sb.append(" and genre = '").append(genre).append("'");
+                        }
                     }
                     sb.append(" GROUP BY whdsc ");
                     break;
@@ -297,7 +308,11 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                     sb.append(" from inventorydepartment WHERE 1=1  ");
                     sb.append(" AND whdsc IN ('借客户','借员工') ");
                     if (!genre.equals("N") && !genre.equals("")) {
-                        sb.append(" and genre = '").append(genre).append("'");
+                        if (genre.equals("R")) {
+                            sb.append(" and genre in ('R','RG') ");
+                        } else {
+                            sb.append(" and genre = '").append(genre).append("'");
+                        }
                     }
                     sb.append(" GROUP BY whdsc ");
                     break;
@@ -309,7 +324,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
-            log4j.error("getDataList()异常！", ex);
+            log4j.error("InventoryDepartmentBean.getDataList()异常！", ex);
         }
         return null;
     }
@@ -369,7 +384,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
             tempList.add(ibu1);
             return tempList;
         } catch (Exception ex) {
-            log4j.error("getBusinessUnitsResultList()异常！", ex);
+            log4j.error("InventoryDepartmentBean.getInventoryDepartmentResultList()异常！", ex);
         }
         return null;
     }

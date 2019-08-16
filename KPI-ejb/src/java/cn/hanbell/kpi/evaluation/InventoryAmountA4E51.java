@@ -15,7 +15,7 @@ public class InventoryAmountA4E51 extends InventoryAmountA4 {
         super();
         queryParams.put("facno", "C");
         queryParams.put("trtype", "CA");
-        queryParams.put("deptno", "1C");
+        queryParams.put("deptno", "1V");
 
     }
 

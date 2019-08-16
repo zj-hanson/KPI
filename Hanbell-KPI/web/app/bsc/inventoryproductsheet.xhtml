@@ -12,17 +12,17 @@
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询的年份" for="clientyear" />
-                <p:inputText id="clientyear" value="#{inventoryManagerBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
+                <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
                 <p:outputLabel value="请输入查询的月份" for="clientmonth" />
-                <p:inputText id="clientmonth" value="#{inventoryManagerBean.month}" title="月" />
-                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryManagerBean.resetQuery()}"  icon="ui-icon-refresh"
+                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" />
+                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.resetQuery()}"  icon="ui-icon-refresh"
                                  update="formOne" />
-                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryManagerBean.inventoryProductQuery()}"  icon="ui-icon-search"
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryProductQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList,remarks" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <p:dataTable id="tblList" value="#{inventoryManagerBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData"
+            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData"
                          rowSelectMode="single" rowKey="item.id" editable="true">
                 <f:facet name="header">
                     <span style="font-size: 21px;" >各库别之产品别库存金额表</span>
@@ -100,9 +100,9 @@
                 </p:column>
             </p:dataTable>
             <p:panel id="remarks" style="height: 0px" >
-                <c:if test="#{inventoryManagerBean.summaryCount != 0 }">
+                <c:if test="#{inventoryReportBean.summaryCount != 0 }">
                     <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repSummary" value="#{inventoryManagerBean.summaryList}" var="s" rendered="#{inventoryManagerBean.summaryCount>0}">
+                        <p:repeat id="repSummary" value="#{inventoryReportBean.summaryList}" var="s" rendered="#{inventoryReportBean.summaryCount>0}">
                             <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                                 <h:panelGrid>
                                     <h:outputText id="summary"/>
@@ -112,9 +112,9 @@
                         </p:repeat>
                     </div>
                 </c:if>
-                <c:if test="#{inventoryManagerBean.analysisCount != 0}">
+                <c:if test="#{inventoryReportBean.analysisCount != 0}">
                     <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repAnalysis" value="#{inventoryManagerBean.analysisList}" var="a" rendered="#{inventoryManagerBean.analysisCount>0}">
+                        <p:repeat id="repAnalysis" value="#{inventoryReportBean.analysisList}" var="a" rendered="#{inventoryReportBean.analysisCount>0}">
                             <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                                 <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                                     <h:outputText id="issueLabel" value="问题"/>
@@ -131,10 +131,10 @@
                         </p:repeat>
                     </div>
                 </c:if>
-                <c:if test="#{inventoryManagerBean.analysisCount != 0  or inventoryManagerBean.summaryCount != 0 }">
+                <c:if test="#{inventoryReportBean.analysisCount != 0  or inventoryReportBean.summaryCount != 0 }">
                     <h:outputScript name="bsc-clientranking.js" library="js"/>
-                    <h:inputHidden id="ac" value="#{inventoryManagerBean.analysisCount}"></h:inputHidden>
-                    <h:inputHidden id="sc" value="#{inventoryManagerBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{inventoryReportBean.analysisCount}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{inventoryReportBean.summaryCount}"></h:inputHidden>
                 </c:if>
             </p:panel>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">

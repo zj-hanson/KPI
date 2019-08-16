@@ -42,10 +42,9 @@ public class InventoryAmountA2 extends Inventory {
         sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
         sb.append(" WHERE facno = '${facno}' ");
         sb.append(" AND trtype = 'ZC' ");
-        sb.append(" AND indicatorno = 'C10' ");// 待指标数据都归档完成之前用这个逻辑（ERP需维护每个指标对应的库别）
-        // if (!"".equals(indicatorno)) {
-        // sb.append(" AND indicatorno = '").append(indicatorno).append("'");
-        // }
+        if (!"".equals(indicatorno)) {
+            sb.append(" AND indicatorno = 'C05'");
+        }
         if (!"".equals(categories)) {
             sb.append(" AND categories = '").append(categories).append("'");
         }
@@ -60,7 +59,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getValue()异常", ex.toString());
         }
         return result;
     }
@@ -93,7 +92,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getFgsValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getFgsValue()异常", ex.toString());
         }
         return result;
     }
@@ -136,7 +135,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getFgsZjValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getFgsZjValue()异常", ex.toString());
         }
         return result;
     }
@@ -151,18 +150,18 @@ public class InventoryAmountA2 extends Inventory {
         BigDecimal result = BigDecimal.ZERO;
         // 生产性物料 RT、AD和P部分的数据
         sb.append(" select ifnull(sum(a.num),0) from ( ");
-        // indicatorno暂时写成B20
+        // indicatorno暂时写成B20 后续改为“按物料归类”
         sb.append(
-                " select sum(amount+amamount) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
         sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
         }
-        sb.append(" AND genre NOT IN ('RT','P','AD') ");
+        //sb.append(" AND genre NOT IN ('RT','P','AD') ");
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         // 借厂商部分
         sb.append(" UNION ALL ");
-        sb.append(" select sum(amount+amamount) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
+        sb.append(" select ifnull(sum(amount+amamount),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
         }
@@ -175,7 +174,7 @@ public class InventoryAmountA2 extends Inventory {
             Object o1 = query.getSingleResult();
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getProductValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getProductValue()异常", ex.toString());
         }
         return result;
     }
@@ -203,7 +202,7 @@ public class InventoryAmountA2 extends Inventory {
             result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
             return result;
         } catch (Exception ex) {
-            log4j.error("InventoryAmountA2--getgetProductZZValue()异常", ex.toString());
+            log4j.error("InventoryAmountA2.getgetProductZZValue()异常", ex.toString());
         }
         return result;
     }
