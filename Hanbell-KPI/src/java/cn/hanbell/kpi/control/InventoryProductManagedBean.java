@@ -126,7 +126,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         List<InventoryProduct> list = getEditInventoryProductList();
         if (!list.isEmpty()) {
             for (InventoryProduct ip : list) {
-                ip.setAmamount(ip.getEditamount());
+                ip.setAmamount(ip.getEditamount() != null ? ip.getEditamount() : BigDecimal.ZERO);
                 ip.setEditamount(BigDecimal.ZERO);
                 ip.setOptuser(getUserManagedBean().getCurrentUser().getUsername());
                 ip.setOptdateToNow();
@@ -142,6 +142,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     public void create() {
         super.create(); // To change body of generated methods, choose Tools | Templates.
         if (newEntity != null) {
+            newEntity.setAmamount(BigDecimal.ZERO);
             newEntity.setStatus("N");
             newEntity.setCreator(getUserManagedBean().getCurrentUser().getUsername());
             newEntity.setCredateToNow();

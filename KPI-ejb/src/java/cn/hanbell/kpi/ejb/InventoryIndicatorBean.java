@@ -115,7 +115,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setActual(actAmt);
 
             // 与目标差异 = 当月 - 目标
-            ita.setDifference1((actAmt.subtract(tarAmt)).divide(BigDecimal.valueOf(10000), 2, BigDecimal.ROUND_HALF_UP));
+            ita.setDifference1(actAmt.subtract(tarAmt));
 
             // 上月库存
             mon = this.getIndicatorColumn("N", m - 1);
@@ -125,7 +125,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setUpactual(upactAmt);
 
             // 与上月差异 当月 - 上月
-            ita.setDifference2((actAmt.subtract(upactAmt)).divide(BigDecimal.valueOf(10000), 2, BigDecimal.ROUND_HALF_UP));
+            ita.setDifference2(actAmt.subtract(upactAmt));
 
             // 去年同期库存
             mon = this.getIndicatorColumn("N", m);
@@ -135,7 +135,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setBenchmark(benAmt);
 
             // 与去年同期差异 当月 - 去年同期
-            ita.setDifference3((actAmt.subtract(benAmt)).divide(BigDecimal.valueOf(10000), 2, BigDecimal.ROUND_HALF_UP));
+            ita.setDifference3(actAmt.subtract(benAmt));
 
             InventoryList1.add(ita);
         } catch (SecurityException | IllegalArgumentException ex) {
