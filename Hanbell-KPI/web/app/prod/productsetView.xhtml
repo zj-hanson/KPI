@@ -73,6 +73,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="考核人员"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="userid" value="#{productSetManagedBean.currentEntity.userid}" title="userid"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="姓名"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="username" value="#{productSetManagedBean.currentEntity.username}" title="username"/>
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><h:outputText value="指标类型"/></p:column>
                     <p:column>
                         <p:selectOneMenu id="formtype" value="#{productSetManagedBean.currentEntity.formtype}" title="formtype"
@@ -1149,7 +1159,7 @@
                                            symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
-                            <p:commandButton id="otherd01"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 1)}" icon="ui-icon-add" 
+                            <p:commandButton id="otherd01"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 1)}" icon="ui-icon-add"
                                              process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd01" style="background-color: #1AB394" rendered="#{productSetManagedBean.currentEntity.formkind=='D' }" >
                             </p:commandButton>
                         </p:column>
@@ -1159,7 +1169,7 @@
                                            symbol="#{productSetManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" readonly="true">
                             </p:inputNumber>
                             &nbsp;
-                            <p:commandButton id="otherd02"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 2)}" icon="ui-icon-add" 
+                            <p:commandButton id="otherd02"  actionListener="#{productSetManagedBean.queryIndicatorDaily(productSetManagedBean.otherIndicator, 2)}" icon="ui-icon-add"
                                              process="@this" update="formOne:dlgDaily" oncomplete="PF('dlgDaily').show();" title="otherd02" style="background-color: #1AB394" rendered="#{productSetManagedBean.currentEntity.formkind=='D' }"  >
                             </p:commandButton>
                         </p:column>
