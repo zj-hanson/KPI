@@ -5,6 +5,7 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.entity.Category;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.JobSchedule;
@@ -87,6 +88,24 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
             Category e = (Category) event.getObject();
             currentDetail2.setProductId(e.getId());
             currentDetail2.setProduct(e.getCategory());
+        }
+    }
+
+    public void handleDialogReturnUserWhenDetailNew(SelectEvent event) {
+        if (event.getObject() != null && newEntity != null) {
+            Object o = event.getObject();
+            SystemUser user = (SystemUser) o;
+            newEntity.setUserid(user.getUserid());
+            newEntity.setUsername(user.getUsername());
+        }
+    }
+
+    public void handleDialogReturnUserWhenDetailEdit(SelectEvent event) {
+        if (event.getObject() != null && currentEntity != null) {
+            Object o = event.getObject();
+            SystemUser user = (SystemUser) o;
+            currentEntity.setUserid(user.getUserid());
+            currentEntity.setUsername(user.getUsername());
         }
     }
 
