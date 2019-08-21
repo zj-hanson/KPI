@@ -39,23 +39,24 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     @EJB
     protected IndicatorChartBean indicatorChartBean;
 
+    protected int y;
+    protected int m;
     protected Date btndate;
     protected String facno;
-    private String[] titel;
-    private List<String[]> list;
+    protected String[] titel;
+    protected IndicatorChart indicatorChart;
+    protected List<String[]> list;
+
+    protected final DecimalFormat decimalFormat;
 
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
 
     FacesContext fc;
     ExternalContext ec;
-    private IndicatorChart indicatorChart;
-    protected final DecimalFormat format;
-    private int y;
-    protected int m;
 
     public FinancingFreeServiceReportBean() {
-        this.format = new DecimalFormat("#,###.##");
+        this.decimalFormat = new DecimalFormat("#,###.##");
     }
 
     public Calendar settlementDate() {
@@ -64,7 +65,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         return c;
     }
 
-    public Calendar getdate() {
+    public Calendar getDate() {
         Calendar c = Calendar.getInstance();
         c.setTime(btndate);
         return c;
@@ -95,14 +96,14 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     public void btnquery() {
         titel = new String[9];
         list = new ArrayList<>();
-        m = getdate().get(Calendar.MONTH) + 1;
-        y = getdate().get(Calendar.YEAR);
+        m = getDate().get(Calendar.MONTH) + 1;
+        y = getDate().get(Calendar.YEAR);
         boolean aa = true;
         if (getBtndate().after(settlementDate().getTime())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
         }
-        indicator = indicatorBean.findByFormidYearAndDeptno(getIndicatorChart().getFormid(),y, getIndicatorChart().getDeptno());
+        indicator = indicatorBean.findByFormidYearAndDeptno(getIndicatorChart().getFormid(), y, getIndicatorChart().getDeptno());
         if (indicator == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
@@ -122,7 +123,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
             }
             titel[4] = m == 1 ? (y - 1) + "年12月实绩" : (m - 1) + "月实绩";
             titel[5] = m + "月实绩";
-            titel[6] = m == 1 ?y + "年累计（1月)" :y + "年累计（1-" + m + "月)";
+            titel[6] = m == 1 ? y + "年累计（1月)" : y + "年累计（1-" + m + "月)";
             titel[7] = m == 1 ? (y - 1) + "年累计（1月)" : (y - 1) + "年累计（1-" + m + "月)";
             titel[8] = "累计与上年同期对比差异";
             String[] arr;
@@ -201,7 +202,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     }
 
     public String format(BigDecimal value) {
-        return format.format(value); //To change body of generated methods, choose Tools | Templates.
+        return decimalFormat.format(value); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -273,7 +274,5 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     public IndicatorChart getIndicatorChart() {
         return indicatorChart;
     }
-    
-    
 
 }
