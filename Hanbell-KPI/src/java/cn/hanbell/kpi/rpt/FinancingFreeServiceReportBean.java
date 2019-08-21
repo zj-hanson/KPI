@@ -43,7 +43,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     protected int m;
     protected Date btndate;
     protected String facno;
-    protected String[] titel;
+    protected String[] title;
     protected IndicatorChart indicatorChart;
     protected List<String[]> list;
 
@@ -94,7 +94,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     }
 
     public void btnquery() {
-        titel = new String[9];
+        title = new String[9];
         list = new ArrayList<>();
         m = getDate().get(Calendar.MONTH) + 1;
         y = getDate().get(Calendar.YEAR);
@@ -109,23 +109,23 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         }
         if (indicator.isAssigned() && aa) {
             List<Indicator> indicatorList = indicatorBean.findByPId(indicator.getId());
-            titel[0] = "项目";
-            titel[1] = "考核部门";
-            titel[2] = "目标全年";
+            title[0] = "项目";
+            title[1] = "考核部门";
+            title[2] = "目标全年";
             if (m >= 1 && m < 4) {
-                titel[3] = "Q1目标(1~3月)";
+                title[3] = "Q1目标(1~3月)";
             } else if (m >= 4 && m < 6) {
-                titel[3] = "Q2目标(4~6月)";
+                title[3] = "Q2目标(4~6月)";
             } else if (m >= 6 && m < 9) {
-                titel[3] = "Q3目标(7~9月)";
+                title[3] = "Q3目标(7~9月)";
             } else {
-                titel[3] = "Q4目标(10~12月)";
+                title[3] = "Q4目标(10~12月)";
             }
-            titel[4] = m == 1 ? (y - 1) + "年12月实绩" : (m - 1) + "月实绩";
-            titel[5] = m + "月实绩";
-            titel[6] = m == 1 ? y + "年累计（1月)" : y + "年累计（1-" + m + "月)";
-            titel[7] = m == 1 ? (y - 1) + "年累计（1月)" : (y - 1) + "年累计（1-" + m + "月)";
-            titel[8] = "累计与上年同期对比差异";
+            title[4] = m == 1 ? (y - 1) + "年12月实绩" : (m - 1) + "月实绩";
+            title[5] = m + "月实绩";
+            title[6] = m == 1 ? y + "年累计（1月)" : y + "年累计（1-" + m + "月)";
+            title[7] = m == 1 ? (y - 1) + "年累计（1月)" : (y - 1) + "年累计（1-" + m + "月)";
+            title[8] = "累计与上年同期对比差异";
             String[] arr;
             String[] arrsum = new String[10];
             arrsum[0] = "合计";
@@ -220,17 +220,17 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     }
 
     /**
-     * @return the titel
+     * @return the title
      */
     public String[] getTitel() {
-        return titel;
+        return title;
     }
 
     /**
-     * @param titel the titel to set
+     * @param titel the title to set
      */
     public void setTitel(String[] titel) {
-        this.titel = titel;
+        this.title = titel;
     }
 
     /**
