@@ -5,6 +5,7 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.ejb.InventoryDepartmentBean;
 import cn.hanbell.kpi.ejb.InventoryProductBean;
 import cn.hanbell.kpi.entity.InventoryProduct;
 import cn.hanbell.kpi.lazy.inventoryProductModel;
@@ -12,6 +13,7 @@ import cn.hanbell.kpi.web.SuperSingleBean;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -30,6 +32,9 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     @EJB
     protected InventoryProductBean inventoryProductBean;
 
+    @EJB
+    private InventoryDepartmentBean inventoryDepartmentBean;
+
     protected String queryYearmon;
     protected String queryWhdsc;
     protected String queryGenre;
@@ -38,7 +43,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     protected List<InventoryProduct> editInventoryProductList;
 
     protected final DecimalFormat doubleFormat;
-
+    
     public InventoryProductManagedBean() {
         super(InventoryProduct.class);
         this.doubleFormat = new DecimalFormat("###,###.##");
@@ -64,14 +69,19 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
 
     @Override
     public void init() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        String y = String.valueOf(year);
+        String m = String.valueOf(month);
         this.superEJB = inventoryProductBean;
         this.model = new inventoryProductModel(superEJB);
-        queryYearmon = "";
+        queryYearmon = y.concat(month < 10 ? "0" + m : m);
         queryWhdsc = "";
-        queryGenre = "0";
         queryItclscode = "";
         newEntity = new InventoryProduct();
         setEditInventoryProductList(new ArrayList<>());
+        query();
         super.init(); // To change body of generated methods, choose Tools | Templates.
     }
 
@@ -132,7 +142,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
                 ip.setOptdateToNow();
                 inventoryProductBean.update(ip);
             }
-            showErrorMsg("Error", "更新数据成功！！！");
+            showErrorMsg("Info", "更新数据成功！！！");
         } else {
             showErrorMsg("Error", "更新数据失败，请重试！！！");
         }
@@ -167,6 +177,22 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "没有可更新数据!"));
+        }
+    }
+
+    public void updateInventoryDepartment() {
+        boolean flag = false;
+        try {
+            int y = Integer.parseInt(queryYearmon.substring(0, 4), 10);
+            int m = Integer.parseInt(queryYearmon.substring(queryYearmon.length() -2,queryYearmon.length()), 10);
+            flag = inventoryDepartmentBean.updateInventoryDepartment(y,m);
+            if (flag) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "数据保存成功！"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "数据保存失败，请重试！！！"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

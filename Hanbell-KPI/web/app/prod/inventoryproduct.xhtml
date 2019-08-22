@@ -73,6 +73,7 @@
                                      update=":formList"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnUpdateInvdep" value="保存" actionListener="#{inventoryProductManagedBean.updateInventoryDepartment()}"  icon="ui-icon-save"/>
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
                         <p:menuitem id="btnUpdate" value="修改" actionListener="#{inventoryProductManagedBean.queryEdit()}" icon="ui-icon-update"
                                     update="formEdit" oncomplete="PF('InventoryProductEdit').show();"/>
@@ -111,14 +112,14 @@
                     <h:outputText id="yearmon" value="#{item.yearmon}"/>
                 </p:column>
 
-                <p:column styleClass="Wid20" style="text-align: center;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="库号"/>
                     </f:facet>
                     <h:outputText id="wareh" value="#{item.wareh}"/>
                 </p:column>
 
-                <p:column styleClass="Wid20" style="text-align: center;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="库别"/>
                     </f:facet>
@@ -139,18 +140,18 @@
                     <h:outputText id ="itclscode" value="#{item.itclscode}"></h:outputText>
                 </p:column>
 
-                <p:column styleClass="Wid20" style="text-align: center;">
-                    <f:facet name="header" >
+                <p:column styleClass="Wid20" style="text-align: right;">
+                    <f:facet name="header">
                         <h:outputText value="金额"/>
                     </f:facet>
-                    <h:outputText id="amount" value="#{inventoryProductManagedBean.format(item.amount)}"/>
+                        <h:outputText id="amount" value="#{inventoryProductManagedBean.format(item.amount)}"/>
                 </p:column>
 
-                <p:column styleClass="Wid15">
+                <p:column styleClass="Wid15" style="text-align: right;">
                     <f:facet name="header">
                         <h:outputText value="调整金额"/>
                     </f:facet>
-                    <h:outputText id="amamount"  value="#{item.amamount}" />
+                    <h:outputText id="amamount"  value="#{item.amamount}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -169,7 +170,13 @@
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="公司别：" /></p:column>
                         <p:column styleClass="Wid20">
-                            <p:inputText value="#{inventoryProductManagedBean.newEntity.facno}" required="true" requiredMessage="请输入公司别" />
+                            <p:selectOneMenu id="facno"  value="#{inventoryProductManagedBean.newEntity.facno}" required="true" style="width:100%;" title="公司别" >
+                                <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                                <f:selectItem itemLabel="广州分公司" itemValue="G"/>
+                                <f:selectItem itemLabel="南京分公司" itemValue="N"/>
+                                <f:selectItem itemLabel="济南分公司" itemValue="J"/>
+                                <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="日期：" /></p:column>
                         <p:column styleClass="Wid20">
@@ -282,9 +289,9 @@
                 <p:panelGrid id="InventoryProductEditValue" styleClass="plgDetail Wid100">
                     <p:toolbar>
                         <f:facet name="right">
-                        <p:commandButton id="btnQueryEdit" value="保存" actionListener="#{inventoryProductManagedBean.updateEdit()}" icon="ui-icon-search"
-                                         update="formEdit"/>
-                    </f:facet>
+                            <p:commandButton id="btnQueryEdit" value="保存" actionListener="#{inventoryProductManagedBean.updateEdit()}" icon="ui-icon-save"
+                                             update="formEdit"/>
+                        </f:facet>
                     </p:toolbar>
                 </p:panelGrid>
                 <p:dataTable id="editTableList"  value="#{inventoryProductManagedBean.editInventoryProductList}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
