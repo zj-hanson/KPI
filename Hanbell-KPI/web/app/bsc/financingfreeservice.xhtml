@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
+                <p:outputLabel value="请输入查询日期*" for="btndate" />
+                <p:calendar id="btndate" value="#{financingFreeServiceReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
+                <p:outputLabel style="visibility: hidden"/>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{financingFreeServiceReportBean.btnreset()}"  icon="ui-icon-refresh"
+                                 update="formOne" process="plgQuery" />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{financingFreeServiceReportBean.btnquery()}"  icon="ui-icon-search"
+                                 update="formOne" process="plgQuery"/>
+                <p:link  value="返回"  outcome="home" style="float: left"/>
+            </p:panelGrid>
+            <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                <f:facet name="header"  >
+                    <p:row >
+                        <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{financingFreeServiceReportBean.y}年#{financingFreeServiceReportBean.indicatorChart.name}</p:column>
+                    </p:row>
+                    <p:row style="text-align: right" >
+                            <p:column style="letter-spacing:2px;font-weight: 600" >单位:#{freeServiceReportBean.indicator.unit}&nbsp;&nbsp;</p:column>
+                    </p:row>
+                </f:facet>
+            </p:panelGrid >
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <p:dataTable var="item" value="#{financingFreeServiceReportBean.list}" styleClass="plgSheetData Wid100">
+                        <p:column styleClass="Wid10" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[0]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{item[0]}"   />
+                        </p:column>
+                        <p:column styleClass="Wid15" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[1]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{item[1]}&nbsp;&nbsp;" />
+                        </p:column>
+                        <p:column styleClass="Wid10"  style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[2]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[2])}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column styleClass="Wid10" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[3]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[3])}"   style="color: #0033ff"  />
+                        </p:column>
+                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[4]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[4])}&nbsp;&nbsp;"  />
+                        </p:column>
+                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[5]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[5])}&nbsp;&nbsp;" />
+                        </p:column>
+                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[6]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[6])}&nbsp;&nbsp;" />
+                        </p:column>
+                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header" >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[7]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[7])}&nbsp;&nbsp;" style="color: #{item[9]}" />
+                        </p:column>
+                        <p:column styleClass="Wid15" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
+                            <f:facet name="header"  >
+                                <h:outputText  value="#{financingFreeServiceReportBean.title[8]}"  />
+                            </f:facet>
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[8])}&nbsp;&nbsp;" style="color: #{item[9]}" />
+                        </p:column>
+                    </p:dataTable>
+                    <div style="color: gray;">
+                        <p >
+                            注：<span style="color: red">红色</span>字体指标较上年同期衰退！
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%;display:#{balanceSheetReportBean.statusMap.displaydiv2};">
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{balanceSheetReportBean.summaryList}" var="s" rendered="#{balanceSheetReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{balanceSheetReportBean.analysisList}" var="a" rendered="#{balanceSheetReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:outputScript name="bsc-clientranking.js" library="js"/>
+                    <h:inputHidden id="sc" value="#{balanceSheetReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{balanceSheetReportBean.analysisCount}"></h:inputHidden>
+                </div>
+            </div>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
