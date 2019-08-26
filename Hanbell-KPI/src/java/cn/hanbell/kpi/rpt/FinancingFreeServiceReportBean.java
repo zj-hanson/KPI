@@ -222,15 +222,15 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     /**
      * @return the title
      */
-    public String[] getTitel() {
+    public String[] getTitle() {
         return title;
     }
 
     /**
-     * @param titel the title to set
+     * @param title the title to set
      */
-    public void setTitel(String[] titel) {
-        this.title = titel;
+    public void setTitle(String[] title) {
+        this.title = title;
     }
 
     /**

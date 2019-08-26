@@ -6,7 +6,7 @@
 package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.control.UserManagedBean;
-import cn.hanbell.kpi.ejb.BalanceSheetBean;
+import cn.hanbell.kpi.ejb.DataRecordBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CashFlowSheetReportBean extends BscQueryTableManageBean implements Serializable {
 
     @EJB
-    protected BalanceSheetBean balanceSheetBean;
+    protected DataRecordBean dataRecordBean;
 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
@@ -97,13 +98,15 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
         }
+        int y = getdate().get(Calendar.YEAR);
+        int m = getdate().get(Calendar.MONTH) + 1;
         if (aa) {
-            map = balanceSheetBean.getCashFlowMap(btndate);
+            map = dataRecordBean.getCashFlowMap("C", "cashflow", y, m);
             if (getMap() != null && !map.isEmpty()) {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");
-                statusMap.put("th1title", (getdate().get(Calendar.MONTH) + 1)==1?getdate().get(Calendar.YEAR)+"年 1月":getTitle(getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1));
-                statusMap.put("th2title", (getdate().get(Calendar.MONTH) + 1)==1?getdate().get(Calendar.YEAR)-1+"年 1月":getTitle(getdate().get(Calendar.YEAR) - 1, getdate().get(Calendar.MONTH) + 1));
+                statusMap.put("th1title", (getdate().get(Calendar.MONTH) + 1) == 1 ? getdate().get(Calendar.YEAR) + "年 1月" : getTitle(getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1));
+                statusMap.put("th2title", (getdate().get(Calendar.MONTH) + 1) == 1 ? getdate().get(Calendar.YEAR) - 1 + "年 1月" : getTitle(getdate().get(Calendar.YEAR) - 1, getdate().get(Calendar.MONTH) + 1));
                 super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));

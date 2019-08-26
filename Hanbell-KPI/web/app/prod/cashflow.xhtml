@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid15,Wid15,Wid15,Wid20,Wid15,Wid20" styleClass="plgQuery Wid100" >
+                <f:facet name="header">
+                    查询条件
+                </f:facet>
+                <h:outputLabel value="公司" for="queryCompany" />
+                <p:selectOneMenu id="queryCompany" value="#{cashFlowManagedBean.queryCompany}" style="width:100%;" title="公司" >
+                    <f:selectItem itemLabel="汉钟" itemValue="C"/>
+                    <f:selectItem itemLabel="柯茂" itemValue="K"/>
+                </p:selectOneMenu>
+                <h:outputLabel value="日期：" for="queryDate" />
+                <p:calendar id="queryDateBegin" value="#{cashFlowManagedBean.queryDate}" title="日期" pattern="yyyy/MM/dd"/>
+                <h:outputLabel value="项目名" for="queryName" />
+                <p:inputText id="queryUsername" value="#{cashFlowManagedBean.queryName}" title="项目名" />
+                <h:outputLabel value="经营汇报显示栏位" for="querywhethershow" />
+                <p:selectBooleanCheckbox value="#{cashFlowManagedBean.querywhethershow}" disabled="false"/>
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{cashFlowManagedBean.init()}" icon="ui-icon-sync"
+                                     update=":formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
+                        <p:menuitem id="btnAddIndicatorSummary" value="添加"  icon="ui-icon-plus"
+                                    process="@this" update=":formList" oncomplete="PF('dataRecordAdd').show();"/>
+                        <p:menuitem id="btnDelete" value="删除" icon="ui-icon-trash" actionListener="#{cashFlowManagedBean.delete()}"
+                                    rendered="true" update=":formList">
+                            <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                        </p:menuitem>
+                    </p:splitButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{cashFlowManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{cashFlowManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable  value="#{cashFlowManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                          rowsPerPageTemplate="15,50,100"
+                          lazy="true" selectionMode="single" selection="#{cashFlowManagedBean.currentEntity}" rowKey="#{item.id}" >
+                <p:ajax event="rowSelect"  update="formOne:dlgDetail"  oncomplete="PF('dlgDetail').show();" />
+                <f:facet name="header">
+                    维护
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid5" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="公司别"/>
+                    </f:facet>
+                    <h:outputText  value="#{item.facno}"/>
+                </p:column>
+                <p:column styleClass="Wid5" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="项目号"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemno}"/>
+                </p:column>
+                <p:column styleClass="Wid25"  >
+                    <f:facet name="header" >
+                        <h:outputText value="名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.itemname}"/>
+                </p:column>
+                <p:column styleClass="Wid10" style="text-align: center" >
+                    <f:facet name="header" >
+                        <h:outputText value="经营汇报行次"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dataRecorDassisted.showno}"/>
+                </p:column>
+                <p:column styleClass="Wid25"  >
+                    <f:facet name="header" >
+                        <h:outputText value="经营汇报名称"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dataRecorDassisted.adjitemname}"/>
+                </p:column>
+                <p:column styleClass="Wid5" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="年份"/>
+                    </f:facet>
+                    <h:outputText value="#{item.yea}"/>
+                </p:column>
+                <p:column styleClass="Wid5" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="月份"/>
+                    </f:facet>
+                    <h:outputText value="#{item.mon}"/>
+                </p:column>
+                <p:column styleClass="Wid10" style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="原金额"/>
+                    </f:facet>
+                    <h:outputText value="#{item.amt}"/>
+                </p:column>
+                <p:column styleClass="Wid10" style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="调整金额"/>
+                    </f:facet>
+                    <h:outputText  value="#{item.adjamt}" style="width: 100%" />
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:dialog id="dataRecordAdd" widgetVar="dataRecordAdd" width="40%" style="border-color: #666666">
+                <p:panelGrid id="dataRecordValue" styleClass="plgDetail Wid100">
+                    <f:facet name="header" >
+                        <p:row >
+                            <p:column colspan="4">资料导入</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row >
+                        <p:column styleClass="Wid10"><h:outputLabel value="*日期" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:calendar value="#{cashFlowManagedBean.createDate}" title="日期" pattern="yyyy/MM/dd" required="true" requiredMessage="请输入日期">
+                                <p:ajax event="dateSelect" process="@this"/>
+                            </p:calendar>
+                        </p:column>
+                        <p:column styleClass="Wid10"><h:outputLabel value="*公司" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:selectOneMenu id="createCompany" value="#{cashFlowManagedBean.createCompany}" style="width:100%;" title="公司" >
+                                <f:selectItem itemLabel="汉钟" itemValue="C"/>
+                                <f:selectItem itemLabel="柯茂" itemValue="K"/>
+                                <p:ajax event="change" process="@this"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid id="dataRecordsValue" styleClass="plgDetail Wid100">
+                    <p:row>
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{cashFlowManagedBean.handleFileUploadWhenNew}"  styleClass="fileUpload"
+                                      allowTypes="/(\.|\/)(xlsx)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原" update=":formList"/>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="formOne" >
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="60%">
+                <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                    <f:facet name="header"  >
+                        <p:column colspan="4">经营汇报现金流量表维护</p:column>
+                    </f:facet>
+                    <p:row>
+                        <p:column styleClass="Wid15"><p:outputLabel value="类型"/></p:column>
+                        <p:column styleClass="Wid35">
+                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.type}"  />
+                        </p:column>
+                        <p:column><p:outputLabel value="项目编号"/></p:column>
+                        <p:column>
+                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.itemno}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column styleClass="Wid15"><p:outputLabel value="原项目名"/></p:column>
+                        <p:column styleClass="Wid35">
+                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.itemname}"  />
+                        </p:column>
+                        <p:column><p:outputLabel value="调整项目名"/></p:column>
+                        <p:column>
+                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.adjitemname}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column styleClass="Wid15"><p:outputLabel value="原金额"/></p:column>
+                        <p:column styleClass="Wid35">
+                            <h:outputText id="amt" value="#{cashFlowManagedBean.currentEntity.amt}"  />
+                        </p:column>
+                        <p:column><p:outputLabel value="调整金额"/></p:column>
+                        <p:column>
+                            <p:inputNumber  value="#{cashFlowManagedBean.currentEntity.adjamt}" style="width: 100%" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column styleClass="Wid15"><p:outputLabel value="经营汇报是否展示"/></p:column>
+                        <p:column styleClass="Wid35">
+                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.whethershow}" disabled="false"/>
+                        </p:column>
+                        <p:column><p:outputLabel value="经营汇报展示行号"/></p:column>
+                        <p:column>
+                            <p:inputNumber decimalPlaces="0"   value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.showno}" style="width: 100%" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column styleClass="Wid15"><p:outputLabel value="经营汇报项突出显示"/></p:column>
+                        <p:column styleClass="Wid35">
+                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.highlight}" disabled="false"/>
+                        </p:column>
+                        <p:column><p:outputLabel value="备注"/></p:column>
+                        <p:column>
+                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.remark1}" style="width: 100%" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:commandButton  id="btnUpdate" value="修改" actionListener="#{cashFlowManagedBean.update()}" icon="ui-icon-update" style="float: right"
+                                              process="formOne:dlgDetail"  update="formList,formOne:dlgDetail" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
