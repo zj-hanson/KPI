@@ -5,9 +5,9 @@
  */
 package cn.hanbell.kpi.control;
 
-import cn.hanbell.kpi.ejb.DataRecorDassistedBean;
+import cn.hanbell.kpi.ejb.DataRecordAssistedBean;
 import cn.hanbell.kpi.ejb.DataRecordBean;
-import cn.hanbell.kpi.entity.DataRecorDassisted;
+import cn.hanbell.kpi.entity.DataRecordAssisted;
 import cn.hanbell.kpi.entity.DataRecord;
 import cn.hanbell.kpi.lazy.DataRecordModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
@@ -39,13 +39,13 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
     protected DataRecordBean dataRecordBean;
 
     @EJB
-    protected DataRecorDassistedBean dassistedBean;
+    protected DataRecordAssistedBean assistedBean;
 
     protected Date queryDate;
     protected Date createDate;
     protected String queryCompany;
     protected String createCompany;
-    protected DataRecorDassisted dataRecorDassisted;
+    protected DataRecordAssisted dataRecordAssisted;
     private boolean querywhethershow;
 
     public CashFlowManagedBean() {
@@ -62,7 +62,7 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
     public void update() {
         currentEntity.setOptuser(getUserManagedBean().getCurrentUser().getUsername());
         currentEntity.setOptdateToNow();
-        dassistedBean.update(currentEntity.getDataRecorDassisted());
+        assistedBean.update(currentEntity.getDataRecordAssisted());
         super.update();
 
     }
@@ -101,7 +101,7 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
                 model.getFilterFields().put("itemname", queryName);
             }
             if (querywhethershow) {
-                model.getFilterFields().put("dataRecorDassisted.whethershow", querywhethershow);
+                model.getFilterFields().put("dataRecordAssisted.whethershow", querywhethershow);
             }
 
             model.getFilterFields().put("type =", "cashflow");
@@ -167,14 +167,14 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
                     }
                     for (DataRecord dr : addlist) {
                         dataRecordBean.persist(dr);
-                        dataRecorDassisted = dassistedBean.findByFacnoAndTypeAndItemname(dr.getFacno(), dr.getType(), dr.getItemname());
-                        if (dataRecorDassisted == null) {
-                            dataRecorDassisted = new DataRecorDassisted();
-                            dataRecorDassisted.setItemname(dr.getItemname());
-                            dataRecorDassisted.setAdjitemname(dr.getItemname());
-                            dataRecorDassisted.setFacno(dr.getFacno());
-                            dataRecorDassisted.setType(dr.getType());
-                            dassistedBean.persist(dataRecorDassisted);
+                        dataRecordAssisted = assistedBean.findByFacnoAndTypeAndItemname(dr.getFacno(), dr.getType(), dr.getItemname());
+                        if (dataRecordAssisted == null) {
+                            dataRecordAssisted = new DataRecordAssisted();
+                            dataRecordAssisted.setItemname(dr.getItemname());
+                            dataRecordAssisted.setAdjitemname(dr.getItemname());
+                            dataRecordAssisted.setFacno(dr.getFacno());
+                            dataRecordAssisted.setType(dr.getType());
+                            assistedBean.persist(dataRecordAssisted);
                         }
                     }
                     showInfoMsg("Info", "数据导入成功");

@@ -6,7 +6,7 @@
 package cn.hanbell.kpi.ejb;
 
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
-import cn.hanbell.kpi.entity.DataRecorDassisted;
+import cn.hanbell.kpi.entity.DataRecordAssisted;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -17,20 +17,20 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class DataRecorDassistedBean extends SuperEJBForKPI<DataRecorDassisted> {
+public class DataRecordAssistedBean extends SuperEJBForKPI<DataRecordAssisted> {
 
-    public DataRecorDassistedBean() {
-        super(DataRecorDassisted.class);
+    public DataRecordAssistedBean() {
+        super(DataRecordAssisted.class);
     }
 
-    public DataRecorDassisted findByFacnoAndTypeAndItemname(String facno, String type, String itemname) {
-        Query query = getEntityManager().createNamedQuery("DataRecorDassisted.findByFacnoAndTypeAndItemname");
+    public DataRecordAssisted findByFacnoAndTypeAndItemname(String facno, String type, String itemname) {
+        Query query = getEntityManager().createNamedQuery("DataRecordAssisted.findByFacnoAndTypeAndItemname");
         query.setParameter("facno", facno);
         query.setParameter("type", type);
         query.setParameter("itemname", itemname);
         try {
             Object o = query.getSingleResult();
-            return (DataRecorDassisted) o;
+            return (DataRecordAssisted) o;
         } catch (Exception ex) {
             return null;
         }

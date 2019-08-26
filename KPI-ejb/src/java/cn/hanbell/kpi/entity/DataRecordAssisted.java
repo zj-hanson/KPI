@@ -22,11 +22,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "datarecordassisted")
 @NamedQueries({
-    @NamedQuery(name = "DataRecorDassisted.findAll", query = "SELECT d FROM DataRecorDassisted d")
+    @NamedQuery(name = "DataRecordAssisted.findAll", query = "SELECT d FROM DataRecordAssisted d")
     ,
-    @NamedQuery(name = "DataRecorDassisted.findByFacnoAndTypeAndItemname", query = "SELECT d FROM DataRecorDassisted d WHERE d.facno = :facno AND d.type = :type AND d.itemname = :itemname ")
+    @NamedQuery(name = "DataRecordAssisted.findByFacnoAndTypeAndItemname", query = "SELECT d FROM DataRecordAssisted d WHERE d.facno = :facno AND d.type = :type AND d.itemname = :itemname ")
 })
-public class DataRecorDassisted extends BaseEntity {
+public class DataRecordAssisted extends BaseEntity {
 
     @Basic(optional = false)
     @NotNull
@@ -65,14 +65,14 @@ public class DataRecorDassisted extends BaseEntity {
     @Column(name = "showno")
     private Integer showno;
 
-    public DataRecorDassisted() {
+    public DataRecordAssisted() {
     }
 
-    public DataRecorDassisted(Integer id) {
+    public DataRecordAssisted(Integer id) {
         this.id = id;
     }
 
-    public DataRecorDassisted(Integer id, String facno, String type, String adjitemname, String itemname, boolean whethershow, boolean highlight) {
+    public DataRecordAssisted(Integer id, String facno, String type, String adjitemname, String itemname, boolean whethershow, boolean highlight) {
         this.id = id;
         this.facno = facno;
         this.type = type;
@@ -92,10 +92,10 @@ public class DataRecorDassisted extends BaseEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DataRecorDassisted)) {
+        if (!(object instanceof DataRecordAssisted)) {
             return false;
         }
-        DataRecorDassisted other = (DataRecorDassisted) object;
+        DataRecordAssisted other = (DataRecordAssisted) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -104,7 +104,7 @@ public class DataRecorDassisted extends BaseEntity {
 
     @Override
     public String toString() {
-        return "cn.hanbell.kpi.entity.DataRecorDassisted[ id=" + id + " ]";
+        return "cn.hanbell.kpi.entity.DataRecordAssisted[ id=" + id + " ]";
     }
 
     public Integer getShowno() {

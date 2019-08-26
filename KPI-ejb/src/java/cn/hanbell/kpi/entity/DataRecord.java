@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DataRecord.findAll", query = "SELECT d FROM DataRecord d")
     ,
-    @NamedQuery(name = "DataRecord.findAssistantTable", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.dataRecorDassisted.type = :type AND d.dataRecorDassisted.whethershow = :whethershow  AND d.yea = :yea AND d.mon = :mon  ORDER BY d.dataRecorDassisted.showno ASC ")
+    @NamedQuery(name = "DataRecord.findDataRecords", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.dataRecordAssisted.type = :type AND d.dataRecordAssisted.whethershow = :whethershow  AND d.yea = :yea AND d.mon = :mon  ORDER BY d.dataRecordAssisted.showno ASC ")
     ,
     @NamedQuery(name = "DataRecord.findByYeaAndMon", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.type = :type AND d.yea = :yea AND d.mon = :mon ")
 })
@@ -44,7 +44,7 @@ public class DataRecord extends SuperEntity {
         @JoinColumn(name = "itemname", referencedColumnName = "itemname", updatable = false, insertable = false)
     })
     @OneToOne(optional = true)
-    private DataRecorDassisted dataRecorDassisted;
+    private DataRecordAssisted dataRecordAssisted;
 
     @Basic(optional = false)
     @NotNull
@@ -177,17 +177,17 @@ public class DataRecord extends SuperEntity {
     }
 
     /**
-     * @return the dataRecorDassisted
+     * @return the dataRecordAssisted
      */
-    public DataRecorDassisted getDataRecorDassisted() {
-        return dataRecorDassisted;
+    public DataRecordAssisted getDataRecordAssisted() {
+        return dataRecordAssisted;
     }
 
     /**
-     * @param dataRecorDassisted the dataRecorDassisted to set
+     * @param dataRecordAssisted the dataRecordAssisted to set
      */
-    public void setDataRecorDassisted(DataRecorDassisted dataRecorDassisted) {
-        this.dataRecorDassisted = dataRecorDassisted;
+    public void setDataRecordAssisted(DataRecordAssisted dataRecordAssisted) {
+        this.dataRecordAssisted = dataRecordAssisted;
     }
-
+    
 }

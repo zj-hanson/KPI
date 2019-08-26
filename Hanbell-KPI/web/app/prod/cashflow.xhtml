@@ -77,13 +77,13 @@
                     <f:facet name="header" >
                         <h:outputText value="经营汇报行次"/>
                     </f:facet>
-                    <h:outputText value="#{item.dataRecorDassisted.showno}"/>
+                    <h:outputText value="#{item.dataRecordAssisted.showno}"/>
                 </p:column>
                 <p:column styleClass="Wid25"  >
                     <f:facet name="header" >
                         <h:outputText value="经营汇报名称"/>
                     </f:facet>
-                    <h:outputText value="#{item.dataRecorDassisted.adjitemname}"/>
+                    <h:outputText value="#{item.dataRecordAssisted.adjitemname}"/>
                 </p:column>
                 <p:column styleClass="Wid5" style="text-align: center">
                     <f:facet name="header">
@@ -155,7 +155,7 @@
                     <p:row>
                         <p:column styleClass="Wid15"><p:outputLabel value="类型"/></p:column>
                         <p:column styleClass="Wid35">
-                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.type}"  />
+                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.type}"  />
                         </p:column>
                         <p:column><p:outputLabel value="项目编号"/></p:column>
                         <p:column>
@@ -165,11 +165,11 @@
                     <p:row>
                         <p:column styleClass="Wid15"><p:outputLabel value="原项目名"/></p:column>
                         <p:column styleClass="Wid35">
-                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.itemname}"  />
+                            <h:outputText  value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.itemname}"  />
                         </p:column>
                         <p:column><p:outputLabel value="调整项目名"/></p:column>
                         <p:column>
-                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.adjitemname}"/>
+                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.adjitemname}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -185,21 +185,21 @@
                     <p:row>
                         <p:column styleClass="Wid15"><p:outputLabel value="经营汇报是否展示"/></p:column>
                         <p:column styleClass="Wid35">
-                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.whethershow}" disabled="false"/>
+                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.whethershow}" disabled="false"/>
                         </p:column>
                         <p:column><p:outputLabel value="经营汇报展示行号"/></p:column>
                         <p:column>
-                            <p:inputNumber decimalPlaces="0"   value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.showno}" style="width: 100%" />
+                            <p:inputNumber decimalPlaces="0"   value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.showno}" style="width: 100%" />
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column styleClass="Wid15"><p:outputLabel value="经营汇报项突出显示"/></p:column>
                         <p:column styleClass="Wid35">
-                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.highlight}" disabled="false"/>
+                            <p:selectBooleanCheckbox value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.highlight}" disabled="false"/>
                         </p:column>
                         <p:column><p:outputLabel value="备注"/></p:column>
                         <p:column>
-                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecorDassisted.remark1}" style="width: 100%" />
+                            <p:inputText  value="#{cashFlowManagedBean.currentEntity.dataRecordAssisted.remark1}" style="width: 100%" />
                         </p:column>
                     </p:row>
                     <p:row>

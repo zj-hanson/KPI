@@ -44,8 +44,8 @@ public class DataRecordBean extends SuperEJBForKPI<DataRecord> {
         }
     }
 
-    public List<DataRecord> findAssistantTable(String facno, String type, int yea, int mon) {
-        Query query = getEntityManager().createNamedQuery("DataRecord.findAssistantTable");
+    public List<DataRecord> findDataRecords(String facno, String type, int yea, int mon) {
+        Query query = getEntityManager().createNamedQuery("DataRecord.findDataRecords");
         query.setParameter("facno", facno);
         query.setParameter("type", type);
         query.setParameter("yea", yea);
@@ -61,16 +61,16 @@ public class DataRecordBean extends SuperEJBForKPI<DataRecord> {
     //现金流量表
     public LinkedHashMap<String, String[]> getCashFlowMap(String facno, String type, int yea, int mon) {
         LinkedHashMap<String, String[]> map = null;
-        List<DataRecord> nowlist = findAssistantTable(facno, type, yea, mon);
-        List<DataRecord> lastlist = findAssistantTable(facno, type, yea - 1, mon);
+        List<DataRecord> nowlist = findDataRecords(facno, type, yea, mon);
+        List<DataRecord> lastlist = findDataRecords(facno, type, yea - 1, mon);
         DecimalFormat dfpercent = new DecimalFormat("0.##％");
         try {
             if (nowlist != null && !nowlist.isEmpty()) {
                 map = new LinkedHashMap<>();
                 for (DataRecord now : nowlist) {
                     String[] arr = new String[7];
-                    arr[0] = now.getDataRecorDassisted().getAdjitemname();
-                    arr[1] = String.valueOf(now.getDataRecorDassisted().getShowno());
+                    arr[0] = now.getDataRecordAssisted().getAdjitemname();
+                    arr[1] = String.valueOf(now.getDataRecordAssisted().getShowno());
                     arr[2] = df.format(now.getAdjamt().divide(BigDecimal.valueOf(10000), 2, RoundingMode.HALF_UP));
                     for (DataRecord last : lastlist) {
                         if (now.getItemname().equals(last.getItemname())) {
@@ -87,8 +87,8 @@ public class DataRecordBean extends SuperEJBForKPI<DataRecord> {
                             }
                         }
                     }
-                    arr[6] = now.getDataRecorDassisted().getHighlight() ? "true" : "false";
-                    map.put(String.valueOf(now.getDataRecorDassisted().getShowno()), arr);
+                    arr[6] = now.getDataRecordAssisted().getHighlight() ? "true" : "false";
+                    map.put(String.valueOf(now.getDataRecordAssisted().getShowno()), arr);
                 }
             }
             return map;
