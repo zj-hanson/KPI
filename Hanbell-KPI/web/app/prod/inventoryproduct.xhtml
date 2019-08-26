@@ -71,6 +71,8 @@
                 <f:facet name="left">
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{inventoryProductManagedBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
+                    <p:commandButton id="btnUpdateData" value="更新" actionListener="#{inventoryProductManagedBean.updateInventoryProduct()}" icon="ui-icon-save"
+                                     update=":formList"/>
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnUpdateInvdep" value="保存" actionListener="#{inventoryProductManagedBean.updateInventoryDepartment()}"  icon="ui-icon-save"/>
@@ -83,6 +85,8 @@
                                     rendered="true" update=":formList">
                             <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
                         </p:menuitem>
+                        <p:menuitem id="btnExport" value="导出月报" icon="ui-icon-print" actionListener="#{inventoryProductManagedBean.print()}"
+                                    rendered="true" process="@this"/>
                     </p:splitButton>
                     <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryProductManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>
@@ -144,7 +148,7 @@
                     <f:facet name="header">
                         <h:outputText value="金额"/>
                     </f:facet>
-                        <h:outputText id="amount" value="#{inventoryProductManagedBean.format(item.amount)}"/>
+                    <h:outputText id="amount" value="#{inventoryProductManagedBean.format(item.amount)}"/>
                 </p:column>
 
                 <p:column styleClass="Wid15" style="text-align: right;">
