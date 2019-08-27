@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author C1749
+ * @author C1749 此逻辑暂时不需要使用
  */
 public class InventoryAmountA2C50 extends InventoryAmountA2 {
 
@@ -24,6 +24,7 @@ public class InventoryAmountA2C50 extends InventoryAmountA2 {
         queryParams.put("deptno", "1H000");
         queryParams.put("facno", "C");
         queryParams.put("categories", "A2");
+        queryParams.put("indicatorno", "C50");
         queryParams.put("genre", "='P'");
     }
 

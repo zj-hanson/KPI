@@ -20,7 +20,7 @@ public class InventoryAmountA2C60 extends InventoryAmountA2 {
         queryParams.put("facno", "C");
         queryParams.put("prono", "1");
         queryParams.put("categories", "A2");
-        queryParams.put("indicatorno", "C10");
+        //queryParams.put("indicatorno", "C10");
         queryParams.put("genre", "='S'");
     }
 
