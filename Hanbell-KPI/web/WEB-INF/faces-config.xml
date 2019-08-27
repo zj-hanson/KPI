@@ -141,6 +141,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>cashflow</from-outcome>
+            <to-view-id>/app/prod/cashflow.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>exchange</from-outcome>
             <to-view-id>/app/prod/exchange.xhtml</to-view-id>
             <redirect/>
