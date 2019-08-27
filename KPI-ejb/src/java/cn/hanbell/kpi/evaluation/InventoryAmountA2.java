@@ -152,7 +152,7 @@ public class InventoryAmountA2 extends Inventory {
         sb.append(" select ifnull(sum(a.num),0) from ( ");
         // indicatorno暂时写成B20 后续改为“按物料归类”
         sb.append(
-                " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B20' ");
+                " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B05' ");
         sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);

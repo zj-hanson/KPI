@@ -51,7 +51,7 @@
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formOne:toolbar" />
                 <p:ajax event="rowUnselect" update="formOne:toolbar" />
-                <p:column styleClass="Wid20" style="text-align: center;">
+                <p:column styleClass="Wid20" style="text-align: left;">
                     <f:facet name="header">
                         <h:outputText value="库别"/>
                     </f:facet>
@@ -75,7 +75,7 @@
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item.n03)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20" style="text-align: center" >
+                <p:column styleClass="Wid20" style="text-align: right" >
                     <f:facet name="header">
                         <h:outputText value="差异"/>
                     </f:facet>

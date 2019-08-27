@@ -29,7 +29,7 @@
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
             <style type="text/css">
                 .bgred{
-                    background-color: #00FF00 !important;
+                    background-color: #87CEEB !important;
                 }
             </style>
             <p:dataTable rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}" id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData">
@@ -42,32 +42,32 @@
                         <p:column rowspan="2" headerText="分类" />
                         <p:column rowspan="2" headerText="责任人" />
                         <p:column rowspan="2" headerText="当季目标" />
-                        <p:column colspan="2" headerText="当月实绩与目标差异" />
-                        <p:column colspan="2" headerText="当月实绩与上月差异" />
-                        <p:column colspan="2" headerText="当月实绩与与去年同期差异" />
+                        <p:column colspan="2" headerText="与目标比" />
+                        <p:column colspan="2" headerText="与上月比" />
+                        <p:column colspan="2" headerText="与同期比" />
                     </p:row>
                     <p:row>
-                        <p:column headerText="当月库存金额" />
+                        <p:column headerText="当月金额" />
                         <p:column headerText="差异" />
-                        <p:column headerText="上月库存金额" />
+                        <p:column headerText="上月金额" />
                         <p:column headerText="差异" />
-                        <p:column headerText="同期库存金额" />
+                        <p:column headerText="同期金额" />
                         <p:column headerText="差异" />
                     </p:row>
                 </p:columnGroup>
-                <p:column styleClass="Wid20" style="text-align: center;" groupRow="true">
+                <p:column styleClass="Wid20" style="text-align: left;" groupRow="true">
                     <h:outputText value="#{item.id}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: center;">
+                <p:column  styleClass="Wid20" style="text-align: left;">
                     <h:outputText value="#{(item.deptName == '财务部')?'无':item.deptName}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: center;">
+                <p:column  styleClass="Wid20" style="text-align: left;">
                     <h:outputText  value="#{item.classify}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right;">
+                <p:column  styleClass="Wid20" style="text-align: left;">
                     <h:outputText value="#{item.responsible}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: center">
+                <p:column  styleClass="Wid20" style="text-align: right">
                     <h:outputText value="#{inventoryReportBean.format(item.target)}"/>
                 </p:column>
                 <p:column  styleClass="Wid20" style="text-align: right">

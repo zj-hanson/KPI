@@ -73,6 +73,18 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         }
         return null;
     }
+    
+    public List getDataByFindByYearmon(String yearmon){
+        Query query = this.getEntityManager().createNamedQuery("InventoryProduct.findByYearmon");
+        try {
+            query.setParameter("yearmon", yearmon);
+            List result = query.getResultList();
+            return result;
+        } catch (Exception ex) {
+            System.out.println("cn.hanbell.kpi.ejb.InventoryProductBean.getDataByFindByYearmon()" + ex.toString());
+        }
+        return null;
+    }
 
     // 获取ERP的invamount的数据 存到KPI的inventoryproduct表中去
     private List getDataForERPList(int y, int m, LinkedHashMap<String, String> map) {
