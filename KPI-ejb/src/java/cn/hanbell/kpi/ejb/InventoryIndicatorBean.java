@@ -98,7 +98,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setClassify(indicator.getFormid());
 
             // 责任人
-            ita.setResponsible(indicator.getRemark());
+            ita.setResponsible(indicator.getUsername()!=null?indicator.getUsername():"无");
 
             // 当季目标
             mon = this.getIndicatorColumn("N", m);
