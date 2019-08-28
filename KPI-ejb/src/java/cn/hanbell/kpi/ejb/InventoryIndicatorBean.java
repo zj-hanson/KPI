@@ -95,7 +95,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setDeptName(indicator.getDeptname());
 
             // 分类
-            ita.setClassify(indicator.getFormid());
+            ita.setClassify(indicator.getName());
 
             // 责任人
             ita.setResponsible(indicator.getUsername()!=null?indicator.getUsername():"无");

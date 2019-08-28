@@ -72,7 +72,9 @@
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{inventoryProductManagedBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
                     <p:commandButton id="btnUpdateData" value="更新" actionListener="#{inventoryProductManagedBean.updateInventoryProduct()}" icon="ui-icon-save"
-                                     update=":formList"/>
+                                     update=":formList">
+                        <p:confirm header="系统提示" message="当月是否有数据？是否继续更新？" icon="ui-icon-alert"></p:confirm>
+                    </p:commandButton>
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnUpdateInvdep" value="保存" actionListener="#{inventoryProductManagedBean.updateInventoryDepartment()}"  icon="ui-icon-save"/>
