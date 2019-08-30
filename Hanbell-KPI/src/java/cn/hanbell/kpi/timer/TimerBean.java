@@ -7,7 +7,6 @@ package cn.hanbell.kpi.timer;
 
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
-import cn.hanbell.kpi.ejb.ClientTableBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.JobScheduleBean;
 import cn.hanbell.kpi.ejb.MailSettingBean;
@@ -48,8 +47,6 @@ public class TimerBean {
     private JobScheduleBean jobScheduleBean;
     @EJB
     private MailSettingBean mailSettingBean;
-    @EJB
-    private ClientTableBean clientTableBean;
     @EJB
     private SalesTableBean salesTableBean;
     @Resource
@@ -215,30 +212,6 @@ public class TimerBean {
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
             log4j.info(String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
-        }
-    }
-
-    @Schedule(hour = "5", dayOfMonth = "1", persistent = false)
-    public void updateKPIClientTable() {
-        try {
-            log4j.info("Begin Execute Job updateKPIClientTable");
-            Calendar now = Calendar.getInstance();
-            int year = now.get(Calendar.YEAR);
-            int month = (now.get(Calendar.MONTH) + 1);
-            //本月更新上个月
-            int y, m;
-            if (month == 1) {
-                m = 12;
-                y = year - 1;
-            } else {
-                m = month - 1;
-                y = year;
-            }
-            if (clientTableBean.updateClientTable(y, m, "")) {
-                log4j.info("End Execute Job updateKPIClientTable");
-            }
-        } catch (Exception e) {
-            log4j.error(String.format("客户排名历史表归档更新异常", "updateKPIClientTable"), e.toString());
         }
     }
 

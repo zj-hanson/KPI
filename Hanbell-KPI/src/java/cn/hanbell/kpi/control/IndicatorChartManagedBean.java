@@ -69,7 +69,7 @@ public class IndicatorChartManagedBean extends SuperSingleBean<IndicatorChart> {
         if (model != null) {
             model.getFilterFields().clear();
             if (queryFormId != null && !"".equals(queryFormId)) {
-                model.getFilterFields().put("formid", queryFormId);
+                model.getFilterFields().put("pid", queryFormId);
             }
             if (queryName != null && !"".equals(queryName)) {
                 model.getFilterFields().put("name", queryName);
