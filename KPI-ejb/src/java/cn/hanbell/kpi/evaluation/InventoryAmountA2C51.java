@@ -42,8 +42,8 @@ public class InventoryAmountA2C51 extends InventoryAmountA2 {
             f = o1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a1 = Double.valueOf(f.get(o1).toString());
-            v1 = BigDecimal.valueOf(a1);// 真空出租库存的实际值
-            result = super.getValue(y, m, d, type, map).subtract(v1);
+            //v1 = BigDecimal.valueOf(a1);// 真空出租库存的实际值 暂不体现在这段逻辑
+            result = super.getValue(y, m, d, type, map);
             return result;
         } catch (Exception ex) {
             log4j.error("InventoryAmountA2C50--getValue()异常", ex.toString());

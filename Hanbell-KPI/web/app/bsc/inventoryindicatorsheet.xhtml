@@ -9,18 +9,19 @@
     <ui:define name="content">
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:spacer />
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
-                <p:outputLabel value="请输入查询的年份" for="clientyear" />
+                <p:outputLabel value="查询年份" for="clientyear" styleClass="ui-panelgrid-blank"/>
                 <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
-                <p:outputLabel value="请输入查询的月份" for="clientmonth" />
-                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" />
+                <p:outputLabel value="查询月份" for="clientmonth" />
+                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" required="true" requiredMessage="请输入查询的月份"/>
                 <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.resetQuery()}"  icon="ui-icon-refresh"
                                  update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryIndicatorQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
-            <p:panelGrid columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100" >
+            <p:panelGrid columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <f:facet name="header">
                     <span style="font-size: 21px;float: left" >各部门库存金额达标情况</span>
                     <span style="font-size: 21px;float: right" >单位：万元</span>
@@ -29,7 +30,8 @@
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
             <style type="text/css">
                 .bgred{
-                    background-color: #87CEEB !important;
+                    background-color: #D3D3D3 !important;
+                    color: red !important;
                 }
             </style>
             <p:dataTable rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}" id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData">

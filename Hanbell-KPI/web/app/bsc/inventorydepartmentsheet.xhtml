@@ -14,23 +14,23 @@
                 <f:facet name="header">
                     查询条件
                 </f:facet>
-                <p:outputLabel for="type" value="事业部" style="font-size:18px" />
-                <p:selectOneMenu id="type" value="#{inventoryReportBean.type}" style="width:600px;font-size: 18px">
+                <p:outputLabel for="type" value="目标类型"/>
+                <p:selectOneMenu id="type" value="#{inventoryReportBean.type}">
                     <f:selectItem itemLabel="--请选择--" itemValue="N" />
                     <f:selectItem itemLabel="生产目标" itemValue="SC" />
                     <f:selectItem itemLabel="服务目标" itemValue="FW" />
                     <f:selectItem itemLabel="营业目标" itemValue="YY" />
                     <f:selectItem itemLabel="研发目标" itemValue="YF" />
                 </p:selectOneMenu>
-                <p:outputLabel for="genre" value="产品别" style="font-size:18px" />
-                <p:selectOneMenu id="genre" value="#{inventoryReportBean.genre}" style="width:600px;font-size: 18px">
+                <p:outputLabel for="genre" value="产品别"/>
+                <p:selectOneMenu id="genre" value="#{inventoryReportBean.genre}">
                     <f:selectItem itemLabel="--请选择--" itemValue="N" />
                     <f:selectItems value="#{inventoryReportBean.cities}" />
                 </p:selectOneMenu>
-                <p:outputLabel value="请输入查询的年份" for="clientyear" style="font-size:18px" />
+                <p:outputLabel value="查询年份" for="clientyear"/>
                 <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
-                <p:outputLabel value="请输入查询的月份" for="clientmonth" style="font-size:18px"/>
-                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" />
+                <p:outputLabel value="查询月份" for="clientmonth"/>
+                <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" required="true" requiredMessage="请输入查询的月份"/>
             </p:panelGrid>
             <p:toolbar id="toolbar-head" styleClass="topToolbar">
                 <f:facet name="left">
