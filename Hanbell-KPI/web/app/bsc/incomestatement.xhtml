@@ -10,8 +10,7 @@
     <ui:define name="content">
 
         <h:form id="formOne" >
-            <p:growl id="growl" showSummary="false" showDetail="true" autoUpdate="true"/>
-            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid0" styleClass="plgQuery Wid100">
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{incomeStatementReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
                 <h:selectBooleanCheckbox value="#{incomeStatementReportBean.checkbox}"  title="√选中为损益表月查询" style="height: 18px;width: 18px" >
@@ -27,7 +26,9 @@
                 <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
                     <f:facet name="header" >
                         <p:row >
-                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{balanceSheetReportBean.statusMap.title}<br/>损益表#{incomeStatementReportBean.statusMap.title}</p:column>
+                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{balanceSheetReportBean.statusMap.title}<br/>
+                                 <p:spacer width="110" height="10" />损益表#{incomeStatementReportBean.statusMap.title}
+                                 <span  style="float: right;font-size: 16px;" >单位：万元</span></p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid >
@@ -47,9 +48,8 @@
                         });
                     </script>
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 540px;text-align: center;font-size: 18px;">
-                        <caption style="padding-right: 30px;background-color:#2F4050;text-align: right;color: white"><p:column  >单位：万元</p:column></caption>
                         <thead style="background-color: #E8E8E8;">
-                            <tr style="height: 30px;">
+                            <tr style="height: 34px;">
                                 <th rowspan="2">项目</th>
                                 <th colspan="2">#{incomeStatementReportBean.statusMap.th1title}</th>
                                 <th colspan="2">#{incomeStatementReportBean.statusMap.th2title}</th>
@@ -60,7 +60,7 @@
                                     <th rowspan="2">达成率</th>
                                 </c:if>
                             </tr>
-                            <tr style="height: 30px">
+                            <tr style="height: 34px">
                                 <th>金额</th>
                                 <th>百分比</th>
                                 <th>金额</th>

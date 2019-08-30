@@ -11,7 +11,7 @@
 
         <h:form id="formOne" style="height: 100%">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
-            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{balanceSheetReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
                 <p:outputLabel style="visibility: hidden"/>
@@ -27,7 +27,9 @@
                 <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
                     <f:facet name="header"  >
                         <p:row >
-                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{balanceSheetReportBean.statusMap.title}<br/>资产负债表</p:column>
+                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{balanceSheetReportBean.statusMap.title}<br/>
+                                <p:spacer width="90" height="10" />资产负债表
+                            <span  style="float: right;font-size: 16px;" >单位：万元</span></p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid >
@@ -55,9 +57,7 @@
                             });
                         });
                     </script>
-
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px">
-                        <caption style="padding-right: 30px;background-color:#2F4050;text-align: right;color: white"><p:column  >单位：万元</p:column></caption>
                         <thead style="background-color: #E8E8E8;"  >
                             <tr style="height: 45px;">
                                 <th>资产</th>

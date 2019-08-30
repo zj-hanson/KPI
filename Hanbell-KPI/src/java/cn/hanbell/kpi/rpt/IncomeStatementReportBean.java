@@ -131,9 +131,7 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
             }
-
         }
-
     }
 
     /**

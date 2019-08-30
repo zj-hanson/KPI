@@ -10,13 +10,13 @@
     <ui:define name="content">
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"  />
-            <p:panelGrid id="plgQuery" columns="8" columnClasses="Wid15,Wid20,Wid15,Wid20,Wid10,Wid10,Wid10" styleClass="plgQuery Wid100">
-                <p:outputLabel value="请输入查询的年份" for="clientyear" />
-                <p:inputText id="clientyear" value="#{shipmentTopManagedBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
+            <p:panelGrid id="plgQuery" columns="8" columnClasses="Wid10,Wid15,Wid15,Wid15,Wid15,Wid15,Wid15" styleClass="plgQuery Wid100">
+                <p:outputLabel value="查询年份" for="clientyear" />
+                <p:inputText id="clientyear" value="#{shipmentTopManagedBean.year}" title="年" />
                 <h:selectBooleanCheckbox value="#{shipmentTopManagedBean.checkbox}"  title="√不选中为年统计." style="height: 18px;width: 18px" >
                     只查当月
                 </h:selectBooleanCheckbox>
-                <p:inputText id="clientmonth" value="#{shipmentTopManagedBean.month}" title="月" />
+                <p:inputNumber decimalPlaces="0"  id="clientmonth" value="#{shipmentTopManagedBean.month}" title="月" />
                 <h:selectBooleanCheckbox   value="#{shipmentTopManagedBean.status}"  title="√选中为总公司排名查询." style="height: 18px;width: 18px" >
                     客户整合
                 </h:selectBooleanCheckbox>

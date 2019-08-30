@@ -11,7 +11,7 @@
 
         <h:form id="formOne" style="height: 100%">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
-            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{cashFlowSheetReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
                 <p:outputLabel style="visibility: hidden"/>
@@ -27,10 +27,9 @@
                 <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
                     <f:facet name="header"  >
                         <p:row >
-                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >上海汉钟精机股份有限公司<br/>现金流量表</p:column>
-                        </p:row>
-                        <p:row style="text-align: right" >
-                            <p:column style="letter-spacing:2px;font-weight: 600" >单位：万元&nbsp;&nbsp;</p:column>
+                            <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >上海汉钟精机股份有限公司<br/>
+                                <p:spacer width="90" height="10" />现金流量表
+                                <span  style="float: right;font-size: 16px;" >单位：万元</span></p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid >
@@ -85,46 +84,44 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="width: 100%;display:#{cashFlowSheetReportBean.statusMap.displaydiv2};">
-                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repSummary" value="#{cashFlowSheetReportBean.summaryList}" var="s" rendered="#{cashFlowSheetReportBean.summaryCount>0}">
-                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid>
-                                    <h:outputText id="summary"/>
-                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repAnalysis" value="#{cashFlowSheetReportBean.analysisList}" var="a" rendered="#{cashFlowSheetReportBean.analysisCount>0}">
-                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
-                                    <h:outputText id="issueLabel" value="问题"/>
-                                    <h:outputText id="factorLabel" value="原因"/>
-                                    <h:outputText id="countermeasureLabel" value="对策"/>
-                                    <h:outputText id="issue"/>
-                                    <h:outputText id="factor"/>
-                                    <h:outputText id="countermeasure"/>
-                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
-                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
-                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                    <div>
-                        <h:outputScript name="bsc-clientranking.js" library="js"/>
-                        <h:inputHidden id="sc" value="#{cashFlowSheetReportBean.summaryCount}"></h:inputHidden>
-                        <h:inputHidden id="ac" value="#{cashFlowSheetReportBean.analysisCount}"></h:inputHidden>
-                    </div>
+            </div>
+            <div style="width: 100%;display:#{cashFlowSheetReportBean.statusMap.displaydiv2};">
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{cashFlowSheetReportBean.summaryList}" var="s" rendered="#{cashFlowSheetReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{cashFlowSheetReportBean.analysisList}" var="a" rendered="#{cashFlowSheetReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:outputScript name="bsc-clientranking.js" library="js"/>
+                    <h:inputHidden id="sc" value="#{cashFlowSheetReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{cashFlowSheetReportBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
-
     </ui:define>
-
 </ui:composition>

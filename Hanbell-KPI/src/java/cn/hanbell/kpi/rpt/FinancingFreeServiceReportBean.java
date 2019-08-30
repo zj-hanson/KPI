@@ -114,9 +114,9 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
             title[2] = "目标全年";
             if (m >= 1 && m < 4) {
                 title[3] = "Q1目标(1~3月)";
-            } else if (m >= 4 && m < 6) {
+            } else if (m >= 4 && m < 7) {
                 title[3] = "Q2目标(4~6月)";
-            } else if (m >= 6 && m < 9) {
+            } else if (m >= 7 && m < 10) {
                 title[3] = "Q3目标(7~9月)";
             } else {
                 title[3] = "Q4目标(10~12月)";
@@ -159,9 +159,9 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
                         arrsum[2] = BigDecimal.valueOf(Double.parseDouble(arrsum[2])).add(idt.getTargetIndicator().getNfy()).toString();
                         if (m >= 1 && m < 4) {
                             arr[3] = idt.getTargetIndicator().getNq1().toString();
-                        } else if (m >= 4 && m < 6) {
+                        } else if (m >= 4 && m < 7) {
                             arr[3] = idt.getTargetIndicator().getNq2().toString();
-                        } else if (m >= 6 && m < 9) {
+                        } else if (m >= 7 && m < 10) {
                             arr[3] = idt.getTargetIndicator().getNq3().toString();
                         } else {
                             arr[3] = idt.getTargetIndicator().getNq4().toString();
