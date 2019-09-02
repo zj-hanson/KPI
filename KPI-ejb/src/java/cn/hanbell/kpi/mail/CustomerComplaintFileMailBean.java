@@ -156,7 +156,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell3.setCellValue(cp.getBadwhy() != null ? cp.getBadwhy() : "");
             Cell cell4 = row.createCell(4);
             cell4.setCellStyle(style.get("cell"));
-            cell4.setCellValue(cp.getDutydeptna() != null ? cp.getDutydeptna() : "");
+            cell4.setCellValue("".equals(cp.getDutydeptna().trim()) || "null".equals(cp.getDutydeptna()) ? cp.getDutydeptno() : cp.getDutydeptna());
             Cell cell5 = row.createCell(5);
             cell5.setCellStyle(style.get("cell"));
             cell5.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
