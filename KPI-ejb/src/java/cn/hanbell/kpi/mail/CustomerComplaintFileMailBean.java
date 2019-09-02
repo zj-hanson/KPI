@@ -61,7 +61,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     }
 
     public String[] getCuscomPlaintTitle() {
-        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
+        return new String[]{"产品别", "客诉单号", "客户名称", "不良原因", "责任单位", "责任判断比率", "材料费",/*"人工费",*/ "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
     public String[] getCuscomPlaintDetailTitle() {
@@ -69,7 +69,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
     }
 
     private int[] getCuscomPlaintWidth() {
-        return new int[]{10, 20, 15, 60, 15, 15, 15, 15, 15, 15, 15, 15, 15, 20};
+        return new int[]{10, 20, 15, 60, 15, 15, 15,/*15,*/ 15, 15, 15, 15, 15, 20};
     }
 
     private int[] getCuscomPlaintDetailWidth() {

@@ -62,11 +62,30 @@ public class ClientRanking implements Serializable {
     //差异值
     private String differencevalue;
 
-    //成长率
+    //金额同比
     private String growthrate;
+    
     //字体颜色
-    private String style;
+    private String paststyle;
+    
+    //字体颜色
+    private String ultstyle;
+    
+    //上月销售数量
+    private String ultshpqy1;
+    
+    //上月销售金额
+    private String ultshpamts;
 
+    //数量环比
+    private String shpqy1chainrate;
+    
+    //金额环比
+    private String shpamtschainrate;
+     
+    //数量同比
+    private String shpqy1growthrate;
+    
     public Long getId() {
         return id;
     }
@@ -237,18 +256,101 @@ public class ClientRanking implements Serializable {
     }
 
     /**
-     * @return the style
+     * @return the ultshpqy1
      */
-    public String getStyle() {
-        return style;
+    public String getUltshpqy1() {
+        return ultshpqy1;
     }
 
     /**
-     * @param style the style to set
+     * @param ultshpqy1 the ultshpqy1 to set
      */
-    public void setStyle(String style) {
-        this.style = style;
+    public void setUltshpqy1(String ultshpqy1) {
+        this.ultshpqy1 = ultshpqy1;
     }
 
+    /**
+     * @return the ultshpamts
+     */
+    public String getUltshpamts() {
+        return ultshpamts;
+    }
+
+    /**
+     * @param ultshpamts the ultshpamts to set
+     */
+    public void setUltshpamts(String ultshpamts) {
+        this.ultshpamts = ultshpamts;
+    }
+
+    /**
+     * @return the shpqy1chainrate
+     */
+    public String getShpqy1chainrate() {
+        return shpqy1chainrate;
+    }
+
+    /**
+     * @param shpqy1chainrate the shpqy1chainrate to set
+     */
+    public void setShpqy1chainrate(String shpqy1chainrate) {
+        this.shpqy1chainrate = shpqy1chainrate;
+    }
+
+    /**
+     * @return the shpamtschainrate
+     */
+    public String getShpamtschainrate() {
+        return shpamtschainrate;
+    }
+
+    /**
+     * @param shpamtschainrate the shpamtschainrate to set
+     */
+    public void setShpamtschainrate(String shpamtschainrate) {
+        this.shpamtschainrate = shpamtschainrate;
+    }
+
+    /**
+     * @return the shpqy1growthrate
+     */
+    public String getShpqy1growthrate() {
+        return shpqy1growthrate;
+    }
+
+    /**
+     * @param shpqy1growthrate the shpqy1growthrate to set
+     */
+    public void setShpqy1growthrate(String shpqy1growthrate) {
+        this.shpqy1growthrate = shpqy1growthrate;
+    }
+
+    /**
+     * @return the paststyle
+     */
+    public String getPaststyle() {
+        return paststyle;
+    }
+
+    /**
+     * @param paststyle the paststyle to set
+     */
+    public void setPaststyle(String paststyle) {
+        this.paststyle = paststyle;
+    }
+
+    /**
+     * @return the ultstyle
+     */
+    public String getUltstyle() {
+        return ultstyle;
+    }
+
+    /**
+     * @param ultstyle the ultstyle to set
+     */
+    public void setUltstyle(String ultstyle) {
+        this.ultstyle = ultstyle;
+    }
     
 }

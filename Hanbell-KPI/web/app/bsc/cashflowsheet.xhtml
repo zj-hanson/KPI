@@ -53,7 +53,7 @@
                                 $(this).css("color", "white");
                             }, function () {
                                 $(this).css("background-color", "#dbdbdb");
-                                $(this).css("color", "black");
+                                $(this).css("color", "firebrick");
                             });
                         });
                     </script>
@@ -70,7 +70,7 @@
                         </thead>
                         <tbody class="table" style="cursor:pointer;font-weight: bold;">
                             <c:forEach items="#{cashFlowSheetReportBean.map}" var="mp" varStatus="status" >
-                                <tr name="#{mp.value[6] ? 'btitle' : 'btitle1'}" style="#{mp.value[6] ? 'background-color: #dbdbdb;' : ''}" >
+                                <tr name="#{mp.value[6] ? 'btitle' : 'btitle1'}" style="#{mp.value[6] ? 'background-color: #dbdbdb;color: firebrick;' : ''}" >
                                     <c:forEach items="#{mp.value}" var="item"  varStatus="st" >
                                         <c:if test="${st.first}">
                                             <td style="text-align: left;">#{item}</td>

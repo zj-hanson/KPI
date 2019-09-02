@@ -6,87 +6,85 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
     <ui:define name="content">
+        <style>
+            .tr_color1{
+                background-color: #e9e9e9!important;
+            }
+            .tr_color2{
+                background-color: #F8F8F8!important;
+            }
+        </style>
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"  />
-            <p:panelGrid id="plgQuery" columns="8" columnClasses="Wid10,Wid15,Wid15,Wid15,Wid15,Wid15,Wid15" styleClass="plgQuery Wid100">
-                <p:outputLabel value="查询年份" for="clientyear" />
-                <p:inputText id="clientyear" value="#{shipmentTopManagedBean.year}" title="年" />
-                <h:selectBooleanCheckbox value="#{shipmentTopManagedBean.checkbox}"  title="√不选中为年统计." style="height: 18px;width: 18px" >
+            <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid20,Wid15,Wid15,Wid5,Wid5,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
+                <p:outputLabel value="查询日期"  title="查询日期"/>
+                <p:calendar  value="#{clientRankingReportBean.querydate}" title="日期" pattern="yyyy/MM/dd" />
+                <h:selectBooleanCheckbox value="#{clientRankingReportBean.monthchecked}"  title="√不选中为年统计." style="height: 18px;width: 18px" >
                     只查当月
                 </h:selectBooleanCheckbox>
-                <p:inputNumber decimalPlaces="0"  id="clientmonth" value="#{shipmentTopManagedBean.month}" title="月" />
-                <h:selectBooleanCheckbox   value="#{shipmentTopManagedBean.status}"  title="√选中为总公司排名查询." style="height: 18px;width: 18px" >
+                <h:selectBooleanCheckbox   value="#{clientRankingReportBean.aggregatechecked}"  title="√选中为总公司排名查询." style="height: 18px;width: 18px" >
                     客户整合
                 </h:selectBooleanCheckbox>
-                <p:commandButton id="btnReset" value="重置" actionListener="#{shipmentTopManagedBean.refreshxhtml()}"  icon="ui-icon-refresh"
+                <p:outputLabel value="TOP" for="rowsPerPage" title="请选择展示记录数" />
+                <p:selectOneMenu id="rowsPerPage" value="#{clientRankingReportBean.rowsPerPage}" style="width:100%;" title="记录数" >
+                    <f:selectItem itemLabel="20" itemValue="20"/>
+                    <f:selectItem itemLabel="30" itemValue="30"/>
+                    <f:selectItem itemLabel="50" itemValue="50"/>
+                    <f:selectItem itemLabel="100" itemValue="100"/>
+                    <f:selectItem itemLabel="All" itemValue="0"/>
+                </p:selectOneMenu>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{clientRankingReportBean.reset()}"  icon="ui-icon-refresh"
                                  update="formOne" />
-                <p:commandButton id="btnQuery" value="查询" actionListener="#{shipmentTopManagedBean.findclient()}"  icon="ui-icon-search"
-                                 update="formOne:tblList,remarks" />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{clientRankingReportBean.query()}"  icon="ui-icon-search"
+                                 update="formOne" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <p:dataTable id="tblList" value="#{shipmentTopManagedBean.clientlist}" var="item" tableStyleClass="plgSheetData"
-                         rowSelectMode="single" rowKey="item.id">
-                <f:facet name="header">
-                    <span style="font-size: 21px;" >#{shipmentTopManagedBean.map.daname}&nbsp;#{shipmentTopManagedBean.map.year}#{shipmentTopManagedBean.map.title}出货销售统计表</span>
+            <p:dataTable id="tblList" value="#{clientRankingReportBean.list}" var="item" tableStyleClass="plgSheetData"
+                         rowIndexVar="index" rowStyleClass="#{index mod 2 == 0 ?'tr_color1':'tr_color2'}" reflow="true" stickyHeader="true">
+                <f:facet name="header" >
+                    <span style="font-size: 21px;" >#{clientRankingReportBean.map.daname}&nbsp;#{clientRankingReportBean.map.title}出货销售统计表</span>
                 </f:facet>
-                <p:ajax event="rowSelect"  update="formOne:toolbar" />
-                <p:ajax event="rowUnselect" update="formOne:toolbar" />
-                <p:column styleClass="Wid15" style="text-align: center;">
-                    <f:facet name="header">
-                        <h:outputText value="客户"/>
-                    </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column styleClass="Wid15" headerText="客户" />
+                        <p:column styleClass="Wid10" headerText="#{clientRankingReportBean.map.nowtitle}排名" />
+                        <p:column styleClass="Wid10" headerText="#{clientRankingReportBean.map.nowtitle}台数" />
+                        <p:column styleClass="Wid15" headerText="#{clientRankingReportBean.map.nowtitle}金额" />
+                        <p:column styleClass="Wid10" headerText="去年同期排名" />
+                        <p:column styleClass="Wid10" headerText="去年同期台数" />
+                        <p:column styleClass="Wid15" headerText="去年同期金额" />
+                        <p:column styleClass="Wid15" headerText="同比差异值" />
+                        <p:column styleClass="Wid10" headerText="同比成长率" />
+                    </p:row>
+                </p:columnGroup>
+                <p:column  style="text-align: center;">
                     <h:outputText value="#{item.cusna}" style="#{(item.cusna == '总计')?'color:red':'' }" />
                 </p:column>
-                <p:column styleClass="Wid10" style="text-align: center;">
-                    <f:facet name="header">
-                        <h:outputText value="#{shipmentTopManagedBean.map.futitle}排名"/>
-                    </f:facet>
+                <p:column  style="text-align: center;">
                     <h:outputText value="#{item.nowrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid10" style="text-align: right;">
-                    <f:facet name="header" >
-                        <h:outputText value="#{shipmentTopManagedBean.map.futitle}台数" style="text-align: center"/>
-                    </f:facet>
-                    <h:outputText  value="#{shipmentTopManagedBean.dfShpqy1(item.nowshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                <p:column  style="text-align: right;">
+                    <h:outputText  value="#{clientRankingReportBean.dfShpqy1(item.nowshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid15" style="text-align: right;">
-                    <f:facet name="header">
-                        <h:outputText value="#{shipmentTopManagedBean.map.futitle}金额"/>
-                    </f:facet>
-                    <h:outputText value="#{item.nowshpamts}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                <p:column  style="text-align: right;">
+                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.nowshpamts)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid10" style="text-align: center" >
-                    <f:facet name="header">
-                        <h:outputText value="去年同期排名"/>
-                    </f:facet>
+                <p:column  style="text-align: center;">
                     <h:outputText value="#{item.pastrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid10" style="text-align: right;">
-                    <f:facet name="header">
-                        <h:outputText value="去年同期台数"/>
-                    </f:facet>
-                    <h:outputText value="#{shipmentTopManagedBean.dfShpqy1(item.pastshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                <p:column  style="text-align: right;">
+                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.pastshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid15" style="text-align: right;">
-                    <f:facet name="header">
-                        <h:outputText value="去年同期金额"/>
-                    </f:facet>
-                    <h:outputText value="#{item.pastshpamts}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                <p:column  style="text-align: right;">
+                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.pastshpamts)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid15" style="text-align: right;">
-                    <f:facet name="header">
-                        <h:outputText value="同比差异值"/>
-                    </f:facet>
-                    <h:outputText value="#{item.differencevalue}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                <p:column  style="text-align: right;">
+                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.differencevalue)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid10">
-                    <f:facet name="header">
-                        <h:outputText value="同比成长率"/>
-                    </f:facet>
-                    <h:outputText value="#{item.growthrate}%"  style="#{(item.cusna == '总计' or item.style=='red' )?'color:red':'' }" />
+                <p:column style="text-align: right;">
+                    <h:outputText value="#{item.growthrate}%"  style="#{(item.cusna == '总计' or item.paststyle=='red' )?'color:red':'' }" />
                 </p:column>
             </p:dataTable>
             <div style="width: 100%;color: gray; font-size: 13px;" >
@@ -97,13 +95,13 @@
                     同比成长率 = (本年累计金额 - 去年同期累计金额)/去年同期累计金额*100%
                 </p>
                 <p  style="height: 14px;">
-                    此出货销售统计表销售金额去除销售折让、质量扣款金额<c:if test="#{shipmentTopManagedBean.deptno != '50000' }">、包含国际营销课出货数据</c:if>
+                    此出货销售统计表销售金额去除销售折让、质量扣款金额<c:if test="#{clientRankingReportBean.deptno != '50000' and clientRankingReportBean.deptno != '5B000' and clientRankingReportBean.deptno != '5C000' }">、包含国际营销课出货数据</c:if>
                 </p>
             </div>
             <p:panel id="remarks" style="height: 0px" >
-                <c:if test="#{shipmentTopManagedBean.summaryCount != 0 }">
+                <c:if test="#{clientRankingReportBean.summaryCount != 0 }">
                     <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repSummary" value="#{shipmentTopManagedBean.summaryList}" var="s" rendered="#{shipmentTopManagedBean.summaryCount>0}">
+                        <p:repeat id="repSummary" value="#{clientRankingReportBean.summaryList}" var="s" rendered="#{clientRankingReportBean.summaryCount>0}">
                             <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                                 <h:panelGrid>
                                     <h:outputText id="summary"/>
@@ -113,9 +111,9 @@
                         </p:repeat>
                     </div>
                 </c:if>
-                <c:if test="#{shipmentTopManagedBean.analysisCount != 0}">
+                <c:if test="#{clientRankingReportBean.analysisCount != 0}">
                     <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repAnalysis" value="#{shipmentTopManagedBean.analysisList}" var="a" rendered="#{shipmentTopManagedBean.analysisCount>0}">
+                        <p:repeat id="repAnalysis" value="#{clientRankingReportBean.analysisList}" var="a" rendered="#{clientRankingReportBean.analysisCount>0}">
                             <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                                 <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                                     <h:outputText id="issueLabel" value="问题"/>
@@ -132,10 +130,10 @@
                         </p:repeat>
                     </div>
                 </c:if>
-                <c:if test="#{shipmentTopManagedBean.analysisCount != 0  or shipmentTopManagedBean.summaryCount != 0 }">
+                <c:if test="#{clientRankingReportBean.analysisCount != 0  or clientRankingReportBean.summaryCount != 0 }">
                     <h:outputScript name="bsc-clientranking.js" library="js"/>
-                    <h:inputHidden id="ac" value="#{shipmentTopManagedBean.analysisCount}"></h:inputHidden>
-                    <h:inputHidden id="sc" value="#{shipmentTopManagedBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{clientRankingReportBean.analysisCount}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{clientRankingReportBean.summaryCount}"></h:inputHidden>
                 </c:if>
             </p:panel>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
