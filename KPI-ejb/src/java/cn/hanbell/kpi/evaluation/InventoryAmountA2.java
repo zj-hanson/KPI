@@ -36,6 +36,7 @@ public class InventoryAmountA2 extends Inventory {
         String categories = map.get("categories") != null ? map.get("categories").toString() : "";// 大类编号
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";// 指标编号
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";// 产品别
+        String itclscode = map.get("itclscode") != null ? map.get("itclscode").toString() : "";//类别
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         // 公用物料部分
@@ -50,6 +51,10 @@ public class InventoryAmountA2 extends Inventory {
         }
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
+        }
+        //判断当前类别是否为真空出租。
+        if (!"".equals(itclscode)) {
+            sb.append(" AND itclscode ").append(itclscode);
         }
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}",
