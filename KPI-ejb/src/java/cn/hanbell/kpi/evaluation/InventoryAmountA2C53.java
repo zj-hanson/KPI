@@ -7,12 +7,16 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1749 暂时不用 此部分数据由财务提供
+ * @author C1749 
  */
 public class InventoryAmountA2C53 extends InventoryAmountA2 {
 
     public InventoryAmountA2C53() {
         super();
+        queryParams.put("facno", "C");
+        queryParams.put("categories", "A2");
+        queryParams.put("genre", "='P'");
+        queryParams.put("itclscode", "='L'");
     }
 
 }
