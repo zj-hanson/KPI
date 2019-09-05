@@ -24,8 +24,8 @@
                                  update="formOne:tblList" oncomplete="setTableHeaderStyle();" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
-            <p:dataTable  id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true"
-                          rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}">
+            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true"
+                         rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}">
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column rowspan="2" headerText="目标类型" />
@@ -46,37 +46,37 @@
                         <p:column headerText="差异" />
                     </p:row>
                 </p:columnGroup>
-                <p:column styleClass="Wid20" style="text-align: left;" groupRow="true">
+                <p:column style="text-align: left;" groupRow="true">
                     <h:outputText value="#{item.id}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: left;">
+                <p:column style="text-align: left;">
                     <h:outputText value="#{(item.deptName == '财务部')?'无':item.deptName}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: left;">
+                <p:column style="text-align: left;">
                     <h:outputText  value="#{item.classify}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: left;">
+                <p:column style="text-align: left;">
                     <h:outputText value="#{item.responsible}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.target)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.actual)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.difference1)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.upactual)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.difference2)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.benchmark)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20">
+                <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.difference3)}"/>
                 </p:column>
             </p:dataTable>
