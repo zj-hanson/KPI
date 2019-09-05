@@ -51,17 +51,17 @@ public class ProductManagedBean extends IndicatorSetManagedBean {
             //指标修改权限设置
             indicatorgrant = indicatorgrantBean.findByUseridAndFormid(userManagedBean.getUserid(), currentEntity.getFormid());
             if (indicatorgrant == null || "N".equals(indicatorgrant.getStatus())) {
-                indicatorgrant = indicatorgrantBean.findByUseridAndFormid(userManagedBean.getUserid(),"");
+                indicatorgrant = indicatorgrantBean.findByUseridAndFormid(userManagedBean.getUserid(), "");
             }
             if (indicatorgrant == null || "N".equals(indicatorgrant.getStatus())) {
-                    indicatorgrant = new Indicatorgrant();
-                    indicatorgrant.setForecast(false);
-                    indicatorgrant.setBenchmark(false);
-                    indicatorgrant.setTarget(false);
-                    indicatorgrant.setPerformance(false);
-                    indicatorgrant.setActual(false);
-                    indicatorgrant.setOther(false);
-             }
+                indicatorgrant = new Indicatorgrant();
+                indicatorgrant.setForecast(false);
+                indicatorgrant.setBenchmark(false);
+                indicatorgrant.setTarget(false);
+                indicatorgrant.setPerformance(false);
+                indicatorgrant.setActual(false);
+                indicatorgrant.setOther(false);
+            }
         }
         detailList = detailEJB.findByPId(id);
         detailList2 = detailEJB2.findByPId(id);

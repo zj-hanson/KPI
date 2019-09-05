@@ -394,7 +394,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
             return percentFormat.format(value);
         }
     }
-    
+
     public String doubleformat(BigDecimal value, int i) {
         if (value == null) {
             return "";

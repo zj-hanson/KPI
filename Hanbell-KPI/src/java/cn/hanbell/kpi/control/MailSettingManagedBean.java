@@ -213,7 +213,7 @@ public class MailSettingManagedBean extends FormMultiBean<MailSetting, MailRecip
             }
         }
     }
-    
+
     /**
      * @return the recipient
      */

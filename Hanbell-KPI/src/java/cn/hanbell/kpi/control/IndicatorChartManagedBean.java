@@ -80,10 +80,10 @@ public class IndicatorChartManagedBean extends SuperSingleBean<IndicatorChart> {
             }
             if (queryDeptname != null && !"".equals(queryDeptname)) {
                 model.getFilterFields().put("deptname", queryDeptname);
-            }   
+            }
             if (queryPid != null && !"".equals(queryPid)) {
                 model.getFilterFields().put("pid", queryPid);
-            }    
+            }
         }
     }
 
@@ -128,7 +128,5 @@ public class IndicatorChartManagedBean extends SuperSingleBean<IndicatorChart> {
     public void setQueryPid(String queryPid) {
         this.queryPid = queryPid;
     }
-    
-    
 
 }

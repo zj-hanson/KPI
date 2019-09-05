@@ -9,34 +9,23 @@
     <ui:define name="content">
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
-            <p:spacer />
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <span class="plgSheetHead">各部门库存金额达标情况</span>
+                    <span class="plgSheetHead right">单位：万元</span>
+                </f:facet>
                 <p:outputLabel value="查询年份" for="clientyear" styleClass="ui-panelgrid-blank"/>
                 <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
                 <p:outputLabel value="查询月份" for="clientmonth" />
                 <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" required="true" requiredMessage="请输入查询的月份"/>
-                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.resetQuery()}"  icon="ui-icon-refresh"
+                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.reset()}"  icon="ui-icon-refresh"
                                  update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryIndicatorQuery()}"  icon="ui-icon-search"
-                                 update="formOne:tblList" />
+                                 update="formOne:tblList" oncomplete="setTableHeaderStyle();" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
-            <p:panelGrid columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
-                <f:facet name="header">
-                    <span style="font-size: 21px;float: left" >各部门库存金额达标情况</span>
-                    <span style="font-size: 21px;float: right" >单位：万元</span>
-                </f:facet>
-            </p:panelGrid>
-            <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <style type="text/css">
-                .bgred{
-                    background-color: #D3D3D3 !important;
-                    color: red !important;
-                }
-            </style>
-            <p:dataTable rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}" id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData">
-                <p:ajax event="rowSelect"  update="formOne:toolbar" />
-                <p:ajax event="rowUnselect" update="formOne:toolbar" />
+            <p:dataTable  id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true"
+                          rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}">
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column rowspan="2" headerText="目标类型" />
@@ -69,25 +58,25 @@
                 <p:column  styleClass="Wid20" style="text-align: left;">
                     <h:outputText value="#{item.responsible}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.target)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.actual)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.difference1)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.upactual)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.difference2)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.benchmark)}"/>
                 </p:column>
-                <p:column  styleClass="Wid20" style="text-align: right">
+                <p:column  styleClass="Wid20">
                     <h:outputText value="#{inventoryReportBean.format(item.difference3)}"/>
                 </p:column>
             </p:dataTable>
@@ -95,5 +84,19 @@
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
+        <style type="text/css">
+            .bgred{
+                background-color: #D3D3D3 !important;
+                color: red !important;
+            }
+        </style>
+        <script>
+            var setTableHeaderStyle = function () {
+                var h = $(document.getElementById("formOne:tblList")).find('div')[0];
+                if (h !== null) {
+                    $(h).addClass('plgSheetData');
+                }
+            };
+        </script>
     </ui:define>
 </ui:composition>
