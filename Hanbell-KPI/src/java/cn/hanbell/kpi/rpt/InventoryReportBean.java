@@ -122,15 +122,11 @@ public class InventoryReportBean implements Serializable {
                 case "1F000":
                     cities.put("物料库存状况表(冷媒)", "R");
                     cities.put("物料库存状况表(冷冻)", "L");
-                    break;
-                case "1G100":
-                    cities.put("物料库存状况表(冷冻)", "AJ");
-                    break;
-                case "1G500":
-                    cities.put("物料库存状况表(无油机组)", "AD");
-                    break;
-                case "5A000":
                     cities.put("物料库存状况表(离心机)", "RT");
+                    break;
+                case "1G000":
+                    cities.put("物料库存状况表(机体)", "AJ");
+                    cities.put("物料库存状况表(无油机组)", "AD");
                     break;
                 case "1Q000":
                     cities.put("物料库存状况表(机组)", "A");
