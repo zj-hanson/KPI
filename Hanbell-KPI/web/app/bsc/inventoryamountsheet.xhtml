@@ -1,4 +1,3 @@
-@@ -1,97 +0,0 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -13,7 +12,7 @@
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center"><span style="float: left">单位:#{inventoryAmountBean.indicator.unit}</span>#{inventoryAmountBean.y}&nbsp;&nbsp;#{inventoryAmountBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
-                    <p:dataTable var="item" value="#{inventoryAmountBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                    <p:dataTable var="item" value="#{inventoryAmountBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true" >
                         <p:column headerText="部门" groupRow="true">
                             <h:outputText value="#{item.parent.name}" />
                         </p:column>

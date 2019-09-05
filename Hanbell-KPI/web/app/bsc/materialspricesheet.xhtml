@@ -21,7 +21,7 @@
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{materialsPriceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                    <p:dataTable var="item" value="#{materialsPriceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true">
                         <p:column headerText="" groupRow="true" styleClass="plgSheetData Wid5">
                             <div style="text-align: center"> <h:outputText value="#{materialsPriceReportBean.getName(item.parent.name)}" /></div>
                         </p:column>
