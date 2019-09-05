@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IndicatorAnalysisBean;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
@@ -19,7 +18,7 @@ import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.entity.InventoryDepartment;
 import cn.hanbell.kpi.entity.InventoryIndicator;
-import java.io.Serializable;
+import cn.hanbell.kpi.web.SuperQueryBean;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -29,13 +28,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,10 +42,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "inventoryReportBean")
 @ViewScoped
-public class InventoryReportBean implements Serializable {
-
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
+public class InventoryReportBean extends SuperQueryBean<Indicator> {
 
     @EJB
     protected IndicatorAnalysisBean indicatorAnalysisBean;
@@ -59,16 +52,15 @@ public class InventoryReportBean implements Serializable {
     protected IndicatorChartBean indicatorChartBean;
     @EJB
     protected IndicatorBean indicatorBean;
-    protected Indicator indicator;
 
     @EJB
     protected InventoryProductBean inventoryProductBean;
-
     @EJB
     protected InventoryDepartmentBean inventoryDepartmentBean;
-
     @EJB
     protected InventoryIndicatorBean inventoryIndicatorBean;
+
+    protected Indicator indicator;
 
     private Integer year;
     private Integer month;
@@ -88,33 +80,19 @@ public class InventoryReportBean implements Serializable {
     private String type;
     private String genre;
 
-    FacesContext fc;
-    ExternalContext ec;
     protected IndicatorChart indicatorChart;
 
     protected final DecimalFormat doubleFormat;
 
     // 下拉选项集合
-    private Map<String, String> cities = new HashMap<String, String>();
+    private Map<String, String> cities = new HashMap<>();
 
     public InventoryReportBean() {
+        super(Indicator.class);
         this.doubleFormat = new DecimalFormat("#,###.##");
-
     }
 
-    public int findyear() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(userManagedBean.getBaseDate());
-        return c.get(Calendar.YEAR);
-    }
-
-    public int findmonth() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(userManagedBean.getBaseDate());
-        return c.get(Calendar.MONTH) + 1;
-    }
-
-    public void getDeopt() {
+    public void setCities() {
         cities = new HashMap<String, String>();
         String deptno = indicatorChart.getDeptno();
         if (cities.isEmpty()) {
@@ -152,18 +130,7 @@ public class InventoryReportBean implements Serializable {
 
     }
 
-    public void init() {
-        getDeopt();
-        setAnalysisCount(0);
-        setSummaryCount(0);
-        analysisList = new ArrayList<>();
-        summaryList = new ArrayList<>();
-        setInventoryIndicatorList(new ArrayList<>());
-        setInventoryDepartmentsList(new ArrayList<>());
-        setInventoryProductList(new ArrayList<>());
-    }
-
-    @PostConstruct
+    @Override
     public void construct() {
         fc = FacesContext.getCurrentInstance();
         ec = fc.getExternalContext();
@@ -177,15 +144,27 @@ public class InventoryReportBean implements Serializable {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
         init();
-
     }
 
-    public void resetQuery() {
-        year = findyear();
-        month = findmonth();
+    @Override
+    public void init() {
+        setCities();
+        year = userManagedBean.getY();
+        month = userManagedBean.getM();
+        analysisList = new ArrayList<>();
+        summaryList = new ArrayList<>();
+        setInventoryIndicatorList(new ArrayList<>());
+        setInventoryDepartmentsList(new ArrayList<>());
+        setInventoryProductList(new ArrayList<>());
+    }
+
+    @Override
+    public void reset() {
+        year = userManagedBean.getY();
+        month = userManagedBean.getM();
         type = "";
         genre = "";
-        init();
+        this.init();
     }
 
     public boolean addQueryModel() {
@@ -203,7 +182,6 @@ public class InventoryReportBean implements Serializable {
 
     // 各库别之产品别库存金额数据集
     public void inventoryProductQuery() {
-        init();
         try {
             if (addQueryModel()) {
                 int m = getMonth();
@@ -215,31 +193,26 @@ public class InventoryReportBean implements Serializable {
                     if (indicator != null) {
                         analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), month);// 指标分析
                         if (getAnalysisList() != null) {
-                            setAnalysisCount(getAnalysisList().size());
+                            analysisCount = getAnalysisList().size();
                         }
                         summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), month);// 指标说明
                         if (getSummaryList() != null) {
-                            setSummaryCount(getSummaryList().size());
+                            summaryCount = getSummaryList().size();
                         }
                     }
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
+                    showErrorMsg("Error", "无法查询到该日期的数据，请重新查询！");
                 }
             }
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.toString());
         }
-
     }
 
     // 各事业部和各产品目标的各库别物料库存状况表数据集 新版
     public void inventoryDepartmentQuery() {
-        // 初始化
-        init();
         // 获取页面显示的时间三个月的时间
-        getDate();
+        setDate();
         try {
             if (addQueryModel()) {
                 int m = getMonth();
@@ -253,29 +226,25 @@ public class InventoryReportBean implements Serializable {
                     if (indicator != null) {
                         analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), month);// 指标分析
                         if (getAnalysisList() != null) {
-                            setAnalysisCount(getAnalysisList().size());
+                            analysisCount = getAnalysisList().size();
                         }
                         summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), month);// 指标说明
                         if (getSummaryList() != null) {
-                            setSummaryCount(getSummaryList().size());
+                            summaryCount = getSummaryList().size();
                         }
                     }
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
+                    showErrorMsg("Error", "无法查询到该日期的数据，请重新查询！");
                 }
             }
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.toString());
         }
 
     }
 
     // 获取库存金额按总经理室方针目标总表 list
     public void inventoryIndicatorQuery() {
-        // 初始化
-        init();
         try {
             if (addQueryModel()) {
                 int m = getMonth();
@@ -285,18 +254,16 @@ public class InventoryReportBean implements Serializable {
                 if (!list.isEmpty()) {
                     inventoryIndicatorList = list;
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null,
-                            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
+                    showErrorMsg("Error", "无法查询到该日期的数据，请重新查询！");
                 }
             }
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.toString());
         }
     }
 
     // 获取日期当月、上月、上上月 做个事业部物料状况表 使用
-    private void getDate() {
+    private void setDate() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         cal.set(getYear(), getMonth(), 1);
@@ -309,14 +276,6 @@ public class InventoryReportBean implements Serializable {
         cal.add(Calendar.DATE, -1);
         date3 = sdf.format(cal.getTime());
         cal.clear();
-    }
-
-    public UserManagedBean getUserManagedBean() {
-        return userManagedBean;
-    }
-
-    public void setUserManagedBean(UserManagedBean userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
 
     public IndicatorAnalysisBean getIndicatorAnalysisBean() {
@@ -387,48 +346,16 @@ public class InventoryReportBean implements Serializable {
         return analysisList;
     }
 
-    public void setAnalysisList(List<IndicatorAnalysis> analysisList) {
-        this.analysisList = analysisList;
-    }
-
     public List<IndicatorSummary> getSummaryList() {
         return summaryList;
-    }
-
-    public void setSummaryList(List<IndicatorSummary> summaryList) {
-        this.summaryList = summaryList;
     }
 
     public int getAnalysisCount() {
         return analysisCount;
     }
 
-    public void setAnalysisCount(int analysisCount) {
-        this.analysisCount = analysisCount;
-    }
-
     public int getSummaryCount() {
         return summaryCount;
-    }
-
-    public void setSummaryCount(int summaryCount) {
-        this.summaryCount = summaryCount;
-    }
-
-    public FacesContext getFc() {
-        return fc;
-    }
-
-    public void setFc(FacesContext fc) {
-        this.fc = fc;
-    }
-
-    public ExternalContext getEc() {
-        return ec;
-    }
-
-    public void setEc(ExternalContext ec) {
-        this.ec = ec;
     }
 
     public IndicatorChart getIndicatorChart() {
@@ -512,7 +439,11 @@ public class InventoryReportBean implements Serializable {
     }
 
     public String format(BigDecimal b) {
-        return doubleFormat.format(b);
+        if (b != null) {
+            return doubleFormat.format(b);
+        } else {
+            return "";
+        }
     }
 
 }

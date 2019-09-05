@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "indicatorManagedBean")
 @ViewScoped
-public class IndicatorManagedBean extends IndicatorSetManagedBean{
+public class IndicatorManagedBean extends IndicatorSetManagedBean {
 
     private boolean deny = true;
 
@@ -49,6 +49,5 @@ public class IndicatorManagedBean extends IndicatorSetManagedBean{
     public boolean isDeny() {
         return deny;
     }
-
 
 }

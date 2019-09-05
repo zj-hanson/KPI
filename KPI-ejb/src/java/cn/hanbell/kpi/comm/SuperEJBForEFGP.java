@@ -17,8 +17,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @LocalBean
-public class SuperEJBForEFGP implements Serializable{
-    
+public class SuperEJBForEFGP implements Serializable {
+
     @PersistenceContext(unitName = "PU-SHBEFGP")
     private EntityManager em;
 

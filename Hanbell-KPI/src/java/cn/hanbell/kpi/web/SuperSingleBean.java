@@ -36,9 +36,6 @@ public abstract class SuperSingleBean<T extends SuperEntity> extends SuperSingle
     protected String appResPath;
     protected SystemGrantPrg currentPrgGrant;
 
-    protected Map<String, Object> openOptions;
-    protected Map<String, List<String>> openParams;
-
     /**
      * @param entityClass
      */

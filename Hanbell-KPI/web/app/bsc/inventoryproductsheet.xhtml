@@ -11,88 +11,76 @@
         <h:form id="formOne">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <span class="plgSheetHead">各库别之产品别库存金额表</span>
+                </f:facet>
                 <p:outputLabel value="查询年份" for="clientyear" styleClass="ui-panelgrid-blank"/>
                 <p:inputText id="clientyear" value="#{inventoryReportBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
                 <p:outputLabel value="查询月份" for="clientmonth" />
                 <p:inputText id="clientmonth" value="#{inventoryReportBean.month}" title="月" required="true" requiredMessage="请输入查询的月份"/>
-                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.resetQuery()}"  icon="ui-icon-refresh"
+                <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.reset()}"  icon="ui-icon-refresh"
                                  update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryProductQuery()}"  icon="ui-icon-search"
                                  update="formOne:tblList,remarks" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
-            <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
             <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData"
                          rowSelectMode="single" rowKey="item.id" editable="true">
-                <f:facet name="header">
-                    <span style="font-size: 21px;" >各库别之产品别库存金额表</span>
-                </f:facet>
-                <p:ajax event="rowSelect"  update="formOne:toolbar" />
-                <p:ajax event="rowUnselect" update="formOne:toolbar" />
                 <p:column styleClass="Wid20" style="text-align: left;">
                     <f:facet name="header" >
                         <h:outputText value="库别"/>
                     </f:facet>
                     <h:outputText value="#{item[0]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-                
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="AA"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[1])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="AH"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[2])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="SDS"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[3])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="R"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[4])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="RT"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[5])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="L"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[6])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="P"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[7])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="S"/>
                     </f:facet>
                     <h:outputText value="#{inventoryReportBean.format(item[8])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
                 </p:column>
-
-                <p:column styleClass="Wid20" style="text-align: right;">
+                <p:column styleClass="Wid20">
                     <f:facet name="header" >
                         <h:outputText value="合计"/>
                     </f:facet>

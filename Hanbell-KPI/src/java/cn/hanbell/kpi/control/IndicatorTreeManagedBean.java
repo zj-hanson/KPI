@@ -55,7 +55,7 @@ public class IndicatorTreeManagedBean extends IndicatorSetManagedBean {
     private void initTree() {
         setRootNode(new DefaultTreeNode());
         //rootNode.setExpanded(true);
-        rootIndicator = indicatorBean.findRootByCompany(userManagedBean.getCompany(), "D",queryYear);
+        rootIndicator = indicatorBean.findRootByCompany(userManagedBean.getCompany(), "D", queryYear);
         if (rootIndicator != null && !rootIndicator.isEmpty()) {
             for (Indicator e : rootIndicator) {
                 TreeNode n = new DefaultTreeNode(e, getRootNode());

@@ -59,7 +59,6 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     protected String queryItclscode;
     protected String fileFullName;
 
-
     protected List<InventoryProduct> editInventoryProductList;
     protected List<InventoryProduct> inventoryProductList;
 
@@ -302,7 +301,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             cell7.setCellValue(ip.getItclscode());
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(ip.getCategories() != null ? ip.getCategories():"");
+            cell8.setCellValue(ip.getCategories() != null ? ip.getCategories() : "");
             Cell cell9 = row.createCell(9);
             cell9.setCellStyle(style.get("cell"));
             cell9.setCellValue(ip.getIndicatorno() != null ? ip.getIndicatorno() : "");
