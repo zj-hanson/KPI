@@ -60,19 +60,19 @@ public class CustomerComplaintFileMailBean extends MailNotification {
         super.init();
     }
 
-    public String[] getCuscomPlaintTitle() {
+    public String[] getCustomerComplaintTitle() {
         return new String[]{"产品别", "客诉单号", "客户名称", "制造号码", "不良原因", "责任单位", "责任判定", "责任判断比率", "材料费", "人工费", "运输费(含空运、吊装费)", "差旅费", "不良导致索赔款", "其他", "费用合计", "结案时间"};
     }
 
-    public String[] getCuscomPlaintDetailTitle() {
+    public String[] getCustomerComplaintMaterialTitle() {
         return new String[]{"客诉单号", "服务单号", "类型", "领退料单号", "品号", "品名", "数量", "单位", "总金额"};
     }
 
-    private int[] getCuscomPlaintWidth() {
+    private int[] getCustomerComplaintWidth() {
         return new int[]{10, 20, 15, 20, 50, 15, 15, 14, 14, 14, 14, 14, 14, 14, 15, 20};
     }
 
-    private int[] getCuscomPlaintDetailWidth() {
+    private int[] getCustomerComplaintMaterialWidth() {
         return new int[]{20, 20, 15, 20, 35, 35, 15, 15, 15};
     }
 
@@ -119,18 +119,18 @@ public class CustomerComplaintFileMailBean extends MailNotification {
         HSSFSheet sheet1 = workbook.createSheet("客诉明细");
         HSSFSheet sheet2 = workbook.createSheet("材料明细");
         // 设置表格宽度
-        int[] wt1 = getCuscomPlaintWidth();
+        int[] wt1 = getCustomerComplaintWidth();
         for (int i = 0; i < wt1.length; i++) {
             sheet1.setColumnWidth(i, wt1[i] * 256);
         }
-        int[] wt2 = getCuscomPlaintDetailWidth();
+        int[] wt2 = getCustomerComplaintMaterialWidth();
         for (int i = 0; i < wt2.length; i++) {
             sheet2.setColumnWidth(i, wt2[i] * 256);
         }
         //创建标题行
         Row row;
         //表格一
-        String[] title1 = getCuscomPlaintTitle();
+        String[] title1 = getCustomerComplaintTitle();
         row = sheet1.createRow(0);
         row.setHeight((short) 800);
         for (int i = 0; i < title1.length; i++) {
@@ -192,7 +192,7 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell15.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
         }
         //表格二
-        String[] title2 = getCuscomPlaintDetailTitle();
+        String[] title2 = getCustomerComplaintMaterialTitle();
         row = sheet2.createRow(0);
         row.setHeight((short) 550);
         for (int i = 0; i < title2.length; i++) {

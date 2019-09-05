@@ -21,9 +21,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -55,8 +53,8 @@ public class RAchievingRateFileMailBean extends MailNotification {
         return "";
     }
 
-    private List<Indicator> getIndicatorList(String fromid, int year, String deptno) {
-        Indicator indicator = indicatorBean.findByFormidYearAndDeptno(fromid, year, deptno);
+    private List<Indicator> getIndicatorList(String formid, int year, String deptno) {
+        Indicator indicator = indicatorBean.findByFormidYearAndDeptno(formid, year, deptno);
         if (indicator != null) {
             return indicatorBean.findByPIdAndYear(indicator.getId(), year);
         }
@@ -71,7 +69,6 @@ public class RAchievingRateFileMailBean extends MailNotification {
             int index = finalFilePath.indexOf("dist/gfdeploy");
             InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI/web/rpt/R冷媒目标与实际达成率模板.xlsx");
             Workbook workbook = WorkbookFactory.create(is);
-            Row row;
             Cell cell;
 
             //sheet1为台数
@@ -81,15 +78,15 @@ public class RAchievingRateFileMailBean extends MailNotification {
             cell.setCellValue(y + "年");
             //本年度
             indicators = getIndicatorList("Q-R产品出货", y, "1F000");
-            //setCellValue(赋值开始行 展现的月份 表页 集合 单元格样式 换算率)
+            //setCellValue(赋值开始行 展现的月份 表页 集合 换算率)
             setCellValue(5, m, sheet1, indicators, 1);
             indicators.clear();
             //去年同期
             indicators = getIndicatorList("Q-R产品出货", y - 1, "1F000");
-            //setCellValue(赋值开始行 展现的月份 表页 集合 单元格样式 换算率)
             setCellValue(12, 12, sheet1, indicators,1);
             //更新页面公式
             sheet1.setForceFormulaRecalculation(true);
+            indicators.clear();
 
             //sheet2金额
             Sheet sheet2 = workbook.getSheetAt(1);
@@ -98,7 +95,7 @@ public class RAchievingRateFileMailBean extends MailNotification {
             cell.setCellValue(y + "年");
             //本年度
             indicators = getIndicatorList("A-R产品出货", y, "1F000");
-            //setCellValue(赋值开始行 展现的月份 表页 集合 单元格样式 换算率)
+            //setCellValue(赋值开始行 展现的月份 表页 集合 换算率)
             setCellValue(5, m, sheet2, indicators, 10000);
             indicators.clear();
             //去年同期

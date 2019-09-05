@@ -12,7 +12,7 @@
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center"><span style="float: left">单位:#{inventoryAmount1NReportBean.indicator.unit}</span>#{inventoryAmount1NReportBean.y}&nbsp;&nbsp;#{inventoryAmount1NReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
-                    <p:dataTable var="item" value="#{inventoryAmount1NReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                    <p:dataTable var="item" value="#{inventoryAmount1NReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100"  reflow="true" stickyHeader="true">
                         <p:column headerText="部门" groupRow="true">
                             <h:outputText value="#{item.parent.name.replace('库存金额', '')}" />
                         </p:column>

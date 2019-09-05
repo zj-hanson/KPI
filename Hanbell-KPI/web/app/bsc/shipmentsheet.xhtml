@@ -20,7 +20,7 @@
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100">
+                    <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true">
                         <p:column headerText="产品" groupRow="true">
                             <h:outputText value="#{item.parent.name}" />
                         </p:column>
