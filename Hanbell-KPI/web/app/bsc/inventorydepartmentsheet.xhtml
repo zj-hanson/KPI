@@ -8,7 +8,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne"  rendered="#{!inventoryReportBean.deny}">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
                 <f:facet name="header">
@@ -85,6 +85,14 @@
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{inventoryReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -8,7 +8,7 @@ package cn.hanbell.kpi.rpt;
 import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.ExchangeRateBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
-import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.model.chart.Axis;
@@ -60,13 +58,6 @@ public class ExchangeRateReportBean extends BscQueryTableManageBean implements S
 
     protected LineChartModel chartModel;
 
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
-
-    FacesContext fc;
-    ExternalContext ec;
-    protected IndicatorChart indicatorChart;
-
     public ExchangeRateReportBean() {
     }
 
@@ -103,8 +94,13 @@ public class ExchangeRateReportBean extends BscQueryTableManageBean implements S
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
-
         queryDateBegin = getNowDateBegin().getTime(); //new SimpleDateFormat("yyyy/MM/dd").format(c.getTime());
         queryDateEnd = getNowDateEnd().getTime();
 

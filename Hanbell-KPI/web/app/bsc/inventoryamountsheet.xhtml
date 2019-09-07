@@ -8,7 +8,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne" rendered="#{!inventoryAmountBean.deny}">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center"><span style="float: left">单位:#{inventoryAmountBean.indicator.unit}</span>#{inventoryAmountBean.y}&nbsp;&nbsp;#{inventoryAmountBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
@@ -20,37 +20,37 @@
                             <h:outputText value="#{item.type}" ></h:outputText>
                         </p:column>
                         <p:column headerText="M01">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n01,1)}" />                        
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n01,1)}" />
                         </p:column>
                         <p:column headerText="M02">
                             <h:outputText value="#{inventoryAmountBean.format(item.type,item.n02,2) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M03">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n03,3) }" ></h:outputText>  
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n03,3) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M04">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n04,4) }" ></h:outputText>     
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n04,4) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M05">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n05,5) }" ></h:outputText>     
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n05,5) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M06">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n06,6) }" ></h:outputText>     
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n06,6) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M07">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n07,7) }" ></h:outputText>      
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n07,7) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M08">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n08,8) }" ></h:outputText>      
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n08,8) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M09">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n09,9) }" ></h:outputText>                                                       
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n09,9) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M10">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n10,10) }" ></h:outputText>      
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n10,10) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M11">
-                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n11,11) }" ></h:outputText>      
+                            <h:outputText value="#{inventoryAmountBean.format(item.type,item.n11,11) }" ></h:outputText>
                         </p:column>
                         <p:column headerText="M12">
                             <h:outputText value="#{inventoryAmountBean.format(item.type,item.n12,12) }" ></h:outputText>
@@ -91,6 +91,14 @@
                 <h:inputHidden id="ac" value="#{inventoryAmountBean.analysisCount}"></h:inputHidden>
             </div>
             <h:outputScript name="bsc-analysis-sheet1.js" library="js"/>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{inventoryAmountBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

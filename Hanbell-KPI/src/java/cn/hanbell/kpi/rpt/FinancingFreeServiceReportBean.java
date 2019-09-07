@@ -5,10 +5,10 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -22,9 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,16 +42,10 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     protected Date btndate;
     protected String facno;
     protected String[] title;
-    protected IndicatorChart indicatorChart;
     protected List<String[]> list;
 
     protected final DecimalFormat decimalFormat;
 
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
-
-    FacesContext fc;
-    ExternalContext ec;
 
     public FinancingFreeServiceReportBean() {
         this.decimalFormat = new DecimalFormat("#,###.##");
@@ -83,6 +75,12 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (getIndicatorChart() == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m1 : userManagedBean.getRoleGrantDeptList()) {
+                if (m1.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         btndate = settlementDate().getTime();
         btnquery();
@@ -245,20 +243,6 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
      */
     public void setList(List<String[]> list) {
         this.list = list;
-    }
-
-    /**
-     * @return the userManagedBean
-     */
-    public UserManagedBean getUserManagedBean() {
-        return userManagedBean;
-    }
-
-    /**
-     * @param userManagedBean the userManagedBean to set
-     */
-    public void setUserManagedBean(UserManagedBean userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
 
     /**

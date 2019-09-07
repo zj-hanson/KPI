@@ -7,7 +7,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne" rendered="#{!inventoryReportBean.deny}">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="7" columnClasses="Wid20,Wid20,Wid20,Wid20,Wid10,Wid10" styleClass="plgQuery Wid100">
                 <f:facet name="header">
@@ -94,9 +94,18 @@
             var setTableHeaderStyle = function () {
                 var h = $(document.getElementById("formOne:tblList")).find('div')[0];
                 if (h !== null) {
+                    $(h).css("z-index", "800");
                     $(h).addClass('plgSheetData');
                 }
             };
         </script>
+        <h:form id="formTwo"  rendered="#{inventoryReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

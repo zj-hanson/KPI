@@ -5,10 +5,9 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.ProcurementBean;
-import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,9 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,13 +37,6 @@ public class ProcurementReportBean extends BscQueryTableManageBean implements Se
     protected Date btndate;
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, String> statusMap;
-
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
-
-    FacesContext fc;
-    ExternalContext ec;
-    protected IndicatorChart indicatorChart;
 
     public ProcurementReportBean() {
     }
@@ -75,6 +65,12 @@ public class ProcurementReportBean extends BscQueryTableManageBean implements Se
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        } else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         map = new LinkedHashMap<>();
         statusMap = new LinkedHashMap<>();
@@ -83,7 +79,7 @@ public class ProcurementReportBean extends BscQueryTableManageBean implements Se
         setBtndate(settlementDate().getTime());
     }
 
-    public void btnreset() {;
+    public void btnreset() {
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
@@ -137,20 +133,6 @@ public class ProcurementReportBean extends BscQueryTableManageBean implements Se
      */
     public void setStatusMap(LinkedHashMap<String, String> statusMap) {
         this.statusMap = statusMap;
-    }
-
-    /**
-     * @return the userManagedBean
-     */
-    public UserManagedBean getUserManagedBean() {
-        return userManagedBean;
-    }
-
-    /**
-     * @param userManagedBean the userManagedBean to set
-     */
-    public void setUserManagedBean(UserManagedBean userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
 
     /**

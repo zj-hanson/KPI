@@ -11,9 +11,29 @@
         <h:form id="formOne" rendered="#{!productManagedBean.deny}">
             <p:growl id="growl"  showSummary="false" showDetail="true" />
             <p:toolbar id="toolbar" styleClass="topToolbar">
+                    <f:facet name="left">
+                    <p:commandButton id="btnUpdateForecast" value="预测" actionListener="#{productManagedBean.calcForecast()}" icon="ui-icon-save"
+                                     process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl" disabled="#{!productManagedBean.indicatorgrant.forecast}" >
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateBenchmark" value="基准" actionListener="#{productManagedBean.calcBenchmark()}" icon="ui-icon-save"
+                                     process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl"  disabled="#{!productManagedBean.indicatorgrant.benchmark}" >
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateTarget" value="目标" actionListener="#{productManagedBean.calcTarget()}" icon="ui-icon-save"
+                                     process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl" disabled="#{!productManagedBean.indicatorgrant.target}" >
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdateActual" value="实绩" actionListener="#{productManagedBean.calcActual()}" icon="ui-icon-save"
+                                     process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl" disabled="#{!productManagedBean.indicatorgrant.actual}" >
+                        <p:confirm header="系统提示" message="更新吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUpdatePerformance" value="达成" actionListener="#{productManagedBean.updatePerformance()}" icon="ui-icon-save"
+                                     process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl" disabled="#{!productManagedBean.indicatorgrant.performance}" />
+                </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnSave" value="保存" actionListener="#{productManagedBean.update()}" icon="ui-icon-save"
-                                     rendered="#{productManagedBean.doEdit}" process="@this,formOne:tabView:plgTarget" update="formOne:tabView"/>
+                                     rendered="#{productManagedBean.doEdit}" process="@this,formOne:tabView:plgTarget" update="formOne:tabView,formOne:growl"/>
                     <p:commandButton id="btnVerify" value="审核" actionListener="#{productManagedBean.verify()}" icon="ui-icon-check"
                                      rendered="#{productManagedBean.doCfm}" process="@this" update="toolbar">
                         <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
@@ -1157,7 +1177,7 @@
                         <p:row>
                             <p:column colspan="6">
                                 <p:commandButton id="saveOther"  actionListener="#{productManagedBean.updateOtherIndicator()}" icon="ui-icon-save" value="保存" style="float: right"
-                                                 process="@this,formOne:dlgOther" oncomplete="PF('dlgOther').hide();"  disabled="#{!productManagedBean.indicatorgrant.other}" >
+                                                 process="@this,formOne:dlgOther" update="formOne:dlgOther,formOne:growl" oncomplete="PF('dlgOther').hide();"  disabled="#{!productManagedBean.indicatorgrant.other}" >
                                 </p:commandButton>
                             </p:column>
                         </p:row>
@@ -1384,7 +1404,7 @@
                         <p:row>
                             <p:column colspan="14">
                                 <p:commandButton id="saveDaily"  actionListener="#{productManagedBean.updateIndicatorDaily()}" icon="ui-icon-save" value="保存" style="float: right"
-                                                 process="@this,formOne:dlgDaily" update="formOne:tabView:plgTarget,formOne:dlgOther" oncomplete="PF('dlgDaily').hide();" disabled="#{productManagedBean.queryIndicatorGrant(productManagedBean.indicatorDaily.seq)}" >
+                                                 process="@this,formOne:dlgDaily" update="formOne:tabView:plgTarget,formOne:dlgOther,formOne:growl" oncomplete="PF('dlgDaily').hide();" disabled="#{productManagedBean.queryIndicatorGrant(productManagedBean.indicatorDaily.seq)}" >
                                 </p:commandButton>
                             </p:column>
                         </p:row>
@@ -1413,7 +1433,7 @@
                         <p:row>
                             <p:column colspan="2">
                                 <p:commandButton id="updateIndicatorSummary"  actionListener="#{productManagedBean.updateIndicatorSummary()}" value="保存" icon="ui-icon-save" style="float: right"
-                                                 process="formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                                 rendered="#{productManagedBean.doEdit}"   process="@this,formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList,formOne:growl" oncomplete="PF('dlgIndicatorSummary').hide();">
                                 </p:commandButton>
                                 <p:commandButton id="deleteIndicatorSummary"  actionListener="#{productManagedBean.deleteIndicatorSummary()}" value="删除" icon="ui-icon-trash" style="float: right"
                                                  process="@this" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">
@@ -1451,7 +1471,7 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton id="updateIndicatorAnalysis"  actionListener="#{productManagedBean.updateIndicatorAnalysis()}" value="保存" icon="ui-icon-save" style="float: right"
-                                                 process="formOne:dlgIndicatorAnalysis" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">
+                                                 rendered="#{productManagedBean.doEdit}"   process="@this,formOne:dlgIndicatorAnalysis" update="formOne:tabView:analysisList,formOne:growl" oncomplete="PF('dlgIndicatorAnalysis').hide();">
                                 </p:commandButton>
                                 <p:commandButton id="deleteIndicatorAnalysis"  actionListener="#{productManagedBean.deleteIndicatorAnalysis()}" value="删除" icon="ui-icon-trash" style="float: right"
                                                  process="@this" update="formOne:tabView:analysisList" oncomplete="PF('dlgIndicatorAnalysis').hide();">

@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne"  rendered="#{!shipmentChartReportBean.deny}">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center">#{shipmentChartReportBean.y}&nbsp;&nbsp;#{shipmentChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
@@ -29,7 +29,7 @@
                                 <p:column>12月</p:column>
                                 <p:column>累计/年平均</p:column>
                             </p:row>
-                        </f:facet>                        
+                        </f:facet>
                         <p:row style="text-align: right;font-weight: 800;">
                             <p:column>目标</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.targetIndicator.n01,1)}</p:column>
@@ -77,7 +77,7 @@
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n11)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.n12)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other1Indicator.nfy)}</p:column>
-                        </p:row>    
+                        </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
                             <p:column>加工数（件）</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n01)}</p:column>
@@ -93,7 +93,7 @@
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n11)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.n12)}</p:column>
                             <p:column>#{shipmentChartReportBean.format(shipmentChartReportBean.indicator.other2Indicator.nfy)}</p:column>
-                        </p:row>    
+                        </p:row>
                         <p:row  style="text-align: right;font-weight: 800;">
                             <p:column>良率</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n01,1)}</p:column>
@@ -109,7 +109,7 @@
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n11,11)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n12,12)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
-                        </p:row>                                                                                    
+                        </p:row>
                     </p:panelGrid>
                 </div>
                 <div class="ui-g-12 ui-md-12">
@@ -151,6 +151,14 @@
                 </div>
             </div>
             <h:outputScript name="bsc-analysis.js" library="js"/>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{shipmentChartReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne" rendered="#{!shipmentChartReportBean.deny}">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center"><span style="float: left">单位:#{shipmentChartReportBean.indicator.unit}</span>#{shipmentChartReportBean.y}&nbsp;&nbsp;#{shipmentChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
@@ -220,6 +220,14 @@
                 </div>
             </div>
             <h:outputScript name="bsc-analysis.js" library="js"/>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{shipmentChartReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

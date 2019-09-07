@@ -15,8 +15,8 @@
                 background-color: #F8F8F8!important;
             }
         </style>
-        <h:form id="formOne">
-            <p:growl id="growl" showSummary="false" showDetail="true"  />
+        <h:form id="formOne" rendered="#{!clientRankingReportBean.deny}">
+            <p:growl id="growl" showSummary="false" showDetail="true" sticky="true" />
             <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid20,Wid15,Wid15,Wid5,Wid5,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="查询日期"  title="查询日期"/>
                 <p:calendar  value="#{clientRankingReportBean.querydate}" title="日期" pattern="yyyy/MM/dd" />
@@ -37,53 +37,53 @@
                 <p:commandButton id="btnReset" value="重置" actionListener="#{clientRankingReportBean.reset()}"  icon="ui-icon-refresh"
                                  update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{clientRankingReportBean.query()}"  icon="ui-icon-search"
-                                 update="formOne" />
+                                 update="formOne"  oncomplete="setTableHeaderStyle();" />
                 <p:link value="返回"  outcome="home" style="float: left"/>
             </p:panelGrid>
             <p:row id="toolbar" styleClass="topToolbar" style="visibility: hidden"></p:row>
-            <p:dataTable id="tblList" value="#{clientRankingReportBean.list}" var="item" tableStyleClass="plgSheetData"
+            <p:dataTable id="tblList" value="#{clientRankingReportBean.list}" var="item" styleClass="plgSheetData"
                          rowIndexVar="index" rowStyleClass="#{index mod 2 == 0 ?'tr_color1':'tr_color2'}" reflow="true" stickyHeader="true">
                 <f:facet name="header" >
                     <span style="font-size: 21px;" >#{clientRankingReportBean.map.daname}&nbsp;#{clientRankingReportBean.map.title}出货销售统计表</span>
                 </f:facet>
                 <p:columnGroup type="header">
                     <p:row>
-                        <p:column styleClass="Wid15" headerText="客户" />
-                        <p:column styleClass="Wid10" headerText="#{clientRankingReportBean.map.nowtitle}排名" />
-                        <p:column styleClass="Wid10" headerText="#{clientRankingReportBean.map.nowtitle}台数" />
-                        <p:column styleClass="Wid15" headerText="#{clientRankingReportBean.map.nowtitle}金额" />
-                        <p:column styleClass="Wid10" headerText="去年同期排名" />
-                        <p:column styleClass="Wid10" headerText="去年同期台数" />
-                        <p:column styleClass="Wid15" headerText="去年同期金额" />
-                        <p:column styleClass="Wid15" headerText="同比差异值" />
-                        <p:column styleClass="Wid10" headerText="同比成长率" />
+                        <p:column style="width: 13%" headerText="客户" />
+                        <p:column style="width: 9%" headerText="#{clientRankingReportBean.map.nowtitle}排名" />
+                        <p:column style="width: 9%" headerText="#{clientRankingReportBean.map.nowtitle}台数" />
+                        <p:column style="width: 14%" headerText="#{clientRankingReportBean.map.nowtitle}金额" />
+                        <p:column style="width: 9%" headerText="去年同期排名" />
+                        <p:column style="width: 9%" headerText="去年同期台数" />
+                        <p:column style="width: 14%" headerText="去年同期金额" />
+                        <p:column style="width: 14%" headerText="同比差异值" />
+                        <p:column style="width: 9%" headerText="同比成长率" />
                     </p:row>
                 </p:columnGroup>
-                <p:column  style="text-align: center;">
+                <p:column  style="text-align: center;width: 13%">
                     <h:outputText value="#{item.cusna}" style="#{(item.cusna == '总计')?'color:red':'' }" />
                 </p:column>
-                <p:column  style="text-align: center;">
+                <p:column  style="text-align: center;width: 9%">
                     <h:outputText value="#{item.nowrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column  style="text-align: right;">
+                <p:column>
                     <h:outputText  value="#{clientRankingReportBean.dfShpqy1(item.nowshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column  style="text-align: right;">
+                <p:column>
                     <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.nowshpamts)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column  style="text-align: center;">
                     <h:outputText value="#{item.pastrank}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column  style="text-align: right;">
+                <p:column >
                     <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.pastshpqy1)}&nbsp;&nbsp;" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column  style="text-align: right;">
+                <p:column >
                     <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.pastshpamts)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column  style="text-align: right;">
+                <p:column>
                     <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.differencevalue)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
-                <p:column style="text-align: right;">
+                <p:column >
                     <h:outputText value="#{item.growthrate}%"  style="#{(item.cusna == '总计' or item.paststyle=='red' )?'color:red':'' }" />
                 </p:column>
             </p:dataTable>
@@ -131,7 +131,7 @@
                     </div>
                 </c:if>
                 <c:if test="#{clientRankingReportBean.analysisCount != 0  or clientRankingReportBean.summaryCount != 0 }">
-                    <h:outputScript name="bsc-clientranking.js" library="js"/>
+                    <h:outputScript name="bsc-clientranking.js" library="js" />
                     <h:inputHidden id="ac" value="#{clientRankingReportBean.analysisCount}"></h:inputHidden>
                     <h:inputHidden id="sc" value="#{clientRankingReportBean.summaryCount}"></h:inputHidden>
                 </c:if>
@@ -140,6 +140,22 @@
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
-
+        <script>
+            var setTableHeaderStyle = function () {
+                var h = $(document.getElementById("formOne:tblList")).find('div')[0];
+                if (h !== null) {
+                    $(h).css("z-index", "800");
+                    $(h).addClass('plgSheetData');
+                }
+            };
+        </script>
+        <h:form id="formTwo"  rendered="#{clientRankingReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
