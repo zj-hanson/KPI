@@ -244,7 +244,7 @@
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n11)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.sixMISRatio.n12)}</p:column>
                         </p:row>
-                        <p:row>
+                        <p:row style="#{complaintsChartReportBean.display==true?'display:none':''}">
                             <p:column>12MIS台数</p:column>
                             <p:column>#{complaintsChartReportBean.benchmark5}</p:column>
                             <p:column>#{complaintsChartReportBean.twelveMIS.n01}</p:column>
@@ -260,7 +260,7 @@
                             <p:column>#{complaintsChartReportBean.twelveMIS.n11}</p:column>
                             <p:column>#{complaintsChartReportBean.twelveMIS.n12}</p:column>
                         </p:row>
-                        <p:row>
+                        <p:row style="#{complaintsChartReportBean.display==true?'display:none':''}">
                             <p:column>12MIS比率</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.benchmark6)}</p:column>
                             <p:column>#{complaintsChartReportBean.doubleformat(complaintsChartReportBean.twelveMISRatio.n01)}</p:column>

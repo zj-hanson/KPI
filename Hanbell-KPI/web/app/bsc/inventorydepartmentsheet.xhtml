@@ -40,46 +40,37 @@
                     <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.reset()}"  icon="ui-icon-refresh"
                                      update="formOne" />
                     <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryDepartmentQuery()}"  icon="ui-icon-search"
-                                     update="formOne:tblList" />
+                                     update="formOne:tblList" oncomplete="setTableHeaderStyle();"/>
                 </f:facet>
             </p:toolbar>
-            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryDepartmentsList}" var="item" tableStyleClass="plgSheetData"
-                         rowSelectMode="single" rowKey="item.id">
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="库别"/>
-                    </f:facet>
-                    <h:outputText value="#{item.inventoryDepartmentPK.whdsc}" class="left" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryDepartmentsList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="库别" />
+                        <p:column headerText="#{inventoryReportBean.date3}" />
+                        <p:column headerText="#{inventoryReportBean.date2}" />
+                        <p:column headerText="#{inventoryReportBean.date1}" />
+                        <p:column headerText="差异" />
+                        <p:column headerText="占比" />
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="text-align: left">
+                    <h:outputText value="#{item.inventoryDepartmentPK.whdsc}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="#{inventoryReportBean.date3}"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item.n01)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item.n01)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="#{inventoryReportBean.date2}" style="text-align: center"/>
-                    </f:facet>
-                    <h:outputText  value="#{inventoryReportBean.format(item.n02)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText  value="#{inventoryReportBean.format(item.n02)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="#{inventoryReportBean.date1}"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item.n03)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item.n03)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="差异"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item.difference)}" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item.difference)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header">
-                        <h:outputText value="占比"/>
-                    </f:facet>
-                    <h:outputText value="#{item.proportion}%" style="#{(item.inventoryDepartmentPK.whdsc == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{item.proportion}%" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
                 </p:column>
             </p:dataTable>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
@@ -94,5 +85,14 @@
                 <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
             </div>
         </h:form>
+        <script>
+            var setTableHeaderStyle = function () {
+                var h = $(document.getElementById("formOne:tblList")).find('div')[0];
+                if (h !== null) {
+                    $(h).css("z-index", "500");
+                    $(h).addClass('plgSheetData');
+                }
+            };
+        </script>
     </ui:define>
 </ui:composition>

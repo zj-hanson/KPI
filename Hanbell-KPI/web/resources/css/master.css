@@ -185,3 +185,7 @@ button.inputWithButton{
 .ui-datagrid-column .panelView{
     min-height: 305px;
 }
+
+.red{
+    color: red;
+}
