@@ -46,6 +46,7 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
     Indicator thisMIS;
     protected LineChartModel chartMIS;
     protected boolean hasMIS;
+    protected boolean display = false;
 
     public ComplaintsChartReportBean() {
     }
@@ -57,6 +58,9 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
         //计算移动平均MIS
         String formid = indicator.getAssociatedIndicator();
         if (formid != null && !"".equals(formid)) {
+            if ("KS-机体MIS".equals(formid)) {
+                display = true;
+            }
             Indicator lastMIS = indicatorBean.findByFormidYearAndDeptno(formid, y - 1, indicator.getDeptno());
             thisMIS = indicatorBean.findByFormidYearAndDeptno(formid, y, indicator.getDeptno());
             if (lastMIS != null && thisMIS != null) {
@@ -414,6 +418,10 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
 
     public void setBenchmark6(BigDecimal benchmark6) {
         this.benchmark6 = benchmark6;
+    }
+
+    public boolean isDisplay() {
+        return display;
     }
 
 }

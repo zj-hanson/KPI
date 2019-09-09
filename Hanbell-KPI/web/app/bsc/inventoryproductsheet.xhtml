@@ -21,110 +21,55 @@
                 <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportBean.reset()}"  icon="ui-icon-refresh"
                                  update="formOne" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportBean.inventoryProductQuery()}"  icon="ui-icon-search"
-                                 update="formOne:tblList,remarks" />
-                <p:link value="返回"  outcome="home" style="float: left"/>
+                                 update="formOne" oncomplete="setTableHeaderStyle();" />
+                <p:link value="返回"  outcome="home" styleClass="left"/>
             </p:panelGrid>
-            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData"
-                         rowSelectMode="single" rowKey="item.id" editable="true">
-                <p:column styleClass="Wid20" style="text-align: left;">
-                    <f:facet name="header" >
-                        <h:outputText value="库别"/>
-                    </f:facet>
-                    <h:outputText value="#{item[0]}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+            <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryProductList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="库别" />
+                        <p:column headerText="AA" />
+                        <p:column headerText="AH" />
+                        <p:column headerText="SDS" />
+                        <p:column headerText="R" />
+                        <p:column headerText="RT" />
+                        <p:column headerText="L" />
+                        <p:column headerText="P" />
+                        <p:column headerText="S" />
+                        <p:column headerText="合计" />
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="text-align: left">
+                    <h:outputText value="#{item[0]}" styleClass="#{(item[0] == '合计')?'red':''}"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="AA"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[1])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[1])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="AH"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[2])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[2])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="SDS"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[3])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[3])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="R"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[4])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[4])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="RT"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[5])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[5])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="L"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[6])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[6])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="P"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[7])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[7])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="S"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[8])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[8])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
-                <p:column styleClass="Wid20">
-                    <f:facet name="header" >
-                        <h:outputText value="合计"/>
-                    </f:facet>
-                    <h:outputText value="#{inventoryReportBean.format(item[9])}" style="#{(item[0] == '合计')?'color:red':'' }"/>
+                <p:column>
+                    <h:outputText value="#{inventoryReportBean.format(item[9])}" styleClass="#{(item[0] == '合计')?'red':'' }"/>
                 </p:column>
             </p:dataTable>
-            <p:panel id="remarks" style="height: 0px" >
-                <c:if test="#{inventoryReportBean.summaryCount != 0 }">
-                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repSummary" value="#{inventoryReportBean.summaryList}" var="s" rendered="#{inventoryReportBean.summaryCount>0}">
-                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid>
-                                    <h:outputText id="summary"/>
-                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                </c:if>
-                <c:if test="#{inventoryReportBean.analysisCount != 0}">
-                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                        <p:repeat id="repAnalysis" value="#{inventoryReportBean.analysisList}" var="a" rendered="#{inventoryReportBean.analysisCount>0}">
-                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
-                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
-                                    <h:outputText id="issueLabel" value="问题"/>
-                                    <h:outputText id="factorLabel" value="原因"/>
-                                    <h:outputText id="countermeasureLabel" value="对策"/>
-                                    <h:outputText id="issue"/>
-                                    <h:outputText id="factor"/>
-                                    <h:outputText id="countermeasure"/>
-                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
-                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
-                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
-                                </h:panelGrid>
-                            </p:panel>
-                        </p:repeat>
-                    </div>
-                </c:if>
-                <c:if test="#{inventoryReportBean.analysisCount != 0  or inventoryReportBean.summaryCount != 0 }">
-                    <h:outputScript name="bsc-clientranking.js" library="js"/>
-                    <h:inputHidden id="ac" value="#{inventoryReportBean.analysisCount}"></h:inputHidden>
-                    <h:inputHidden id="sc" value="#{inventoryReportBean.summaryCount}"></h:inputHidden>
-                </c:if>
-            </p:panel>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
@@ -137,5 +82,14 @@
                 <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
             </div>
         </h:form>
+        <script>
+            var setTableHeaderStyle = function () {
+                var h = $(document.getElementById("formOne:tblList")).find('div')[0];
+                if (h !== null) {
+                    $(h).css("z-index", "500");
+                    $(h).addClass('plgSheetData');
+                }
+            };
+        </script>
     </ui:define>
 </ui:composition>
