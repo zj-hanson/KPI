@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne" rendered="#{!financingFreeServiceReportBean.deny}">
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
@@ -25,7 +25,7 @@
                         <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{financingFreeServiceReportBean.y}年#{financingFreeServiceReportBean.indicatorChart.name}</p:column>
                     </p:row>
                     <p:row style="text-align: right" >
-                            <p:column style="letter-spacing:2px;font-weight: 600" >单位:#{freeServiceReportBean.indicator.unit}&nbsp;&nbsp;</p:column>
+                        <p:column style="letter-spacing:2px;font-weight: 600" >单位:#{freeServiceReportBean.indicator.unit}&nbsp;&nbsp;</p:column>
                     </p:row>
                 </f:facet>
             </p:panelGrid >
@@ -94,9 +94,9 @@
                     </div>
                 </div>
             </div>
-            <div style="width: 100%;display:#{balanceSheetReportBean.statusMap.displaydiv2};">
+            <div style="width: 100%;display:#{financingFreeServiceReportBean.statusMap.displaydiv2};">
                 <div id="indicatorSummary" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repSummary" value="#{balanceSheetReportBean.summaryList}" var="s" rendered="#{balanceSheetReportBean.summaryCount>0}">
+                    <p:repeat id="repSummary" value="#{financingFreeServiceReportBean.summaryList}" var="s" rendered="#{financingFreeServiceReportBean.summaryCount>0}">
                         <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid>
                                 <h:outputText id="summary"/>
@@ -106,7 +106,7 @@
                     </p:repeat>
                 </div>
                 <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
-                    <p:repeat id="repAnalysis" value="#{balanceSheetReportBean.analysisList}" var="a" rendered="#{balanceSheetReportBean.analysisCount>0}">
+                    <p:repeat id="repAnalysis" value="#{financingFreeServiceReportBean.analysisList}" var="a" rendered="#{financingFreeServiceReportBean.analysisCount>0}">
                         <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
                                 <h:outputText id="issueLabel" value="问题"/>
@@ -124,13 +124,21 @@
                 </div>
                 <div>
                     <h:outputScript name="bsc-clientranking.js" library="js"/>
-                    <h:inputHidden id="sc" value="#{balanceSheetReportBean.summaryCount}"></h:inputHidden>
-                    <h:inputHidden id="ac" value="#{balanceSheetReportBean.analysisCount}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{financingFreeServiceReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{financingFreeServiceReportBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{financingFreeServiceReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

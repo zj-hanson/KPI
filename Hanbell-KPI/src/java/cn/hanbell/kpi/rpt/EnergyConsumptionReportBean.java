@@ -7,6 +7,7 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorSet;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscSheetManagedBean;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -43,6 +44,12 @@ public class EnergyConsumptionReportBean extends BscSheetManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         indicator = indicatorBean.findByFormidYearAndDeptno(indicatorChart.getFormid(), getY(), indicatorChart.getDeptno());
         if (indicator == null) {

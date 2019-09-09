@@ -18,6 +18,7 @@ import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.entity.InventoryDepartment;
 import cn.hanbell.kpi.entity.InventoryIndicator;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.SuperQueryBean;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -142,6 +143,12 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         init();
     }

@@ -5,10 +5,9 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IncomeStatementBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
-import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,9 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,13 +40,6 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, String> statusMap;
     protected String facno;
-
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
-
-    FacesContext fc;
-    ExternalContext ec;
-    protected IndicatorChart indicatorChart;
 
     public IncomeStatementReportBean() {
     }
@@ -78,6 +68,12 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         map = new LinkedHashMap<>();
         statusMap = new LinkedHashMap<>();
@@ -174,20 +170,6 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
      */
     public void setStatusMap(LinkedHashMap<String, String> statusMap) {
         this.statusMap = statusMap;
-    }
-
-    /**
-     * @return the userManagedBean
-     */
-    public UserManagedBean getUserManagedBean() {
-        return userManagedBean;
-    }
-
-    /**
-     * @param userManagedBean the userManagedBean to set
-     */
-    public void setUserManagedBean(UserManagedBean userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
 
     /**

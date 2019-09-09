@@ -36,6 +36,7 @@ public abstract class SuperQueryBean<T extends BaseEntity> extends SuperSingleMa
     protected String appDataPath;
     protected String appResPath;
     protected SystemGrantPrg currentPrgGrant;
+    protected boolean deny = true;
 
     protected Map<String, String[]> params;//页面传参
 
@@ -208,4 +209,12 @@ public abstract class SuperQueryBean<T extends BaseEntity> extends SuperSingleMa
         this.userManagedBean = userManagedBean;
     }
 
+    /**
+     * @return the deny
+     */
+    public boolean isDeny() {
+        return deny;
+    }
+
+    
 }

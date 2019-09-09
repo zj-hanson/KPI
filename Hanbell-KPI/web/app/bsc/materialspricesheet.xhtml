@@ -8,7 +8,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
-        <h:form id="formOne">
+        <h:form id="formOne" rendered="#{!materialsPriceReportBean.deny}">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center">
@@ -21,57 +21,77 @@
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{materialsPriceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true">
-                        <p:column headerText="" groupRow="true" styleClass="plgSheetData Wid5">
-                            <div style="text-align: center"> <h:outputText value="#{materialsPriceReportBean.getName(item.parent.name)}" /></div>
+                    <p:dataTable  value="#{materialsPriceReportBean.indicatorDetailList}" var="item" styleClass="plgSheetData" reflow="true" stickyHeader="true">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column style="width: 5%"  headerText="" />
+                                <p:column style="width: 8%" headerText="类别" />
+                                <p:column  headerText="1月" />
+                                <p:column headerText="2月" />
+                                <p:column headerText="3月" />
+                                <p:column headerText="4月" />
+                                <p:column headerText="5月" />
+                                <p:column headerText="6月" />
+                                <p:column headerText="7月" />
+                                <p:column headerText="8月" />
+                                <p:column headerText="9月" />
+                                <p:column headerText="10月" />
+                                <p:column headerText="11月" />
+                                <p:column headerText="12月" />
+                                <p:column headerText="年均" />
+                                <p:column headerText="去年" />
+                                <p:column headerText="当日" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column groupRow="true" style="text-align: center" >
+                            <h:outputText value="#{materialsPriceReportBean.getName(item.parent.name)}"  />
                         </p:column>
-                        <p:column headerText="类别" styleClass="plgSheetData Wid10" >
-                            <div style="text-align: left"><h:outputText value="#{item.type}"  /></div>
-
+                        <p:column style="text-align: left" >
+                            <h:outputText value="#{item.type}" />
                         </p:column>
-                        <p:column headerText="1月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n01,1)}" />
                         </p:column>
-                        <p:column headerText="2月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n02,2)}" />
                         </p:column>
-                        <p:column headerText="3月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n03,3)}" />
                         </p:column>
-                        <p:column headerText="4月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n04,4)}" />
                         </p:column>
-                        <p:column headerText="5月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n05,5)}" />
                         </p:column>
-                        <p:column headerText="6月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n06,6)}" />
                         </p:column>
-                        <p:column headerText="7月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n07,7)}" />
                         </p:column>
-                        <p:column headerText="8月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n08,8)}" />
                         </p:column>
-                        <p:column headerText="9月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n09,9)}" />
                         </p:column>
-                        <p:column headerText="10月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n10,10)}" />
                         </p:column>
-                        <p:column headerText="11月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n11,11)}" />
                         </p:column>
-                        <p:column headerText="12月">
+                        <p:column>
                             <h:outputText value="#{materialsPriceReportBean.format(item.type,item.n12,12)}" />
                         </p:column>
-                        <p:column headerText="年均">
+                        <p:column>
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.nfy,0) }" />
                         </p:column>
-                        <p:column headerText="去年">
+                        <p:column>
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,item.parent.benchmarkIndicator.nfy,0) }" />
                         </p:column>
-                        <p:column headerText="当日">
+                        <p:column>
                             <h:outputText value="#{(item.type == '月跌涨比例' or item.type =='年跌涨比例' )?'':materialsPriceReportBean.format(item.type,materialsPriceReportBean.getForecastValue(item.parent.forecastIndicator),0) }" />
                         </p:column>
                     </p:dataTable>
@@ -118,6 +138,14 @@
                 </p>
             </div>
             <h:outputScript name="bsc-materials-sheet.js" library="js"/>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{materialsPriceReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

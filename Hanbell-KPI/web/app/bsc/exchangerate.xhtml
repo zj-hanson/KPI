@@ -7,8 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-
-        <h:form id="formOne">
+        <h:form id="formOne"  rendered="#{!exchangeRateReportBean.deny}">
             <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid20,Wid0,Wid20,Wid10,Wid20,Wid10,Wid10,Wid0" styleClass="plgQuery Wid100" >
                 <h:outputLabel value="请输入日期：" for="queryDateBegin" />
                 <p:calendar id="queryDateBegin" value="#{exchangeRateReportBean.queryDateBegin}" title="开始日期" pattern="yyyy/MM/dd" />
@@ -116,7 +115,14 @@
                     <h:inputHidden id="ac" value="#{exchangeRateReportBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
-
+        </h:form>
+        <h:form id="formTwo"  rendered="#{exchangeRateReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
         </h:form>
     </ui:define>
 

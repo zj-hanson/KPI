@@ -5,11 +5,10 @@
  */
 package cn.hanbell.kpi.rpt;
 
-import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.SalesTableBean;
 import cn.hanbell.kpi.entity.ClientRanking;
-import cn.hanbell.kpi.entity.IndicatorChart;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -22,9 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,16 +38,8 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
 
-    @ManagedProperty(value = "#{userManagedBean}")
-    protected UserManagedBean userManagedBean;
-
-    protected IndicatorChart indicatorChart;
-
     private LinkedHashMap<String, String> map;
     private List<ClientRanking> list;
-
-    FacesContext fc;
-    ExternalContext ec;
 
     private Date querydate;
     private boolean monthchecked;
@@ -88,6 +77,12 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        }else {
+            for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
+                if (m.getDeptno().equals(indicatorChart.getPid())) {
+                    deny = false;
+                }
+            }
         }
         map = new LinkedHashMap<>();
         indicator = indicatorBean.findByFormidYearAndDeptno(indicatorChart.getFormid(), getCalendar(userManagedBean.getBaseDate()).get(Calendar.YEAR), indicatorChart.getDeptno());
@@ -200,7 +195,7 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
         try {
             Boolean aa = true;
             if (querydate.compareTo(userManagedBean.getBaseDate()) == 1) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询时间不可超过系统结算日期"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "查询时间不可超过系统结算日期"));
                 aa = false;
             }
             if (aa) {
@@ -218,14 +213,14 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
                     map.put("nowtitle", "本年");
                 }
                 list = salesTableBean.getClientList(year, month, map, monthchecked, aggregatechecked, rowsPerPage);
-                if (list.size() < 0) {
+                if (list.size() <=0) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
                 } else {
                     super.getRemarkOne(indicatorChart, year, month);
                 }
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.toString()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", e.toString()));
         }
     }
 
@@ -241,20 +236,6 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
      */
     public void setList(List<ClientRanking> list) {
         this.list = list;
-    }
-
-    /**
-     * @return the userManagedBean
-     */
-    public UserManagedBean getUserManagedBean() {
-        return userManagedBean;
-    }
-
-    /**
-     * @param userManagedBean the userManagedBean to set
-     */
-    public void setUserManagedBean(UserManagedBean userManagedBean) {
-        this.userManagedBean = userManagedBean;
     }
 
     /**
