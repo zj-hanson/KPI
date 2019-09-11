@@ -480,6 +480,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>shipmentchartdouble</from-outcome>
+            <to-view-id>/app/bsc/shipmentchartdouble.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>shipmentsheet</from-outcome>
             <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
             <redirect/>

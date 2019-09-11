@@ -7,7 +7,6 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
@@ -250,13 +249,6 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
      */
     public int getY() {
         return y;
-    }
-
-    /**
-     * @return the indicatorChart
-     */
-    public IndicatorChart getIndicatorChart() {
-        return indicatorChart;
     }
 
 }

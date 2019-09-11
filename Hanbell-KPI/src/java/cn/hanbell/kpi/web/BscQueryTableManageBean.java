@@ -123,5 +123,14 @@ public class BscQueryTableManageBean {
     public boolean isDeny() {
         return deny;
     }
+
+    /**
+     * @return the indicatorChart
+     */
+    public IndicatorChart getIndicatorChart() {
+        return indicatorChart;
+    }
+    
+    
     
 }

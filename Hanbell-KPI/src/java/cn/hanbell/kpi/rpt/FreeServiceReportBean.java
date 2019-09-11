@@ -58,7 +58,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -155,6 +155,10 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         sumActualAccumulated.setParent(sumIndicator);
         sumActualAccumulated.setType("A");
 
+        sumBenchmarkAccumulated = new IndicatorDetail();
+        sumBenchmarkAccumulated.setParent(sumIndicator);
+        sumBenchmarkAccumulated.setType("B");
+
         sumTargetAccumulated = new IndicatorDetail();
         sumTargetAccumulated.setParent(sumIndicator);
         sumTargetAccumulated.setType("T");
@@ -179,6 +183,10 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         sumAP.setParent(sumIndicator);
         sumAP.setType("P");
 
+        sumBG = new IndicatorDetail();
+        sumBG.setParent(sumIndicator);
+        sumBG.setType("P");
+
         sumAG = new IndicatorDetail();
         sumAG.setParent(sumIndicator);
         sumAG.setType("P");
@@ -192,6 +200,10 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             actualAccumulated.setParent(e);
             actualAccumulated.setType("A");
 
+            benchmarkAccumulated = new IndicatorDetail();
+            benchmarkAccumulated.setParent(e);
+            benchmarkAccumulated.setType("B");
+
             targetAccumulated = new IndicatorDetail();
             targetAccumulated.setParent(e);
             targetAccumulated.setType("T");
@@ -199,6 +211,10 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             AP = new IndicatorDetail();
             AP.setParent(e);
             AP.setType("P");
+
+            BG = new IndicatorDetail();
+            BG.setParent(e);
+            BG.setType("P");
 
             AG = new IndicatorDetail();
             AG.setParent(e);
@@ -212,18 +228,42 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                     v = indicatorBean.getAccumulatedValue(e.getActualIndicator(), i);
                     setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(actualAccumulated, v);
+
+                    v = indicatorBean.getAccumulatedValue(e.getBenchmarkIndicator(), i);
+                    setMethod = getBenchmarkAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(benchmarkAccumulated, v);
+
+                    v = indicatorBean.getGrowth(e.getActualIndicator(), e.getBenchmarkIndicator(), i);
+                    setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(BG, v);
+
                     //目标值累计
                     v = indicatorBean.getAccumulatedValue(e.getTargetIndicator(), i);
                     setMethod = getTargetAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(targetAccumulated, v);
+
                     v = indicatorBean.getAccumulatedPerformance(e.getTargetIndicator(), e.getActualIndicator(), i);
                     setMethod = AP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(AP, v);
+
+                    //同比成长率
+                    v = indicatorBean.getGrowth(e.getActualIndicator(), e.getBenchmarkIndicator(), i);
+                    setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(BG, v);
+                    //累计成长率
+                    v = indicatorBean.getGrowth(actualAccumulated, benchmarkAccumulated, i);
+                    setMethod = AG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(AG, v);
+
                 }
                 //按当前月份累计值重设全年累计
                 f = actualAccumulated.getClass().getDeclaredField(mon);
                 f.setAccessible(true);
                 actualAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(actualAccumulated).toString())));
+
+                f = benchmarkAccumulated.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                benchmarkAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(benchmarkAccumulated).toString())));
 
                 f = targetAccumulated.getClass().getDeclaredField(mon);
                 f.setAccessible(true);
@@ -275,6 +315,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(actualAccumulated);
             AP.setType("累计控制");
             indicatorDetailList.add(AP);
+            e.getBenchmarkIndicator().setType("去年同期");
+            indicatorDetailList.add(e.getBenchmarkIndicator());
+            benchmarkAccumulated.setType("同期累计");
+            indicatorDetailList.add(benchmarkAccumulated);
+            BG.setType("同比成长");
+            indicatorDetailList.add(BG);
+            AG.setType("累计成长");
+            indicatorDetailList.add(AG);
 
         }
         //产品合计逻辑
@@ -322,6 +370,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             indicatorDetailList.add(sumActualAccumulated);
             sumAP.setType("累计控制");
             indicatorDetailList.add(sumAP);
+            sumIndicator.getBenchmarkIndicator().setType("去年同期");
+            indicatorDetailList.add(sumIndicator.getBenchmarkIndicator());
+            sumBenchmarkAccumulated.setType("同期累计");
+            indicatorDetailList.add(sumBenchmarkAccumulated);
+            sumBG.setType("同比成长");
+            indicatorDetailList.add(sumBG);
+            sumAG.setType("累计成长");
+            indicatorDetailList.add(sumAG);
 
             //根据指标ID加载指标说明、指标分析
             analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
@@ -343,6 +399,8 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
         switch (type) {
             case "当月控制":
             case "累计控制":
+            case "累计成长":
+            case "同比成长":
                 return percentFormat(value, i);
             default:
                 return format(value, i);
@@ -354,6 +412,9 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
             case "目标累计":
             case "当月累计":
             case "累计控制":
+            case "同期累计":
+            case "累计成长":
+            case "同比成长":
                 return "";
             default:
                 return format(type, value, i);

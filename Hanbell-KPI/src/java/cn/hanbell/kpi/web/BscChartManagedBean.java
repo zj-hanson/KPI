@@ -59,6 +59,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected final DecimalFormat decimalFormat;
     protected final DecimalFormat percentFormat;
     protected LineChartModel chartModel;
+    protected LineChartModel accumulatedChartModel;
 
     protected List<IndicatorAnalysis> analysisList;
     protected List<IndicatorSummary> summaryList;
@@ -100,7 +101,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -279,71 +280,194 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
                 break;
         }
 
-        ChartSeries f = new ChartSeries();
-        f.setLabel("预测");
-        switch (getIndicator().getFormkind()) {
-            case "M":
-                if (getIndicator().getForecastIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M01", getIndicator().getForecastIndicator().getN01().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M02", getIndicator().getForecastIndicator().getN02().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M03", getIndicator().getForecastIndicator().getN03().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M04", getIndicator().getForecastIndicator().getN04().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M05", getIndicator().getForecastIndicator().getN05().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M06", getIndicator().getForecastIndicator().getN06().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M07", getIndicator().getForecastIndicator().getN07().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M08", getIndicator().getForecastIndicator().getN08().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M09", getIndicator().getForecastIndicator().getN09().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M10", getIndicator().getForecastIndicator().getN10().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M11", getIndicator().getForecastIndicator().getN11().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("M12", getIndicator().getForecastIndicator().getN12().doubleValue());
-                }
-                break;
-            case "Q":
-                if (getIndicator().getForecastIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("Q1", getIndicator().getForecastIndicator().getNq1().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("Q2", getIndicator().getForecastIndicator().getNq2().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("Q3", getIndicator().getForecastIndicator().getNq3().doubleValue());
-                }
-                if (getIndicator().getForecastIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                    f.set("Q4", getIndicator().getForecastIndicator().getNq4().doubleValue());
-                }
-                break;
-        }
-
         getChartModel().addSeries(t);//目标
         getChartModel().addSeries(b);//同期
         getChartModel().addSeries(a);//实际
-        getChartModel().addSeries(f);//预测
         getChartModel().setTitle(getIndicator().getName());
         getChartModel().setLegendPosition("e");
         getChartModel().setShowPointLabels(true);
         getChartModel().setBreakOnNull(true);
+
+        //累计
+        accumulatedChartModel = new LineChartModel();
+        ChartSeries at = new ChartSeries();
+        at.setLabel("目标累计");
+        switch (getIndicator().getFormkind()) {
+            case "M":
+                if (targetAccumulated.getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M01", targetAccumulated.getN01().doubleValue());
+                }
+                if (targetAccumulated.getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M02", targetAccumulated.getN02().doubleValue());
+                }
+                if (targetAccumulated.getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M03", targetAccumulated.getN03().doubleValue());
+                }
+                if (targetAccumulated.getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M04", targetAccumulated.getN04().doubleValue());
+                }
+                if (targetAccumulated.getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M05", targetAccumulated.getN05().doubleValue());
+                }
+                if (targetAccumulated.getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M06", targetAccumulated.getN06().doubleValue());
+                }
+                if (targetAccumulated.getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M07", targetAccumulated.getN07().doubleValue());
+                }
+                if (targetAccumulated.getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M08", targetAccumulated.getN08().doubleValue());
+                }
+                if (targetAccumulated.getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M09", targetAccumulated.getN09().doubleValue());
+                }
+                if (targetAccumulated.getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M10", targetAccumulated.getN10().doubleValue());
+                }
+                if (targetAccumulated.getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M11", targetAccumulated.getN11().doubleValue());
+                }
+                if (targetAccumulated.getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("M12", targetAccumulated.getN12().doubleValue());
+                }
+                break;
+            case "Q":
+                if (targetAccumulated.getNq1().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("Q1", targetAccumulated.getNq1().doubleValue());
+                }
+                if (targetAccumulated.getNq2().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("Q2", targetAccumulated.getNq2().doubleValue());
+                }
+                if (targetAccumulated.getNq3().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("Q3", targetAccumulated.getNq3().doubleValue());
+                }
+                if (targetAccumulated.getNq4().compareTo(BigDecimal.ZERO) != 0) {
+                    at.set("Q4", targetAccumulated.getNq4().doubleValue());
+                }
+                break;
+        }
+
+        ChartSeries aa = new ChartSeries();
+        aa.setLabel("实际累计");
+        switch (getIndicator().getFormkind()) {
+            case "M":
+                if (actualAccumulated.getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M01", actualAccumulated.getN01().doubleValue());
+                }
+                if (actualAccumulated.getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M02", actualAccumulated.getN02().doubleValue());
+                }
+                if (actualAccumulated.getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M03", actualAccumulated.getN03().doubleValue());
+                }
+                if (actualAccumulated.getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M04", actualAccumulated.getN04().doubleValue());
+                }
+                if (actualAccumulated.getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M05", actualAccumulated.getN05().doubleValue());
+                }
+                if (actualAccumulated.getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M06", actualAccumulated.getN06().doubleValue());
+                }
+                if (actualAccumulated.getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M07", actualAccumulated.getN07().doubleValue());
+                }
+                if (actualAccumulated.getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M08", actualAccumulated.getN08().doubleValue());
+                }
+                if (actualAccumulated.getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M09", actualAccumulated.getN09().doubleValue());
+                }
+                if (actualAccumulated.getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M10", actualAccumulated.getN10().doubleValue());
+                }
+                if (actualAccumulated.getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M11", actualAccumulated.getN11().doubleValue());
+                }
+                if (actualAccumulated.getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("M12", actualAccumulated.getN12().doubleValue());
+                }
+                break;
+            case "Q":
+                if (actualAccumulated.getNq1().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("Q1", actualAccumulated.getNq1().doubleValue());
+                }
+                if (actualAccumulated.getNq2().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("Q2", actualAccumulated.getNq2().doubleValue());
+                }
+                if (actualAccumulated.getNq3().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("Q3", actualAccumulated.getNq3().doubleValue());
+                }
+                if (actualAccumulated.getNq4().compareTo(BigDecimal.ZERO) != 0) {
+                    aa.set("Q4", actualAccumulated.getNq4().doubleValue());
+                }
+                break;
+        }
+
+        ChartSeries ab = new ChartSeries();
+        ab.setLabel("同期累计");
+        switch (getIndicator().getFormkind()) {
+            case "M":
+                if (benchmarkAccumulated.getN01().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M01", benchmarkAccumulated.getN01().doubleValue());
+                }
+                if (benchmarkAccumulated.getN02().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M02", benchmarkAccumulated.getN02().doubleValue());
+                }
+                if (benchmarkAccumulated.getN03().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M03", benchmarkAccumulated.getN03().doubleValue());
+                }
+                if (benchmarkAccumulated.getN04().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M04", benchmarkAccumulated.getN04().doubleValue());
+                }
+                if (benchmarkAccumulated.getN05().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M05", benchmarkAccumulated.getN05().doubleValue());
+                }
+                if (benchmarkAccumulated.getN06().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M06", benchmarkAccumulated.getN06().doubleValue());
+                }
+                if (benchmarkAccumulated.getN07().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M07", benchmarkAccumulated.getN07().doubleValue());
+                }
+                if (benchmarkAccumulated.getN08().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M08", benchmarkAccumulated.getN08().doubleValue());
+                }
+                if (benchmarkAccumulated.getN09().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M09", benchmarkAccumulated.getN09().doubleValue());
+                }
+                if (benchmarkAccumulated.getN10().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M10", benchmarkAccumulated.getN10().doubleValue());
+                }
+                if (benchmarkAccumulated.getN11().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M11", benchmarkAccumulated.getN11().doubleValue());
+                }
+                if (benchmarkAccumulated.getN12().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("M12", benchmarkAccumulated.getN12().doubleValue());
+                }
+                break;
+            case "Q":
+                if (benchmarkAccumulated.getNq1().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("Q1", benchmarkAccumulated.getNq1().doubleValue());
+                }
+                if (benchmarkAccumulated.getNq2().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("Q2", benchmarkAccumulated.getNq2().doubleValue());
+                }
+                if (benchmarkAccumulated.getNq3().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("Q3", benchmarkAccumulated.getNq3().doubleValue());
+                }
+                if (benchmarkAccumulated.getNq4().compareTo(BigDecimal.ZERO) != 0) {
+                    ab.set("Q4", benchmarkAccumulated.getNq4().doubleValue());
+                }
+                break;
+        }
+
+        accumulatedChartModel.addSeries(at);//目标
+        accumulatedChartModel.addSeries(ab);//同期
+        accumulatedChartModel.addSeries(aa);//实际
+        accumulatedChartModel.setTitle(getIndicator().getName() + "累计");
+        accumulatedChartModel.setLegendPosition("e");
+        accumulatedChartModel.setShowPointLabels(true);
+        accumulatedChartModel.setBreakOnNull(true);
 
         //根据指标ID加载指标说明、指标分析
         analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
@@ -359,12 +483,20 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
-        getChartModel().setSeriesColors("33FF66,FF6633,0000EE,000000");//自定义颜色
+        getChartModel().setSeriesColors("33FF66,FF6633,0000EE");//自定义颜色
         getChartModel().getAxes().put(AxisType.X, new CategoryAxis(xTitle));
         yAxis = getChartModel().getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
-
         return getChartModel();
+    }
+
+    public LineChartModel accumulatedInitLineChartModel(String xTitle, String yTitle) {
+        Axis yAxis;
+        accumulatedChartModel.setSeriesColors("33FF66,FF6633,0000EE");//自定义颜色
+        accumulatedChartModel.getAxes().put(AxisType.X, new CategoryAxis(xTitle));
+        yAxis = accumulatedChartModel.getAxis(AxisType.Y);
+        yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
+        return accumulatedChartModel;
     }
 
     /**
@@ -515,6 +647,13 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
      */
     public LineChartModel getChartModel() {
         return chartModel;
+    }
+
+    /**
+     * @return the accumulativeChartModel
+     */
+    public LineChartModel getAccumulatedChartModel() {
+        return accumulatedChartModel;
     }
 
     /**

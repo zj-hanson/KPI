@@ -20,7 +20,7 @@
                             </p:selectOneRadio>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{freeServiceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" style="border: 1" reflow="true" stickyHeader="true" >
+                    <p:dataTable var="item" value="#{freeServiceReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true" >
                         <p:column headerText="产品" groupRow="true">
                             <h:outputText value="#{freeServiceReportBean.getNewName(item.parent.name)}" />
                         </p:column>
@@ -28,43 +28,43 @@
                             <h:outputText value="#{item.type}" />
                         </p:column>
                         <p:column headerText="1月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n01,1)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n01,1)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="2月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n02,2)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n02,2)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="3月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n03,3)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n03,3)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="4月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n04,4)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n04,4)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="5月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n05,5)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n05,5)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="6月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n06,6)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n06,6)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="7月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n07,7)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n07,7)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="8月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n08,8)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n08,8)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="9月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n09,9)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n09,9)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="10月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n10,10)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n10,10)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="11月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n11,11)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n11,11)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="12月">
-                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n12,12)}" />
+                            <h:outputText value="#{freeServiceReportBean.format(item.type,item.n12,12)}" title="#{item.type}"/>
                         </p:column>
                         <p:column headerText="全年">
-                            <h:outputText value="#{freeServiceReportBean.formatnfy(item.type,item.nfy,0)}" />
+                            <h:outputText value="#{freeServiceReportBean.formatnfy(item.type,item.nfy,0)}" title="#{item.type}"/>
                         </p:column>
                     </p:dataTable>
                 </div>
