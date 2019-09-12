@@ -30,9 +30,9 @@
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnTestMail" value="测试" actionListener="#{mailSettingManagedBean.testMail()}" icon="ui-icon-mail"
-                                     process="@this,formList:plgQuery"/>
+                                     process="@this,formList:plgQuery" update=":formList"/>
                     <p:commandButton id="btnSendMail" value="邮件" actionListener="#{mailSettingManagedBean.sendMail()}" icon="ui-icon-save"
-                                     process="@this,formList:plgQuery"/>
+                                     process="@this,formList:plgQuery" update=":formList"/>
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
                         <p:menuitem id="btnEdit" value="编辑" action="#{mailSettingManagedBean.edit('mailsettingEdit')}" icon="ui-icon-pencil"
                                     rendered="#{mailSettingManagedBean.doEdit}"/>
