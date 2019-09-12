@@ -164,12 +164,12 @@ public class RSalesQuantityFileMailBean extends MailNotification {
         }
     }
 
-    private void setCellValue(int month, Sheet sheet, List<Indicator> ShipmentQuantitys, List<Indicator> SalesOrderQuantity) {
+    private void setCellValue(int month, Sheet sheet, List<Indicator> shipmentQuantity, List<Indicator> salesOrderQuantity) {
         String mon;
         Field f;
         Row row;
         Cell cell;
-        ShipmentQuantitys.sort((Indicator o1, Indicator o2) -> {
+        shipmentQuantity.sort((Indicator o1, Indicator o2) -> {
             if (o1.getSortid() > o2.getSortid()) {
                 return 1;
             } else {
@@ -177,7 +177,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
             }
         });
         int i = 3;
-        for (Indicator shipment : ShipmentQuantitys) {
+        for (Indicator shipment : shipmentQuantity) {
             if (i < 10) {
                 row = sheet.getRow(i);
                 if ("1T100".equals(shipment.getDeptno())) {
@@ -186,7 +186,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     row.getCell(0).setCellValue(shipment.getDeptname().substring(0, 2));
                 }
                 try {
-                    for (Indicator salesOrde : SalesOrderQuantity) {
+                    for (Indicator salesOrde : salesOrderQuantity) {
                         if (salesOrde.getDeptno().equals(shipment.getDeptno())) {
                             mon = indicatorBean.getIndicatorColumn("N", month);
                             //出货、订单当月
