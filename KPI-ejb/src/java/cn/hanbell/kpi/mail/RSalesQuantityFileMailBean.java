@@ -37,7 +37,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 @LocalBean
 public class RSalesQuantityFileMailBean extends MailNotification {
 
-    private List<Indicator> shipmentQuantitys;
+    private List<Indicator> shipmentQuantity;
     private List<Indicator> salesOrderQuantity;
 
     public RSalesQuantityFileMailBean() {
@@ -95,7 +95,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     sheet.createRow(11).createCell(0).setCellValue(annotation);
                     CellRangeAddress merge = new CellRangeAddress(11, 11, 0, 4);
                     sheet.addMergedRegion(merge);
-                    setCellValue(i, sheet, shipmentQuantitys, salesOrderQuantity);
+                    setCellValue(i, sheet, shipmentQuantity, salesOrderQuantity);
                     sheet.setForceFormulaRecalculation(true);
                 } else {
                     workbook.removeSheetAt(i - 1);
@@ -131,45 +131,45 @@ public class RSalesQuantityFileMailBean extends MailNotification {
     }
 
     private void setShipmentlist() throws Exception {
-        shipmentQuantitys = new ArrayList<>();
+        shipmentQuantity = new ArrayList<>();
         String col, mon;
         Field f;
         mon = indicatorBean.getIndicatorColumn("N", getM());
         BigDecimal v;
         Method setMethod;
-        Indicator quantityi;
+        Indicator quantity;
         String[] arr;
         for (Indicator e : indicators) {
             String associatedIndicator = e.getAssociatedIndicator();
             if (associatedIndicator != null && !"".equals(associatedIndicator)) {
                 arr = associatedIndicator.split(";");
-                quantityi = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
+                quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
-                        ///实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        //实际台数 + 录入柯茂数据 - 销往柯茂数据
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                 } else {
                     for (int i = 1; i <= 12; i++) {
                         ///实际台数
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                 }
-                shipmentQuantitys.add(quantityi);
+                shipmentQuantity.add(quantity);
             }
         }
     }
 
-    private void setCellValue(int month, Sheet sheet, List<Indicator> ShipmentQuantitys, List<Indicator> SalesOrderQuantity) {
+    private void setCellValue(int month, Sheet sheet, List<Indicator> shipmentQuantity, List<Indicator> salesOrderQuantity) {
         String mon;
         Field f;
         Row row;
         Cell cell;
-        ShipmentQuantitys.sort((Indicator o1, Indicator o2) -> {
+        shipmentQuantity.sort((Indicator o1, Indicator o2) -> {
             if (o1.getSortid() > o2.getSortid()) {
                 return 1;
             } else {
@@ -177,7 +177,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
             }
         });
         int i = 3;
-        for (Indicator shipment : ShipmentQuantitys) {
+        for (Indicator shipment : shipmentQuantity) {
             if (i < 10) {
                 row = sheet.getRow(i);
                 if ("1T100".equals(shipment.getDeptno())) {
@@ -186,7 +186,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     row.getCell(0).setCellValue(shipment.getDeptname().substring(0, 2));
                 }
                 try {
-                    for (Indicator salesOrde : SalesOrderQuantity) {
+                    for (Indicator salesOrde : salesOrderQuantity) {
                         if (salesOrde.getDeptno().equals(shipment.getDeptno())) {
                             mon = indicatorBean.getIndicatorColumn("N", month);
                             //出货、订单当月

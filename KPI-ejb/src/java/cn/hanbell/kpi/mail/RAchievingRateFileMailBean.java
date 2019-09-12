@@ -149,39 +149,39 @@ public class RAchievingRateFileMailBean extends MailNotification {
         mon = indicatorBean.getIndicatorColumn("N", getM());
         BigDecimal v;
         Method setMethod;
-        Indicator quantityi, amounti;
+        Indicator quantity, amount;
         String[] arr;
         for (Indicator e : indicators) {
             String associatedIndicator = e.getAssociatedIndicator();
             if (associatedIndicator != null && !"".equals(associatedIndicator)) {
                 arr = associatedIndicator.split(";");
-                quantityi = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
-                amounti = indicatorBean.findByFormidYearAndDeptno(arr[1].trim(), y, arr[2].trim());
+                quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
+                amount = indicatorBean.findByFormidYearAndDeptno(arr[1].trim(), y, arr[2].trim());
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
                         ///实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                         //实际金额  + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(amounti.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i)).subtract(getNValue(e.getOther4Indicator(), i));
-                        setMethod = amounti.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(amounti.getActualIndicator(), v);
+                        v = getNValue(amount.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i)).subtract(getNValue(e.getOther4Indicator(), i));
+                        setMethod = amount.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(amount.getActualIndicator(), v);
                     }
                 } else {
                     for (int i = 1; i <= 12; i++) {
                         ///实际台数
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                         //实际金额
-                        v = getNValue(amounti.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i));
-                        setMethod = amounti.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(amounti.getActualIndicator(), v);
+                        v = getNValue(amount.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i));
+                        setMethod = amount.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(amount.getActualIndicator(), v);
                     }
                 }
-                quantityIndicators.add(quantityi);
-                amountIndicators.add(amounti);
+                quantityIndicators.add(quantity);
+                amountIndicators.add(amount);
             }
         }
     }
