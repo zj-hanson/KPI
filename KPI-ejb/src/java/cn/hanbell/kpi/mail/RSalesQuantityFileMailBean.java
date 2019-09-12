@@ -37,7 +37,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 @LocalBean
 public class RSalesQuantityFileMailBean extends MailNotification {
 
-    private List<Indicator> shipmentQuantitys;
+    private List<Indicator> shipmentQuantity;
     private List<Indicator> salesOrderQuantity;
 
     public RSalesQuantityFileMailBean() {
@@ -95,7 +95,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     sheet.createRow(11).createCell(0).setCellValue(annotation);
                     CellRangeAddress merge = new CellRangeAddress(11, 11, 0, 4);
                     sheet.addMergedRegion(merge);
-                    setCellValue(i, sheet, shipmentQuantitys, salesOrderQuantity);
+                    setCellValue(i, sheet, shipmentQuantity, salesOrderQuantity);
                     sheet.setForceFormulaRecalculation(true);
                 } else {
                     workbook.removeSheetAt(i - 1);
@@ -131,35 +131,35 @@ public class RSalesQuantityFileMailBean extends MailNotification {
     }
 
     private void setShipmentlist() throws Exception {
-        shipmentQuantitys = new ArrayList<>();
+        shipmentQuantity = new ArrayList<>();
         String col, mon;
         Field f;
         mon = indicatorBean.getIndicatorColumn("N", getM());
         BigDecimal v;
         Method setMethod;
-        Indicator quantityi;
+        Indicator quantity;
         String[] arr;
         for (Indicator e : indicators) {
             String associatedIndicator = e.getAssociatedIndicator();
             if (associatedIndicator != null && !"".equals(associatedIndicator)) {
                 arr = associatedIndicator.split(";");
-                quantityi = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
+                quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
-                        ///实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        //实际台数 + 录入柯茂数据 - 销往柯茂数据
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                 } else {
                     for (int i = 1; i <= 12; i++) {
                         ///实际台数
-                        v = getNValue(quantityi.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = quantityi.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(quantityi.getActualIndicator(), v);
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                 }
-                shipmentQuantitys.add(quantityi);
+                shipmentQuantity.add(quantity);
             }
         }
     }

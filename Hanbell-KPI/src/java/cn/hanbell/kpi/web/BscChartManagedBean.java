@@ -461,9 +461,9 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
                 break;
         }
 
-        accumulatedChartModel.addSeries(at);//目标
-        accumulatedChartModel.addSeries(ab);//同期
-        accumulatedChartModel.addSeries(aa);//实际
+        accumulatedChartModel.addSeries(at);//累计目标
+        accumulatedChartModel.addSeries(ab);//累计同期
+        accumulatedChartModel.addSeries(aa);//累计实际
         accumulatedChartModel.setTitle(getIndicator().getName() + "累计");
         accumulatedChartModel.setLegendPosition("e");
         accumulatedChartModel.setShowPointLabels(true);
@@ -490,7 +490,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         return getChartModel();
     }
 
-    public LineChartModel accumulatedInitLineChartModel(String xTitle, String yTitle) {
+    public LineChartModel initAccumulatedLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
         accumulatedChartModel.setSeriesColors("33FF66,FF6633,0000EE");//自定义颜色
         accumulatedChartModel.getAxes().put(AxisType.X, new CategoryAxis(xTitle));
