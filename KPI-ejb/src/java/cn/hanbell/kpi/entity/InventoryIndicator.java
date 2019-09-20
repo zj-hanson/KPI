@@ -19,24 +19,18 @@ public class InventoryIndicator implements Serializable {
     // 责任单位
     private String deptName;
     // 分类
-    private String classify;
-    // 责任人
-    private String responsible;
+    private String category;
     // 目标值
     private BigDecimal target;
-    // 当月实际值
-    private BigDecimal actual;
-    // 差异1
-    private BigDecimal difference1;
     // 上月实际值
     private BigDecimal upactual;
-    // 差异2
-    private BigDecimal difference2;
-    // 去年同期值
-    protected BigDecimal benchmark;
-    // 差异3
-    private BigDecimal difference3;
-    
+    // 当月实际值
+    private BigDecimal actual;
+    // 与目标比
+    private BigDecimal targetThan;
+    //与上月比
+    private BigDecimal upactualThan;
+
     public String getId() {
         return id;
     }
@@ -53,44 +47,20 @@ public class InventoryIndicator implements Serializable {
         this.deptName = deptName;
     }
 
-    public String getClassify() {
-        return classify;
+    public String getCategory() {
+        return category;
     }
 
-    public void setClassify(String classify) {
-        this.classify = classify;
+    public void setCategory(String category) {
+        this.category = category;
     }
-
-    public String getResponsible() {
-        return responsible;
-    }
-
-    public void setResponsible(String responsible) {
-        this.responsible = responsible;
-    }
-
+    
     public BigDecimal getTarget() {
         return target;
     }
 
     public void setTarget(BigDecimal target) {
         this.target = target;
-    }
-
-    public BigDecimal getActual() {
-        return actual;
-    }
-
-    public void setActual(BigDecimal actual) {
-        this.actual = actual;
-    }
-
-    public BigDecimal getDifference1() {
-        return difference1;
-    }
-
-    public void setDifference1(BigDecimal difference1) {
-        this.difference1 = difference1;
     }
 
     public BigDecimal getUpactual() {
@@ -101,28 +71,28 @@ public class InventoryIndicator implements Serializable {
         this.upactual = upactual;
     }
 
-    public BigDecimal getDifference2() {
-        return difference2;
+    public BigDecimal getActual() {
+        return actual;
     }
 
-    public void setDifference2(BigDecimal difference2) {
-        this.difference2 = difference2;
+    public void setActual(BigDecimal actual) {
+        this.actual = actual;
     }
 
-    public BigDecimal getBenchmark() {
-        return benchmark;
+    public BigDecimal getTargetThan() {
+        return targetThan;
     }
 
-    public void setBenchmark(BigDecimal benchmark) {
-        this.benchmark = benchmark;
+    public void setTargetThan(BigDecimal targetThan) {
+        this.targetThan = targetThan;
     }
 
-    public BigDecimal getDifference3() {
-        return difference3;
+    public BigDecimal getUpactualThan() {
+        return upactualThan;
     }
 
-    public void setDifference3(BigDecimal difference3) {
-        this.difference3 = difference3;
+    public void setUpactualThan(BigDecimal upactualThan) {
+        this.upactualThan = upactualThan;
     }
-
+    
 }

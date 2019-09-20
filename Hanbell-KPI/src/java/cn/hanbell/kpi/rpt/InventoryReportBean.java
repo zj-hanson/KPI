@@ -452,5 +452,13 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
             return "";
         }
     }
+    
+    public String fontColor(BigDecimal b) {
+        if (b.doubleValue() > 0 ) {
+            return "red";
+        } else {
+            return "";
+        }
+    }
 
 }
