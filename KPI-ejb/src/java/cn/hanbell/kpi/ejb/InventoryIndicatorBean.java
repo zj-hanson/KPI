@@ -78,7 +78,7 @@ public class InventoryIndicatorBean implements Serializable {
     // 获取各目标表的行
     protected List<InventoryIndicator> getHtmlTableRow(Indicator indicator, int y, int m, Date d, boolean sumType)
             throws Exception {
-        List<InventoryIndicator> InventoryList = new ArrayList<>();
+        List<InventoryIndicator> inventoryList = new ArrayList<>();
         // 实例化对象
         InventoryIndicator ita = new InventoryIndicator();
         IndicatorDetail a = indicator.getActualIndicator();// 实际
@@ -133,11 +133,11 @@ public class InventoryIndicatorBean implements Serializable {
             }
             // 与上月差异 当月 - 上月
             ita.setUpactualThan(actAmt.subtract(upactAmt));
-            InventoryList.add(ita);
+            inventoryList.add(ita);
         } catch (SecurityException | IllegalArgumentException ex) {
             throw new Exception(ex);
         }
-        return InventoryList;
+        return inventoryList;
     }
 
     public List<InventoryIndicator> getInventoryIndicatorResultList(int y, int m) {
