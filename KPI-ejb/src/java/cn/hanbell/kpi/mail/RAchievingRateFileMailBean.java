@@ -80,7 +80,7 @@ public class RAchievingRateFileMailBean extends MailNotification {
 //            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI/web/rpt/R冷媒目标与实际达成率模板.xlsx");
             //正式路径
             int index = finalFilePath.indexOf("KPI-ejb");
-            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/R冷媒订单出货统计表模板.xlsx");
+            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/R冷媒目标与实际达成率模板.xlsx");
             Workbook workbook = WorkbookFactory.create(is);
             Cell cell;
 
