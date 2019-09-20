@@ -78,11 +78,11 @@ public class InventoryIndicatorBean implements Serializable {
     // 获取各目标表的行
     protected List<InventoryIndicator> getHtmlTableRow(Indicator indicator, int y, int m, Date d, boolean sumType)
             throws Exception {
-        List<InventoryIndicator> InventoryList1 = new ArrayList<>();
+        List<InventoryIndicator> InventoryList = new ArrayList<>();
         // 实例化对象
         InventoryIndicator ita = new InventoryIndicator();
         IndicatorDetail a = indicator.getActualIndicator();// 实际
-        IndicatorDetail b = indicator.getBenchmarkIndicator();// 去年同期
+        //IndicatorDetail b = indicator.getBenchmarkIndicator();// 去年同期
         IndicatorDetail t = indicator.getTargetIndicator();// 目标
 
         String mon;
@@ -95,10 +95,7 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setDeptName(indicator.getDeptname());
 
             // 分类
-            ita.setClassify(indicator.getName());
-
-            // 责任人
-            ita.setResponsible(indicator.getUsername()!=null?indicator.getUsername():"无");
+            ita.setCategory(indicator.getDescript());
 
             // 当季目标
             mon = this.getIndicatorColumn("N", m);
@@ -115,33 +112,32 @@ public class InventoryIndicatorBean implements Serializable {
             ita.setActual(actAmt);
 
             // 与目标差异 = 当月 - 目标
-            ita.setDifference1(actAmt.subtract(tarAmt));
+            ita.setTargetThan(actAmt.subtract(tarAmt));
 
             // 上月库存
-            mon = this.getIndicatorColumn("N", m - 1);
-            f = a.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            BigDecimal upactAmt = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
-            ita.setUpactual(upactAmt);
-
+            BigDecimal upactAmt = BigDecimal.ZERO;
+            if (m == 1) {
+                Indicator lastindicator = indicatorBean.findByFormidYearAndDeptno(indicator.getFormid(), y - 1, indicator.getDeptno());
+                IndicatorDetail upa = lastindicator.getActualIndicator();//去年的实际值
+                mon = this.getIndicatorColumn("N", 12);
+                f = upa.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                upactAmt = BigDecimal.valueOf(Double.valueOf(f.get(upa).toString()));
+                ita.setUpactual(upactAmt);
+            } else {
+                mon = this.getIndicatorColumn("N", m - 1);
+                f = a.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                upactAmt = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
+                ita.setUpactual(upactAmt);
+            }
             // 与上月差异 当月 - 上月
-            ita.setDifference2(actAmt.subtract(upactAmt));
-
-            // 去年同期库存
-            mon = this.getIndicatorColumn("N", m);
-            f = b.getClass().getDeclaredField(mon);
-            f.setAccessible(true);
-            BigDecimal benAmt = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
-            ita.setBenchmark(benAmt);
-
-            // 与去年同期差异 当月 - 去年同期
-            ita.setDifference3(actAmt.subtract(benAmt));
-
-            InventoryList1.add(ita);
+            ita.setUpactualThan(actAmt.subtract(upactAmt));
+            InventoryList.add(ita);
         } catch (SecurityException | IllegalArgumentException ex) {
             throw new Exception(ex);
         }
-        return InventoryList1;
+        return InventoryList;
     }
 
     public List<InventoryIndicator> getInventoryIndicatorResultList(int y, int m) {

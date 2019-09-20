@@ -25,24 +25,20 @@
                 <p:link value="返回"  outcome="home" styleClass="left"/>
             </p:panelGrid>
             <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true"
-                         rowStyleClass="#{(item.classify.substring(item.classify.length()-2,item.classify.length()) == '合计')?'bgred':''}">
+                         rowStyleClass="#{(item.category.substring(item.category.length()-2,item.category.length()) == '合计')?'bgred':''}">
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column rowspan="2" headerText="目标类型" />
                         <p:column rowspan="2" headerText="责任单位" />
                         <p:column rowspan="2" headerText="分类" />
-                        <p:column rowspan="2" headerText="责任人" />
                         <p:column rowspan="2" headerText="当季目标" />
                         <p:column colspan="2" headerText="与目标比" />
                         <p:column colspan="2" headerText="与上月比" />
-                        <p:column colspan="2" headerText="与同期比" />
                     </p:row>
                     <p:row>
                         <p:column headerText="当月金额" />
                         <p:column headerText="差异" />
                         <p:column headerText="上月金额" />
-                        <p:column headerText="差异" />
-                        <p:column headerText="同期金额" />
                         <p:column headerText="差异" />
                     </p:row>
                 </p:columnGroup>
@@ -53,10 +49,7 @@
                     <h:outputText value="#{(item.deptName == '财务部')?'无':item.deptName}"/>
                 </p:column>
                 <p:column style="text-align: left;">
-                    <h:outputText  value="#{item.classify}"/>
-                </p:column>
-                <p:column style="text-align: left;">
-                    <h:outputText value="#{item.responsible}"/>
+                    <h:outputText  value="#{item.category}"/>
                 </p:column>
                 <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.target)}"/>
@@ -65,19 +58,13 @@
                     <h:outputText value="#{inventoryReportBean.format(item.actual)}"/>
                 </p:column>
                 <p:column>
-                    <h:outputText value="#{inventoryReportBean.format(item.difference1)}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.targetThan)}" style="color:#{inventoryReportBean.fontColor(item.targetThan)}"/>
                 </p:column>
                 <p:column>
                     <h:outputText value="#{inventoryReportBean.format(item.upactual)}"/>
                 </p:column>
                 <p:column>
-                    <h:outputText value="#{inventoryReportBean.format(item.difference2)}"/>
-                </p:column>
-                <p:column>
-                    <h:outputText value="#{inventoryReportBean.format(item.benchmark)}"/>
-                </p:column>
-                <p:column>
-                    <h:outputText value="#{inventoryReportBean.format(item.difference3)}"/>
+                    <h:outputText value="#{inventoryReportBean.format(item.upactualThan)}" style="color:#{inventoryReportBean.fontColor(item.upactualThan)}"/>
                 </p:column>
             </p:dataTable>
             <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
@@ -95,7 +82,7 @@
         <style type="text/css">
             .bgred{
                 background-color: #D3D3D3 !important;
-                color: red !important;
+                color: blue !important;
             }
         </style>
         <script>
