@@ -228,7 +228,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                     v = indicatorBean.getAccumulatedValue(e.getActualIndicator(), i);
                     setMethod = getActualAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(actualAccumulated, v);
-
+                    //同期值累计
                     v = indicatorBean.getAccumulatedValue(e.getBenchmarkIndicator(), i);
                     setMethod = getBenchmarkAccumulated().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(benchmarkAccumulated, v);
@@ -271,6 +271,7 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
 
                 //M表示月份型
                 indicatorBean.addValue(sumActualAccumulated, actualAccumulated, "M");
+                indicatorBean.addValue(sumBenchmarkAccumulated, benchmarkAccumulated, "M");
                 indicatorBean.addValue(sumTargetAccumulated, targetAccumulated, "M");
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
                 log4j.error("bscReportManagedBean", ex);
