@@ -26,7 +26,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
         padding: 0px 0px;
     }
 
-    body .plgSheetHead{
+    body .plgSheetHead .ui-grid-col-left .ui-grid-col-right{
         font-size: 14px;
         font-weight: 400;
     }
@@ -64,7 +64,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
         padding: 2px 1px;
     }
 
-    body .plgSheetHead{
+    body .plgSheetHead .ui-grid-col-left .ui-grid-col-right{
         font-size: 22px;
         font-weight: 600;
     }
@@ -188,4 +188,20 @@ button.inputWithButton{
 
 .red{
     color: red;
+}
+
+.ui-grid-col-left{
+    color: #000000 !important;
+    float: left;
+    position: absolute;
+    top: 3%;
+    left: 55%;
+}
+
+.ui-grid-col-right{
+    color: #000000 !important;
+    float: right;
+    position: absolute;
+    top: 3%;
+    right: 25%;
 }
