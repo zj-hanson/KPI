@@ -333,6 +333,14 @@ public class FreeServiceReportBean extends BscSheetManagedBean {
                 v = indicatorBean.getAccumulatedPerformance(sumIndicator.getTargetIndicator(), sumIndicator.getActualIndicator(), i);
                 setMethod = sumAP.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(sumAP, v);
+                //合计同期成长
+                v = indicatorBean.getGrowth(sumIndicator.getActualIndicator(), sumIndicator.getBenchmarkIndicator(), i);
+                setMethod = sumBG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumBG, v);
+                //合计累计成长
+                v = indicatorBean.getGrowth(sumActualAccumulated, sumBenchmarkAccumulated, i);
+                setMethod = sumAG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(sumAG, v);
             }
             //按当前月份累计值重设全年累计
             f = sumTargetAccumulated.getClass().getDeclaredField(mon);

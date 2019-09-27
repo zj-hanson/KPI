@@ -177,6 +177,11 @@ public class AuditClientRankingReportBean extends BscQueryTableManageBean implem
                 map.put("daname", "汉钟");
                 map.put("n_code_DA", " In('R','AA','AH','P','S') ");
                 break;
+            case "10000":
+                map.put("deptnoname", "汉钟柯茂");
+                map.put("daname", "汉钟柯茂");
+                map.put("n_code_DA", " In('R','AA','AH','P','S','RT','OH') ");
+                break;
             default:
                 map.put("deptnoname", "");
                 map.put("daname", "");
