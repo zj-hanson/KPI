@@ -144,6 +144,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
             if (associatedIndicator != null && !"".equals(associatedIndicator)) {
                 arr = associatedIndicator.split(";");
                 quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
+                indicatorBean.getEntityManager().clear();
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
                         //实际台数 + 录入柯茂数据 - 销往柯茂数据
