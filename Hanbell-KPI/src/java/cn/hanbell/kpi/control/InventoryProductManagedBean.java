@@ -173,7 +173,6 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
 
     @Override
     public void create() {
-        //super.create(); // To change body of generated methods, choose Tools | Templates.
         if (newEntity != null) {
             newEntity.setAmamount(BigDecimal.ZERO);
             newEntity.setStatus("N");
@@ -184,6 +183,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             }
         }
         setCurrentEntity(newEntity);
+        super.create(); // To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
