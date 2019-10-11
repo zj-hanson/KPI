@@ -6,7 +6,6 @@
 package cn.hanbell.kanban.sidebar;
 
 import cn.hanbell.kpi.ejb.kb.WarehouseBean;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ejb.EJB;
@@ -55,6 +54,7 @@ public class AutomaticWarehouseBean extends KanBanBean {
 
     public void query() {
         map.clear();
+        setSecond(60);
         map = warehouseBean.getTableMap();
         query(getNumber(), name);
     }
