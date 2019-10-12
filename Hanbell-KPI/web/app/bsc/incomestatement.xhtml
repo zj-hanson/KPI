@@ -10,6 +10,7 @@
     <ui:define name="content">
 
         <h:form id="formOne" rendered="#{!incomeStatementReportBean.deny}" >
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
                 <p:outputLabel value="请输入查询日期*" for="btndate" />
                 <p:calendar id="btndate" value="#{incomeStatementReportBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
