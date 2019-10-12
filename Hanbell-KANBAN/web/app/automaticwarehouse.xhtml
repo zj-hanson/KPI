@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="./../WEB-INF/template.xhtml">
+    <ui:define name="title">汉钟精机 | Middleware</ui:define>
+    <ui:define name="content" >
+        <style>
+            #explaindiv{
+                border: 1px solid #2f4050;
+                margin: 8px -14px -8px -14px;
+            }
+            .ui-panel-left {
+                width: 35%;
+                position: absolute;
+                cursor:move;
+                left: 0px;
+                top: 76px;
+                background-color: #2f4050;
+            }
+            .ui-panel-right {
+                width: 64.65%;
+                position: absolute;
+                cursor:move;
+                right: 4px;
+                top: 76px;
+                background-color: #2f4050;
+            }
+            body.layout-compact .ui-datatable thead th,body.layout-compact .ui-datatable tbody tr.ui-widget-content td
+            {
+                padding: 0px 0px;
+                font-size: 21px;
+            }
+            body.layout-compact .ui-panel .ui-panel-titlebar{
+                padding: 10px 0px;
+                font-size: 21px;
+            }
+            #explaindiv{
+                font-size: 18px;
+                letter-spacing: 2px;
+                color: white;
+                background-color: #2f4050;
+            }
+            #explaindiv li{
+                margin-bottom: 14px;
+                margin-left: 15%;
+            }
+            #explaindiv li span{
+                padding-top: 7px;
+                text-align: center;
+                display: inline-block;
+                width: 25%;
+                height: 18px;
+            }
+            #table,#table td{
+                border:1px solid #ccc;
+                border-collapse:collapse;
+                font-size: 7px;
+                text-align: center;
+                font-weight: 600;
+            }
+            #table td{
+                padding: 0px;
+                height: 22px;
+            }
+        </style>
+        <h:form id="formOne">
+            <div id="djs"><h:outputText id="second" value="#{automaticWarehouseBean.getFormat(automaticWarehouseBean.second)}" />秒后刷新数据</div>
+            <p:poll listener="#{automaticWarehouseBean.increment()}" update="second" interval="1" />
+            <p:poll listener="#{automaticWarehouseBean.query()}" update="listtable,listtable1,listtable2" interval="60" />
+            <p:panel class="ui-panel-left" style="background-color: #2f4050;"  id="pnl" header="#{automaticWarehouseBean.panels.pdname}" >
+                <p:dataTable  var="item" value="#{automaticWarehouseBean.map.entrySet()}"  id="listtable" style="margin: -8px -14px;" scrollable="false" >
+                    <p:column headerText="" style="width: 25%;height: 50px">
+                        <h:outputText  value="#{item.getKey()}" />
+                    </p:column>
+                    <p:column headerText="1号线">
+                        <h:outputText  value="#{item.getValue()[0]}" />
+                    </p:column>
+                    <p:column headerText="2号线">
+                        <h:outputText  value="#{item.getValue()[1]}" />
+                    </p:column>
+                    <p:column headerText="3号线">
+                        <h:outputText  value="#{item.getValue()[2]}" />
+                    </p:column>
+                    <p:column headerText="4号线">
+                        <h:outputText  value="#{item.getValue()[3]}" />
+                    </p:column>
+                </p:dataTable>
+                <div id="explaindiv" >
+                    <p style="padding-left: 5%;margin: 12px 0px">说明：</p>
+                    <ul>
+                        <li><span style="width: 5%;">N</span><span>空储位</span><span style="background-color: #f0f0f0;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">E</span><span>空栈板</span><span style="background-color: #0904C0;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">L</span><span>走形预约</span><span style="background-color: #66ff66;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">S</span><span>库存储位</span><span style="background-color: #ffcccc;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">I</span><span>入库预约</span><span style="background-color: #ffff00;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">O</span><span>出库预约</span><span style="background-color: #009933;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">C</span><span>盘点预约</span><span style="background-color: #7B107C;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">P</span><span>调账预约</span><span style="background-color: #a9a954;margin-left: 30px;" >&nbsp;</span></li>
+                        <li><span style="width: 5%;">X</span><span>禁用储位</span><span style="background-color: #FF0000;margin-left: 30px;" >&nbsp;</span></li>
+                    </ul>
+                </div>
+            </p:panel>
+            <p:draggable for="pnl" />
+            <p:resizable for="pnl" />
+            <p:contextMenu for="pnl" id="contextMenu" >
+                <p:menuitem value="返回主页" outcome="home" icon="ui-icon-home"  />
+                <p:menuitem value="手动刷新" actionListener="#{automaticWarehouseBean.query()}" icon="ui-icon-sync" update="listtable,second" />
+                <p:menuitem id="barshow" value="显示工具栏" onclick="PF('bar').show();"  icon="ui-icon-carat-1-n"/>
+                <p:menuitem id="barhide" value="隐藏工具栏" onclick="PF('bar').hide();"  icon="ui-icon-carat-1-s"/>
+            </p:contextMenu>
+            <p:panel class="ui-panel-right"  style="background-color: #2f4050;" id="pnl2"  >
+                <p:dataTable class="list" id="listtable1" value="" style="margin: -8px -14px;" scrollable="false" >
+                    <p:column headerText="#{automaticWarehouseBean.name}Row#{automaticWarehouseBean.number}" style="text-align: left;font-size: 18px;"  >
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <c:forEach   var="th" begin="1" end="57" >
+                                        <td>#{th}</td>
+                                    </c:forEach>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="#{automaticWarehouseBean.map1.entrySet()}"  var="item"  >
+                                    <tr>
+                                        <td style="width: 30px">#{item.getKey()}</td>
+                                        <c:forEach items="#{item.getValue()}"  var="i" >
+                                            <td style="background-color:#{automaticWarehouseBean.setColor(i)} ">#{i}</td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable class="list" id="listtable2"  value=""   style="margin: 6px -14px -8px -14px;" scrollable="false" >
+                    <p:column headerText=" #{automaticWarehouseBean.name}Row#{automaticWarehouseBean.number+1}" style="text-align: left;font-size: 18px;">
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <c:forEach   var="th" begin="1" end="57" >
+                                        <td>#{th}</td>
+                                    </c:forEach>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="#{automaticWarehouseBean.map2.entrySet()}"  var="item"  >
+                                    <tr>
+                                        <td>#{item.getKey()}</td>
+                                        <c:forEach items="#{item.getValue()}"  var="i" >
+                                            <td style="background-color:#{automaticWarehouseBean.setColor(i)} ">#{i}</td>
+                                        </c:forEach>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:draggable for="pnl2" />
+            <p:resizable for="pnl2" />
+            <p:contextMenu for="pnl2" id="contextMenu2">
+                <p:menuitem value="查询1号线" actionListener="#{automaticWarehouseBean.query(1,'1号线')}"  icon="ui-icon-search"  update="listtable1,listtable2"  />
+                <p:menuitem value="查询2号线" actionListener="#{automaticWarehouseBean.query(3,'2号线')}" icon="ui-icon-search"  update="listtable1,listtable2"  />
+                <p:menuitem value="查询3号线" actionListener="#{automaticWarehouseBean.query(5,'3号线')}" icon="ui-icon-search"  update="listtable1,listtable2" />
+                <p:menuitem value="查询4号线" actionListener="#{automaticWarehouseBean.query(7,'4号线')}" icon="ui-icon-search" update="listtable1,listtable2"  />
+            </p:contextMenu>
+
+            <p:notificationBar position="bottom" effect="slide" styleClass="bottom" widgetVar="bar" rendered="true">
+                <h:outputText value="******************待开发******************" style="font-size:36px;" />
+            </p:notificationBar>
+        </h:form>
+    </ui:define>
+</ui:composition>
