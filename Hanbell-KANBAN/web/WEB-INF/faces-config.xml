@@ -63,5 +63,10 @@
             <to-view-id>/app/storageunoccupied.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>automaticwarehouse</from-outcome>
+            <to-view-id>/app/automaticwarehouse.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

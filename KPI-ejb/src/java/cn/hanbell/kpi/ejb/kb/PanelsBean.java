@@ -26,12 +26,12 @@ public class PanelsBean extends SuperEJBForKPI<Panels> {
     public PanelsBean() {
         super(Panels.class);
     }
-    
+
     public void updateValue(Panels entity, int y, int m, Date d, int type) {
         int uy, um;
         BigDecimal na;
         //先计算Other
-        if (entity != null && entity.getHasOther() > 0) {
+        if (entity != null && entity.getHasOther() != null && entity.getHasOther() > 0) {
             if (entity.getOther1Interface() != null && !"".equals(entity.getOther1Interface())) {
                 try {
                     otherInterface = (Actual) Class.forName(entity.getOther1Interface()).newInstance();
