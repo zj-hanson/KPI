@@ -26,8 +26,12 @@ body .ui-panelgrid .ui-panelgrid-cell {
         padding: 0px 0px;
     }
 
-    body .plgSheetHead .ui-grid-col-left .ui-grid-col-right{
+    body .plgSheetHead{
         font-size: 14px;
+        font-weight: 400;
+    }
+    .ui-grid-col-left,.ui-grid-col-right{
+        font-size: 13px;
         font-weight: 400;
     }
 
@@ -64,9 +68,14 @@ body .ui-panelgrid .ui-panelgrid-cell {
         padding: 2px 1px;
     }
 
-    body .plgSheetHead .ui-grid-col-left .ui-grid-col-right{
+    body .plgSheetHead{
         font-size: 22px;
         font-weight: 600;
+    }
+    
+    .ui-grid-col-left,.ui-grid-col-right{
+        font-size: 18px;
+        font-weight: 500;
     }
 
     body .plgSheetData thead th{
