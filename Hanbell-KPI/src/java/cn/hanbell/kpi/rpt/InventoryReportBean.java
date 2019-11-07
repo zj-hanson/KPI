@@ -12,6 +12,7 @@ import cn.hanbell.kpi.ejb.IndicatorSummaryBean;
 import cn.hanbell.kpi.ejb.InventoryDepartmentBean;
 import cn.hanbell.kpi.ejb.InventoryIndicatorBean;
 import cn.hanbell.kpi.ejb.InventoryProductBean;
+import cn.hanbell.kpi.ejb.InventoryTurnoverBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorAnalysis;
 import cn.hanbell.kpi.entity.IndicatorChart;
@@ -60,6 +61,8 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
     protected InventoryDepartmentBean inventoryDepartmentBean;
     @EJB
     protected InventoryIndicatorBean inventoryIndicatorBean;
+    @EJB
+    protected InventoryTurnoverBean inventoryTurnoverBean;
 
     protected Indicator indicator;
 
@@ -71,6 +74,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
     private List<InventoryDepartment> inventoryDepartmentsList;
     protected List<IndicatorAnalysis> analysisList;
     protected List<IndicatorSummary> summaryList;
+    private List<String[]> indicatorTurnoverList;
     protected int analysisCount;
     protected int summaryCount;
 
@@ -143,7 +147,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -260,6 +264,24 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
                 list = inventoryIndicatorBean.getInventoryIndicatorResultList(y, m);
                 if (!list.isEmpty()) {
                     inventoryIndicatorList = list;
+                } else {
+                    showErrorMsg("Error", "无法查询到该日期的数据，请重新查询！");
+                }
+            }
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.toString());
+        }
+    }
+
+    public void inventoryTurnoverQuery() {
+        try {
+            if (addQueryModel()) {
+                int m = getMonth();
+                int y = getYear();
+                List<String[]> list;
+                list = inventoryTurnoverBean.getInventoryTurnoverResultList(y, m);
+                if (!list.isEmpty()) {
+                    indicatorTurnoverList = list;
                 } else {
                     showErrorMsg("Error", "无法查询到该日期的数据，请重新查询！");
                 }
@@ -445,6 +467,14 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
         this.inventoryProductList = inventoryProductList;
     }
 
+    public List<String[]> getIndicatorTurnoverList() {
+        return indicatorTurnoverList;
+    }
+
+    public void setIndicatorTurnoverList(List<String[]> indicatorTurnoverList) {
+        this.indicatorTurnoverList = indicatorTurnoverList;
+    }
+
     public String format(BigDecimal b) {
         if (b != null) {
             return doubleFormat.format(b);
@@ -452,9 +482,9 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
             return "";
         }
     }
-    
+
     public String fontColor(BigDecimal b) {
-        if (b.doubleValue() > 0 ) {
+        if (b.doubleValue() > 0) {
             return "red";
         } else {
             return "";

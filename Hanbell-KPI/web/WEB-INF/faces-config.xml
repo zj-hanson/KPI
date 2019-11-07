@@ -399,6 +399,12 @@
             <to-view-id>/app/bsc/inventoryproductsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>inventoryturnoversheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryturnoversheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
         <navigation-case>
             <from-outcome>materialsaccproject</from-outcome>
             <to-view-id>/app/bsc/materialsaccproject.xhtml</to-view-id>
