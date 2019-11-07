@@ -21,21 +21,19 @@ import javax.faces.bean.ViewScoped;
 public class AutomaticWarehouseBean extends KanBanBean {
 
     @EJB
-    private WarehouseBean warehouseBean;
+    protected WarehouseBean warehouseBean;
 
-    private int number;
-    private String name;
-    private LinkedHashMap<String, String[]> map;
-    private LinkedHashMap<String, List> map1;
-    private LinkedHashMap<String, List> map2;
+    protected int number;
+    protected String name;
+    protected LinkedHashMap<String, String[]> map;
+    protected LinkedHashMap<String, List> map1;
+    protected LinkedHashMap<String, List> map2;
 
     public AutomaticWarehouseBean() {
     }
 
     @Override
     public void construct() {
-        name = "1号线";
-        number = 1;
         map = new LinkedHashMap<>();
         map1 = new LinkedHashMap<>();
         map2 = new LinkedHashMap<>();
@@ -54,9 +52,32 @@ public class AutomaticWarehouseBean extends KanBanBean {
 
     public void query() {
         map.clear();
-        setSecond(60);
+        second = 300;
         map = warehouseBean.getTableMap();
-        query(getNumber(), name);
+        query(1, "1号线");               
+    }
+
+    /**
+     * 刷新右边面板，每75秒1-4号信息轮换
+     */
+    public void flushRight() {
+        if (second <= 225 && second > 150) {
+            query(3, "2号线");
+        }
+        if (second <= 150 && second > 75) {
+            query(5, "3号线");
+        }
+        if (second <= 75 && second > 0) {
+            query(7, "4号线");
+        }
+    }
+
+    @Override
+    public void increment() {
+        if (second == 0) {
+            second = 300;
+        }
+        second --;
     }
 
     public String setColor(String value) {

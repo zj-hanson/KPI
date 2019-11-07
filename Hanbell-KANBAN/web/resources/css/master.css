@@ -53,7 +53,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
     position: fixed;
     z-index: 1000;
     right:25px;
-    top: 85px;
+    top: 82px;
     color: #999999;
     font-weight: 500;
     font-size: 18px;
@@ -65,6 +65,19 @@ body .ui-panelgrid .ui-panelgrid-cell {
     position: fixed;
     left: 0px;
     bottom: 0px;
+}
+
+#kanbantitle{
+    width: 100%;
+    text-align: center;
+    font-size: 36px;
+    color: white;
+    font-weight: 500;
+    letter-spacing: 5px;
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    z-index: 1200;
 }
 
 body.layout-compact .ui-datatable tbody tr.ui-widget-content td
