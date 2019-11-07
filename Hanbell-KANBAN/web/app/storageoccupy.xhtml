@@ -9,9 +9,10 @@
     <ui:define name="title">汉钟精机 | Middleware</ui:define>
     <ui:define name="content">
         <h:form id="formOne" >
+            <div id="kanbantitle" >#{storageBean.panels.pdname}</div>
             <div id="djs"><h:outputText id="second" value="#{storageBean.getFormat(storageBean.second)}" />秒后刷新数据</div>
             <p:poll listener="#{storageBean.increment()}" update="second" interval="1" />
-            <p:panel class="ui-panel-sg" style="background-color: #2f4050;" id="pnl" header="#{storageBean.panels.pdname}">
+            <p:panel class="ui-panel-sg" style="background-color: #2f4050;" id="pnl" >
                 <p:dataTable var="item" value="#{storageBean.paneldatas}" id="listtable" style="margin: -8px -14px;" scrollable="false" >
                     <p:column headerText="库号">
                         <h:outputText value="#{item.pdname}" />

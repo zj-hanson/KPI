@@ -168,25 +168,25 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell7.setCellValue(cp.getDutyrate() != null ? cp.getDutyrate() : "");
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(cp.getMaterialcost().toString());
+            cell8.setCellValue(Double.valueOf(cp.getMaterialcost().toString()));
             Cell cell9 = row.createCell(9);
             cell9.setCellStyle(style.get("cell"));
-            cell9.setCellValue(cp.getLabourcost().toString());
+            cell9.setCellValue(Double.valueOf(cp.getLabourcost().toString()));
             Cell cell10 = row.createCell(10);
             cell10.setCellStyle(style.get("cell"));
-            cell10.setCellValue(cp.getTansportexpense().toString());
+            cell10.setCellValue(Double.valueOf(cp.getTansportexpense().toString()));
             Cell cell11 = row.createCell(11);
             cell11.setCellStyle(style.get("cell"));
-            cell11.setCellValue(cp.getTravelexpense().toString());
+            cell11.setCellValue(Double.valueOf(cp.getTravelexpense().toString()));
             Cell cell12 = row.createCell(12);
             cell12.setCellStyle(style.get("cell"));
-            cell12.setCellValue(cp.getClaimamount().toString());
+            cell12.setCellValue(Double.valueOf(cp.getClaimamount().toString()));
             Cell cell13 = row.createCell(13);
             cell13.setCellStyle(style.get("cell"));
-            cell13.setCellValue(cp.getOthercost().toString());
+            cell13.setCellValue(Double.valueOf(cp.getOthercost().toString()));
             Cell cell14 = row.createCell(14);
             cell14.setCellStyle(style.get("cell"));
-            cell14.setCellValue(cp.getTotalamount().toString());
+            cell14.setCellValue(Double.valueOf(cp.getTotalamount().toString()));
             Cell cell15 = row.createCell(15);
             cell15.setCellStyle(style.get("cell"));
             cell15.setCellValue(cp.getOverdate() != null ? BaseLib.formatDate("yyyy-MM-dd HH:mm", cp.getOverdate()) : "");
@@ -224,13 +224,13 @@ public class CustomerComplaintFileMailBean extends MailNotification {
             cell5.setCellValue(cpd.getItdsc());
             Cell cell6 = row.createCell(6);
             cell6.setCellStyle(style.get("cell"));
-            cell6.setCellValue(cpd.getTrnqy1().toString());
+            cell6.setCellValue(Double.valueOf(cpd.getTrnqy1().toString()));
             Cell cell7 = row.createCell(7);
             cell7.setCellStyle(style.get("cell"));
             cell7.setCellValue(cpd.getUnmsr1());
             Cell cell8 = row.createCell(8);
             cell8.setCellStyle(style.get("cell"));
-            cell8.setCellValue(cpd.getTramt().toString());
+            cell8.setCellValue(Double.valueOf(cpd.getTramt().toString()));
         }
 
         String finalFilePath = "../" + filename + ".xls";//最终保存的文件路径

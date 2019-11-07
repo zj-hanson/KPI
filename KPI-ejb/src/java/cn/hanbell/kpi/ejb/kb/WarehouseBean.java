@@ -82,9 +82,10 @@ public class WarehouseBean implements Serializable {
     public LinkedHashMap<String, String[]> getTableMap() {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
-        sb.append(" select linecode,count(linecode) as zong,SUM(jing) as jing, SUM(yong) as yong,SUM(kong) as kong,SUM(di) as di,SUM(gao) as gao  from ( ");
+        //总储位、禁用储位、空储位、使用中储位、使用率、空储位低、空储位高、
+        sb.append(" select linecode,count(linecode) as zong,SUM(jing) as jing, SUM(kong) as kong,SUM(yong) as yong,SUM(di) as di,SUM(gao) as gao  from ( ");
         sb.append(" select (CASE when row_x in (1,2) then '1' when row_x in (3,4) then '2' when row_x in (5,6) then '3' when row_x in (7,8) then '4' end) as linecode, ");
-        sb.append(" (CASE WHEN (loc_sts ='X')  THEN 1 ELSE 0 END ) AS jing,(CASE WHEN (loc_sts <>'X')  THEN 1 ELSE 0 END ) AS yong,(CASE WHEN (loc_sts ='N')  THEN 1 ELSE 0 END ) AS kong, ");
+        sb.append(" (CASE WHEN (loc_sts ='X')  THEN 1 ELSE 0 END ) AS jing,(CASE WHEN (loc_sts not in ('X','N'))  THEN 1 ELSE 0 END ) AS yong,(CASE WHEN (loc_sts ='N')  THEN 1 ELSE 0 END ) AS kong, ");
         sb.append(" (CASE WHEN (loc_sts ='N') AND (right(asrs_tb_loc_mst.loc,2)) BETWEEN '01' and '06' THEN 1 ELSE 0 END ) AS di, ");
         sb.append(" (CASE WHEN (loc_sts ='N') AND (right(asrs_tb_loc_mst.loc,2)) BETWEEN '07' and '17' THEN 1 ELSE 0 END ) as gao ");
         sb.append(" from asrs_tb_loc_mst where loc<'090101' ) as a GROUP BY linecode ");
@@ -102,17 +103,17 @@ public class WarehouseBean implements Serializable {
                     arr[0] = row[1].toString();
                     arr[1] = row[2].toString();
                     arr[2] = row[3].toString();
-                    arr[3] = dmf.format(Double.parseDouble(arr[2]) / Double.parseDouble(arr[0]));
-                    arr[4] = row[4].toString();
+                    arr[3] = row[4].toString();
+                    arr[4] = dmf.format(Double.parseDouble(arr[3]) / Double.parseDouble(arr[0]));                  
                     arr[5] = row[5].toString();
                     arr[6] = row[6].toString();
                     list.add(arr);
                 }
                 map.put("总储位", getArr(0, list));
                 map.put("禁用储位", getArr(1, list));
-                map.put("使用中储位", getArr(2, list));
-                map.put("使用率", getArr(3, list));
-                map.put("空储位", getArr(4, list));
+                map.put("空储位", getArr(2, list));
+                map.put("使用中储位", getArr(3, list));
+                map.put("使用率", getArr(4, list));              
                 map.put("空储位低", getArr(5, list));
                 map.put("空储位高", getArr(6, list));
             }
