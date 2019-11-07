@@ -7,10 +7,11 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 真空周转天数(含服务)--月
  */
-// 真空周转天数(含服务)
-//本月周转天数 = 30 / (本月销售成本/((本月库存金额+上月库存金额)/2))
 public class InventoryTurnoverA2C50m extends InventoryTurnoverA2 {
 
     public InventoryTurnoverA2C50m() {

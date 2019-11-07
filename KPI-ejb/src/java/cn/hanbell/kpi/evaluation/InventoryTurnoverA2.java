@@ -12,9 +12,11 @@ import javax.persistence.Query;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 营业目标周转天数
  */
-// 营业目标周转天数
 public class InventoryTurnoverA2 extends InventoryTurnover {
 
     public InventoryTurnoverA2() {
@@ -39,7 +41,16 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
         return BigDecimal.ZERO;
     }
 
-    //获取当月销售成本
+    /**
+     *
+     * @param y
+     * @param m
+     * @param d
+     * @param map
+     * @param type
+     * @return BigDecimal
+     * @description 获取当月销售成本
+     */
     public BigDecimal getMonthSellingCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_da = map.get("n_code_da") != null ? map.get("n_code_da").toString() : "";
@@ -47,7 +58,8 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
         String n_code_dd = map.get("n_code_dd") != null ? map.get("n_code_dd").toString() : "";
         String issevdta = map.get("issevdta") != null ? map.get("issevdta").toString() : "";//是否纳入服务
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(otramt),0) FROM N_CDRX666_armdta WHERE 1=1 ");
+        sb.append(" SELECT isnull(sum(amt),0) FROM ( ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
         sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
@@ -62,6 +74,23 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
             sb.append(" AND n_code_DD ").append(n_code_dd);
         }
         sb.append(" and yea = ${y} and mon= ${m} ");
+        sb.append(" UNION ALL ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        if (!"".equals(issevdta)) {
+            sb.append(" AND issevdta = ").append(issevdta);
+        }
+        if (!"".equals(n_code_da)) {
+            sb.append(" AND n_code_DA ").append(n_code_da);
+        }
+        if (!"".equals(n_code_dc)) {
+            sb.append(" AND n_code_DC ").append(n_code_dc);
+        }
+        if (!"".equals(n_code_dd)) {
+            sb.append(" AND n_code_DD ").append(n_code_dd);
+        }
+        sb.append(" and yea = ${y} and mon= ${m} ");
+        sb.append(" ) a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
@@ -74,7 +103,16 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
         return BigDecimal.ZERO;
     }
 
-    //获取年度销售成本
+    /**
+     *
+     * @param y
+     * @param m
+     * @param d
+     * @param map
+     * @param type
+     * @return BigDecimal
+     * @description 获取年度销售成本
+     */
     public BigDecimal getYearSellingCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_da = map.get("n_code_da") != null ? map.get("n_code_da").toString() : "";
@@ -82,7 +120,8 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
         String n_code_dd = map.get("n_code_dd") != null ? map.get("n_code_dd").toString() : "";
         String issevdta = map.get("issevdta") != null ? map.get("issevdta").toString() : "";//是否纳入服务
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(otramt),0) FROM N_CDRX666_armdta WHERE 1=1 ");
+        sb.append(" SELECT isnull(sum(amt),0) FROM ( ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
         sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
@@ -97,6 +136,103 @@ public class InventoryTurnoverA2 extends InventoryTurnover {
             sb.append(" AND n_code_DD ").append(n_code_dd);
         }
         sb.append(" and yea = ${y} and mon <= ${m} ");
+        sb.append(" UNION ALL ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        if (!"".equals(issevdta)) {
+            sb.append(" AND issevdta = ").append(issevdta);
+        }
+        if (!"".equals(n_code_da)) {
+            sb.append(" AND n_code_DA ").append(n_code_da);
+        }
+        if (!"".equals(n_code_dc)) {
+            sb.append(" AND n_code_DC ").append(n_code_dc);
+        }
+        if (!"".equals(n_code_dd)) {
+            sb.append(" AND n_code_DD ").append(n_code_dd);
+        }
+        sb.append(" and yea = ${y} and mon <= ${m} ");
+        sb.append(" ) a ");
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sql);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    /**
+     *
+     * @param y
+     * @param m
+     * @param d
+     * @param map
+     * @param type
+     * @return BigDecimal
+     * @description 真空维修和真空出租的成本 --月
+     */
+    public BigDecimal getMonthRepairCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        /**
+         * 出租的
+         */
+        sb.append(" SELECT isnull(sum(amt),0) FROM ( ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
+        sb.append(" and itnbr = 'ARM270' ");
+        sb.append(" and yea = ${y} and mon = ${m} ");
+        sb.append(" UNION ALL ");
+        /**
+         * 维修的
+         */
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" AND dmark1 = 'INV555' ");
+        sb.append(" and yea = ${y} and mon = ${m} ");
+        sb.append(" ) a ");
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sql);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    /**
+     *
+     * @param y
+     * @param m
+     * @param d
+     * @param map
+     * @param type
+     * @return BigDecimal
+     * @description 真空维修和真空出租的成本 --年
+     */
+    public BigDecimal getYearRepairCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        /**
+         * 出租的
+         */
+        sb.append(" SELECT isnull(sum(amt),0) FROM ( ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
+        sb.append(" AND facno = '${facno}' AND itnbr = 'ARM270' ");
+        sb.append(" AND yea = ${y} AND mon <= ${m} ");
+        sb.append(" UNION ALL ");
+        /**
+         * 维修的
+         */
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" AND facno = '${facno}' AND dmark1 = 'INV555' ");
+        sb.append(" AND yea = ${y} AND mon <= ${m} ");
+        sb.append(" ) a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sql);

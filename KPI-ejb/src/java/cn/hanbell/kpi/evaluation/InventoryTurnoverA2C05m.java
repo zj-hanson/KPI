@@ -11,10 +11,11 @@ import java.util.LinkedHashMap;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 营业目标合计--月
  */
-// 营业目标合计
-//本月周转天数 = 今年到本月的天数 / (本月销售成本/((本月库存金额+上月库存金额)/2))
 public class InventoryTurnoverA2C05m extends InventoryTurnoverA2 {
 
     public InventoryTurnoverA2C05m() {
@@ -38,7 +39,7 @@ public class InventoryTurnoverA2C05m extends InventoryTurnoverA2 {
     }
 
     public BigDecimal getSellingValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        BigDecimal v1, v2, v3, v4, v5, v6, v7;
+        BigDecimal v1, v2, v3, v4, v5, v6, v7, v8;
         BigDecimal result;
         queryParams.clear();
         queryParams.put("facno", "C");
@@ -89,8 +90,12 @@ public class InventoryTurnoverA2C05m extends InventoryTurnoverA2 {
         queryParams.put("n_code_dc", "= 'RT'");
         queryParams.put("n_code_dd", "in ('00','02','01')");
         v7 = getMonthSellingCost(y, m, d, type, queryParams);
+
+        queryParams.clear();
+        queryParams.put("facno", "C");
+        v8 = getMonthRepairCost(y, m, d, type, queryParams);
         try {
-            result = v1.add(v2).add(v3).add(v4).add(v5).add(v6).add(v7);
+            result = v1.add(v2).add(v3).add(v4).add(v5).add(v6).add(v7).add(v8);
             return result;
         } catch (Exception ex) {
             log4j.error(ex);

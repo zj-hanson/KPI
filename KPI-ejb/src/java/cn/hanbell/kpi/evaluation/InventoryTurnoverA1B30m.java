@@ -11,10 +11,11 @@ import java.util.LinkedHashMap;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 半成品周转天数
  */
-// 半成品周转天数
-//本月周转天数 = 今年到本月的天数 / (本月销售成本/((本月库存金额+上月库存金额)/2))
 public class InventoryTurnoverA1B30m extends InventoryTurnoverA1 {
 
     public InventoryTurnoverA1B30m() {

@@ -60,11 +60,20 @@ public class InventoryTurnoverBean implements Serializable {
         this.indicators.add(i);
     }
 
-    // 获取总表
+    /**
+     * @param indicatorList
+     * @param y
+     * @param m
+     * @return List
+     * @throws java.lang.Exception
+     * @description 获取总表
+     */
     public List<String[]> getHtmlTable(List<Indicator> indicatorList, int y, int m) throws Exception {
         List<String[]> arrList = new ArrayList<>();
         try {
-            // 添加指标
+            /**
+             * 添加指标
+             */
             for (Indicator i : indicatorList) {
                 arrList.addAll(getHtmlTableRow(i, y, m));
             }
@@ -74,7 +83,14 @@ public class InventoryTurnoverBean implements Serializable {
         return arrList;
     }
 
-    // 获取各目标表的行
+    /**
+     * @param indicator
+     * @param y
+     * @param m
+     * @return List
+     * @throws java.lang.Exception
+     * @description 获取各目标表的行
+     */
     protected List<String[]> getHtmlTableRow(Indicator indicator, int y, int m) throws Exception {
         List<String[]> arrList;
         IndicatorDetail a = indicator.getActualIndicator();// 实际
@@ -87,46 +103,64 @@ public class InventoryTurnoverBean implements Serializable {
         try {
             arrList = new ArrayList<>();
             strArr = new String[9];
-            //目标类型
+            /**
+             * 目标类型*
+             */
             strArr[0] = indicator.getCategory();
 
-            // 责任单位
+            /**
+             * 责任单位*
+             */
             strArr[1] = indicator.getDeptname();
-            // 分类
+            /**
+             * 分类*
+             */
             strArr[2] = indicator.getDescript();
 
-            //负责人
+            /**
+             * 负责人*
+             */
             strArr[3] = indicator.getUsername();
 
-            // 当季目标
+            /**
+             * 当季目标*
+             */
             mon = this.getIndicatorColumn("N", m);
             f = t.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             String targetAmt = f.get(t).toString();
             strArr[4] = targetAmt;
 
-            // 当月库存
+            /**
+             * 当月库存*
+             */
             mon = this.getIndicatorColumn("N", m);
             f = a.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             String actualAmt = f.get(a).toString();
             strArr[5] = actualAmt;
 
-            //去年同期
+            /**
+             * 去年同期*
+             */
             mon = this.getIndicatorColumn("N", m);
             f = b.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             String benchmarkAmt = f.get(b).toString();
             strArr[6] = benchmarkAmt;
 
-            //本年累计
+            /**
+             * 本年累计*
+             */
             mon = this.getIndicatorColumn("N", m);
             f = other1.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             String other1Amt = f.get(other1).toString();
             strArr[7] = other1Amt;
 
-            //去年累计
+            /**
+             * 去年累计*
+             */
             mon = this.getIndicatorColumn("N", m);
             f = other2.getClass().getDeclaredField(mon);
             f.setAccessible(true);
@@ -143,13 +177,17 @@ public class InventoryTurnoverBean implements Serializable {
     public List<String[]> getInventoryTurnoverResultList(int y, int m) {
         List<String[]> arrList = new ArrayList<>();
         try {
-            // 生产目标
+            /**
+             * 生产目标
+             */
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
             indicators = indicatorBean.findByCategoryAndYear("生产周转天数", y);
             indicatorBean.getEntityManager().clear();
-            // 指标排序
+            /**
+             * 指标排序
+             */
             indicators.sort((Indicator o1, Indicator o2) -> {
                 if (o1.getSortid() > o2.getSortid()) {
                     return 1;
@@ -163,13 +201,17 @@ public class InventoryTurnoverBean implements Serializable {
                 }
                 arrList.addAll(getHtmlTable(this.indicators, y, m));
             }
-            // 营业目标
+            /**
+             * 营业目标
+             */
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
             indicators = indicatorBean.findByCategoryAndYear("营业周转天数", y);
             indicatorBean.getEntityManager().clear();
-            // 指标排序
+            /**
+             * 指标排序
+             */
             indicators.sort((Indicator o1, Indicator o2) -> {
                 if (o1.getSortid() > o2.getSortid()) {
                     return 1;
@@ -184,7 +226,9 @@ public class InventoryTurnoverBean implements Serializable {
                 arrList.addAll(getHtmlTable(this.indicators, y, m));
             }
 
-            // 服务目标
+            /**
+             * 服务目标
+             */
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
@@ -204,7 +248,9 @@ public class InventoryTurnoverBean implements Serializable {
                 }
                 arrList.addAll(getHtmlTable(this.indicators, y, m));
             }
-            // 其他
+            /**
+             * 其他
+             */
 //            if (this.indicators.size() > 0) {
 //                this.indicators.clear();
 //            }
@@ -225,7 +271,9 @@ public class InventoryTurnoverBean implements Serializable {
 //                arrList.addAll(getHtmlTable(this.indicators, y, m));
 //            }
 
-            // 最后的总合计
+            /**
+             * 最后的总合计
+             */
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
@@ -256,7 +304,11 @@ public class InventoryTurnoverBean implements Serializable {
         }
     }
 
-    // 换算率
+    /**
+     * @param i
+     * @param scale
+     * @description 换算率
+     */
     public void divideByRateOther(Indicator i, int scale) {
         indicatorBean.divideByRate(i.getActualIndicator(), i.getRate(), scale);
         indicatorBean.divideByRate(i.getBenchmarkIndicator(), i.getRate(), scale);

@@ -7,10 +7,11 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 库存周转天数合计 月
  */
-// 库存周转天数合计
-//本月周转天数 = 30 / (本月销售成本/((本月库存金额+上月库存金额)/2))
 public class InventoryTurnoverTotalm extends InventoryTurnoverA3 {
 
     public InventoryTurnoverTotalm() {

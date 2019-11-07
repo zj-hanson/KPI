@@ -7,10 +7,11 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 广州周转天数--月
  */
-// 广州周转天数（服务部(冷媒、冷冻+空压机组+空压机体+涡旋）
-//本月周转天数 = 30 / (本月销售成本/((本月库存金额+上月库存金额)/2))
 public class InventoryTurnoverA3C30m extends InventoryTurnoverA3 {
 
     public InventoryTurnoverA3C30m() {

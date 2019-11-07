@@ -12,9 +12,11 @@ import javax.persistence.Query;
 
 /**
  *
+ * @version V1.0
  * @author C1749
+ * @data 2019-10-28
+ * @description 总计周转天数
  */
-// 总计标周转天数
 public class InventoryTurnoverTotal extends InventoryTurnover {
 
     public InventoryTurnoverTotal() {
@@ -39,12 +41,26 @@ public class InventoryTurnoverTotal extends InventoryTurnover {
         return BigDecimal.ZERO;
     }
 
-    //获取当月销售成本
+    /**
+     * @param y
+     * @param m
+     * @param d
+     * @param type
+     * @param map
+     * @return BigDecimal
+     * @description 获取当月销售成本
+     * @throws:
+     */
     public BigDecimal getMonthSellingCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(otramt),0) FROM N_CDRX666_armdta WHERE 1=1 ");
+        sb.append(" select isnull(sum(amt),0) from (  ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
         sb.append(" and yea = ${y} and mon= ${m} ");
+        sb.append("  ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" and yea = ${y} and mon= ${m} ");
+        sb.append(" ) a");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
@@ -57,13 +73,26 @@ public class InventoryTurnoverTotal extends InventoryTurnover {
         return BigDecimal.ZERO;
     }
 
-    //获取年度销售成本
+    /**
+     * @param y
+     * @param m
+     * @param d
+     * @param type
+     * @param map
+     * @return BigDecimal
+     * @description 获取年度销售成本
+     * @throws:
+     */
     public BigDecimal getYearSellingCost(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(otramt),0) FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" select isnull(sum(amt),0) from (  ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
         sb.append(" and yea = ${y} and mon <= ${m} ");
+        sb.append("  ");
+        sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
+        sb.append(" and yea = ${y} and mon <= ${m} ");
+        sb.append(" ) a");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
