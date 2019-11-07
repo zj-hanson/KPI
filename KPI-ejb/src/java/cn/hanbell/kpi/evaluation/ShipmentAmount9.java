@@ -142,6 +142,8 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
+        } else {
+            sb.append(" and d.n_code_DD <> 'ZZ' ");
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
@@ -177,6 +179,8 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
+        } else {
+            sb.append(" and d.n_code_DD <> 'ZZ' ");
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
