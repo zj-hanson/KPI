@@ -81,7 +81,7 @@
                     <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.pastshpamts)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
                 </p:column>
                 <p:column>
-                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.differencevalue)}" style="#{(item.cusna == '总计')?'color:red':'' }"/>
+                    <h:outputText value="#{clientRankingReportBean.dfShpqy1(item.differencevalue)}" style="#{(item.cusna == '总计' or item.paststyle=='red')?'color:red':'' }"/>
                 </p:column>
                 <p:column >
                     <h:outputText value="#{item.growthrate}%"  style="#{(item.cusna == '总计' or item.paststyle=='red' )?'color:red':'' }" />
