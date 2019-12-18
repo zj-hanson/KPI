@@ -61,7 +61,7 @@ public class IndicatorCloneManagedBean extends SuperSingleBean<Indicator> {
             showErrorMsg("Error", "目标年度需要大于来源年度");
             return false;
         }
-        if (indicatorBean.getRowCount(newC.get(Calendar.YEAR)) != 0) {
+        if (indicatorBean.getRowCount(newC.get(Calendar.YEAR),userManagedBean.getCompany()) != 0) {
             showErrorMsg("Error", "目的年度已有资料");
             return false;
         }
@@ -97,6 +97,15 @@ public class IndicatorCloneManagedBean extends SuperSingleBean<Indicator> {
             indicatorList = indicatorBean.findRootByCompany(userManagedBean.getCompany(), "D", lastY);
             if (indicatorList == null || indicatorList.isEmpty()) {
                 showErrorMsg("Error", "获取部门参考指标失败");
+                return;
+            }
+            for (Indicator e : indicatorList) {
+                initIndicator(e, newY);
+            }
+            //复制业务员指标
+            indicatorList = indicatorBean.findRootByCompany(userManagedBean.getCompany(), "E", lastY);
+            if (indicatorList == null || indicatorList.isEmpty()) {
+                showErrorMsg("Error", "获取业务员参考指标失败");
                 return;
             }
             for (Indicator e : indicatorList) {
