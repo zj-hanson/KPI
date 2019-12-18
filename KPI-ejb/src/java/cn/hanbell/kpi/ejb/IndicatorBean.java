@@ -541,9 +541,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public int getRowCount(int y) {
+    public int getRowCount(int y,String company) {
         Query query = getEntityManager().createNamedQuery("Indicator.getRowCountBySeq");
         query.setParameter("seq", y);
+        query.setParameter("company", company);
         if (query.getSingleResult() == null) {
             return -1;
         } else {
