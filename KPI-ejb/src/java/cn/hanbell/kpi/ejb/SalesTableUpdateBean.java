@@ -42,7 +42,7 @@ public class SalesTableUpdateBean implements Serializable {
         if ("".equals(da.trim()) || "R".equals(da.trim())) {
             queryParams.clear();
             queryParams.put("facno", "C,C4,N,G,J");
-            queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
+            queryParams.put("depno", " IN ('1B000','1B100','1C000','1D000','1E000','1V000') ");
             queryParams.put("n_code_DA", " ='R' ");
             queryParams.put("ogdkid", " IN ('RL01') ");
             list = getSalesTableList(y, m, queryParams, type);

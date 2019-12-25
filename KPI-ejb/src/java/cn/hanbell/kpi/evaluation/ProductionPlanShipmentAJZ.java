@@ -8,6 +8,7 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1879
+ * 2019/12/25日 吴晓升提出新增大类3586
  */
 public class ProductionPlanShipmentAJZ extends ProductionPlanShipment {
 
@@ -15,6 +16,6 @@ public class ProductionPlanShipmentAJZ extends ProductionPlanShipment {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AA' ");
-        queryParams.put("itcls", " in ('3576','3579','3580','4052','3676','3679','3680') and itnbr <> '35302-H5233-08' ");
+        queryParams.put("itcls", " in ('3576','3579','3580','4052','3676','3679','3680','3586') and itnbr <> '35302-H5233-08' ");
     }
 }
