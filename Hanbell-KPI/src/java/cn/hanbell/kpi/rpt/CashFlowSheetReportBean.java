@@ -80,16 +80,20 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
             statusMap.put("title", "上海汉钟精机股份有限公司");
             facno = "C";
         }
-        if (indicatorChart.getRemark().contains("柯茂")) {
+        if (indicatorChart.getRemark().contains("上海柯茂")) {
             statusMap.put("title", "上海柯茂机械有限公司");
             facno = "K";
+        }
+        if (indicatorChart.getRemark().contains("浙江柯茂")) {
+            statusMap.put("title", "浙江柯茂节能环保工程设备有限公司");
+            facno = "E";
         }
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
     }
 
-    public void btnreset() {;
+    public void btnreset() {
         setBtndate(settlementDate().getTime());
     }
 
