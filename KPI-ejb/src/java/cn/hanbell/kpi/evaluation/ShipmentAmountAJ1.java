@@ -19,7 +19,7 @@ public class ShipmentAmountAJ1 extends ShipmentAmount {
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
+        queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

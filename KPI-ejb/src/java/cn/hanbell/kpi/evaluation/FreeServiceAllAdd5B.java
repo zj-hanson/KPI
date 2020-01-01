@@ -21,7 +21,7 @@ public class FreeServiceAllAdd5B extends FreeServiceAllAdd {
     public FreeServiceAllAdd5B() {
         super();
         queryParams.put("OuterFormid", "A-再生能源服务成本");
-        queryParams.put("deptno", "5B000");
+        queryParams.put("deptno", "8A000");
     }
 
     @Override

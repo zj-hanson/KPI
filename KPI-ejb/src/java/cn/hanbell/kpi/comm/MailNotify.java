@@ -19,8 +19,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class MailNotify {
     
-    protected String SMTP_HOST = "172.16.10.18";
-    protected int SMTP_PORT = 25;
+    protected String SMTP_HOST = "172.16.10.108";
+    protected int SMTP_PORT = 2525;
     protected HtmlEmail email;
     
     protected MailNotification notification;

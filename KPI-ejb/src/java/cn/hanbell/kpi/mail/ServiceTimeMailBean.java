@@ -10,6 +10,7 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -69,9 +70,11 @@ public class ServiceTimeMailBean extends ServiceMail {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"8%\">部门</th> <th width=\"7%\">统计项目</th> <th width=\"6%\">01月</th> <th width=\"6%\">02月</th> <th width=\"6%\">03月</th>");
-            sb.append("<th width=\"6%\">04月</th> <th width=\"6%\">05月</th> <th width=\"6%\">06月</th> <th width=\"6%\">07月</th> <th width=\"6%\">08月</th>");
-            sb.append("<th width=\"6%\">09月</th> <th width=\"6%\">10月</th> <th width=\"6%\">11月</th> <th width=\"6%\">12月</th> <th width=\"6%\">月平均</th> <th>合计</th></tr>");
+            sb.append("<tr><th>部门</th> <th>统计项目</th>");
+            for (int i = 1; i <= m; i++) {
+                sb.append("<th>").append(i).append("月</th>");
+            }
+            sb.append("<th>合计</th></tr>");
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
@@ -94,13 +97,13 @@ public class ServiceTimeMailBean extends ServiceMail {
         StringBuilder sb = new StringBuilder();
         IndicatorDetail o1 = e.getOther1Indicator();
         IndicatorDetail o2 = e.getOther2Indicator();
-        Field f;
+        Field f,f1,f2;
         try {
             o1.setType(e.getOther1Label());
             o2.setType(e.getOther2Label());
-            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"2\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"3\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
             sb.append("<td style=\"text-align: left;\">").append(o1.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o1.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -112,11 +115,12 @@ public class ServiceTimeMailBean extends ServiceMail {
                     sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
                 }
             }
-            sb.append("<td>").append(decimalFormat.format(o1.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
+            //服务部需求不需要月平均 20210301
+            //sb.append("<td>").append(decimalFormat.format(o1.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
             sb.append("<td>").append(decimalFormat.format(o1.getNfy())).append("</td>");
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o2.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -128,8 +132,28 @@ public class ServiceTimeMailBean extends ServiceMail {
                     sb.append("<td>").append(decimalFormat.format(f.get(o2))).append("</td>");
                 }
             }
-            sb.append("<td>").append(decimalFormat.format(o2.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
+            //服务部需求不需要月平均 20210301
+            //sb.append("<td>").append(decimalFormat.format(o2.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
             sb.append("<td>").append(decimalFormat.format(o2.getNfy())).append("</td>");
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append("合计").append("</td>");
+            for (int i = 1; i <= m; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f1 = o1.getClass().getDeclaredField(col);
+                f1.setAccessible(true);
+                f2 = o2.getClass().getDeclaredField(col);
+                f2.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(BigDecimal.valueOf(Double.valueOf(f1.get(o1).toString())).add(BigDecimal.valueOf(Double.valueOf(f1.get(o2).toString()))).setScale(2, BigDecimal.ROUND_HALF_UP)).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append(BigDecimal.valueOf(Double.valueOf(f1.get(o1).toString())).add(BigDecimal.valueOf(Double.valueOf(f1.get(o2).toString()))).setScale(2, BigDecimal.ROUND_HALF_UP)).append("</td>");
+                } else {
+                    sb.append("<td>").append(BigDecimal.valueOf(Double.valueOf(f1.get(o1).toString())).add(BigDecimal.valueOf(Double.valueOf(f1.get(o2).toString()))).setScale(2, BigDecimal.ROUND_HALF_UP)).append("</td>");
+                }
+            }
+            //服务部需求不需要月平均 20210301
+            //sb.append("<td>").append(decimalFormat.format(o1.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP).add(o2.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP)))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(o1.getNfy().add(o2.getNfy()))).append("</td>");
             sb.append("</tr>");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);

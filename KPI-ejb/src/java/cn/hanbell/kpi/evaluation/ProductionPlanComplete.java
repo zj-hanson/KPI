@@ -42,7 +42,7 @@ public class ProductionPlanComplete extends Production {
         BigDecimal value = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(d.godqty),0) FROM  sfcfsd d, sfcfsh h LEFT JOIN manmas m ON d.manno=m.manno ");
+        sb.append(" SELECT isnull(sum(d.godqty),0) FROM  sfcfsd d LEFT JOIN manmas m ON d.manno=m.manno, sfcfsh h ");
         sb.append(" where  h.facno=d.facno and  h.prono=d.prono  and h.fshno=d.fshno ");
         sb.append(" AND d.facno=m.facno AND d.prono=m.prono AND d.manno=m.manno and h.facno='${facno}' and h.prono='${prono}' and h.stats='${stats}' ");
         sb.append(" AND m.facno='${facno}' and m.prono='${prono}'   ");
