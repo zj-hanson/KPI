@@ -234,6 +234,81 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         }
         return null;
     }
+    
+    // 返回当前ClientRanking集合getNowClientByCodeDA
+    protected List<ClientRanking> getNowClientByCodeDA(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked, String rowsPerPage) {
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
+
+        StringBuilder sb = new StringBuilder();
+        if (aggregatechecked) {
+            sb.append(" Select parentcusno,parentcusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
+        sb.append(" AND n_code_DA ").append(n_code_DA);
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND n_code_DC ").append(n_code_DC);
+        }
+        sb.append(" AND year(cdrdate) = ${y} ");
+        if (monthchecked) {
+            sb.append(" and month(cdrdate) = ${m} ");
+        } else {
+            sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
+        }
+        if (aggregatechecked) {
+            sb.append(" GROUP BY parentcusno,n_code_DA ORDER BY sum(amount) desc");
+        } else {
+            sb.append(" GROUP BY cusno,n_code_DA ORDER BY sum(amount) desc");
+        }
+        String sqlsize = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
+
+        if (!"0".equals(rowsPerPage)) {
+            sb.append("  LIMIT ${rowsPerPage} ");
+        }
+
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
+        try {
+            ClientRanking ct;
+            List<ClientRanking> list = new ArrayList<>();
+            Query query1 = getEntityManager().createNativeQuery(sqlsize);
+            int size = query1.getResultList().size();
+            Query query = getEntityManager().createNativeQuery(sql);
+            List result = query.getResultList();
+            if (result != null && !result.isEmpty()) {
+                for (int i = 0; i < result.size(); i++) {
+                    ct = new ClientRanking();
+                    Object[] row = (Object[]) result.get(i);
+                    ct.setCusno(row[0].toString());
+                    ct.setCusna(row[1].toString());
+                    ct.setN_code_DA(row[2].toString());
+                    ct.setNowrank(String.valueOf(i + 1));
+                    ct.setNowshpqy1(row[3].toString());
+                    ct.setNowshpamts(row[4].toString());
+                    list.add(ct);
+                }
+                if (!"0".equals(rowsPerPage) && size > Integer.parseInt(rowsPerPage)) {
+                    ct = new ClientRanking();
+                    ct.setCusna("其他");
+                    ct.setNowshpqy1("0");
+                    ct.setN_code_DA("");
+                    ct.setNowshpamts("0");
+                    list.add(ct);
+                }
+                ct = new ClientRanking();
+                ct.setCusna("总计");
+                ct.setN_code_DA("");
+                ct.setNowshpqy1(String.valueOf(getSumQuantity(y, m, map, type, monthchecked)));
+                ct.setNowshpamts(String.valueOf(getSumAmount(y, m, map, type, monthchecked)));
+                list.add(ct);
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getNowClientByCodeDA()"+e.toString());
+        }
+        return null;
+    }
+    
 
     // 返回同期ClientRanking集合
     protected List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked) {
@@ -287,6 +362,63 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             return list;
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.ejb.ClientNowAndPastBean.getClient()" + e);
+        }
+        return null;
+    }
+    
+    // 返回同期ClientRanking集合getPastClientByCodeDA
+    protected List<ClientRanking> getPastClientByCodeDA(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked) {
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
+
+        StringBuilder sb = new StringBuilder();
+        if (aggregatechecked) {
+            sb.append(" Select parentcusno,parentcusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        } else {
+            sb.append(" Select cusno,cusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
+        }
+        sb.append(" AND n_code_DA ").append(n_code_DA);
+        if (!"".equals(n_code_DC)) {
+            sb.append(" AND n_code_DC ").append(n_code_DC);
+        }
+        sb.append(" AND year(cdrdate) = ${y} ");
+        if (monthchecked) {
+            sb.append(" and month(cdrdate) = ${m} ");
+        } else {
+            sb.append(" and month(cdrdate) BETWEEN 1 AND ${m} ");
+        }
+        if (aggregatechecked) {
+            sb.append(" GROUP BY parentcusno,n_code_DA ORDER BY sum(amount) desc ");
+        } else {
+            sb.append(" GROUP BY cusno,n_code_DA ORDER BY sum(amount) desc");
+        }
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type);
+        try {
+            ClientRanking ct;
+            List<ClientRanking> list = new ArrayList<>();
+            Query query = getEntityManager().createNativeQuery(sql);
+            List result = query.getResultList();
+            if (result != null && !result.isEmpty()) {
+                for (int i = 0; i < result.size(); i++) {
+                    ct = new ClientRanking();
+                    Object[] row = (Object[]) result.get(i);
+                    ct.setCusno(row[0].toString());
+                    ct.setCusna(row[1].toString());
+                    ct.setN_code_DA(row[2].toString());
+                    ct.setPastrank(String.valueOf(i + 1));
+                    ct.setPastshpqy1(row[3].toString());
+                    ct.setPastshpamts(row[4].toString());
+                    list.add(ct);
+                }
+                ct = new ClientRanking();
+                ct.setCusna("总计");
+                ct.setPastshpqy1(String.valueOf(getSumQuantity(y, m, map, type, monthchecked)));
+                ct.setPastshpamts(String.valueOf(getSumAmount(y, m, map, type, monthchecked)));
+                list.add(ct);
+            }
+            return list;
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getPastClientByCodeDA()"+e.toString());
         }
         return null;
     }
@@ -418,6 +550,135 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         return list;
     }
 
+     /**
+     *
+     * @param y 查询年
+     * @param m 查询月
+     * @param map 查询参数
+     * @param monthchecked 是为月查询 否为年查询
+     * @param aggregatechecked 是否客户整合
+     * @param rowsPerPage 显示行数
+     * @return
+     */
+    public List<ClientRanking> getClientListByCodeDA(int y, int m, LinkedHashMap<String, String> map, Boolean monthchecked, Boolean aggregatechecked, String rowsPerPage) {
+        String type = "Shipment";
+        List<ClientRanking> list = new ArrayList<>();
+        //得到已经有排名的list
+        //NowClient
+        List<ClientRanking> nowList = getNowClientByCodeDA(y, m, map, type, monthchecked, aggregatechecked, rowsPerPage);
+        //PastClient
+        List<ClientRanking> pastList = getPastClientByCodeDA(y - 1, m, map, type, monthchecked, aggregatechecked);
+        //UltClient
+        List<ClientRanking> ultList;
+        if (monthchecked) {
+            ultList = getPastClientByCodeDA(m == 1 ? y - 1 : y, m == 1 ? 12 : m - 1, map, type, monthchecked, aggregatechecked);
+        } else {
+            ultList = null;
+        }
+        try {
+            //判断是否有其他项
+            Boolean other = false;
+            ClientRanking cr;
+            if (nowList != null && !nowList.isEmpty()) {
+                for (ClientRanking now : nowList) {
+                    cr = new ClientRanking();
+                    cr.setCusno(now.getCusno());
+                    cr.setCusna(now.getCusna());
+                    cr.setN_code_DA(now.getN_code_DA());
+                    cr.setNowrank(now.getNowrank());
+                    cr.setNowshpqy1(now.getNowshpqy1());
+                    cr.setNowshpamts(now.getNowshpamts());
+                    cr.setPastshpqy1("0");
+                    cr.setPastshpamts("0");
+                    cr.setUltshpqy1("0");
+                    cr.setUltshpamts("0");
+                    //找到同期数据
+                    if (pastList != null && !pastList.isEmpty()) {
+                        for (ClientRanking past : pastList) {
+                            if (now.getCusna().equals(past.getCusna()) && now.getN_code_DA().equals(past.getN_code_DA()) ) {
+                                cr.setPastrank(past.getPastrank());
+                                cr.setPastshpqy1(past.getPastshpqy1());
+                                cr.setPastshpamts(past.getPastshpamts());
+                                break;
+                            }
+                        }
+                    }
+                    if (ultList != null && !ultList.isEmpty()) {
+                        for (ClientRanking ult : ultList) {
+                            if (now.getCusna().equals(ult.getCusna()) && now.getN_code_DA().equals(ult.getN_code_DA())) {
+                                cr.setUltshpqy1(ult.getPastshpqy1());
+                                cr.setUltshpamts(ult.getPastshpamts());
+                                break;
+                            }
+                        }
+                    }
+                    if ("其他".equals(now.getCusna())) {
+                        other = true;
+                    }
+                    list.add(cr);
+                }
+                //计算其他项
+                Double topNowshpqy1 = 0.0;
+                Double topPastshpqy1 = 0.0;
+                Double topUltshpqy1 = 0.0;
+
+                Double topNowshpamts = 0.0;
+                Double topPastshpamts = 0.0;
+                Double topUltshpamts = 0.0;
+                if (other) {
+                    for (ClientRanking ranking : list) {
+                        if (!"总计".equals(ranking.getCusna())) {
+                            topNowshpqy1 += Double.parseDouble(ranking.getNowshpqy1());
+                            topPastshpqy1 += Double.parseDouble(ranking.getPastshpqy1());
+                            topUltshpqy1 += Double.parseDouble(ranking.getUltshpqy1());
+
+                            topNowshpamts += Double.parseDouble(ranking.getNowshpamts());
+                            topPastshpamts += Double.parseDouble(ranking.getPastshpamts());
+                            topUltshpamts += Double.parseDouble(ranking.getUltshpamts());
+                        }
+                        if ("总计".equals(ranking.getCusna())) {
+                            topNowshpqy1 = Double.parseDouble(ranking.getNowshpqy1()) - topNowshpqy1;
+                            topPastshpqy1 = Double.parseDouble(ranking.getPastshpqy1()) - topPastshpqy1;
+                            topUltshpqy1 = Double.parseDouble(ranking.getUltshpqy1()) - topUltshpqy1;
+
+                            topNowshpamts = Double.parseDouble(ranking.getNowshpamts()) - topNowshpamts;
+                            topPastshpamts = Double.parseDouble(ranking.getPastshpamts()) - topPastshpamts;
+                            topUltshpamts = Double.parseDouble(ranking.getUltshpamts()) - topUltshpamts;
+                        }
+                    }
+                }
+                for (ClientRanking ranking : list) {
+                    if ("其他".equals(ranking.getCusna())) {
+                        ranking.setNowshpqy1(topNowshpqy1.toString());
+                        ranking.setNowshpamts(topNowshpamts.toString());
+                        ranking.setPastshpqy1(topPastshpqy1.toString());
+                        ranking.setPastshpamts(topPastshpamts.toString());
+                        ranking.setUltshpqy1(topUltshpqy1.toString());
+                        ranking.setUltshpamts(topUltshpamts.toString());
+                        ranking.setN_code_DA("");
+                    }
+                    if ("总计".equals(ranking.getCusna())) {
+                        ranking.setN_code_DA("");
+                    }
+                    ranking.setDifferencevalue(CRdifferencevalue(ranking.getNowshpamts(), ranking.getPastshpamts()));
+                    ranking.setGrowthrate(CRrate(ranking.getNowshpamts(), ranking.getPastshpamts()));
+                    ranking.setShpqy1growthrate(CRrate(ranking.getNowshpqy1(), ranking.getPastshpqy1()));
+                    if (Double.parseDouble(ranking.getGrowthrate()) < 0) {
+                        ranking.setPaststyle("red");
+                    }
+                    ranking.setShpqy1chainrate(CRrate(ranking.getNowshpqy1(), ranking.getUltshpqy1()));
+                    ranking.setShpamtschainrate(CRrate(ranking.getNowshpamts(), ranking.getUltshpamts()));
+                    if (Double.parseDouble(ranking.getShpamtschainrate()) < 0) {
+                        ranking.setUltstyle("red");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getClientListByCodeDA()"+e.toString());
+        }
+        return list;
+    }
+    
     // 同比差异值 = 本年累计金额 - 去年同期累计金额
     protected String CRdifferencevalue(String now, String past) {
         return df.format(Double.parseDouble(now) - Double.parseDouble(past));
