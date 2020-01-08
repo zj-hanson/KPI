@@ -121,7 +121,7 @@ public class ServiceClosingQuarterSpecialMailBean extends ServiceMail {
                 }
                 if (i == 4) {
                     if (getQuarter(m) > 2) {
-                        sb.append("<td>").append(decimalFormat.format(o4.getNh2())).append("</td>");
+                        sb.append("<td>").append(decimalFormat.format(o3.getNh2())).append("</td>");
                     } else {
                         sb.append("<td>").append("").append("</td>");
                     }

@@ -40,6 +40,9 @@ public class ClientRanking implements Serializable {
 
     //客户名称
     private String cusna;
+    
+    //产品别
+    private String n_code_DA;
 
     //本年、月的销售数量
     private String nowshpqy1;
@@ -352,5 +355,20 @@ public class ClientRanking implements Serializable {
     public void setUltstyle(String ultstyle) {
         this.ultstyle = ultstyle;
     }
+
+    /**
+     * @return the n_code_DA
+     */
+    public String getN_code_DA() {
+        return n_code_DA;
+    }
+
+    /**
+     * @param n_code_DA the n_code_DA to set
+     */
+    public void setN_code_DA(String n_code_DA) {
+        this.n_code_DA = n_code_DA;
+    }
+    
     
 }

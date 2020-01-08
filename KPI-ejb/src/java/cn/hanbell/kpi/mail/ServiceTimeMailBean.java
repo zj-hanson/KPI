@@ -9,6 +9,7 @@ import cn.hanbell.kpi.comm.ServiceMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ServiceTimeMailBean extends ServiceMail {
     public void init() {
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
-        decimalFormat = new DecimalFormat("#,###.##");
+        decimalFormat = new DecimalFormat("#,##0.00");
     }
 
     @Override
@@ -64,8 +65,9 @@ public class ServiceTimeMailBean extends ServiceMail {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"10%\">部门</th width=\"12%\"><th>统计项目</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
-            sb.append("<th>09月</th><th>10月</th><th>11月</th><th>12月</th></tr>");
+            sb.append("<tr><th width=\"8%\">部门</th> <th width=\"7%\">统计项目</th> <th width=\"6%\">01月</th> <th width=\"6%\">02月</th> <th width=\"6%\">03月</th>");
+            sb.append("<th width=\"6%\">04月</th> <th width=\"6%\">05月</th> <th width=\"6%\">06月</th> <th width=\"6%\">07月</th> <th width=\"6%\">08月</th>");
+            sb.append("<th width=\"6%\">09月</th> <th width=\"6%\">10月</th> <th width=\"6%\">11月</th> <th width=\"6%\">12月</th> <th width=\"6%\">月平均</th> <th>合计</th></tr>");
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
@@ -101,11 +103,13 @@ public class ServiceTimeMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o1)).equals("0") ? "" : decimalFormat.format(f.get(o1))).append("</td>");
+                    sb.append("<td>").append(decimalFormat.format(f.get(o1)).equals("0.00") ? "" : decimalFormat.format(f.get(o1))).append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
                 }
             }
+            sb.append("<td>").append(decimalFormat.format(o1.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(o1.getNfy())).append("</td>");
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o2.getType()).append("</td>");
             for (int i = 1; i < 13; i++) {
@@ -115,11 +119,13 @@ public class ServiceTimeMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o2))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o2)).equals("0") ? "" : decimalFormat.format(f.get(o2))).append("</td>");
+                    sb.append("<td>").append(decimalFormat.format(f.get(o2)).equals("0.00") ? "" : decimalFormat.format(f.get(o2))).append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(o2))).append("</td>");
                 }
             }
+            sb.append("<td>").append(decimalFormat.format(o2.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
+            sb.append("<td>").append(decimalFormat.format(o2.getNfy())).append("</td>");
             sb.append("</tr>");           
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);

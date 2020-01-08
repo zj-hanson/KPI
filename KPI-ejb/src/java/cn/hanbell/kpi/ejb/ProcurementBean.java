@@ -448,7 +448,8 @@ public class ProcurementBean implements Serializable {
         String jk1, jk2, jksum, itnbrDj, itnbrZc, itnbrZj, itnbrSgp, itnbrCjjg;
         //2019年5月7日 陆夏玲要求 进口1加入厂商 'STW00035'
         jk1 = "'STW00007','STW00015','SXG00006','SXG00003','SXG00005','SXG00007','SXG00001','SXG00004','STW00033','STW00035'";
-        jk2 = "'STW00010','STW00001','STW00002','STW00013','SDM00001','STW00028','STW00029','STW00020','SDQ00002','STW00009','SDQ00004','SXG00011','SXG00009','STW00030','SXG00013','STW00024','STW00036','SDF00001'";
+        //2019年12月31日 陆夏玲要求加入STW00004  （从2020年1月开始润滑油原来贸易商CPA ENGINEERING SERVICES LTD.（STW00002）现变更抬头为FOU TAI ENTERPRISE CO.,LTD.（STW00004））
+        jk2 = "'STW00010','STW00001','STW00002','STW00004','STW00013','SDM00001','STW00028','STW00029','STW00020','SDQ00002','STW00009','SDQ00004','SXG00011','SXG00009','STW00030','SXG00013','STW00024','STW00036','SDF00001'";
         jksum = jk1 + "," + jk2;
         //2019年2月26日 陆夏玲要求加入'4304'，
         itnbrDj = " select itnbr from invmas where itcls in('3104','4503','4703','3504','4304') ";

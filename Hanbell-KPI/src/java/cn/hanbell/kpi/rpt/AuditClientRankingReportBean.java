@@ -38,15 +38,15 @@ public class AuditClientRankingReportBean extends BscQueryTableManageBean implem
     @EJB
     protected IndicatorChartBean indicatorChartBean;
 
-    private LinkedHashMap<String, String> map;
-    private List<ClientRanking> list;
+    protected LinkedHashMap<String, String> map;
+    protected List<ClientRanking> list;
 
-    private Date querydate;
-    private boolean monthchecked;
-    private boolean aggregatechecked;
-    private String rowsPerPage;
+    protected Date querydate;
+    protected boolean monthchecked;
+    protected boolean aggregatechecked;
+    protected String rowsPerPage;
 
-    private String deptno;
+    protected String deptno;
     protected int year;
     protected int month;
     protected final DecimalFormat df;
