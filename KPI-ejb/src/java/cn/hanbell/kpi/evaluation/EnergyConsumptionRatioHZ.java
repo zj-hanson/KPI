@@ -56,7 +56,7 @@ public class EnergyConsumptionRatioHZ extends EnergyConsumptionCost {
             if (a3 == 0.00) {
                 v1 = BigDecimal.ZERO;
             } else {
-                v1 = BigDecimal.valueOf(a1 / a3 * 100).divide(BigDecimal.ONE, 2, RoundingMode.HALF_UP);
+                v1 = BigDecimal.valueOf(a1 / a3 * 100).divide(BigDecimal.ONE, 4, RoundingMode.HALF_UP);
             }
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

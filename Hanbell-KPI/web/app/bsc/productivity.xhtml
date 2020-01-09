@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:form id="formOne" rendered="#{!shipmentSheetReportBean.deny}">
+        <h:form id="formOne" rendered="#{!shipmentChartReportBean.deny}">
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
                     <div><h3 style="text-align: center">#{shipmentChartReportBean.y}&nbsp;&nbsp;#{shipmentChartReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
@@ -92,7 +92,7 @@
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n10,10)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n11,11)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.n12,12)}</p:column>
-                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.getValueA(shipmentChartReportBean.indicator.other2Indicator.nsy(), shipmentChartReportBean.indicator.other1Indicator.nsy()),0)}</p:column>
                         </p:row>
                         <p:row  style="text-align: right;font-weight: 800">
                             <p:column>去年同期效率</p:column>
@@ -124,7 +124,7 @@
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.other3Indicator.n10,10)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.other3Indicator.n11,11)}</p:column>
                             <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.other3Indicator.n12,12)}</p:column>
-                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.indicator.other3Indicator.nfy,0)}</p:column>
+                            <p:column>#{shipmentChartReportBean.doubleformat(shipmentChartReportBean.getValueA(shipmentChartReportBean.indicator.other2Indicator.nsy(), shipmentChartReportBean.indicator.other1Indicator.nsy(),shipmentChartReportBean.indicator.benchmarkIndicator.nfy),0)}</p:column>
                         </p:row>
                     </p:panelGrid>
                 </div>

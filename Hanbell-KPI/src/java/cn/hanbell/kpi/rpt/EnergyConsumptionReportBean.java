@@ -11,6 +11,7 @@ import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscSheetManagedBean;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -29,7 +30,7 @@ public class EnergyConsumptionReportBean extends BscSheetManagedBean {
 
     public EnergyConsumptionReportBean() {
         this.Format = new DecimalFormat("#,###");
-        this.DoubleFormat = new DecimalFormat("0.00");
+        this.DoubleFormat = new DecimalFormat("0.####");
     }
 
     @Override
@@ -127,22 +128,29 @@ public class EnergyConsumptionReportBean extends BscSheetManagedBean {
         if (value == null) {
             return "";
         } else if (i <= m) {
-            return DoubleFormat.format(value);
-        } else if (value.compareTo(BigDecimal.ZERO) == 0) {
-            return "";
+            return DoubleFormat.format(value.divide(BigDecimal.valueOf(10000), 4, RoundingMode.HALF_UP));
         } else {
-            return DoubleFormat.format(value);
+            return "";
         }
     }
 
     @Override
     public String format(String type, BigDecimal value, int i) {
-        switch (type) {
-            case "吨标煤/万元产值":
+        switch (type) {           
             case "能耗达标率":
-            case "实际（吨标煤/万元产值）":
-            case "基准（吨标煤/万元产值）":
-            case "目标（吨标煤/万元产值）":
+                 if (value == null) {
+                    return "";
+                } else if (i <= m) {
+                    return DoubleFormat.format(value) + "%";
+                } else if (value.compareTo(BigDecimal.ZERO) == 0) {
+                    return "";
+                } else {
+                    return DoubleFormat.format(value);
+                }
+            case "吨标煤/万元产值":
+            case "实际(吨标煤/万元产值)":
+            case "基准(吨标煤/万元产值)":
+            case "目标(吨标煤/万元产值)":
                 return format(value, i);
             default:
                 if (value == null) {
@@ -156,5 +164,18 @@ public class EnergyConsumptionReportBean extends BscSheetManagedBean {
                 }
         }
     }
+    
+    public String sumformat(String type, BigDecimal value, int i) {
+        switch (type) { 
+            case "能耗达标率":
+            case "吨标煤/万元产值":
+            case "实际(吨标煤/万元产值)":
+            case "基准(吨标煤/万元产值)":
+            case "目标(吨标煤/万元产值)":
+                return "";
+            default:
+                return format(type, value, i);
+        }
+    }    
 
 }
