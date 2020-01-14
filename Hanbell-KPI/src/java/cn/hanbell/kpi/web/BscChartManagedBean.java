@@ -18,6 +18,7 @@ import cn.hanbell.kpi.entity.RoleGrantModule;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -74,7 +75,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     public BscChartManagedBean() {
         super(Indicator.class);
         this.decimalFormat = new DecimalFormat("#,###");
-        this.percentFormat = new DecimalFormat("##.00％");
+        this.percentFormat = new DecimalFormat("#0.00％");
     }
 
     @PostConstruct
@@ -497,6 +498,44 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         yAxis = accumulatedChartModel.getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
         return accumulatedChartModel;
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return a/b
+     */
+    public BigDecimal getValueA(BigDecimal a, BigDecimal b) {
+        if (b.compareTo(BigDecimal.ZERO) != 0) {
+            return a.divide(b, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+        } else {
+            if (a.compareTo(BigDecimal.ZERO) != 0) {
+                return BigDecimal.valueOf(100d);
+            } else {
+                return BigDecimal.ZERO;
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param a
+     * @param b
+     * @param c
+     * @return  (a/b - c)/c 
+     */
+    public BigDecimal getValueA(BigDecimal a, BigDecimal b, BigDecimal c) {
+        BigDecimal d = getValueA(a, b);
+        if (c.compareTo(BigDecimal.ZERO) != 0) {
+            return d.divide(c, 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+        } else {
+            if (d.compareTo(BigDecimal.ZERO) != 0) {
+                return BigDecimal.valueOf(100d);
+            } else {
+                return BigDecimal.ZERO;
+            }
+        }
     }
 
     /**

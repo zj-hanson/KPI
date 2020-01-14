@@ -412,6 +412,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 }
                 ct = new ClientRanking();
                 ct.setCusna("总计");
+                ct.setN_code_DA("");
                 ct.setPastshpqy1(String.valueOf(getSumQuantity(y, m, map, type, monthchecked)));
                 ct.setPastshpamts(String.valueOf(getSumAmount(y, m, map, type, monthchecked)));
                 list.add(ct);
