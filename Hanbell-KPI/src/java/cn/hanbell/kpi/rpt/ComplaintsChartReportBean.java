@@ -170,50 +170,53 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                         setMethod.invoke(period, BigDecimal.valueOf(i));
                     }
                     //去年补充位移
-                    do {
-                        mon = indicatorBean.getIndicatorColumn("N", getM() + j);
+                    if (j > 0) {
+                        do {
+                            mon = indicatorBean.getIndicatorColumn("N", getM() + j);
 
-                        f = lastMIS.getOther1Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther1Indicator()).toString()));
-                        setMethod = threeMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(threeMIS, v);
+                            f = lastMIS.getOther1Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther1Indicator()).toString()));
+                            setMethod = threeMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(threeMIS, v);
 
-                        f = lastMIS.getOther2Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther2Indicator()).toString()));
-                        setMethod = threeMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(threeMISRatio, v);
+                            f = lastMIS.getOther2Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther2Indicator()).toString()));
+                            setMethod = threeMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(threeMISRatio, v);
 
-                        f = lastMIS.getOther3Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther3Indicator()).toString()));
-                        setMethod = sixMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(sixMIS, v);
+                            f = lastMIS.getOther3Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther3Indicator()).toString()));
+                            setMethod = sixMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(sixMIS, v);
 
-                        f = lastMIS.getOther4Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther4Indicator()).toString()));
-                        setMethod = sixMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(sixMISRatio, v);
+                            f = lastMIS.getOther4Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther4Indicator()).toString()));
+                            setMethod = sixMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(sixMISRatio, v);
 
-                        f = lastMIS.getOther5Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther5Indicator()).toString()));
-                        setMethod = twelveMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(twelveMIS, v);
+                            f = lastMIS.getOther5Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther5Indicator()).toString()));
+                            setMethod = twelveMIS.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(twelveMIS, v);
 
-                        f = lastMIS.getOther6Indicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther6Indicator()).toString()));
-                        setMethod = twelveMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(twelveMISRatio, v);
-                        //记录移动平均月份
-                        setMethod = period.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(period, BigDecimal.valueOf(getM() + j));
+                            f = lastMIS.getOther6Indicator().getClass().getDeclaredField(mon);
+                            f.setAccessible(true);
+                            v = BigDecimal.valueOf(Double.valueOf(f.get(lastMIS.getOther6Indicator()).toString()));
+                            setMethod = twelveMISRatio.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(twelveMISRatio, v);
+                            //记录移动平均月份
+                            setMethod = period.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
+                            setMethod.invoke(period, BigDecimal.valueOf(getM() + j));
 
-                        j--;
-                    } while (j > 0);
+                            j--;
+                        } while (j > 0);
+                    }
+
                     //产生图表
                     chartMIS = new LineChartModel();
                     ChartSeries mr3 = new ChartSeries();
