@@ -26,7 +26,7 @@
                             <p:link rendered="#{shipmentSheetReportBean.isExists(item.parent.formid, item.parent.deptno)}"  value="#{item.parent.name}" outcome="#{shipmentSheetReportBean.sheetChart.api}" includeViewParams="true" >                                   
                                     <f:param name="id" value="#{shipmentSheetReportBean.sheetChart.id}" />                                                                
                             </p:link>
-                            <h:outputText value="#{item.parent.name}" rendered="#{shipmentSheetReportBean.isExists(item.parent.formid, item.parent.deptno)==false}" />
+                            <h:outputText value="#{item.parent.name}" rendered="#{shipmentSheetReportBean.notExists}" />
                         </p:column>
                         <p:column headerText="类别">
                             <h:outputText value="#{item.type}" />

@@ -82,6 +82,8 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     protected int scale;
 
     private IndicatorChart sheetChart;
+    private boolean notExists;
+    private String formidValue;
 
     public BscSheetManagedBean() {
         super(Indicator.class);
@@ -89,6 +91,8 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
         //初始化对象
         indicatorList = new ArrayList<>();
         indicatorDetailList = new ArrayList<>();
+        formidValue = "";
+        notExists = false;
     }
 
     @PostConstruct
@@ -105,12 +109,20 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     }
 
     public boolean isExists(String formid, String deptno) {
-        List<IndicatorChart> charts = indicatorChartBean.findByFormidAndDeptno(formid, deptno);
-        if (charts != null && !charts.isEmpty()) {
-            sheetChart=charts.get(0);
-            return true;
+        List<IndicatorChart> charts = null;
+        //相同formid只查询一次
+        if (!formidValue.equals(formid)) {
+            formidValue = formid;
+            charts = indicatorChartBean.findByFormidAndDeptno(formid, deptno);
+            if (charts != null && !charts.isEmpty()) {
+                sheetChart = charts.get(0);
+                notExists = false;
+                return true;
+            }
+            notExists = true;
+            return false;
         }
-        return false;
+        return !notExists;
     }
 
     @Override
@@ -571,6 +583,18 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
         this.sheetChart = sheetChart;
     }
 
-    
+    /**
+     * @return the notExists
+     */
+    public boolean isNotExists() {
+        return notExists;
+    }
+
+    /**
+     * @param notExists the notExists to set
+     */
+    public void setNotExists(boolean notExists) {
+        this.notExists = notExists;
+    }
 
 }
