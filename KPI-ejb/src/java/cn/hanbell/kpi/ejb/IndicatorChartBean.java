@@ -23,5 +23,16 @@ public class IndicatorChartBean extends SuperEJBForKPI<IndicatorChart> {
     public IndicatorChartBean() {
         super(IndicatorChart.class);
     }
+    
+    public List<IndicatorChart> findByFormidAndDeptno(String formid, String deptno) {
+        Query query = getEntityManager().createNamedQuery("IndicatorChart.findByFormidAndDeptno");
+        query.setParameter("formid", formid);
+        query.setParameter("deptno", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
 }

@@ -81,6 +81,8 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
 
     protected int scale;
 
+    private IndicatorChart sheetChart;
+
     public BscSheetManagedBean() {
         super(Indicator.class);
         this.decimalFormat = new DecimalFormat("#,###");
@@ -100,6 +102,15 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             m = c.get(Calendar.MONTH) + 1;
             this.init();
         }
+    }
+
+    public boolean isExists(String formid, String deptno) {
+        List<IndicatorChart> charts = indicatorChartBean.findByFormidAndDeptno(formid, deptno);
+        if (charts != null && !charts.isEmpty()) {
+            sheetChart=charts.get(0);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -545,5 +556,21 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     public int getSummaryCount() {
         return summaryCount;
     }
+
+    /**
+     * @return the sheetChart
+     */
+    public IndicatorChart getSheetChart() {
+        return sheetChart;
+    }
+
+    /**
+     * @param sheetChart the sheetChart to set
+     */
+    public void setSheetChart(IndicatorChart sheetChart) {
+        this.sheetChart = sheetChart;
+    }
+
+    
 
 }
