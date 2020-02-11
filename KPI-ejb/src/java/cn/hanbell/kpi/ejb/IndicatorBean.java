@@ -563,6 +563,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
             entity.setId(-1);
             entity.setName("合计");
+            entity.setFormid("合计");
             sa = new IndicatorDetail();
             sa.setParent(entity);
             sa.setType("A");

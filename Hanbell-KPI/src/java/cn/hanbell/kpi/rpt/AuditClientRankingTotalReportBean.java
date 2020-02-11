@@ -7,6 +7,7 @@ package cn.hanbell.kpi.rpt;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -30,8 +31,8 @@ public class AuditClientRankingTotalReportBean extends AuditClientRankingReportB
         month = getCalendar(querydate).get(Calendar.MONTH) + 1;
         try {
             Boolean aa = true;
-            if (querydate.compareTo(userManagedBean.getBaseDate()) == 1) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询时间不可超过系统结算日期"));
+            if (querydate.compareTo(new Date()) == 1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "查询时间不可超过当前日期"));
                 aa = false;
             }
             if (aa) {

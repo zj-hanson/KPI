@@ -95,8 +95,8 @@ public class SalesTableReportBean implements Serializable {
         status2 = "";
         quantitySum = 0;
         amountSum = "0";
-        if (btnDate.after(getQueryDate().getTime())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
+        if (btnDate.after(new Date())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过当前日期！"));
         } else {
             List<SalesTable> list = new ArrayList();
             try {

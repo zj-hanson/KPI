@@ -115,11 +115,19 @@ public class SHBShipmentMailBean extends ShipmentMail {
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货台数", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡轮每日出货台数", y);
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("柯茂出货台数");
+            total.setName("涡轮出货台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("再生每日出货台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("再生出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -382,7 +390,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             salesOrder = new SalesOrderAmount();
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡轮每日出货金额", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && indicators.size() > 0) {
                 indicators.stream().forEach((i) -> {
@@ -390,7 +398,23 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 });
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
-                total.setName("柯茂出货金额");
+                total.setName("涡轮每日出货金额");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("再生每日出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("再生每日出货金额");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
@@ -400,7 +424,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             salesOrder = null;
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂收费服务金额", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡轮收费服务金额", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && indicators.size() > 0) {
                 indicators.stream().forEach((i) -> {
@@ -408,13 +432,30 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 });
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
-                total.setName("柯茂收费服务金额");
+                total.setName("涡轮收费服务金额");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
-
+                      
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("再生收费服务金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("再生收费服务金额");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+            
+           
             total = indicatorBean.getSumValue(sumList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
