@@ -238,5 +238,20 @@ public class TimerBean {
             log4j.error(String.format("出货、订单、收费服务历史表归档更新异常", "updateKPISalesTable"), e.toString());
         }
     }
+    
+    @Schedule(minute = "30", hour = "2",persistent = false)
+    public void updateKPISalesTableDays() {
+        try {
+            log4j.info("Begin Execute Job updateKPISalesTableDays");
+            Calendar now = Calendar.getInstance();
+            int y = now.get(Calendar.YEAR);
+            int m = (now.get(Calendar.MONTH) + 1);
+            if (salesTableBean.updateSalesTable(y, m, "", "Shipment")) {
+                log4j.info("End Execute Job updateKPISalesTableDays");
+            }
+        } catch (Exception e) {
+            log4j.error(String.format("当月出货资料归档更新异常", "updateKPISalesTableDays"), e.toString());
+        }
+    }
 
 }
