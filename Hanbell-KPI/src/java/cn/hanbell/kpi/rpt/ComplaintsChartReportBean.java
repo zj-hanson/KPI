@@ -170,7 +170,7 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                         setMethod.invoke(period, BigDecimal.valueOf(i));
                     }
                     //去年补充位移
-                    do {
+                    while (j > 0) {
                         mon = indicatorBean.getIndicatorColumn("N", getM() + j);
 
                         f = lastMIS.getOther1Indicator().getClass().getDeclaredField(mon);
@@ -211,9 +211,8 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                         //记录移动平均月份
                         setMethod = period.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", j).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(period, BigDecimal.valueOf(getM() + j));
-
                         j--;
-                    } while (j > 0);
+                    }
                     //产生图表
                     chartMIS = new LineChartModel();
                     ChartSeries mr3 = new ChartSeries();
