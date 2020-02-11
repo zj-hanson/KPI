@@ -114,11 +114,19 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂订单台数", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡轮订单台数", y);
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("柯茂订单台数");
+            total.setName("涡轮订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("再生订单台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("再生订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -262,19 +270,32 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             salesOrder = new SalesOrderAmount();
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("柯茂订单金额", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡轮订单金额", y);
             indicatorBean.getEntityManager().clear();
             indicators.stream().forEach((i) -> {
                 indicatorBean.divideByRate(i, 2);
             });
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
-            total.setName("柯茂订单金额");
+            total.setName("涡轮订单金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("再生订单金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("再生订单金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
 
-            /*
+            
             total = indicatorBean.getSumValue(sumList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
@@ -282,7 +303,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
                 getData().put("sum1", sum1);
                 sb.append(getHtmlTableRow(total, y, m, d));
             }
-             */
+            
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
