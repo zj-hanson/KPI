@@ -44,7 +44,8 @@ public class ComerShipmentMailBean extends ShipmentMail {
 
     protected String getQuantityTable() {
         this.indicators.clear();
-        this.indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货台数", y);
+        this.indicators = indicatorBean.findByCategoryAndYear("涡轮每日出货台数", y);
+        this.indicators.addAll(indicatorBean.findByCategoryAndYear("再生每日出货台数", y));
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             salesOrder = new SalesOrderQuantity();
@@ -56,7 +57,8 @@ public class ComerShipmentMailBean extends ShipmentMail {
 
     protected String getAmountTable() {
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("柯茂每日出货金额", y);
+        indicators = indicatorBean.findByCategoryAndYear("涡轮每日出货金额", y);
+        this.indicators.addAll(indicatorBean.findByCategoryAndYear("再生每日出货金额", y));
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
