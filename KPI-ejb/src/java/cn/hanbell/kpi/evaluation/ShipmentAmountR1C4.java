@@ -20,7 +20,7 @@ public class ShipmentAmountR1C4 extends ShipmentAmount {
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1C000','1C100' ");
         queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_CD", " ='JN' ");
         queryParams.put("n_code_DC", " ='RT' ");
         queryParams.put("n_code_DD", " ='00' ");
