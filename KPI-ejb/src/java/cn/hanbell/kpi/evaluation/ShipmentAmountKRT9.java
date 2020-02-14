@@ -28,7 +28,7 @@ public class ShipmentAmountKRT9 extends ShipmentAmount9 {
     }
     
     //厂商排除'KSH00004'
-     @Override
+    @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";

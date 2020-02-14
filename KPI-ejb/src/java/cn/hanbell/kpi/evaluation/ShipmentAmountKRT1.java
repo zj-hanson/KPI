@@ -15,10 +15,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1879
+ * @author C1879 
  * 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
  */
-public class ShipmentAmountKRT1 extends ShipmentAmount{
+public class ShipmentAmountKRT1 extends ShipmentAmount {
 
     public ShipmentAmountKRT1() {
         super();
@@ -29,8 +29,8 @@ public class ShipmentAmountKRT1 extends ShipmentAmount{
         queryParams.put("n_code_DC", " ='RT' ");
         queryParams.put("n_code_DD", " In ('00','02') ");
     }
-    
-     @Override
+
+    @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
