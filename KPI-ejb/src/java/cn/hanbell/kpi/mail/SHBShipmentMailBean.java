@@ -398,7 +398,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 });
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
-                total.setName("涡轮每日出货金额");
+                total.setName("涡轮出货金额");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
@@ -414,7 +414,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 });
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
-                total.setName("再生每日出货金额");
+                total.setName("再生出货金额");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));

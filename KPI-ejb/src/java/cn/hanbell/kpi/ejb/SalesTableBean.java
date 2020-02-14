@@ -24,19 +24,19 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
-
+    
     @EJB
     private SalesTableUpdateBean salesTableUpdateBean;
-
+    
     private final DecimalFormat df;
     private final DecimalFormat dmf;
-
+    
     public SalesTableBean() {
         super(SalesTable.class);
         this.df = new DecimalFormat("#");
         this.dmf = new DecimalFormat("#0.00");
     }
-
+    
     public boolean querySalesTableIsExist(int y, int m, String daString, String typeString) {
         String da = daString == null ? "" : daString;
         StringBuilder sb = new StringBuilder();
@@ -58,7 +58,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         }
         return false;
     }
-
+    
     private void deleteSales(int y, int m, String daString, String typeString) {
         String da = daString == null ? "" : daString;
         StringBuilder sb = new StringBuilder();
@@ -77,7 +77,27 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.deleteSales()" + e);
         }
+        
+    }
 
+    /**
+     * 增加删除逻辑--RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分
+     *
+     * @param y
+     * @param m
+     */
+    private void deleteShbRT(int y, int m) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" delete from SalesTable  WHERE  cusno='KSH00004' and n_code_DC='RT' AND  year(cdrdate)=${y} and month(cdrdate)=${m}  ");
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
+        try {
+            Query query = getEntityManager().createNativeQuery(sql);
+            int count = query.executeUpdate();
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.deleteShbRT()受影响行数：" + count);
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.deleteShbRT()" + e);
+        }
+        
     }
 
     //更新到KPI
@@ -102,6 +122,8 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                     salesTable.setStatus("N");
                     super.persist(salesTable);
                 }
+                //调用RT删除逻辑
+                deleteShbRT(y, m);
                 return true;
             }
         } catch (Exception e) {
@@ -114,7 +136,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     protected Double getSumQuantity(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT sum(quantity) FROM SalesTable where type='${type}' ");
         sb.append(" AND n_code_DA ").append(n_code_DA);
@@ -141,7 +163,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     protected Double getSumAmount(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT sum(amount) FROM SalesTable where type='${type}' ");
         sb.append(" AND n_code_DA ").append(n_code_DA);
@@ -168,7 +190,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
     protected List<ClientRanking> getNowClient(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked, String rowsPerPage) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         if (aggregatechecked) {
             sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
@@ -191,11 +213,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             sb.append(" GROUP BY cusno ORDER BY sum(amount) desc");
         }
         String sqlsize = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
-
+        
         if (!"0".equals(rowsPerPage)) {
             sb.append("  LIMIT ${rowsPerPage} ");
         }
-
+        
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
         try {
             ClientRanking ct;
@@ -234,12 +256,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         }
         return null;
     }
-    
+
     // 返回当前ClientRanking集合getNowClientByCodeDA
     protected List<ClientRanking> getNowClientByCodeDA(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked, String rowsPerPage) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         if (aggregatechecked) {
             sb.append(" Select parentcusno,parentcusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
@@ -262,11 +284,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             sb.append(" GROUP BY cusno,n_code_DA ORDER BY sum(amount) desc");
         }
         String sqlsize = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
-
+        
         if (!"0".equals(rowsPerPage)) {
             sb.append("  LIMIT ${rowsPerPage} ");
         }
-
+        
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${type}", type).replace("${rowsPerPage}", rowsPerPage);
         try {
             ClientRanking ct;
@@ -304,17 +326,16 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             }
             return list;
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getNowClientByCodeDA()"+e.toString());
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getNowClientByCodeDA()" + e.toString());
         }
         return null;
     }
-    
 
     // 返回同期ClientRanking集合
     protected List<ClientRanking> getPastClient(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         if (aggregatechecked) {
             sb.append(" Select parentcusno,parentcusna,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
@@ -365,12 +386,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         }
         return null;
     }
-    
+
     // 返回同期ClientRanking集合getPastClientByCodeDA
     protected List<ClientRanking> getPastClientByCodeDA(int y, int m, LinkedHashMap<String, String> map, String type, Boolean monthchecked, Boolean aggregatechecked) {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA") : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC") : "";
-
+        
         StringBuilder sb = new StringBuilder();
         if (aggregatechecked) {
             sb.append(" Select parentcusno,parentcusna,n_code_DA,sum(quantity),sum(amount) FROM  SalesTable where type='${type}' ");
@@ -419,7 +440,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             }
             return list;
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getPastClientByCodeDA()"+e.toString());
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getPastClientByCodeDA()" + e.toString());
         }
         return null;
     }
@@ -494,7 +515,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 Double topNowshpqy1 = 0.0;
                 Double topPastshpqy1 = 0.0;
                 Double topUltshpqy1 = 0.0;
-
+                
                 Double topNowshpamts = 0.0;
                 Double topPastshpamts = 0.0;
                 Double topUltshpamts = 0.0;
@@ -504,7 +525,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                             topNowshpqy1 += Double.parseDouble(ranking.getNowshpqy1());
                             topPastshpqy1 += Double.parseDouble(ranking.getPastshpqy1());
                             topUltshpqy1 += Double.parseDouble(ranking.getUltshpqy1());
-
+                            
                             topNowshpamts += Double.parseDouble(ranking.getNowshpamts());
                             topPastshpamts += Double.parseDouble(ranking.getPastshpamts());
                             topUltshpamts += Double.parseDouble(ranking.getUltshpamts());
@@ -513,7 +534,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                             topNowshpqy1 = Double.parseDouble(ranking.getNowshpqy1()) - topNowshpqy1;
                             topPastshpqy1 = Double.parseDouble(ranking.getPastshpqy1()) - topPastshpqy1;
                             topUltshpqy1 = Double.parseDouble(ranking.getUltshpqy1()) - topUltshpqy1;
-
+                            
                             topNowshpamts = Double.parseDouble(ranking.getNowshpamts()) - topNowshpamts;
                             topPastshpamts = Double.parseDouble(ranking.getPastshpamts()) - topPastshpamts;
                             topUltshpamts = Double.parseDouble(ranking.getUltshpamts()) - topUltshpamts;
@@ -530,7 +551,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                         ranking.setUltshpamts(topUltshpamts.toString());
                     }
                     if ("总计".equals(ranking.getCusna())) {
-
+                        
                     }
                     ranking.setDifferencevalue(CRdifferencevalue(ranking.getNowshpamts(), ranking.getPastshpamts()));
                     ranking.setGrowthrate(CRrate(ranking.getNowshpamts(), ranking.getPastshpamts()));
@@ -551,7 +572,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         return list;
     }
 
-     /**
+    /**
      *
      * @param y 查询年
      * @param m 查询月
@@ -596,7 +617,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                     //找到同期数据
                     if (pastList != null && !pastList.isEmpty()) {
                         for (ClientRanking past : pastList) {
-                            if (now.getCusna().equals(past.getCusna()) && now.getN_code_DA().equals(past.getN_code_DA()) ) {
+                            if (now.getCusna().equals(past.getCusna()) && now.getN_code_DA().equals(past.getN_code_DA())) {
                                 cr.setPastrank(past.getPastrank());
                                 cr.setPastshpqy1(past.getPastshpqy1());
                                 cr.setPastshpamts(past.getPastshpamts());
@@ -622,7 +643,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 Double topNowshpqy1 = 0.0;
                 Double topPastshpqy1 = 0.0;
                 Double topUltshpqy1 = 0.0;
-
+                
                 Double topNowshpamts = 0.0;
                 Double topPastshpamts = 0.0;
                 Double topUltshpamts = 0.0;
@@ -632,7 +653,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                             topNowshpqy1 += Double.parseDouble(ranking.getNowshpqy1());
                             topPastshpqy1 += Double.parseDouble(ranking.getPastshpqy1());
                             topUltshpqy1 += Double.parseDouble(ranking.getUltshpqy1());
-
+                            
                             topNowshpamts += Double.parseDouble(ranking.getNowshpamts());
                             topPastshpamts += Double.parseDouble(ranking.getPastshpamts());
                             topUltshpamts += Double.parseDouble(ranking.getUltshpamts());
@@ -641,7 +662,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                             topNowshpqy1 = Double.parseDouble(ranking.getNowshpqy1()) - topNowshpqy1;
                             topPastshpqy1 = Double.parseDouble(ranking.getPastshpqy1()) - topPastshpqy1;
                             topUltshpqy1 = Double.parseDouble(ranking.getUltshpqy1()) - topUltshpqy1;
-
+                            
                             topNowshpamts = Double.parseDouble(ranking.getNowshpamts()) - topNowshpamts;
                             topPastshpamts = Double.parseDouble(ranking.getPastshpamts()) - topPastshpamts;
                             topUltshpamts = Double.parseDouble(ranking.getUltshpamts()) - topUltshpamts;
@@ -675,11 +696,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                 }
             }
         } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getClientListByCodeDA()"+e.toString());
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableBean.getClientListByCodeDA()" + e.toString());
         }
         return list;
     }
-    
+
     // 同比差异值 = 本年累计金额 - 去年同期累计金额
     protected String CRdifferencevalue(String now, String past) {
         return df.format(Double.parseDouble(now) - Double.parseDouble(past));
@@ -702,5 +723,5 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
             }
         }
     }
-
+    
 }

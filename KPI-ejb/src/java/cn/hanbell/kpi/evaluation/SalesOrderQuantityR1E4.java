@@ -20,7 +20,7 @@ public class SalesOrderQuantityR1E4 extends SalesOrderQuantity {
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1E000' ");
         queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_CD", " ='NJ' ");
         queryParams.put("n_code_DC", " ='RT' ");
         queryParams.put("n_code_DD", " ='00' ");
