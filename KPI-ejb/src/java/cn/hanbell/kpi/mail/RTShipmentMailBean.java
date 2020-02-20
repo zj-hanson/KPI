@@ -24,15 +24,12 @@ import javax.ejb.Stateless;
 @LocalBean
 public class RTShipmentMailBean extends ShipmentMail {
 
-    private List<Indicator> rtlist;
-
     public RTShipmentMailBean() {
 
     }
 
     @Override
     public void init() {
-        rtlist = new ArrayList<>();
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
     }
@@ -58,73 +55,33 @@ public class RTShipmentMailBean extends ShipmentMail {
     }
 
     protected String getQuantityTable() {
-        this.rtlist.clear();
         this.indicators.clear();
-        this.indicators = indicatorBean.findByCategoryAndYear("R冷媒出货台数", y);
+        Indicator indic = indicatorBean.findByFormidYearAndDeptno("Q-离心机体出货(总)", y, "5C0000");
+        this.indicators =  indicatorBean.findByPId(indic.getId());
         indicatorBean.getEntityManager().clear();
-        for (Indicator indicator : indicators) {
-            if (indicator.getName().contains("离心")) {
-                rtlist.add(indicator);
-            }
-        }
-        if (rtlist != null && !rtlist.isEmpty()) {
+        if (indicators != null && !indicators.isEmpty()) {
             salesOrder = new SalesOrderQuantity();
-            return getHtmlTable(this.rtlist, y, m, d, true);
+            return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "离心机体出货台数设定错误";
         }
     }
 
     protected String getAmountTable() {
-        this.rtlist.clear();
         this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("R冷媒出货金额", y);
+        Indicator indic = indicatorBean.findByFormidYearAndDeptno("A-离心机体出货(总)", y, "5C0000");
+        this.indicators =  indicatorBean.findByPId(indic.getId());
         indicatorBean.getEntityManager().clear();
-        for (Indicator indicator : indicators) {
-            if (indicator.getName().contains("离心")) {
-                rtlist.add(indicator);
-            }
-        }
-        if (rtlist != null && !rtlist.isEmpty()) {
-            for (Indicator i : rtlist) {
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
             salesOrder = new SalesOrderAmount();
-            return getHtmlTable(this.rtlist, y, m, d, true);
+            return getHtmlTable(this.indicators, y, m, d, true);
         } else {
             return "离心机体出货金额设定错误";
         }
     }
 
-    @Override
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
-        getData().clear();
-        getData().put("sum1", BigDecimal.ZERO);
-        getData().put("sum2", BigDecimal.ZERO);
-        StringBuilder sb = new StringBuilder();
-        try {
-            sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
-            sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-            sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
-            sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("</tr>");
-            for (Indicator i : indicatorList) {
-                sb.append(getHtmlTableRow(i, y, m, d));
-            }
-            if (needsum) {
-                sumIndicator = indicatorBean.getSumValue(rtlist);
-                if (sumIndicator != null) {
-                    indicatorBean.updatePerformance(sumIndicator);
-                    sb.append(getHtmlTableRow(sumIndicator, y, m, d));
-                }
-            }
-            sb.append("</table></div>");
-        } catch (Exception ex) {
-            return ex.toString();
-        }
-        return sb.toString();
-    }
 
 }
