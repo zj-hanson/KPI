@@ -48,6 +48,7 @@ public class RTShipmentMailBean extends ShipmentMail {
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
         sb.append("</div>");
+        sb.append("<div style=\"text-align:left;width:100%;color:Red;\">此报表各公司离心机体目标含柯茂机组之机体目标，实际栏位需每月末人工剥离柯茂机组销售之机体后调整为准。</div>");
         sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复</div>");
         sb.append("<div class=\"divFoot\">报表管理员</div>");
         sb.append("</div></body></html>");
@@ -56,8 +57,7 @@ public class RTShipmentMailBean extends ShipmentMail {
 
     protected String getQuantityTable() {
         this.indicators.clear();
-        Indicator indic = indicatorBean.findByFormidYearAndDeptno("Q-离心机体出货(总)", y, "5C0000");
-        this.indicators =  indicatorBean.findByPId(indic.getId());
+        this.indicators = indicatorBean.findByCategoryAndYear("各分公司离心机体出货台数", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             salesOrder = new SalesOrderQuantity();
@@ -69,8 +69,7 @@ public class RTShipmentMailBean extends ShipmentMail {
 
     protected String getAmountTable() {
         this.indicators.clear();
-        Indicator indic = indicatorBean.findByFormidYearAndDeptno("A-离心机体出货(总)", y, "5C0000");
-        this.indicators =  indicatorBean.findByPId(indic.getId());
+        indicators = indicatorBean.findByCategoryAndYear("各分公司离心机体出货金额", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
