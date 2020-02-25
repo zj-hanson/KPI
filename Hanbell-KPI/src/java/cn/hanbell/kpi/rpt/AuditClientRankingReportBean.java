@@ -124,12 +124,6 @@ public class AuditClientRankingReportBean extends BscQueryTableManageBean implem
                 map.put("n_code_DA", "= 'R'");
                 map.put("n_code_DC", " IN ('R','H') ");
                 break;
-            case "1F340":
-                map.put("deptnoname", "制冷产品部");
-                map.put("daname", "离心机");
-                map.put("n_code_DA", "= 'R'");
-                map.put("n_code_DC", " IN ('RT') ");
-                break;
             case "1Q000":
                 map.put("deptnoname", "空压机组产品部");
                 map.put("daname", "空压机组");
