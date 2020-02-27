@@ -9,13 +9,17 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ShipmentAmountKRT9 extends ShipmentAmount9 {
+public class SalesOrderQuantityKHM2 extends SalesOrderQuantity{
 
-    public ShipmentAmountKRT9() {
+    public SalesOrderQuantityKHM2() {
         super();
         queryParams.put("facno", "K");
+        queryParams.put("deptno", " '5C000' ");
         queryParams.put("ogdkid", "RL01");
-        queryParams.put("n_code_DA", " IN('RT') ");
+        queryParams.put("n_code_DA", " ='RT' ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " ='HM' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
-   
+
 }

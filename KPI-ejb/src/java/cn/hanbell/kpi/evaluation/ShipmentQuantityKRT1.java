@@ -5,6 +5,7 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import cn.hanbell.kpi.comm.Actual;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,10 +16,11 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1879 
- * 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
+ * @author C1879 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
  */
 public class ShipmentQuantityKRT1 extends ShipmentQuantity {
+
+    protected Actual actualInterface;
 
     public ShipmentQuantityKRT1() {
         super();
@@ -125,6 +127,32 @@ public class ShipmentQuantityKRT1 extends ShipmentQuantity {
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return shpqy1.subtract(bshpqy1);
+        BigDecimal rt = BigDecimal.ZERO;
+        try {
+            //各分公司数据
+            String ejb="java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1B4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal hd = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1C4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal jn = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1D4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal gz = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1E4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal nj = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1V4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal cq = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1T4").newInstance();
+            actualInterface.setEJB(ejb);
+            BigDecimal wx = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
+            rt.add(hd).add(jn).add(gz).add(cq).add(nj).add(wx);
+        } catch (Exception ex) {
+            Logger.getLogger(ShipmentQuantityKRT1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return shpqy1.subtract(bshpqy1).add(rt);
     }
 }
