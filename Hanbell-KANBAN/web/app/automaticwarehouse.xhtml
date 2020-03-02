@@ -69,10 +69,7 @@
             }
         </style>
         <h:form id="formOne">
-            <div id="djs"><h:outputText id="second" value="#{automaticWarehouseBean.getFormat(automaticWarehouseBean.second)}" />秒后刷新数据</div>
-            <p:poll listener="#{automaticWarehouseBean.increment()}" update="second" interval="1" />
-            <p:poll listener="#{automaticWarehouseBean.flushRight()}" update="listtable1,listtable2" interval="75" />
-            <p:poll listener="#{automaticWarehouseBean.query()}" update="listtable,listtable1,listtable2" interval="300" />
+            <p:poll listener="#{automaticWarehouseBean.refresh()}" update="listtable,listtable1,listtable2" interval="900" />
             <div id="kanbantitle" >#{automaticWarehouseBean.panels.pdname}</div>
             <p:panel class="ui-panel-left" style="background-color: #2f4050;"  id="pnl" >
                 <p:dataTable  var="item" value="#{automaticWarehouseBean.map.entrySet()}"  id="listtable" style="margin: -8px -14px;" scrollable="false" >
@@ -111,7 +108,7 @@
             <p:resizable for="pnl" />
             <p:contextMenu for="pnl" id="contextMenu" >
                 <p:menuitem value="返回主页" outcome="home" icon="ui-icon-home"  />
-                <p:menuitem value="手动刷新" actionListener="#{automaticWarehouseBean.query()}" icon="ui-icon-sync" update="listtable,second" />
+                <p:menuitem value="手动刷新" actionListener="#{automaticWarehouseBean.query()}" icon="ui-icon-sync" update="listtable" />
                 <p:menuitem id="barshow" value="显示工具栏" onclick="PF('bar').show();"  icon="ui-icon-carat-1-n"/>
                 <p:menuitem id="barhide" value="隐藏工具栏" onclick="PF('bar').hide();"  icon="ui-icon-carat-1-s"/>
             </p:contextMenu>

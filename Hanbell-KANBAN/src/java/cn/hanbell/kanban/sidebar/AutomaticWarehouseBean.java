@@ -28,15 +28,17 @@ public class AutomaticWarehouseBean extends KanBanBean {
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, List> map1;
     protected LinkedHashMap<String, List> map2;
+    protected int index;
 
     public AutomaticWarehouseBean() {
+        map = new LinkedHashMap<>();
+        map1 = new LinkedHashMap<>();
+        map2 = new LinkedHashMap<>();
+        index = 1;
     }
 
     @Override
     public void construct() {
-        map = new LinkedHashMap<>();
-        map1 = new LinkedHashMap<>();
-        map2 = new LinkedHashMap<>();
         super.construct();
         this.query();
     }
@@ -54,7 +56,7 @@ public class AutomaticWarehouseBean extends KanBanBean {
         map.clear();
         second = 300;
         map = warehouseBean.getTableMap();
-        query(1, "1号线");               
+        query(1, "1号线");
     }
 
     /**
@@ -72,12 +74,33 @@ public class AutomaticWarehouseBean extends KanBanBean {
         }
     }
 
+    //优化看板自动刷新
+    public void refresh() {
+        index++;
+        switch (index) {
+            case 1:
+                query(1, "1号线");
+                break;
+            case 2:
+                query(3, "2号线");
+                break;
+            case 3:
+                query(5, "3号线");
+                break;
+            case 4:
+                query(7, "4号线");
+                index = 0;
+                break;
+        }
+
+    }
+
     @Override
     public void increment() {
         if (second == 0) {
             second = 300;
         }
-        second --;
+        second--;
     }
 
     public String setColor(String value) {

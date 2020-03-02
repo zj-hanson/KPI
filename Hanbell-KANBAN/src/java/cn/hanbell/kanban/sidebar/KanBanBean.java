@@ -54,11 +54,13 @@ public class KanBanBean implements Serializable {
     @PostConstruct
     public void construct() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        id = Integer.parseInt(request.getParameter("id"));
-        panels = panelsBean.findById(id);
-        //删除以往的数据
-        paneldataBean.deleteYesterdayData(id, getYesterDayDate(new Date()).getTime());
-        paneldatas = new ArrayList<>();
+        if (request.getParameter("id") != null) {
+            id = Integer.parseInt(request.getParameter("id"));
+            panels = panelsBean.findById(id);
+            //删除以往的数据
+            paneldataBean.deleteYesterdayData(id, getYesterDayDate(new Date()).getTime());
+            paneldatas = new ArrayList<>();
+        }
     }
 
     public void queryPanelDataList() {
