@@ -157,7 +157,7 @@ public class ShipmentAmountKRT1 extends ShipmentAmount {
             actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentAmountR1T4").newInstance();
             actualInterface.setEJB(ejb);
             BigDecimal wx = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            rt.add(hd).add(jn).add(gz).add(cq).add(nj).add(wx);
+            rt = hd.add(jn).add(gz).add(cq).add(nj).add(wx);
         } catch (Exception ex) {
             Logger.getLogger(ShipmentAmountKRT1.class.getName()).log(Level.SEVERE, null, ex);
         }
