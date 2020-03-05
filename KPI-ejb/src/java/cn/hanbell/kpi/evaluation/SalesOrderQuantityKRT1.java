@@ -16,8 +16,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1879 
- * 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
+ * @author C1879 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
  */
 public class SalesOrderQuantityKRT1 extends SalesOrderQuantity {
 
@@ -96,7 +95,7 @@ public class SalesOrderQuantityKRT1 extends SalesOrderQuantity {
         BigDecimal rt = BigDecimal.ZERO;
         try {
             //各分公司数据
-            String ejb="java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
+            String ejb = "java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
             actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderQuantityR1B4").newInstance();
             actualInterface.setEJB(ejb);
             BigDecimal hd = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
@@ -115,7 +114,7 @@ public class SalesOrderQuantityKRT1 extends SalesOrderQuantity {
             actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderQuantityR1T4").newInstance();
             actualInterface.setEJB(ejb);
             BigDecimal wx = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            rt.add(hd).add(jn).add(gz).add(cq).add(nj).add(wx);
+            rt = hd.add(jn).add(gz).add(cq).add(nj).add(wx);
         } catch (Exception ex) {
             Logger.getLogger(SalesOrderQuantityKRT1.class.getName()).log(Level.SEVERE, null, ex);
         }
