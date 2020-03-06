@@ -38,6 +38,7 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
     protected Date btndate;
     protected LinkedHashMap<String, String[]> map;
     protected LinkedHashMap<String, String> statusMap;
+    protected String facno;
 
     public CashFlowSheetReportBean() {
     }
@@ -75,6 +76,14 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
         }
         setMap(new LinkedHashMap<>());
         statusMap = new LinkedHashMap<>();
+        if (indicatorChart.getRemark().contains("汉钟")) {
+            statusMap.put("title", "上海汉钟精机股份有限公司");
+            facno = "C";
+        }
+        if (indicatorChart.getRemark().contains("柯茂")) {
+            statusMap.put("title", "上海柯茂机械有限公司");
+            facno = "K";
+        }
         statusMap.put("displaydiv1", "block");
         statusMap.put("displaydiv2", "none");
         setBtndate(settlementDate().getTime());
@@ -96,7 +105,7 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
         int y = getdate().get(Calendar.YEAR);
         int m = getdate().get(Calendar.MONTH) + 1;
         if (aa) {
-            map = dataRecordBean.getCashFlowMap("C", "cashflow", y, m);
+            map = dataRecordBean.getCashFlowMap(facno, "cashflow", y, m);
             if (getMap() != null && !map.isEmpty()) {
                 statusMap.put("displaydiv1", "none");
                 statusMap.put("displaydiv2", "block");

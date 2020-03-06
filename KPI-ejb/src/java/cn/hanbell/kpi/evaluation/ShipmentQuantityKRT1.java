@@ -130,7 +130,7 @@ public class ShipmentQuantityKRT1 extends ShipmentQuantity {
         BigDecimal rt = BigDecimal.ZERO;
         try {
             //各分公司数据
-            String ejb="java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
+            String ejb = "java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
             actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1B4").newInstance();
             actualInterface.setEJB(ejb);
             BigDecimal hd = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
@@ -149,7 +149,7 @@ public class ShipmentQuantityKRT1 extends ShipmentQuantity {
             actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.ShipmentQuantityR1T4").newInstance();
             actualInterface.setEJB(ejb);
             BigDecimal wx = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            rt.add(hd).add(jn).add(gz).add(cq).add(nj).add(wx);
+            rt = hd.add(jn).add(gz).add(cq).add(nj).add(wx);
         } catch (Exception ex) {
             Logger.getLogger(ShipmentQuantityKRT1.class.getName()).log(Level.SEVERE, null, ex);
         }
