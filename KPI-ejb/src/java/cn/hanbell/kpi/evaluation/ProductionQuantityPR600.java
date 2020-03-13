@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ProductionQuantityAH extends ProductionQuantity {
+public class ProductionQuantityPR600 extends ProductionQuantity {
 
     /**
-     * A机体
+     * PR600机体
      */
-    public ProductionQuantityAH() {
+    public ProductionQuantityPR600() {
         super();
         //*公司别
         queryParams.put("facno", "C");
@@ -25,7 +25,7 @@ public class ProductionQuantityAH extends ProductionQuantity {
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //品号大类
-        queryParams.put("itcls", " NOT IN ('3476','3479','3480') ");
+        queryParams.put("itcls", "  IN ('3476','3479','3480') ");
         
     }
 }

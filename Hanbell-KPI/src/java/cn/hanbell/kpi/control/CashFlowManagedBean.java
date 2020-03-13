@@ -262,6 +262,13 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
 
     @Override
     public void setCurrentEntity(DataRecord currentEntity) {
+        if (currentEntity != null) {
+            if (currentEntity.getDataRecordAssisted() != null) {
+                if (currentEntity.getDataRecordAssisted().getShowno() == null) {
+                    currentEntity.getDataRecordAssisted().setShowno(assistedBean.findByShownoMax(currentEntity.getFacno()));
+                }
+            }
+        }
         super.setCurrentEntity(currentEntity);
     }
 

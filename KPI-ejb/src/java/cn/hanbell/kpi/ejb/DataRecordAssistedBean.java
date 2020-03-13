@@ -36,4 +36,21 @@ public class DataRecordAssistedBean extends SuperEJBForKPI<DataRecordAssisted> {
         }
     }
 
+    public Integer findByShownoMax(String facno) {
+        int showno = 0;
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select max(showno) FROM dataRecordAssisted where facno='${facno}'");
+        String sql = sb.toString().replace("${facno}", facno);
+        try {
+            Query query = getEntityManager().createNativeQuery(sql);
+            Object o1 = query.getSingleResult();
+            if (o1 != null) {
+                showno = (Integer) o1;
+            }
+            return showno + 1;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
