@@ -17,7 +17,8 @@ public class ShipmentQuantitySSF1 extends ShipmentQuantity {
         queryParams.put("decode", "1");
         queryParams.put("deptno", " '1U000' ");
         queryParams.put("n_code_DA", "='S' ");
-        queryParams.put("n_code_DC", " ='SF' ");
+        //2020年3月17日金杰提出无油大巴并入无油内销中
+        queryParams.put("n_code_DC", " IN ('SF','SM') ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 
