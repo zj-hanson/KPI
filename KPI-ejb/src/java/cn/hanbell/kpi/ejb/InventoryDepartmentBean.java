@@ -216,107 +216,226 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
 
     // 获取KPI的数据源 为KPI的系统最终显示的数据源
     private List getDataList(String type, String genre, int y, int m) {
-
         StringBuilder sb = new StringBuilder();
-        sb.append(" select whdsc, ");
-        sb.append("sum(n").append(getMon(m - 2)).append("),");
-        sb.append("sum(n").append(getMon(m - 1)).append("),");
-        sb.append("sum(n").append(getMon(m)).append(") ");
-        sb.append(" from inventorydepartment WHERE 1=1  ");
-        if (!type.equals("N") && !type.equals("")) {
-            switch (type) {
-                case "SC":
-                    sb.append("AND categories  = 'A1'");
-                    break;
-                case "YY":
-                    sb.append("AND categories  = 'A2'");
-                    break;
-                case "FW":
-                    sb.append("AND categories  = 'A3'");
-                    break;
-                case "YF":
-                    sb.append("AND categories  = 'A6'");
-                    break;
-                default:
-                    sb.append(" ");
-                    break;
-            }
-        }
-        if (!genre.equals("N") && !genre.equals("")) {
-            if (genre.equals("R")) {
-                sb.append(" and genre in ('R','RG') ");
-            } else {
-                sb.append(" and genre = '").append(genre).append("'");
-            }
-        }
-        sb.append(" GROUP BY whdsc ");
-        // 服务在制和生产在制的数据
-        if (!type.equals("N") && !type.equals("")) {
-            sb.append(" UNION ");
-            sb.append(" select whdsc, ");
-            sb.append("sum(n").append(getMon(m - 2)).append("),");
-            sb.append("sum(n").append(getMon(m - 1)).append("),");
-            sb.append("sum(n").append(getMon(m)).append(") ");
-            sb.append(" from inventorydepartment WHERE 1=1  ");
-            // 判断当前事业部性质
-            switch (type) {
-                case "SC":
-                    sb.append(" AND wareh = 'SCZZ' ");
-                    break;
-                case "FW":
-                    sb.append(" AND wareh = 'FWZZ' ");
-                    break;
-                default:
-                    sb.append(" AND wareh = 'YFZZ' ");
-            }
-            // 取到产品别
-            if (!genre.equals("N") && !genre.equals("")) {
-                if (genre.equals("R")) {
-                    sb.append(" and genre in ('R','RG') ");
-                } else {
-                    sb.append(" and genre = '").append(genre).append("'");
+        switch (m) {
+            //当月份为1月时，前两个月的数据为去年的最后两个月的数据
+            case 1:
+                sb.append(" select * from ( ");
+                sb.append(" select whdsc, ");
+                sb.append("0 as num1,");
+                sb.append("0 as num2,");
+                sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                sb.append(sql1(type, genre, y, m));
+                sb.append(" AND creyear = '${y}'");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" UNION all ");
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(11)).append(") as num1, ");
+                sb.append("sum(n").append(getMon(12)).append(") as num2, ");
+                sb.append("0 as num3 ");
+                sb.append(sql1(type, genre, y, m));
+                sb.append(" AND creyear = '").append(y - 1).append("'");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" ) a ");
+                // 服务在制和生产在制的数据
+                if (!type.equals("N") && !type.equals("")) {
+                    sb.append(" UNION ");
+                    sb.append(" select * from ( ");
+                    sb.append(" select whdsc, ");
+                    sb.append("0 as num1,");
+                    sb.append("0 as num2,");
+                    sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                    sb.append(sql2(type, genre, y, m));
+                    sb.append(" AND creyear = '${y}'");
+                    sb.append(" GROUP BY whdsc ");
+                    sb.append(" UNION All ");
+                    sb.append(" select whdsc, ");
+                    sb.append("sum(n").append(getMon(11)).append(") as num1, ");
+                    sb.append("sum(n").append(getMon(12)).append(") as num2, ");
+                    sb.append("0 as num3 ");
+                    sb.append(sql2(type, genre, y, m));
+                    sb.append(" AND creyear = '").append(y - 1).append("'");
+                    sb.append(" GROUP BY whdsc ");
+                    sb.append(" ) b ");
                 }
-            }
-            sb.append(" GROUP BY whdsc ");
-        }
-        // 借出总仓 借厂商的数据归生产目标；借客户借员工的数据归服务目标
-        if (!type.equals("N") && !type.equals("")) {
-            switch (type) {
-                case "SC":
+                // 借出总仓 借厂商的数据归生产目标；借客户借员工的数据归服务目标
+                if (!type.equals("N") && !type.equals("")) {
+                    switch (type) {
+                        case "SC":
+                            sb.append(" UNION ");
+                            sb.append(" select * from ( ");
+                            sb.append(" select whdsc, ");
+                            sb.append("0 as num1,");
+                            sb.append("0 as num2,");
+                            sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" UNION All ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(11)).append(") as num1, ");
+                            sb.append("sum(n").append(getMon(12)).append(") as num2, ");
+                            sb.append("0 as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '").append(y - 1).append("'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" ) c ");
+                            break;
+                        case "FW":
+                            sb.append(" UNION ");
+                            sb.append(" select * from ( ");
+                            sb.append(" select whdsc, ");
+                            sb.append("0 as num1,");
+                            sb.append("0 as num2,");
+                            sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" UNION All ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(11)).append(") as num1, ");
+                            sb.append("sum(n").append(getMon(12)).append(") as num2, ");
+                            sb.append("0 as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '").append(y - 1).append("'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" ) c ");
+                            break;
+                    }
+                }
+                break;
+            //当月份为2月时，第一个月份的数据为去年的最后一月的数据
+            case 2:
+                sb.append(" select * from ( ");
+                sb.append(" select whdsc, ");
+                sb.append("0 as num1,");
+                sb.append("sum(n").append(getMon(m - 1)).append(") as num2, ");
+                sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                sb.append(sql1(type, genre, y, m));
+                sb.append(" AND creyear = '${y}'");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" UNION all ");
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(12)).append(") as num1, ");
+                sb.append("0 as num2, ");
+                sb.append("0 as num3 ");
+                sb.append(sql1(type, genre, y, m));
+                sb.append(" AND creyear = '").append(y - 1).append("'");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" ) a ");
+                // 服务在制和生产在制的数据
+                if (!type.equals("N") && !type.equals("")) {
+                    sb.append(" UNION ");
+                    sb.append(" select * from ( ");
+                    sb.append(" select whdsc, ");
+                    sb.append("0 as num1,");
+                    sb.append("sum(n").append(getMon(m - 1)).append(") as num2, ");
+                    sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                    sb.append(sql2(type, genre, y, m));
+                    sb.append(" AND creyear = '${y}'");
+                    sb.append(" GROUP BY whdsc ");
+                    sb.append(" UNION All ");
+                    sb.append(" select whdsc, ");
+                    sb.append("sum(n").append(getMon(12)).append(") as num1, ");
+                    sb.append("0 as num2, ");
+                    sb.append("0 as num3 ");
+                    sb.append(sql2(type, genre, y, m));
+                    sb.append(" AND creyear = '").append(y - 1).append("'");
+                    sb.append(" GROUP BY whdsc ");
+                    sb.append(" ) b ");
+                }
+                // 借出总仓 借厂商的数据归生产目标；借客户借员工的数据归服务目标
+                if (!type.equals("N") && !type.equals("")) {
+                    switch (type) {
+                        case "SC":
+                            sb.append(" UNION ");
+                            sb.append(" select * from ( ");
+                            sb.append(" select whdsc, ");
+                            sb.append("0 as num1,");
+                            sb.append("sum(n").append(getMon(m - 1)).append(") as num2, ");
+                            sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" UNION All ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(12)).append(") as num1, ");
+                            sb.append("0 as num2, ");
+                            sb.append("0 as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '").append(y - 1).append("'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" ) c ");
+                            break;
+                        case "FW":
+                            sb.append(" UNION ");
+                            sb.append(" select * from ( ");
+                            sb.append(" select whdsc, ");
+                            sb.append("0 as num1,");
+                            sb.append("sum(n").append(getMon(m - 1)).append(") as num2, ");
+                            sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" UNION All ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(12)).append(") as num1, ");
+                            sb.append("0 as num2, ");
+                            sb.append("0 as num3 ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '").append(y - 1).append("'");
+                            sb.append(" GROUP BY whdsc ");
+                            sb.append(" ) c ");
+                            break;
+                    }
+                }
+                break;
+            default:
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(m - 2)).append("),");
+                sb.append("sum(n").append(getMon(m - 1)).append("),");
+                sb.append("sum(n").append(getMon(m)).append(") ");
+                sb.append(" from inventorydepartment WHERE 1=1  ");
+                sb.append(sql1(type, genre, y, m));
+                sb.append(" AND creyear = '${y}'");
+                sb.append(" GROUP BY whdsc ");
+                // 服务在制和生产在制的数据
+                if (!type.equals("N") && !type.equals("")) {
                     sb.append(" UNION ");
                     sb.append(" select whdsc, ");
                     sb.append("sum(n").append(getMon(m - 2)).append("),");
                     sb.append("sum(n").append(getMon(m - 1)).append("),");
                     sb.append("sum(n").append(getMon(m)).append(") ");
-                    sb.append(" from inventorydepartment WHERE 1=1  ");
-                    sb.append(" AND whdsc LIKE ('借厂商%') ");
-                    if (!genre.equals("")) {
-                        if (genre.equals("R")) {
-                            sb.append(" and genre in ('R','RG') ");
-                        } else {
-                            sb.append(" and genre = '").append(genre).append("'");
-                        }
-                    }
+                    sb.append(sql2(type, genre, y, m));
+                    sb.append(" AND creyear = '${y}'");
                     sb.append(" GROUP BY whdsc ");
-                    break;
-                case "FW":
-                    sb.append(" UNION ");
-                    sb.append(" select whdsc, ");
-                    sb.append("sum(n").append(getMon(m - 2)).append("),");
-                    sb.append("sum(n").append(getMon(m - 1)).append("),");
-                    sb.append("sum(n").append(getMon(m)).append(") ");
-                    sb.append(" from inventorydepartment WHERE 1=1  ");
-                    sb.append(" AND whdsc IN ('借客户','借员工') ");
-                    if (!genre.equals("N") && !genre.equals("")) {
-                        if (genre.equals("R")) {
-                            sb.append(" and genre in ('R','RG') ");
-                        } else {
-                            sb.append(" and genre = '").append(genre).append("'");
-                        }
+                }
+                // 借出总仓 借厂商的数据归生产目标；借客户借员工的数据归服务目标
+                if (!type.equals("N") && !type.equals("")) {
+                    switch (type) {
+                        case "SC":
+                            sb.append(" UNION ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(m - 2)).append("),");
+                            sb.append("sum(n").append(getMon(m - 1)).append("),");
+                            sb.append("sum(n").append(getMon(m)).append(") ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            break;
+                        case "FW":
+                            sb.append(" UNION ");
+                            sb.append(" select whdsc, ");
+                            sb.append("sum(n").append(getMon(m - 2)).append("),");
+                            sb.append("sum(n").append(getMon(m - 1)).append("),");
+                            sb.append("sum(n").append(getMon(m)).append(") ");
+                            sb.append(sql3(type, genre, y, m));
+                            sb.append(" AND creyear = '${y}'");
+                            sb.append(" GROUP BY whdsc ");
+                            break;
                     }
-                    sb.append(" GROUP BY whdsc ");
-                    break;
-            }
+                }
+                break;
         }
         String sql = sb.toString().replace("${y}", String.valueOf(y));
         Query query = this.getEntityManager().createNativeQuery(sql);
@@ -398,6 +517,85 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
 
     public LinkedHashMap<String, String> getQueryStringParams() {
         return queryStringParams;
+    }
+
+    //封装代码 正常库存
+    private String sql1(String type, String genre, int y, int m) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" from inventorydepartment WHERE 1=1  ");
+        if (!type.equals("N") && !type.equals("")) {
+            switch (type) {
+                case "SC":
+                    sb.append("AND categories  = 'A1'");
+                    break;
+                case "YY":
+                    sb.append("AND categories  = 'A2'");
+                    break;
+                case "FW":
+                    sb.append("AND categories  = 'A3'");
+                    break;
+                case "YF":
+                    sb.append("AND categories  = 'A6'");
+                    break;
+                default:
+                    sb.append(" ");
+                    break;
+            }
+        }
+        if (!genre.equals("N") && !genre.equals("")) {
+            if (genre.equals("R")) {
+                sb.append(" and genre in ('R','RG') ");
+            } else {
+                sb.append(" and genre = '").append(genre).append("'");
+            }
+        }
+        return sb.toString();
+    }
+
+    //封装代码 服务在制和生产在制
+    private String sql2(String type, String genre, int y, int m) {
+        // 服务在制和生产在制的数据
+        StringBuilder sb = new StringBuilder();
+        sb.append(" from inventorydepartment WHERE 1=1  ");
+        // 判断当前事业部性质
+        switch (type) {
+            case "SC":
+                sb.append(" AND wareh = 'SCZZ' ");
+                break;
+            case "FW":
+                sb.append(" AND wareh = 'FWZZ' ");
+                break;
+            default:
+                sb.append(" AND wareh = 'YFZZ' ");
+        }
+        // 取到产品别
+        if (!genre.equals("N") && !genre.equals("")) {
+            if (genre.equals("R")) {
+                sb.append(" and genre in ('R','RG') ");
+            } else {
+                sb.append(" and genre = '").append(genre).append("'");
+            }
+        }
+        return sb.toString();
+    }
+
+    //封装代码 借出未归部分
+    private String sql3(String type, String genre, int y, int m) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" from inventorydepartment WHERE 1=1  ");
+        if (type.equals("SC")) {
+            sb.append(" AND whdsc LIKE ('借厂商%') ");
+        } else {
+            sb.append(" AND whdsc IN ('借客户','借员工') ");
+        }
+        if (!genre.equals("")) {
+            if (genre.equals("R")) {
+                sb.append(" and genre in ('R','RG') ");
+            } else {
+                sb.append(" and genre = '").append(genre).append("'");
+            }
+        }
+        return sb.toString();
     }
 
 }
