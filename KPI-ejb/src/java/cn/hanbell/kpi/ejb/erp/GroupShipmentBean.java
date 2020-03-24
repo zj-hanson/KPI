@@ -66,6 +66,7 @@ public class GroupShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
@@ -75,6 +76,7 @@ public class GroupShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "G");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
@@ -95,6 +97,7 @@ public class GroupShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "J");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
@@ -115,6 +118,7 @@ public class GroupShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "N");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
@@ -135,6 +139,7 @@ public class GroupShipmentBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C4");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
