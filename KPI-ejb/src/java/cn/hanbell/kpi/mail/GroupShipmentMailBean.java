@@ -17,6 +17,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import tw.hanbell.kpi.ejb.erp.GrpsdailytmpBean;
 
 /**
  *
@@ -32,6 +33,8 @@ public class GroupShipmentMailBean extends MailNotification {
     private GroupServiceBean groupServiceBean;
     @EJB
     private GroupHSShipmentBean groupHSShipmentBean;
+    @EJB
+    private GrpsdailytmpBean grpsdailytmpBean;
 
     public GroupShipmentMailBean() {
 
@@ -56,14 +59,29 @@ public class GroupShipmentMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
+            //先更新汉钟的
             groupShipmentBean.updataActualValue(y, m, d);
             groupServiceBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateSHBBscGroupShipment");
             groupHSShipmentBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateHansonBscGroupShipment");
-            return "更新集团报表数据成功";
+            //再更新到台湾ERP
+            StringBuilder sb = new StringBuilder();
+            int num;
+            num = grpsdailytmpBean.updateActualList(y, m, d);
+            log4j.info("End Execute Job updateActualList");
+            if (num > 0) {
+                sb.append("<div style=\"text-align:center;width:100%\">资料上传台湾ERP成功！</div>");
+                sb.append("<div style=\"text-align:center;width:100%\">一共").append(num).append("笔资料！</div>");
+            } else if (num == 0) {
+                sb.append("<div style=\"text-align:center;width:100%\">本日无新数据！</div>");
+            } else {
+                sb.append("<div style=\"text-align:center;width:100%\">资料上传台湾ERP失败，请重新手动执行！</div>");
+            }
+            sb.append(getMailFooter());
+            return "更新集团报表（汉钟中间表）数据成功" + sb.toString();
         } catch (Exception ex) {
-            return ex.toString();
+            return ex.toString() + "捕获异常，请检查排程！！！";    
         }
     }
 
