@@ -62,7 +62,8 @@ public abstract class FreeServiceOuterOA implements Actual {
             sb.append("  and applydept ").append(applydept);
         }
         sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");
-
+        sb.append(" and wi.completedTime=( select max(d.completedTime) from WorkItem d where wi.contextOID=d.contextOID ");
+        sb.append("  AND year(d.completedTime) = ${y} and month(d.completedTime)>=${m} ) ");
         sb.append(" ) as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         Query query = superEFGP.getEntityManager().createNativeQuery(sql);
@@ -89,7 +90,9 @@ public abstract class FreeServiceOuterOA implements Actual {
         if (!"".equals(supportdept)) {
             sb.append("  and h6.supportdept ").append(supportdept);
         }
-        sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");       
+        sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} "); 
+        sb.append(" and wi.completedTime=( select max(d.completedTime) from WorkItem d where wi.contextOID=d.contextOID ");
+        sb.append("  AND year(d.completedTime) = ${y} and month(d.completedTime)>=${m} ) ");
         sb.append(" ) as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         Query query = superEFGP.getEntityManager().createNativeQuery(sql);

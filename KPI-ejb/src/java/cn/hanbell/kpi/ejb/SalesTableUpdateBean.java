@@ -107,7 +107,7 @@ public class SalesTableUpdateBean implements Serializable {
         }
         if ("".equals(da.trim()) || "RT".equals(da.trim())) {
             queryParams.clear();
-            queryParams.put("facno", "K,C,C4,N,G,J");
+            queryParams.put("facno", "K");
             queryParams.put("depno", " IN('5C000','5A000') ");
             queryParams.put("n_code_DA", " IN('RT') ");
             queryParams.put("n_code_DD", " IN ('02') ");
@@ -783,5 +783,5 @@ public class SalesTableUpdateBean implements Serializable {
         }
         return aa;
     }
-    
+
 }

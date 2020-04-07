@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.evaluation;
 
-import cn.hanbell.kpi.comm.Actual;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,11 +15,10 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1879 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
+ * @author C1879
+ * 2020年2月13日RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除 厂商KSH00004
  */
 public class SalesOrderAmountKRT1 extends SalesOrderAmount {
-
-    protected Actual actualInterface;
 
     public SalesOrderAmountKRT1() {
         super();
@@ -90,32 +88,6 @@ public class SalesOrderAmountKRT1 extends SalesOrderAmount {
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        BigDecimal rt = BigDecimal.ZERO;
-        try {
-            //各分公司数据
-            String ejb = "java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP";
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1B4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal hd = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1C4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal jn = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1D4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal gz = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1E4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal nj = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1V4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal cq = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            actualInterface = (Actual) Class.forName("cn.hanbell.kpi.evaluation.SalesOrderAmountR1T4").newInstance();
-            actualInterface.setEJB(ejb);
-            BigDecimal wx = actualInterface.getValue(y, m, d, type, actualInterface.getQueryParams());
-            rt = hd.add(jn).add(gz).add(cq).add(nj).add(wx);
-        } catch (Exception ex) {
-            Logger.getLogger(SalesOrderAmountKRT1.class.getName()).log(Level.SEVERE, null, ex);
+        return tram;
         }
-        return tram.add(rt);
     }
-}
