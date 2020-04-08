@@ -20,11 +20,11 @@ import tw.hanbell.kpi.ejb.erp.GrpsdailytmpBean;
 /**
  *
  * @author C1749
- * @description：只更新出货和服务的
+ * @description:更新所有公司订单、出货、服务
  */
 @Stateless
 @LocalBean
-public class GroupShipmentMailBean extends MailNotification {
+public class GroupAllMailBean extends MailNotification {
 
     @EJB
     private GroupShipmentBean groupShipmentBean;
@@ -35,7 +35,7 @@ public class GroupShipmentMailBean extends MailNotification {
     @EJB
     private GrpsdailytmpBean grpsdailytmpBean;
 
-    public GroupShipmentMailBean() {
+    public GroupAllMailBean() {
 
     }
 
@@ -59,10 +59,10 @@ public class GroupShipmentMailBean extends MailNotification {
     protected String getMailBody() {
         try {
             //先更新汉钟的
-            groupShipmentBean.updataActualValue(y, m, d,"Shipment");
+            groupShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
             groupServiceBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateSHBBscGroupShipment");
-            groupHSShipmentBean.updataActualValue(y, m, d,"Shipment");
+            groupHSShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
             log4j.info("End Execute Job updateHansonBscGroupShipment");
             //再更新到台湾ERP
             StringBuilder sb = new StringBuilder();
@@ -80,7 +80,7 @@ public class GroupShipmentMailBean extends MailNotification {
             sb.append(getMailFooter());
             return "更新集团报表（汉钟中间表）数据成功" + sb.toString();
         } catch (Exception ex) {
-            return ex.toString() + "捕获异常，请检查排程！！！";    
+            return ex.toString() + "捕获异常，请检查排程！！！";
         }
     }
 

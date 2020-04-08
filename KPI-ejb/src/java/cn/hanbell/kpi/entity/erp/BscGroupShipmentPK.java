@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author C1749
+ * @author Administrator
  */
 @Embeddable
 public class BscGroupShipmentPK implements Serializable {
@@ -32,6 +32,11 @@ public class BscGroupShipmentPK implements Serializable {
     @Column(name = "soday")
     @Temporal(TemporalType.TIMESTAMP)
     private Date soday;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "type")
+    private String type;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -51,9 +56,10 @@ public class BscGroupShipmentPK implements Serializable {
     public BscGroupShipmentPK() {
     }
 
-    public BscGroupShipmentPK(String facno, Date soday, String protype, String protypeno, String shptype) {
+    public BscGroupShipmentPK(String facno, Date soday, String type, String protype, String protypeno, String shptype) {
         this.facno = facno;
         this.soday = soday;
+        this.type = type;
         this.protype = protype;
         this.protypeno = protypeno;
         this.shptype = shptype;
@@ -73,6 +79,14 @@ public class BscGroupShipmentPK implements Serializable {
 
     public void setSoday(Date soday) {
         this.soday = soday;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getProtype() {
@@ -104,6 +118,7 @@ public class BscGroupShipmentPK implements Serializable {
         int hash = 0;
         hash += (facno != null ? facno.hashCode() : 0);
         hash += (soday != null ? soday.hashCode() : 0);
+        hash += (type != null ? type.hashCode() : 0);
         hash += (protype != null ? protype.hashCode() : 0);
         hash += (protypeno != null ? protypeno.hashCode() : 0);
         hash += (shptype != null ? shptype.hashCode() : 0);
@@ -123,6 +138,9 @@ public class BscGroupShipmentPK implements Serializable {
         if ((this.soday == null && other.soday != null) || (this.soday != null && !this.soday.equals(other.soday))) {
             return false;
         }
+        if ((this.type == null && other.type != null) || (this.type != null && !this.type.equals(other.type))) {
+            return false;
+        }
         if ((this.protype == null && other.protype != null) || (this.protype != null && !this.protype.equals(other.protype))) {
             return false;
         }
@@ -137,7 +155,7 @@ public class BscGroupShipmentPK implements Serializable {
 
     @Override
     public String toString() {
-        return "cn.hanbell.erp.entity.BscGroupShipmentPK[ facno=" + facno + ", soday=" + soday + ", protype=" + protype + ", protypeno=" + protypeno + ", shptype=" + shptype + " ]";
+        return "cn.hanbell.kpi.entity.erp.BscGroupShipmentPK[ facno=" + facno + ", soday=" + soday + ", type=" + type + ", protype=" + protype + ", protypeno=" + protypeno + ", shptype=" + shptype + " ]";
     }
     
 }

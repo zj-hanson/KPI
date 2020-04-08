@@ -47,21 +47,21 @@ public class GroupServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("ogdkid", " ='RL01' ");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         List<BscGroupShipment> resultData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "G");
         queryParams.put("ogdkid", " ='RL01' ");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -70,16 +70,15 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "J");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("ogdkid", " IN ('RL01') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -88,16 +87,15 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "N");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("ogdkid", " IN ('RL01') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -106,16 +104,15 @@ public class GroupServiceBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C4");
         queryParams.put("n_code_DA", " ='R' ");
+        queryParams.put("n_code_DC", " <>'RT' ");
         queryParams.put("ogdkid", " IN ('RL01') ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -131,10 +128,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -150,10 +145,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -169,10 +162,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -188,10 +179,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -207,10 +196,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -225,10 +212,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -243,10 +228,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -261,10 +244,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -279,10 +260,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -297,10 +276,8 @@ public class GroupServiceBean implements Serializable {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(BigDecimal.ZERO);
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(BigDecimal.ZERO);
-                    a.setOrdamts(BigDecimal.ZERO);
+                    a.setQuantity(BigDecimal.ZERO);
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -406,9 +383,9 @@ public class GroupServiceBean implements Serializable {
                 Object o[] = (Object[]) shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 sqty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("S", shpdate, protype, protypeno, shptype);
-                e.setShpnum(BigDecimal.ZERO);
-                e.setShpamts(sqty);
+                BscGroupShipment e = new BscGroupShipment("S", shpdate,"ServiceAmount" ,protype, protypeno, shptype);
+                e.setQuantity(BigDecimal.ZERO);
+                e.setAmount(sqty);
                 data.add(e);
             }
         } catch (Exception ex) {
