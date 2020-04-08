@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.ejb.erp;
 
-
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
@@ -43,23 +42,21 @@ public class GroupVHShipmentBean implements Serializable {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d) {
+    public void updataActualValue(int y, int m, Date d, String type) {
         queryParams.clear();
         queryParams.put("facno", "V");
         queryParams.put("hmark1", " ='R' ");
-        List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        List<BscGroupShipment> resultData = getShipment(y, m, d, type, getQueryParams());
         List<BscGroupShipment> tempData;
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='L' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -67,15 +64,13 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='DR' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -83,15 +78,13 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='CDU' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -99,15 +92,13 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='A' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -115,15 +106,13 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='SDS' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -131,15 +120,13 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='P' ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipment(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -147,7 +134,12 @@ public class GroupVHShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            if (type.contains("SalesOrder")) {
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            } else {
+                //如果不更新订单就不清除订单数据
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type <> 'SalesOrder'").executeUpdate();
+            }
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -155,7 +147,7 @@ public class GroupVHShipmentBean implements Serializable {
     }
 
     //出货
-    protected List<BscGroupShipment> getShipment(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+    protected List<BscGroupShipment> getShipment(int y, int m, Date d, String type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
         List<BscGroupShipment> data = new ArrayList<>();
@@ -163,24 +155,6 @@ public class GroupVHShipmentBean implements Serializable {
         BigDecimal qty = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-//        sb.append(" select h.shpdate,isnull(sum(d.shpqy1),0) from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno  ");
-//        sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
-//        sb.append(" and h.facno='${facno}' ");
-//        if (!"".equals(hmark1)) {
-//            sb.append(" and e.hmark1 ").append(hmark1);
-//        }
-//        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' group by h.shpdate ");
-//        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-//                .replace("${facno}", facno);
-//
-//        sb.setLength(0);
-//        sb.append(" select h.bakdate,-isnull(sum(d.bshpqy1),0) from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
-//        sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
-//        sb.append(" and h.facno='${facno}' ");
-//        if (!"".equals(hmark1)) {
-//            sb.append(" and e.hmark1 ").append(hmark1);
-//        }
-//        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' group by h.bakdate ");
         sb.append(" select a.soday,sum(num) from ( ");
         sb.append(" select h.facno,h.shpdate as soday,e.hmark1,sum(d.shpqy1) as num  from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno ");
         sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
@@ -221,13 +195,12 @@ public class GroupVHShipmentBean implements Serializable {
                 protype = "压缩机DORIN";
                 protypeno = "DR";
                 shptype = "1";
-            } 
-            //20190702 取消CDU产品别归到代理品
-//            else if (hmark1.contains("CDU")) {
-//                protype = "机组CDU";
-//                protypeno = "CDU";
-//                shptype = "2";
-//            }
+            } //20190702 取消CDU产品别归到代理品
+            //            else if (hmark1.contains("CDU")) {
+            //                protype = "机组CDU";
+            //                protypeno = "CDU";
+            //                shptype = "2";
+            //            }
             else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
                 protypeno = "A";
@@ -249,35 +222,23 @@ public class GroupVHShipmentBean implements Serializable {
                 Object o[] = (Object[]) shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("V", shpdate, protype, protypeno, shptype);
-                e.setShpnum(qty);
-                e.setShpamts(BigDecimal.ZERO);
+                BscGroupShipment e = new BscGroupShipment("V", shpdate, "Shipment", protype, protypeno, shptype);
+                e.setQuantity(qty);
+                e.setAmount(BigDecimal.ZERO);
                 data.add(e);
             }
-//            for (int i = 0; i < bakResult.size(); i++) {
-//                Object o[] = (Object[]) bakResult.get(i);
-//                shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
-//                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-//                BscGroupShipment e = new BscGroupShipment("V", shpdate, protype, protypeno, shptype);
-//                e.setShpnum(qty);
-//                e.setShpamts(BigDecimal.ZERO);
-//                if (data.contains(e)) {
-//                    BscGroupShipment entity = data.get(data.indexOf(e));
-//                    entity.setShpnum(entity.getShpnum().add(qty));
-//                } else {
-//                    data.add(e);
-//                }
-//            }
-            //订单
-            temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
-            if (temp != null && !temp.isEmpty()) {
-                for (BscGroupShipment c : temp) {
-                    if (data.contains(c)) {
-                        BscGroupShipment a = data.get(data.indexOf(c));
-                        a.setOrdnum(a.getOrdnum().add(c.getOrdnum()));
-                        a.setOrdamts(a.getOrdamts().add(c.getOrdamts()));
-                    } else {
-                        data.add(c);
+            //订单 选择性是否更新订单
+            if (type.contains("SalesOrder")) {
+                temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
+                if (temp != null && !temp.isEmpty()) {
+                    for (BscGroupShipment c : temp) {
+                        if (data.contains(c)) {
+                            BscGroupShipment a = data.get(data.indexOf(c));
+                            a.setQuantity(a.getQuantity().add(c.getQuantity()));
+                            a.setAmount(a.getAmount().add(c.getAmount()));
+                        } else {
+                            data.add(c);
+                        }
                     }
                 }
             }
@@ -286,7 +247,7 @@ public class GroupVHShipmentBean implements Serializable {
                 for (BscGroupShipment e : data) {
                     amts = getShipmentAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
                     if (amts != null) {
-                        e.setShpamts(amts);
+                        e.setAmount(amts);
                     }
                 }
             }
@@ -397,13 +358,12 @@ public class GroupVHShipmentBean implements Serializable {
                 protype = "压缩机DORIN";
                 protypeno = "DR";
                 shptype = "1";
-            } 
-            ////20190702 取消CDU产品别归到代理品
-//            else if (hmark1.contains("CDU")) {
-//                protype = "机组CDU";
-//                protypeno = "CDU";    
-//                shptype = "2";
-//            } 
+            } ////20190702 取消CDU产品别归到代理品
+            //            else if (hmark1.contains("CDU")) {
+            //                protype = "机组CDU";
+            //                protypeno = "CDU";
+            //                shptype = "2";
+            //            }
             else if (hmark1.contains("A")) {
                 protype = "空压机组A系列";
                 protypeno = "A";
@@ -425,16 +385,16 @@ public class GroupVHShipmentBean implements Serializable {
                 Object o[] = (Object[]) cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("V", recdate, protype, protypeno, shptype);
-                e.setOrdnum(qty);
-                e.setOrdamts(BigDecimal.ZERO);
+                BscGroupShipment e = new BscGroupShipment("V", recdate, "SalesOrder", protype, protypeno, shptype);
+                e.setQuantity(qty);
+                e.setAmount(BigDecimal.ZERO);
                 data.add(e);
             }
             if (!data.isEmpty()) {
                 for (BscGroupShipment e : data) {
                     amts = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
                     if (amts != null) {
-                        e.setOrdamts(amts);
+                        e.setAmount(amts);
                     }
                 }
             }

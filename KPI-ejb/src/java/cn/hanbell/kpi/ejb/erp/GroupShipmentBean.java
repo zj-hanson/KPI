@@ -43,7 +43,7 @@ public class GroupShipmentBean implements Serializable {
     public List findNeedRow(int y, int m, Date d) {
         erpEJB.setCompany("C");
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT facno,soday,protypeno,shptype,cusno,isnull(sum(shpnum),0) as shpnum,isnull(sum(shpamts),0) as shpamts,isnull(sum(ordnum),0) as ordnum,isnull(sum(ordamts),0) as ordamts FROM bsc_groupshipment b ");
+        sb.append(" SELECT facno,soday,protypeno,shptype,cusno,isnull(sum(shpnum),0) as shpnum,isnull(sum(shpamts),0) as shpamts,isnull(sum(ordnum),0) as ordnum,isnull(sum(ordamts),0) as ordamts FROM v_bsc_groupshipment b ");
         sb.append(" where year(soday) = ${y} and month(soday) = ${m} and soday <= '${d}' ");
         sb.append(" GROUP BY facno,soday,protypeno,shptype,cusno ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
@@ -61,34 +61,32 @@ public class GroupShipmentBean implements Serializable {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d) {
+    public void updataActualValue(int y, int m, Date d, String type) {
 
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DC", " <>'RT' ");
-        queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
+        queryParams.put("depno", " IN ('1B000','1B100' ,'1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
-        List<BscGroupShipment> resultData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        List<BscGroupShipment> resultData = getShipmentAmount(y, m, d, type, getQueryParams());
 
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "G");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DC", " <>'RT' ");
-        queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
+        queryParams.put("depno", " IN ('1B000','1B100','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -101,15 +99,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -122,15 +118,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -143,15 +137,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("depno", " IN ('1B000','1C000','1D000','1E000','1V000') ");
         //queryParams.put("n_code_DD", " in ('00','02') ");
         queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -163,15 +155,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DD", " IN ('02') ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -182,15 +172,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("depno", " IN ('1H000','1H100') ");
         queryParams.put("n_code_DA", "= 'P'");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -201,15 +189,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("depno", " IN ('1U000') ");
         queryParams.put("n_code_DA", " ='S'");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -221,15 +207,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("n_code_DA", " ='AH' ");
         queryParams.put("n_code_DC", " LIKE 'AJ%' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -241,15 +225,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("n_code_DA", " ='AH' ");
         queryParams.put("n_code_DC", " ='SDS' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -261,15 +243,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("n_code_DD", " IN ('02') ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -281,15 +261,13 @@ public class GroupShipmentBean implements Serializable {
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_DD", " IN ('02') ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        tempData = getShipmentAmount(y, m, d, type, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setShpnum(a.getShpnum().add(b.getShpnum()));
-                    a.setShpamts(a.getShpamts().add(b.getShpamts()));
-                    a.setOrdnum(a.getOrdnum().add(b.getOrdnum()));
-                    a.setOrdamts(a.getOrdamts().add(b.getOrdamts()));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -297,7 +275,12 @@ public class GroupShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'Z' and facno='S' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            if (type.contains("SalesOrder")) {
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'Z' and facno='S' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            } else {
+                //如果不更新订单就不清除订单数据
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'Z' and facno='S' and year(soday)=" + y + " and month(soday) = " + m + "and type <> 'SalesOrder'").executeUpdate();
+            }
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -305,7 +288,7 @@ public class GroupShipmentBean implements Serializable {
     }
 
     //出货金额
-    protected List<BscGroupShipment> getShipmentAmount(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+    protected List<BscGroupShipment> getShipmentAmount(int y, int m, Date d, String type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String decode = map.get("decode") != null ? map.get("decode").toString() : "";
         String depno = map.get("depno") != null ? map.get("depno").toString() : "";
@@ -535,20 +518,16 @@ public class GroupShipmentBean implements Serializable {
                 Object o[] = (Object[]) shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 amts = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("S", shpdate, protype, protypeno, shptype);
-                e.setShpnum(BigDecimal.ZERO);
-                e.setShpamts(amts);
+                BscGroupShipment e = new BscGroupShipment("S", shpdate, "Shipment", protype, protypeno, shptype);
+                e.setQuantity(BigDecimal.ZERO);
+                e.setAmount(amts);
                 data.add(e);
             }
-            //订单
-            temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
-            if (temp != null && !temp.isEmpty()) {
-                for (BscGroupShipment c : temp) {
-                    if (data.contains(c)) {
-                        BscGroupShipment a = data.get(data.indexOf(c));
-                        a.setOrdnum(a.getOrdnum().add(c.getOrdnum()));
-                        a.setOrdamts(a.getOrdamts().add(c.getOrdamts()));
-                    } else {
+            //订单 如果需要更新订单
+            if (type.contains("SalesOrder")) {
+                temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
+                if (temp != null && !temp.isEmpty()) {
+                    for (BscGroupShipment c : temp) {
                         data.add(c);
                     }
                 }
@@ -558,7 +537,7 @@ public class GroupShipmentBean implements Serializable {
                 for (BscGroupShipment e : data) {
                     qty = getShipment(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
                     if (qty != null) {
-                        e.setShpnum(qty);
+                        e.setQuantity(qty);
                     }
                 }
             }
@@ -686,9 +665,9 @@ public class GroupShipmentBean implements Serializable {
 //        if (!"".equals(n_code_DD)) {
 //            sb.append(" and d.n_code_DD ").append(n_code_DD);
 //        }
-        if(n_code_DA.contains("AA") || n_code_DA.contains("RT") || n_code_DA.contains("OH")){
+        if (n_code_DA.contains("AA") || n_code_DA.contains("RT") || n_code_DA.contains("OH")) {
             sb.append(" and d.n_code_DD in ('00','02') ");
-        }else{
+        } else {
             sb.append(" and d.n_code_DD in ('00') ");
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate<='${d}' group by h.recdate");
@@ -742,9 +721,9 @@ public class GroupShipmentBean implements Serializable {
                 Object o[] = (Object[]) cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 amts = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("S", recdate, protype, protypeno, shptype);
-                e.setOrdnum(BigDecimal.ZERO);
-                e.setOrdamts(amts);
+                BscGroupShipment e = new BscGroupShipment("S", recdate, "SalesOrder", protype, protypeno, shptype);
+                e.setQuantity(BigDecimal.ZERO);
+                e.setAmount(amts);
                 data.add(e);
             }
             if (!data.isEmpty()) {
@@ -757,7 +736,7 @@ public class GroupShipmentBean implements Serializable {
                 for (BscGroupShipment e : data) {
                     qty = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
                     if (qty != null) {
-                        e.setOrdnum(qty);
+                        e.setQuantity(qty);
                     }
                 }
             }

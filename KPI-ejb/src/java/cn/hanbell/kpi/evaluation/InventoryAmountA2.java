@@ -37,6 +37,7 @@ public class InventoryAmountA2 extends Inventory {
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";// 指标编号
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";// 产品别
         String itclscode = map.get("itclscode") != null ? map.get("itclscode").toString() : "";//类别
+        String wareh = map.get("wareh") != null ? map.get("wareh").toString() : "";//库号
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         // 公用物料部分
@@ -51,6 +52,10 @@ public class InventoryAmountA2 extends Inventory {
         }
         if (!"".equals(genre)) {
             sb.append(" AND genre ").append(genre);
+        }
+        //真空的新机特殊，只需要W01和EW01库
+        if (!"".equals(wareh)) {
+            sb.append(" AND wareh ").append(wareh);
         }
         //判断当前类别是否为真空出租。
         if (!"".equals(itclscode)) {

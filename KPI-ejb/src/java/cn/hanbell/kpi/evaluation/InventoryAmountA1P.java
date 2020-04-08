@@ -8,17 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
- * @description:服务机+服务零件
+ * @description:生产性-真空
  */
-public class InventoryAmountA2C52 extends InventoryAmountA2 {
 
-    public InventoryAmountA2C52() {
+public class InventoryAmountA1P extends InventoryAmountA1 {
+
+    public InventoryAmountA1P() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("categories", "A2");
         queryParams.put("genre", "='P'");
-        queryParams.put("itclscode", "<>'L'");
-        queryParams.put("wareh", " not in ('W01','EW01')");
     }
-
 }

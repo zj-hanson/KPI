@@ -8,6 +8,7 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
+ * @description:真空新机 库号为W01 和 EW01
  */
 public class InventoryAmountA2C51 extends InventoryAmountA2 {
 
@@ -17,6 +18,7 @@ public class InventoryAmountA2C51 extends InventoryAmountA2 {
         queryParams.put("categories", "A2");
         queryParams.put("genre", "='P'");
         queryParams.put("itclscode", "<>'L'");
+        queryParams.put("wareh", "in ('W01','EW01')");
     }
 
 }
