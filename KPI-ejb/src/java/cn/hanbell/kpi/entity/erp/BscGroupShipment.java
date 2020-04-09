@@ -19,23 +19,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author C1749
+ * @author Administrator
  */
 @Entity
 @Table(name = "bsc_groupshipment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BscGroupShipment.findAll", query = "SELECT b FROM BscGroupShipment b")
-    , @NamedQuery(name = "BscGroupShipment.findByFacno", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.facno = :facno")
-    , @NamedQuery(name = "BscGroupShipment.findBySoday", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.soday = :soday")
-    , @NamedQuery(name = "BscGroupShipment.findByProtype", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.protype = :protype")
-    , @NamedQuery(name = "BscGroupShipment.findByProtypeno", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.protypeno = :protypeno")
-    , @NamedQuery(name = "BscGroupShipment.findByShptype", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.shptype = :shptype")
-    , @NamedQuery(name = "BscGroupShipment.findByCusno", query = "SELECT b FROM BscGroupShipment b WHERE b.cusno = :cusno")
-    , @NamedQuery(name = "BscGroupShipment.findByShpnum", query = "SELECT b FROM BscGroupShipment b WHERE b.shpnum = :shpnum")
-    , @NamedQuery(name = "BscGroupShipment.findByShpamts", query = "SELECT b FROM BscGroupShipment b WHERE b.shpamts = :shpamts")
-    , @NamedQuery(name = "BscGroupShipment.findByOrdnum", query = "SELECT b FROM BscGroupShipment b WHERE b.ordnum = :ordnum")
-    , @NamedQuery(name = "BscGroupShipment.findByOrdamts", query = "SELECT b FROM BscGroupShipment b WHERE b.ordamts = :ordamts")})
+    @NamedQuery(name = "BscGroupShipment.findAll", query = "SELECT b FROM BscGroupShipment b"),
+    @NamedQuery(name = "BscGroupShipment.findByFacno", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.facno = :facno"),
+    @NamedQuery(name = "BscGroupShipment.findBySoday", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.soday = :soday"),
+    @NamedQuery(name = "BscGroupShipment.findByType", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.type = :type"),
+    @NamedQuery(name = "BscGroupShipment.findByProtype", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.protype = :protype"),
+    @NamedQuery(name = "BscGroupShipment.findByProtypeno", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.protypeno = :protypeno"),
+    @NamedQuery(name = "BscGroupShipment.findByShptype", query = "SELECT b FROM BscGroupShipment b WHERE b.bscGroupShipmentPK.shptype = :shptype"),
+    @NamedQuery(name = "BscGroupShipment.findByCusno", query = "SELECT b FROM BscGroupShipment b WHERE b.cusno = :cusno"),
+    @NamedQuery(name = "BscGroupShipment.findByQuantity", query = "SELECT b FROM BscGroupShipment b WHERE b.quantity = :quantity"),
+    @NamedQuery(name = "BscGroupShipment.findByAmount", query = "SELECT b FROM BscGroupShipment b WHERE b.amount = :amount")})
 public class BscGroupShipment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,30 +44,20 @@ public class BscGroupShipment implements Serializable {
     @Column(name = "cusno")
     private String cusno;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "shpnum")
-    private BigDecimal shpnum;
-    @Column(name = "shpamts")
-    private BigDecimal shpamts;
-    @Column(name = "ordnum")
-    private BigDecimal ordnum;
-    @Column(name = "ordamts")
-    private BigDecimal ordamts;
+    @Column(name = "quantity")
+    private BigDecimal quantity;
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     public BscGroupShipment() {
-        cusno = "";
-        shpnum = BigDecimal.ZERO;
-        shpamts = BigDecimal.ZERO;
-        ordnum = BigDecimal.ZERO;
-        ordamts = BigDecimal.ZERO;
     }
 
-    public BscGroupShipment(String facno, Date soday, String protype, String protypeno, String shptype) {
-        this.bscGroupShipmentPK = new BscGroupShipmentPK(facno, soday, protype, protypeno, shptype);
-        cusno = "";
-        shpnum = BigDecimal.ZERO;
-        shpamts = BigDecimal.ZERO;
-        ordnum = BigDecimal.ZERO;
-        ordamts = BigDecimal.ZERO;
+    public BscGroupShipment(BscGroupShipmentPK bscGroupShipmentPK) {
+        this.bscGroupShipmentPK = bscGroupShipmentPK;
+    }
+
+    public BscGroupShipment(String facno, Date soday, String type, String protype, String protypeno, String shptype) {
+        this.bscGroupShipmentPK = new BscGroupShipmentPK(facno, soday, type, protype, protypeno, shptype);
     }
 
     public BscGroupShipmentPK getBscGroupShipmentPK() {
@@ -87,36 +76,20 @@ public class BscGroupShipment implements Serializable {
         this.cusno = cusno;
     }
 
-    public BigDecimal getShpnum() {
-        return shpnum;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
 
-    public void setShpnum(BigDecimal shpnum) {
-        this.shpnum = shpnum;
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
     }
 
-    public BigDecimal getShpamts() {
-        return shpamts;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setShpamts(BigDecimal shpamts) {
-        this.shpamts = shpamts;
-    }
-
-    public BigDecimal getOrdnum() {
-        return ordnum;
-    }
-
-    public void setOrdnum(BigDecimal ordnum) {
-        this.ordnum = ordnum;
-    }
-
-    public BigDecimal getOrdamts() {
-        return ordamts;
-    }
-
-    public void setOrdamts(BigDecimal ordamts) {
-        this.ordamts = ordamts;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -133,15 +106,15 @@ public class BscGroupShipment implements Serializable {
             return false;
         }
         BscGroupShipment other = (BscGroupShipment) object;
-        if (this.bscGroupShipmentPK.equals(other.bscGroupShipmentPK)) {
-            return true;
+        if ((this.bscGroupShipmentPK == null && other.bscGroupShipmentPK != null) || (this.bscGroupShipmentPK != null && !this.bscGroupShipmentPK.equals(other.bscGroupShipmentPK))) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        return "cn.hanbell.erp.entity.BscGroupShipment[ bscGroupShipmentPK=" + bscGroupShipmentPK + " ]";
+        return "cn.hanbell.kpi.entity.erp.BscGroupShipment[ bscGroupShipmentPK=" + bscGroupShipmentPK + " ]";
     }
-
+    
 }

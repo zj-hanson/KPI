@@ -51,10 +51,10 @@ public class GroupVNShipmentMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
-            groupVHShipmentBean.updataActualValue(y, m, d);
+            groupVHShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
             groupVHServiceBean.updataActualValue(y, m, d);
             log4j.info("End Execute Job updateERPVHBscGroupShipment");
-            return "更新集团报表数据成功";
+            return "越南数据更新集团报表数据成功";
         } catch (Exception ex) {
             return ex.toString();
         }
