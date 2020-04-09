@@ -20,8 +20,6 @@ public class FundRecoveryRateRectotal extends TurnoverDays {
 
     public FundRecoveryRateRectotal() {
         super();
-        queryParams.put("facno", "C");
-
     }
 
     @Override
@@ -43,7 +41,7 @@ public class FundRecoveryRateRectotal extends TurnoverDays {
             //期间总收款(实收)
             rectotalValue = rectotalValue.add(getRectotalValue(y, m, map));
             //期末应收账款
-            booamtValue = booamtValue.add(getBooamtValue(y, m, d, map));
+            booamtValue = booamtValue.add(getBooamtValue(y, m, getFirstDayOfMonth(d), map));
             //期间总收款(实收)累计
             map.put("type", "LJ");
             rectotalValuelj = rectotalValuelj.add(getRectotalValue(y, m, map));
@@ -62,13 +60,13 @@ public class FundRecoveryRateRectotal extends TurnoverDays {
             Indicator entity = indicatorBean.findById(Integer.valueOf(id));
             if (entity != null) {
                 //累计资金回收率
-                updateIndicatorDaily(m, valuelj, entity.getForecastIndicator());
+                updateIndicatorDaily(m, valuelj, entity.getOther1Indicator());
                 //期间总收款(实收)
-                updateIndicatorDaily(m, rectotalValue, entity.getOther1Indicator());
+                updateIndicatorDaily(m, rectotalValue, entity.getOther2Indicator());
                 //期末应收账款
-                updateIndicatorDaily(m, booamtValue, entity.getOther2Indicator());
+                updateIndicatorDaily(m, booamtValue, entity.getOther3Indicator());
                 //期间总收款(实收)累计
-                updateIndicatorDaily(m, rectotalValuelj, entity.getOther3Indicator());
+                updateIndicatorDaily(m, rectotalValuelj, entity.getOther4Indicator());
             }
         }
         return value;

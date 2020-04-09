@@ -1079,6 +1079,14 @@ public class Indicator extends SuperEntity {
     }
 
     /**
+     * @param parent the parent to set
+     */
+    public void setParent(Indicator parent) {
+        this.parent = parent;
+    }
+    
+
+    /**
      * @return the actualIndicator
      */
     public IndicatorDetail getActualIndicator() {

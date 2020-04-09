@@ -500,6 +500,11 @@
             <to-view-id>/app/bsc/shipmentsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>turnoverdays</from-outcome>
+            <to-view-id>/app/bsc/turnoverdays.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--模态开窗-->
     <navigation-rule>

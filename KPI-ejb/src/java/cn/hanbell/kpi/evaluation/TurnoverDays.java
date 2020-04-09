@@ -15,6 +15,7 @@ import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author C1879 应收账款周转天数
+ * @author C1879 应收账款周转天数 月初更新上月
  */
 public class TurnoverDays implements Actual {
 
@@ -57,6 +58,13 @@ public class TurnoverDays implements Actual {
         InitialContext c = new InitialContext();
         Object objRef = c.lookup(JNDIName);
         superEJB = (SuperEJBForERP) objRef;
+    }
+
+    public Date getFirstDayOfMonth(Date d) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.set(Calendar.DATE, 1);
+        return c.getTime();
     }
 
     @Override
@@ -97,7 +105,7 @@ public class TurnoverDays implements Actual {
             //期间总收款(实收)累计
             rectotalValuelj = rectotalValuelj.add(getRectotalValue(y, m, map));
             //期末应收账款
-            booamtValue = booamtValue.add(getBooamtValue(y, m, d, map));
+            booamtValue = booamtValue.add(getBooamtValue(y, m, getFirstDayOfMonth(d), map));
 
         }
         //期间天数
@@ -118,17 +126,17 @@ public class TurnoverDays implements Actual {
             Indicator entity = indicatorBean.findById(Integer.valueOf(id));
             if (entity != null) {
                 //周转天数累计
-                updateIndicatorDaily(m, valuelj, entity.getForecastIndicator());
+                updateIndicatorDaily(m, valuelj, entity.getOther1Indicator());
                 //期间总收款(实收)
-                updateIndicatorDaily(m, rectotalValue, entity.getOther1Indicator());
+                updateIndicatorDaily(m, rectotalValue, entity.getOther2Indicator());
                 //期末应收账款
-                updateIndicatorDaily(m, booamtValue, entity.getOther2Indicator());
+                updateIndicatorDaily(m, booamtValue, entity.getOther3Indicator());
                 //含税出货
-                updateIndicatorDaily(m, cdrhads, entity.getOther3Indicator());
+                updateIndicatorDaily(m, cdrhads, entity.getOther4Indicator());
                 //不含税出货
-                updateIndicatorDaily(m, cdrhad, entity.getOther4Indicator());
+                updateIndicatorDaily(m, cdrhad, entity.getOther5Indicator());
                 //期间总收款(实收)累计
-                updateIndicatorDaily(m, rectotalValuelj, entity.getOther5Indicator());
+                updateIndicatorDaily(m, rectotalValuelj, entity.getOther6Indicator());
             }
         }
         return value;
@@ -452,18 +460,18 @@ public class TurnoverDays implements Actual {
         sb.append(" FROM armhad ,armbil where armhad.facno=armbil.facno AND armhad.hadno=armbil.bilno ");
         sb.append(" AND ((armhad.booamt - armhad.recamt)<> 0) AND armhad.facno = '${facno}' ");
         sb.append(" AND (armhad.accno='1122') AND (armhad.difcod in ('1','3')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and armhad.bildat<= '${d}' ");
+        sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" union all ");
         sb.append(" SELECT (CASE WHEN armhad.n_code_DA is null THEN '' ELSE armhad.n_code_DA END ) as n_code_DA, ");
         sb.append(" (CASE WHEN armhad.isserve is null THEN '' ELSE armhad.isserve END ) as issevdta,(armhad.booamt - armhad.recamt) as booamt ");
         sb.append(" FROM armhad where ((armhad.booamt - armhad.recamt)<> 0) AND armhad.facno = '${facno}' ");
         sb.append(" AND (armhad.accno='1122') AND (armhad.difcod ='6') AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and armhad.bildat<= '${d}' ");
+        sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" union all ");
         sb.append(" SELECT  '' as n_code_DA , '' as issevdta, (armhad.booamt - armhad.recamt) as booamt ");
         sb.append(" FROM armhad where ((armhad.booamt - armhad.recamt)<> 0)  AND armhad.facno = '${facno}'  AND (armhad.accno='1122') ");
         sb.append(" AND (armhad.difcod not in ('1','3','6')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
-        sb.append(" and armhad.bildat<= '${d}' ");
+        sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" ) a where 1=1 ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and a.n_code_DA = '' ");
@@ -621,12 +629,24 @@ public class TurnoverDays implements Actual {
 
     @Override
     public int getUpdateMonth(int y, int m) {
-        return m;
+        int month;
+        if (m == 1) {
+            month = 12;
+        } else {
+            month = m - 1;
+        }
+        return month;
     }
 
     @Override
     public int getUpdateYear(int y, int m) {
-        return y;
+        int year;
+        if (m == 1) {
+            year = y - 1;
+        } else {
+            year = y;
+        }
+        return year;
     }
 
     public IndicatorBean lookupIndicatorBeanBean() {
