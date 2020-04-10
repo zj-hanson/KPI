@@ -69,7 +69,7 @@ public abstract class EmployeeMail extends MailNotification {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<tr>");
-            sb.append("<td style=\"text-align:center;\" rowspan=\"").append(indicatorList.size()==1?1:indicatorList.size()+ 1).append("\" colspan=\"1\" >").append(name).append("</td>");
+            sb.append("<td style=\"text-align:center;\" rowspan=\"").append(indicatorList.size() == 1 ? 1 : indicatorList.size() + 1).append("\" colspan=\"1\" >").append(name).append("</td>");
             for (Indicator i : indicatorList) {
                 indicatorBean.divideByRate(i, 2);
                 sb.append(getHtmlTableRow(i, y, m, d));
@@ -86,8 +86,8 @@ public abstract class EmployeeMail extends MailNotification {
                     sb.append(getHtmlTableRow(sumIndicator, y, m, d));
                     sb.append("</tr>");
                 }
-            }else{
-                 sumIndicator = indicatorBean.getSumValue(indicatorList);
+            } else {
+                sumIndicator = indicatorBean.getSumValue(indicatorList);
                 if (sumIndicator != null) {
                     sumList.add(sumIndicator);
                     sum1 = sum1.add(getData().get("sum1"));
@@ -114,7 +114,7 @@ public abstract class EmployeeMail extends MailNotification {
             BigDecimal num1, num2;
             if (indicator.getActualInterface() != null && indicator.getActualEJB() != null && indicator.getId() != -1) {
                 //本日出货
-                String userid=indicator.getUserid();
+                String userid = indicator.getUserid();
                 Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
                 actualInterface.setEJB(indicator.getActualEJB());
                 actualInterface.getQueryParams().put("userid", userid);
@@ -155,7 +155,7 @@ public abstract class EmployeeMail extends MailNotification {
             //达成
             sb.append("<td>").append(percentFormat(achievingRate(a1, t1))).append("</td>");
             //年累计应收账款
-            if ("年累计应收账款".equals(indicator.getOther2Label()==null?"":indicator.getOther2Label().trim())) {
+            if ("年累计应收账款".equals(indicator.getOther2Label() == null ? "" : indicator.getOther2Label().trim())) {
                 sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(o2, m))).append("</td>");
             }
 
@@ -164,7 +164,7 @@ public abstract class EmployeeMail extends MailNotification {
         }
         return sb.toString();
     }
-    
+
     public Indicator getSumValue(List<Indicator> indicators) {
         if (indicators.isEmpty()) {
             return null;
@@ -203,14 +203,14 @@ public abstract class EmployeeMail extends MailNotification {
     private BigDecimal achievingRate(BigDecimal a, BigDecimal t) {
         if (t.compareTo(BigDecimal.ZERO) == 0) {
             if (a.compareTo(BigDecimal.ZERO) > 0) {
-               return BigDecimal.valueOf(100d);
+                return BigDecimal.valueOf(100d);
             } else if (a.compareTo(BigDecimal.ZERO) < 0) {
                 return BigDecimal.valueOf(-100d);
             } else {
                 return BigDecimal.valueOf(0d);
             }
         } else {
-            return  a.divide(t, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+            return a.divide(t, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         }
     }
 

@@ -46,7 +46,7 @@ public class InventoryAmount1NReportBean extends BscSheetManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -60,7 +60,7 @@ public class InventoryAmount1NReportBean extends BscSheetManagedBean {
         indicatorList.clear();
         indicatorDetailList.clear();
         List<Indicator> sumlist = new ArrayList<>();
-        
+
         if (indicator.isAssigned()) {
             indicatorList = indicatorBean.findByPId(indicator.getId());
         } else {

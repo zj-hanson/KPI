@@ -216,5 +216,4 @@ public abstract class SuperQueryBean<T extends BaseEntity> extends SuperSingleMa
         return deny;
     }
 
-    
 }

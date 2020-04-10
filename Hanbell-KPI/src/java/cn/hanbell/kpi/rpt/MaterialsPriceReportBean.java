@@ -45,7 +45,7 @@ public class MaterialsPriceReportBean extends BscSheetManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -160,8 +160,8 @@ public class MaterialsPriceReportBean extends BscSheetManagedBean {
                 return format(value, i);
         }
     }
-    
-    public String getName(String name){
+
+    public String getName(String name) {
         return name.replace("价格趋势", "");
     }
 

@@ -51,7 +51,7 @@ public class IncomeStatementBean implements Serializable {
         return df.format(Double.parseDouble(a));
     }
 
-    public LinkedHashMap<String, String[]> yearMap(Date date,String facno) {
+    public LinkedHashMap<String, String[]> yearMap(Date date, String facno) {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.seq,a.tyear/10000 as tyear,a.tyrate/100 as tyrate,a.lyear/10000 as lyear,a.lyrate/100 as lyrate,");
@@ -112,7 +112,7 @@ public class IncomeStatementBean implements Serializable {
         return null;
     }
 
-    public LinkedHashMap<String, String[]> monthMap(Date date,String facno) {
+    public LinkedHashMap<String, String[]> monthMap(Date date, String facno) {
         LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         sb.append(" select seq,tmon/10000  as tmon,tmrate/100 as tmrate,lmon/10000 as lmon,lmrate/100 as lmrate ,(tmon-lmon)/10000 as changemon from accinmon ");

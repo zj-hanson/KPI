@@ -77,7 +77,7 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -213,7 +213,7 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
                     map.put("nowtitle", "本年");
                 }
                 list = salesTableBean.getClientList(year, month, map, monthchecked, aggregatechecked, rowsPerPage);
-                if (list.size() <=0) {
+                if (list.size() <= 0) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
                 } else {
                     super.getRemarkOne(indicatorChart, year, month);

@@ -184,7 +184,7 @@ public class ProcurementBean implements Serializable {
         }
         //2019年5月7日添加此逻辑 原因：因税改—— 3月部分采购单据在4月初重新打单，此部分不应该计入整年或4月份统计中
         sb.append(" AND  (d.pono>'PC119042743' or  d.pono <'PC119040001') ");
-        
+
         sb.append(" AND year(h.podate) BETWEEN ").append(findYear(date) - 1).append(" and ").append(findYear(date));
 
         String sql = sb.toString().replace("${type}", type);
@@ -459,7 +459,7 @@ public class ProcurementBean implements Serializable {
         //2019年2月26日 陆夏玲要求去除5063（研发大类），新增4020
         itnbrSgp = " select itnbr from invmas where itcls in('4010','4046','4047','4048','4049','5050','4052','4151','5061','5062','5064','5065','4079','4507','4020')";
         //2019年2月26日 陆夏玲要求新增2401,3401，去除3016（9QC零件）
-        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3101','3102','3201','3202','3402','3801','3802','2401','3401')";    
+        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3101','3102','3201','3202','3402','3801','3802','2401','3401')";
         try {
             //销售额
             Double monthDouble = getSaleValue(date, "month");

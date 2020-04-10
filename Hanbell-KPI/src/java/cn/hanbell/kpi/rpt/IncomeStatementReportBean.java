@@ -68,7 +68,7 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -112,9 +112,9 @@ public class IncomeStatementReportBean extends BscQueryTableManageBean implement
         }
         if (aa) {
             if (checkbox) {
-                map = incomeStatementBean.monthMap(btndate,facno);
+                map = incomeStatementBean.monthMap(btndate, facno);
             } else {
-                map = incomeStatementBean.yearMap(btndate,facno);
+                map = incomeStatementBean.yearMap(btndate, facno);
             }
             if (map != null && !map.isEmpty()) {
                 statusMap.put("displaydiv1", "none");

@@ -304,7 +304,7 @@ public abstract class BscProductiontMail extends MailNotification {
                 }
             }
             sb.append("<td></td><td></td></tr>");
-            
+
             sb.append("<tr><td>工令与交货差异累计</td>");
             daily = dailySubtract(Other3Accumulated, Other1Accumulated);
             for (int i = 1; i <= days(y, m); i++) {

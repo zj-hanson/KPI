@@ -26,8 +26,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "DSALP")
 @NamedQueries({
-    @NamedQuery(name = "DSALP.findAll", query = "SELECT d FROM DSALP d")
-    ,
+    @NamedQuery(name = "DSALP.findAll", query = "SELECT d FROM DSALP d"),
     @NamedQuery(name = "DSALP.findByParams", query = "SELECT d FROM DSALP d WHERE d.ds003= :type AND d.ds005= :userid AND d.ds015= :DA AND d.ds006 >= :datebegin AND d.ds006<= :dateend ")
 })
 public class DSALP implements Serializable {

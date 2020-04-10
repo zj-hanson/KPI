@@ -285,7 +285,7 @@ public class ProductionSheetReportBean extends BscSheetManagedBean {
     }
 
     @Override
-     public String format(String type, BigDecimal value, int i) {
+    public String format(String type, BigDecimal value, int i) {
         switch (type) {
             case "P":
             case "本月达成":
@@ -297,5 +297,5 @@ public class ProductionSheetReportBean extends BscSheetManagedBean {
                 return format(value, i);
         }
     }
-    
+
 }
