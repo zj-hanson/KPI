@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="formOne" rendered="#{!turnoverdaysBean.deny}">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid20,Wid15,Wid15,Wid0" styleClass="plgQuery Wid100">
+                <p:outputLabel value="请输入查询日期*" for="btndate" />
+                <p:calendar id="btndate" value="#{turnoverdaysBean.btndate}" title="日期" pattern="yyyy/MM/dd" />
+                <p:outputLabel style="visibility: hidden"/>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{turnoverdaysBean.btnreset()}"  icon="ui-icon-refresh"
+                                 update="formOne" process="plgQuery" />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{turnoverdaysBean.btnquery()}"  icon="ui-icon-search"
+                                 update="formOne" process="plgQuery"/>
+                <p:link  value="返回"  outcome="home" style="float: left"/>
+            </p:panelGrid>
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12">
+                    <p:dataTable var="item" value="#{turnoverdaysBean.firstList}" styleClass="plgSheetData Wid100">
+                        <f:facet name="header" >
+                            <span style="font-size: 21px;" >#{turnoverdaysBean.y}&nbsp; #{turnoverdaysBean.indicatorChart.name}</span><span  style="float: right;font-size: 16px;" >单位：天</span>
+                        </f:facet>
+                        <p:columnGroup type="header"  >
+                            <p:row>
+                                <p:column style="width: 6%;background-color:#dbdbdb" rowspan="2" headerText="项目" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="产品" />
+                                <p:column style="width: 12%;background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
+                                <p:column style="width: 6%;background-color:#dbdbdb" rowspan="2" headerText="责任人" />
+                                <p:column style="width: 33%;color: #0033ff;background-color:#dbdbdb" colspan="4" headerText="#{turnoverdaysBean.y}年目标"   />
+                                <p:column style="width: 23%;background-color:#dbdbdb" colspan="3" headerText="实绩" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="Q1" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q2" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q3" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q4" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="当月" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{turnoverdaysBean.y}年累计" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{turnoverdaysBean.y-1}年累计" style="background-color:#dbdbdb" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column groupRow="true"  style="text-align: center" >
+                            <h:outputText value="#{item.parent.name}" style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" />
+                        </p:column>
+                        <p:column style="text-align: left;#{turnoverdaysBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.descript}" />
+                        </p:column>
+                        <p:column style="text-align: left;#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{item.deptname}" />
+                        </p:column>
+                        <p:column  style="text-align: center;#{turnoverdaysBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.username}" />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(item.targetIndicator.nq1)}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(item.targetIndicator.nq2)}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(item.targetIndicator.nq3)}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(item.targetIndicator.nq4)}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.actualIndicator))}"  />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.other1Indicator))}" />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.forecastIndicator))}" />
+                        </p:column>
+                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)};#{turnoverdaysBean.getColor(item)}" >
+                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.contrastValue(item.other1Indicator,item.forecastIndicator))}" />
+                        </p:column>
+                    </p:dataTable>
+                    <div style="color: gray;">
+                        <p >
+                            注：<span style="color: red">红色</span>字体指标较上年同期衰退！
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                <p:repeat id="repSummary" value="#{turnoverdaysBean.summaryList}" var="s" rendered="#{turnoverdaysBean.summaryCount>0}">
+                    <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                        <h:panelGrid>
+                            <h:outputText id="summary"/>
+                            <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:repeat>
+            </div>
+            <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                <p:repeat id="repAnalysis" value="#{turnoverdaysBean.analysisList}" var="a" rendered="#{turnoverdaysBean.analysisCount>0}">
+                    <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                        <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                            <h:outputText id="issueLabel" value="问题"/>
+                            <h:outputText id="factorLabel" value="原因"/>
+                            <h:outputText id="countermeasureLabel" value="对策"/>
+                            <h:outputText id="issue"/>
+                            <h:outputText id="factor"/>
+                            <h:outputText id="countermeasure"/>
+                            <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                            <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                            <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:repeat>
+            </div>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{turnoverdaysBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

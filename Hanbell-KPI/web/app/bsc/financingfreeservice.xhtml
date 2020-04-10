@@ -21,70 +21,137 @@
             </p:panelGrid>
             <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
                 <f:facet name="header"  >
-                    <p:row >
-                        <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{financingFreeServiceReportBean.y}年#{financingFreeServiceReportBean.indicatorChart.name}</p:column>
-                    </p:row>
-                    <p:row style="text-align: right" >
-                        <p:column style="letter-spacing:2px;font-weight: 600" >单位:#{freeServiceReportBean.indicator.unit}&nbsp;&nbsp;</p:column>
+                    <p:row >          
+                        <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{financingFreeServiceReportBean.y}年
+                            汉钟免费服务\资金回收<br/><p:spacer width="60" height="10" />情况分析表</p:column>
                     </p:row>
                 </f:facet>
             </p:panelGrid >
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12">
-                    <p:dataTable var="item" value="#{financingFreeServiceReportBean.list}" styleClass="plgSheetData Wid100">
-                        <p:column styleClass="Wid10" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[0]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{item[0]}"   />
+                    <p:dataTable var="item" value="#{financingFreeServiceReportBean.firstList}" styleClass="plgSheetData Wid100">
+                        <p:columnGroup type="header"  >
+                            <p:row>
+                                <p:column style="width: 5%;background-color:#dbdbdb" rowspan="2" headerText="项目" />
+                                <p:column style="width: 7%;background-color:#dbdbdb" rowspan="2" headerText="产品" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
+                                <p:column style="width: 5%;background-color:#dbdbdb" rowspan="2" headerText="责任人" />
+                                <p:column style="width: 39%;color: #0033ff;background-color:#dbdbdb" colspan="5" headerText="#{financingFreeServiceReportBean.y}年目标"   />
+                                <p:column style="width: 24%;background-color:#dbdbdb" colspan="3" headerText="实绩" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="全年" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q1" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q2" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q3" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q4" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="当月" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{financingFreeServiceReportBean.y}年累计" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{financingFreeServiceReportBean.y-1}年累计" style="background-color:#dbdbdb" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column groupRow="true"  style="text-align: center" >
+                            <h:outputText value="#{item.parent.name}(单位：#{item.parent.unit})" />
                         </p:column>
-                        <p:column styleClass="Wid15" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[1]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{item[1]}&nbsp;&nbsp;" />
+                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.descript}" />
                         </p:column>
-                        <p:column styleClass="Wid10"  style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[2]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[2])}"  style="color: #0033ff"  />
+                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{item.deptname}" />
                         </p:column>
-                        <p:column styleClass="Wid10" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[3]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[3])}"   style="color: #0033ff"  />
+                        <p:column  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.username}" />
                         </p:column>
-                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[4]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[4])}&nbsp;&nbsp;"  />
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nsy())}"  style="color: #0033ff" />
                         </p:column>
-                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[5]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[5])}&nbsp;&nbsp;" />
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq1)}"  style="color: #0033ff"  />
                         </p:column>
-                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[6]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[6])}&nbsp;&nbsp;" />
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq2)}"  style="color: #0033ff"  />
                         </p:column>
-                        <p:column styleClass="Wid10" style="background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header" >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[7]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[7])}&nbsp;&nbsp;" style="color: #{item[9]}" />
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq3)}"  style="color: #0033ff"  />
                         </p:column>
-                        <p:column styleClass="Wid15" style="text-align: center !important;background-color:#{item[0]=='合计'?'#dbdbdb':''};" >
-                            <f:facet name="header"  >
-                                <h:outputText  value="#{financingFreeServiceReportBean.title[8]}"  />
-                            </f:facet>
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item[8])}&nbsp;&nbsp;" style="color: #{item[9]}" />
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq4)}"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator))}"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nsy())}" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.benchmarkIndicator.nsy())}" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)};#{financingFreeServiceReportBean.getColor(financingFreeServiceReportBean.contrastValue(item.actualIndicator.nsy(),item.benchmarkIndicator.nsy()),'fw')}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.contrastValue(item.actualIndicator.nsy(),item.benchmarkIndicator.nsy())}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <p:dataTable var="item" value="#{financingFreeServiceReportBean.secondList}" styleClass="plgSheetData Wid100">
+                        <p:columnGroup type="header"  >
+                            <p:row>
+                                <p:column style="width: 5%;background-color:#dbdbdb" rowspan="2" headerText="项目" />
+                                <p:column style="width: 7%;background-color:#dbdbdb" rowspan="2" headerText="产品" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
+                                <p:column style="width: 5%;background-color:#dbdbdb" rowspan="2" headerText="责任人" />
+                                <p:column style="width: 39%;color: #0033ff;background-color:#dbdbdb" colspan="5" headerText="#{financingFreeServiceReportBean.y}年目标"   />
+                                <p:column style="width: 24%;background-color:#dbdbdb" colspan="3" headerText="实绩" />
+                                <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="全年" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q1" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q2" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q3" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q4" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="当月" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{financingFreeServiceReportBean.y}年累计" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{financingFreeServiceReportBean.y-1}年累计" style="background-color:#dbdbdb" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column groupRow="true"  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText value="#{item.parent.name}" />
+                        </p:column>
+                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.descript}" />
+                        </p:column>
+                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{item.deptname}" />
+                        </p:column>
+                        <p:column  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
+                            <h:outputText  value="#{item.username}" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq4)}%"  style="color: #0033ff" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq1)}%"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq2)}%"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq3)}%"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq4)}%"  style="color: #0033ff"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator))}%"  />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.other1Indicator))}%" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.forecastIndicator))}%" />
+                        </p:column>
+                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)};#{financingFreeServiceReportBean.getColor(financingFreeServiceReportBean.contrastValue(item.other1Indicator,item.forecastIndicator),'hs')}" >
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.contrastValue(item.other1Indicator,item.forecastIndicator))}%" />
                         </p:column>
                     </p:dataTable>
                     <div style="color: gray;">

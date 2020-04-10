@@ -37,6 +37,8 @@ public class FreeServiceOuterCL extends FreeServiceOuterOA {
             sb.append("  AND h.appDept ").append(appDept);
         }
         sb.append(" AND year(wi.completedTime) = ${y} and month(wi.completedTime)= ${m} ");
+        sb.append(" and wi.completedTime=( select max(d.completedTime) from WorkItem d where wi.contextOID=d.contextOID ");
+        sb.append("  AND year(d.completedTime) = ${y} and month(d.completedTime)>=${m} ) ");
         sb.append(" ) as a ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno);
         Query query = superEFGP.getEntityManager().createNativeQuery(sql);

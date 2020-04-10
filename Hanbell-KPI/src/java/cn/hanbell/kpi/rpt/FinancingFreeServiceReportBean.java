@@ -7,10 +7,13 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -40,13 +43,19 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     protected int m;
     protected Date btndate;
     protected String facno;
-    protected String[] title;
-    protected List<String[]> list;
 
     protected final DecimalFormat decimalFormat;
 
+    protected List<Indicator> firstList;
+    protected List<Indicator> secondList;
+    protected List<Indicator> thirdlyList;
+
+    protected Indicator sumIndicator;
 
     public FinancingFreeServiceReportBean() {
+        firstList = new ArrayList<>();
+        secondList = new ArrayList<>();
+        thirdlyList = new ArrayList<>();
         this.decimalFormat = new DecimalFormat("#,###.##");
     }
 
@@ -74,7 +83,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (getIndicatorChart() == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m1 : userManagedBean.getRoleGrantDeptList()) {
                 if (m1.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -91,8 +100,8 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     }
 
     public void btnquery() {
-        title = new String[9];
-        list = new ArrayList<>();
+        firstList.clear();
+        secondList.clear();
         m = getDate().get(Calendar.MONTH) + 1;
         y = getDate().get(Calendar.YEAR);
         boolean aa = true;
@@ -100,101 +109,131 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
         }
-        indicator = indicatorBean.findByFormidYearAndDeptno(getIndicatorChart().getFormid(), y, getIndicatorChart().getDeptno());
+        //分割第一个为免费服务金额 第二个为资金回收
+        String[] arr = indicatorChart.getRemark().split(",");
+        //免费服务金额
+        indicator = indicatorBean.findByFormidYearAndDeptno(arr[0], y, indicatorChart.getDeptno());
         if (indicator == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
         if (indicator.isAssigned() && aa) {
-            List<Indicator> indicatorList = indicatorBean.findByPId(indicator.getId());
-            title[0] = "项目";
-            title[1] = "考核部门";
-            title[2] = "目标全年";
-            if (m >= 1 && m < 4) {
-                title[3] = "Q1目标(1~3月)";
-            } else if (m >= 4 && m < 7) {
-                title[3] = "Q2目标(4~6月)";
-            } else if (m >= 7 && m < 10) {
-                title[3] = "Q3目标(7~9月)";
-            } else {
-                title[3] = "Q4目标(10~12月)";
-            }
-            title[4] = m == 1 ? (y - 1) + "年12月实绩" : (m - 1) + "月实绩";
-            title[5] = m + "月实绩";
-            title[6] = m == 1 ? y + "年累计（1月)" : y + "年累计（1-" + m + "月)";
-            title[7] = m == 1 ? (y - 1) + "年累计（1月)" : (y - 1) + "年累计（1-" + m + "月)";
-            title[8] = "累计与上年同期对比差异";
-            String[] arr;
-            String[] arrsum = new String[10];
-            arrsum[0] = "合计";
-            arrsum[1] = "";
-            arrsum[2] = "0";
-            arrsum[3] = "0";
-            arrsum[4] = "0";
-            arrsum[5] = "0";
-            arrsum[6] = "0";
-            arrsum[7] = "0";
-            arrsum[8] = "0";
-            String mon;
-            Field f;
+            firstList = indicatorBean.findByPId(indicator.getId());
             //排序
-            indicatorList.sort((Indicator o1, Indicator o2) -> {
+            firstList.sort((Indicator o1, Indicator o2) -> {
                 if (o1.getSortid() < o2.getSortid()) {
                     return -1;
                 } else {
                     return 1;
                 }
             });
+            //删除
+            firstList.removeIf(x -> !x.getProduct().contains("汉钟"));
+            sumIndicator = indicatorBean.getSumValue(getFirstList());
+            sumIndicator.setParent(indicator);
+            sumIndicator.setDescript("合计");
+            sumIndicator.setDeptname("");
+            sumIndicator.setUsername("");
+            firstList.add(sumIndicator);
+            for (Indicator e : firstList) {
+                //按换算率计算结果
+                indicatorBean.divideByRate(e, 2);
+            }
             try {
-                for (Indicator idt : indicatorList) {
-                    if (!"5".equals(idt.getDeptno().substring(0, 1))) {
-                        //换算率
-                        indicatorBean.divideByRate(idt, 2);
-                        arr = new String[10];
-                        arr[0] = idt.getName().replace("免费服务", "");
-                        arr[1] = idt.getDeptname();
-                        arr[2] = idt.getTargetIndicator().getNfy().toString();
-                        arrsum[2] = BigDecimal.valueOf(Double.parseDouble(arrsum[2])).add(idt.getTargetIndicator().getNfy()).toString();
-                        if (m >= 1 && m < 4) {
-                            arr[3] = idt.getTargetIndicator().getNq1().toString();
-                        } else if (m >= 4 && m < 7) {
-                            arr[3] = idt.getTargetIndicator().getNq2().toString();
-                        } else if (m >= 7 && m < 10) {
-                            arr[3] = idt.getTargetIndicator().getNq3().toString();
-                        } else {
-                            arr[3] = idt.getTargetIndicator().getNq4().toString();
-                        }
-                        arrsum[3] = BigDecimal.valueOf(Double.parseDouble(arrsum[3])).add(BigDecimal.valueOf(Double.parseDouble(arr[3]))).toString();
-                        if (m == 1) {
-                            arr[4] = idt.getBenchmarkIndicator().getN12().toString();
-                        } else {
-                            mon = indicatorBean.getIndicatorColumn("N", m - 1);
-                            f = idt.getActualIndicator().getClass().getDeclaredField(mon);
-                            f.setAccessible(true);
-                            arr[4] = f.get(idt.getActualIndicator()).toString();
-                        }
-                        arrsum[4] = BigDecimal.valueOf(Double.parseDouble(arrsum[4])).add(BigDecimal.valueOf(Double.parseDouble(arr[4]))).toString();
-                        mon = indicatorBean.getIndicatorColumn("N", m);
-                        f = idt.getActualIndicator().getClass().getDeclaredField(mon);
-                        f.setAccessible(true);
-                        arr[5] = f.get(idt.getActualIndicator()).toString();
-                        arrsum[5] = BigDecimal.valueOf(Double.parseDouble(arrsum[5])).add(BigDecimal.valueOf(Double.parseDouble(arr[5]))).toString();
-                        BigDecimal sumA = indicatorBean.getAccumulatedValue(idt.getActualIndicator(), m);
-                        arr[6] = sumA.toString();
-                        arrsum[6] = BigDecimal.valueOf(Double.parseDouble(arrsum[6])).add(sumA).toString();
-                        BigDecimal sumB = indicatorBean.getAccumulatedValue(idt.getBenchmarkIndicator(), m);
-                        arr[7] = sumB.toString();
-                        arrsum[7] = BigDecimal.valueOf(Double.parseDouble(arrsum[7])).add(sumB).toString();
-                        arr[8] = sumA.subtract(sumB).toString();
-                        arrsum[8] = BigDecimal.valueOf(Double.parseDouble(arrsum[8])).add(BigDecimal.valueOf(Double.parseDouble(arr[8]))).toString();
-                        arr[9] = Double.parseDouble(arr[8]) > 0 ? "red" : "black";
-                        list.add(arr);
-                    }
+                for (Indicator fw : firstList) {
+                    IndicatorDetailToZero(fw.getActualIndicator(), m);
+                    IndicatorDetailToZero(fw.getBenchmarkIndicator(), m);
                 }
-                arrsum[9] = Double.parseDouble(arrsum[8]) > 0 ? "red" : "black";
-                list.add(arrsum);
             } catch (Exception e) {
                 System.out.println("cn.hanbell.kpi.rpt.FreeServiceChartReportBean.init()" + e.toString());
             }
+            //资金回收率
+            indicator = new Indicator();
+            if (arr.length == 2) {
+                indicator = indicatorBean.findByFormidYearAndDeptno(arr[1], y, indicatorChart.getDeptno());
+            }
+            if (indicator != null) {
+                secondList = indicatorBean.findByPId(indicator.getId());
+                //排序
+                secondList.sort((Indicator o1, Indicator o2) -> {
+                    if (o1.getSortid() < o2.getSortid()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                //根据指标ID加载指标说明、指标分析
+                getRemarkOne(indicatorChart, y, m);
+            }
+        }
+    }
+
+    public BigDecimal contrastValue(BigDecimal now, BigDecimal past) {
+        return now.subtract(past);
+    }
+
+    public BigDecimal contrastValue(IndicatorDetail now, IndicatorDetail past) {
+        return getValue(now).subtract(getValue(past));
+    }
+
+    public void IndicatorDetailToZero(IndicatorDetail entity, int m) throws InvocationTargetException, NoSuchMethodException {
+        for (int i = m + 1; i <= 12; i++) {
+            try {
+                Method setMethod = entity.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(entity, BigDecimal.ZERO);
+            } catch (SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            }
+        }
+    }
+
+    public BigDecimal getValue(IndicatorDetail entity) {
+        String mon;
+        BigDecimal total = BigDecimal.ZERO;
+        Field f;
+        try {
+            mon = indicatorBean.getIndicatorColumn("N", m);
+            f = entity.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            total = BigDecimal.valueOf(Double.valueOf(f.get(entity).toString()));
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            total = BigDecimal.ZERO;
+        }
+        return total;
+    }
+
+    public String getColor(Indicator a) {
+        if (a == null) {
+            return "";
+        }
+        BigDecimal value = contrastValue(getValue(a.getOther1Indicator()), getValue(a.getForecastIndicator()));
+        if (a.getProduct().contains("应付")) {
+            return getColor(value, "");
+        } else {
+            return getColor(value, "fw");
+        }
+    }
+
+    public String getColor(BigDecimal value, String taye) {
+        if ("fw".equals(taye)) {
+            if (value.compareTo(BigDecimal.ZERO) == 1) {
+                return "color:red";
+            }
+        } else {
+            if (value.compareTo(BigDecimal.ZERO) == -1) {
+                return "color:red";
+            }
+        }
+        return "";
+    }
+
+    public String getBackgroundColor(String value) {
+        switch (value) {
+            case "合计":
+            case "总产品":
+            case "营业周期":
+            case "现金周期":
+                return "background-color:#dbdbdb";
+            default:
+                return "";
         }
     }
 
@@ -217,38 +256,52 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     }
 
     /**
-     * @return the title
-     */
-    public String[] getTitle() {
-        return title;
-    }
-
-    /**
-     * @param title the title to set
-     */
-    public void setTitle(String[] title) {
-        this.title = title;
-    }
-
-    /**
-     * @return the list
-     */
-    public List<String[]> getList() {
-        return list;
-    }
-
-    /**
-     * @param list the list to set
-     */
-    public void setList(List<String[]> list) {
-        this.list = list;
-    }
-
-    /**
      * @return the y
      */
     public int getY() {
         return y;
+    }
+
+    /**
+     * @return the firstList
+     */
+    public List<Indicator> getFirstList() {
+        return firstList;
+    }
+
+    /**
+     * @param firstList the firstList to set
+     */
+    public void setFirstList(List<Indicator> firstList) {
+        this.firstList = firstList;
+    }
+
+    /**
+     * @return the secondList
+     */
+    public List<Indicator> getSecondList() {
+        return secondList;
+    }
+
+    /**
+     * @param secondList the secondList to set
+     */
+    public void setSecondList(List<Indicator> secondList) {
+        this.secondList = secondList;
+    }
+
+    /**
+     * @return the thirdlyList
+     */
+    public List<Indicator> getThirdlyList() {
+        return thirdlyList;
+    }
+
+    /**
+     * @param thirdlyList the thirdlyList to set
+     */
+    public void setThirdlyList(List<Indicator> thirdlyList) {
+        this.thirdlyList = thirdlyList;
     }
 
 }
