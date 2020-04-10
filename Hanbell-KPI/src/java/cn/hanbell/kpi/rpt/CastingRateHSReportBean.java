@@ -35,7 +35,7 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
 
     @Override
     public void init() {
-                HttpServletRequest request = (HttpServletRequest) ec.getRequest();
+        HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String id = request.getParameter("id");
         if (id == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
@@ -43,7 +43,7 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -137,14 +137,14 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
         }
     }
 
-    public BigDecimal getNfy(BigDecimal a,BigDecimal b){
+    public BigDecimal getNfy(BigDecimal a, BigDecimal b) {
         try {
-            return a.divide(b,2).multiply(BigDecimal.valueOf(100));
+            return a.divide(b, 2).multiply(BigDecimal.valueOf(100));
         } catch (Exception e) {
         }
         return BigDecimal.ZERO;
     }
-    
+
     @Override
     public LineChartModel initLineChartModel(String xTitle, String yTitle) {
         Axis yAxis;
@@ -155,6 +155,5 @@ public class CastingRateHSReportBean extends BscChartManagedBean {
 
         return getChartModel();
     }
-    
 
 }

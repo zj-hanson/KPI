@@ -52,7 +52,7 @@ public class TimerBean {
     @Resource
     TimerService timerService;
 
-    protected final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public TimerBean() {
 

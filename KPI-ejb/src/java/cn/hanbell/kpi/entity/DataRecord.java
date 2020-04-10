@@ -28,19 +28,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "datarecord")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DataRecord.findAll", query = "SELECT d FROM DataRecord d")
-    ,
-    @NamedQuery(name = "DataRecord.findDataRecords", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.dataRecordAssisted.type = :type AND d.dataRecordAssisted.whethershow = :whethershow  AND d.yea = :yea AND d.mon = :mon  ORDER BY d.dataRecordAssisted.showno ASC ")
-    ,
+    @NamedQuery(name = "DataRecord.findAll", query = "SELECT d FROM DataRecord d"),
+    @NamedQuery(name = "DataRecord.findDataRecords", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.dataRecordAssisted.type = :type AND d.dataRecordAssisted.whethershow = :whethershow  AND d.yea = :yea AND d.mon = :mon  ORDER BY d.dataRecordAssisted.showno ASC "),
     @NamedQuery(name = "DataRecord.findByYeaAndMon", query = "SELECT d FROM DataRecord d WHERE d.facno = :facno AND d.type = :type AND d.yea = :yea AND d.mon = :mon ")
 })
 public class DataRecord extends SuperEntity {
 
     @JoinColumns({
-        @JoinColumn(name = "facno", referencedColumnName = "facno", updatable = false, insertable = false)
-        ,
-        @JoinColumn(name = "type", referencedColumnName = "type", updatable = false, insertable = false)
-        ,
+        @JoinColumn(name = "facno", referencedColumnName = "facno", updatable = false, insertable = false),
+        @JoinColumn(name = "type", referencedColumnName = "type", updatable = false, insertable = false),
         @JoinColumn(name = "itemname", referencedColumnName = "itemname", updatable = false, insertable = false)
     })
     @OneToOne(optional = true)
@@ -189,5 +185,5 @@ public class DataRecord extends SuperEntity {
     public void setDataRecordAssisted(DataRecordAssisted dataRecordAssisted) {
         this.dataRecordAssisted = dataRecordAssisted;
     }
-    
+
 }

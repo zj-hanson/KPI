@@ -73,8 +73,8 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         }
         return null;
     }
-    
-    public List getDataByFindByYearmon(String yearmon){
+
+    public List getDataByFindByYearmon(String yearmon) {
         Query query = this.getEntityManager().createNamedQuery("InventoryProduct.findByYearmon");
         try {
             query.setParameter("yearmon", yearmon);

@@ -68,7 +68,7 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -181,5 +181,5 @@ public class BalanceSheetReportBean extends BscQueryTableManageBean implements S
     public void setStatusMap(LinkedHashMap<String, String> statusMap) {
         this.statusMap = statusMap;
     }
-    
+
 }
