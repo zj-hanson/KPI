@@ -6,9 +6,11 @@
 package cn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.MailNotification;
-import cn.hanbell.kpi.ejb.erp.GroupHSShipmentBean;
-import cn.hanbell.kpi.ejb.erp.GroupServiceBean;
-import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupHSSaleOrderBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupHSShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupSHSaleOrderBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupSHServiceBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupSHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
 import java.util.List;
@@ -24,18 +26,22 @@ import tw.hanbell.kpi.ejb.erp.GrpsdailytmpBean;
  */
 @Stateless
 @LocalBean
-public class GroupAllMailBean extends MailNotification {
+public class BscGroupAllMailBean extends MailNotification {
 
     @EJB
-    private GroupShipmentBean groupShipmentBean;
+    private BscGroupSHShipmentBean bscGroupSHShipmentBean;
     @EJB
-    private GroupServiceBean groupServiceBean;
+    private BscGroupSHSaleOrderBean bscGroupSHSaleOrderBean;
     @EJB
-    private GroupHSShipmentBean groupHSShipmentBean;
+    private BscGroupSHServiceBean bscGroupSHServiceBean;
+    @EJB
+    private BscGroupHSShipmentBean bscGroupHSShipmentBean;
+    @EJB
+    private BscGroupHSSaleOrderBean bscGroupHSSaleOrderBean;
     @EJB
     private GrpsdailytmpBean grpsdailytmpBean;
 
-    public GroupAllMailBean() {
+    public BscGroupAllMailBean() {
 
     }
 
@@ -58,12 +64,21 @@ public class GroupAllMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
-            //先更新汉钟的
-            groupShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
-            groupServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateSHBBscGroupShipment");
-            groupHSShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
-            log4j.info("End Execute Job updateHansonBscGroupShipment");
+            //汉钟的出货
+            bscGroupSHShipmentBean.updataShpimentActualValue(y, m, d);
+            log4j.info("End Execute Job updataShpimentActualValue");
+            //汉钟的订单
+            bscGroupSHSaleOrderBean.updataSaleOrderActualValue(y, m, d);
+            log4j.info("End Execute Job updataSaleOrderActualValue");
+            //汉钟的服务
+            bscGroupSHServiceBean.updataServerActualValue(y, m, d);
+            log4j.info("End Execute Job updataServerActualValue");
+            //汉声的出货
+            bscGroupHSShipmentBean.updataShpimentActualValue(y, m, d);
+            log4j.info("End Execute Job updataShpimentActualValue");
+            //汉声的订单
+            bscGroupHSSaleOrderBean.updataSaleOrderActualValue(y, m, d);
+            log4j.info("End Execute Job updataSaleOrderActualValue");
             //再更新到台湾ERP
             StringBuilder sb = new StringBuilder();
             int num;

@@ -6,7 +6,7 @@
 package tw.hanbell.kpi.ejb.erp;
 
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import cn.hanbell.kpi.ejb.erp.GroupShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupSHShipmentBean;
 import tw.hanbell.kpi.entity.erp.Grpsdailytmp;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class GrpsdailytmpBean implements Serializable {
     private SuperEJBForERP erpEJB;
 
     @EJB
-    private GroupShipmentBean groupShipmentBean;
+    private BscGroupSHShipmentBean groupShipmentBean;
 
     private List<Grpsdailytmp> grpsdailytmpList;
 
