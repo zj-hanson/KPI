@@ -28,21 +28,21 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class GroupVHServiceBean implements Serializable {
+public class BscGroupVHServiceBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
-    public GroupVHServiceBean() {
+    public BscGroupVHServiceBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d) {
+    public void updataServerActualValue(int y, int m, Date d) {
         queryParams.clear();
         queryParams.put("facno", "V");
         queryParams.put("hmark1", " ='O' ");
@@ -80,7 +80,7 @@ public class GroupVHServiceBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -96,8 +96,8 @@ public class GroupVHServiceBean implements Serializable {
         BigDecimal sqty = BigDecimal.ZERO;
         sb.append(" select soday,isnull(cast(sum(num) as decimal(16,2)),0) as num from(  ");
         sb.append(" select h.shpdate as soday,isnull(sum((d.shpamts * h.ratio)),0) as num ");
-        sb.append(" from [vnerp1].[dbo].cdrhmas e,[vnerp1].[dbo].cdrdta d  inner join [vnerp1].[dbo].cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno   ");
-        sb.append(" where h.facno = '${facno}'    and h.houtsta <> 'W' and e.cdrno=d.cdrno and e.hmark2='FW'  ");
+        sb.append(" from cdrhmas e,cdrdta d  inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno   ");
+        sb.append(" where h.facno = '${facno}' and h.houtsta <> 'W' and e.cdrno=d.cdrno and e.hmark2='FW'  ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
         }
@@ -105,7 +105,7 @@ public class GroupVHServiceBean implements Serializable {
         sb.append(" group by h.shpdate ");
         sb.append(" UNION  all ");
         sb.append(" select  h.bakdate as soday,isnull(sum((d.bakamts * h.ratio)*(-1)),0) as num ");
-        sb.append(" from  [vnerp1].[dbo].cdrhmas e,[vnerp1].[dbo].cdrbhad h right join [vnerp1].[dbo].cdrbdta d on h.bakno=d.bakno  ");
+        sb.append(" from  cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno  ");
         sb.append(" where h.facno = '${facno}'   and h.baksta <> 'W' and e.cdrno=d.cdrno AND e.hmark2='FW' ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
@@ -146,7 +146,7 @@ public class GroupVHServiceBean implements Serializable {
                 data.add(e);
             }
         } catch (Exception ex) {
-            Logger.getLogger(GroupVHServiceBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BscGroupVHServiceBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }

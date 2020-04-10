@@ -28,29 +28,29 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class GroupVHShipmentBean implements Serializable {
+public class BscGroupVHSaleOrderBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
 
-    public GroupVHShipmentBean() {
+    public BscGroupVHSaleOrderBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d, String type) {
+    public void updataSaleOrderActualValue(int y, int m, Date d) {
         queryParams.clear();
         queryParams.put("facno", "V");
         queryParams.put("hmark1", " ='R' ");
-        List<BscGroupShipment> resultData = getShipment(y, m, d, type, getQueryParams());
+        List<BscGroupShipment> resultData = getSalesOrder(y, m, d, y, getQueryParams());
         List<BscGroupShipment> tempData;
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='L' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -64,7 +64,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='DR' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -78,7 +78,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='CDU' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -92,7 +92,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='A' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -106,7 +106,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='SDS' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -120,7 +120,7 @@ public class GroupVHShipmentBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='P' ");
-        tempData = getShipment(y, m, d, type, getQueryParams());
+        tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -134,191 +134,11 @@ public class GroupVHShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            if (type.contains("SalesOrder")) {
-                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
-            } else {
-                //如果不更新订单就不清除订单数据
-                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type <> 'SalesOrder'").executeUpdate();
-            }
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'SalesOrder'").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
         }
-    }
-
-    //出货
-    protected List<BscGroupShipment> getShipment(int y, int m, Date d, String type, LinkedHashMap<String, Object> map) {
-        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
-        List<BscGroupShipment> data = new ArrayList<>();
-        List<BscGroupShipment> temp;
-        BigDecimal qty = BigDecimal.ZERO;
-        BigDecimal amts = BigDecimal.ZERO;
-        StringBuilder sb = new StringBuilder();
-        sb.append(" select a.soday,sum(num) from ( ");
-        sb.append(" select h.facno,h.shpdate as soday,e.hmark1,sum(d.shpqy1) as num  from  cdrhmas e,cdrdta d inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno ");
-        sb.append(" where h.houtsta <> 'W'  and e.cdrno=d.cdrno    and  e.hmark2='ZJ' ");
-        sb.append(" and h.facno='${facno}' ");
-        if (!"".equals(hmark1)) {
-            sb.append(" and e.hmark1 ").append(hmark1);
-        }
-        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
-        sb.append(" GROUP BY h.facno,h.shpdate,e.hmark1 ");
-        sb.append(" union all  ");
-        sb.append(" select h.facno,h.bakdate as soday,e.hmark1, -sum(d.bshpqy1) as num from cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
-        sb.append(" where h.baksta <> 'W'  and e.cdrno=d.cdrno and  e.hmark2='ZJ' ");
-        sb.append(" and h.facno='${facno}' ");
-        if (!"".equals(hmark1)) {
-            sb.append(" and e.hmark1 ").append(hmark1);
-        }
-        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
-        sb.append(" group by h.facno,h.bakdate,e.hmark1 ");
-        sb.append(" ) a group by a.soday ");
-        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno);
-
-        erpEJB.setCompany(facno);
-        Query query1 = erpEJB.getEntityManager().createNativeQuery(cdrdta);
-        try {
-            List shpResult = query1.getResultList();
-            Date shpdate;
-            String protype, protypeno, shptype;
-            if (hmark1.contains("R") && !hmark1.contains("DR")) {
-                protype = "压缩机R系列";
-                protypeno = "R";
-                shptype = "1";
-            } else if (hmark1.contains("L")) {
-                protype = "压缩机L系列";
-                protypeno = "L";
-                shptype = "1";
-            } else if (hmark1.contains("DR")) {
-                protype = "压缩机DORIN";
-                protypeno = "DR";
-                shptype = "1";
-            } //20190702 取消CDU产品别归到代理品
-            //            else if (hmark1.contains("CDU")) {
-            //                protype = "机组CDU";
-            //                protypeno = "CDU";
-            //                shptype = "2";
-            //            }
-            else if (hmark1.contains("A")) {
-                protype = "空压机组A系列";
-                protypeno = "A";
-                shptype = "2";
-            } else if (hmark1.contains("SDS")) {
-                protype = "空压机SDS";
-                protypeno = "SDS";
-                shptype = "2";
-            } else if (hmark1.contains("P")) {
-                protype = "真空泵";
-                protypeno = "P";
-                shptype = "2";
-            } else {
-                protype = "";
-                protypeno = "";
-                shptype = "";
-            }
-            for (int i = 0; i < shpResult.size(); i++) {
-                Object o[] = (Object[]) shpResult.get(i);
-                shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
-                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("V", shpdate, "Shipment", protype, protypeno, shptype);
-                e.setQuantity(qty);
-                e.setAmount(BigDecimal.ZERO);
-                data.add(e);
-            }
-            //订单 选择性是否更新订单
-            if (type.contains("SalesOrder")) {
-                temp = getSalesOrder(y, m, d, Calendar.MONTH, getQueryParams());
-                if (temp != null && !temp.isEmpty()) {
-                    for (BscGroupShipment c : temp) {
-                        if (data.contains(c)) {
-                            BscGroupShipment a = data.get(data.indexOf(c));
-                            a.setQuantity(a.getQuantity().add(c.getQuantity()));
-                            a.setAmount(a.getAmount().add(c.getAmount()));
-                        } else {
-                            data.add(c);
-                        }
-                    }
-                }
-            }
-            //出貨金額
-            if (!data.isEmpty()) {
-                for (BscGroupShipment e : data) {
-                    amts = getShipmentAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
-                    if (amts != null) {
-                        e.setAmount(amts);
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return data;
-    }
-
-    //出货金额
-    public BigDecimal getShipmentAmount(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        //获得查询参数
-        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
-        BigDecimal shp1 = BigDecimal.ZERO;
-        BigDecimal bshp1 = BigDecimal.ZERO;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(" select  isnull(sum((d.shpamts*h.ratio)),0) from cdrhmas e,cdrdta d  inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno ");
-        sb.append(" where  e.cdrno=d.cdrno and h.cusno not in ('SSD00328') and h.houtsta <> 'W' AND e.hmark2='ZJ' ");
-        sb.append(" and h.facno='${facno}' ");
-        if (!"".equals(hmark1)) {
-            sb.append(" and e.hmark1 ").append(hmark1);
-        }
-        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
-        switch (type) {
-            case 2:
-                //月
-                sb.append(" and h.shpdate<= '${d}' ");
-                break;
-            case 5:
-                //日
-                sb.append(" and h.shpdate= '${d}' ");
-                break;
-            default:
-                sb.append(" and h.shpdate<= '${d}' ");
-        }
-        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno);
-
-        sb.setLength(0);
-        sb.append("select isnull(sum((d.bakamts*h.ratio)),0) from cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
-        sb.append(" where h.cusno not  in ('SSD00328')  and h.baksta <> 'W' AND h.hmark2='ZJ '   ");
-        sb.append(" and h.facno='${facno}' ");
-        sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
-        switch (type) {
-            case 2:
-                //月
-                sb.append(" and h.bakdate<= '${d}' ");
-                break;
-            case 5:
-                //日
-                sb.append(" and h.bakdate= '${d}' ");
-                break;
-            default:
-                sb.append(" and h.bakdate<= '${d}' ");
-        }
-        String cdrbdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno);
-        erpEJB.setCompany(facno);
-        Query query1 = erpEJB.getEntityManager().createNativeQuery(cdrdta);
-        Query query2 = erpEJB.getEntityManager().createNativeQuery(cdrbdta);
-        try {
-            Object o1 = query1.getSingleResult();
-            Object o2 = query2.getSingleResult();
-            shp1 = (BigDecimal) o1;
-            bshp1 = (BigDecimal) o2;
-        } catch (Exception ex) {
-            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return shp1.subtract(bshp1);
     }
 
     //订单台数
@@ -399,7 +219,7 @@ public class GroupVHShipmentBean implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BscGroupVHSaleOrderBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }
@@ -438,7 +258,7 @@ public class GroupVHShipmentBean implements Serializable {
             Object o1 = query.getSingleResult();
             result = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(GroupVHShipmentBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BscGroupVHSaleOrderBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
 

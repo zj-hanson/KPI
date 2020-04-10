@@ -41,7 +41,7 @@ public class BscGroupVHServiceBean implements Serializable {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d) {
+    public void updataServerActualValue(int y, int m, Date d) {
         queryParams.clear();
         queryParams.put("facno", "V");
         queryParams.put("hmark1", " ='O' ");
@@ -71,7 +71,7 @@ public class BscGroupVHServiceBean implements Serializable {
                 if (resultData.contains(b)) {
                     BscGroupShipment a = resultData.get(resultData.indexOf(b));
                     a.setQuantity(BigDecimal.ZERO);
-                a.setAmount(a.getAmount().add(b.getAmount()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
                     resultData.add(b);
                 }
@@ -79,13 +79,14 @@ public class BscGroupVHServiceBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno='V' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
         }
     }
 
+    //服务金额
     protected List<BscGroupShipment> getServiceValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
@@ -94,8 +95,8 @@ public class BscGroupVHServiceBean implements Serializable {
         BigDecimal sqty = BigDecimal.ZERO;
         sb.append(" select soday,isnull(cast(sum(num) as decimal(16,2)),0) as num from(  ");
         sb.append(" select h.shpdate as soday,isnull(sum((d.shpamts * h.ratio)),0) as num ");
-        sb.append(" from [vnerp1].[dbo].cdrhmas e,[vnerp1].[dbo].cdrdta d  inner join [vnerp1].[dbo].cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno   ");
-        sb.append(" where h.facno = '${facno}'    and h.houtsta <> 'W' and e.cdrno=d.cdrno and e.hmark2='FW'  ");
+        sb.append(" from cdrhmas e,cdrdta d  inner join cdrhad h on  d.facno=h.facno  and d.shpno=h.shpno   ");
+        sb.append(" where h.facno = '${facno}' and h.houtsta <> 'W' and e.cdrno=d.cdrno and e.hmark2='FW'  ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
         }
@@ -103,7 +104,7 @@ public class BscGroupVHServiceBean implements Serializable {
         sb.append(" group by h.shpdate ");
         sb.append(" UNION  all ");
         sb.append(" select  h.bakdate as soday,isnull(sum((d.bakamts * h.ratio)*(-1)),0) as num ");
-        sb.append(" from  [vnerp1].[dbo].cdrhmas e,[vnerp1].[dbo].cdrbhad h right join [vnerp1].[dbo].cdrbdta d on h.bakno=d.bakno  ");
+        sb.append(" from  cdrhmas e,cdrbhad h right join cdrbdta d on h.bakno=d.bakno  ");
         sb.append(" where h.facno = '${facno}'   and h.baksta <> 'W' and e.cdrno=d.cdrno AND e.hmark2='FW' ");
         if (!"".equals(hmark1)) {
             sb.append(" and e.hmark1 ").append(hmark1);
@@ -119,15 +120,15 @@ public class BscGroupVHServiceBean implements Serializable {
             String protype, protypeno, shptype;
             if (hmark1.contains("O")) {
                 protype = "其他代理品";
-                protypeno = "Z";
+                protypeno = "O";
                 shptype = "21";
             } else if (hmark1.contains("R") && !hmark1.contains("DR")) {
                 protype = "R/CDU/Dorin服务收费";
-                protypeno = "Z";
+                protypeno = "SR";
                 shptype = "21";
             } else if (hmark1.contains("A")) {
                 protype = "空压机服务收费";
-                protypeno = "Z";
+                protypeno = "SA";
                 shptype = "21";
             } else {
                 protype = "";
@@ -138,7 +139,7 @@ public class BscGroupVHServiceBean implements Serializable {
                 Object o[] = (Object[]) shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 sqty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("V", shpdate, "ServiceAmount", protype, protypeno, shptype);
+                BscGroupShipment e = new BscGroupShipment("V", shpdate,"ServiceAmount", protype, protypeno, shptype);
                 e.setQuantity(BigDecimal.ZERO);
                 e.setAmount(sqty);
                 data.add(e);
