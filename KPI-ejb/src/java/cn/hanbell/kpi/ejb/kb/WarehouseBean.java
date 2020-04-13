@@ -35,7 +35,7 @@ public class WarehouseBean implements Serializable {
     public WarehouseBean() {
         this.dmf = new DecimalFormat("#0.00%");
     }
-    
+
     public LinkedHashMap<String, List> getMap(int row_x) {
         LinkedHashMap<String, List> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
@@ -47,20 +47,20 @@ public class WarehouseBean implements Serializable {
         try {
             List list = query.getResultList();
             for (Object object : list) {
-                map.put(String.valueOf(object), getTierList(String.valueOf(row_x),String.valueOf(object)));
+                map.put(String.valueOf(object), getTierList(String.valueOf(row_x), String.valueOf(object)));
             }
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
         return map;
     }
-    
+
     protected List getTierList(String row_x, String lvl_z) {
         List list = new ArrayList();
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT loc_sts FROM asrs_tb_loc_mst  where row_x =${x} and lvl_z=${z}  and loc<'090101' ORDER BY bay_y ASC ");
         String sql = sb.toString().replace("${x}", row_x).replace("${z}", lvl_z);
-        
+
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
         try {
@@ -104,7 +104,7 @@ public class WarehouseBean implements Serializable {
                     arr[1] = row[2].toString();
                     arr[2] = row[3].toString();
                     arr[3] = row[4].toString();
-                    arr[4] = dmf.format(Double.parseDouble(arr[3]) / Double.parseDouble(arr[0]));                  
+                    arr[4] = dmf.format(Double.parseDouble(arr[3]) / Double.parseDouble(arr[0]));
                     arr[5] = row[5].toString();
                     arr[6] = row[6].toString();
                     list.add(arr);
@@ -113,7 +113,7 @@ public class WarehouseBean implements Serializable {
                 map.put("禁用储位", getArr(1, list));
                 map.put("空储位", getArr(2, list));
                 map.put("使用中储位", getArr(3, list));
-                map.put("使用率", getArr(4, list));              
+                map.put("使用率", getArr(4, list));
                 map.put("空储位低", getArr(5, list));
                 map.put("空储位高", getArr(6, list));
             }

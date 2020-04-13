@@ -5,7 +5,6 @@
  */
 package cn.hanbell.kpi.ejb.erp;
 
-
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.entity.erp.BscGroupShipment;
 import com.lightshell.comm.BaseLib;
@@ -22,27 +21,28 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+
 /**
  *
  * @author C1749
  */
 @Stateless
 @LocalBean
-public class GroupServiceBean implements Serializable {
+public class BscGroupSHServiceBean implements Serializable {
 
     @EJB
     private SuperEJBForERP erpEJB;
 
     protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
-    
-    public GroupServiceBean() {
+
+    public BscGroupSHServiceBean() {
     }
 
     public LinkedHashMap<String, Object> getQueryParams() {
         return this.queryParams;
     }
 
-    public void updataActualValue(int y, int m, Date d) {
+    public void updataServerActualValue(int y, int m, Date d) {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("ogdkid", " ='RL01' ");
@@ -285,7 +285,7 @@ public class GroupServiceBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno = 'S' and year(soday)=" + y + " and month(soday) = " + m).executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno = 'S' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -383,13 +383,13 @@ public class GroupServiceBean implements Serializable {
                 Object o[] = (Object[]) shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 sqty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
-                BscGroupShipment e = new BscGroupShipment("S", shpdate,"ServiceAmount" ,protype, protypeno, shptype);
+                BscGroupShipment e = new BscGroupShipment("S", shpdate, "ServiceAmount", protype, protypeno, shptype);
                 e.setQuantity(BigDecimal.ZERO);
                 e.setAmount(sqty);
                 data.add(e);
             }
         } catch (Exception ex) {
-            Logger.getLogger(GroupServiceBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BscGroupSHServiceBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }

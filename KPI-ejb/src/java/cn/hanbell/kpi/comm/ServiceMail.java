@@ -249,5 +249,5 @@ public abstract class ServiceMail extends MailNotification {
         }
         return total1;
     }
-    
+
 }

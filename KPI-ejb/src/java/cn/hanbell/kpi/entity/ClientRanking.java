@@ -40,7 +40,7 @@ public class ClientRanking implements Serializable {
 
     //客户名称
     private String cusna;
-    
+
     //产品别
     private String n_code_DA;
 
@@ -67,28 +67,28 @@ public class ClientRanking implements Serializable {
 
     //金额同比
     private String growthrate;
-    
+
     //字体颜色
     private String paststyle;
-    
+
     //字体颜色
     private String ultstyle;
-    
+
     //上月销售数量
     private String ultshpqy1;
-    
+
     //上月销售金额
     private String ultshpamts;
 
     //数量环比
     private String shpqy1chainrate;
-    
+
     //金额环比
     private String shpamtschainrate;
-     
+
     //数量同比
     private String shpqy1growthrate;
-    
+
     public Long getId() {
         return id;
     }
@@ -158,7 +158,7 @@ public class ClientRanking implements Serializable {
      * @param nowshpqy1 the nowshpqy1 to set
      */
     public void setNowshpqy1(String nowshpqy1) {
-        this.nowshpqy1 =nowshpqy1;
+        this.nowshpqy1 = nowshpqy1;
     }
 
     /**
@@ -172,7 +172,7 @@ public class ClientRanking implements Serializable {
      * @param nowshpamts the nowshpamts to set
      */
     public void setNowshpamts(String nowshpamts) {
-        this.nowshpamts =nowshpamts;
+        this.nowshpamts = nowshpamts;
     }
 
     /**
@@ -200,7 +200,7 @@ public class ClientRanking implements Serializable {
      * @param pastshpqy1 the pastshpqy1 to set
      */
     public void setPastshpqy1(String pastshpqy1) {
-        this.pastshpqy1 =pastshpqy1;
+        this.pastshpqy1 = pastshpqy1;
     }
 
     /**
@@ -214,8 +214,9 @@ public class ClientRanking implements Serializable {
      * @param pastshpamts the pastshpamts to set
      */
     public void setPastshpamts(String pastshpamts) {
-        this.pastshpamts =pastshpamts;
+        this.pastshpamts = pastshpamts;
     }
+
     /**
      * @return the pastrank
      */
@@ -369,6 +370,5 @@ public class ClientRanking implements Serializable {
     public void setN_code_DA(String n_code_DA) {
         this.n_code_DA = n_code_DA;
     }
-    
-    
+
 }

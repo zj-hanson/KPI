@@ -94,7 +94,7 @@ public class ExchangeRateReportBean extends BscQueryTableManageBean implements S
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
@@ -149,7 +149,7 @@ public class ExchangeRateReportBean extends BscQueryTableManageBean implements S
                 //yAxis.setLabel("");
                 displaySting = "block";
                 remind = "none";
-                super.getRemarkOne(indicatorChart, getDate().get(Calendar.YEAR), getDate().get(Calendar.MONTH)+1);
+                super.getRemarkOne(indicatorChart, getDate().get(Calendar.YEAR), getDate().get(Calendar.MONTH) + 1);
             } else {
                 displaySting = "none";
                 remind = "block";

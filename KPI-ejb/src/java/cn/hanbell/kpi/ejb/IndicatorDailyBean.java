@@ -37,15 +37,14 @@ public class IndicatorDailyBean extends SuperEJBForKPI<IndicatorDaily> {
         }
     }
 
-    
     public void deleteByPId(int pid) {
         StringBuilder sb = new StringBuilder();
         sb.append(" DELETE FROM indicatordaily  WHERE pid = ${pid} ");
         String sql = sb.toString().replace("${pid}", String.valueOf(pid));
         try {
-                Query query = getEntityManager().createNativeQuery(sql);
-                int count = query.executeUpdate();
-                System.out.println("cn.hanbell.kpi.ejb.IndicatorDailyBean.deleteByPId()受影响行数：" + count);
+            Query query = getEntityManager().createNativeQuery(sql);
+            int count = query.executeUpdate();
+            System.out.println("cn.hanbell.kpi.ejb.IndicatorDailyBean.deleteByPId()受影响行数：" + count);
         } catch (Exception e) {
             System.out.println("cn.hanbell.kpi.ejb.IndicatorDailyBean.deleteByPId()" + e);
         }

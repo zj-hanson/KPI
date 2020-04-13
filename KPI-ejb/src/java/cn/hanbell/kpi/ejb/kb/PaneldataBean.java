@@ -72,7 +72,7 @@ public class PaneldataBean extends SuperEJBForKPI<Paneldata> {
                     pd.setValue4(BigDecimal.valueOf(Double.parseDouble(row[7].toString())));
                     pd.setValue5(BigDecimal.valueOf(Double.parseDouble(row[8].toString())));
                     pd.setValue6(BigDecimal.valueOf(Double.parseDouble(row[9].toString())));
-                    pd.setRemark(row[10]==null?"":row[10].toString());
+                    pd.setRemark(row[10] == null ? "" : row[10].toString());
                     paneldatas.add(pd);
                 }
             }

@@ -6,8 +6,8 @@
 package vn.hanbell.kpi.mail;
 
 import cn.hanbell.kpi.comm.MailNotification;
-import cn.hanbell.kpi.ejb.erp.GroupVHServiceBean;
-import cn.hanbell.kpi.ejb.erp.GroupVHShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupVHSaleOrderBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupVHShipmentBean;
 import cn.hanbell.kpi.entity.Indicator;
 import java.util.Date;
 import java.util.List;
@@ -21,14 +21,14 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class GroupVNShipmentMailBean extends MailNotification {
+public class BscGroupVNShipmentMailBean extends MailNotification {
 
     @EJB
-    private GroupVHShipmentBean groupVHShipmentBean;
+    private BscGroupVHShipmentBean bscGroupVHShipmentBean;
     @EJB
-    private GroupVHServiceBean groupVHServiceBean;
-
-    public GroupVNShipmentMailBean() {
+    private BscGroupVHSaleOrderBean bscGroupVHSaleOrderBean;
+    
+    public BscGroupVNShipmentMailBean() {
 
     }
 
@@ -51,9 +51,15 @@ public class GroupVNShipmentMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         try {
-            groupVHShipmentBean.updataActualValue(y, m, d,"Shipment,SalesOrder");
-            groupVHServiceBean.updataActualValue(y, m, d);
-            log4j.info("End Execute Job updateERPVHBscGroupShipment");
+            //越南出货
+            bscGroupVHShipmentBean.updataShpimentActualValue(y, m, d);
+             log4j.info("End Execute Job updataShpimentActualValue");
+             //越南订单
+             bscGroupVHSaleOrderBean.updataSaleOrderActualValue(y, m, d);
+            log4j.info("End Execute Job updataSaleOrderActualValue");
+             //越南服务
+             bscGroupVHShipmentBean.updataServerActualValue(y, m, d);
+             log4j.info("End Execute Job updataServerActualValue");
             return "越南数据更新集团报表数据成功";
         } catch (Exception ex) {
             return ex.toString();

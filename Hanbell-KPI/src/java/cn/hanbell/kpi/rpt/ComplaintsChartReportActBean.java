@@ -39,7 +39,7 @@ public class ComplaintsChartReportActBean extends BscChartManagedBean {
         indicatorChart = indicatorChartBean.findById(Integer.valueOf(id));
         if (indicatorChart == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
-        }else {
+        } else {
             for (RoleGrantModule m : userManagedBean.getRoleGrantDeptList()) {
                 if (m.getDeptno().equals(indicatorChart.getPid())) {
                     deny = false;
