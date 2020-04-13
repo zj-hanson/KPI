@@ -26,10 +26,5 @@ public class ShipmentAmountAJB extends ShipmentAmount {
         queryParams.put("n_code_DC", " = 'AJB' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-
-    @Override
-    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    } 
     
 }

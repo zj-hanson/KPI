@@ -5,6 +5,10 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 /**
  *
  * @author C0160
@@ -23,4 +27,9 @@ public class ShipmentAmountAJA extends ShipmentAmount {
         queryParams.put("n_code_DD", " ='00' ");
     }
 
+    @Override
+    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        return BigDecimal.ZERO;
+    }
+  
 }
