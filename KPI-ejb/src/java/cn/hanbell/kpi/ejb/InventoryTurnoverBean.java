@@ -98,6 +98,7 @@ public class InventoryTurnoverBean implements Serializable {
         IndicatorDetail t = indicator.getTargetIndicator();// 目标
         IndicatorDetail other1 = indicator.getOther1Indicator();//本年累计
         IndicatorDetail other2 = indicator.getOther2Indicator();//去年累计
+        IndicatorDetail fc = indicator.getForecastIndicator();//预测值 放去年累计值
         String mon;
         Field f;
         try {
@@ -162,10 +163,10 @@ public class InventoryTurnoverBean implements Serializable {
              * 去年累计*
              */
             mon = this.getIndicatorColumn("N", m);
-            f = other2.getClass().getDeclaredField(mon);
+            f = fc.getClass().getDeclaredField(mon);
             f.setAccessible(true);
-            String other2Amt = f.get(other2).toString();
-            strArr[8] = other2Amt;
+            String fcAmt = f.get(fc).toString();
+            strArr[8] = fcAmt;
             arrList.add(strArr);
             return arrList;
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {

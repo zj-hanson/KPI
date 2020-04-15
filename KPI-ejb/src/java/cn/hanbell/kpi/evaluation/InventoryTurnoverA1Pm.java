@@ -13,12 +13,13 @@ import java.util.LinkedHashMap;
  *
  * @version V1.0
  * @author C1749
- * @data 2019-10-28
- * @description 原材料周转天数 --此指标与2020年方针目标变更 不再使用 留着做备份
+ * @data 2020-4-1
+ * @description 真空生产库存周转天数 //本月周转天数 = 今年到本月的天数 / (本月销售成本/((本月库存金额+上月库存金额)/2))
+ * 
  */
-public class InventoryTurnoverA1B20m extends InventoryTurnoverA1 {
+public class InventoryTurnoverA1Pm extends InventoryTurnoverA1 {
 
-    public InventoryTurnoverA1B20m() {
+    public InventoryTurnoverA1Pm() {
         super();
     }
 
@@ -28,7 +29,7 @@ public class InventoryTurnoverA1B20m extends InventoryTurnoverA1 {
         try {
             sell = getMonthSellingValue(y, m, d, type, map);
             queryParams.clear();
-            queryParams.put("formid", "原材料库存金额");
+            queryParams.put("formid", "真空生产库存");
             queryParams.put("deptno", "1P000");
             result = getMonthValue(y, m, d, type, queryParams, sell);
             return result;

@@ -10,15 +10,16 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
- *
+*
  * @version V1.0
  * @author C1749
- * @data 2019-10-28
- * @description 原材料周转天数 --此指标与2020年方针目标变更 不再使用 留着做备份
+ * @data 2020-4-1
+ * @description 真空生产周转天数 :本月周转天数 = 今年到本月的天数 / (本月销售成本/((本月库存金额+上月库存金额)/2))
+ * @description2 此指标与2020年方针目标变更 不再使用 留着做备份
  */
-public class InventoryTurnoverA1B20m extends InventoryTurnoverA1 {
+public class InventoryTurnoverA1Py extends InventoryTurnoverA1 {
 
-    public InventoryTurnoverA1B20m() {
+    public InventoryTurnoverA1Py() {
         super();
     }
 
@@ -26,15 +27,16 @@ public class InventoryTurnoverA1B20m extends InventoryTurnoverA1 {
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         BigDecimal sell, result;
         try {
-            sell = getMonthSellingValue(y, m, d, type, map);
+            sell = getYearSellingValue(y, m, d, type, map);
             queryParams.clear();
-            queryParams.put("formid", "原材料库存金额");
+            queryParams.put("formid", "真空生产库存");
             queryParams.put("deptno", "1P000");
-            result = getMonthValue(y, m, d, type, queryParams, sell);
+            result = getYearValue(y, m, d, type, queryParams, sell);
             return result;
         } catch (Exception ex) {
             log4j.error(ex);
         }
         return BigDecimal.ZERO;
     }
+
 }
