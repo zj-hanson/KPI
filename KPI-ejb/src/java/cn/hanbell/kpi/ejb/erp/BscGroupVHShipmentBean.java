@@ -134,7 +134,7 @@ public class BscGroupVHShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'Shipment'").executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'Shipment'").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
@@ -340,7 +340,7 @@ public class BscGroupVHShipmentBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }

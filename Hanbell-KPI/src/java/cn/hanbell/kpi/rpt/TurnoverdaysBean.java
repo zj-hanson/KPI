@@ -31,6 +31,8 @@ import org.apache.commons.beanutils.BeanUtils;
 @ViewScoped
 public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
 
+    protected List<Indicator> indicators;
+
     public TurnoverdaysBean() {
         super();
     }
@@ -89,22 +91,35 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
                     return 1;
                 }
             });
-            //2、库存
+            //2、库存 营业所有、服务合计、生产合计
             indicator = new Indicator();
             if (arr.length >= 2) {
+                //营业所有 不要营业总产品
                 indicator = indicatorBean.findByFormidYearAndDeptno(arr[1], y, indicatorChart.getDeptno());
                 if (indicator != null) {
                     secondList = indicatorBean.findByPId(indicator.getId());
-                    //排序
-                    secondList.sort((Indicator o1, Indicator o2) -> {
-                        if (o1.getSortid() < o2.getSortid()) {
-                            return -1;
-                        } else {
-                            return 1;
+                    if (secondList != null) {
+                        for (Indicator i : secondList) {
+                            if (i.getCategory().contains("营业周转天数") && !i.getDescript().contains("合计")) {
+                                i.getParent().setName("库存周转天数");
+                                firstList.add(i);
+                            }
                         }
-                    });
-                    firstList.addAll(secondList);
+                    }
                 }
+                //生产合计
+                indicator = indicatorBean.findByFormidYearAndDeptno("生产周转天数合计", y, indicatorChart.getDeptno());
+                indicator.getParent().setName("库存周转天数");
+                firstList.add(indicator);
+                //服务合计
+                indicator = indicatorBean.findByFormidYearAndDeptno("服务周转天数合计", y, indicatorChart.getDeptno());
+                indicator.getParent().setName("库存周转天数");
+                firstList.add(indicator);
+                //周转总合计
+                indicator = indicatorBean.findByFormidYearAndDeptno("库存周转天数总计", y, indicatorChart.getDeptno());
+                indicator.setParent(indicator);
+                indicator.getParent().setName("库存周转天数");
+                firstList.add(indicator);
             }
             //提出总产品指标
             firstList.forEach(a -> {
@@ -136,7 +151,7 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
                             return 1;
                         }
                     });
-                    firstList.addAll(thirdlyList);          
+                    firstList.addAll(thirdlyList);
                     thirdlyList.forEach(a -> {
                         if (a.getDescript().contains("总")) {
                             indicatorSubtract(sumIndicator, a);
@@ -163,9 +178,9 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
 
     //IndicatorDaily两两相减
     protected IndicatorDetail detailSubtract(IndicatorDetail a, IndicatorDetail b) {
-            IndicatorDetail detail = new IndicatorDetail();
-            detail.setParent(indicator);
-            detail.setType("A");
+        IndicatorDetail detail = new IndicatorDetail();
+        detail.setParent(indicator);
+        detail.setType("A");
         try {
             detail.setN01(a.getN01().subtract(b.getN01()));
             detail.setN02(a.getN02().subtract(b.getN02()));
@@ -185,7 +200,7 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
             detail.setNq4(a.getNq4().subtract(b.getNq4()));
             detail.setNh1(a.getNh1().subtract(b.getNh1()));
             detail.setNh2(a.getNh2().subtract(b.getNh2()));
-            detail.setNfy(a.getNfy().subtract(b.getNfy()));  
+            detail.setNfy(a.getNfy().subtract(b.getNfy()));
         } catch (Exception e) {
             System.out.println(e.toString());
         }

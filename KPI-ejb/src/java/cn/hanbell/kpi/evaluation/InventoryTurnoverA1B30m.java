@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
  * @version V1.0
  * @author C1749
  * @data 2019-10-28
- * @description 半成品周转天数
+ * @description 半成品周转天数 -- 此指标与2020年方针目标变更 不再使用 留着做备份
  */
 public class InventoryTurnoverA1B30m extends InventoryTurnoverA1 {
 

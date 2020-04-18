@@ -134,7 +134,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno <> 'O' and facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'SalesOrder'").executeUpdate();
+            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where facno='V' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'SalesOrder'").executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }

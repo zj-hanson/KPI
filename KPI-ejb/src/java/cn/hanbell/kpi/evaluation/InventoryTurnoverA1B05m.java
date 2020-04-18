@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
  * @author C1749
  * @data 2019-10-28
  * @description 生产目标合计 //本月周转天数 = 今年到本月的天数 / (本月销售成本/((本月库存金额+上月库存金额)/2))
+ * @description2 此指标与2020年方针目标变更 不再使用 留着做备份
  */
 public class InventoryTurnoverA1B05m extends InventoryTurnoverA1 {
 

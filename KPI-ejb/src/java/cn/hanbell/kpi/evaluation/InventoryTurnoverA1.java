@@ -87,7 +87,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
 
         queryParams.clear();
         queryParams.put("facno", "C");
-        queryParams.put("n_code_da", "= 'R'");
+        queryParams.put("n_code_da", "= 'RT'");
         queryParams.put("n_code_dc", "= 'RT'");
         queryParams.put("n_code_dd", "in ('00','02','01')");
         v7 = getMonthSellingCost(y, m, d, type, queryParams);
@@ -168,7 +168,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
 
         queryParams.clear();
         queryParams.put("facno", "C");
-        queryParams.put("n_code_da", "= 'R'");
+        queryParams.put("n_code_da", "= 'RT'");
         queryParams.put("n_code_dc", "= 'RT'");
         queryParams.put("n_code_dd", "in ('00','02','01')");
         v7 = getYearSellingCost(y, m, d, type, queryParams);
