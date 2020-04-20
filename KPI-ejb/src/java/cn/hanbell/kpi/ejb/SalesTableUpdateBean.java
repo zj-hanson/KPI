@@ -708,14 +708,24 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" '' as  n_code_CD,");
             sb.append(getDC(depno)).append(" as n_code_DC, ");
             sb.append(" '00' as  n_code_DD,mancode,'ARM270' as hmark1,'ARM270' as hmark2 FROM armbil h WHERE 1=1 ");
-            if (depno.contains("5B000")) {
-                sb.append(" and h.rkd in ('RQ51','RQ11') ");
-            } else {
-                sb.append(" and h.rkd='RQ11' ");
-            }
+            sb.append(" and h.rkd='RQ11' ");
             sb.append(" AND h.depno ").append(depno);
             sb.append(" and year(h.bildat) = ${y}   and month(h.bildat) =${m} ");
             sb.append(" group by  h.facno,h.cusno,h.depno,h.bildat,mancode ");
+            if (depno.contains("5B000")) {
+                // 关于柯茂北京中矿之芦南芦北项目分期收款，期限为三年，每季度为1期，共12期（2018年4月至2021年3月），调整逻辑抓取金额/(1+7%*3)
+                //2019年6月6日 财务周建芳调整此部分逻辑
+                sb.append(" union all ");
+                sb.append(" SELECT h.facno,'' as itnbrcus,h.cusno,h.bildat AS cdrdate ,h.depno,0 AS quantity,ISNULL(sum(h.shpamt/1.21),0) AS amount, ");
+                sb.append(getDA(depno)).append(" as n_code_DA, ");
+                sb.append(" '' as  n_code_CD,");
+                sb.append(getDC(depno)).append(" as n_code_DC, ");
+                sb.append(" '00' as  n_code_DD,mancode,'ARM270' as hmark1,'ARM270' as hmark2 FROM armbil h WHERE 1=1 ");
+                sb.append(" and h.rkd in ('RQ51') ");
+                sb.append(" AND h.depno ").append(depno);
+                sb.append(" and year(h.bildat) = ${y}   and month(h.bildat) =${m} ");
+                sb.append(" group by  h.facno,h.cusno,h.depno,h.bildat,mancode ");
+            }
         }
         sb.append(" ) a,cdrcus s LEFT OUTER JOIN miscode o on s.cusgroup = o.code and o.ckind= 'CB',secuser e WHERE a.cusno=s.cusno AND a.mancode=e.userno ");
 
@@ -782,6 +792,44 @@ public class SalesTableUpdateBean implements Serializable {
             aa = "'SDS'";
         }
         return aa;
+    }
+
+    public int updateArmhad(String arr[],String facno) {
+        String hadno = arr[0];
+        String mancode = arr[1];
+        String n_code_DA = arr[2];
+        String isserve = arr[3];
+        String n_code_CD = arr[4];
+
+        int  a = 0;
+        StringBuilder sb = new StringBuilder();
+        sb.append("  UPDATE armhad SET  isserve = '${isserve}' , n_code_DA = '${n_code_DA}',n_code_CD = '${n_code_CD}', mancode = '${mancode}'  where  hadno like '%${hadno}'");
+        String sql = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${hadno}", hadno);
+
+        sb.setLength(0);
+        sb.append(" UPDATE armbil SET  address5='${isserve}' ,address4='${n_code_DA}',address3='${n_code_CD}',mancode = '${mancode}'  where bilno like '%${hadno}'");
+        String sql2 = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${hadno}", hadno);
+        try {
+            erpEJB.setCompany(facno);
+
+            if (hadno.contains("R")) {
+                Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+                query.executeUpdate();
+                a=1;
+
+            } else {
+                Query query = erpEJB.getEntityManager().createNativeQuery(sql);
+                Query query2 = erpEJB.getEntityManager().createNativeQuery(sql2);
+                query.executeUpdate();
+                query2.executeUpdate();
+                a=1;
+            }
+        } catch (Exception e) {
+            System.out.println("cn.hanbell.kpi.ejb.SalesTableUpdateBean.updateArmhad SQL()----异常" + e.toString());
+               a=0;
+        }
+         return  a;
+
     }
 
 }
