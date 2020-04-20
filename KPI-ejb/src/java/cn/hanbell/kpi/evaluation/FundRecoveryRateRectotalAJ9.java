@@ -15,6 +15,7 @@ public class FundRecoveryRateRectotalAJ9 extends FundRecoveryRateRectotal {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
+        queryParams.put("n_code_CD", " <> 'SDS' ");
         queryParams.put("issevdta", " ='Y' ");
     }
 

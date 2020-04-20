@@ -15,6 +15,7 @@ public class TurnoverDaysAJSum extends TurnoverDays {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
+        queryParams.put("n_code_CD", " <> 'SDS' ");
     }
 
 }

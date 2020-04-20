@@ -16,7 +16,7 @@ import javax.persistence.Query;
 /**
  *
  * @author C1879 2020年4月13日方利华要求RT新统计逻辑需要删除上海柯茂销售给上海汉钟RT部分排除
- * 厂商KSH00004,汉钟销柯茂、分公司的不计入，各分公司销售客户、柯茂销售客户统计
+ * 汉钟销柯茂、分公司的不计入，各分公司销售客户、柯茂销售客户统计
  */
 public class ShipmentQuantityKRT2 extends ShipmentQuantity {
 
@@ -43,7 +43,7 @@ public class ShipmentQuantityKRT2 extends ShipmentQuantity {
         for (String string : arr) {
             StringBuilder sb = new StringBuilder();
             sb.append("select isnull(sum(d.shpqy1),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno  and h.houtsta<>'W' ");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KSH00004','SSH00205') ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KSH00004','SSH00451') ");
             sb.append(" and d.issevdta='N' and h.facno='${facno}' ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -75,7 +75,7 @@ public class ShipmentQuantityKRT2 extends ShipmentQuantity {
 
             sb.setLength(0);
             sb.append("select isnull(sum(d.bshpqy1),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KSH00004') ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KSH00004','SSH00451') ");
             sb.append(" and d.issevdta='N' and h.facno='${facno}' ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);

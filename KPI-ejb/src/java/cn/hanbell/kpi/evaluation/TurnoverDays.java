@@ -174,15 +174,17 @@ public class TurnoverDays implements Actual {
         sb.append(" and h.facno='${facno}' ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and d.shpno like 'HC%' ");
+        } else {
+            sb.append(" and d.shpno not like 'HC%' ");
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and d.n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(issevdta)) {
             sb.append(" and d.issevdta ").append(issevdta);
-        }
-        if (!"".equals(n_code_DA) || !"".equals(issevdta)) {
-            sb.append(" and d.shpno not like 'HC%' ");
         }
         if (!"LJ".equals(type)) {
             sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
@@ -202,15 +204,17 @@ public class TurnoverDays implements Actual {
         sb.append(" and h.facno='${facno}' ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and d.shpno like 'HC%' ");
+        } else {
+            sb.append(" and d.shpno not like 'HC%' ");
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and d.n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(issevdta)) {
             sb.append(" and d.issevdta ").append(issevdta);
-        }
-        if (!"".equals(n_code_DA) || !"".equals(issevdta)) {
-            sb.append(" and d.shpno not like 'HC%' ");
         }
         if (!"LJ".equals(type)) {
             sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
@@ -264,15 +268,17 @@ public class TurnoverDays implements Actual {
         sb.append(" AND armpmm.facno = '${facno}'  ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and cdrdta.shpno like 'HC%' ");
+        } else {
+            sb.append(" and cdrdta.shpno not like 'HC%' ");
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and cdrdta.n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" AND cdrdta.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(issevdta)) {
             sb.append(" AND cdrdta.issevdta ").append(issevdta);
-        }
-        if (!"".equals(n_code_DA) || !"".equals(issevdta)) {
-            sb.append(" and cdrdta.shpno not like 'HC%' ");
         }
         if (!"LJ".equals(type)) {
             sb.append(" AND year(armpmm.trdat) = ${y} AND month(armpmm.trdat)= ${m} ");
@@ -313,16 +319,17 @@ public class TurnoverDays implements Actual {
         sb.append("  AND cdrhad.houtsta <> 'W' AND cdrhad.facno='${facno}' AND cdrdta.trseq = 1 ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and cdrhad.shpno like 'HC%' ");
+        } else {
+            sb.append(" and cdrhad.shpno not like 'HC%' ");
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and cdrdta.n_code_CD ").append(n_code_CD);
+            }
         }
-
         if (!"".equals(n_code_DA)) {
             sb.append(" and cdrdta.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(issevdta)) {
             sb.append(" and cdrdta.issevdta ").append(issevdta);
-        }
-        if (!"".equals(n_code_DA) || !"".equals(issevdta)) {
-            sb.append(" and cdrhad.shpno not like 'HC%' ");
         }
         if (!"LJ".equals(type)) {
             sb.append(" AND year(cdrhad.shpdate) = ${y}  AND month(cdrhad.shpdate)= ${m} ");
@@ -362,6 +369,7 @@ public class TurnoverDays implements Actual {
         }
         sb.append(" SELECT (CASE WHEN armbil.address4 is null THEN '' ELSE armbil.address4 END ) as n_code_DA, ");
         sb.append(" (CASE WHEN armbil.address5 is null THEN '' ELSE armbil.address5 END ) as issevdta, ");
+        sb.append(" (CASE WHEN armbil.address3 is null THEN '' ELSE armbil.address3 END ) as n_code_CD, ");
         sb.append(" ISNULL((armbil.shpamt * (armbil.taxrate + 1)),0) as totamts, ");
         sb.append(" ISNULL((armbil.shpamt),0) as totamt FROM armbil WHERE armbil.rkd IN ('RQ11','RQ12') ");
         sb.append(" AND armbil.facno = '${facno}' ");
@@ -372,8 +380,11 @@ public class TurnoverDays implements Actual {
         }
         sb.append(" ) a where 1=1 ");
         if ("WX".equals(n_code_CD)) {
-            sb.append(" and n_code_DA = '' ");
-            sb.append(" and issevdta = '' ");
+            sb.append(" and n_code_DA = '' and issevdta = '' and n_code_CD = '' ");
+        } else {
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and n_code_DA ").append(n_code_DA);
@@ -412,7 +423,7 @@ public class TurnoverDays implements Actual {
         } else {
             sb.append("SELECT ISNULL(SUM(totamt),0) from ( ");
         }
-        sb.append(" SELECT armrech.n_code_DA,(CASE WHEN armrech.n_code_DD <> '01' THEN 'N' ELSE 'Y' END)  as issevdta,ISNULL((armrec.recamt),0) as totamts, ");
+        sb.append(" SELECT armrech.n_code_DA,(CASE WHEN armrech.n_code_DD <> '01' THEN 'N' ELSE 'Y' END)  as issevdta,armrech.n_code_CD,ISNULL((armrec.recamt),0) as totamts, ");
         sb.append(" (CASE WHEN  armrec.raccno in ('6001','6002') THEN ISNULL((armrec.recamt),0) ELSE 0 END)as totamt  ");
         sb.append(" FROM armrec, armrech where armrec.facno=armrech.facno AND armrec.recno=armrech.recno AND armrech.prgno='ARM423'   ");
         sb.append(" AND armrech.recstat='1' AND armrec.raccno in ('6001','6002','2226') AND armrech.facno='${facno}' ");
@@ -423,8 +434,11 @@ public class TurnoverDays implements Actual {
         }
         sb.append(" ) a where 1=1 ");
         if ("WX".equals(n_code_CD)) {
-            sb.append(" AND n_code_DA = '' ");
-            sb.append(" AND issevdta = '' ");
+            sb.append(" AND n_code_DA = '' AND issevdta = '' AND n_code_CD = '' ");
+        } else {
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and n_code_DA ").append(n_code_DA);
@@ -456,7 +470,8 @@ public class TurnoverDays implements Actual {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT ISNULL(sum(booamt),0) FROM ( ");
         sb.append(" SELECT (CASE WHEN armbil.address4 is null THEN '' ELSE armbil.address4 END ) as n_code_DA , ");
-        sb.append(" (CASE WHEN armbil.address5 is null THEN '' ELSE armbil.address5 END ) as issevdta,(booamt - recamt) as booamt ");
+        sb.append(" (CASE WHEN armbil.address5 is null THEN '' ELSE armbil.address5 END ) as issevdta, ");
+        sb.append(" (CASE WHEN armbil.address3 is null THEN '' ELSE armbil.address3 END ) as n_code_CD,(booamt - recamt) as booamt ");
         sb.append(" FROM armhad ,armbil where armhad.facno=armbil.facno AND armhad.hadno=armbil.bilno ");
         sb.append(" AND ((armhad.booamt - armhad.recamt)<> 0) AND armhad.facno = '${facno}' ");
         sb.append(" AND (armhad.accno='1122') AND (armhad.difcod in ('1','3')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
@@ -474,8 +489,11 @@ public class TurnoverDays implements Actual {
         sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" ) a where 1=1 ");
         if ("WX".equals(n_code_CD)) {
-            sb.append(" and a.n_code_DA = '' ");
-            sb.append(" and a.issevdta = '' ");
+            sb.append(" and a.n_code_DA = '' and a.issevdta = '' and a.n_code_CD = '' ");
+        } else {
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and a.n_code_CD ").append(n_code_DA);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and a.n_code_DA ").append(n_code_DA);
@@ -483,7 +501,6 @@ public class TurnoverDays implements Actual {
         if (!"".equals(issevdta)) {
             sb.append(" and a.issevdta ").append(issevdta);
         }
-
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
 
         superEJB.setCompany(facno);
@@ -511,7 +528,8 @@ public class TurnoverDays implements Actual {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT ISNULL(sum(b.recamt),0)  FROM ( ");
         sb.append(" SELECT  (CASE WHEN armbil.address4 is null THEN '' ELSE armbil.address4 END ) as n_code_DA , ");
-        sb.append(" (CASE WHEN armbil.address5 is null THEN '' ELSE armbil.address5 END ) as issevdta, a.tnfamt as recamt ");
+        sb.append(" (CASE WHEN armbil.address5 is null THEN '' ELSE armbil.address5 END ) as issevdta,");
+        sb.append(" (CASE WHEN armbil.address3 is null THEN '' ELSE armbil.address3 END ) as n_code_CD,a.tnfamt as recamt ");
         sb.append(" from ( SELECT armtnf.hadno, armtnf.cusno, sum(armtnf.tnfamt) as tnfamt FROM armtnf,armrec,armrech ");
         sb.append(" where ( armrech.facno = armtnf.facno ) and ( armrech.vouno = armtnf.vouno ) and ( armrech.facno = armrec.facno ) AND ( armtnf.accno = armrec.raccno )");
         sb.append(" and ( armrech.recno = armrec.recno ) and armrec.raccno='1122' and armrec.rectype = '2' and armtnf.hadno not like 'HC%' and armrec.recno in  ");
@@ -524,7 +542,7 @@ public class TurnoverDays implements Actual {
         }
         sb.append(" GROUP BY armrec.recno) GROUP BY  armtnf.hadno,armtnf.cusno ) a LEFT JOIN armbil on a.hadno= armbil.bilno ");
         sb.append(" union all ");
-        sb.append(" SELECT  '' as n_code_DA , '' as issevdta, a.tnfamt as recamt");
+        sb.append(" SELECT  '' as n_code_DA , '' as issevdta, '' as n_code_CD, a.tnfamt as recamt");
         sb.append(" from ( SELECT armtnf.hadno, armtnf.cusno, sum(armtnf.tnfamt) as tnfamt FROM armtnf,armrec,armrech ");
         sb.append(" where ( armrech.facno = armtnf.facno ) and ( armrech.vouno = armtnf.vouno ) and ( armrech.facno = armrec.facno ) ");
         sb.append(" and ( armrech.recno = armrec.recno ) and armrec.raccno='1122' and armrec.rectype = '2' and armtnf.hadno like 'HC%' and armrec.recno in  ");
@@ -538,7 +556,8 @@ public class TurnoverDays implements Actual {
         sb.append(" GROUP BY armrec.recno) GROUP BY  armtnf.hadno,armtnf.cusno ) a LEFT JOIN armbil on a.hadno= armbil.bilno ");
         sb.append(" union all ");
         sb.append(" SELECT  ( CASE WHEN armhad.n_code_DA is null THEN '' ELSE armhad.n_code_DA END ) as n_code_DA, ");
-        sb.append(" ( CASE WHEN armhad.isserve is null THEN '' ELSE armhad.isserve END ) as issevdta, (armrec.recamt) as recamt ");
+        sb.append(" ( CASE WHEN armhad.isserve is null THEN '' ELSE armhad.isserve END ) as issevdta,");
+        sb.append(" ( CASE WHEN armhad.n_code_CD is null THEN '' ELSE armhad.n_code_CD END ) as n_code_CD,(armrec.recamt) as recamt ");
         sb.append(" FROM armhad,armrec where armhad.facno=armrec.facno and armhad.hadno=armrec.recno and armrec.raccno='2203' AND armrec.rectype = '2' and armrec.recno in ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
         sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
@@ -549,7 +568,7 @@ public class TurnoverDays implements Actual {
         }
         sb.append(" GROUP BY armrec.recno ) ");
         sb.append(" union all ");
-        sb.append(" SELECT   '' as n_code_DA , '' as issevdta, (case when armrec.rectype = '2' then  armrec.recamt ELSE  -armrec.recamt end) as recamt ");
+        sb.append(" SELECT   '' as n_code_DA , '' as issevdta,'' as n_code_CD, (case when armrec.rectype = '2' then  armrec.recamt ELSE  -armrec.recamt end) as recamt ");
         sb.append(" FROM armrec where armrec.raccno='6805' and armrec.recno in  ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
         sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
@@ -561,8 +580,11 @@ public class TurnoverDays implements Actual {
         sb.append(" GROUP BY armrec.recno ) ");
         sb.append(" ) b where 1=1 ");
         if ("WX".equals(n_code_CD)) {
-            sb.append(" and b.n_code_DA = '' ");
-            sb.append(" and b.issevdta = '' ");
+            sb.append(" and b.n_code_DA = '' and b.issevdta = '' and b.n_code_CD = '' ");
+        } else {
+            if (!"".equals(n_code_CD)) {
+                sb.append(" and b.n_code_CD ").append(n_code_CD);
+            }
         }
         if (!"".equals(n_code_DA)) {
             sb.append(" and b.n_code_DA ").append(n_code_DA);
