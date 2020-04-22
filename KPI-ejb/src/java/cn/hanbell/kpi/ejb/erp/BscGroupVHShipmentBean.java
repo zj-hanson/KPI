@@ -270,7 +270,7 @@ public class BscGroupVHShipmentBean implements Serializable {
 
         sb.setLength(0);
         sb.append("select isnull(sum((d.bakamts*h.ratio)),0) from cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
-        sb.append(" where h.cusno not  in ('SSD00328')  and h.baksta <> 'W' AND h.hmark2='ZJ '   ");
+        sb.append(" where h.cusno not  in ('SSD00328')  and h.baksta <> 'W' AND h.hmark2='ZJ'   ");
         sb.append(" and h.facno='${facno}' ");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
