@@ -9,13 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class FundRecoveryRateRectotalAJ extends FundRecoveryRateRectotal {
+public class FundRecoveryRateRectotalSDS extends FundRecoveryRateRectotal {
 
-    public FundRecoveryRateRectotalAJ() {
+    public FundRecoveryRateRectotalSDS() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("n_code_CD", " <> 'SDS' ");
+        queryParams.put("n_code_CD", " = 'SDS' ");
         queryParams.put("issevdta", " ='N' ");
     }
 

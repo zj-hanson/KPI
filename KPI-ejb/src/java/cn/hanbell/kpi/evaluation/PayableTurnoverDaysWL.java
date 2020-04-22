@@ -39,7 +39,7 @@ public class PayableTurnoverDaysWL extends PayableTurnoverDays {
         BigDecimal valuelj = BigDecimal.ZERO;
         map.put("type", "");
         //应付工程款
-        engineeringValue = engineeringValue.add(getEndTurnoverValue(y, m, map));
+        engineeringValue = engineeringValue.add(getEngineeringValue(y, m, map));
         //1月期初不用减去工程款 其他反之
         if(m==1){
             beignTurnoverValue = beignTurnoverValue.add(getBeignTurnoverValue(y, m, map));
@@ -81,7 +81,7 @@ public class PayableTurnoverDaysWL extends PayableTurnoverDays {
                 //销售成本
                 updateIndicatorDaily(m, sellingCostValue, entity.getOther4Indicator());
                 //累计销售成本
-                updateIndicatorDaily(m, sellingCostValue, entity.getOther5Indicator());
+                updateIndicatorDaily(m, sellingCostValuelj, entity.getOther5Indicator());
             }
         }
         return value;

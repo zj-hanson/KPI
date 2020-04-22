@@ -6,6 +6,7 @@
 package cn.hanbell.kpi.control;
 
 import cn.hanbell.kpi.ejb.ExchangeRateBean;
+import cn.hanbell.kpi.ejb.SalesTableUpdateBean;
 import cn.hanbell.kpi.entity.ExchangeRate;
 import cn.hanbell.kpi.lazy.ExchangeRateModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
@@ -38,10 +39,14 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
 
     @EJB
     protected ExchangeRateBean exchangeRateBean;
+    @EJB
+    protected SalesTableUpdateBean salesTableUpdateBean;
 
     protected String queryCurrency;
     protected BigDecimal rate;
     protected int id;
+
+    protected String facno;
 
     public ExchangeRateManagedBean() {
         super(ExchangeRate.class);
@@ -89,6 +94,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
         queryCurrency = "0";
         newEntity = new ExchangeRate();
         newEntity.setRateday(getNowDateEnd().getTime());
+        facno = "C";
         super.init();
     }
 
@@ -119,58 +125,111 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
     public void readFile() {
     }
 
+//     @Override
+//    public void handleFileUploadWhenNew(FileUploadEvent event) {
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        DecimalFormat dmf=new DecimalFormat("#");
+//        List<ExchangeRate> addlist = new ArrayList<>();
+//        String a = "";
+//        String b = "";
+//        super.handleFileUploadWhenNew(event);
+//        if (this.fileName != null) {
+//            try {
+//                InputStream is = new FileInputStream(getAppResPath() + "/" + fileName);
+//                Workbook excel = WorkbookFactory.create(is);
+//                Sheet sheet = excel.getSheetAt(0);
+//
+//                int cols = sheet.getRow(0).getLastCellNum();
+//                for (int i = 1; i < cols; i++) {
+//                    for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
+//                        a = df.format(sheet.getRow(0).getCell(i).getDateCellValue());
+//                        b = j + "";
+//                        newEntity = new ExchangeRate();
+//                        newEntity.setRateday(sheet.getRow(0).getCell(i).getDateCellValue());
+//                        newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j).getCell(i).getNumericCellValue())));
+//                        newEntity.setRpttype(dmf.format(sheet.getRow(j).getCell(0).getNumericCellValue()));
+//                        setDefaultValue();
+//                        addlist.add(newEntity);
+//                    }
+//                }
+//                newEntity = new ExchangeRate();
+//                //导入数据
+//                if (!addlist.isEmpty()) {
+//                    try {
+//                        ExchangeRate exchangeRate;
+//                        for (int i = 0; i < addlist.size(); i++) {
+//                            exchangeRate = exchangeRateBean.queryExchangeRate(addlist.get(i));
+//                            if (exchangeRate != null) {
+//                                exchangeRate.setRate(addlist.get(i).getRate());
+//                                exchangeRateBean.update(exchangeRate);
+//                            } else {
+//                                exchangeRateBean.persist(addlist.get(i));
+//                            }
+//                        }
+//                        showInfoMsg("Info", "数据导入成功");
+//                    } catch (Exception el) {
+//                        showInfoMsg("Info", "数据导入失败");
+//                        System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
+//                    }
+//                }
+//            } catch (Exception ex) {
+//                showErrorMsg("Error", "导入失败,找不到文件或格式错误----" + ex.toString());
+//                if (!"".equals(a) && !"".equals(b)) {
+//                    showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
+//                }
+//            }
+//            //将导入文件删除掉
+//            File file = new File(getAppResPath() + "/" + fileName);
+//            if (file.isFile()) {
+//                file.delete();
+//            }
+//        }
+//
+//    }
     @Override
     public void handleFileUploadWhenNew(FileUploadEvent event) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat dmf = new DecimalFormat("#");
-        List<ExchangeRate> addlist = new ArrayList<>();
+        List<String[]> list = new ArrayList<>();
         String a = "";
-        String b = "";
         super.handleFileUploadWhenNew(event);
         if (this.fileName != null) {
             try {
                 InputStream is = new FileInputStream(getAppResPath() + "/" + fileName);
                 Workbook excel = WorkbookFactory.create(is);
                 Sheet sheet = excel.getSheetAt(0);
+                for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {
+                    String[] arr = new String[5];
 
-                int cols = sheet.getRow(0).getLastCellNum();
-                for (int i = 1; i < cols; i++) {
-                    for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
-                        a = df.format(sheet.getRow(0).getCell(i).getDateCellValue());
-                        b = j + "";
-                        newEntity = new ExchangeRate();
-                        newEntity.setRateday(sheet.getRow(0).getCell(i).getDateCellValue());
-                        newEntity.setRate((BigDecimal.valueOf(sheet.getRow(j).getCell(i).getNumericCellValue())));
-                        newEntity.setRpttype(dmf.format(sheet.getRow(j).getCell(0).getNumericCellValue()));
-                        setDefaultValue();
-                        addlist.add(newEntity);
+                    if (sheet.getRow(i).getCell(0).toString().contains(".0")) {
+                        arr[0] = sheet.getRow(i).getCell(0).toString().replace(".0", "");
+                    } else {
+                        arr[0] = sheet.getRow(i).getCell(0).toString();
                     }
+                    arr[1] = (sheet.getRow(i).getCell(1).toString());
+                    arr[2] = (sheet.getRow(i).getCell(2).toString());
+                    arr[3] = (sheet.getRow(i).getCell(3).toString());
+                    arr[4] = (sheet.getRow(i).getCell(4).toString());
+                    list.add(arr);
                 }
-                newEntity = new ExchangeRate();
-                //导入数据
-                if (!addlist.isEmpty()) {
+                // 导入数据
+                if (!list.isEmpty()) {
                     try {
-                        ExchangeRate exchangeRate;
-                        for (int i = 0; i < addlist.size(); i++) {
-                            exchangeRate = exchangeRateBean.queryExchangeRate(addlist.get(i));
-                            if (exchangeRate != null) {
-                                exchangeRate.setRate(addlist.get(i).getRate());
-                                exchangeRateBean.update(exchangeRate);
+                        int aa = 0;
+                        for (String[] arr : list) {
+                            a = arr[0];
+                            int bb = salesTableUpdateBean.updateArmhad(arr, facno);
+                            if (bb == 0) {
+                                showInfoMsg("error", "单号——" + arr[0] + "导入失败");
                             } else {
-                                exchangeRateBean.persist(addlist.get(i));
+                                aa++;
                             }
                         }
-                        showInfoMsg("Info", "数据导入成功");
+                        showInfoMsg("Info", aa + "条数据数据导入成功");
                     } catch (Exception el) {
-                        showInfoMsg("Info", "数据导入失败");
-                        System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + el.toString());
+                        System.out.println("cn.hanbell.kpi.control.ExchangeRateManagedBean.handleFileUploadWhenNew()" + a + el.toString());
                     }
                 }
             } catch (Exception ex) {
                 showErrorMsg("Error", "导入失败,找不到文件或格式错误----" + ex.toString());
-                if (!"".equals(a) && !"".equals(b)) {
-                    showErrorMsg("Error", "时间为：" + a + "第" + b + "行附近栏位发生错误");
-                }
             }
             //将导入文件删除掉
             File file = new File(getAppResPath() + "/" + fileName);
@@ -304,6 +363,20 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
      */
     public void setExchangEntity(ExchangeRate newEntity) {
         this.newEntity = newEntity;
+    }
+
+    /**
+     * @return the facno
+     */
+    public String getFacno() {
+        return facno;
+    }
+
+    /**
+     * @param facno the facno to set
+     */
+    public void setFacno(String facno) {
+        this.facno = facno;
     }
 
 }
