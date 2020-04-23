@@ -803,12 +803,12 @@ public class SalesTableUpdateBean implements Serializable {
 
         int  a = 0;
         StringBuilder sb = new StringBuilder();
-        sb.append("  UPDATE armhad SET  isserve = '${isserve}' , n_code_DA = '${n_code_DA}',n_code_CD = '${n_code_CD}', mancode = '${mancode}'  where  hadno like '%${hadno}'");
-        String sql = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${hadno}", hadno);
+        sb.append(" UPDATE armhad SET  isserve = '${isserve}' , n_code_DA = '${n_code_DA}',n_code_CD = '${n_code_CD}', mancode = '${mancode}'  where facno='${facno}' and  hadno like '%${hadno}'");
+        String sql = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${facno}", facno).replace("${hadno}", hadno);
 
         sb.setLength(0);
-        sb.append(" UPDATE armbil SET  address5='${isserve}' ,address4='${n_code_DA}',address3='${n_code_CD}',mancode = '${mancode}'  where bilno like '%${hadno}'");
-        String sql2 = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${hadno}", hadno);
+        sb.append(" UPDATE armbil SET  address5='${isserve}' ,address4='${n_code_DA}',address3='${n_code_CD}',mancode = '${mancode}'  where facno='${facno}' and  bilno like '%${hadno}'");
+        String sql2 = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${facno}", facno).replace("${hadno}", hadno);
         try {
             erpEJB.setCompany(facno);
 
