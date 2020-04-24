@@ -385,11 +385,11 @@ public class BscGroupVHShipmentBean implements Serializable {
                 shptype = "21";
             } else if (hmark1.contains("R") && !hmark1.contains("DR")) {
                 protype = "R/CDU/Dorin服务收费";
-                protypeno = "SR";
+                protypeno = "R";
                 shptype = "21";
             } else if (hmark1.contains("A")) {
                 protype = "空压机服务收费";
-                protypeno = "SA";
+                protypeno = "A";
                 shptype = "21";
             } else {
                 protype = "";
