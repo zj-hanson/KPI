@@ -794,42 +794,4 @@ public class SalesTableUpdateBean implements Serializable {
         return aa;
     }
 
-    public int updateArmhad(String arr[],String facno) {
-        String hadno = arr[0];
-        String mancode = arr[1];
-        String n_code_DA = arr[2];
-        String isserve = arr[3];
-        String n_code_CD = arr[4];
-
-        int  a = 0;
-        StringBuilder sb = new StringBuilder();
-        sb.append(" UPDATE armhad SET  isserve = '${isserve}' , n_code_DA = '${n_code_DA}',n_code_CD = '${n_code_CD}', mancode = '${mancode}'  where facno='${facno}' and  hadno like '%${hadno}'");
-        String sql = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${facno}", facno).replace("${hadno}", hadno);
-
-        sb.setLength(0);
-        sb.append(" UPDATE armbil SET  address5='${isserve}' ,address4='${n_code_DA}',address3='${n_code_CD}',mancode = '${mancode}'  where facno='${facno}' and  bilno like '%${hadno}'");
-        String sql2 = sb.toString().replace("${isserve}", isserve).replace("${n_code_DA}", n_code_DA).replace("${n_code_CD}", n_code_CD).replace("${mancode}", mancode).replace("${facno}", facno).replace("${hadno}", hadno);
-        try {
-            erpEJB.setCompany(facno);
-
-            if (hadno.contains("R")) {
-                Query query = erpEJB.getEntityManager().createNativeQuery(sql);
-                query.executeUpdate();
-                a=1;
-
-            } else {
-                Query query = erpEJB.getEntityManager().createNativeQuery(sql);
-                Query query2 = erpEJB.getEntityManager().createNativeQuery(sql2);
-                query.executeUpdate();
-                query2.executeUpdate();
-                a=1;
-            }
-        } catch (Exception e) {
-            System.out.println("cn.hanbell.kpi.ejb.SalesTableUpdateBean.updateArmhad SQL()----异常" + e.toString());
-               a=0;
-        }
-         return  a;
-
-    }
-
 }
