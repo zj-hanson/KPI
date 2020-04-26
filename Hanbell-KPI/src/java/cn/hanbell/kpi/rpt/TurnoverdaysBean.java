@@ -10,6 +10,8 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -59,6 +61,11 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
         }
         btndate = settlementDate().getTime();
         btnquery();
+    }
+
+    @Override
+    public String format(BigDecimal value) {
+        return new DecimalFormat("#,###").format(value);
     }
 
     @Override
