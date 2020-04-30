@@ -270,7 +270,7 @@ public class BscGroupVHShipmentBean implements Serializable {
 
         sb.setLength(0);
         sb.append("select isnull(sum((d.bakamts*h.ratio)),0) from cdrbhad h right join cdrbdta d on h.bakno=d.bakno ");
-        sb.append(" where h.cusno not  in ('SSD00328')  and h.baksta <> 'W' AND h.hmark2='ZJ '   ");
+        sb.append(" where h.cusno not  in ('SSD00328')  and h.baksta <> 'W' AND h.hmark2='ZJ'   ");
         sb.append(" and h.facno='${facno}' ");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
@@ -385,11 +385,11 @@ public class BscGroupVHShipmentBean implements Serializable {
                 shptype = "21";
             } else if (hmark1.contains("R") && !hmark1.contains("DR")) {
                 protype = "R/CDU/Dorin服务收费";
-                protypeno = "SR";
+                protypeno = "R";
                 shptype = "21";
             } else if (hmark1.contains("A")) {
                 protype = "空压机服务收费";
-                protypeno = "SA";
+                protypeno = "A";
                 shptype = "21";
             } else {
                 protype = "";

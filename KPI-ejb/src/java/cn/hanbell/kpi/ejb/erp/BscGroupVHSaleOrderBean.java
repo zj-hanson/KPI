@@ -46,11 +46,11 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "V");
         queryParams.put("hmark1", " ='R' ");
-        List<BscGroupShipment> resultData = getSalesOrder(y, m, d, y, getQueryParams());
+        List<BscGroupShipment> resultData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         List<BscGroupShipment> tempData;
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='L' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -64,7 +64,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='DR' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -78,7 +78,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='CDU' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -92,7 +92,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='A' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -106,7 +106,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='SDS' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -120,7 +120,7 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
         queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='P' ");
-        tempData = getSalesOrder(y, m, d, y, getQueryParams());
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
                 if (resultData.contains(b)) {
@@ -141,8 +141,8 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         }
     }
 
-    //订单台数
-    protected List<BscGroupShipment> getSalesOrder(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+    //订单金额
+    protected List<BscGroupShipment> getSalesOrderAmount(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
@@ -150,13 +150,12 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         BigDecimal qty = BigDecimal.ZERO;
         BigDecimal amts = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append(" select h.recdate,isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
+        sb.append(" SELECT  h.recdate,isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and d.drecsta not in ('98','99') ");
-        sb.append(" and h.cusno not in ('SSD00328') and  h.facno='${facno}' AND h.hmark2='ZJ '  ");
+        sb.append(" and h.cusno not in ('SSD00328') and  h.facno='${facno}' ");
         if (!"".equals(hmark1)) {
             sb.append(" and h.hmark1 ").append(hmark1);
         }
-        sb.append(" and ( d.itnbr in (select itnbr from invmas where itcls in('RC2','AA','3176','3576','3579','3580','3679','3705','3707','3716','3733','3735','3738','3766','3776','3780','3801','3802','3806','3833','3835','3838','3866','3879','3880','3A76','3A79','CDU','7110')) )");
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate<='${d}' group by h.recdate  ");
         String cdrdmas = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
@@ -204,17 +203,17 @@ public class BscGroupVHSaleOrderBean implements Serializable {
             for (int i = 0; i < cdrResult.size(); i++) {
                 Object o[] = (Object[]) cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
-                qty = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
+                amts = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 BscGroupShipment e = new BscGroupShipment("V", recdate, "SalesOrder", protype, protypeno, shptype);
-                e.setQuantity(qty);
-                e.setAmount(BigDecimal.ZERO);
+                e.setQuantity(BigDecimal.ZERO);
+                e.setAmount(amts);
                 data.add(e);
             }
             if (!data.isEmpty()) {
                 for (BscGroupShipment e : data) {
-                    amts = getSalesOrderAmount(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
-                    if (amts != null) {
-                        e.setAmount(amts);
+                    qty = getSalesOrder(y, m, e.getBscGroupShipmentPK().getSoday(), Calendar.DATE, getQueryParams());
+                    if (qty != null) {
+                        e.setQuantity(qty);
                     }
                 }
             }
@@ -224,19 +223,20 @@ public class BscGroupVHSaleOrderBean implements Serializable {
         return data;
     }
 
-    //订单金额
-    protected BigDecimal getSalesOrderAmount(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+    //订单台数
+    protected BigDecimal getSalesOrder(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String hmark1 = map.get("hmark1") != null ? map.get("hmark1").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
-        sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
+        sb.append(" select isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and d.drecsta not in ('98','99') ");
         sb.append(" and h.cusno not in ('SSD00328') and  h.facno='${facno}' ");
         if (!"".equals(hmark1)) {
             sb.append(" and h.hmark1 ").append(hmark1);
         }
+        sb.append(" and ( d.itnbr in (select itnbr from invmas where itcls in('RC2','AA','3176','3576','3579','3580','3679','3705','3707','3716','3733','3735','3738','3766','3776','3780','3801','3802','3806','3833','3835','3838','3866','3879','3880','3A76','3A79','CDU','7110')) )");
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {
             case 2:
