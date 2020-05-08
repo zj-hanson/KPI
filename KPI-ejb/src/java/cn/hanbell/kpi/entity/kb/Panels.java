@@ -23,8 +23,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "panels")
 @NamedQueries({
-    @NamedQuery(name = "Panels.findAll", query = "SELECT p FROM Panels p WHERE p.status='V' ")
-    ,
+    @NamedQuery(name = "Panels.findAll", query = "SELECT p FROM Panels p WHERE p.status='V' "),
     @NamedQuery(name = "Panels.findById", query = "SELECT p FROM Panels p WHERE p.id = :id ")
 })
 public class Panels extends SuperEntity {

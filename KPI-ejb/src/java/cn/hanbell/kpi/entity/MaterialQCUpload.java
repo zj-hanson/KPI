@@ -66,8 +66,6 @@ public class MaterialQCUpload implements Serializable {
     public void setITNBRFIELDS(String ITNBRFIELDS) {
         this.ITNBRFIELDS = ITNBRFIELDS;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -93,5 +91,5 @@ public class MaterialQCUpload implements Serializable {
     public String toString() {
         return "cn.hanbell.kpi.entity.MaterialQCUpload[ id=" + id + " ]";
     }
-    
+
 }

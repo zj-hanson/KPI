@@ -116,5 +116,5 @@ public class BscGroupShipment implements Serializable {
     public String toString() {
         return "cn.hanbell.kpi.entity.erp.BscGroupShipment[ bscGroupShipmentPK=" + bscGroupShipmentPK + " ]";
     }
-    
+
 }

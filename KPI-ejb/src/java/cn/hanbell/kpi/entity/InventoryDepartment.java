@@ -23,50 +23,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "inventorydepartment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "InventoryDepartment.findAll", query = "SELECT i FROM InventoryDepartment i")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByFacno", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.facno = :facno")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByProno", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.prono = :prono")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByCreyear", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.creyear = :creyear")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByWareh", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.wareh = :wareh")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByWhdsc", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.whdsc = :whdsc")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByCategories", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.categories = :categories")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByGenre", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.genre = :genre")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN01", query = "SELECT i FROM InventoryDepartment i WHERE i.n01 = :n01")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN02", query = "SELECT i FROM InventoryDepartment i WHERE i.n02 = :n02")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN03", query = "SELECT i FROM InventoryDepartment i WHERE i.n03 = :n03")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN04", query = "SELECT i FROM InventoryDepartment i WHERE i.n04 = :n04")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN05", query = "SELECT i FROM InventoryDepartment i WHERE i.n05 = :n05")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN06", query = "SELECT i FROM InventoryDepartment i WHERE i.n06 = :n06")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN07", query = "SELECT i FROM InventoryDepartment i WHERE i.n07 = :n07")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN08", query = "SELECT i FROM InventoryDepartment i WHERE i.n08 = :n08")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN09", query = "SELECT i FROM InventoryDepartment i WHERE i.n09 = :n09")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN10", query = "SELECT i FROM InventoryDepartment i WHERE i.n10 = :n10")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN11", query = "SELECT i FROM InventoryDepartment i WHERE i.n11 = :n11")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByN12", query = "SELECT i FROM InventoryDepartment i WHERE i.n12 = :n12")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByDifference", query = "SELECT i FROM InventoryDepartment i WHERE i.difference = :difference")
-    ,
-    @NamedQuery(name = "InventoryDepartment.findByProportion", query = "SELECT i FROM InventoryDepartment i WHERE i.proportion = :proportion")
-    ,
+    @NamedQuery(name = "InventoryDepartment.findAll", query = "SELECT i FROM InventoryDepartment i"),
+    @NamedQuery(name = "InventoryDepartment.findByFacno", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.facno = :facno"),
+    @NamedQuery(name = "InventoryDepartment.findByProno", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.prono = :prono"),
+    @NamedQuery(name = "InventoryDepartment.findByCreyear", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.creyear = :creyear"),
+    @NamedQuery(name = "InventoryDepartment.findByWareh", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.wareh = :wareh"),
+    @NamedQuery(name = "InventoryDepartment.findByWhdsc", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.whdsc = :whdsc"),
+    @NamedQuery(name = "InventoryDepartment.findByCategories", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.categories = :categories"),
+    @NamedQuery(name = "InventoryDepartment.findByGenre", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.genre = :genre"),
+    @NamedQuery(name = "InventoryDepartment.findByN01", query = "SELECT i FROM InventoryDepartment i WHERE i.n01 = :n01"),
+    @NamedQuery(name = "InventoryDepartment.findByN02", query = "SELECT i FROM InventoryDepartment i WHERE i.n02 = :n02"),
+    @NamedQuery(name = "InventoryDepartment.findByN03", query = "SELECT i FROM InventoryDepartment i WHERE i.n03 = :n03"),
+    @NamedQuery(name = "InventoryDepartment.findByN04", query = "SELECT i FROM InventoryDepartment i WHERE i.n04 = :n04"),
+    @NamedQuery(name = "InventoryDepartment.findByN05", query = "SELECT i FROM InventoryDepartment i WHERE i.n05 = :n05"),
+    @NamedQuery(name = "InventoryDepartment.findByN06", query = "SELECT i FROM InventoryDepartment i WHERE i.n06 = :n06"),
+    @NamedQuery(name = "InventoryDepartment.findByN07", query = "SELECT i FROM InventoryDepartment i WHERE i.n07 = :n07"),
+    @NamedQuery(name = "InventoryDepartment.findByN08", query = "SELECT i FROM InventoryDepartment i WHERE i.n08 = :n08"),
+    @NamedQuery(name = "InventoryDepartment.findByN09", query = "SELECT i FROM InventoryDepartment i WHERE i.n09 = :n09"),
+    @NamedQuery(name = "InventoryDepartment.findByN10", query = "SELECT i FROM InventoryDepartment i WHERE i.n10 = :n10"),
+    @NamedQuery(name = "InventoryDepartment.findByN11", query = "SELECT i FROM InventoryDepartment i WHERE i.n11 = :n11"),
+    @NamedQuery(name = "InventoryDepartment.findByN12", query = "SELECT i FROM InventoryDepartment i WHERE i.n12 = :n12"),
+    @NamedQuery(name = "InventoryDepartment.findByDifference", query = "SELECT i FROM InventoryDepartment i WHERE i.difference = :difference"),
+    @NamedQuery(name = "InventoryDepartment.findByProportion", query = "SELECT i FROM InventoryDepartment i WHERE i.proportion = :proportion"),
     @NamedQuery(name = "InventoryDepartment.findByPK", query = "SELECT i FROM InventoryDepartment i WHERE i.inventoryDepartmentPK.facno = :facno and i.inventoryDepartmentPK.prono = :prono and i.inventoryDepartmentPK.creyear = :creyear and "
             + "i.inventoryDepartmentPK.wareh = :wareh and i.inventoryDepartmentPK.whdsc = :whdsc and i.inventoryDepartmentPK.categories = :categories and i.inventoryDepartmentPK.genre = :genre")})
 public class InventoryDepartment implements Serializable {
@@ -106,7 +84,7 @@ public class InventoryDepartment implements Serializable {
     private BigDecimal proportion;
 
     public InventoryDepartment() {
-        
+
     }
 
     public InventoryDepartment(InventoryDepartmentPK inventoryDepartmentPK) {

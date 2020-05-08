@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicatorsummary")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorSummary.findAll", query = "SELECT i FROM IndicatorSummary i")
-    , @NamedQuery(name = "IndicatorSummary.findById", query = "SELECT i FROM IndicatorSummary i WHERE i.id = :id")
-    , @NamedQuery(name = "IndicatorSummary.findByPId", query = "SELECT i FROM IndicatorSummary i WHERE i.pid = :pid ORDER BY i.m,i.seq")
-    , @NamedQuery(name = "IndicatorSummary.findByPIdAndMonth", query = "SELECT i FROM IndicatorSummary i WHERE i.pid = :pid AND i.m = :m ORDER BY i.seq")})
+    @NamedQuery(name = "IndicatorSummary.findAll", query = "SELECT i FROM IndicatorSummary i"),
+    @NamedQuery(name = "IndicatorSummary.findById", query = "SELECT i FROM IndicatorSummary i WHERE i.id = :id"),
+    @NamedQuery(name = "IndicatorSummary.findByPId", query = "SELECT i FROM IndicatorSummary i WHERE i.pid = :pid ORDER BY i.m,i.seq"),
+    @NamedQuery(name = "IndicatorSummary.findByPIdAndMonth", query = "SELECT i FROM IndicatorSummary i WHERE i.pid = :pid AND i.m = :m ORDER BY i.seq")})
 public class IndicatorSummary extends SuperDetailEntity {
 
     @Basic(optional = false)

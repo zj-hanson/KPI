@@ -31,52 +31,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicator")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Indicator.findAll", query = "SELECT i FROM Indicator i")
-    ,
-    @NamedQuery(name = "Indicator.findById", query = "SELECT i FROM Indicator i WHERE i.id = :id")
-    ,
-    @NamedQuery(name = "Indicator.findByIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.id = :id AND i.seq = :seq ")
-    ,
-    @NamedQuery(name = "Indicator.findByCategoryAndSeq", query = "SELECT i FROM Indicator i WHERE i.category = :category AND i.seq = :seq ORDER BY i.sortid ASC")
-    ,
-    @NamedQuery(name = "Indicator.findByFormidAndSeq", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq ORDER BY i.sortid ASC")
-    ,
-    @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno")
-    ,
-    @NamedQuery(name = "Indicator.findByFormtype", query = "SELECT i FROM Indicator i WHERE i.formtype = :formtype")
-    ,
-    @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind")
-    ,
-    @NamedQuery(name = "Indicator.findByJobScheduleAndStatus", query = "SELECT i FROM Indicator i WHERE i.assigned=0 AND i.jobSchedule = :jobschedule AND i.status =:status")
-    ,
-    @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq ORDER BY i.id")
-    ,
-    @NamedQuery(name = "Indicator.findByObjtypeSeqAndStatus", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq AND i.status =:status")
-    ,
-    @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid ORDER BY i.seq DESC,i.sortid ASC,i.deptno ASC")
-    ,
-    @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq")
-    ,
-    @NamedQuery(name = "Indicator.findByPIdAndSeqAndFormid", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.formid LIKE :formid")
-    ,
-    @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno")
-    ,
-    @NamedQuery(name = "Indicator.findByDeptno", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno")
-    ,
-    @NamedQuery(name = "Indicator.findByDeptnoObjtypeAndYear", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.sortid")
-    ,
-    @NamedQuery(name = "Indicator.findByUserid", query = "SELECT i FROM Indicator i WHERE i.userid = :userid")
-    ,
-    @NamedQuery(name = "Indicator.findByUsername", query = "SELECT i FROM Indicator i WHERE i.username = :username")
-    ,
-    @NamedQuery(name = "Indicator.findByStatus", query = "SELECT i FROM Indicator i WHERE i.status = :status")
-    ,
-    @NamedQuery(name = "Indicator.findRootByAssigned", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")
-    ,
-    @NamedQuery(name = "Indicator.findRootByAssignedAndJobSchedule", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq AND i.jobSchedule = :jobschedule ORDER BY i.sortid ASC")
-    ,
-    @NamedQuery(name = "Indicator.findRootByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC")
-    ,
+    @NamedQuery(name = "Indicator.findAll", query = "SELECT i FROM Indicator i"),
+    @NamedQuery(name = "Indicator.findById", query = "SELECT i FROM Indicator i WHERE i.id = :id"),
+    @NamedQuery(name = "Indicator.findByIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.id = :id AND i.seq = :seq "),
+    @NamedQuery(name = "Indicator.findByCategoryAndSeq", query = "SELECT i FROM Indicator i WHERE i.category = :category AND i.seq = :seq ORDER BY i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findByFormidAndSeq", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq ORDER BY i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findByFormidSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.formid = :formid AND i.seq = :seq AND i.deptno=:deptno"),
+    @NamedQuery(name = "Indicator.findByFormtype", query = "SELECT i FROM Indicator i WHERE i.formtype = :formtype"),
+    @NamedQuery(name = "Indicator.findByFormkind", query = "SELECT i FROM Indicator i WHERE i.formkind = :formkind"),
+    @NamedQuery(name = "Indicator.findByJobScheduleAndStatus", query = "SELECT i FROM Indicator i WHERE i.assigned=0 AND i.jobSchedule = :jobschedule AND i.status =:status"),
+    @NamedQuery(name = "Indicator.findByObjtypeAndSeq", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq ORDER BY i.id"),
+    @NamedQuery(name = "Indicator.findByObjtypeSeqAndStatus", query = "SELECT i FROM Indicator i WHERE i.objtype = :objtype AND i.seq = :seq AND i.status =:status"),
+    @NamedQuery(name = "Indicator.findByPId", query = "SELECT i FROM Indicator i WHERE i.pid = :pid ORDER BY i.seq DESC,i.sortid ASC,i.deptno ASC"),
+    @NamedQuery(name = "Indicator.findByPIdAndSeq", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq"),
+    @NamedQuery(name = "Indicator.findByPIdAndSeqAndFormid", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.formid LIKE :formid"),
+    @NamedQuery(name = "Indicator.findByPIdSeqAndDeptno", query = "SELECT i FROM Indicator i WHERE i.pid = :pid AND i.seq = :seq AND i.deptno=:deptno"),
+    @NamedQuery(name = "Indicator.findByDeptno", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno"),
+    @NamedQuery(name = "Indicator.findByDeptnoObjtypeAndYear", query = "SELECT i FROM Indicator i WHERE i.deptno = :deptno AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.sortid"),
+    @NamedQuery(name = "Indicator.findByUserid", query = "SELECT i FROM Indicator i WHERE i.userid = :userid"),
+    @NamedQuery(name = "Indicator.findByUsername", query = "SELECT i FROM Indicator i WHERE i.username = :username"),
+    @NamedQuery(name = "Indicator.findByStatus", query = "SELECT i FROM Indicator i WHERE i.status = :status"),
+    @NamedQuery(name = "Indicator.findRootByAssigned", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findRootByAssignedAndJobSchedule", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.assigned = 1 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq AND i.jobSchedule = :jobschedule ORDER BY i.sortid ASC"),
+    @NamedQuery(name = "Indicator.findRootByCompany", query = "SELECT i FROM Indicator i WHERE i.lvl = 0 AND i.company = :company AND i.objtype = :objtype AND i.seq = :seq ORDER BY i.seq DESC,i.sortid ASC"),
     @NamedQuery(name = "Indicator.getRowCountBySeq", query = "SELECT COUNT(i) FROM Indicator i WHERE i.seq = :seq AND i.company = :company ")})
 public class Indicator extends SuperEntity {
 
@@ -1084,7 +1061,6 @@ public class Indicator extends SuperEntity {
     public void setParent(Indicator parent) {
         this.parent = parent;
     }
-    
 
     /**
      * @return the actualIndicator

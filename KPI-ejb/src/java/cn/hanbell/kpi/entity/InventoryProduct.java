@@ -32,51 +32,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "inventoryproduct")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "InventoryProduct.findAll", query = "SELECT i FROM InventoryProduct i")
-    ,
-    @NamedQuery(name = "InventoryProduct.findById", query = "SELECT i FROM InventoryProduct i WHERE i.id = :id")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByFacno", query = "SELECT i FROM InventoryProduct i WHERE i.facno = :facno")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByYearmon", query = "SELECT i FROM InventoryProduct i WHERE i.yearmon = :yearmon")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByWareh", query = "SELECT i FROM InventoryProduct i WHERE i.wareh = :wareh")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByWhdsc", query = "SELECT i FROM InventoryProduct i WHERE i.whdsc = :whdsc")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByGenre", query = "SELECT i FROM InventoryProduct i WHERE i.genre = :genre")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByTrtype", query = "SELECT i FROM InventoryProduct i WHERE i.trtype = :trtype")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByDeptno", query = "SELECT i FROM InventoryProduct i WHERE i.deptno = :deptno")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByItclscode", query = "SELECT i FROM InventoryProduct i WHERE i.itclscode = :itclscode")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByCategories", query = "SELECT i FROM InventoryProduct i WHERE i.categories = :categories")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByIndicatorno", query = "SELECT i FROM InventoryProduct i WHERE i.indicatorno = :indicatorno")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByAmount", query = "SELECT i FROM InventoryProduct i WHERE i.amount = :amount")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByAmamount", query = "SELECT i FROM InventoryProduct i WHERE i.amamount = :amamount")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByStatus", query = "SELECT i FROM InventoryProduct i WHERE i.status = :status")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByCreator", query = "SELECT i FROM InventoryProduct i WHERE i.creator = :creator")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByCredate", query = "SELECT i FROM InventoryProduct i WHERE i.credate = :credate")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByOptuser", query = "SELECT i FROM InventoryProduct i WHERE i.optuser = :optuser")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByOptdate", query = "SELECT i FROM InventoryProduct i WHERE i.optdate = :optdate")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByCfmuser", query = "SELECT i FROM InventoryProduct i WHERE i.cfmuser = :cfmuser")
-    ,
-    @NamedQuery(name = "InventoryProduct.findByCfmdate", query = "SELECT i FROM InventoryProduct i WHERE i.cfmdate = :cfmdate")
-    ,
+    @NamedQuery(name = "InventoryProduct.findAll", query = "SELECT i FROM InventoryProduct i"),
+    @NamedQuery(name = "InventoryProduct.findById", query = "SELECT i FROM InventoryProduct i WHERE i.id = :id"),
+    @NamedQuery(name = "InventoryProduct.findByFacno", query = "SELECT i FROM InventoryProduct i WHERE i.facno = :facno"),
+    @NamedQuery(name = "InventoryProduct.findByYearmon", query = "SELECT i FROM InventoryProduct i WHERE i.yearmon = :yearmon"),
+    @NamedQuery(name = "InventoryProduct.findByWareh", query = "SELECT i FROM InventoryProduct i WHERE i.wareh = :wareh"),
+    @NamedQuery(name = "InventoryProduct.findByWhdsc", query = "SELECT i FROM InventoryProduct i WHERE i.whdsc = :whdsc"),
+    @NamedQuery(name = "InventoryProduct.findByGenre", query = "SELECT i FROM InventoryProduct i WHERE i.genre = :genre"),
+    @NamedQuery(name = "InventoryProduct.findByTrtype", query = "SELECT i FROM InventoryProduct i WHERE i.trtype = :trtype"),
+    @NamedQuery(name = "InventoryProduct.findByDeptno", query = "SELECT i FROM InventoryProduct i WHERE i.deptno = :deptno"),
+    @NamedQuery(name = "InventoryProduct.findByItclscode", query = "SELECT i FROM InventoryProduct i WHERE i.itclscode = :itclscode"),
+    @NamedQuery(name = "InventoryProduct.findByCategories", query = "SELECT i FROM InventoryProduct i WHERE i.categories = :categories"),
+    @NamedQuery(name = "InventoryProduct.findByIndicatorno", query = "SELECT i FROM InventoryProduct i WHERE i.indicatorno = :indicatorno"),
+    @NamedQuery(name = "InventoryProduct.findByAmount", query = "SELECT i FROM InventoryProduct i WHERE i.amount = :amount"),
+    @NamedQuery(name = "InventoryProduct.findByAmamount", query = "SELECT i FROM InventoryProduct i WHERE i.amamount = :amamount"),
+    @NamedQuery(name = "InventoryProduct.findByStatus", query = "SELECT i FROM InventoryProduct i WHERE i.status = :status"),
+    @NamedQuery(name = "InventoryProduct.findByCreator", query = "SELECT i FROM InventoryProduct i WHERE i.creator = :creator"),
+    @NamedQuery(name = "InventoryProduct.findByCredate", query = "SELECT i FROM InventoryProduct i WHERE i.credate = :credate"),
+    @NamedQuery(name = "InventoryProduct.findByOptuser", query = "SELECT i FROM InventoryProduct i WHERE i.optuser = :optuser"),
+    @NamedQuery(name = "InventoryProduct.findByOptdate", query = "SELECT i FROM InventoryProduct i WHERE i.optdate = :optdate"),
+    @NamedQuery(name = "InventoryProduct.findByCfmuser", query = "SELECT i FROM InventoryProduct i WHERE i.cfmuser = :cfmuser"),
+    @NamedQuery(name = "InventoryProduct.findByCfmdate", query = "SELECT i FROM InventoryProduct i WHERE i.cfmdate = :cfmdate"),
     @NamedQuery(name = "InventoryProduct.findByUnique", query = "SELECT i FROM InventoryProduct i WHERE i.yearmon = :yearmon "
-            + " and i.whdsc = :whdsc and i.genre = :genre and i.trtype = :trtype and i.itclscode = :itclscode and i.categories = :categories")
-    ,
+            + " and i.whdsc = :whdsc and i.genre = :genre and i.trtype = :trtype and i.itclscode = :itclscode and i.categories = :categories"),
     @NamedQuery(name = "InventoryProduct.findByEditRow", query = "SELECT i FROM InventoryProduct i WHERE i.facno = :facno and i.yearmon = :yearmon"
             + " and i.wareh = :wareh and i.itclscode = :itclscode")})
 public class InventoryProduct extends SuperEntity {

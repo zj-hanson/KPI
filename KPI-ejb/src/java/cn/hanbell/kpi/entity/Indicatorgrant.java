@@ -22,12 +22,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "indicatorgrant")
 @NamedQueries({
-    @NamedQuery(name = "Indicatorgrant.findAll", query = "SELECT i FROM Indicatorgrant i")
-    ,
-    @NamedQuery(name = "Indicatorgrant.findByUserid", query = "SELECT i FROM Indicatorgrant i WHERE i.userid = :userid")
-    ,
-    @NamedQuery(name = "Indicatorgrant.findByUseridAndFormid", query = "SELECT i FROM Indicatorgrant i WHERE i.userid = :userid AND i.formid = :formid")
-    ,
+    @NamedQuery(name = "Indicatorgrant.findAll", query = "SELECT i FROM Indicatorgrant i"),
+    @NamedQuery(name = "Indicatorgrant.findByUserid", query = "SELECT i FROM Indicatorgrant i WHERE i.userid = :userid"),
+    @NamedQuery(name = "Indicatorgrant.findByUseridAndFormid", query = "SELECT i FROM Indicatorgrant i WHERE i.userid = :userid AND i.formid = :formid"),
     @NamedQuery(name = "Indicatorgrant.findByUseridAndFormidNotId", query = "SELECT i FROM Indicatorgrant i WHERE i.userid = :userid AND i.formid = :formid AND i.id <> :id ")
 
 })
@@ -181,7 +178,6 @@ public class Indicatorgrant extends SuperEntity {
     public void setRemark2(String remark2) {
         this.remark2 = remark2;
     }
-
 
     @Override
     public int hashCode() {
