@@ -35,13 +35,13 @@ public class IncomeStatementBean implements Serializable {
         this.dfpercent = new DecimalFormat("0.00％");
     }
 
-    private int findyear(Date date) {
+    private int year(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         return c.get(Calendar.YEAR);
     }
 
-    private int findmonth(Date date) {
+    private int month(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         return c.get(Calendar.MONTH) + 1;
@@ -67,7 +67,7 @@ public class IncomeStatementBean implements Serializable {
         sb.append(" ( select a.seq,a.tyear,a.tyrate/100 as tyrate,a.lyear,a.lyrate/100 as lyrate,(a.tyear-a.lyear) as changeyear,b.dradj,b.cradj/100 as cradj from accinmon a, ");
         sb.append(" (select seq,dradj,cradj from accinmon where facno='CK' and accyear = ${y}  and accmon = 1) b ");
         sb.append(" where a.facno='CK' and a.seq = b.seq and a.seq = 2 and a.accyear = ${y}  and a.accmon = ${m} ) b ");
-        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(year(date))).replace("${m}", String.valueOf(month(date)));
 
         erpEJB.setCompany(facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
@@ -124,7 +124,7 @@ public class IncomeStatementBean implements Serializable {
         sb.append(" where facno='CK'  and accyear = ${y}  and accmon = ${m} and seq = 1 )  a , ");
         sb.append(" (select seq,tmon,tmrate,lmon,lmrate ,(tmon-lmon) as changemon from accinmon where facno='CK' ");
         sb.append(" and accyear = ${y}  and accmon = ${m} and seq = 2 )  b ");
-        String sql = sb.toString().replace("${y}", String.valueOf(findyear(date))).replace("${m}", String.valueOf(findmonth(date)));
+        String sql = sb.toString().replace("${y}", String.valueOf(year(date))).replace("${m}", String.valueOf(month(date)));
 
         erpEJB.setCompany(facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);
