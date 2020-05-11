@@ -54,7 +54,7 @@ public class InventoryIndicator implements Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
-    
+
     public BigDecimal getTarget() {
         return target;
     }
@@ -94,5 +94,5 @@ public class InventoryIndicator implements Serializable {
     public void setUpactualThan(BigDecimal upactualThan) {
         this.upactualThan = upactualThan;
     }
-    
+
 }

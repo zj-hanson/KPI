@@ -28,10 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicatordaily")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorDaily.findAll", query = "SELECT i FROM IndicatorDaily i")
-    , @NamedQuery(name = "IndicatorDaily.findById", query = "SELECT i FROM IndicatorDaily i WHERE i.id = :id")
-    , @NamedQuery(name = "IndicatorDaily.findByPidDateAndType", query = "SELECT i FROM IndicatorDaily i WHERE i.pid = :pid AND i.seq = :seq AND i.mth = :mth and i.type = :type ")
-    , @NamedQuery(name = "IndicatorDaily.findByPidAndSeq", query = "SELECT i FROM IndicatorDaily i WHERE i.pid = :pid AND i.seq = :seq ")
+    @NamedQuery(name = "IndicatorDaily.findAll", query = "SELECT i FROM IndicatorDaily i"),
+    @NamedQuery(name = "IndicatorDaily.findById", query = "SELECT i FROM IndicatorDaily i WHERE i.id = :id"),
+    @NamedQuery(name = "IndicatorDaily.findByPidDateAndType", query = "SELECT i FROM IndicatorDaily i WHERE i.pid = :pid AND i.seq = :seq AND i.mth = :mth and i.type = :type "),
+    @NamedQuery(name = "IndicatorDaily.findByPidAndSeq", query = "SELECT i FROM IndicatorDaily i WHERE i.pid = :pid AND i.seq = :seq ")
 })
 public class IndicatorDaily extends SuperDetailEntity {
 

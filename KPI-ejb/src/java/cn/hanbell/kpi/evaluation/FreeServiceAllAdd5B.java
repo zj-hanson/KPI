@@ -11,8 +11,6 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -46,7 +44,7 @@ public class FreeServiceAllAdd5B extends FreeServiceAllAdd {
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(FreeServiceAllAdd.class.getName()).log(Level.SEVERE, null, ex);
+            indicatorBean.getLog4j().error(ex);
         }
         return BigDecimal.ZERO;
 

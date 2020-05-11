@@ -32,30 +32,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicator")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorAssignment.findAll", query = "SELECT i FROM IndicatorAssignment i")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findById", query = "SELECT i FROM IndicatorAssignment i WHERE i.id = :id")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByCompany", query = "SELECT i FROM IndicatorAssignment i WHERE i.company = :company")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByFormtype", query = "SELECT i FROM IndicatorAssignment i WHERE i.formtype = :formtype")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByFormkind", query = "SELECT i FROM IndicatorAssignment i WHERE i.formkind = :formkind")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByPId", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByPIdAndSeq", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid AND i.seq = :seq")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByDeptno", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptno = :deptno")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByDeptname", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptname = :deptname")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByUserid", query = "SELECT i FROM IndicatorAssignment i WHERE i.userid = :userid")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByUsername", query = "SELECT i FROM IndicatorAssignment i WHERE i.username = :username")
-    ,
-    @NamedQuery(name = "IndicatorAssignment.findByRemark", query = "SELECT i FROM IndicatorAssignment i WHERE i.remark = :remark")
-    ,
+    @NamedQuery(name = "IndicatorAssignment.findAll", query = "SELECT i FROM IndicatorAssignment i"),
+    @NamedQuery(name = "IndicatorAssignment.findById", query = "SELECT i FROM IndicatorAssignment i WHERE i.id = :id"),
+    @NamedQuery(name = "IndicatorAssignment.findByCompany", query = "SELECT i FROM IndicatorAssignment i WHERE i.company = :company"),
+    @NamedQuery(name = "IndicatorAssignment.findByFormtype", query = "SELECT i FROM IndicatorAssignment i WHERE i.formtype = :formtype"),
+    @NamedQuery(name = "IndicatorAssignment.findByFormkind", query = "SELECT i FROM IndicatorAssignment i WHERE i.formkind = :formkind"),
+    @NamedQuery(name = "IndicatorAssignment.findByPId", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid"),
+    @NamedQuery(name = "IndicatorAssignment.findByPIdAndSeq", query = "SELECT i FROM IndicatorAssignment i WHERE i.pid = :pid AND i.seq = :seq"),
+    @NamedQuery(name = "IndicatorAssignment.findByDeptno", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptno = :deptno"),
+    @NamedQuery(name = "IndicatorAssignment.findByDeptname", query = "SELECT i FROM IndicatorAssignment i WHERE i.deptname = :deptname"),
+    @NamedQuery(name = "IndicatorAssignment.findByUserid", query = "SELECT i FROM IndicatorAssignment i WHERE i.userid = :userid"),
+    @NamedQuery(name = "IndicatorAssignment.findByUsername", query = "SELECT i FROM IndicatorAssignment i WHERE i.username = :username"),
+    @NamedQuery(name = "IndicatorAssignment.findByRemark", query = "SELECT i FROM IndicatorAssignment i WHERE i.remark = :remark"),
     @NamedQuery(name = "IndicatorAssignment.findByStatus", query = "SELECT i FROM IndicatorAssignment i WHERE i.status = :status")})
 public class IndicatorAssignment extends SuperDetailEntity {
 

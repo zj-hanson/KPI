@@ -22,8 +22,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "datarecordassisted")
 @NamedQueries({
-    @NamedQuery(name = "DataRecordAssisted.findAll", query = "SELECT d FROM DataRecordAssisted d")
-    ,
+    @NamedQuery(name = "DataRecordAssisted.findAll", query = "SELECT d FROM DataRecordAssisted d"),
     @NamedQuery(name = "DataRecordAssisted.findByFacnoAndTypeAndItemname", query = "SELECT d FROM DataRecordAssisted d WHERE d.facno = :facno AND d.type = :type AND d.itemname = :itemname ")
 })
 public class DataRecordAssisted extends BaseEntity {

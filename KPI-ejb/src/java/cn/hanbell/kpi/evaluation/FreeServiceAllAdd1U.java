@@ -9,7 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class FreeServiceAllAdd1U extends FreeServiceAllAdd{
+public class FreeServiceAllAdd1U extends FreeServiceAllAdd {
 
     public FreeServiceAllAdd1U() {
         super();

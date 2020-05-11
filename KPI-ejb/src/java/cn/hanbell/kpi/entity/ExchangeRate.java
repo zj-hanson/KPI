@@ -28,19 +28,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "exchangerate")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ExchangeRate.findAll", query = "SELECT e FROM ExchangeRate e")
-    , @NamedQuery(name = "ExchangeRate.findById", query = "SELECT e FROM ExchangeRate e WHERE e.id = :id")
-    , @NamedQuery(name = "ExchangeRate.findByFacno", query = "SELECT e FROM ExchangeRate e WHERE e.facno = :facno")
-    , @NamedQuery(name = "ExchangeRate.findByCoin", query = "SELECT e FROM ExchangeRate e WHERE e.coin = :coin")
-    , @NamedQuery(name = "ExchangeRate.findByRateday", query = "SELECT e FROM ExchangeRate e WHERE e.rateday = :rateday")
-    , @NamedQuery(name = "ExchangeRate.findByRate", query = "SELECT e FROM ExchangeRate e WHERE e.rate = :rate")
-    , @NamedQuery(name = "ExchangeRate.findByCoinna", query = "SELECT e FROM ExchangeRate e WHERE e.coinna = :coinna")
-    , @NamedQuery(name = "ExchangeRate.findByExcoin", query = "SELECT e FROM ExchangeRate e WHERE e.excoin = :excoin")
-    , @NamedQuery(name = "ExchangeRate.findByExcoinna", query = "SELECT e FROM ExchangeRate e WHERE e.excoinna = :excoinna")
-    , @NamedQuery(name = "ExchangeRate.findByExchangena", query = "SELECT e FROM ExchangeRate e WHERE e.exchangena = :exchangena")
-    , @NamedQuery(name = "ExchangeRate.findByRpttype", query = "SELECT e FROM ExchangeRate e WHERE e.rpttype = :rpttype")
-    , @NamedQuery(name = "ExchangeRate.findByQueryDateBegin", query = "SELECT e FROM ExchangeRate e WHERE e.rateday >= :ratedayBegin ")
-    , @NamedQuery(name = "ExchangeRate.findByQueryDateEnd", query = "SELECT e FROM ExchangeRate e WHERE e.rateday <= :ratedayEnd ")
+    @NamedQuery(name = "ExchangeRate.findAll", query = "SELECT e FROM ExchangeRate e"),
+    @NamedQuery(name = "ExchangeRate.findById", query = "SELECT e FROM ExchangeRate e WHERE e.id = :id"),
+    @NamedQuery(name = "ExchangeRate.findByFacno", query = "SELECT e FROM ExchangeRate e WHERE e.facno = :facno"),
+    @NamedQuery(name = "ExchangeRate.findByCoin", query = "SELECT e FROM ExchangeRate e WHERE e.coin = :coin"),
+    @NamedQuery(name = "ExchangeRate.findByRateday", query = "SELECT e FROM ExchangeRate e WHERE e.rateday = :rateday"),
+    @NamedQuery(name = "ExchangeRate.findByRate", query = "SELECT e FROM ExchangeRate e WHERE e.rate = :rate"),
+    @NamedQuery(name = "ExchangeRate.findByCoinna", query = "SELECT e FROM ExchangeRate e WHERE e.coinna = :coinna"),
+    @NamedQuery(name = "ExchangeRate.findByExcoin", query = "SELECT e FROM ExchangeRate e WHERE e.excoin = :excoin"),
+    @NamedQuery(name = "ExchangeRate.findByExcoinna", query = "SELECT e FROM ExchangeRate e WHERE e.excoinna = :excoinna"),
+    @NamedQuery(name = "ExchangeRate.findByExchangena", query = "SELECT e FROM ExchangeRate e WHERE e.exchangena = :exchangena"),
+    @NamedQuery(name = "ExchangeRate.findByRpttype", query = "SELECT e FROM ExchangeRate e WHERE e.rpttype = :rpttype"),
+    @NamedQuery(name = "ExchangeRate.findByQueryDateBegin", query = "SELECT e FROM ExchangeRate e WHERE e.rateday >= :ratedayBegin "),
+    @NamedQuery(name = "ExchangeRate.findByQueryDateEnd", query = "SELECT e FROM ExchangeRate e WHERE e.rateday <= :ratedayEnd ")
 })
 
 public class ExchangeRate extends SuperEntity {

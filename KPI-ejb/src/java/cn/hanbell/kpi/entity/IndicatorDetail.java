@@ -28,10 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "indicatordetail")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "IndicatorDetail.findAll", query = "SELECT i FROM IndicatorDetail i")
-    ,
-    @NamedQuery(name = "IndicatorDetail.findById", query = "SELECT i FROM IndicatorDetail i WHERE i.id = :id")
-    ,
+    @NamedQuery(name = "IndicatorDetail.findAll", query = "SELECT i FROM IndicatorDetail i"),
+    @NamedQuery(name = "IndicatorDetail.findById", query = "SELECT i FROM IndicatorDetail i WHERE i.id = :id"),
     @NamedQuery(name = "IndicatorDetail.findByPId", query = "SELECT i FROM IndicatorDetail i WHERE i.pid = :pid")})
 public class IndicatorDetail extends SuperDetailEntity {
 

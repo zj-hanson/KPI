@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author C1879
  */
-public class FreeServiceAllAdd1A extends FreeServiceAllAdd{
+public class FreeServiceAllAdd1A extends FreeServiceAllAdd {
 
     public FreeServiceAllAdd1A() {
         super();
@@ -43,7 +43,7 @@ public class FreeServiceAllAdd1A extends FreeServiceAllAdd{
             a1 = Double.valueOf(f.get(o1).toString());
 
             v1 = BigDecimal.valueOf(a1);
-            
+
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(FreeServiceAllAdd.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,5 +51,5 @@ public class FreeServiceAllAdd1A extends FreeServiceAllAdd{
         return BigDecimal.ZERO;
 
     }
-    
+
 }
