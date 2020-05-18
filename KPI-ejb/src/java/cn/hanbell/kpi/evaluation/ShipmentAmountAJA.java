@@ -19,7 +19,7 @@ public class ShipmentAmountAJA extends ShipmentAmount {
         super();
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1G000','1G100' ");
-        queryParams.put("decode", "1");
+        //queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
@@ -31,5 +31,5 @@ public class ShipmentAmountAJA extends ShipmentAmount {
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return BigDecimal.ZERO;
     }
-  
+
 }

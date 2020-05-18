@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class SalesOrderAmountAJA extends SalesOrderAmount{
+public class SalesOrderAmountAJA extends SalesOrderAmount {
 
     public SalesOrderAmountAJA() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "1");
+        //queryParams.put("decode", "1");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
         queryParams.put("n_code_DC", " = 'AJA' ");
