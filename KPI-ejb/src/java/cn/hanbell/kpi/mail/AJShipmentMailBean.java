@@ -34,11 +34,11 @@ public class AJShipmentMailBean extends ShipmentMail {
     public String getMailBody() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：台</div>");
-        sb.append(getQuantityTable_NX());
+        sb.append(getQuantityTable_domesticSale());
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getAmountTable_NX());
+        sb.append(getAmountTable_domesticSale());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
@@ -48,7 +48,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getQuantityTable_NX() {
+    protected String getQuantityTable_domesticSale() {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数", y);
         this.indicators.removeIf((Indicator indicator)->{
@@ -80,7 +80,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTable_NX() {
+    protected String getAmountTable_domesticSale() {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
         this.indicators.removeIf((Indicator indicator)->{

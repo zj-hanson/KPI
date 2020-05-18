@@ -33,17 +33,17 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
     public String getMailBody() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：台</div>");
-        sb.append(getQuantityTable_NX());
+        sb.append(getQuantityTable_domesticSale());
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getAmountTable_NX());
+        sb.append(getAmountTable_domesticSale());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
         return sb.toString();
     }
 
-    protected String getQuantityTable_NX() {
+    protected String getQuantityTable_domesticSale() {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体订单台数", y);
         indicators.removeIf((Indicator indicator) -> {
@@ -74,7 +74,7 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
         }
     }
 
-    protected String getAmountTable_NX() {
+    protected String getAmountTable_domesticSale() {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体订单金额", y);
         indicators.removeIf((Indicator indicator) -> {
