@@ -9,7 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class SalesOrderAmountAJ9 extends SalesOrderAmount{
+public class SalesOrderAmountAJ9 extends SalesOrderAmount {
 
     public SalesOrderAmountAJ9() {
         super();

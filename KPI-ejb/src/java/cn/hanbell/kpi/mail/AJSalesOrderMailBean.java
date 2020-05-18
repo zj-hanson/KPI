@@ -33,38 +33,31 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
     public String getMailBody() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：台</div>");
-        sb.append(getQuantityTable_domesticSale());
+        sb.append(getQuantityTableDomesticSale());
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getAmountTable_domesticSale());
+        sb.append(getAmountTableDomesticSale());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
         return sb.toString();
     }
 
-    protected String getQuantityTable_domesticSale() {
+    protected String getQuantityTableDomesticSale() {
         this.indicators.clear();
-        this.indicators = indicatorBean.findByCategoryAndYear("A机体订单台数", y);
-        indicators.removeIf((Indicator indicator) -> {
-            return "Q-A机体外销订单".equals(indicator.getFormid());
-        });
+        this.indicators = indicatorBean.findByCategoryAndYear("A机体订单台数-内销", y);
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             salesOrder = new SalesOrderQuantity();
             return getHtmlTable(this.indicators, y, m, d, true);
         } else {
-            return "A机体订单台数设定错误";
+            return "A机体订单台数-内销设定错误";
         }
     }
 
     protected String getQuantityTable() {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体订单台数", y);
-        indicators.removeIf((Indicator indicator) -> {
-            return !"Q-A机体外销订单".equals(indicator.getFormid());
-        });
-        indicators.addAll(indicatorBean.findByCategoryAndYear("A机体订单台数-内销", y));
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             salesOrder = new SalesOrderQuantity();
@@ -74,12 +67,24 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
         }
     }
 
-    protected String getAmountTable_domesticSale() {
+    protected String getAmountTableDomesticSale() {
+        this.indicators.clear();
+        indicators = indicatorBean.findByCategoryAndYear("A机体订单金额-内销", y);
+        indicatorBean.getEntityManager().clear();
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
+                indicatorBean.divideByRate(i, 2);
+            }
+            salesOrder = new SalesOrderAmount();
+            return getHtmlTable(this.indicators, y, m, d, true);
+        } else {
+            return "A机体订单金额-内销设定错误";
+        }
+    }
+
+    protected String getAmountTable() {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体订单金额", y);
-        indicators.removeIf((Indicator indicator) -> {
-            return "A-A机体外销订单".equals(indicator.getFormid());
-        });
         indicatorBean.getEntityManager().clear();
         if (indicators != null && !indicators.isEmpty()) {
             for (Indicator i : indicators) {
@@ -92,22 +97,4 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
         }
     }
 
-    protected String getAmountTable() {
-        this.indicators.clear();
-        indicators = indicatorBean.findByCategoryAndYear("A机体订单金额", y);
-        indicators.removeIf((Indicator indicator) -> {
-            return !"A-A机体外销订单".equals(indicator.getFormid());
-        });
-        indicators.addAll(indicatorBean.findByCategoryAndYear("A机体订单金额-内销", y));
-        indicatorBean.getEntityManager().clear();
-        if (indicators != null && !indicators.isEmpty()) {
-            for (Indicator i : indicators) {
-                indicatorBean.divideByRate(i, 2);
-            }
-            salesOrder = new SalesOrderAmount();
-            return getHtmlTable(this.indicators, y, m, d, true);
-        } else {
-            return "A机体订单金额设定错误";
-        }
-    }
 }
