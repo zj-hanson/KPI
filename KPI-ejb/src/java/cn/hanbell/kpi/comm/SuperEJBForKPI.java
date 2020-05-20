@@ -42,4 +42,11 @@ public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
         return format.substring(0, format.length() - value.length()) + value;
     }
 
+    /**
+     * @return the log4j
+     */
+    public Logger getLog4j() {
+        return log4j;
+    }
+
 }
