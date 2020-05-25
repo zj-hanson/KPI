@@ -13,9 +13,9 @@ import com.lightshell.comm.SuperEJB;
  *
  * @author C1749
  */
-public class inventoryProductModel extends BaseLazyModel<InventoryProduct> {
+public class InventoryProductModel extends BaseLazyModel<InventoryProduct> {
 
-    public inventoryProductModel(SuperEJB superEJB) {
+    public InventoryProductModel(SuperEJB superEJB) {
         this.superEJB = superEJB;
     }
 

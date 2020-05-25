@@ -41,17 +41,16 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
     }
 
     // 获取最终的库存List 给到KPI调用
-    public List<InventoryDepartment> getInvamountDepartmentList(int y, int m) {
+    public List<InventoryDepartment> getInvamountDepartmentList(int y, int m,String facno) {
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         queryStringParams.put("prono", "1");
-        List<InventoryDepartment> resultData = getDataForInventoryProductList(y, m, queryStringParams);
+        List<InventoryDepartment> resultData = getDataForInventoryProductList(y, m, queryStringParams,facno);
         return resultData;
     }
-
+    
     // 获取ERP的当前月的库存金额明细
-    private List<InventoryDepartment> getDataForInventoryProductList(int y, int m, LinkedHashMap<String, String> map) {
-        String facno = map.get("facno") != null ? map.get("facno") : "";
+    private List<InventoryDepartment> getDataForInventoryProductList(int y, int m, LinkedHashMap<String, String> map,String facno) {
         StringBuilder sb = new StringBuilder();
         List<InventoryDepartment> DataList = new ArrayList<>();
         InventoryDepartment ibu;
@@ -124,7 +123,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         return null;
 
     }
-
+    
     // 为了判断当前表中是否存在相同数据
     private List<InventoryDepartment> findByPK(String facno, String prono, String creyear, String wareh, String whdsc,
             String categories, String genre) {
@@ -144,13 +143,13 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
     }
 
     // 更新数据到KPI的getInvamountDepartment表中
-    public boolean updateInventoryDepartment(int y, int m) {
-        List<InventoryDepartment> newList = getInvamountDepartmentList(y, m);
+    public boolean updateInventoryDepartment(int y, int m,String facno) {
+        List<InventoryDepartment> newList = getInvamountDepartmentList(y, m,facno);
         try {
             if (!newList.isEmpty()) {
                 for (InventoryDepartment ib : newList) {
                     // 判断资料库是否存在相同的数据
-                    String facno = ib.getInventoryDepartmentPK().getFacno();
+                    facno = ib.getInventoryDepartmentPK().getFacno();
                     String prono = ib.getInventoryDepartmentPK().getProno();
                     String creyear = ib.getInventoryDepartmentPK().getCreyear();
                     String wareh = ib.getInventoryDepartmentPK().getWareh();
@@ -213,7 +212,7 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         }
         return false;
     }
-
+    
     // 获取KPI的数据源 为KPI的系统最终显示的数据源
     private List getDataList(String type, String genre, int y, int m) {
         StringBuilder sb = new StringBuilder();
@@ -447,14 +446,81 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
         }
         return null;
     }
+    
+    //柯茂 获取KPI的数据源 为KPI的系统最终显示的数据源
+    private List getDataList_Comer(String type, String genre, int y, int m,String facno) {
+        StringBuilder sb = new StringBuilder();
+        switch (m) {
+            //当月份为1月时，前两个月的数据为去年的最后两个月的数据
+            case 1:
+                sb.append(" select * from ( ");
+                sb.append(" select whdsc, ");
+                sb.append("0 as num1,");
+                sb.append("0 as num2,");
+                sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                sb.append(" from inventorydepartment WHERE 1=1  ");
+                sb.append(" AND creyear = '${y}' and facno = '${facno}' ");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" UNION all ");
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(11)).append(") as num1, ");
+                sb.append("sum(n").append(getMon(12)).append(") as num2, ");
+                sb.append("0 as num3 ");
+                sb.append(" from inventorydepartment WHERE 1=1 ");
+                sb.append(" AND creyear = '").append(y - 1).append("'");
+                sb.append(" AND facno = '${facno}'");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" ) a ");
+            //当月份为2月时，第一个月份的数据为去年的最后一月的数据
+            case 2:
+                sb.append(" select * from ( ");
+                sb.append(" select whdsc, ");
+                sb.append("0 as num1,");
+                sb.append("sum(n").append(getMon(m - 1)).append(") as num2, ");
+                sb.append("sum(n").append(getMon(m)).append(") as num3 ");
+                sb.append(" from inventorydepartment WHERE 1=1 ");
+                sb.append(" AND creyear = '${y}' and facno = '${facno}' ");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" UNION all ");
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(12)).append(") as num1, ");
+                sb.append("0 as num2, ");
+                sb.append("0 as num3 ");
+                sb.append(" from inventorydepartment WHERE 1=1 ");
+                sb.append(" AND creyear = '").append(y - 1).append("'");
+                sb.append(" AND facno = '${facno}' ");
+                sb.append(" GROUP BY whdsc ");
+                sb.append(" ) a ");
+            default:
+                sb.append(" select whdsc, ");
+                sb.append("sum(n").append(getMon(m - 2)).append("),");
+                sb.append("sum(n").append(getMon(m - 1)).append("),");
+                sb.append("sum(n").append(getMon(m)).append(") ");
+                sb.append(" from inventorydepartment WHERE 1=1  ");
+                sb.append(" AND creyear = '${y}'");
+                sb.append(" AND facno = '${facno}' ");
+                sb.append(" GROUP BY whdsc ");
+                break;
+        }
+        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${facno}", String.valueOf(facno));
+        Query query = this.getEntityManager().createNativeQuery(sql);
+        try {
+            List result = query.getResultList();
+            return result;
+        } catch (Exception ex) {
+            log4j.error("InventoryDepartmentBean.getDataList()异常！", ex);
+        }
+        return null;
+    }
+    
 
     // 取到当月的合计值 算占比
-    private BigDecimal getTotalAmts(String type, String genre, int y, int m) {
-        List itsList = getDataList(type, genre, y, m);
+    private BigDecimal getTotalAmts(String type, String genre, int y, int m,List tempData) {
+        //List itsList = getDataList(type, genre, y, m);
         BigDecimal totalAmts = BigDecimal.ZERO;
-        if (!itsList.isEmpty()) {
-            for (int i = 0; i < itsList.size(); i++) {
-                Object[] row = (Object[]) itsList.get(i);
+        if (!tempData.isEmpty()) {
+            for (int i = 0; i < tempData.size(); i++) {
+                Object[] row = (Object[]) tempData.get(i);
                 totalAmts = totalAmts.add((BigDecimal) row[3] == null ? new BigDecimal(0) : (BigDecimal) row[3]);
             }
         }
@@ -462,10 +528,16 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
     }
 
     // 增加合计项和差异项和最后一行的合计 返回最终呈现的List
-    public List<InventoryDepartment> getInventoryDepartmentResultList(String type, String genre, int y, int m) {
+    public List<InventoryDepartment> getInventoryDepartmentResultList(String type, String genre, int y, int m,String facno) {
         List<InventoryDepartment> tempList = new ArrayList<>();
-        List dataList = getDataList(type, genre, y, m);
-        BigDecimal totalAmts = getTotalAmts(type, genre, y, m);
+        List dataList = null;
+        //根据公司别来显示来做不同处理
+        if(facno.equals("C")){
+            dataList = getDataList(type, genre, y, m);
+        }else{
+            dataList = getDataList_Comer(type, genre, y, m,facno);
+        }
+        BigDecimal totalAmts = getTotalAmts(type, genre, y, m,dataList);
         InventoryDepartment ibu;
         try {
             if (!dataList.isEmpty()) {

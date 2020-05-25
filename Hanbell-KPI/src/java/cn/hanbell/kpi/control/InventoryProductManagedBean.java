@@ -8,7 +8,7 @@ package cn.hanbell.kpi.control;
 import cn.hanbell.kpi.ejb.InventoryDepartmentBean;
 import cn.hanbell.kpi.ejb.InventoryProductBean;
 import cn.hanbell.kpi.entity.InventoryProduct;
-import cn.hanbell.kpi.lazy.inventoryProductModel;
+import cn.hanbell.kpi.lazy.InventoryProductModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
 import java.io.FileOutputStream;
@@ -58,6 +58,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     protected String queryGenre;
     protected String queryItclscode;
     protected String fileFullName;
+    protected String facno;
 
     protected List<InventoryProduct> editInventoryProductList;
     protected List<InventoryProduct> inventoryProductList;
@@ -97,11 +98,11 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         String y = String.valueOf(year);
         String m = String.valueOf(month);
         this.superEJB = inventoryProductBean;
-        this.model = new inventoryProductModel(superEJB);
+        this.model = new InventoryProductModel(superEJB);
+        model.getFilterFields().put("facno =", facno);
         queryYearmon = y.concat(month < 10 ? "0" + m : m);
         queryWhdsc = "";
         queryItclscode = "";
-        newEntity = new InventoryProduct();
         setEditInventoryProductList(new ArrayList<>());
         setInventoryProductList(new ArrayList<>());
         query();
@@ -113,6 +114,9 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         super.query(); // To change body of generated methods, choose Tools | Templates.
         if (model != null) {
             model.getFilterFields().clear();
+            if (!"".equals(facno) && facno != null) {
+                model.getFilterFields().put("facno", facno);
+            }
             if (!"".equals(queryYearmon) && queryYearmon != null) {
                 model.getFilterFields().put("yearmon", queryYearmon);
             }
@@ -211,7 +215,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         try {
             int y = Integer.parseInt(queryYearmon.substring(0, 4), 10);
             int m = Integer.parseInt(queryYearmon.substring(queryYearmon.length() - 2, queryYearmon.length()), 10);
-            flag = inventoryDepartmentBean.updateInventoryDepartment(y, m);
+            flag = inventoryDepartmentBean.updateInventoryDepartment(y, m,facno);
             if (flag) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "数据保存成功！"));
             } else {
@@ -221,13 +225,14 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             ex.printStackTrace();
         }
     }
-
+    
     public void updateInventoryProduct() {
         boolean flag;
         try {
             int y = Integer.parseInt(queryYearmon.substring(0, 4), 10);
             int m = Integer.parseInt(queryYearmon.substring(queryYearmon.length() - 2, queryYearmon.length()), 10);
-            flag = inventoryProductBean.updateInventoryProduct(y, m);
+            flag = inventoryProductBean.updateInventoryProduct(y, m, facno);
+            //这里需增加一个判断，确认当前公司当前月份有没有数据，如果有提示用户是否继续执行，如果没有直接更新
             if (flag) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "数据保存成功！"));
             } else {
@@ -237,7 +242,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             ex.printStackTrace();
         }
     }
-
+    
     //导出成报表
     @Override
     public void print() throws Exception {
@@ -444,6 +449,14 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
 
     public void setInventoryProductList(List<InventoryProduct> inventoryProductList) {
         this.inventoryProductList = inventoryProductList;
+    }
+
+    public String getFacno() {
+        return facno;
+    }
+
+    public void setFacno(String facno) {
+        this.facno = facno;
     }
 
 }

@@ -87,30 +87,42 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
     }
 
     // 获取ERP的invamount的数据 存到KPI的inventoryproduct表中去
-    private List getDataForERPList(int y, int m, LinkedHashMap<String, String> map) {
-        String facno = map.get("facno") != null ? map.get("facno") : "";
-        String prono = map.get("prono") != null ? map.get("prono") : "";
+    private List getDataForERPList(int y, int m, LinkedHashMap<String, String> map, String facno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
-        sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-        sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
-        sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-        sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
-        sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
-        sb.append(" where a.facno='${facno}' and a.prono = '${prono}'  ");
-        sb.append(" AND a.genre NOT LIKE '%,%' AND a.genre NOT LIKE 'QT' ");
-        sb.append(" and a.yearmon='${y}${m}'  ");
-        sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-        sb.append(" a.itclscode,d.genreno,h.genzls ");
-        sb.append(" UNION ALL ");
-        sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc, ");
-        sb.append(" (case when  a.genre <> '' then  a.genre else  'R' end ), ");
-        sb.append(" a.itclscode,'' AS genreno,'' AS genzls,sum(a.amount) AS amount,'' AS amamount ");
-        sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-        sb.append(" where a.facno<>'${facno}' and a.prono = '${prono}' ");
-        sb.append(" and a.yearmon='${y}${m}'  ");
-        sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode ");
-        String sql = sb.toString().replace("${facno}", String.valueOf(facno)).replace("${prono}", String.valueOf(prono))
+        if (facno.equals("C")) {
+            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
+            sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+            sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
+            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
+            sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
+            sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
+            sb.append(" where a.facno='${facno}' and a.prono = '1'  ");
+            sb.append(" AND a.genre NOT LIKE '%,%' AND a.genre NOT LIKE 'QT' ");
+            sb.append(" and a.yearmon='${y}${m}'  ");
+            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+            sb.append(" a.itclscode,d.genreno,h.genzls ");
+            sb.append(" UNION ALL ");
+            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc, ");
+            sb.append(" (case when  a.genre <> '' then  a.genre else  'R' end ), ");
+            sb.append(" a.itclscode,'' AS genreno,'' AS genzls,sum(a.amount) AS amount,'' AS amamount ");
+            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
+            sb.append(" where a.facno<>'${facno}' and a.prono = '1' ");
+            sb.append(" and a.yearmon='${y}${m}'  ");
+            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode ");
+        } else {
+            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
+            sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+            sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
+            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
+            sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
+            sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
+            sb.append(" where a.facno='${facno}' and a.prono = '1'  ");
+            sb.append(" AND a.genre NOT LIKE 'GY' ");
+            sb.append(" and a.yearmon='${y}${m}'  ");
+            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
+            sb.append(" a.itclscode,d.genreno,h.genzls ");
+        }
+        String sql = sb.toString().replace("${facno}", String.valueOf(facno))
                 .replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(getMon(m)));
         try {
             superEJBForERP.setCompany(facno);
@@ -124,12 +136,11 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
     }
 
     // 更新到KPI的inventoryproduct表中的方法 在mailBean里设置自动排程更新数据
-    public boolean updateInventoryProduct(int y, int m) {
+    public boolean updateInventoryProduct(int y, int m, String facno) {
         queryStringParams.clear();
-        queryStringParams.put("facno", "C");
         queryStringParams.put("prono", "1");
         // 取到数据源
-        List dataList = getDataForERPList(y, m, queryStringParams);
+        List dataList = getDataForERPList(y, m, queryStringParams, facno);
         List<InventoryProduct> ipResultList = new ArrayList<>();
         InventoryProduct ip;
         try {
@@ -147,7 +158,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                     //兴塔的空压机体整机归为空压机组库存(兴塔成品仓库）
                     String genre = row[6] != null ? row[6].toString() : "";
                     String itclscode = row[7].toString();
-                    if (row[4].toString().equals("EW01") && genre.equals("AJ") && itclscode.equals("2")) {
+                    if (row[4].toString().equals("EW01") && genre.equals("AJ") && itclscode.equals("2") && row[0].toString().equals("C")) {
                         ip.setGenre("A");
                     } else {
                         ip.setGenre(genre);
@@ -160,8 +171,13 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                     ipResultList.add(ip);
                 }
                 if (!ipResultList.isEmpty()) {
-                    this.getEntityManager()
-                            .createNativeQuery("delete from inventoryproduct where yearmon ='" + y + getMon(m) + "'").executeUpdate();
+                    if (!facno.equals("") && facno.equals("C")) {
+                        this.getEntityManager()
+                                .createNativeQuery("delete from inventoryproduct where facno <> 'K' and yearmon ='" + y + getMon(m) + "'").executeUpdate();
+                    } else {
+                        this.getEntityManager()
+                                .createNativeQuery("delete from inventoryproduct where facno = 'K' and yearmon ='" + y + getMon(m) + "'").executeUpdate();
+                    }
                     for (InventoryProduct e : ipResultList) {
                         this.persist(e);
                     }
@@ -176,8 +192,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
 
     // 各产品别之库存统计表
     // 取到KPI的invamountproduct表中的数据做呈现
-    private List getDataforKPIInvamountProductList(int y, int m, LinkedHashMap<String, String> map) {
-        String facno = map.get("facno") != null ? map.get("facno") : "";
+    private List getDataforKPIInvamountProductList(int y, int m, String facno) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select whdsc, ");
         sb.append(" ifnull(sum(CASE when genre =  'A'  then amount + amamount end),0) as 'AA', ");
@@ -202,12 +217,12 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         return null;
     }
 
-    public List<String[]> getDisplayInvamountProductList(int y, int m) {
+    public List<String[]> getDisplayInvamountProductList(int y, int m,String facno) {
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         List<String[]> dataResultList = new ArrayList<>();
         // 取到集合
-        List dataDisplayList = getDataforKPIInvamountProductList(y, m, queryStringParams);
+        List dataDisplayList = getDataforKPIInvamountProductList(y, m, facno);
         try {
             if (!dataDisplayList.isEmpty()) {
                 // 定义最后一列的数据类型

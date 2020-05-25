@@ -38,9 +38,10 @@ public class InventoryProductMailBean extends MailNotification {
     @Override
     protected String getMailBody() {
         StringBuilder sb = new StringBuilder();
+        String facno = "";
         boolean flag;
         try {
-            flag = inventoryProductBean.updateInventoryProduct(y, m);
+            flag = inventoryProductBean.updateInventoryProduct(y, m,facno);
             if (flag) {
                 sb.append("<div style=\"text-align:center;width:100%\">资料更新成功！</div>");
             } else {
