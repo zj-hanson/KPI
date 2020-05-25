@@ -18,35 +18,60 @@
                 </f:facet>
                 <p:row>
                     <p:column styleClass="Wid20">
+                        <p:outputLabel value="请选择公司别" for="selectfacno"/>
+                    </p:column>
+                    <p:column styleClass="Wid30" >
+                        <p:selectOneMenu id="selectfacno" value="#{inventoryProductManagedBean.facno}" style="width:20%;" title="公司别" requiredMessage="请选择公司别">
+                            <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                            <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
+                            <p:ajax update="queryGenre"  />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询年月" for="queryYearmon"/>
                     </p:column>
                     <p:column styleClass="Wid30">
                         <p:inputText id="queryYearmon" value="#{inventoryProductManagedBean.queryYearmon}" title="查询年月"/>
                     </p:column>
+                </p:row>
+                <p:row>
                     <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询库别" for="queryWhdsc"/>
                     </p:column>
                     <p:column styleClass="Wid30">
                         <p:inputText id="queryWhdsc" value="#{inventoryProductManagedBean.queryWhdsc}" title="查询库别"/>
                     </p:column>
-                </p:row>
-                <p:row>
                     <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询产品别" for="queryGenre" />
                     </p:column>
                     <p:column styleClass="Wid30">
-                        <p:selectOneMenu id="queryGenre" value="#{inventoryProductManagedBean.queryGenre}" style="width:20%;" title="产品别" requiredMessage="请输入产品别" >
-                            <f:selectItem itemLabel="R" itemValue="R"/>
-                            <f:selectItem itemLabel="L" itemValue="L"/>
-                            <f:selectItem itemLabel="RG" itemValue="RG"/>
-                            <f:selectItem itemLabel="RT" itemValue="RT"/>
-                            <f:selectItem itemLabel="A" itemValue="A"/>
-                            <f:selectItem itemLabel="AJ" itemValue="AJ"/>
-                            <f:selectItem itemLabel="AD" itemValue="AD"/>
-                            <f:selectItem itemLabel="P" itemValue="P"/>
-                            <f:selectItem itemLabel="S" itemValue="S"/>
+                        <p:selectOneMenu id="queryGenre" value="#{inventoryProductManagedBean.queryGenre}" style="width:20%;" title="产品别" requiredMessage="请输入产品别">
+                            <c:if test="${inventoryProductManagedBean.facno == 'C'}">
+                                <f:selectItem itemLabel="R" itemValue="R"/>
+                                <f:selectItem itemLabel="L" itemValue="L"/>
+                                <f:selectItem itemLabel="RG" itemValue="RG"/>
+                                <f:selectItem itemLabel="RT" itemValue="RT"/>
+                                <f:selectItem itemLabel="A" itemValue="A"/>
+                                <f:selectItem itemLabel="AJ" itemValue="AJ"/>
+                                <f:selectItem itemLabel="AD" itemValue="AD"/>
+                                <f:selectItem itemLabel="P" itemValue="P"/>
+                                <f:selectItem itemLabel="S" itemValue="S"/>
+                            </c:if>
+                            <c:if test="${inventoryProductManagedBean.facno == 'K'}">
+                                <f:selectItem itemLabel="RT" itemValue="RT"/>
+                                <f:selectItem itemLabel="HC" itemValue="HC"/>
+                                <f:selectItem itemLabel="HT" itemValue="HT"/>
+                                <f:selectItem itemLabel="HM" itemValue="HM"/>
+                                <f:selectItem itemLabel="WL" itemValue="WL"/>
+                                <f:selectItem itemLabel="WC" itemValue="WC"/>
+                                <f:selectItem itemLabel="HG" itemValue="HG"/>
+                                <f:selectItem itemLabel="BA" itemValue="BA"/>
+                                <f:selectItem itemLabel="HE" itemValue="HE"/>
+                            </c:if>
                         </p:selectOneMenu>
                     </p:column>
+                </p:row>
+                <p:row>
                     <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询归类码" for="queryItclscode" />
                     </p:column>
@@ -73,7 +98,7 @@
                                      update=":formList"/>
                     <p:commandButton id="btnUpdateData" value="更新" actionListener="#{inventoryProductManagedBean.updateInventoryProduct()}" icon="ui-icon-save"
                                      update=":formList">
-                        <p:confirm header="系统提示" message="当月是否有数据？是否继续更新？" icon="ui-icon-alert"></p:confirm>
+                        <p:confirm header="系统提示" message="确认覆盖已有数据" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
                 </f:facet>
                 <f:facet name="right">
@@ -106,9 +131,9 @@
                 <p:ajax event="rowUnselect" update="formList:toolbar" />
                 <p:column styleClass="Wid10" >
                     <f:facet name="header">
-                        <h:outputText value="id"/>
+                        <h:outputText value="公司别"/>
                     </f:facet>
-                    <h:outputText id="id" value="#{item.id}"/>
+                    <h:outputText id="facno" value="#{item.facno}"/>
                 </p:column>
 
                 <p:column styleClass="Wid10" >
@@ -182,6 +207,7 @@
                                 <f:selectItem itemLabel="南京分公司" itemValue="N"/>
                                 <f:selectItem itemLabel="济南分公司" itemValue="J"/>
                                 <f:selectItem itemLabel="重庆分公司" itemValue="C4"/>
+                                <f:selectItem itemLabel="上海柯茂" itemValue="K"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="日期：" /></p:column>
@@ -215,6 +241,15 @@
                                 <f:selectItem itemLabel="AD" itemValue="AD"/>
                                 <f:selectItem itemLabel="P" itemValue="P"/>
                                 <f:selectItem itemLabel="S" itemValue="S"/>
+                                <f:selectItem itemLabel="RT" itemValue="RT"/>
+                                <f:selectItem itemLabel="HC" itemValue="HC"/>
+                                <f:selectItem itemLabel="HT" itemValue="HT"/>
+                                <f:selectItem itemLabel="HM" itemValue="HM"/>
+                                <f:selectItem itemLabel="WL" itemValue="WL"/>
+                                <f:selectItem itemLabel="WC" itemValue="WC"/>
+                                <f:selectItem itemLabel="HG" itemValue="HG"/>
+                                <f:selectItem itemLabel="BA" itemValue="BA"/>
+                                <f:selectItem itemLabel="HE" itemValue="HE"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column styleClass="Wid10"><h:outputLabel value="库存性质：" /></p:column>

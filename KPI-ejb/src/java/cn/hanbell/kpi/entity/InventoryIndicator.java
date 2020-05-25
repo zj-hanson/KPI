@@ -26,10 +26,15 @@ public class InventoryIndicator implements Serializable {
     private BigDecimal upactual;
     // 当月实际值
     private BigDecimal actual;
+    // 基准值
+    private BigDecimal benchmark;
     // 与目标比
     private BigDecimal targetThan;
     //与上月比
     private BigDecimal upactualThan;
+    //与同期比
+    private BigDecimal benchmarkThan;
+    
 
     public String getId() {
         return id;
@@ -95,4 +100,19 @@ public class InventoryIndicator implements Serializable {
         this.upactualThan = upactualThan;
     }
 
+    public BigDecimal getBenchmark() {
+        return benchmark;
+    }
+
+    public void setBenchmark(BigDecimal benchmark) {
+        this.benchmark = benchmark;
+    }
+
+    public BigDecimal getBenchmarkThan() {
+        return benchmarkThan;
+    }
+
+    public void setBenchmarkThan(BigDecimal benchmarkThan) {
+        this.benchmarkThan = benchmarkThan;
+    }
 }

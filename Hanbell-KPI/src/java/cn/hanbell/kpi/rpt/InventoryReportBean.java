@@ -20,6 +20,7 @@ import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.entity.InventoryDepartment;
 import cn.hanbell.kpi.entity.InventoryIndicator;
 import cn.hanbell.kpi.entity.RoleGrantModule;
+import cn.hanbell.kpi.lazy.InventoryProductModel;
 import cn.hanbell.kpi.web.SuperQueryBean;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -66,31 +67,31 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
 
     protected Indicator indicator;
 
-    private Integer year;
-    private Integer month;
-    private LinkedHashMap<String, String> map;
-    private List<String[]> inventoryProductList;
-    private List<InventoryIndicator> inventoryIndicatorList;
-    private List<InventoryDepartment> inventoryDepartmentsList;
+    protected Integer year;
+    protected Integer month;
+    protected LinkedHashMap<String, String> map;
+    protected List<String[]> inventoryProductList;
+    protected List<InventoryIndicator> inventoryIndicatorList;
+    protected List<InventoryDepartment> inventoryDepartmentsList;
     protected List<IndicatorAnalysis> analysisList;
     protected List<IndicatorSummary> summaryList;
-    private List<String[]> indicatorTurnoverList;
+    protected List<String[]> indicatorTurnoverList;
     protected int analysisCount;
     protected int summaryCount;
 
-    private String date1;
-    private String date2;
-    private String date3;
+    protected String date1;
+    protected String date2;
+    protected String date3;
 
-    private String type;
-    private String genre;
+    protected String type;
+    protected String genre;
 
     protected IndicatorChart indicatorChart;
 
     protected final DecimalFormat doubleFormat;
 
     // 下拉选项集合
-    private Map<String, String> cities = new HashMap<>();
+    protected Map<String, String> cities = new HashMap<>();
 
     public InventoryReportBean() {
         super(Indicator.class);
@@ -100,7 +101,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
     public void setCities() {
         cities = new HashMap<String, String>();
         String deptno = indicatorChart.getDeptno();
-        if (cities.isEmpty()) {
+        if (cities.isEmpty() && cities == null) {
             switch (deptno) {
                 case "1F000":
                     cities.put("物料库存状况表(冷媒)", "R");
@@ -164,6 +165,9 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
         month = userManagedBean.getM();
         analysisList = new ArrayList<>();
         summaryList = new ArrayList<>();
+        this.superEJB = inventoryProductBean;
+        this.model = new InventoryProductModel(superEJB);
+        model.getFilterFields().put("facno =", "C");
         setInventoryIndicatorList(new ArrayList<>());
         setInventoryDepartmentsList(new ArrayList<>());
         setInventoryProductList(new ArrayList<>());
@@ -198,7 +202,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
                 int m = getMonth();
                 int y = getYear();
                 List<String[]> list;
-                list = inventoryProductBean.getDisplayInvamountProductList(y, m);
+                list = inventoryProductBean.getDisplayInvamountProductList(y, m,userManagedBean.getCompany());
                 if (!list.isEmpty()) {
                     setInventoryProductList(list);
                     if (indicator != null) {
@@ -231,7 +235,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
                 String typeValue = getType();
                 String genreValue = getGenre();
                 List<InventoryDepartment> list;
-                list = inventoryDepartmentBean.getInventoryDepartmentResultList(typeValue, genreValue, y, m);
+                list = inventoryDepartmentBean.getInventoryDepartmentResultList(typeValue, genreValue, y, m,"C");
                 if (!list.isEmpty()) {
                     setInventoryDepartmentsList(list);
                     if (indicator != null) {
@@ -253,7 +257,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
         }
 
     }
-
+   
     // 获取库存金额按总经理室方针目标总表 list
     public void inventoryIndicatorQuery() {
         try {
@@ -261,7 +265,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
                 int m = getMonth();
                 int y = getYear();
                 List<InventoryIndicator> list;
-                list = inventoryIndicatorBean.getInventoryIndicatorResultList(y, m);
+                list = inventoryIndicatorBean.getInventoryIndicatorResultList(y, m,"");
                 if (!list.isEmpty()) {
                     inventoryIndicatorList = list;
                 } else {
@@ -292,7 +296,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
     }
 
     // 获取日期当月、上月、上上月 做个事业部物料状况表 使用
-    private void setDate() {
+    public void setDate() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         cal.set(getYear(), getMonth(), 1);
