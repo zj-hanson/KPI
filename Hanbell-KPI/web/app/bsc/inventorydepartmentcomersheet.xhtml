@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="formOne"  rendered="#{!inventoryReportComerBean.deny}">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgQuery Wid100">
+                <f:facet name="header">
+                    <span class="plgSheetHead">各事业部物料库存状况表</span>
+                </f:facet>
+                <p:outputLabel value="查询年份" for="clientyear"/>
+                <p:inputText id="clientyear" value="#{inventoryReportComerBean.year}" title="年"  required="true" requiredMessage="请输入查询的年份"/>
+                <p:outputLabel value="查询月份" for="clientmonth"/>
+                <p:inputText id="clientmonth" value="#{inventoryReportComerBean.month}" title="月" required="true" requiredMessage="请输入查询的月份"/>
+            </p:panelGrid>
+            <p:toolbar id="toolbar-head" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="home" icon="ui-icon-restore"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{inventoryReportComerBean.reset()}"  icon="ui-icon-refresh"
+                                     update="formOne" />
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{inventoryReportComerBean.inventoryDepartmentQuery()}"  icon="ui-icon-search"
+                                     update="formOne:tblList" oncomplete="setTableHeaderStyle();"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable id="tblList" value="#{inventoryReportComerBean.inventoryDepartmentsList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="库别" />
+                        <p:column headerText="#{inventoryReportComerBean.date3}" />
+                        <p:column headerText="#{inventoryReportComerBean.date2}" />
+                        <p:column headerText="#{inventoryReportComerBean.date1}" />
+                        <p:column headerText="差异" />
+                        <p:column headerText="占比" />
+                    </p:row>
+                </p:columnGroup>
+                <p:column>
+                    <h:outputText value="#{item.inventoryDepartmentPK.whdsc}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{inventoryReportComerBean.format(item.n01)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText  value="#{inventoryReportComerBean.format(item.n02)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{inventoryReportComerBean.format(item.n03)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{inventoryReportComerBean.format(item.difference)}" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{item.proportion}%" styleClass="#{(item.inventoryDepartmentPK.whdsc == '合计')? 'red' : ''}"/>
+                </p:column>
+            </p:dataTable>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{inventoryReportComerBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
+        <script>
+            var setTableHeaderStyle = function () {
+                var h = $(document.getElementById("formOne:tblList")).find('div')[0];
+                if (h !== null) {
+                    $(h).css("z-index", "500");
+                    $(h).addClass('plgSheetData');
+                }
+            };
+        </script>
+    </ui:define>
+</ui:composition>

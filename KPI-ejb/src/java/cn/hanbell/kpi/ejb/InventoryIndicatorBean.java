@@ -11,6 +11,7 @@ import cn.hanbell.kpi.entity.InventoryIndicator;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +83,7 @@ public class InventoryIndicatorBean implements Serializable {
         // 实例化对象
         InventoryIndicator ita = new InventoryIndicator();
         IndicatorDetail a = indicator.getActualIndicator();// 实际
-        //IndicatorDetail b = indicator.getBenchmarkIndicator();// 去年同期
+        IndicatorDetail b = indicator.getBenchmarkIndicator();// 去年同期
         IndicatorDetail t = indicator.getTargetIndicator();// 目标
 
         String mon;
@@ -133,6 +134,14 @@ public class InventoryIndicatorBean implements Serializable {
             }
             // 与上月差异 当月 - 上月
             ita.setUpactualThan(actAmt.subtract(upactAmt));
+            //同期金额
+            mon = this.getIndicatorColumn("N", m);
+            f = a.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            BigDecimal benchmarkAmt = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
+            ita.setBenchmark(benchmarkAmt);
+            //与同期比
+            ita.setBenchmarkThan(actAmt.subtract(benchmarkAmt));
             inventoryList.add(ita);
         } catch (SecurityException | IllegalArgumentException ex) {
             throw new Exception(ex);
@@ -140,14 +149,18 @@ public class InventoryIndicatorBean implements Serializable {
         return inventoryList;
     }
 
-    public List<InventoryIndicator> getInventoryIndicatorResultList(int y, int m) {
+    public List<InventoryIndicator> getInventoryIndicatorResultList(int y, int m,String facno) {
         List<InventoryIndicator> InventoryAmtList = new ArrayList<>();
+        String category = "";
+        if(!facno.isEmpty() && facno.equals("K")){
+            category = "柯茂";
+        }
         try {
             // 生产目标
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("生产目标", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"生产目标", y);
             indicatorBean.getEntityManager().clear();
             // 指标排序
             indicators.sort((Indicator o1, Indicator o2) -> {
@@ -167,7 +180,7 @@ public class InventoryIndicatorBean implements Serializable {
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("营业目标", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"营业目标", y);
             indicatorBean.getEntityManager().clear();
             // 指标排序
             indicators.sort((Indicator o1, Indicator o2) -> {
@@ -188,7 +201,7 @@ public class InventoryIndicatorBean implements Serializable {
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("服务目标", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"服务目标", y);
             indicatorBean.getEntityManager().clear();
             // 指标排序
             indicators.sort((Indicator o1, Indicator o2) -> {
@@ -208,7 +221,7 @@ public class InventoryIndicatorBean implements Serializable {
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("借出未归", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"借出未归", y);
             indicatorBean.getEntityManager().clear();
             // 指标排序
             indicators.sort((Indicator o1, Indicator o2) -> {
@@ -228,7 +241,7 @@ public class InventoryIndicatorBean implements Serializable {
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("其他目标", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"其他目标", y);
             indicatorBean.getEntityManager().clear();
             // 指标排序
             indicators.sort((Indicator o1, Indicator o2) -> {
@@ -249,7 +262,7 @@ public class InventoryIndicatorBean implements Serializable {
             if (this.indicators.size() > 0) {
                 this.indicators.clear();
             }
-            indicators = indicatorBean.findByCategoryAndYear("库存金额总计", y);
+            indicators = indicatorBean.findByCategoryAndYear(category+"库存金额总计", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
                 for (Indicator i : indicators) {

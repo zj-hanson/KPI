@@ -391,8 +391,18 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>inventorydepartmentcomersheet</from-outcome>
+            <to-view-id>/app/bsc/inventorydepartmentcomersheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>inventoryindicatorsheet</from-outcome>
             <to-view-id>/app/bsc/inventoryindicatorsheet.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>inventoryindicatorcomersheet</from-outcome>
+            <to-view-id>/app/bsc/inventoryindicatorcomersheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

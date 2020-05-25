@@ -25,6 +25,7 @@ public class InventoryAmountA1 extends Inventory {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
+        String itclscode = map.get("itclscode") != null ? map.get("itclscode").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         // 正常生产性物料部分
@@ -35,6 +36,9 @@ public class InventoryAmountA1 extends Inventory {
         if (!genre.equals("")) {
             sb.append(" AND genre ").append(genre);
         }
+        if (!itclscode.equals("")) {
+            sb.append(" AND itclscode ").append(itclscode);
+        }
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         // 借厂商部分
         sb.append(" UNION ALL ");
@@ -42,17 +46,24 @@ public class InventoryAmountA1 extends Inventory {
         if (!genre.equals("")) {
             sb.append(" AND genre ").append(genre);
         }
-        sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
-        sb.append(" UNION ALL ");
-        // 如果中类编号是B40 生产在制品
-        sb.append(" SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
-        if (!genre.equals("")) {
-            sb.append(" AND genre ").append(genre);
+        if (!itclscode.equals("")) {
+            sb.append(" AND itclscode ").append(itclscode);
         }
-        sb.append(" AND wareh = 'SCZZ' ");
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
+        //柯茂的在制需要拧出来分开算，所以这里需要加公司别判断
+        if (facno.equals("C")) {
+            sb.append(" UNION ALL ");
+            // 如果中类编号是B40 生产在制品
+            sb.append(" SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
+            if (!genre.equals("")) {
+                sb.append(" AND genre ").append(genre);
+            }
+            sb.append(" AND wareh = 'SCZZ' ");
+            sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
+        }
         sb.append(" )a ");
         // 如果中类编号是B50（加工刀片库存（含刀柄））就直接选择库号
+        sb.length();
         if (indicatorno.equals("B50")) {
             sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
             sb.append(" WHERE facno = '${facno}' ");
