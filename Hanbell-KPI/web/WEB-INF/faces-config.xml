@@ -64,7 +64,6 @@
             <to-view-id>/404.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-
     </navigation-rule>
     <navigation-rule>
         <description>系统模块一级导航</description>
@@ -119,7 +118,6 @@
             <to-view-id>/sys/systemrole.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-
     </navigation-rule>
     <!--KPI一级导航-->
     <navigation-rule>
@@ -263,9 +261,9 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    <!--BSC一级导航-->
+    <!--经营汇报一级导航-->
     <navigation-rule>
-        <description>BSC一级导航</description>
+        <description>经营汇报一级导航</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
             <from-outcome>auditclientranking</from-outcome>
@@ -312,7 +310,6 @@
             <to-view-id>/app/bsc/complaintschart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-
         <navigation-case>
             <from-outcome>complaintschartc</from-outcome>
             <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
@@ -333,7 +330,6 @@
             <to-view-id>/app/bsc/consumptioncutter.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-
         <navigation-case>
             <from-outcome>exchangerate</from-outcome>
             <to-view-id>/app/bsc/exchangerate.xhtml</to-view-id>
@@ -404,7 +400,6 @@
             <to-view-id>/app/bsc/inventoryproductsheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        
         <navigation-case>
             <from-outcome>inventoryturnoversheet</from-outcome>
             <to-view-id>/app/bsc/inventoryturnoversheet.xhtml</to-view-id>
@@ -503,6 +498,16 @@
         <navigation-case>
             <from-outcome>turnoverdays</from-outcome>
             <to-view-id>/app/bsc/turnoverdays.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <!--绩效考核一级导航-->
+    <navigation-rule>
+        <description>绩效考核一级导航</description>
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>scorecard</from-outcome>
+            <to-view-id>/app/perf/scorecard.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
