@@ -520,24 +520,39 @@
             <to-view-id>/app/perf/scorecard.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>scorecardset</from-outcome>
+            <to-view-id>/app/perf/scorecardset.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--模态开窗-->
     <navigation-rule>
         <description>模态开窗</description>
         <from-view-id>/*</from-view-id>
         <navigation-case>
-            <from-outcome>departmentSelect</from-outcome>
-            <to-view-id>/app/df/departmentSelect.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>categorySelect</from-outcome>
             <to-view-id>/app/df/categorySelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>departmentSelect</from-outcome>
+            <to-view-id>/app/df/departmentSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>indicatorSelect</from-outcome>
+            <to-view-id>/app/df/indicatorSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>jobscheduleSelect</from-outcome>
             <to-view-id>/app/df/jobscheduleSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scoretemplateSelect</from-outcome>
+            <to-view-id>/app/df/scoretemplateSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

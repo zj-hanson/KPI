@@ -36,7 +36,7 @@
                         </div>
                         <div class="ui-g-12">
                             <p:commandButton id="btnReset" value="重置日期"  type="reset" />
-                            <p:commandButton id="btnInit" value="复制指标" actionListener="#{indicatorCloneManagedBean.verify()}" rendered="true">
+                            <p:commandButton id="btnInit" value="复制指标" actionListener="#{indicatorCloneManagedBean.verify()}" rendered="true" update="growl">
                                 <p:confirm header="系统提示" message="产生吗?" icon="ui-icon-alert" />
                             </p:commandButton>
                         </div>

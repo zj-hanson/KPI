@@ -61,7 +61,7 @@ public class IndicatorCloneManagedBean extends SuperSingleBean<Indicator> {
             showErrorMsg("Error", "目标年度需要大于来源年度");
             return false;
         }
-        if (indicatorBean.getRowCount(newC.get(Calendar.YEAR),userManagedBean.getCompany()) != 0) {
+        if (indicatorBean.getRowCount(newC.get(Calendar.YEAR), userManagedBean.getCompany()) != 0) {
             showErrorMsg("Error", "目的年度已有资料");
             return false;
         }

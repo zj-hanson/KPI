@@ -31,7 +31,7 @@ public abstract class Shipment implements Actual {
     protected BigDecimal arm270 = BigDecimal.ZERO;
     protected BigDecimal arm423 = BigDecimal.ZERO;
 
-    protected final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public Shipment() {
         queryParams = new LinkedHashMap<>();
