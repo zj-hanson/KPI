@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="scorecardset" icon="ui-icon-restore"/>
+                    <p:commandButton id="btnPrev" value="向前" actionListener="#{scorecardSetManagedBean.toPrev()}" icon="ui-icon-carat-1-w"
+                                     process="@this" update="formOne"
+                                     rendered="#{scorecardSetManagedBean.hasPrev}"/>
+                    <p:commandButton id="btnNext" value="向后" actionListener="#{scorecardSetManagedBean.toNext()}" icon="ui-icon-carat-1-e"
+                                     process="@this" update="formOne"
+                                     rendered="#{scorecardSetManagedBean.hasNext}"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnVerify" value="审核" actionListener="#{scorecardSetManagedBean.verify()}" icon="ui-icon-check"
+                                     rendered="#{scorecardSetManagedBean.doCfm}" process="@this" update="toolbar">
+                        <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton id="btnUnverify" value="还原" actionListener="#{scorecardSetManagedBean.unverify()}" icon="ui-icon-check"
+                                     rendered="#{scorecardSetManagedBean.doUnCfm}" process="@this" update="toolbar">
+                        <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">绩效考核－查看</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="绩效名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="name" value="#{scorecardSetManagedBean.currentEntity.name}" title="Name"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="绩效年度"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="seq" value="#{scorecardSetManagedBean.currentEntity.seq}" title="seq"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="绩效描述"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="descript" value="#{scorecardSetManagedBean.currentEntity.descript}" title="descript" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="考核对象"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="deptno" value="#{scorecardSetManagedBean.currentEntity.deptno}" title="deptno"  />
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="对象名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="deptname" value="#{scorecardSetManagedBean.currentEntity.deptname}" title="deptname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="负责人员"/></p:column>
+                    <p:column>
+                        <h:outputText id="userid" value="#{scorecardSetManagedBean.currentEntity.userid}" title="userid"/>
+                    </p:column>
+                    <p:column><h:outputText value="姓名"/></p:column>
+                    <p:column>
+                        <h:outputText id="username" value="#{scorecardSetManagedBean.currentEntity.username}" title="username" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="这是模板"/></p:column>
+                    <p:column>
+                        <p:inputSwitch id="template" value="#{scorecardSetManagedBean.currentEntity.template}" disabled="true" />
+                    </p:column>
+                    <p:column><h:outputText value="使用模板"/></p:column>
+                    <p:column>
+                        <h:outputText id="templateId" value="#{scorecardSetManagedBean.currentEntity.templateId}" title="templateId" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="备注"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="remark" value="#{scorecardSetManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:dataTable id="tableList" value="#{scorecardSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
+                         selectionMode="single" selection="#{scorecardSetManagedBean.currentDetail}" rowKey="#{item.id}" >
+                <p:ajax event="rowSelect"  update=":formOne:dlgDetail" oncomplete="PF('dlgDetail').show();" />
+                <p:ajax event="rowUnselect"  update=":formOne:dlgDetail" oncomplete="" />
+                <p:column styleClass="Wid30">
+                    <f:facet name="header">
+                        <h:outputText value="考核内容"/>
+                    </f:facet>
+                    <h:outputText value="#{item.content}"/>
+                </p:column>
+                <p:column styleClass="Wid10">
+                    <f:facet name="header">
+                        <h:outputText value="权重"/>
+                    </f:facet>
+                    <h:outputText value="#{item.weight}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q1达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq1}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q1得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq1}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q2达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq2}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q2得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq2}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="HY达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ph1}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="HY得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sh1}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q3达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq3}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q3得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq3}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q4达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq4}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Q4得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq4}"/>
+                </p:column>
+            </p:dataTable>
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="80%" header="#{scorecardSetManagedBean.currentDetail.content} 权重 #{scorecardSetManagedBean.currentDetail.weight}">
+                <p:panelGrid id="plgFillDetail"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column styleClass="Wid5"><p:outputLabel value="期间"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="目标"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="实际"/></p:column>
+                            <p:column><p:outputLabel value="达成"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="部门说明"/></p:column>
+                            <p:column><p:outputLabel value="自评得分"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="总经理说明"/></p:column>
+                            <p:column><p:outputLabel value="最终得分"/></p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputText value="Q1"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq1" value="#{scorecardSetManagedBean.currentDetail.tq1}" rows="5" styleClass="Wid100"  title="tq1" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq1" value="#{scorecardSetManagedBean.currentDetail.aq1}" rows="5" styleClass="Wid100"  title="aq1"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5">
+                            <p:inputNumber id="pq1" value="#{scorecardSetManagedBean.currentDetail.pq1}" title="pq1"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq1" value="#{scorecardSetManagedBean.currentDetail.deptScore.q1}" rows="5" styleClass="Wid100"  title="dq1"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsq1" value="#{scorecardSetManagedBean.currentDetail.deptScore.sq1}" title="dsq1"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq1" value="#{scorecardSetManagedBean.currentDetail.generalScore.q1}" rows="5" styleClass="Wid100"  title="gq1"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsq1" value="#{scorecardSetManagedBean.currentDetail.generalScore.sq1}" title="gsq1" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Q2"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq2" value="#{scorecardSetManagedBean.currentDetail.tq2}" rows="5" styleClass="Wid100"  title="tq2"  readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq2" value="#{scorecardSetManagedBean.currentDetail.aq2}" rows="5" styleClass="Wid100"  title="aq2"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq2" value="#{scorecardSetManagedBean.currentDetail.pq2}" title="pq2"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq2" value="#{scorecardSetManagedBean.currentDetail.deptScore.q2}" rows="5" styleClass="Wid100"  title="dq2" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsq2" value="#{scorecardSetManagedBean.currentDetail.deptScore.sq2}" title="dsq2" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq2" value="#{scorecardSetManagedBean.currentDetail.generalScore.q2}" rows="5" styleClass="Wid100"  title="gq2" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsq2" value="#{scorecardSetManagedBean.currentDetail.generalScore.sq2}" title="gsq2" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="上半年"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="th1" value="#{scorecardSetManagedBean.currentDetail.th1}" rows="5" styleClass="Wid100"  title="th1" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="ah1" value="#{scorecardSetManagedBean.currentDetail.ah1}" rows="5" styleClass="Wid100"  title="ah1" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="ph1" value="#{scorecardSetManagedBean.currentDetail.ph1}" title="ph1"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dh1" value="#{scorecardSetManagedBean.currentDetail.deptScore.h1}" rows="5" styleClass="Wid100"  title="dh1" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsh1" value="#{scorecardSetManagedBean.currentDetail.deptScore.sh1}" title="dsh1"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gh1" value="#{scorecardSetManagedBean.currentDetail.generalScore.h1}" rows="5" styleClass="Wid100"  title="gh1" readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsh1" value="#{scorecardSetManagedBean.currentDetail.generalScore.sh1}" title="gsh1" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Q3"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq3" value="#{scorecardSetManagedBean.currentDetail.tq3}"  rows="5" styleClass="Wid100"  title="tq3"  readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq3" value="#{scorecardSetManagedBean.currentDetail.aq3}"  rows="5" styleClass="Wid100"  title="aq3"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq3" value="#{scorecardSetManagedBean.currentDetail.pq3}" title="pq3"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq3" value="#{scorecardSetManagedBean.currentDetail.deptScore.q3}"  rows="5" styleClass="Wid100"  title="dq3"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsq3" value="#{scorecardSetManagedBean.currentDetail.deptScore.sq3}" title="dsq3" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq3" value="#{scorecardSetManagedBean.currentDetail.generalScore.q3}"  rows="5" styleClass="Wid100"  title="gq3"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsq3" value="#{scorecardSetManagedBean.currentDetail.generalScore.sq3}" title="gsq3" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Q4"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq4" value="#{scorecardSetManagedBean.currentDetail.tq4}"  rows="5" styleClass="Wid100"  title="tq4"  readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq4" value="#{scorecardSetManagedBean.currentDetail.aq4}"  rows="5" styleClass="Wid100"  title="aq4"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq4" value="#{scorecardSetManagedBean.currentDetail.pq4}" title="pq4"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq4" value="#{scorecardSetManagedBean.currentDetail.deptScore.q4}" rows="5"  styleClass="Wid100"  title="dq4"  readonly="true"/>
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsq4" value="#{scorecardSetManagedBean.currentDetail.deptScore.sq4}" title="dsq4" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq4" value="#{scorecardSetManagedBean.currentDetail.generalScore.q4}" rows="5"  styleClass="Wid100"  title="gq4" readonly="true" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsq4" value="#{scorecardSetManagedBean.currentDetail.generalScore.sq4}" title="gsq4" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="全年"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tfy" value="#{scorecardSetManagedBean.currentDetail.tfy}"  rows="5" styleClass="Wid100"  title="tfy" readonly="true" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="afy" value="#{scorecardSetManagedBean.currentDetail.afy}"  rows="5" styleClass="Wid100"  title="afy" readonly="true" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pfy" value="#{scorecardSetManagedBean.currentDetail.pfy}" title="pfy"
+                                           symbol="%" symbolPosition="s" emptyValue="zero" readonly="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dfy" value="#{scorecardSetManagedBean.currentDetail.deptScore.fy}" rows="5"  styleClass="Wid100"  title="dfy" readonly="true" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="dsfy" value="#{scorecardSetManagedBean.currentDetail.deptScore.sfy}" title="dsfy" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gfy" value="#{scorecardSetManagedBean.currentDetail.generalScore.fy}" rows="5"  styleClass="Wid100"  title="gfy" readonly="true" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <h:outputText id="gsfy" value="#{scorecardSetManagedBean.currentDetail.generalScore.sfy}" title="gsfy" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnVerify,btnUnverify">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

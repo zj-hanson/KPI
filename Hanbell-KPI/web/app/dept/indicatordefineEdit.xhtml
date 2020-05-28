@@ -48,7 +48,7 @@
                                      required="true" requiredMessage="请输入考核对象"/>
                         <p:commandButton id="btnApplyDeptSelect" actionListener="#{indicatorDefineManagedBean.openDialog('departmentSelect')}" icon="ui-icon-extlink"
                                          process="@this" >
-                            <p:ajax event="dialogReturn" listener="#{indicatorDefineManagedBean.handleDialogReturnWhenNew}"
+                            <p:ajax event="dialogReturn" listener="#{indicatorDefineManagedBean.handleDialogReturnWhenEdit}"
                                     update="deptno,deptname" />
                         </p:commandButton>
                     </p:column>

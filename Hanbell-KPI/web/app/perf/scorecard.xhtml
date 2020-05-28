@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{scorecardManagedBean.init()}"  icon="ui-icon-sync"  update="formList"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
+                    </p:splitButton>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">绩效考核－编辑</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column styleClass="Wid20"><h:outputText value="绩效名称"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="name" value="#{scorecardManagedBean.scorecard.name}" title="Name"/>
+                    </p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="绩效年度"/></p:column>
+                    <p:column styleClass="Wid30">
+                        <h:outputText id="seq" value="#{scorecardManagedBean.scorecard.seq}" title="seq"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="绩效描述"/></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="descript" value="#{scorecardManagedBean.scorecard.descript}" title="descript" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="考核对象"/></p:column>
+                    <p:column>
+                        <h:outputText id="deptno" value="#{scorecardManagedBean.scorecard.deptno}" title="deptno"  styleClass="inputWithButton"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="对象名称" for="deptname" /></p:column>
+                    <p:column>
+                        <h:outputText id="deptname" value="#{scorecardManagedBean.scorecard.deptname}" title="deptname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="负责人员" for="userid" /></p:column>
+                    <p:column>
+                        <h:outputText id="userid" value="#{scorecardManagedBean.scorecard.userid}" title="userid" styleClass="inputWithButton"/>
+                    </p:column>
+                    <p:column><h:outputText value="姓名"/></p:column>
+                    <p:column>
+                        <h:outputText id="username" value="#{scorecardManagedBean.scorecard.username}" title="username" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:dataTable value="#{scorecardManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="15,30,45"  lazy="true"
+                         selectionMode="single" selection="#{scorecardManagedBean.currentEntity}" rowKey="#{item.id}" >
+                <f:facet name="header">
+                    绩效考核
+                </f:facet>
+                <p:ajax event="rowSelect"  update="formList:dlgDetail" oncomplete="PF('dlgDetail').show();" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid20">
+                    <f:facet name="header">
+                        <h:outputText value="考核内容"/>
+                    </f:facet>
+                    <h:outputText value="#{item.content}"/>
+                </p:column>
+                <p:column  style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="权重"/>
+                    </f:facet>
+                    <h:outputText value="#{item.weight}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q1达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq1}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q1得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq1}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q2达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq2}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q2得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq2}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="HY达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ph1}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="HY得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sh1}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q3达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq3}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q3得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq3}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q4达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pq4}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Q4得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sq4}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="FY达成"/>
+                    </f:facet>
+                    <h:outputText value="#{item.pfy}"/>
+                </p:column>
+                <p:column style="text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="FY得分"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sfy}"/>
+                </p:column>
+            </p:dataTable>
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%" style="text-align: center" header="#{scorecardManagedBean.currentEntity.content}  权重  #{scorecardManagedBean.currentEntity.weight}">
+                <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column styleClass="Wid5"><p:outputLabel value="期间"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="目标"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="实际"/></p:column>
+                            <p:column><p:outputLabel value="达成"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="部门说明"/></p:column>
+                            <p:column><p:outputLabel value="自评得分"/></p:column>
+                            <p:column styleClass="Wid15"><p:outputLabel value="总经理说明"/></p:column>
+                            <p:column><p:outputLabel value="最终得分"/></p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><p:outputLabel value="Q1" for="tq1"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq1" value="#{scorecardManagedBean.currentEntity.tq1}" rows="5" styleClass="Wid100"  title="tq1" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq1" value="#{scorecardManagedBean.currentEntity.aq1}" rows="5" styleClass="Wid100"  title="aq1" />
+                        </p:column>
+                        <p:column styleClass="Wid5">
+                            <p:inputNumber id="pq1" value="#{scorecardManagedBean.currentEntity.pq1}" title="pq1"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq1" value="#{scorecardManagedBean.currentEntity.deptScore.q1}" rows="5" styleClass="Wid100"  title="dq1" />
+                        </p:column>
+                        <p:column styleClass="Wid5">
+                            <p:inputText id="dsq1" value="#{scorecardManagedBean.currentEntity.deptScore.sq1}" title="dsq1"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq1" value="#{scorecardManagedBean.currentEntity.generalScore.q1}" rows="5" styleClass="Wid100"  title="gq1" />
+                        </p:column>
+                        <p:column styleClass="Wid5">
+                            <p:inputText id="gsq1" value="#{scorecardManagedBean.currentEntity.generalScore.sq1}" title="gsq1" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="Q2" for="tq2"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq2" value="#{scorecardManagedBean.currentEntity.tq2}" rows="5" styleClass="Wid100"  title="tq2" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq2" value="#{scorecardManagedBean.currentEntity.aq2}" rows="5" styleClass="Wid100"  title="aq2" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq2" value="#{scorecardManagedBean.currentEntity.pq2}" title="pq2"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq2" value="#{scorecardManagedBean.currentEntity.deptScore.q2}" rows="5" styleClass="Wid100"  title="dq2" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="dsq2" value="#{scorecardManagedBean.currentEntity.deptScore.sq2}" title="dsq2" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq2" value="#{scorecardManagedBean.currentEntity.generalScore.q2}" rows="5" styleClass="Wid100"  title="gq2" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="gsq2" value="#{scorecardManagedBean.currentEntity.generalScore.sq2}" title="gsq2" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="上半年" for="th1"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="th1" value="#{scorecardManagedBean.currentEntity.th1}" rows="5" styleClass="Wid100"  title="th1" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="ah1" value="#{scorecardManagedBean.currentEntity.ah1}" rows="5" styleClass="Wid100"  title="ah1" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="ph1" value="#{scorecardManagedBean.currentEntity.ph1}" title="ph1"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dh1" value="#{scorecardManagedBean.currentEntity.deptScore.h1}" rows="5" styleClass="Wid100"  title="dh1" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="dsh1" value="#{scorecardManagedBean.currentEntity.deptScore.sh1}" title="dsh1" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gh1" value="#{scorecardManagedBean.currentEntity.generalScore.h1}" rows="5" styleClass="Wid100"  title="gh1" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="gsh1" value="#{scorecardManagedBean.currentEntity.generalScore.sh1}" title="gsh1" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="Q3" for="tq3"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq3" value="#{scorecardManagedBean.currentEntity.tq3}"  rows="5" styleClass="Wid100"  title="tq3" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq3" value="#{scorecardManagedBean.currentEntity.aq3}"  rows="5" styleClass="Wid100"  title="aq3" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq3" value="#{scorecardManagedBean.currentEntity.pq3}" title="pq3"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq3" value="#{scorecardManagedBean.currentEntity.deptScore.q3}"  rows="5" styleClass="Wid100"  title="dq3" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="dsq3" value="#{scorecardManagedBean.currentEntity.deptScore.sq3}" title="dsq3" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq3" value="#{scorecardManagedBean.currentEntity.generalScore.q3}"  rows="5" styleClass="Wid100"  title="gq3" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="gsq3" value="#{scorecardManagedBean.currentEntity.generalScore.sq3}" title="gsq3" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="Q4" for="tq4"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tq4" value="#{scorecardManagedBean.currentEntity.tq4}"  rows="5" styleClass="Wid100"  title="tq4" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="aq4" value="#{scorecardManagedBean.currentEntity.aq4}"  rows="5" styleClass="Wid100"  title="aq4" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pq4" value="#{scorecardManagedBean.currentEntity.pq4}" title="pq4"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dq4" value="#{scorecardManagedBean.currentEntity.deptScore.q4}" rows="5"  styleClass="Wid100"  title="dq4" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="dsq4" value="#{scorecardManagedBean.currentEntity.deptScore.sq4}" title="dsq4" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gq4" value="#{scorecardManagedBean.currentEntity.generalScore.q4}" rows="5"  styleClass="Wid100"  title="gq4" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="gsq4" value="#{scorecardManagedBean.currentEntity.generalScore.sq4}" title="gsq4" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><p:outputLabel value="全年" for="tfy"/></p:column>
+                        <p:column>
+                            <p:inputTextarea id="tfy" value="#{scorecardManagedBean.currentEntity.tfy}"  rows="5" styleClass="Wid100"  title="tfy" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="afy" value="#{scorecardManagedBean.currentEntity.afy}"  rows="5" styleClass="Wid100"  title="afy" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputNumber id="pfy" value="#{scorecardManagedBean.currentEntity.pfy}" title="pfy"
+                                           symbol="%" symbolPosition="s" emptyValue="zero"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="dfy" value="#{scorecardManagedBean.currentEntity.deptScore.fy}" rows="5"  styleClass="Wid100"  title="dfy" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="dsfy" value="#{scorecardManagedBean.currentEntity.deptScore.sfy}" title="dsfy" />
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="gfy" value="#{scorecardManagedBean.currentEntity.generalScore.fy}" rows="5"  styleClass="Wid100"  title="gfy" />
+                        </p:column>
+                        <p:column styleClass="Wid5" style="text-align: right">
+                            <p:inputText id="gsfy" value="#{scorecardManagedBean.currentEntity.generalScore.sfy}" title="gsfy" />
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="8">
+                                <p:commandButton id="btnSaveExplanation"  actionListener="#{scorecardManagedBean.update()}" icon="ui-icon-save" value="保存" style="float: right"
+                                                 process="@this,formList:dlgDetail" update="formList" oncomplete="PF('dlgDetail').hide();" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formList" trigger="">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -24,7 +24,7 @@
                     <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true">
                         <p:column headerText="产品" groupRow="true"> 
                             <p:link rendered="#{shipmentSheetReportBean.isExists(item.parent.formid, item.parent.deptno)}"  value="#{item.parent.name}" outcome="#{shipmentSheetReportBean.sheetChart.api}" includeViewParams="true" >                                   
-                                    <f:param name="id" value="#{shipmentSheetReportBean.sheetChart.id}" />                                                                
+                                <f:param name="id" value="#{shipmentSheetReportBean.sheetChart.id}" />                                                                
                             </p:link>
                             <h:outputText value="#{item.parent.name}" rendered="#{!shipmentSheetReportBean.isExists}" />
                         </p:column>

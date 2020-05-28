@@ -11,8 +11,6 @@ import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemGrantPrg;
 import com.lightshell.comm.SuperSingleManagedBean;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
@@ -227,15 +225,15 @@ public abstract class SuperSingleBean<T extends SuperEntity> extends SuperSingle
                     currentEntity.setCfmdateToNow();
                     superEJB.verify(currentEntity);
                     doAfterVerify();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新成功!"));
+                    showInfoMsg("Info", "更新成功!");
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "审核前检查失败!"));
+                    showWarnMsg("Warn", "审核前检查失败!");
                 }
             } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, e.getMessage()));
+                showErrorMsg("Error", e.getMessage());
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warn", "没有可更新数据!"));
+            showWarnMsg("Warn", "没有可更新数据!");
         }
     }
 
