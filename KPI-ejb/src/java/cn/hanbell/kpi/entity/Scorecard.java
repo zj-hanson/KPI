@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Scorecard.findByDeptname", query = "SELECT s FROM Scorecard s WHERE s.deptname = :deptname"),
     @NamedQuery(name = "Scorecard.findByUserid", query = "SELECT s FROM Scorecard s WHERE s.userid = :userid"),
     @NamedQuery(name = "Scorecard.findByUsername", query = "SELECT s FROM Scorecard s WHERE s.username = :username"),
-    @NamedQuery(name = "Scorecard.findBySortid", query = "SELECT s FROM Scorecard s WHERE s.sortid = :sortid"),
+    @NamedQuery(name = "Scorecard.findByMenuAndYear", query = "SELECT s FROM Scorecard s WHERE s.menu = :menu AND s.seq = :seq ORDER BY s.sortid,s.deptno"),
     @NamedQuery(name = "Scorecard.findByTemplate", query = "SELECT s FROM Scorecard s WHERE s.template = :template"),
     @NamedQuery(name = "Scorecard.findByTemplateId", query = "SELECT s FROM Scorecard s WHERE s.templateId = :templateId"),
     @NamedQuery(name = "Scorecard.findByStatus", query = "SELECT s FROM Scorecard s WHERE s.status = :status")})
@@ -103,6 +103,16 @@ public class Scorecard extends SuperEntity {
     private BigDecimal sh2;
     @Column(name = "sfy")
     private BigDecimal sfy;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "api")
+    private String api;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "menu")
+    private String menu;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -311,6 +321,34 @@ public class Scorecard extends SuperEntity {
      */
     public void setSfy(BigDecimal sfy) {
         this.sfy = sfy;
+    }
+
+    /**
+     * @return the api
+     */
+    public String getApi() {
+        return api;
+    }
+
+    /**
+     * @param api the api to set
+     */
+    public void setApi(String api) {
+        this.api = api;
+    }
+
+    /**
+     * @return the menu
+     */
+    public String getMenu() {
+        return menu;
+    }
+
+    /**
+     * @param menu the menu to set
+     */
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
     public String getRemark() {

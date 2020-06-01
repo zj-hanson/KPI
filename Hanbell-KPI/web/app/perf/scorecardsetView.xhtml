@@ -83,9 +83,49 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><h:outputText value="API"/></p:column>
+                    <p:column>
+                        <h:outputText id="api" value="#{scorecardSetManagedBean.currentEntity.api}" title="API" />
+                    </p:column>
+                    <p:column><h:outputText value="菜单部门"/></p:column>
+                    <p:column>
+                        <h:outputText id="menu" value="#{scorecardSetManagedBean.currentEntity.menu}" title="Menu" />
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><h:outputText value="备注"/></p:column>
                     <p:column colspan="3">
                         <h:outputText id="remark" value="#{scorecardSetManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid id="plgScore" styleClass="plgHead Wid100" style="text-align: right">
+                <p:row>
+                    <p:column styleClass="Wid15"><h:outputText value="Q1得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q2得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="上半年得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q3得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q4得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="全年得分"/></p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText id="sq1" value="#{scorecardSetManagedBean.currentEntity.sq1}" title="sq1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq2" value="#{scorecardSetManagedBean.currentEntity.sq2}" title="sq2"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sh1" value="#{scorecardSetManagedBean.currentEntity.sh1}" title="sh1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq3" value="#{scorecardSetManagedBean.currentEntity.sq3}" title="sq3"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq4" value="#{scorecardSetManagedBean.currentEntity.sq4}" title="sq4"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sfy" value="#{scorecardSetManagedBean.currentEntity.sfy}" title="sfy"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

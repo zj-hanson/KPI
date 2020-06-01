@@ -48,6 +48,7 @@ public class UserManagedBean implements Serializable {
     private Calendar c;
     private Date baseDate;
     private int m;
+    private int q;
     private int y;
 
     private String company;
@@ -81,6 +82,29 @@ public class UserManagedBean implements Serializable {
 
     public SystemUser findById(int id) {
         return systemUserBean.findById(id);
+    }
+
+    public int getQuarter(int m) {
+        switch (m) {
+            case 1:
+            case 2:
+            case 3:
+                return 1;
+            case 4:
+            case 5:
+            case 6:
+                return 2;
+            case 7:
+            case 8:
+            case 9:
+                return 3;
+            case 10:
+            case 11:
+            case 12:
+                return 4;
+            default:
+                return 0;
+        }
     }
 
     public String login() {
@@ -221,6 +245,7 @@ public class UserManagedBean implements Serializable {
         this.baseDate = baseDate;
         c.setTime(baseDate);
         m = c.get(Calendar.MONTH) + 1;
+        q = getQuarter(m);
         y = c.get(Calendar.YEAR);
     }
 
@@ -355,6 +380,13 @@ public class UserManagedBean implements Serializable {
      */
     public int getM() {
         return m;
+    }
+
+    /**
+     * @return the q
+     */
+    public int getQ() {
+        return q;
     }
 
     /**

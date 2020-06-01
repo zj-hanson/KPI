@@ -14,8 +14,9 @@
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{scorecardManagedBean.init()}"  icon="ui-icon-sync"  update="formList"/>
                 </f:facet>
                 <f:facet name="right">
-                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
-                    </p:splitButton>
+                    <p:commandButton id="btnCalc" value="得分" actionListener="#{scorecardManagedBean.calcScore()}" icon="ui-icon-check"
+                                     process="@this" update="formList">
+                    </p:commandButton>
                 </f:facet>
             </p:toolbar>
             <p:panelGrid id="plgHead" styleClass="plgHead Wid100">
@@ -61,12 +62,42 @@
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            <p:panelGrid id="plgScore" styleClass="plgHead Wid100" style="text-align: right">
+                <p:row>
+                    <p:column styleClass="Wid15"><h:outputText value="Q1得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q2得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="上半年得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q3得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q4得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="全年得分"/></p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText id="sq1" value="#{scorecardManagedBean.scorecard.sq1}" title="sq1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq2" value="#{scorecardManagedBean.scorecard.sq2}" title="sq2"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sh1" value="#{scorecardManagedBean.scorecard.sh1}" title="sh1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq3" value="#{scorecardManagedBean.scorecard.sq3}" title="sq3"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq4" value="#{scorecardManagedBean.scorecard.sq4}" title="sq4"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sfy" value="#{scorecardManagedBean.scorecard.sfy}" title="sfy"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
             <p:dataTable value="#{scorecardManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="15,30,45"  lazy="true"
                          selectionMode="single" selection="#{scorecardManagedBean.currentEntity}" rowKey="#{item.id}" >
                 <f:facet name="header">
-                    绩效考核
+                    当前是#{scorecardManagedBean.userManagedBean.y}年第#{scorecardManagedBean.userManagedBean.q}季度绩效考核
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formList:dlgDetail" oncomplete="PF('dlgDetail').show();" />
                 <p:ajax event="rowUnselect" update=":formList:toolbar" />
@@ -86,7 +117,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q1达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq1}"/>
+                    <h:outputText value="#{item.pq1}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -98,7 +129,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q2达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq2}"/>
+                    <h:outputText value="#{item.pq2}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -110,7 +141,7 @@
                     <f:facet name="header">
                         <h:outputText value="HY达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.ph1}"/>
+                    <h:outputText value="#{item.ph1}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -122,7 +153,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q3达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq3}"/>
+                    <h:outputText value="#{item.pq3}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -134,7 +165,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q4达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq4}"/>
+                    <h:outputText value="#{item.pq4}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -146,7 +177,7 @@
                     <f:facet name="header">
                         <h:outputText value="FY达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pfy}"/>
+                    <h:outputText value="#{item.pfy}%"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">

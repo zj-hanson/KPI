@@ -15,10 +15,12 @@ import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
 import cn.hanbell.kpi.ejb.RoleDetailBean;
 import cn.hanbell.kpi.ejb.RoleGrantModuleBean;
+import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDepartment;
 import cn.hanbell.kpi.entity.RoleDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
+import cn.hanbell.kpi.entity.Scorecard;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,8 @@ public class MenuManagedBean implements Serializable {
     private IndicatorChartBean indicatorChartBean;
     @EJB
     private IndicatorDepartmentBean indicatorDepartmentBean;
+    @EJB
+    private ScorecardBean scorecardBean;
 
     @EJB
     private RoleDetailBean roleDetailBean;
@@ -75,6 +79,7 @@ public class MenuManagedBean implements Serializable {
 
     private List<IndicatorChart> indicatorChartList;
     private List<IndicatorDepartment> indicatorDepartmentList;
+    private List<Scorecard> scorecardList;
 
     private MenuModel model;
 
@@ -257,10 +262,13 @@ public class MenuManagedBean implements Serializable {
             kpimenu = new DefaultSubMenu("经营汇报");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                submenu = new DefaultSubMenu(r.getDept());
-                submenu.setIcon("menu");
+                submenu = null;
                 indicatorChartList = indicatorChartBean.findByPId(r.getDeptno());
                 if (indicatorChartList != null && !indicatorChartList.isEmpty()) {
+                    if (submenu == null) {
+                        submenu = new DefaultSubMenu(r.getDept());
+                        submenu.setIcon("menu");
+                    }
                     //按报表名称重新排序
                     indicatorChartList.sort((IndicatorChart o1, IndicatorChart o2) -> {
                         if (o1.getSortid() <= o2.getSortid()) {
@@ -277,7 +285,41 @@ public class MenuManagedBean implements Serializable {
                         submenu.addElement(menuitem);
                     }
                 }
-                kpimenu.addElement(submenu);
+                if (submenu != null) {
+                    kpimenu.addElement(submenu);
+                }
+            }
+            model.addElement(kpimenu);
+
+            kpimenu = new DefaultSubMenu("绩效考核");
+            kpimenu.setIcon("menu");
+            for (RoleGrantModule r : grantList) {
+                submenu = null;
+                scorecardList = scorecardBean.findByMenuAndYear(r.getDeptno(), y);
+                if (scorecardList != null && !scorecardList.isEmpty()) {
+                    if (submenu == null) {
+                        submenu = new DefaultSubMenu(r.getDept());
+                        submenu.setIcon("menu");
+                    }
+                    //重新排序
+                    scorecardList.sort((Scorecard o1, Scorecard o2) -> {
+                        if (o1.getSortid() <= o2.getSortid() && o1.getDeptno().compareTo(o2.getDeptno()) < 0) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
+                    for (Scorecard i : scorecardList) {
+                        menuitem = new DefaultMenuItem(i.getName());
+                        menuitem.setIcon("menu");
+                        menuitem.setOutcome(i.getApi());
+                        menuitem.setParam("id", i.getId());
+                        submenu.addElement(menuitem);
+                    }
+                }
+                if (submenu != null) {
+                    kpimenu.addElement(submenu);
+                }
             }
             model.addElement(kpimenu);
 
@@ -286,7 +328,18 @@ public class MenuManagedBean implements Serializable {
 
     @PreDestroy
     public void destory() {
-
+        if (indicatorChartList != null) {
+            indicatorChartList.clear();
+            indicatorChartList = null;
+        }
+        if (indicatorDepartmentList != null) {
+            indicatorDepartmentList.clear();
+            indicatorDepartmentList = null;
+        }
+        if (scorecardList != null) {
+            scorecardList.clear();
+            scorecardList = null;
+        }
     }
 
     /**
