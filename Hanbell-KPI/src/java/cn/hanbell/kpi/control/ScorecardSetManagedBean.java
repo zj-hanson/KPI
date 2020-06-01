@@ -14,7 +14,6 @@ import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -98,10 +97,12 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             Object o = event.getObject();
             Scorecard sc = (Scorecard) o;
             currentEntity.setTemplateId(sc.getName());
+            currentEntity.setApi(sc.getApi());
             List<ScorecardDetail> templateDetail = scorecardDetailBean.findByPId(sc.getId());
             if (templateDetail != null && !templateDetail.isEmpty()) {
                 for (ScorecardDetail d : templateDetail) {
                     this.createDetail();
+                    this.currentDetail.setPid(currentEntity.getId());
                     this.currentDetail.setContent(d.getContent());
                     this.currentDetail.setWeight(d.getWeight());
                     this.currentDetail.setType(d.getType());

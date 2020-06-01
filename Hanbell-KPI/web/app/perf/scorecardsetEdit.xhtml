@@ -85,14 +85,54 @@
                         <p:commandButton id="btnTemplateSelect" actionListener="#{scorecardSetManagedBean.openDialog('scoretemplateSelect')}" icon="ui-icon-extlink"
                                          process="@this">
                             <p:ajax event="dialogReturn" listener="#{scorecardSetManagedBean.handleDialogReturnTemplateWhenEdit}"
-                                    process="@this"  update="templateId,formOne:tabView:tableList"/>
+                                    process="@this"  update="formOne:tabView:tableList,templateId,api"/>
                         </p:commandButton>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="API" for="api" /></p:column>
+                    <p:column>
+                        <p:inputText id="api" value="#{scorecardSetManagedBean.currentEntity.api}" title="API" />
+                    </p:column>
+                    <p:column><p:outputLabel value="菜单部门" for="menu" /></p:column>
+                    <p:column>
+                        <p:inputText id="menu" value="#{scorecardSetManagedBean.currentEntity.menu}" title="Menu" />
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column><p:outputLabel value="备注" for="remark" /></p:column>
                     <p:column colspan="3">
                         <p:inputText id="remark" value="#{scorecardSetManagedBean.currentEntity.remark}" title="Remark" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid id="plgScore" styleClass="plgHead Wid100" style="text-align: right">
+                <p:row>
+                    <p:column styleClass="Wid15"><h:outputText value="Q1得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q2得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="上半年得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q3得分"/></p:column>
+                    <p:column styleClass="Wid15"><h:outputText value="Q4得分"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="全年得分"/></p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText id="sq1" value="#{scorecardSetManagedBean.currentEntity.sq1}" title="sq1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq2" value="#{scorecardSetManagedBean.currentEntity.sq2}" title="sq2"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sh1" value="#{scorecardSetManagedBean.currentEntity.sh1}" title="sh1"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq3" value="#{scorecardSetManagedBean.currentEntity.sq3}" title="sq3"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sq4" value="#{scorecardSetManagedBean.currentEntity.sq4}" title="sq4"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="sfy" value="#{scorecardSetManagedBean.currentEntity.sfy}" title="sfy"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -458,7 +498,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formOne" trigger="btnSave,btnVerify">
+            <p:blockUI id="blockUI" block="formOne" trigger="btnSave">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>
