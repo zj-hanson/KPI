@@ -13,6 +13,6 @@ public class ServiceMaintainTimeR extends ServiceMaintainTime {
 
     public ServiceMaintainTimeR() {
         super();
-        queryParams.put("CProductType", "R冷媒");
+        queryParams.put("CProductType", "in('R冷媒')");
     }
 }

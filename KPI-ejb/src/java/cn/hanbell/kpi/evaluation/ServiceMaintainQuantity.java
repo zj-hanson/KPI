@@ -29,7 +29,7 @@ public class ServiceMaintainQuantity extends ServiceMaintain {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT count(*)  FROM ServerRepairTB where 1=1 and ");
         if (!"CProductType".equals(CProductType)) {
-            sb.append(" CProductType= '").append(CProductType).append("'");
+            sb.append(" CProductType ").append(CProductType);
         }
         sb.append(" and year(FinishDate) = ${y} and month(FinishDate)= ${m} ");
 

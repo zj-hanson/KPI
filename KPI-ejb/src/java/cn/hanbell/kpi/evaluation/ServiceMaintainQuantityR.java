@@ -13,6 +13,6 @@ public class ServiceMaintainQuantityR extends ServiceMaintainQuantity {
 
     public ServiceMaintainQuantityR() {
         super();
-        queryParams.put("CProductType", "R冷媒");
+        queryParams.put("CProductType", "in('R冷媒')");
     }
 }

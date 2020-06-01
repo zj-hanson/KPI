@@ -9,10 +9,10 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ServiceMaintainTimeAH extends ServiceMaintainTime {
+public class ServiceMaintainTimeP extends ServiceMaintainTime {
 
-    public ServiceMaintainTimeAH() {
+    public ServiceMaintainTimeP() {
         super();
-        queryParams.put("CProductType", "in('AH机体','AA机组')");
+        queryParams.put("CProductType", "in('P机体','P机组')");
     }
 }
