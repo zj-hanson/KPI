@@ -5,8 +5,10 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardContentBean;
+import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.lazy.ScorecardContentModel;
@@ -28,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
 
+    @EJB
+    private IndicatorBean indicatorBean;
     @EJB
     private ScorecardBean scorecardBean;
     @EJB
@@ -82,9 +86,57 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         }
     }
 
+    public void refeshActual() {
+        if (currentEntity != null && currentEntity.getIndicator() != null && !"".equals(currentEntity.getIndicator())) {
+            if (!currentEntity.getType().equals("N")) {
+                showWarnMsg("Warn", "数值型才能从指标更新");
+                return;
+            }
+            Indicator i = indicatorBean.findByFormidYearAndDeptno(currentEntity.getIndicator(), currentEntity.getParent().getSeq(), currentEntity.getDeptno());
+            if (i != null) {
+                String col = scorecardBean.getColumn("q", userManagedBean.getQ());
+                switch (userManagedBean.getQ()) {
+                    case 1:
+                        currentEntity.setAq1(i.getActualIndicator().getNq1().toString());
+                        currentEntity.setPq1(i.getPerformanceIndicator().getNq1());
+                        break;
+                    case 2:
+                        currentEntity.setAq2(i.getActualIndicator().getNq2().toString());
+                        currentEntity.setPq2(i.getPerformanceIndicator().getNq2());
+                        currentEntity.setAh1(i.getActualIndicator().getNh1().toString());
+                        currentEntity.setPh1(i.getPerformanceIndicator().getNh1());
+                        break;
+                    case 3:
+                        currentEntity.setAq3(i.getActualIndicator().getNq3().toString());
+                        currentEntity.setPq3(i.getPerformanceIndicator().getNq3());
+                        break;
+                    case 4:
+                        currentEntity.setAq4(i.getActualIndicator().getNq4().toString());
+                        currentEntity.setPq4(i.getPerformanceIndicator().getNq4());
+                        currentEntity.setAh2(i.getActualIndicator().getNh2().toString());
+                        currentEntity.setPh2(i.getPerformanceIndicator().getNh2());
+                        currentEntity.setAfy(i.getActualIndicator().getNfy().toString());
+                        currentEntity.setPfy(i.getPerformanceIndicator().getNfy());
+                        break;
+                }
+                showInfoMsg("Info", "更新实际值成功");
+                try {
+                    if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
+                        scorecardBean.setScore(currentEntity, col);
+                        showInfoMsg("Info", "更新部门分数成功");
+                    }
+                } catch (Exception ex) {
+                    showErrorMsg("Error", ex.getMessage());
+                }
+            } else {
+                showErrorMsg("Error", "找不到相关指标,更新失败");
+            }
+        }
+    }
+
     @Override
     protected boolean doBeforeUpdate() throws Exception {
-        if (currentEntity != null && (currentEntity.getScoreJexl() == null || "".equals(currentEntity.getScoreJexl()))) {
+        if (currentEntity != null) {
             if (currentEntity.getDeptScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
                 currentEntity.setSfy(currentEntity.getDeptScore().getSfy());
             }

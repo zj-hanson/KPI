@@ -203,7 +203,6 @@
                                 <p:inputText id="unit" value="#{scorecardSetManagedBean.currentDetail.unit}" title="unit" />
                             </p:column>
                         </p:row>
-
                         <p:row>
                             <p:column><p:outputLabel value="参考KPI" for="indicator" /></p:column>
                             <p:column>
@@ -235,6 +234,28 @@
                                 <h:outputText id="indicatorDeptname" value="#{scorecardSetManagedBean.currentDetail.deptname}" title="indicatorDeptname" />
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="最低分" for="minNum" /></p:column>
+                            <p:column>
+                                <p:spinner id="minNum" value="#{scorecardSetManagedBean.currentDetail.minNum}" title="minNum"/>
+                            </p:column>
+                            <p:column><p:outputLabel value="最高分" for="maxNum" /></p:column>
+                            <p:column>
+                                <p:spinner id="maxNum" value="#{scorecardSetManagedBean.currentDetail.maxNum}" title="maxNum"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
+                            <p:column><p:outputLabel value="得分表达式" for="scoreJexl" /></p:column>
+                            <p:column colspan="3">
+                                <p:inputTextarea id="scoreJexl" value="#{scorecardSetManagedBean.currentDetail.scoreJexl}" title="scoreJexl" styleClass="Wid100"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
+                            <p:column><p:outputLabel value="表达式接口" for="scoreInterface" /></p:column>
+                            <p:column colspan="3">
+                                <p:inputText id="scoreInterface" value="#{scorecardSetManagedBean.currentDetail.scoreInterface}" title="scoreInterface" />
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                     <p:dataTable id="tableList" value="#{scorecardSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
                                  selectionMode="single" selection="#{scorecardSetManagedBean.currentDetail}" rowKey="#{item.seq}" >
@@ -246,67 +267,67 @@
                             </f:facet>
                             <h:outputText value="#{item.content}"/>
                         </p:column>
-                        <p:column styleClass="Wid10">
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="权重"/>
                             </f:facet>
                             <h:outputText value="#{item.weight}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q1达成"/>
                             </f:facet>
                             <h:outputText value="#{item.pq1}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q1得分"/>
                             </f:facet>
                             <h:outputText value="#{item.sq1}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q2达成"/>
                             </f:facet>
                             <h:outputText value="#{item.pq2}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q2得分"/>
                             </f:facet>
                             <h:outputText value="#{item.sq2}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="HY达成"/>
                             </f:facet>
                             <h:outputText value="#{item.ph1}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="HY得分"/>
                             </f:facet>
                             <h:outputText value="#{item.sh1}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q3达成"/>
                             </f:facet>
                             <h:outputText value="#{item.pq3}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q3得分"/>
                             </f:facet>
                             <h:outputText value="#{item.sq3}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q4达成"/>
                             </f:facet>
                             <h:outputText value="#{item.pq4}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="text-align: right">
                             <f:facet name="header">
                                 <h:outputText value="Q4得分"/>
                             </f:facet>
