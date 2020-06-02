@@ -10,11 +10,14 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardDetailBean;
+import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -43,9 +46,13 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     protected String queryUsername;
     protected int queryYear;
 
+    protected List<String> paramDeptno = null;
+
     public ScorecardSetManagedBean() {
         super(Scorecard.class, ScorecardDetail.class);
         c = Calendar.getInstance();
+        openParams = new HashMap();
+        openOptions = new HashMap();
     }
 
     @Override
@@ -146,9 +153,64 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
+    @Override
+    public void handleDialogReturnWhenDetailNew(SelectEvent event) {
+        if (event.getObject() != null && currentDetail != null) {
+            Indicator e = (Indicator) event.getObject();
+            currentDetail.setIndicator(e.getFormid());
+            currentDetail.setDeptno(e.getDeptno());
+            currentDetail.setDeptname(e.getDeptname());
+            currentDetail.setUserid(e.getUserid());
+            currentDetail.setUsername(e.getUsername());
+            //从指标代入基准
+            currentDetail.setBq1(e.getBenchmarkIndicator().getNq1().toString());
+            currentDetail.setBq2(e.getBenchmarkIndicator().getNq2().toString());
+            currentDetail.setBh1(e.getBenchmarkIndicator().getNh1().toString());
+            currentDetail.setBq3(e.getBenchmarkIndicator().getNq3().toString());
+            currentDetail.setBq4(e.getBenchmarkIndicator().getNq4().toString());
+            currentDetail.setBh2(e.getBenchmarkIndicator().getNh2().toString());
+            currentDetail.setBfy(e.getBenchmarkIndicator().getNfy().toString());
+            //从指标代入目标
+            currentDetail.setTq1(e.getTargetIndicator().getNq1().toString());
+            currentDetail.setTq2(e.getTargetIndicator().getNq2().toString());
+            currentDetail.setTh1(e.getTargetIndicator().getNh1().toString());
+            currentDetail.setTq3(e.getTargetIndicator().getNq3().toString());
+            currentDetail.setTq4(e.getTargetIndicator().getNq4().toString());
+            currentDetail.setTh2(e.getTargetIndicator().getNh2().toString());
+            currentDetail.setTfy(e.getTargetIndicator().getNfy().toString());
+        }
+    }
+
+    @Override
+    public void handleDialogReturnWhenDetailEdit(SelectEvent event) {
+        if (event.getObject() != null && currentDetail != null) {
+            Indicator e = (Indicator) event.getObject();
+            currentDetail.setIndicator(e.getFormid());
+            currentDetail.setDeptno(e.getDeptno());
+            currentDetail.setDeptname(e.getDeptname());
+            currentDetail.setUserid(e.getUserid());
+            currentDetail.setUsername(e.getUsername());
+            //从指标代入基准
+            currentDetail.setBq1(e.getBenchmarkIndicator().getNq1().toString());
+            currentDetail.setBq2(e.getBenchmarkIndicator().getNq2().toString());
+            currentDetail.setBh1(e.getBenchmarkIndicator().getNh1().toString());
+            currentDetail.setBq3(e.getBenchmarkIndicator().getNq3().toString());
+            currentDetail.setBq4(e.getBenchmarkIndicator().getNq4().toString());
+            currentDetail.setBh2(e.getBenchmarkIndicator().getNh2().toString());
+            currentDetail.setBfy(e.getBenchmarkIndicator().getNfy().toString());
+            //从指标代入目标
+            currentDetail.setTq1(e.getTargetIndicator().getNq1().toString());
+            currentDetail.setTq2(e.getTargetIndicator().getNq2().toString());
+            currentDetail.setTh1(e.getTargetIndicator().getNh1().toString());
+            currentDetail.setTq3(e.getTargetIndicator().getNq3().toString());
+            currentDetail.setTq4(e.getTargetIndicator().getNq4().toString());
+            currentDetail.setTh2(e.getTargetIndicator().getNh2().toString());
+            currentDetail.setTfy(e.getTargetIndicator().getNfy().toString());
+        }
+    }
+
     public void handleDialogReturnDeptWhenDetailNew(SelectEvent event) {
         if (event.getObject() != null && currentDetail != null) {
-            Object o = event.getObject();
             Department e = (Department) event.getObject();
             currentDetail.setDeptno(e.getDeptno());
             currentDetail.setDeptname(e.getDept());
@@ -250,6 +312,28 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             } else {
                 showWarnMsg("Warn", "已是最前");
             }
+        }
+    }
+
+    @Override
+    public void openDialog(String view) {
+        switch (view) {
+            case "indicatorSelect":
+                openParams.clear();
+                if (paramDeptno == null) {
+                    paramDeptno = new ArrayList<>();
+                } else {
+                    paramDeptno.clear();
+                }
+                paramDeptno.add(currentEntity.getDeptno());
+                openParams.put("deptno", paramDeptno);
+                openOptions.clear();
+                openOptions.put("modal", true);
+                openOptions.put("contentWidth", "900");
+                super.openDialog(view, openOptions, openParams);
+                break;
+            default:
+                super.openDialog(view);
         }
     }
 
