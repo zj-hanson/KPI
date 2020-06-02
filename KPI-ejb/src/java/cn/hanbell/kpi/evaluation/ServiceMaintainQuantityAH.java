@@ -13,6 +13,6 @@ public class ServiceMaintainQuantityAH extends ServiceMaintainQuantity {
 
     public ServiceMaintainQuantityAH() {
         super();
-        queryParams.put("CProductType", "AH机体");
+        queryParams.put("CProductType", "in('AH机体','AA机组')");
     }
 }
