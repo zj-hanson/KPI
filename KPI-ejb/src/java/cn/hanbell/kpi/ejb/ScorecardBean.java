@@ -78,16 +78,49 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return total;
     }
 
-    public void setScore(ScorecardDetail d) {
+    public void setScore(ScorecardDetail d, String n) throws Exception  {
+        if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
+            throw new NullPointerException("表达式为空");
+        }
         JexlEngine jexl = new JexlBuilder().create();
         // Create an expression
-        String jexlExp = "object.parent.tq1";
-        JexlExpression e = jexl.createExpression(jexlExp);
-        // Create a context and add data
+        String jexlExp = d.getScoreJexl().replace("${n}", n);
+        JexlExpression exp = jexl.createExpression(jexlExp);
+        // Create a context
         JexlContext jc = new MapContext();
         jc.set("object", d);
-        // Now evaluate the expression, getting the result
-        Object o = e.evaluate(jc);
+        // Evaluate the expression
+        try {
+            Object value = exp.evaluate(jc);
+            BigDecimal score = BigDecimal.valueOf(Double.valueOf(value.toString()));
+            if (d.getMinNum() != null && score.compareTo(d.getMinNum()) < 0) {
+                score = d.getMinNum();
+            }
+            if (d.getMaxNum() != null && score.compareTo(d.getMaxNum()) > 0) {
+                score = d.getMaxNum();
+            }
+            switch (n) {
+                case "q1":
+                    d.getDeptScore().setSq1(score);
+                    d.getGeneralScore().setSq1(score);
+                    break;
+                case "q2":
+                    d.getDeptScore().setSq2(score);
+                    d.getGeneralScore().setSq2(score);
+                    break;
+                case "q3":
+                    d.getDeptScore().setSq3(score);
+                    d.getGeneralScore().setSq3(score);
+                    break;
+                case "q4":
+                    d.getDeptScore().setSq4(score);
+                    d.getGeneralScore().setSq4(score);
+                    break;
+                default:
+            }
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     public void setScore(ScorecardContent d, String n) throws Exception {
