@@ -213,9 +213,9 @@
                                             update="indicator,indicatorDeptno,indicatorDeptname" />
                                 </p:commandButton>
                             </p:column>
-                            <p:column></p:column>
+                            <p:column><p:outputLabel value="数字格式" for="symbol" /></p:column>
                             <p:column>
-
+                                <p:inputText id="symbol" value="#{scorecardSetManagedBean.currentDetail.symbol}" title="symbol" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -245,15 +245,15 @@
                             </p:column>
                         </p:row>
                         <p:row rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
-                            <p:column><p:outputLabel value="得分表达式" for="scoreJexl" /></p:column>
+                            <p:column><p:outputLabel value="达成公式" for="performanceJexl" /></p:column>
                             <p:column colspan="3">
-                                <p:inputTextarea id="scoreJexl" value="#{scorecardSetManagedBean.currentDetail.scoreJexl}" title="scoreJexl" styleClass="Wid100"/>
+                                <p:inputTextarea id="performanceJexl" value="#{scorecardSetManagedBean.currentDetail.performanceJexl}" title="performanceJexl" styleClass="Wid100"/>
                             </p:column>
                         </p:row>
                         <p:row rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
-                            <p:column><p:outputLabel value="表达式接口" for="scoreInterface" /></p:column>
+                            <p:column><p:outputLabel value="得分公式" for="scoreJexl" /></p:column>
                             <p:column colspan="3">
-                                <p:inputText id="scoreInterface" value="#{scorecardSetManagedBean.currentDetail.scoreInterface}" title="scoreInterface" />
+                                <p:inputTextarea id="scoreJexl" value="#{scorecardSetManagedBean.currentDetail.scoreJexl}" title="scoreJexl" styleClass="Wid100"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

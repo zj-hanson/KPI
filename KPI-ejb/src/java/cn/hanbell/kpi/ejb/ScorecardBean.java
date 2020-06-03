@@ -78,7 +78,42 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return total;
     }
 
-    public void setScore(ScorecardDetail d, String n) throws Exception  {
+    public void fillPerf(ScorecardContent content, String n) {
+        if (content.getPerformanceJexl() == null || "".equals(content.getPerformanceJexl())) {
+            throw new NullPointerException("表达式为空");
+        }
+        JexlEngine jexl = new JexlBuilder().create();
+        // Create an expression
+        String jexlExp = content.getPerformanceJexl().replace("${n}", n);
+        JexlExpression exp = jexl.createExpression(jexlExp);
+        // Create a context
+        JexlContext jc = new MapContext();
+        jc.set("object", content);
+        // Evaluate the expression
+        try {
+            Object value = exp.evaluate(jc);
+            BigDecimal score = BigDecimal.valueOf(Double.valueOf(value.toString()));
+            switch (n) {
+                case "q1":
+                    content.setPq1(score);
+                    break;
+                case "q2":
+                    content.setPq2(score);
+                    break;
+                case "q3":
+                    content.setPq3(score);
+                    break;
+                case "q4":
+                    content.setPq4(score);
+                    break;
+                default:
+            }
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void setScore(ScorecardDetail d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
         }
