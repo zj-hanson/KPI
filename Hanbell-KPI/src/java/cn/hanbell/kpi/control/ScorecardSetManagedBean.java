@@ -115,6 +115,14 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     this.currentDetail.setType(d.getType());
                     this.currentDetail.setKind(d.getKind());
                     this.currentDetail.setValueMode(d.getValueMode());
+                    this.currentDetail.setUnit(d.getUnit());
+                    this.currentDetail.setSymbol(d.getSymbol());
+                    this.currentDetail.setMinNum(d.getMinNum());
+                    this.currentDetail.setMaxNum(d.getMaxNum());
+                    this.currentDetail.setPerformanceJexl(d.getPerformanceJexl());
+                    this.currentDetail.setPerformanceInterface(d.getPerformanceInterface());
+                    this.currentDetail.setScoreJexl(d.getScoreJexl());
+                    this.currentDetail.setScoreInterface(d.getScoreInterface());
                     this.currentDetail.setBfy(d.getBfy());
                     this.currentDetail.setBh2(d.getBh2());
                     this.currentDetail.setBh1(d.getBh1());

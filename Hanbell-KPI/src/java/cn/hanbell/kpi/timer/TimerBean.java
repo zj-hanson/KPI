@@ -238,8 +238,8 @@ public class TimerBean {
             log4j.error(String.format("出货、订单、收费服务历史表归档更新异常", "updateKPISalesTable"), e.toString());
         }
     }
-    
-    @Schedule(minute = "30", hour = "2",persistent = false)
+
+    @Schedule(minute = "30", hour = "2", persistent = false)
     public void updateKPISalesTableDays() {
         try {
             log4j.info("Begin Execute Job updateKPISalesTableDays");

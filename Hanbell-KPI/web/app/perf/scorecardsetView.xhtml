@@ -21,11 +21,11 @@
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnVerify" value="审核" actionListener="#{scorecardSetManagedBean.verify()}" icon="ui-icon-check"
-                                     rendered="#{scorecardSetManagedBean.doCfm}" process="@this" update="toolbar">
+                                     rendered="#{scorecardSetManagedBean.doCfm}" process="@this" update="formOne">
                         <p:confirm header="系统提示" message="审核吗?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:commandButton id="btnUnverify" value="还原" actionListener="#{scorecardSetManagedBean.unverify()}" icon="ui-icon-check"
-                                     rendered="#{scorecardSetManagedBean.doUnCfm}" process="@this" update="toolbar">
+                                     rendered="#{scorecardSetManagedBean.doUnCfm}" process="@this" update="formOne">
                         <p:confirm header="系统提示" message="还原吗?" icon="ui-icon-alert" />
                     </p:commandButton>
                 </f:facet>

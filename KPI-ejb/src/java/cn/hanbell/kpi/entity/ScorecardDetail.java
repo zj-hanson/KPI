@@ -243,6 +243,9 @@ public class ScorecardDetail extends SuperDetailEntity {
     @Size(max = 10)
     @Column(name = "freeze")
     private String freeze;
+    @Column(name = "freezeDate")
+    @Temporal(TemporalType.DATE)
+    private Date freezeDate;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -871,6 +874,20 @@ public class ScorecardDetail extends SuperDetailEntity {
 
     public void setFreeze(String freeze) {
         this.freeze = freeze;
+    }
+
+    /**
+     * @return the freezeDate
+     */
+    public Date getFreezeDate() {
+        return freezeDate;
+    }
+
+    /**
+     * @param freezeDate the freezeDate to set
+     */
+    public void setFreezeDate(Date freezeDate) {
+        this.freezeDate = freezeDate;
     }
 
     public String getRemark() {
