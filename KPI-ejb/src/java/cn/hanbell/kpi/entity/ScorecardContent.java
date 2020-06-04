@@ -18,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -250,6 +252,9 @@ public class ScorecardContent extends SuperEntity {
     @Size(max = 10)
     @Column(name = "freeze")
     private String freeze;
+    @Column(name = "freezeDate")
+    @Temporal(TemporalType.DATE)
+    private Date freezeDate;
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
@@ -883,6 +888,20 @@ public class ScorecardContent extends SuperEntity {
 
     public void setFreeze(String freeze) {
         this.freeze = freeze;
+    }
+
+    /**
+     * @return the freezeDate
+     */
+    public Date getFreezeDate() {
+        return freezeDate;
+    }
+
+    /**
+     * @param freezeDate the freezeDate to set
+     */
+    public void setFreezeDate(Date freezeDate) {
+        this.freezeDate = freezeDate;
     }
 
     public String getRemark() {

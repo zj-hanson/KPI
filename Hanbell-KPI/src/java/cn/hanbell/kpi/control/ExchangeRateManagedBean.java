@@ -122,7 +122,7 @@ public class ExchangeRateManagedBean extends SuperSingleBean<ExchangeRate> {
     @Override
     public void handleFileUploadWhenNew(FileUploadEvent event) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat dmf=new DecimalFormat("#");
+        DecimalFormat dmf = new DecimalFormat("#");
         List<ExchangeRate> addlist = new ArrayList<>();
         String a = "";
         String b = "";

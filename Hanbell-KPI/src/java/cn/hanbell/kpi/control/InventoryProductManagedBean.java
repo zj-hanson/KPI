@@ -215,7 +215,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         try {
             int y = Integer.parseInt(queryYearmon.substring(0, 4), 10);
             int m = Integer.parseInt(queryYearmon.substring(queryYearmon.length() - 2, queryYearmon.length()), 10);
-            flag = inventoryDepartmentBean.updateInventoryDepartment(y, m,facno);
+            flag = inventoryDepartmentBean.updateInventoryDepartment(y, m, facno);
             if (flag) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "数据保存成功！"));
             } else {
@@ -225,7 +225,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             ex.printStackTrace();
         }
     }
-    
+
     public void updateInventoryProduct() {
         boolean flag;
         try {
@@ -242,7 +242,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             ex.printStackTrace();
         }
     }
-    
+
     //导出成报表
     @Override
     public void print() throws Exception {
