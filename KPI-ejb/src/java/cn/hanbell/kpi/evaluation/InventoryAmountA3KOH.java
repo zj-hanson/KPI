@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class InventoryAmountA3KHG extends InventoryAmountA3 {
+public class InventoryAmountA3KOH extends InventoryAmountA3 {
 
-    public InventoryAmountA3KHG() {
+    public InventoryAmountA3KOH() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("genre", "in('HG')");
+        queryParams.put("indicatorno", "D30");
     }
 
 }

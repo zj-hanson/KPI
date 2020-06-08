@@ -166,7 +166,7 @@ public abstract class BscProductiontMail extends MailNotification {
             sb.append("<td>").append(avgBigDecimal(o2Daily, day).toString()).append("</td>");
             sb.append("</tr>");
 
-            sb.append("<tr><td>工令与完工差异</td>");
+            sb.append("<tr><td>完工与工令差异</td>");
             daily = dailySubtract(o2Daily, o1Daily);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
@@ -225,7 +225,7 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");;
 
-            sb.append("<tr><td>计划与工令差异累计</td>");
+            sb.append("<tr><td>工令与计划差异累计</td>");
             daily = dailySubtract(Other1Accumulated, targetAccumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
@@ -242,7 +242,7 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");
 
-            sb.append("<tr><td>工令与完工差异累计</td>");
+            sb.append("<tr><td>完工与工令差异累计</td>");
             daily = dailySubtract(Other2Accumulated, Other1Accumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
@@ -289,7 +289,7 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");
 
-            sb.append("<tr><td>计划与交货差异累计</td>");
+            sb.append("<tr><td>交货与计划差异累计</td>");
             daily = dailySubtract(Other3Accumulated, targetAccumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);
@@ -305,7 +305,7 @@ public abstract class BscProductiontMail extends MailNotification {
             }
             sb.append("<td></td><td></td></tr>");
 
-            sb.append("<tr><td>工令与交货差异累计</td>");
+            sb.append("<tr><td>交货与工令差异累计</td>");
             daily = dailySubtract(Other3Accumulated, Other1Accumulated);
             for (int i = 1; i <= days(y, m); i++) {
                 col = indicatorBean.getIndicatorColumn("D", i);

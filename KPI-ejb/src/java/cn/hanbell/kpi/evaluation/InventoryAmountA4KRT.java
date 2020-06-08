@@ -9,12 +9,13 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1749
  */
-public class InventoryAmountA3KWC extends InventoryAmountA3 {
+public class InventoryAmountA4KRT extends InventoryAmountA4 {
 
-    public InventoryAmountA3KWC() {
+    public InventoryAmountA4KRT() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("genre", "in('WC')");
+        queryParams.put("trtype", "CA");
+        queryParams.put("genre", "in('RT')");
     }
 
 }
