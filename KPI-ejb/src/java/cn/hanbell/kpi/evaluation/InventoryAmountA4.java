@@ -25,6 +25,7 @@ public class InventoryAmountA4 extends Inventory {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String trtype = map.get("trtype") != null ? map.get("trtype").toString() : "";
         String deptno = map.get("deptno") != null ? map.get("deptno").toString() : "";
+        String genre = map.get("genre") != null ? map.get("genre").toString() : "";
         StringBuilder sb = new StringBuilder();
         BigDecimal result = BigDecimal.ZERO;
         sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct   ");
@@ -35,6 +36,9 @@ public class InventoryAmountA4 extends Inventory {
         }
         if (!"".equals(deptno)) {
             sb.append(" AND deptno LIKE '").append(deptno).append("%'");
+        }
+        if (!"".equals(genre)) {
+            sb.append(" AND genre ").append(genre);
         }
         sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}",

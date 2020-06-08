@@ -8,14 +8,14 @@ package cn.hanbell.kpi.evaluation;
 /**
  *
  * @author C1749
- * @description 柯茂服务性质离心机组库存金额
  */
-public class InventoryAmountA3KHC extends InventoryAmountA3 {
+public class InventoryAmountA4KHM extends InventoryAmountA4 {
 
-    public InventoryAmountA3KHC() {
+    public InventoryAmountA4KHM() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("genre", "in('HC')");
+        queryParams.put("trtype", "CA");
+        queryParams.put("genre", "in('HM')");
     }
 
 }
