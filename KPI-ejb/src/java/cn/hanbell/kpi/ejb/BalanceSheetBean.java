@@ -89,7 +89,8 @@ public class BalanceSheetBean implements Serializable {
                     arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
-                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        //arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Math.abs(Double.parseDouble(row[2].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[1].toString()) == 0) {
                             arr[3] = dfpercent.format(0);
@@ -107,7 +108,8 @@ public class BalanceSheetBean implements Serializable {
                     arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
-                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        //arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Math.abs(Double.parseDouble(row[2].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[1].toString()) == 0) {
                             arr[3] = dfpercent.format(0);
@@ -170,7 +172,8 @@ public class BalanceSheetBean implements Serializable {
                     arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
-                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        //arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Math.abs(Double.parseDouble(row[2].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[1].toString()) == 0) {
                             arr[3] = dfpercent.format(0);
@@ -188,7 +191,8 @@ public class BalanceSheetBean implements Serializable {
                     arr[1] = df.format(Double.parseDouble(row[1].toString()));
                     arr[2] = df.format(Double.parseDouble(row[3].toString()));
                     if (Double.parseDouble(row[2].toString()) != 0) {
-                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        //arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Double.parseDouble(row[2].toString()) * 100);
+                        arr[3] = dfpercent.format(Double.parseDouble(row[3].toString()) / Math.abs(Double.parseDouble(row[2].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[1].toString()) == 0) {
                             arr[3] = dfpercent.format(0);

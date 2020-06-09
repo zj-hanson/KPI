@@ -63,7 +63,7 @@ public class InventoryAmountA1 extends Inventory {
         }
         sb.append(" )a ");
         // 如果中类编号是B50（加工刀片库存（含刀柄））就直接选择库号
-        sb.length();
+        sb.setLength(0);
         if (indicatorno.equals("B50")) {
             sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
             sb.append(" WHERE facno = '${facno}' ");

@@ -15,8 +15,7 @@ public class InventoryAmountA1KB20 extends InventoryAmountA1 {
     public InventoryAmountA1KB20() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("prono", "1");
-        queryParams.put("itclscopde", "<>'2'");
+        queryParams.put("itclscode", "<>'2'");
     }
 
 }

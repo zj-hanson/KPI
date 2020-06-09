@@ -77,7 +77,7 @@ public class DataRecordBean extends SuperEJBForKPI<DataRecord> {
                             arr[3] = df.format(last.getAdjamt().divide(BigDecimal.valueOf(10000), 2, RoundingMode.HALF_UP));
                             arr[4] = df.format(now.getAdjamt().subtract(last.getAdjamt()).divide(BigDecimal.valueOf(10000), 2, RoundingMode.HALF_UP));
                             if (last.getAdjamt().compareTo(BigDecimal.ZERO) != 0) {
-                                arr[5] = dfpercent.format(now.getAdjamt().subtract(last.getAdjamt()).divide(last.getAdjamt(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                                arr[5] = dfpercent.format(now.getAdjamt().subtract(last.getAdjamt()).divide(last.getAdjamt().abs(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
                             } else {
                                 if (now.getAdjamt().compareTo(BigDecimal.ZERO) == 0) {
                                     arr[5] = dfpercent.format(0);
