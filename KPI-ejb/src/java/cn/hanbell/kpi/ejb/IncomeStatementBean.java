@@ -83,7 +83,8 @@ public class IncomeStatementBean implements Serializable {
                     arr[3] = dfpercent.format(Double.parseDouble(row[4].toString()) * 100);
                     arr[4] = DFormat(row[5].toString());
                     if (Double.parseDouble(row[3].toString()) != 0) {
-                        arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString()) * 100);
+                        //arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString()) * 100);
+                        arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Math.abs(Double.parseDouble(row[3].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[5].toString()) != 0) {
                             arr[5] = dfpercent.format(100);
@@ -140,7 +141,9 @@ public class IncomeStatementBean implements Serializable {
                     arr[3] = dfpercent.format(Double.parseDouble(row[4].toString()) * 100);
                     arr[4] = DFormat(row[5].toString());
                     if (Double.parseDouble(row[3].toString()) != 0) {
-                        arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString()) * 100);
+                        //arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Double.parseDouble(row[3].toString()) * 100);
+                        //20200609 因财务需调整增加分母为绝对值
+                        arr[5] = dfpercent.format(Double.parseDouble(row[5].toString()) / Math.abs(Double.parseDouble(row[3].toString())) * 100);
                     } else {
                         if (Double.parseDouble(row[5].toString()) != 0) {
                             arr[5] = dfpercent.format(100);
