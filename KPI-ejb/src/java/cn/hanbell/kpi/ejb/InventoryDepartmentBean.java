@@ -394,7 +394,6 @@ public class InventoryDepartmentBean extends SuperEJBForKPI<InventoryDepartment>
                 sb.append("sum(n").append(getMon(m - 2)).append("),");
                 sb.append("sum(n").append(getMon(m - 1)).append("),");
                 sb.append("sum(n").append(getMon(m)).append(") ");
-                sb.append(" from inventorydepartment WHERE 1=1  ");
                 sb.append(sql1(type, genre, y, m));
                 sb.append(" AND creyear = '${y}'");
                 sb.append(" GROUP BY whdsc ");
