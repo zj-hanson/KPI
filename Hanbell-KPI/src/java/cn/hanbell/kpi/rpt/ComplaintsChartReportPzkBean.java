@@ -121,40 +121,40 @@ public class ComplaintsChartReportPzkBean extends BscChartManagedBean {
         switch (getIndicator().getFormkind()) {
             case "M":
                 if (getIndicator().getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M01", getIndicator().getActualIndicator().getN01().doubleValue());
+                    t.set("M01", getIndicator().getActualIndicator().getN01().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M02", getIndicator().getActualIndicator().getN02().doubleValue());
+                    t.set("M02", getIndicator().getActualIndicator().getN02().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M03", getIndicator().getActualIndicator().getN03().doubleValue());
+                    t.set("M03", getIndicator().getActualIndicator().getN03().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M04", getIndicator().getActualIndicator().getN04().doubleValue());
+                    t.set("M04", getIndicator().getActualIndicator().getN04().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M05", getIndicator().getActualIndicator().getN05().doubleValue());
+                    t.set("M05", getIndicator().getActualIndicator().getN05().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M06", getIndicator().getActualIndicator().getN06().doubleValue());
+                    t.set("M06", getIndicator().getActualIndicator().getN06().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M07", getIndicator().getActualIndicator().getN07().doubleValue());
+                    t.set("M07", getIndicator().getActualIndicator().getN07().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M08", getIndicator().getActualIndicator().getN08().doubleValue());
+                    t.set("M08", getIndicator().getActualIndicator().getN08().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M09", getIndicator().getActualIndicator().getN09().doubleValue());
+                    t.set("M09", getIndicator().getActualIndicator().getN09().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M10", getIndicator().getActualIndicator().getN10().doubleValue());
+                    t.set("M10", getIndicator().getActualIndicator().getN10().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M11", getIndicator().getActualIndicator().getN11().doubleValue());
+                    t.set("M11", getIndicator().getActualIndicator().getN11().doubleValue());
                 }
                 if (getIndicator().getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
-                t.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
+                    t.set("M12", getIndicator().getActualIndicator().getN12().doubleValue());
                 }
                 break;
             case "Q":

@@ -209,7 +209,7 @@ public class ComplaintsChartReportActBean extends BscChartManagedBean {
                 b.set("Q4", getIndicator().getBenchmarkIndicator().getNq4().doubleValue());
                 break;
         }
-        
+
         getChartModel().addSeries(t);//目标
         getChartModel().addSeries(b);//同期
         getChartModel().addSeries(a);//实际
