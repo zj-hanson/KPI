@@ -519,11 +519,11 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     }
 
     /**
-     * 
+     *
      * @param a
      * @param b
      * @param c
-     * @return  (a/b - c)/c 
+     * @return (a/b - c)/c
      */
     public BigDecimal getValueA(BigDecimal a, BigDecimal b, BigDecimal c) {
         BigDecimal d = getValueA(a, b);
