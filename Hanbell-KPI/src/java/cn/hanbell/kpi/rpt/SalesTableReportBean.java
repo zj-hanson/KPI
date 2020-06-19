@@ -111,9 +111,9 @@ public class SalesTableReportBean implements Serializable {
                 }
                 if (list != null && !list.isEmpty()) {
                     if (salesTableBean.querySalesTableIsExist(getDate().get(Calendar.YEAR), (getDate().get(Calendar.MONTH) + 1), da, type)) {
-                        status1 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") +" ("+ type+") 数据已存在，如点击更新则会重新覆盖该时间数据！！！慎重";
+                        status1 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") + " (" + type + ") 数据已存在，如点击更新则会重新覆盖该时间数据！！！慎重";
                     } else {
-                        status2 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") +" ("+ type+")为新数据，请及时更新";
+                        status2 = new SimpleDateFormat("yyyy年MM月").format(getDate().getTime()) + (da != null ? da : "所有部门") + " (" + type + ")为新数据，请及时更新";
                     }
                     Double aaDouble = 0.0;
                     for (SalesTable salesTable : list) {

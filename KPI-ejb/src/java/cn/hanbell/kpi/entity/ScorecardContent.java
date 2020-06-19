@@ -248,7 +248,20 @@ public class ScorecardContent extends SuperEntity {
     @Size(max = 200)
     @Column(name = "scoreInterface")
     private String scoreInterface;
-
+    @Column(name = "cq1")
+    private BigDecimal cq1;
+    @Column(name = "cq2")
+    private BigDecimal cq2;
+    @Column(name = "cq3")
+    private BigDecimal cq3;
+    @Column(name = "cq4")
+    private BigDecimal cq4;
+    @Column(name = "ch1")
+    private BigDecimal ch1;
+    @Column(name = "ch2")
+    private BigDecimal ch2;
+    @Column(name = "cfy")
+    private BigDecimal cfy;
     @Size(max = 10)
     @Column(name = "freeze")
     private String freeze;
@@ -880,6 +893,104 @@ public class ScorecardContent extends SuperEntity {
 
     public void setScoreInterface(String scoreInterface) {
         this.scoreInterface = scoreInterface;
+    }
+
+    /**
+     * @return the cq1
+     */
+    public BigDecimal getCq1() {
+        return cq1;
+    }
+
+    /**
+     * @param cq1 the cq1 to set
+     */
+    public void setCq1(BigDecimal cq1) {
+        this.cq1 = cq1;
+    }
+
+    /**
+     * @return the cq2
+     */
+    public BigDecimal getCq2() {
+        return cq2;
+    }
+
+    /**
+     * @param cq2 the cq2 to set
+     */
+    public void setCq2(BigDecimal cq2) {
+        this.cq2 = cq2;
+    }
+
+    /**
+     * @return the cq3
+     */
+    public BigDecimal getCq3() {
+        return cq3;
+    }
+
+    /**
+     * @param cq3 the cq3 to set
+     */
+    public void setCq3(BigDecimal cq3) {
+        this.cq3 = cq3;
+    }
+
+    /**
+     * @return the cq4
+     */
+    public BigDecimal getCq4() {
+        return cq4;
+    }
+
+    /**
+     * @param cq4 the cq4 to set
+     */
+    public void setCq4(BigDecimal cq4) {
+        this.cq4 = cq4;
+    }
+
+    /**
+     * @return the ch1
+     */
+    public BigDecimal getCh1() {
+        return ch1;
+    }
+
+    /**
+     * @param ch1 the ch1 to set
+     */
+    public void setCh1(BigDecimal ch1) {
+        this.ch1 = ch1;
+    }
+
+    /**
+     * @return the ch2
+     */
+    public BigDecimal getCh2() {
+        return ch2;
+    }
+
+    /**
+     * @param ch2 the ch2 to set
+     */
+    public void setCh2(BigDecimal ch2) {
+        this.ch2 = ch2;
+    }
+
+    /**
+     * @return the cfy
+     */
+    public BigDecimal getCfy() {
+        return cfy;
+    }
+
+    /**
+     * @param cfy the cfy to set
+     */
+    public void setCfy(BigDecimal cfy) {
+        this.cfy = cfy;
     }
 
     public String getFreeze() {

@@ -136,20 +136,19 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
             }
             switch (n) {
                 case "q1":
-                    d.getDeptScore().setSq1(score);
                     d.getGeneralScore().setSq1(score);
                     break;
                 case "q2":
-                    d.getDeptScore().setSq2(score);
                     d.getGeneralScore().setSq2(score);
+                    d.getGeneralScore().setSh1(score);
                     break;
                 case "q3":
-                    d.getDeptScore().setSq3(score);
                     d.getGeneralScore().setSq3(score);
                     break;
                 case "q4":
-                    d.getDeptScore().setSq4(score);
                     d.getGeneralScore().setSq4(score);
+                    d.getGeneralScore().setSh2(score);
+                    d.getGeneralScore().setSfy(score);
                     break;
                 default:
             }
@@ -158,7 +157,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
-    public void setScore(ScorecardContent d, String n) throws Exception {
+    public void setDeptScore(ScorecardContent d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
         }

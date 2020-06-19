@@ -74,8 +74,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><p:outputLabel value="部门层级" for="lvl" /></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="lvl" value="#{scorecardSetManagedBean.newEntity.lvl}" title="Level"
+                                         required="true" requiredMessage="请选择部门层级">
+                            <f:selectItem itemLabel="部级" itemValue="D"/>
+                            <f:selectItem itemLabel="课级" itemValue="S"/>
+                        </p:selectOneMenu>
+                    </p:column>
                     <p:column><p:outputLabel value="备注" for="remark" /></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <p:inputText id="remark" value="#{scorecardSetManagedBean.newEntity.remark}" title="Remark" />
                     </p:column>
                 </p:row>
