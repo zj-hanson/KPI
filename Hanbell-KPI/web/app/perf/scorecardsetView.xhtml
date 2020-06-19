@@ -53,11 +53,11 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column styleClass="Wid20"><h:outputText value="考核对象"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="考核部门"/></p:column>
                     <p:column styleClass="Wid30">
                         <h:outputText id="deptno" value="#{scorecardSetManagedBean.currentEntity.deptno}" title="deptno"  />
                     </p:column>
-                    <p:column styleClass="Wid20"><h:outputText value="对象名称"/></p:column>
+                    <p:column styleClass="Wid20"><h:outputText value="部门名称"/></p:column>
                     <p:column styleClass="Wid30">
                         <h:outputText id="deptname" value="#{scorecardSetManagedBean.currentEntity.deptname}" title="deptname" />
                     </p:column>
@@ -93,8 +93,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><h:outputText value="部门层级"/></p:column>
+                    <p:column>
+                        <p:selectOneMenu id="lvl" value="#{scorecardSetManagedBean.currentEntity.lvl}" title="Level"
+                                         required="true" requiredMessage="请选择部门层级" disabled="true">
+                            <f:selectItem itemLabel="部级" itemValue="D"/>
+                            <f:selectItem itemLabel="课级" itemValue="S"/>
+                        </p:selectOneMenu>
+                    </p:column>
                     <p:column><h:outputText value="备注"/></p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <h:outputText id="remark" value="#{scorecardSetManagedBean.currentEntity.remark}" title="Remark" />
                     </p:column>
                 </p:row>
