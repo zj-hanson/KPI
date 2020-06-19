@@ -32,17 +32,17 @@ public class ShipmentAmountSheetReportBean extends BscSheetManagedBean {
 
     }
 
-    public String getColor(String name){
-        String color="";
-        if(name.contains("小计")){
-            color="lightgray";
+    public String getColor(String name) {
+        String color = "";
+        if (name.contains("小计")) {
+            color = "lightgray";
         }
-        if(name.contains("合计")){
-            color="#bdbdbd";
+        if (name.contains("合计")) {
+            color = "#bdbdbd";
         }
         return color;
     }
-    
+
     @Override
     public void init() {
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
@@ -327,7 +327,7 @@ public class ShipmentAmountSheetReportBean extends BscSheetManagedBean {
         sumAG = new IndicatorDetail();
         sumAG.setParent(sumIndicator);
         sumAG.setType("P");
-        
+
         try {
             for (int i = getM(); i > 0; i--) {
                 //实际值累计

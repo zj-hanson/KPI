@@ -142,7 +142,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 }
                 if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
                     //计算得分
-                    scorecardBean.setScore(currentEntity, col);
+                    scorecardBean.setDeptScore(currentEntity, col);
                     showInfoMsg("Info", "更新部门分数成功");
                 }
             } catch (Exception ex) {
@@ -157,6 +157,29 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
             if (currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
                 return false;
+            }
+            if (currentEntity.getType().equals("N")) {
+                if (currentEntity.getAq1() != null && !currentEntity.getAq1().contains(".")) {
+                    currentEntity.setAq1(currentEntity.getAq1().concat(".00"));
+                }
+                if (currentEntity.getAq2() != null && !currentEntity.getAq2().contains(".")) {
+                    currentEntity.setAq2(currentEntity.getAq2().concat(".00"));
+                }
+                if (currentEntity.getAh1() != null && !currentEntity.getAh1().contains(".")) {
+                    currentEntity.setAh1(currentEntity.getAh1().concat(".00"));
+                }
+                if (currentEntity.getAq3() != null && !currentEntity.getAq3().contains(".")) {
+                    currentEntity.setAq3(currentEntity.getAq3().concat(".00"));
+                }
+                if (currentEntity.getAq4() != null && !currentEntity.getAq4().contains(".")) {
+                    currentEntity.setAq4(currentEntity.getAq4().concat(".00"));
+                }
+                if (currentEntity.getAh2() != null && !currentEntity.getAh2().contains(".")) {
+                    currentEntity.setAh2(currentEntity.getAh2().concat(".00"));
+                }
+                if (currentEntity.getAfy() != null && !currentEntity.getAfy().contains(".")) {
+                    currentEntity.setAfy(currentEntity.getAfy().concat(".00"));
+                }
             }
             switch (userManagedBean.getQ()) {
                 case 1:

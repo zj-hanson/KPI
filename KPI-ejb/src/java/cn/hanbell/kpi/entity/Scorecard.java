@@ -78,6 +78,9 @@ public class Scorecard extends SuperEntity {
     @Size(max = 20)
     @Column(name = "username")
     private String username;
+    @Size(max = 2)
+    @Column(name = "lvl")
+    private String lvl;
     @Basic(optional = false)
     @NotNull
     @Column(name = "sortid")
@@ -199,6 +202,20 @@ public class Scorecard extends SuperEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the lvl
+     */
+    public String getLvl() {
+        return lvl;
+    }
+
+    /**
+     * @param lvl the lvl to set
+     */
+    public void setLvl(String lvl) {
+        this.lvl = lvl;
     }
 
     public int getSortid() {

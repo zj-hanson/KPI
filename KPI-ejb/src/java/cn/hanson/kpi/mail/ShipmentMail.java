@@ -21,7 +21,7 @@ public abstract class ShipmentMail extends MailNotification {
     protected Indicator sumIndicator;
 
     protected SalesOrder salesOrder;
-    
+
     protected DecimalFormat DoublelFormat;
 
     public ShipmentMail() {

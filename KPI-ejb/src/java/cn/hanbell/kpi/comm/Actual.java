@@ -15,14 +15,14 @@ import java.util.LinkedHashMap;
  */
 public interface Actual {
 
-    public void setEJB(String JNDIName) throws Exception;
+    void setEJB(String JNDIName) throws Exception;
 
-    public LinkedHashMap<String, Object> getQueryParams();
+    LinkedHashMap<String, Object> getQueryParams();
 
-    public int getUpdateMonth(int y, int m);
+    int getUpdateMonth(int y, int m);
 
-    public int getUpdateYear(int y, int m);
+    int getUpdateYear(int y, int m);
 
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map);
+    BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map);
 
 }

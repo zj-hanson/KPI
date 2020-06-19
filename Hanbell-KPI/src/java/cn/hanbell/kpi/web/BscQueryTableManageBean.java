@@ -34,26 +34,27 @@ public class BscQueryTableManageBean {
 
     @ManagedProperty(value = "#{userManagedBean}")
     protected UserManagedBean userManagedBean;
-    
+
     protected IndicatorChart indicatorChart;
-    
+
     protected Indicator indicator;
     protected List<IndicatorAnalysis> analysisList;
     protected List<IndicatorSummary> summaryList;
     protected int analysisCount;
     protected int summaryCount;
 
-    protected  FacesContext fc;
+    protected FacesContext fc;
     protected ExternalContext ec;
     protected boolean deny = true;
-    
+
     /**
      * 根据时间查询备注
+     *
      * @param indicatorChart
      * @param y
      * @param m
      */
-    protected void getRemarkOne(IndicatorChart indicatorChart , int y, int m) {
+    protected void getRemarkOne(IndicatorChart indicatorChart, int y, int m) {
         indicator = indicatorBean.findByFormidYearAndDeptno(indicatorChart.getFormid(), y, indicatorChart.getDeptno());
         if (indicator != null) {
             //根据指标ID加载指标说明、指标分析
@@ -103,7 +104,7 @@ public class BscQueryTableManageBean {
         return summaryCount;
     }
 
-        /**
+    /**
      * @return the userManagedBean
      */
     public UserManagedBean getUserManagedBean() {
@@ -130,7 +131,5 @@ public class BscQueryTableManageBean {
     public IndicatorChart getIndicatorChart() {
         return indicatorChart;
     }
-    
-    
-    
+
 }

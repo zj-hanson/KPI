@@ -214,12 +214,13 @@
                     <h:outputText value="#{item.sq4}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="80%" header="#{scorecardSetManagedBean.currentDetail.content} 权重 #{scorecardSetManagedBean.currentDetail.weight}">
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="80%" 
+                      header="当前是#{scorecardSetManagedBean.userManagedBean.y}年第#{scorecardSetManagedBean.userManagedBean.q}季度绩效考核，#{scorecardSetManagedBean.currentDetail.content} 权重 #{scorecardSetManagedBean.currentDetail.weight}">
                 <p:panelGrid id="plgFillDetail"  styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
                             <p:column styleClass="Wid5"><p:outputLabel value="期间"/></p:column>
-                            <p:column styleClass="Wid15"><p:outputLabel value="目标"/></p:column>
+                            <p:column styleClass="Wid15" colspan="2"><p:outputLabel value="基准或目标"/></p:column>
                             <p:column styleClass="Wid15"><p:outputLabel value="实际"/></p:column>
                             <p:column><p:outputLabel value="达成"/></p:column>
                             <p:column styleClass="Wid15"><p:outputLabel value="部门说明"/></p:column>
@@ -228,7 +229,6 @@
                             <p:column><p:outputLabel value="最终得分"/></p:column>
                         </p:row>
                     </f:facet>
-
                     <p:row>
                         <p:column><h:outputText value="Q1"/></p:column>
                         <p:column colspan="2" rendered="#{scorecardSetManagedBean.currentDetail.type!='N'}">
