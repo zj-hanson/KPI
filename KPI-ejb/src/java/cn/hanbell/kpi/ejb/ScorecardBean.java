@@ -49,7 +49,36 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return type.toLowerCase() + String.format("%01d", i);
     }
 
-    public BigDecimal getTotalScore(List<ScorecardContent> detail, String column) throws Exception {
+    public BigDecimal getDetailScores(List<ScorecardDetail> detail, String column) throws Exception {
+        BigDecimal weight;
+        BigDecimal score;
+        BigDecimal total = BigDecimal.ZERO;
+        Object value;
+        Field f;
+        try {
+            for (ScorecardDetail entity : detail) {
+                f = entity.getClass().getDeclaredField(column);
+                f.setAccessible(true);
+                value = f.get(entity);
+                if (value == null || "".equals(value)) {
+                    continue;
+                }
+                if (entity.getWeight() == 0) {
+                    total = total.add(BigDecimal.valueOf(Double.valueOf(value.toString())));
+                } else {
+                    weight = BigDecimal.valueOf(entity.getWeight()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                    score = BigDecimal.valueOf(Double.valueOf(value.toString()));
+                    total = total.add(score.multiply(weight));
+                }
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {
+            log4j.error(ex);
+            throw ex;
+        }
+        return total;
+    }
+
+    public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;
@@ -113,7 +142,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
-    public void setScore(ScorecardDetail d, String n) throws Exception {
+    public void setDetailScore(ScorecardDetail d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
         }
@@ -157,7 +186,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
-    public void setDeptScore(ScorecardContent d, String n) throws Exception {
+    public void setContentScore(ScorecardContent d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
         }

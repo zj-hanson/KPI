@@ -60,6 +60,44 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         this.newEntity.setSeq(queryYear);
     }
 
+    public void calcScore() {
+        if (currentEntity != null && currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            showErrorMsg("Error", "资料已冻结,不可更新");
+            return;
+        }
+        String col;
+        BigDecimal value;
+        col = scorecardBean.getColumn("sq", userManagedBean.getQ());
+        List<ScorecardDetail> detail = scorecardDetailBean.findByPId(currentEntity.getId());
+        try {
+            value = scorecardBean.getDetailScores(detail, col);
+            switch (userManagedBean.getQ()) {
+                case 1:
+                    currentEntity.setSq1(value);
+                    break;
+                case 2:
+                    currentEntity.setSq2(value);
+                    value = scorecardBean.getDetailScores(detail, "sh1");
+                    currentEntity.setSh1(value);
+                    break;
+                case 3:
+                    currentEntity.setSq3(value);
+                    break;
+                case 4:
+                    currentEntity.setSq4(value);
+                    value = scorecardBean.getDetailScores(detail, "sh2");
+                    currentEntity.setSh2(value);
+                    value = scorecardBean.getDetailScores(detail, "sfy");
+                    currentEntity.setSfy(value);
+                    break;
+            }
+            scorecardBean.update(currentEntity);
+            showInfoMsg("Info", "更新成功");
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.getMessage());
+        }
+    }
+
     public void calcItemScore() {
         if (currentDetail != null) {
             if (!currentDetail.getType().equals("N")) {
@@ -74,7 +112,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             try {
                 if (currentDetail.getScoreJexl() != null && !"".equals(currentDetail.getScoreJexl())) {
                     //计算得分
-                    scorecardBean.setScore(currentDetail, col);
+                    scorecardBean.setDetailScore(currentDetail, col);
                     switch (userManagedBean.getQ()) {
                         case 1:
                             if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {

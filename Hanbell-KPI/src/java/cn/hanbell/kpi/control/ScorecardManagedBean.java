@@ -47,29 +47,24 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     }
 
     public void calcScore() {
-        if (currentEntity != null && currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
-            showErrorMsg("Error", "资料已冻结,不可更新");
-            return;
-        }
         if (scorecard != null) {
+            if (scorecard.getFreezeDate() != null && scorecard.getFreezeDate().after(userManagedBean.getBaseDate())) {
+                showErrorMsg("Error", "资料已冻结,不可更新");
+                return;
+            }
             String col;
             BigDecimal value;
             col = scorecardBean.getColumn("sq", userManagedBean.getQ());
             List<ScorecardContent> detail = scorecardContentBean.findByPId(scorecard.getId());
-            if (detail != null && !detail.isEmpty()) {
-                for (ScorecardContent c : detail) {
-
-                }
-            }
             try {
-                value = scorecardBean.getTotalScore(detail, col);
+                value = scorecardBean.getContentScores(detail, col);
                 switch (userManagedBean.getQ()) {
                     case 1:
                         scorecard.setSq1(value);
                         break;
                     case 2:
                         scorecard.setSq2(value);
-                        value = scorecardBean.getTotalScore(detail, "sh1");
+                        value = scorecardBean.getContentScores(detail, "sh1");
                         scorecard.setSh1(value);
                         break;
                     case 3:
@@ -77,9 +72,9 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         break;
                     case 4:
                         scorecard.setSq4(value);
-                        value = scorecardBean.getTotalScore(detail, "sh2");
+                        value = scorecardBean.getContentScores(detail, "sh2");
                         scorecard.setSh2(value);
-                        value = scorecardBean.getTotalScore(detail, "sfy");
+                        value = scorecardBean.getContentScores(detail, "sfy");
                         scorecard.setSfy(value);
                         break;
                 }
@@ -91,10 +86,10 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         }
     }
 
-    public void refeshActual() {
+    public void calcItemScore() {
         if (currentEntity != null) {
             if (!currentEntity.getType().equals("N")) {
-                showWarnMsg("Warn", "数值型才能从指标更新");
+                showWarnMsg("Warn", "数值型才能按计算公式更新");
                 return;
             }
             if (currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
@@ -142,7 +137,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 }
                 if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
                     //计算得分
-                    scorecardBean.setDeptScore(currentEntity, col);
+                    scorecardBean.setContentScore(currentEntity, col);
                     showInfoMsg("Info", "更新部门分数成功");
                 }
             } catch (Exception ex) {
@@ -254,16 +249,22 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
 
     @Override
     public void init() {
-        fc = FacesContext.getCurrentInstance();
-        ec = fc.getExternalContext();
+        if (fc == null) {
+            fc = FacesContext.getCurrentInstance();
+        }
+        if (ec == null) {
+            ec = fc.getExternalContext();
+        }
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String id = request.getParameter("id");
         if (id == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         }
         scorecard = scorecardBean.findById(Integer.valueOf(id));
-        if (getScorecard() == null) {
+        if (scorecard == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
+        } else {
+            this.freezed = scorecard.getFreezeDate() != null && scorecard.getFreezeDate().after(userManagedBean.getBaseDate());
         }
         c.setTime(userManagedBean.getBaseDate());
         superEJB = scorecardContentBean;
@@ -273,18 +274,6 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
         model.getFilterFields().put("pid", getScorecard().getId());
         super.init();
-    }
-
-    @Override
-    public void setCurrentEntity(ScorecardContent currentEntity) {
-        super.setCurrentEntity(currentEntity);
-        if (currentEntity != null && userManagedBean != null) {
-            if (currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
-                this.freezed = true;
-            } else {
-                this.freezed = false;
-            }
-        }
     }
 
     /**

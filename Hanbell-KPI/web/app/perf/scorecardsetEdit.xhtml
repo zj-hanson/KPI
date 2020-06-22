@@ -14,6 +14,10 @@
                     <p:button id="btnReturn" value="返回" outcome="scorecardset" icon="ui-icon-restore"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnCalc" value="得分" actionListener="#{scorecardSetManagedBean.calcScore()}" icon="ui-icon-check"
+                                     rendered="#{scorecardSetManagedBean.doCfm}" process="@this" update="formOne">
+                        <p:confirm header="系统提示" message="计算得分吗?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton id="btnSave" value="保存" action="#{scorecardSetManagedBean.update()}" icon="ui-icon-save"
                                      process="@this,plgHead" update="formOne"/>
                 </f:facet>
@@ -349,7 +353,7 @@
                     </p:contextMenu>
                 </p:tab>
             </p:tabView>
-            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%"
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="95%"
                       header="当前是#{scorecardSetManagedBean.userManagedBean.y}年第#{scorecardSetManagedBean.userManagedBean.q}季度绩效考核，#{scorecardSetManagedBean.currentDetail.content} 权重 #{scorecardSetManagedBean.currentDetail.weight}">
                 <p:panelGrid id="plgFillDetail"  styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -620,7 +624,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:blockUI id="blockUI" block="formOne" trigger="btnSave">
+            <p:blockUI id="blockUI" block="formOne" trigger="btnSave,btnCalc">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
         </h:form>

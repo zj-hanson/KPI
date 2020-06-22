@@ -5,15 +5,13 @@
  */
 package cn.hanbell.kpi.web;
 
-import com.lightshell.comm.SuperEntity;
 import cn.hanbell.kpi.control.UserManagedBean;
 import cn.hanbell.eap.ejb.SystemProgramBean;
 import cn.hanbell.eap.entity.SystemGrantPrg;
 import com.lightshell.comm.SuperDetailEntity;
+import com.lightshell.comm.SuperEntity;
 import com.lightshell.comm.SuperMultiManagedBean;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
@@ -37,9 +35,6 @@ public abstract class SuperMultiBean<T extends SuperEntity, D1 extends SuperDeta
     protected String appDataPath;
     protected String appResPath;
     protected SystemGrantPrg currentPrgGrant;
-
-    protected Map<String, Object> openOptions;
-    protected Map<String, List<String>> openParams;
 
     /**
      * @param entityClass
