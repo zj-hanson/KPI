@@ -49,7 +49,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return type.toLowerCase() + String.format("%01d", i);
     }
 
-    public BigDecimal getDetailScores(List<ScorecardDetail> detail, String column) throws Exception {
+    public BigDecimal calcDetailScores(List<ScorecardDetail> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;
@@ -78,7 +78,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return total;
     }
 
-    public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {
+    public BigDecimal calcContentScores(List<ScorecardContent> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;

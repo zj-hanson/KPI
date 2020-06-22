@@ -57,14 +57,14 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
             col = scorecardBean.getColumn("sq", userManagedBean.getQ());
             List<ScorecardContent> detail = scorecardContentBean.findByPId(scorecard.getId());
             try {
-                value = scorecardBean.getContentScores(detail, col);
+                value = scorecardBean.calcContentScores(detail, col);
                 switch (userManagedBean.getQ()) {
                     case 1:
                         scorecard.setSq1(value);
                         break;
                     case 2:
                         scorecard.setSq2(value);
-                        value = scorecardBean.getContentScores(detail, "sh1");
+                        value = scorecardBean.calcContentScores(detail, "sh1");
                         scorecard.setSh1(value);
                         break;
                     case 3:
@@ -72,9 +72,9 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         break;
                     case 4:
                         scorecard.setSq4(value);
-                        value = scorecardBean.getContentScores(detail, "sh2");
+                        value = scorecardBean.calcContentScores(detail, "sh2");
                         scorecard.setSh2(value);
-                        value = scorecardBean.getContentScores(detail, "sfy");
+                        value = scorecardBean.calcContentScores(detail, "sfy");
                         scorecard.setSfy(value);
                         break;
                 }

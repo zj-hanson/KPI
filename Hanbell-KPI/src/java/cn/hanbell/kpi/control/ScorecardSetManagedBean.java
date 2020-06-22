@@ -70,14 +70,14 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         col = scorecardBean.getColumn("sq", userManagedBean.getQ());
         List<ScorecardDetail> detail = scorecardDetailBean.findByPId(currentEntity.getId());
         try {
-            value = scorecardBean.getDetailScores(detail, col);
+            value = scorecardBean.calcDetailScores(detail, col);
             switch (userManagedBean.getQ()) {
                 case 1:
                     currentEntity.setSq1(value);
                     break;
                 case 2:
                     currentEntity.setSq2(value);
-                    value = scorecardBean.getDetailScores(detail, "sh1");
+                    value = scorecardBean.calcDetailScores(detail, "sh1");
                     currentEntity.setSh1(value);
                     break;
                 case 3:
@@ -85,9 +85,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     break;
                 case 4:
                     currentEntity.setSq4(value);
-                    value = scorecardBean.getDetailScores(detail, "sh2");
+                    value = scorecardBean.calcDetailScores(detail, "sh2");
                     currentEntity.setSh2(value);
-                    value = scorecardBean.getDetailScores(detail, "sfy");
+                    value = scorecardBean.calcDetailScores(detail, "sfy");
                     currentEntity.setSfy(value);
                     break;
             }
