@@ -49,14 +49,14 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return type.toLowerCase() + String.format("%01d", i);
     }
 
-    public BigDecimal calcDetailScores(List<ScorecardDetail> detail, String column) throws Exception {
+    public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;
         Object value;
         Field f;
         try {
-            for (ScorecardDetail entity : detail) {
+            for (ScorecardContent entity : detail) {
                 f = entity.getClass().getDeclaredField(column);
                 f.setAccessible(true);
                 value = f.get(entity);
@@ -78,14 +78,14 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return total;
     }
 
-    public BigDecimal calcContentScores(List<ScorecardContent> detail, String column) throws Exception {
+    public BigDecimal getDetailScores(List<ScorecardDetail> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;
         Object value;
         Field f;
         try {
-            for (ScorecardContent entity : detail) {
+            for (ScorecardDetail entity : detail) {
                 f = entity.getClass().getDeclaredField(column);
                 f.setAccessible(true);
                 value = f.get(entity);
@@ -142,50 +142,6 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
-    public void setDetailScore(ScorecardDetail d, String n) throws Exception {
-        if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
-            throw new NullPointerException("表达式为空");
-        }
-        JexlEngine jexl = new JexlBuilder().create();
-        // Create an expression
-        String jexlExp = d.getScoreJexl().replace("${n}", n);
-        JexlExpression exp = jexl.createExpression(jexlExp);
-        // Create a context
-        JexlContext jc = new MapContext();
-        jc.set("object", d);
-        // Evaluate the expression
-        try {
-            Object value = exp.evaluate(jc);
-            BigDecimal score = BigDecimal.valueOf(Double.valueOf(value.toString()));
-            if (d.getMinNum() != null && score.compareTo(d.getMinNum()) < 0) {
-                score = d.getMinNum();
-            }
-            if (d.getMaxNum() != null && score.compareTo(d.getMaxNum()) > 0) {
-                score = d.getMaxNum();
-            }
-            switch (n) {
-                case "q1":
-                    d.getGeneralScore().setSq1(score);
-                    break;
-                case "q2":
-                    d.getGeneralScore().setSq2(score);
-                    d.getGeneralScore().setSh1(score);
-                    break;
-                case "q3":
-                    d.getGeneralScore().setSq3(score);
-                    break;
-                case "q4":
-                    d.getGeneralScore().setSq4(score);
-                    d.getGeneralScore().setSh2(score);
-                    d.getGeneralScore().setSfy(score);
-                    break;
-                default:
-            }
-        } catch (Exception ex) {
-            throw ex;
-        }
-    }
-
     public void setContentScore(ScorecardContent d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
@@ -223,6 +179,50 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 case "q4":
                     d.getDeptScore().setSq4(score);
                     d.getGeneralScore().setSq4(score);
+                    break;
+                default:
+            }
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void setDetailScore(ScorecardDetail d, String n) throws Exception {
+        if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
+            throw new NullPointerException("表达式为空");
+        }
+        JexlEngine jexl = new JexlBuilder().create();
+        // Create an expression
+        String jexlExp = d.getScoreJexl().replace("${n}", n);
+        JexlExpression exp = jexl.createExpression(jexlExp);
+        // Create a context
+        JexlContext jc = new MapContext();
+        jc.set("object", d);
+        // Evaluate the expression
+        try {
+            Object value = exp.evaluate(jc);
+            BigDecimal score = BigDecimal.valueOf(Double.valueOf(value.toString()));
+            if (d.getMinNum() != null && score.compareTo(d.getMinNum()) < 0) {
+                score = d.getMinNum();
+            }
+            if (d.getMaxNum() != null && score.compareTo(d.getMaxNum()) > 0) {
+                score = d.getMaxNum();
+            }
+            switch (n) {
+                case "q1":
+                    d.getGeneralScore().setSq1(score);
+                    break;
+                case "q2":
+                    d.getGeneralScore().setSq2(score);
+                    d.getGeneralScore().setSh1(score);
+                    break;
+                case "q3":
+                    d.getGeneralScore().setSq3(score);
+                    break;
+                case "q4":
+                    d.getGeneralScore().setSq4(score);
+                    d.getGeneralScore().setSh2(score);
+                    d.getGeneralScore().setSfy(score);
                     break;
                 default:
             }

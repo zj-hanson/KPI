@@ -15,7 +15,7 @@
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnCalc" value="得分" actionListener="#{scorecardSetManagedBean.calcScore()}" icon="ui-icon-check"
-                                     rendered="#{scorecardSetManagedBean.doCfm}" process="@this" update="formOne">
+                                     rendered="#{!scorecardSetManagedBean.freezed}" process="@this" update="formOne">
                         <p:confirm header="系统提示" message="计算得分吗?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:commandButton id="btnSave" value="保存" action="#{scorecardSetManagedBean.update()}" icon="ui-icon-save"
@@ -614,6 +614,9 @@
                             <p:column colspan="10">
                                 <p:commandButton id="btnSaveExplanation" value="确定"  actionListener="#{scorecardSetManagedBean.doConfirmDetail()}" icon="ui-icon-save" style="float: right"
                                                  process="@this,formOne:dlgDetail" update="formOne:tabView:tableList" oncomplete="PF('dlgDetail').hide();" >
+                                </p:commandButton>
+                                <p:commandButton id="btnCalcItemScore" value="更新"  actionListener="#{scorecardSetManagedBean.calcItemScore()}" icon="ui-icon-sync" style="float: right"
+                                                 process="@this,formOne:dlgDetail" update="formOne:tabView:tableList" oncomplete="PF('dlgDetail').show();">
                                 </p:commandButton>
                             </p:column>
                         </p:row>
