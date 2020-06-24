@@ -14,6 +14,7 @@ import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
+import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -408,6 +409,45 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 break;
             default:
                 super.openDialog(view);
+        }
+    }
+
+    public void print(String rptdesign, String reportFormat) throws Exception {
+        if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
+            HashMap<String, Object> reportParams = new HashMap<>();
+            reportParams.put("company", userManagedBean.getCurrentCompany().getName());
+            reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
+            reportParams.put("JNDIName", this.currentPrgGrant.getSysprg().getRptjndi());
+            reportParams.put("seq", currentEntity.getSeq());
+            reportParams.put("deptname", currentEntity.getDeptname());
+            reportParams.put("id", currentEntity.getId());
+            if (!this.model.getFilterFields().isEmpty()) {
+                reportParams.put("filterFields", BaseLib.convertMapToStringWithClass(this.model.getFilterFields()));
+            } else {
+                reportParams.put("filterFields", "");
+            }
+            if (!this.model.getSortFields().isEmpty()) {
+                reportParams.put("sortFields", BaseLib.convertMapToString(this.model.getSortFields()));
+            } else {
+                reportParams.put("sortFields", "");
+            }
+            this.fileName = this.currentPrgGrant.getSysprg().getApi() + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + reportFormat;
+            String reportName = reportPath + rptdesign;
+            String outputName = reportOutputPath + this.fileName;
+            this.reportViewPath = reportViewContext + this.fileName;
+            try {
+                if (this.currentPrgGrant.getSysprg().getRptclazz() != null) {
+                    reportClassLoader = Class.forName(this.currentPrgGrant.getSysprg().getRptclazz()).getClassLoader();
+                }
+                //初始配置
+                this.reportInitAndConfig();
+                //生成报表
+                this.reportRunAndOutput(reportName, reportParams, outputName, reportFormat, null);
+                //预览报表
+                this.preview();
+            } catch (Exception ex) {
+                throw ex;
+            }
         }
     }
 
