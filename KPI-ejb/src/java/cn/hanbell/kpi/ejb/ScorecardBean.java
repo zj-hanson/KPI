@@ -53,15 +53,11 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return type.toLowerCase() + String.format("%01d", i);
     }
 
-<<<<<<< HEAD
     public List<ScorecardDetail> getDetail(Object value) {
         return scorecardDetailBean.findByPId(value);
     }
 
-    public BigDecimal getTotalScore(List<ScorecardContent> detail, String column) throws Exception {
-=======
     public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {
->>>>>>> master
         BigDecimal weight;
         BigDecimal score;
         BigDecimal total = BigDecimal.ZERO;

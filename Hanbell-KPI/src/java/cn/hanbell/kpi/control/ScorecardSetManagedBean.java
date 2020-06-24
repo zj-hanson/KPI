@@ -451,7 +451,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
-<<<<<<< HEAD
     public void print(String rptdesign, String reportFormat) throws Exception {
         if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
             HashMap<String, Object> reportParams = new HashMap<>();
@@ -491,7 +490,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
-=======
     @Override
     public void setCurrentEntity(Scorecard currentEntity) {
         super.setCurrentEntity(currentEntity);
@@ -507,7 +505,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         return freezed;
     }
 
->>>>>>> master
     /**
      * @return the queryDeptno
      */
