@@ -38,6 +38,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     private ScorecardDetailBean scorecardDetailBean;
 
     protected Calendar c;
+    private boolean freezed;
 
     protected String queryDeptno;
     protected String queryDeptname;
@@ -61,6 +62,44 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         this.newEntity.setSeq(queryYear);
     }
 
+    public void calcScore() {
+        if (currentEntity != null && currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            showErrorMsg("Error", "资料已冻结,不可更新");
+            return;
+        }
+        String col;
+        BigDecimal value;
+        col = scorecardBean.getColumn("sq", userManagedBean.getQ());
+        List<ScorecardDetail> data = scorecardDetailBean.findByPId(currentEntity.getId());
+        try {
+            value = scorecardBean.getDetailScores(data, col);
+            switch (userManagedBean.getQ()) {
+                case 1:
+                    currentEntity.setSq1(value);
+                    break;
+                case 2:
+                    currentEntity.setSq2(value);
+                    value = scorecardBean.getDetailScores(data, "sh1");
+                    currentEntity.setSh1(value);
+                    break;
+                case 3:
+                    currentEntity.setSq3(value);
+                    break;
+                case 4:
+                    currentEntity.setSq4(value);
+                    value = scorecardBean.getDetailScores(data, "sh2");
+                    currentEntity.setSh2(value);
+                    value = scorecardBean.getDetailScores(data, "sfy");
+                    currentEntity.setSfy(value);
+                    break;
+            }
+            scorecardBean.update(currentEntity);
+            showInfoMsg("Info", "更新成功");
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.getMessage());
+        }
+    }
+
     public void calcItemScore() {
         if (currentDetail != null) {
             if (!currentDetail.getType().equals("N")) {
@@ -75,54 +114,54 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             try {
                 if (currentDetail.getScoreJexl() != null && !"".equals(currentDetail.getScoreJexl())) {
                     //计算得分
-                    scorecardBean.setScore(currentDetail, col);
-                    switch (userManagedBean.getQ()) {
-                        case 1:
-                            if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
-                            }
-                            break;
-                        case 2:
-                            if (currentDetail.getGeneralScore().getSq2().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
-                            }
-                            if (currentDetail.getGeneralScore().getSh1().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
-                            }
-                            break;
-                        case 3:
-                            if (currentDetail.getGeneralScore().getSq3().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
-                            }
-                            break;
-                        case 4:
-                            if (currentDetail.getGeneralScore().getSq4().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
-                            }
-                            if (currentDetail.getGeneralScore().getSh2().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
-                            }
-                            if (currentDetail.getGeneralScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
-                                currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
-                            } else if (currentDetail.getWeight() == 0) {
-                                currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
-                            }
-                            break;
-                    }
-                    showInfoMsg("Info", "更新部门分数成功");
+                    scorecardBean.setDetailScore(currentDetail, col);
                 }
+                switch (userManagedBean.getQ()) {
+                    case 1:
+                        if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
+                        }
+                        break;
+                    case 2:
+                        if (currentDetail.getGeneralScore().getSq2().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
+                        }
+                        if (currentDetail.getGeneralScore().getSh1().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
+                        }
+                        break;
+                    case 3:
+                        if (currentDetail.getGeneralScore().getSq3().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
+                        }
+                        break;
+                    case 4:
+                        if (currentDetail.getGeneralScore().getSq4().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
+                        }
+                        if (currentDetail.getGeneralScore().getSh2().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
+                        }
+                        if (currentDetail.getGeneralScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
+                            currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
+                        } else if (currentDetail.getWeight() == 0) {
+                            currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
+                        }
+                        break;
+                }
+                showInfoMsg("Info", "更新部门分数成功");
             } catch (Exception ex) {
                 showErrorMsg("Error", ex.getMessage());
             }
@@ -412,6 +451,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
+<<<<<<< HEAD
     public void print(String rptdesign, String reportFormat) throws Exception {
         if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
             HashMap<String, Object> reportParams = new HashMap<>();
@@ -451,6 +491,23 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
+=======
+    @Override
+    public void setCurrentEntity(Scorecard currentEntity) {
+        super.setCurrentEntity(currentEntity);
+        if (currentEntity != null) {
+            this.freezed = currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate());
+        }
+    }
+
+    /**
+     * @return the freezed
+     */
+    public boolean isFreezed() {
+        return freezed;
+    }
+
+>>>>>>> master
     /**
      * @return the queryDeptno
      */

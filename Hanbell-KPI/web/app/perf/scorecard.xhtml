@@ -11,11 +11,12 @@
             <p:growl id="growl" showSummary="false" showDetail="true"/>
             <p:toolbar id="toolbar" styleClass="topToolbar">
                 <f:facet name="left">
-                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{scorecardManagedBean.init()}"  icon="ui-icon-sync"  update="formList"/>
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{scorecardManagedBean.init()}"  icon="ui-icon-sync" process="@this" update="formList"/>
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnCalc" value="得分" actionListener="#{scorecardManagedBean.calcScore()}" icon="ui-icon-check"
-                                     process="@this" update="formList">
+                                     rendered="#{!scorecardManagedBean.freezed}" process="@this" update="formList">
+                        <p:confirm header="系统提示" message="计算得分吗?" icon="ui-icon-alert" />
                     </p:commandButton>
                 </f:facet>
             </p:toolbar>
@@ -186,7 +187,8 @@
                     <h:outputText value="#{item.sfy}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%" style="text-align: center" header="#{scorecardManagedBean.currentEntity.content}  权重  #{scorecardManagedBean.currentEntity.weight}">
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%" style="text-align: center"
+                      header="当前是#{scorecardManagedBean.userManagedBean.y}年第#{scorecardManagedBean.userManagedBean.q}季度绩效考核，#{scorecardManagedBean.currentEntity.content}  权重  #{scorecardManagedBean.currentEntity.weight}">
                 <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -435,7 +437,7 @@
                                 <p:commandButton id="btnSaveExplanation"  actionListener="#{scorecardManagedBean.update()}" icon="ui-icon-save" value="保存" style="float: right"
                                                  process="@this,formList:dlgDetail" update="formList" oncomplete="PF('dlgDetail').hide();" >
                                 </p:commandButton>
-                                <p:commandButton id="btnRefeshActural"  actionListener="#{scorecardManagedBean.refeshActual()}" icon="ui-icon-sync" value="更新" style="float: right"
+                                <p:commandButton id="btnCalcItemScore"  actionListener="#{scorecardManagedBean.calcItemScore()}" icon="ui-icon-sync" value="更新" style="float: right"
                                                  process="@this" update="formList" oncomplete="PF('dlgDetail').show();">
                                 </p:commandButton>
                             </p:column>

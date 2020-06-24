@@ -7,6 +7,7 @@ package cn.hanbell.kpi.entity;
 
 import com.lightshell.comm.SuperEntity;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -106,6 +109,9 @@ public class Scorecard extends SuperEntity {
     private BigDecimal sh2;
     @Column(name = "sfy")
     private BigDecimal sfy;
+    @Column(name = "freezeDate")
+    @Temporal(TemporalType.DATE)
+    private Date freezeDate;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -338,6 +344,20 @@ public class Scorecard extends SuperEntity {
      */
     public void setSfy(BigDecimal sfy) {
         this.sfy = sfy;
+    }
+
+    /**
+     * @return the freezeDate
+     */
+    public Date getFreezeDate() {
+        return freezeDate;
+    }
+
+    /**
+     * @param freezeDate the freezeDate to set
+     */
+    public void setFreezeDate(Date freezeDate) {
+        this.freezeDate = freezeDate;
     }
 
     /**
