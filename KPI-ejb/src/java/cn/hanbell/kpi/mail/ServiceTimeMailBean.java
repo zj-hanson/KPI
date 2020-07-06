@@ -25,7 +25,7 @@ import javax.ejb.Stateless;
 public class ServiceTimeMailBean extends ServiceMail {
 
     public ServiceTimeMailBean() {
-        
+
     }
 
     @Override
@@ -37,12 +37,12 @@ public class ServiceTimeMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("TA-服务时间费用汇总", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("TA-服务时间费用汇总", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "TA-服务时间费用汇总", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -54,7 +54,11 @@ public class ServiceTimeMailBean extends ServiceMail {
         });
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：小时</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
     }
 
@@ -126,7 +130,7 @@ public class ServiceTimeMailBean extends ServiceMail {
             }
             sb.append("<td>").append(decimalFormat.format(o2.getNfy().divide(new BigDecimal(m), 2, BigDecimal.ROUND_HALF_UP))).append("</td>");
             sb.append("<td>").append(decimalFormat.format(o2.getNfy())).append("</td>");
-            sb.append("</tr>");           
+            sb.append("</tr>");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);
         }

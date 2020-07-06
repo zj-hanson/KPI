@@ -34,12 +34,12 @@ public class ServiceAmountMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("TA-服务时间费用汇总", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("TA-服务时间费用汇总", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "TA-服务时间费用汇总", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -52,7 +52,11 @@ public class ServiceAmountMailBean extends ServiceMail {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"content\">统计内容为：当月服务员报销核准的数据，报销对应的服务案可能是非本月发生的</div>");
         sb.append("<div class=\"tableTitle\">单位：元</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
     }
 
@@ -92,7 +96,7 @@ public class ServiceAmountMailBean extends ServiceMail {
             o3.setType(e.getOther3Label());
             o4.setType(e.getOther4Label());
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"3\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
-            sb.append("<td style=\"text-align: left;\">").append(o3.getType()).append("</td>");       
+            sb.append("<td style=\"text-align: left;\">").append(o3.getType()).append("</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o3.getClass().getDeclaredField(col);

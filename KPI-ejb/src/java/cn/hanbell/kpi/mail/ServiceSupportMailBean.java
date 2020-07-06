@@ -32,12 +32,12 @@ public class ServiceSupportMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("QA-各区支援服务", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("QA-各区支援服务", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "QA-各区支援明细", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -48,8 +48,12 @@ public class ServiceSupportMailBean extends ServiceMail {
             }
         });
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd",  new Date())).append("</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
     }
 

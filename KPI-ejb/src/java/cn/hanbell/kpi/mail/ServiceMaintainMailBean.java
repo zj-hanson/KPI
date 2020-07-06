@@ -26,7 +26,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class ServiceMaintainMailBean extends ServiceMail {
 
-    private  DecimalFormat df;
+    private DecimalFormat df;
+
     public ServiceMaintainMailBean() {
 
     }
@@ -34,18 +35,18 @@ public class ServiceMaintainMailBean extends ServiceMail {
     @Override
     public void init() {
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
-       df = new DecimalFormat("#,##0.00");
+        df = new DecimalFormat("#,##0.00");
         super.init();
     }
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("T-服务部维修数据", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("T-服务部维修数据", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "T-服务部维修数据", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -60,7 +61,11 @@ public class ServiceMaintainMailBean extends ServiceMail {
             indicatorBean.divideByRate(e, 2);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
     }
 
@@ -87,7 +92,8 @@ public class ServiceMaintainMailBean extends ServiceMail {
         }
         return sb.toString();
     }
-        @Override
+
+    @Override
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
         sb.append("</div>");//对应Head中的div.content
@@ -130,25 +136,45 @@ public class ServiceMaintainMailBean extends ServiceMail {
             avgday = new IndicatorDetail();
             avgday.setParent(e);
             avgday.setType("平均维修天数");
-            for (int i = getM(); i > 0; i--) {
-                // 维修达标率
-                v = getAccumulatedValue(nowa, nowt, i);
-                setMethod = nowf.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(nowf, v);
-                // 同期达标率
-                v = getAccumulatedValue(pasta, pastt, i);
-                setMethod = pastdc.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(pastdc, v);
-                // 平均维修天数 按工作时长8小时计算为一天
-                v = getAvgDay(gs, nowa, i);
-                setMethod = avgday.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(avgday, v);
-                // 同比成长率
-                v = indicatorBean.getGrowth(nowa, pasta, i);
-                setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(BG, v);
+            if (getM() - 1 == 0) {
+                for (int i = 12; i > 0; i--) {
+                    // 维修达标率
+                    v = getAccumulatedValue(nowa, nowt, i);
+                    setMethod = nowf.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(nowf, v);
+                    // 同期达标率
+                    v = getAccumulatedValue(pasta, pastt, i);
+                    setMethod = pastdc.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(pastdc, v);
+                    // 平均维修天数 按工作时长8小时计算为一天
+                    v = getAvgDay(gs, nowa, i);
+                    setMethod = avgday.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(avgday, v);
+                    // 同比成长率
+                    v = indicatorBean.getGrowth(nowa, pasta, i);
+                    setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(BG, v);
+                }
+            } else {
+                for (int i = getM() - 1; i > 0; i--) {
+                    // 维修达标率
+                    v = getAccumulatedValue(nowa, nowt, i);
+                    setMethod = nowf.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(nowf, v);
+                    // 同期达标率
+                    v = getAccumulatedValue(pasta, pastt, i);
+                    setMethod = pastdc.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(pastdc, v);
+                    // 平均维修天数 按工作时长8小时计算为一天
+                    v = getAvgDay(gs, nowa, i);
+                    setMethod = avgday.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(avgday, v);
+                    // 同比成长率
+                    v = indicatorBean.getGrowth(nowa, pasta, i);
+                    setMethod = BG.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(BG, v);
+                }
             }
-
             nowt.setType("目标维修台数");
             nowa.setType("实际完工台数");
             pastt.setType(e.getOther1Label());
@@ -265,7 +291,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
                     sb.append("<td>").append(percentFormat(f.get(BG))).append("</td>");
                 }
             }
-            sb.append("<td>").append(percentFormat(this.getGrowth(nowa.getNfy(),  pasta.getNfy()))).append("</td>");
+            sb.append("<td>").append(percentFormat(this.getGrowth(nowa.getNfy(), pasta.getNfy()))).append("</td>");
             sb.append("</tr>");
             //维修工时
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(gs.getType()).append("</td>");
