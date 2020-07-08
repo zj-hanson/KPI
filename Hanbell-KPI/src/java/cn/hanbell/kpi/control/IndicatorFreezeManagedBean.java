@@ -49,7 +49,7 @@ public class IndicatorFreezeManagedBean extends SuperSingleBean<Indicator> {
         c.setTime(choiceFreezeDate);
         int seq = c.get(Calendar.YEAR);
         if (!"".equals(objtype)) {
-            indicatorsList = indicatorBean.findSeqObjtypeAndCompany(company, objtype, seq);
+            indicatorsList = indicatorBean.findBySeqObjtypeAndCompany(seq, objtype, company);
             if (!indicatorsList.isEmpty()) {
                 for (Indicator i : indicatorsList) {
                     if ("V".equals(i.getStatus())) {

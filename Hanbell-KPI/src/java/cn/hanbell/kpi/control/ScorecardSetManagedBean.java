@@ -454,10 +454,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     @Override
     public void print() throws Exception {
-        super.print(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void print(String rptdesign, String reportFormat) throws Exception {
         if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
             HashMap<String, Object> reportParams = new HashMap<>();
             reportParams.put("company", userManagedBean.getCurrentCompany().getName());
@@ -477,8 +473,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             } else {
                 reportParams.put("sortFields", "");
             }
-            this.fileName = this.currentPrgGrant.getSysprg().getApi() + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + reportFormat;
-            String reportName = reportPath + rptdesign;
+            this.fileName = this.currentPrgGrant.getSysprg().getApi() + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + "xls";
+            String reportName = reportPath + this.currentPrgGrant.getSysprg().getRptdesign();
             String outputName = reportOutputPath + this.fileName;
             this.reportViewPath = reportViewContext + this.fileName;
             try {
@@ -488,7 +484,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 //初始配置
                 this.reportInitAndConfig();
                 //生成报表
-                this.reportRunAndOutput(reportName, reportParams, outputName, reportFormat, null);
+                this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
                 //预览报表
                 this.preview();
             } catch (Exception ex) {
