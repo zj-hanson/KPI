@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.event.SelectEvent;
 
@@ -451,6 +452,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
+    @Override
+    public void print() throws Exception {
+        super.print(); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void print(String rptdesign, String reportFormat) throws Exception {
         if (currentPrgGrant != null && currentPrgGrant.getDoprt()) {
             HashMap<String, Object> reportParams = new HashMap<>();
@@ -460,6 +466,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             reportParams.put("seq", currentEntity.getSeq());
             reportParams.put("deptname", currentEntity.getDeptname());
             reportParams.put("id", currentEntity.getId());
+            reportParams.put("season", userManagedBean.getQ());
             if (!this.model.getFilterFields().isEmpty()) {
                 reportParams.put("filterFields", BaseLib.convertMapToStringWithClass(this.model.getFilterFields()));
             } else {
@@ -495,6 +502,23 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         super.setCurrentEntity(currentEntity);
         if (currentEntity != null) {
             this.freezed = currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate());
+        }
+    }
+
+    //月结功能
+    public void setFreezeDate() {
+        if (currentEntity != null) {
+            currentEntity.setFreezeDate(userManagedBean.getBaseDate());
+            scorecardBean.update(currentEntity);
+            if (detailList != null) {
+                for (ScorecardDetail s : detailList) {
+                    s.setFreezeDate(userManagedBean.getBaseDate());
+                    scorecardDetailBean.update(s);
+                }
+                showInfoMsg("Info", "冻结时间成功");
+            }
+        } else {
+            showErrorMsg("Error", "请选中一个指标");
         }
     }
 

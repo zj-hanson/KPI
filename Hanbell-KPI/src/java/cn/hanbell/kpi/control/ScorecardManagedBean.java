@@ -13,10 +13,13 @@ import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.lazy.ScorecardContentModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
+import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -260,6 +263,47 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
         model.getFilterFields().put("pid", getScorecard().getId());
         super.init();
+    }
+
+    @Override
+    public void print() throws Exception {
+        if (scorecard == null) {
+            showMsg(FacesMessage.SEVERITY_WARN, "Warn", "没有可打印数据");
+            return;
+        }
+        HashMap<String, Object> reportParams = new HashMap<>();
+        reportParams.put("company", userManagedBean.getCurrentCompany().getName());
+        reportParams.put("companyFullName", userManagedBean.getCurrentCompany().getFullname());
+        reportParams.put("JNDIName", "java:global/KPI/KPI-ejb/ScorecardBean!cn.hanbell.kpi.ejb.ScorecardBean");
+        reportParams.put("seq", scorecard.getSeq());
+        reportParams.put("deptname", scorecard.getDeptname());
+        reportParams.put("id", scorecard.getId());
+        reportParams.put("season", userManagedBean.getQ());
+        if (!this.model.getFilterFields().isEmpty()) {
+            reportParams.put("filterFields", BaseLib.convertMapToStringWithClass(this.model.getFilterFields()));
+        } else {
+            reportParams.put("filterFields", "");
+        }
+        if (!this.model.getSortFields().isEmpty()) {
+            reportParams.put("sortFields", BaseLib.convertMapToString(this.model.getSortFields()));
+        } else {
+            reportParams.put("sortFields", "");
+        }
+        this.fileName = "scorecard" + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + "xls";
+        String reportName = reportPath + "scorecarddetail.rptdesign";
+        String outputName = reportOutputPath + this.fileName;
+        this.reportViewPath = reportViewContext + this.fileName;
+        try {
+            reportClassLoader = Class.forName("cn.hanbell.kpi.rpt.ScorecardReport").getClassLoader();
+            //初始配置
+            this.reportInitAndConfig();
+            //生成报表
+            this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
+            //预览报表
+            this.preview();
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     /**

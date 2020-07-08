@@ -301,6 +301,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
+    public List<Indicator> findSeqObjtypeAndCompany(String company, String objtype, int y) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findSeqObjtypeAndCompany");
+        query.setParameter("company", company);
+        query.setParameter("objtype", objtype);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public List<Indicator> findRootByAssigned(String company, String objtype, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssigned");
         query.setParameter("company", company);

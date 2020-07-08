@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl" showSummary="false" showDetail="true" />
+            <div class="card login-panel ui-fluid">
+                <div class="card ui-g">
+                    <div class="ui-g-12">
+                        <div class="ui-g-12">
+                            <h1>指标月结</h1>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:outputLabel for="company" value="请选择公司别" />
+                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                <p:selectOneMenu id="company" value="#{indicatorFreezeManagedBean.company}">
+                                    <f:selectItem itemLabel="上海汉钟精机股份有限公司" itemValue="C" />
+                                    <f:selectItem itemLabel="浙江汉神精机股份有限公司" itemValue="H" />
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                        </div>
+                        <h:outputLabel value="请选择结算对象" for="objtype"/>
+                        <div class="ui-g-12">
+                            <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="1">
+                                <p:selectOneRadio id="objtype" value="#{indicatorFreezeManagedBean.objtype}" unselectable="true">
+                                    <f:selectItem itemLabel="产品指标" itemValue="P" />
+                                    <f:selectItem itemLabel="员工指标" itemValue="E" />
+                                </p:selectOneRadio>
+                            </h:panelGrid>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar  value="#{indicatorFreezeManagedBean.choiceFreezeDate}" pattern="yyyy-MM-dd"  placeholder="结算日期"
+                                             required="true" requiredMessage="请输入结算日期"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton id="btnReset" value="重置日期"  type="reset" />
+                            <p:commandButton id="btnInit" value="一键月结" actionListener="#{indicatorFreezeManagedBean.verify()}" rendered="true" update="growl">
+                                <p:confirm header="系统提示" message="确认冻结吗?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnInit">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+</ui:composition>
