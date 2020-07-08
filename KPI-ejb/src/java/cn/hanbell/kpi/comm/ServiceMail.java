@@ -38,7 +38,8 @@ public abstract class ServiceMail extends MailNotification {
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(y)).append("年").append(String.valueOf(m)).append("月</div>");
+        //考虑夸年的情况
+        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(m != 1 ? y : y - 1)).append("年").append(String.valueOf(m != 1 ? m - 1 : 12)).append("月</div>");
         sb.append("</div>");
         return sb.toString();
     }
@@ -95,17 +96,29 @@ public abstract class ServiceMail extends MailNotification {
             o3o4 = new IndicatorDetail();
             o3o4.setParent(e);
             o3o4.setType("跨区服务金额占比");
-            for (int i = getM(); i > 0; i--) {
-                //---o1/o2
-                v = getAccumulatedValue(o1, o2, i);
-                setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o1o2, v);
-                //o3 o4
-                v = getAccumulatedValue(o3, o4, i);
-                setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o3o4, v);
+            if (getM() - 1 == 0) {
+                for (int i = 12; i > 0; i--) {
+                    //---o1/o2
+                    v = getAccumulatedValue(o1, o2, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3 o4
+                    v = getAccumulatedValue(o3, o4, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
+                }
+            } else {
+                for (int i = getM() - 1; i > 0; i--) {
+                    //---o1/o2
+                    v = getAccumulatedValue(o1, o2, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3 o4
+                    v = getAccumulatedValue(o3, o4, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
+                }
             }
-
             o1.setType(e.getOther1Label());
             o2.setType(e.getOther2Label());
             o3.setType(e.getOther3Label());

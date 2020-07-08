@@ -37,12 +37,12 @@ public class ServiceClosingMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-服务结案单", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-服务结案单", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "Q-服务结案单", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -54,7 +54,11 @@ public class ServiceClosingMailBean extends ServiceMail {
         });
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
 
     }
@@ -107,25 +111,45 @@ public class ServiceClosingMailBean extends ServiceMail {
             o3o4 = new IndicatorDetail();
             o3o4.setParent(e);
             o3o4.setType("累计服务单结案率");
-            for (int i = getM(); i > 0; i--) {
-                //顺序计算的话会导致累计值重复累加
-                //o1值累计
-                if (o1 != null) {
-                    v = indicatorBean.getAccumulatedValue(o1, i);
-                    setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(ljo1, v);
+            if (getM() - 1 == 0) {
+                for (int i = 12; i > 0; i--) {
+                    //顺序计算的话会导致累计值重复累加
+                    //o1值累计
+                    if (o1 != null) {
+                        v = indicatorBean.getAccumulatedValue(o1, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo1, v);
+                    }
+
+                    //---o2/o1
+                    v = getAccumulatedValue(o2, o1, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3/ljo1
+                    v = getAccumulatedValue(o3, ljo1, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
                 }
+            } else {
+                for (int i = getM() - 1; i > 0; i--) {
+                    //顺序计算的话会导致累计值重复累加
+                    //o1值累计
+                    if (o1 != null) {
+                        v = indicatorBean.getAccumulatedValue(o1, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo1, v);
+                    }
 
-                //---o2/o1
-                v = getAccumulatedValue(o2, o1, i);
-                setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o1o2, v);
-                //o3/ljo1
-                v = getAccumulatedValue(o3, ljo1, i);
-                setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o3o4, v);
+                    //---o2/o1
+                    v = getAccumulatedValue(o2, o1, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3/ljo1
+                    v = getAccumulatedValue(o3, ljo1, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
+                }
             }
-
             o1.setType(e.getOther1Label());
             o2.setType(e.getOther2Label());
             o3.setType(e.getOther3Label());

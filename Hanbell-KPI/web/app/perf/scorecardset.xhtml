@@ -47,6 +47,10 @@
                                     rendered="#{scorecardSetManagedBean.doUnCfm}" update=":formList"/>
                         <p:menuitem id="btnCreate" value="新增" icon="ui-icon-plus" action="#{scorecardSetManagedBean.create('scorecardsetNew')}"
                                     rendered="#{scorecardSetManagedBean.doAdd}" process="@this"/>
+                        <p:menuitem id="btnFreeze" value="季结" icon="ui-icon-lock" action="#{scorecardSetManagedBean.setFreezeDate()}"
+                                    rendered="#{scorecardSetManagedBean.doEdit}" update=":formList"/>
+                        <p:menuitem id="btnPrint" value="导出" icon="ui-icon-print" action="#{scorecardSetManagedBean.print()}"
+                                    rendered="#{scorecardSetManagedBean.doPrt}" process="@this"/>
                     </p:splitButton>
                     <p:commandButton id="btnReset" value="重置" actionListener="#{scorecardSetManagedBean.reset()}" icon="ui-icon-refresh"
                                      update=":formList"/>

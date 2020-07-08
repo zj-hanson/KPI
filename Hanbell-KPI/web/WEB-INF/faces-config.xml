@@ -89,6 +89,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>indicatorfreeze</from-outcome>
+            <to-view-id>/sys/indicatorfreeze.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>jobschedule</from-outcome>
             <to-view-id>/sys/jobschedule.xhtml</to-view-id>
             <redirect/>

@@ -46,21 +46,25 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(y)).append("年").append(String.valueOf(m)).append("月</div>");
+        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(m != 1 ? y : y - 1)).append("年").append(String.valueOf(m != 1 ? m - 1 : 12)).append("月</div>");
         sb.append("</div>");
         return sb.toString();
     }
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-A机体服务结案", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-A机体服务结案", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "Q-A机体服务结案", "1A000"));
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
         try {
-            sb.append(getHtmlTableRow(indicator, y, m, d, ""));
+            if (m == 1) {
+                sb.append(getHtmlTableRow(indicator, y - 1, 12, d, ""));
+            } else {
+                sb.append(getHtmlTableRow(indicator, y, m - 1, d, ""));
+            }
         } catch (Exception ex) {
             Logger.getLogger(AJServiceClosingSpecialMailBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,30 +107,55 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
             o3o4 = new IndicatorDetail();
             o3o4.setParent(e);
             o3o4.setType("累计服务单结案率");
-            for (int i = getM(); i > 0; i--) {
-                //顺序计算的话会导致累计值重复累加
-                //o1值累计
-                if (o1 != null) {
-                    v = indicatorBean.getAccumulatedValue(o1, i);
-                    setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(ljo1, v);
-                }
-                if (o2 != null) {
-                    v = indicatorBean.getAccumulatedValue(o2, i);
-                    setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(ljo2, v);
-                }
+            if (getM() - 1 == 0) {
+                for (int i = 12; i > 0; i--) {
+                    //顺序计算的话会导致累计值重复累加
+                    //o1值累计
+                    if (o1 != null) {
+                        v = indicatorBean.getAccumulatedValue(o1, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo1, v);
+                    }
+                    if (o2 != null) {
+                        v = indicatorBean.getAccumulatedValue(o2, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo2, v);
+                    }
 
-                //---o2/o1
-                v = getAccumulatedValue(o2, o1, i);
-                setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o1o2, v);
-                //o3/ljo1
-                v = getAccumulatedValue(ljo2, ljo1, i);
-                setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o3o4, v);
+                    //---o2/o1
+                    v = getAccumulatedValue(o2, o1, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3/ljo1
+                    v = getAccumulatedValue(ljo2, ljo1, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
+                }
+            } else {
+                for (int i = getM() - 1; i > 0; i--) {
+                    //顺序计算的话会导致累计值重复累加
+                    //o1值累计
+                    if (o1 != null) {
+                        v = indicatorBean.getAccumulatedValue(o1, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo1, v);
+                    }
+                    if (o2 != null) {
+                        v = indicatorBean.getAccumulatedValue(o2, i);
+                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(ljo2, v);
+                    }
+
+                    //---o2/o1
+                    v = getAccumulatedValue(o2, o1, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                    //o3/ljo1
+                    v = getAccumulatedValue(ljo2, ljo1, i);
+                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3o4, v);
+                }
             }
-
             o1.setType(e.getOther1Label());
             o2.setType(e.getOther2Label());
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"6\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");

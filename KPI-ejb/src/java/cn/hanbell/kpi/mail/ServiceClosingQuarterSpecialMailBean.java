@@ -47,7 +47,7 @@ public class ServiceClosingQuarterSpecialMailBean extends ServiceMail {
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">上海汉钟精机股份有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(y)).append("年").append(String.valueOf(m)).append("月</div>");
+        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(String.valueOf(m != 1 ? y : y - 1)).append("年").append(String.valueOf(m != 1 ? m - 1 : 12)).append("月</div>");
         sb.append("</div>");
         return sb.toString();
     }
@@ -59,7 +59,7 @@ public class ServiceClosingQuarterSpecialMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-A机体服务结案", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-A机体服务结案", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "Q-A机体服务结案", "1A000"));
         }
@@ -67,7 +67,11 @@ public class ServiceClosingQuarterSpecialMailBean extends ServiceMail {
         sb.append("<div class=\"content\">统计内容包含：客诉、赠送、技术支持、统包服务、巡检、收费服务及新机调试</div>");
         sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
         try {
-            sb.append(getHtmlTableRow(indicator, y, m, d, "#FFFFFF"));
+            if (m == 1) {
+                sb.append(getHtmlTableRow(indicator, y - 1, 12, d, "#FFFFFF"));
+            } else {
+                sb.append(getHtmlTableRow(indicator, y, m - 1, d, "#FFFFFF"));
+            }
         } catch (Exception ex) {
             Logger.getLogger(ServiceClosingQuarterSpecialMailBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,14 +95,23 @@ public class ServiceClosingQuarterSpecialMailBean extends ServiceMail {
             o1o2 = new IndicatorDetail();
             o1o2.setParent(e);
             o1o2.setType("客服单结案率");
-            for (int i = getQuarter(getM()); i > 0; i--) {
-                //---o2/o1
-                //拿other4的季度值/other3的季度值 得出每月结案率填充到o1o2
-                v = this.getAccumulatedValue(o3, o4, i);
-                setMethod = o1o2.getClass().getDeclaredMethod(("setNq" + i), BigDecimal.class);
-                setMethod.invoke(o1o2, v);
+            if (getM() - 1 == 0) {
+                for (int i = getQuarter(12); i > 0; i--) {
+                    //---o2/o1
+                    //拿other4的季度值/other3的季度值 得出每月结案率填充到o1o2
+                    v = this.getAccumulatedValue(o3, o4, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod(("setNq" + i), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                }
+            } else {
+                for (int i = getQuarter(getM() - 1); i > 0; i--) {
+                    //---o2/o1
+                    //拿other4的季度值/other3的季度值 得出每月结案率填充到o1o2
+                    v = this.getAccumulatedValue(o3, o4, i);
+                    setMethod = o1o2.getClass().getDeclaredMethod(("setNq" + i), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                }
             }
-
             o3.setType(e.getOther3Label());
             o4.setType(e.getOther4Label());
             sb.append("<div class=\"tbl\"><table width=\"100%\">");

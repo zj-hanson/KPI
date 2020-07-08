@@ -14,6 +14,8 @@
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{scorecardManagedBean.init()}"  icon="ui-icon-sync" process="@this" update="formList"/>
                 </f:facet>
                 <f:facet name="right">
+                    <p:commandButton id="btnPrint" value="导出" actionListener="#{scorecardManagedBean.print()}" icon="ui-icon-print" 
+                                process="@this"/>
                     <p:commandButton id="btnCalc" value="得分" actionListener="#{scorecardManagedBean.calcScore()}" icon="ui-icon-check"
                                      rendered="#{!scorecardManagedBean.freezed}" process="@this" update="formList">
                         <p:confirm header="系统提示" message="计算得分吗?" icon="ui-icon-alert" />

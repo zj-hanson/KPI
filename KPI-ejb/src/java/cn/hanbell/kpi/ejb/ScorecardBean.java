@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -29,6 +30,9 @@ import org.apache.commons.jexl3.MapContext;
 @Stateless
 @LocalBean
 public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
+
+    @EJB
+    private ScorecardDetailBean scorecardDetailBean;
 
     public ScorecardBean() {
         super(Scorecard.class);
@@ -47,6 +51,10 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
 
     public String getColumn(String type, int i) {
         return type.toLowerCase() + String.format("%01d", i);
+    }
+
+    public List<ScorecardDetail> getDetail(Object value) {
+        return scorecardDetailBean.findByPId(value);
     }
 
     public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {

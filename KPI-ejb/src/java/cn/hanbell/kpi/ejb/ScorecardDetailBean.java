@@ -8,9 +8,11 @@ package cn.hanbell.kpi.ejb;
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.entity.ScorecardExplanation;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.persistence.Query;
 
 /**
  *

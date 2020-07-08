@@ -256,6 +256,16 @@
                                 <p:spinner id="maxNum" value="#{scorecardSetManagedBean.currentDetail.maxNum}" title="maxNum"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column><p:outputLabel value="换算率" for="rate" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="rate" value="#{scorecardSetManagedBean.currentDetail.rate}" title="rate" />
+                            </p:column>
+                            <p:column><p:outputLabel value="排序" for="seq" /></p:column>
+                            <p:column>
+                                <p:inputNumber id="seq" value="#{scorecardSetManagedBean.currentDetail.seq}" title="seq" />
+                            </p:column>
+                        </p:row>
                         <p:row rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
                             <p:column><p:outputLabel value="达成公式" for="performanceJexl" /></p:column>
                             <p:column colspan="3">
@@ -271,8 +281,8 @@
                     </p:panelGrid>
                     <p:dataTable id="tableList" value="#{scorecardSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
                                  selectionMode="single" selection="#{scorecardSetManagedBean.currentDetail}" rowKey="#{item.seq}" >
-                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
-                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" oncomplete="" />
+                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail" oncomplete="" />
                         <p:ajax event="rowDblselect" update="formOne:dlgDetail" oncomplete="PF('dlgDetail').show();"/>
                         <p:column styleClass="Wid30">
                             <f:facet name="header">

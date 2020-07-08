@@ -39,12 +39,12 @@ public class ServiceClosingQuarterMailBean extends ServiceMail {
 
     @Override
     protected String getMailBody() {
-        indicator = indicatorBean.findByFormidYearAndDeptno("Q-服务结案单", y, "1A000");
+        indicator = indicatorBean.findByFormidYearAndDeptno("Q-服务结案单", m != 1 ? y : y - 1, "1A000");
         if (indicator == null) {
             throw new NullPointerException(String.format("指标编号%s:考核部门%s:不存在", "Q-服务结案单", "1A000"));
         }
         indicators.clear();
-        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), y);
+        indicators = indicatorBean.findByPIdAndYear(indicator.getId(), m != 1 ? y : y - 1);
         indicatorBean.getEntityManager().clear();
         //指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
@@ -56,10 +56,13 @@ public class ServiceClosingQuarterMailBean extends ServiceMail {
         });
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"content\">统计内容包含：客诉、赠送、技术支持、统包服务、巡检、收费服务及新机调试</div>");
-        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd",  new Date())).append("</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        sb.append("<div class=\"divFoot\">制表日期：").append(BaseLib.formatDate("yyyy-MM-dd", new Date())).append("</div>");
+        if (m == 1) {
+            sb.append(getHtmlTable(indicators, y - 1, 12, d, true));
+        } else {
+            sb.append(getHtmlTable(indicators, y, m - 1, d, true));
+        }
         return sb.toString();
-
     }
 
     @Override
@@ -118,14 +121,23 @@ public class ServiceClosingQuarterMailBean extends ServiceMail {
             o1o2 = new IndicatorDetail();
             o1o2.setParent(e);
             o1o2.setType("客服单结案率");
-            for (int i = getM(); i > 0; i--) {
-                //---o2/o1
-                //拿other5的月份值/other4的季度值 得出每月结案率填充到o1o2
-                v = this.getAccumulatedValue(o4, o5, getQuarter(i), i);
-                setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                setMethod.invoke(o1o2, v);
+            if (getM() - 1 == 0) {
+                for (int i = 12; i > 0; i--) {
+                    //---o2/o1
+                    //拿other5的月份值/other4的季度值 得出每月结案率填充到o1o2
+                    v = this.getAccumulatedValue(o4, o5, getQuarter(i), i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                }
+            } else {
+                for (int i = getM() - 1; i > 0; i--) {
+                    //---o2/o1
+                    //拿other5的月份值/other4的季度值 得出每月结案率填充到o1o2
+                    v = this.getAccumulatedValue(o4, o5, getQuarter(i), i);
+                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o1o2, v);
+                }
             }
-
             o4.setType(e.getOther4Label());
             o5.setType(e.getOther5Label());
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"3\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
