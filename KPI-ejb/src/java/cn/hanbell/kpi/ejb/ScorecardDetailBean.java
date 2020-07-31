@@ -8,11 +8,9 @@ package cn.hanbell.kpi.ejb;
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.entity.ScorecardExplanation;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.persistence.Query;
 
 /**
  *
@@ -71,6 +69,38 @@ public class ScorecardDetailBean extends SuperEJBForKPI<ScorecardDetail> {
         scorecardExplanationBean.persist(o);
         scorecardExplanationBean.getEntityManager().flush();
         entity.setOtherScore(o);
+        //一阶原因
+        ScorecardExplanation c1 = new ScorecardExplanation();
+        c1.setPid(entity.getId());
+        c1.setSeq(5);
+        c1.setType("C1");
+        scorecardExplanationBean.persist(c1);
+        scorecardExplanationBean.getEntityManager().flush();
+        entity.setCauseScore1(c1);
+        //一阶对策
+        ScorecardExplanation s1 = new ScorecardExplanation();
+        s1.setPid(entity.getId());
+        s1.setSeq(6);
+        s1.setType("S1");
+        scorecardExplanationBean.persist(s1);
+        scorecardExplanationBean.getEntityManager().flush();
+        entity.setSummaryScore1(s1);
+        //二阶对策
+        ScorecardExplanation c2 = new ScorecardExplanation();
+        c2.setPid(entity.getId());
+        c2.setSeq(7);
+        c2.setType("C2");
+        scorecardExplanationBean.persist(c2);
+        scorecardExplanationBean.getEntityManager().flush();
+        entity.setCauseScore2(c2);
+        //二阶对策
+        ScorecardExplanation s2 = new ScorecardExplanation();
+        s2.setPid(entity.getId());
+        s2.setSeq(8);
+        s2.setType("S2");
+        scorecardExplanationBean.persist(s2);
+        scorecardExplanationBean.getEntityManager().flush();
+        entity.setSummaryScore2(s2);
         //设置后保存
         update(entity);
     }
@@ -81,6 +111,10 @@ public class ScorecardDetailBean extends SuperEJBForKPI<ScorecardDetail> {
         scorecardExplanationBean.update(entity.getDeptScore());
         scorecardExplanationBean.update(entity.getGeneralScore());
         scorecardExplanationBean.update(entity.getOtherScore());
+        scorecardExplanationBean.update(entity.getCauseScore1());
+        scorecardExplanationBean.update(entity.getSummaryScore1());
+        scorecardExplanationBean.update(entity.getCauseScore2());
+        scorecardExplanationBean.update(entity.getSummaryScore2());
         scorecardExplanationBean.getEntityManager().flush();
         return super.update(entity);
     }

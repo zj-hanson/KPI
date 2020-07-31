@@ -157,7 +157,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q1达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq1}"/>
+                    <h:outputText value="#{item.pq1}" style="#{(item.pq1 &lt; 100 and item.pq1 &gt; 0)?'color:red':'' }"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -169,7 +169,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q2达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq2}"/>
+                    <h:outputText value="#{item.pq2}" style="#{(item.pq2 &lt; 100 and item.pq2 &gt; 0)?'color:red':'' }"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -181,7 +181,7 @@
                     <f:facet name="header">
                         <h:outputText value="HY达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.ph1}"/>
+                    <h:outputText value="#{item.ph1}" style="#{(item.ph1 &lt; 100 and item.ph1 &gt; 0)?'color:red':'' }"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -193,7 +193,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q3达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq3}"/>
+                    <h:outputText value="#{item.pq3}" style="#{(item.pq3 &lt; 100 and item.pq3 &gt; 0)?'color:red':'' }"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -205,7 +205,7 @@
                     <f:facet name="header">
                         <h:outputText value="Q4达成"/>
                     </f:facet>
-                    <h:outputText value="#{item.pq4}"/>
+                    <h:outputText value="#{item.pq4}" style="#{(item.pq4 &lt; 100 and item.pq4 &gt; 0)?'color:red':'' }"/>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">
@@ -214,7 +214,7 @@
                     <h:outputText value="#{item.sq4}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%" 
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail" width="90%"
                       header="当前是#{scorecardSetManagedBean.userManagedBean.y}年第#{scorecardSetManagedBean.userManagedBean.q}季度绩效考核，#{scorecardSetManagedBean.currentDetail.content} 权重 #{scorecardSetManagedBean.currentDetail.weight}">
                 <p:panelGrid id="plgFillDetail"  styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -439,6 +439,89 @@
                             <p:inputText id="gsfy" value="#{scorecardSetManagedBean.currentDetail.generalScore.sfy}" title="gsfy" style="text-align: right" readonly="true"/>
                         </p:column>
                     </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="10">
+                                <p:commandButton id="btnStageDescription" value="查看阶段说明" type="button" process="@this,formOne:dlgDetail:stageDescriptionDlg" update="formOne:tabView:tableList" icon="ui-icon-search"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:overlayPanel id="stageDescriptionDlg" widgetVar="stageDescriptionDlg" for="btnStageDescription" hideEffect="fade" dynamic="true" modal="true" showCloseIcon="true" styleClass="plgDetail Wid80">
+                        <p:panelGrid style="height:300px" styleClass="plgDetail Wid100">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column colspan="10">未达标原因分析及对策</p:column>
+                                </p:row>
+                            </f:facet>
+                            <p:row style="text-align: center">
+                                <p:column style="width: 8%"><p:outputLabel value="期间"/></p:column>
+                                <p:column style="width: 23%;background-color: yellow">一阶原因（本单位可解决）</p:column>
+                                <p:column style="width: 23%;background-color: yellow">对策</p:column>
+                                <p:column style="width: 23%;background-color: #FF8F00">二阶原因（矩阵配合可解决）</p:column>
+                                <p:column style="width: 23%;background-color: #FF8F00">对策</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 8%"><p:outputLabel value="Q1"/></p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c1q1" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q1}" title="c1q1" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23">
+                                    <p:inputTextarea id="s1q1" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q1}" title="s1q1" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c2q1" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q1}" title="c2q1" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s2q1" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q1}" title="s2q1" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 8%"><p:outputLabel value="Q2"/></p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c1q2" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q2}" title="c1q2" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s1q2" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q2}" title="s1q2" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c2q2" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q2}" title="c2q2" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s2q2" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q2}" title="s2q2" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 8%"><p:outputLabel value="Q3"/></p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c1q3" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q3}" title="c1q3" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s1q3" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q3}" title="s1q3" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c2q3" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q3}" title="c2q3" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s2q3" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q3}" title="s2q3" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 8%"><p:outputLabel value="Q4"/></p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c1q4" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q4}" title="c1q4" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s1q4" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q4}" title="s1q4" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="c2q4" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q4}" title="c2q4" readonly="true"/>
+                                </p:column>
+                                <p:column style="width: 23%">
+                                    <p:inputTextarea id="s2q4" rows="5" styleClass="Wid100" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q4}" title="s2q4" readonly="true"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:overlayPanel>
                 </p:panelGrid>
             </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

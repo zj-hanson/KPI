@@ -27,7 +27,6 @@ public class IndicatorFreezeManagedBean extends SuperSingleBean<Indicator> {
     @EJB
     private IndicatorBean indicatorBean;
 
-    protected String company;
     protected String objtype;
     protected Date choiceFreezeDate;
 
@@ -49,12 +48,12 @@ public class IndicatorFreezeManagedBean extends SuperSingleBean<Indicator> {
         c.setTime(choiceFreezeDate);
         int seq = c.get(Calendar.YEAR);
         if (!"".equals(objtype)) {
-            indicatorsList = indicatorBean.findBySeqObjtypeAndCompany(seq, objtype, company);
+            indicatorsList = indicatorBean.findBySeqObjtypeAndCompany(seq, objtype,userManagedBean.getCompany());
             if (!indicatorsList.isEmpty()) {
                 for (Indicator i : indicatorsList) {
                     if ("V".equals(i.getStatus())) {
                         i.setFreezeDate(choiceFreezeDate);
-                        indicatorBean.update(i);
+                        indicatorBean.update(i); 
                     }
                 }
                 showInfoMsg("Info", "冻结日期成功");
@@ -62,14 +61,6 @@ public class IndicatorFreezeManagedBean extends SuperSingleBean<Indicator> {
                 showErrorMsg("Error", "冻结日期失败");
             }
         }
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public String getObjtype() {

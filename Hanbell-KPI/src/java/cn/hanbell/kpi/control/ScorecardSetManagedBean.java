@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.event.SelectEvent;
 
@@ -450,6 +449,51 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             default:
                 super.openDialog(view);
         }
+    }
+
+    public void updateScorecardexplanationScore() {
+        if (currentDetail != null) {
+            if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
+                showErrorMsg("Error", "资料已冻结,不可更新");
+                return;
+            }
+            ScorecardDetail sd = scorecardDetailBean.findById(currentDetail.getId());
+            try {
+                if (sd != null) {
+                    switch (userManagedBean.getQ()) {
+                        case 1:
+                            sd.getCauseScore1().setQ1(currentDetail.getCauseScore2().getQ1());
+                            sd.getCauseScore2().setQ1(currentDetail.getCauseScore2().getQ1());
+                            sd.getSummaryScore1().setQ1(currentDetail.getSummaryScore1().getQ1());
+                            sd.getSummaryScore2().setQ1(currentDetail.getSummaryScore2().getQ1());
+                            break;
+                        case 2:
+                            sd.getCauseScore1().setQ2(currentDetail.getSummaryScore1().getQ1());
+                            sd.getCauseScore2().setQ2(currentDetail.getCauseScore2().getQ2());
+                            sd.getSummaryScore1().setQ2(currentDetail.getSummaryScore1().getQ2());
+                            sd.getSummaryScore2().setQ2(currentDetail.getSummaryScore2().getQ2());
+                            break;
+                        case 3:
+                            sd.getCauseScore1().setQ3(currentDetail.getCauseScore1().getQ3());
+                            sd.getCauseScore2().setQ3(currentDetail.getCauseScore2().getQ3());
+                            sd.getSummaryScore1().setQ3(currentDetail.getSummaryScore1().getQ3());
+                            sd.getSummaryScore2().setQ3(currentDetail.getSummaryScore2().getQ3());
+                            break;
+                        case 4:
+                            sd.getCauseScore1().setQ4(currentDetail.getCauseScore1().getQ4());
+                            sd.getCauseScore2().setQ4(currentDetail.getCauseScore2().getQ4());
+                            sd.getSummaryScore1().setQ4(currentDetail.getSummaryScore1().getQ4());
+                            sd.getSummaryScore2().setQ4(currentDetail.getSummaryScore2().getQ4());
+                            break;
+                    }
+                    scorecardDetailBean.update(sd);
+                }
+                showInfoMsg("Info", "更新成功");
+            } catch (Exception ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
+
     }
 
     @Override

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl"  showSummary="false" showDetail="true" />
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:button id="btnReturn" value="返回" outcome="scorecardgrant" icon="ui-icon-restore"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton id="btnSave" value="保存" actionListener="#{scorecardGrantManagedBean.update()}" icon="ui-icon-save"
+                                     process="@this,plgHead" update="formOne"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panelGrid id="plgHead"  styleClass="plgHead Wid100">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="4">考核权限—修改</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column><p:outputLabel value="考核编号" for="scorecardid"/></p:column>
+                    <p:column>
+                        <p:inputText id="scorecardid" value="#{scorecardGrantManagedBean.currentEntity.scorecardid}" title="scorecardid"  styleClass="inputWithButton"
+                                     required="true" requiredMessage="请输入考核编号"/>
+                        <p:commandButton id="btnscorecardSelect" actionListener="#{scorecardGrantManagedBean.openEditDialog('scorecardSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{scorecardGrantManagedBean.handleDialogReturnScorecardSelectWhenEdit}"
+                                    process="@this" update="scorecardid,scorecardname" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column><p:outputLabel value="考核名称" for="scorecardname"/></p:column>
+                    <p:column>
+                        <p:inputText id="scorecardname" value="#{scorecardGrantManagedBean.currentEntity.scorecardname}" title="scorecardname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="内容编号" for="contentid"/></p:column>
+                    <p:column>
+                        <p:inputText id="contentid" value="#{scorecardGrantManagedBean.currentEntity.contentid}" title="contentid"  styleClass="inputWithButton"
+                                     required="true" requiredMessage="请输入内容编号"/>
+                        <p:commandButton id="btnContentSelect" actionListener="#{scorecardGrantManagedBean.openEditDialog('scorecardDetailSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{scorecardGrantManagedBean.handleDialogReturnContentNameWhenEdit}"
+                                    update="contentid,contentname" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column><p:outputLabel value="内容名称" for="contentname"/></p:column>
+                    <p:column>
+                        <p:inputText id="contentname" value="#{scorecardGrantManagedBean.currentEntity.contentname}" title="contentname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="指标部门" for="deptno"/></p:column>
+                    <p:column>
+                        <p:inputText id="deptno" value="#{scorecardGrantManagedBean.currentEntity.deptno}" title="deptno"  styleClass="inputWithButton"
+                                     required="true" requiredMessage="请输入指标部门"/>
+                        <p:commandButton id="btnDepartmentSelect" actionListener="#{scorecardGrantManagedBean.openEditDialog('departmentSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{scorecardGrantManagedBean.handleDialogReturnWhenEdit}"
+                                    update="deptno,deptname" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column><p:outputLabel value="部门名称" for="deptname"/></p:column>
+                    <p:column>
+                        <p:inputText id="deptname" value="#{scorecardGrantManagedBean.currentEntity.deptname}" title="deptname" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="基准"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.benchmark}" disabled="false"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="目标"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.target}" disabled="false"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="实际"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.actual}" disabled="false"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="达成率"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.performance}" disabled="false"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><p:outputLabel value="部门得分"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.deptscore}" disabled="false"/>
+                    </p:column>
+                    <p:column><p:outputLabel value="最终得分"/></p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{scorecardGrantManagedBean.currentEntity.generalscore}" disabled="false"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

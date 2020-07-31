@@ -59,7 +59,19 @@ public class ScorecardDetail extends SuperDetailEntity {
     @JoinColumn(name = "otherScoreId", referencedColumnName = "id")
     @OneToOne
     private ScorecardExplanation otherScore;
-
+    @JoinColumn(name = "causeScore1Id", referencedColumnName = "id")
+    @OneToOne
+    private ScorecardExplanation causeScore1;
+    @JoinColumn(name = "summaryScore1Id", referencedColumnName = "id")
+    @OneToOne
+    private ScorecardExplanation summaryScore1;
+    @JoinColumn(name = "causeScore2Id", referencedColumnName = "id")
+    @OneToOne
+    private ScorecardExplanation causeScore2;
+    @JoinColumn(name = "summaryScore2Id", referencedColumnName = "id")
+    @OneToOne
+    private ScorecardExplanation summaryScore2;
+    
     @Size(max = 45)
     @Column(name = "content")
     private String content;
@@ -289,6 +301,7 @@ public class ScorecardDetail extends SuperDetailEntity {
     public ScorecardDetail() {
         this.sortid = 0;
         this.status = "N";
+        this.rate = BigDecimal.ONE;
         this.cq1 = BigDecimal.valueOf(0.9d);
         this.cq2 = BigDecimal.valueOf(0.9d);
         this.cq3 = BigDecimal.valueOf(0.9d);
@@ -886,6 +899,38 @@ public class ScorecardDetail extends SuperDetailEntity {
 
     public void setScoreInterface(String scoreInterface) {
         this.scoreInterface = scoreInterface;
+    }
+
+    public ScorecardExplanation getCauseScore1() {
+        return causeScore1;
+    }
+
+    public void setCauseScore1(ScorecardExplanation causeScore1) {
+        this.causeScore1 = causeScore1;
+    }
+
+    public ScorecardExplanation getSummaryScore1() {
+        return summaryScore1;
+    }
+
+    public void setSummaryScore1(ScorecardExplanation summaryScore1) {
+        this.summaryScore1 = summaryScore1;
+    }
+
+    public ScorecardExplanation getCauseScore2() {
+        return causeScore2;
+    }
+
+    public void setCauseScore2(ScorecardExplanation causeScore2) {
+        this.causeScore2 = causeScore2;
+    }
+
+    public ScorecardExplanation getSummaryScore2() {
+        return summaryScore2;
+    }
+
+    public void setSummaryScore2(ScorecardExplanation summaryScore2) {
+        this.summaryScore2 = summaryScore2;
     }
 
     /**
