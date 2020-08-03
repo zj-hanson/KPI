@@ -136,12 +136,14 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                     break;
                 case "q2":
                     content.setPq2(score);
+                    content.setPh1(score);
                     break;
                 case "q3":
                     content.setPq3(score);
                     break;
                 case "q4":
                     content.setPq4(score);
+                    content.setPh2(score);
                     break;
                 default:
             }
@@ -179,6 +181,8 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 case "q2":
                     d.getDeptScore().setSq2(score);
                     d.getGeneralScore().setSq2(score);
+                    d.getDeptScore().setSh1(score);
+                    d.getGeneralScore().setSh1(score);
                     break;
                 case "q3":
                     d.getDeptScore().setSq3(score);
@@ -187,6 +191,8 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 case "q4":
                     d.getDeptScore().setSq4(score);
                     d.getGeneralScore().setSq4(score);
+                    d.getDeptScore().setSh2(score);
+                    d.getGeneralScore().setSh2(score);
                     break;
                 default:
             }

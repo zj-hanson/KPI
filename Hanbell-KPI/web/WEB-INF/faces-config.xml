@@ -123,6 +123,11 @@
             <to-view-id>/sys/systemrole.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>scorecardgrant</from-outcome>
+            <to-view-id>/sys/scorecardgrant.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--KPI一级导航-->
     <navigation-rule>
@@ -563,6 +568,16 @@
         <navigation-case>
             <from-outcome>sysuserSelect</from-outcome>
             <to-view-id>/app/df/sysuserSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scorecardSelect</from-outcome>
+            <to-view-id>/app/df/scorecardSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>scorecardDetailSelect</from-outcome>
+            <to-view-id>/app/df/scorecardDetailSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

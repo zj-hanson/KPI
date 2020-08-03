@@ -14,21 +14,13 @@
                         <div class="ui-g-12">
                             <h1>指标月结</h1>
                         </div>
-                        <div class="ui-g-12">
-                            <p:outputLabel for="company" value="请选择公司别" />
-                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                <p:selectOneMenu id="company" value="#{indicatorFreezeManagedBean.company}">
-                                    <f:selectItem itemLabel="上海汉钟精机股份有限公司" itemValue="C" />
-                                    <f:selectItem itemLabel="浙江汉神精机股份有限公司" itemValue="H" />
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                        </div>
                         <h:outputLabel value="请选择结算对象" for="objtype"/>
                         <div class="ui-g-12">
-                            <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="1">
-                                <p:selectOneRadio id="objtype" value="#{indicatorFreezeManagedBean.objtype}" unselectable="true">
-                                    <f:selectItem itemLabel="产品指标" itemValue="P" />
-                                    <f:selectItem itemLabel="员工指标" itemValue="E" />
+                            <h:panelGrid>
+                                <p:selectOneRadio id="objtype" value="#{indicatorFreezeManagedBean.objtype}" unselectable="true" layout="grid" columns="1">
+                                    <f:selectItem itemLabel="产品指标" itemValue="P"/>
+                                    <f:selectItem itemLabel="部门指标" itemValue="D"/>
+                                    <f:selectItem itemLabel="员工指标" itemValue="E"/>
                                 </p:selectOneRadio>
                             </h:panelGrid>
                         </div>

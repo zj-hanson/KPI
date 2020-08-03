@@ -8,9 +8,11 @@ package cn.hanbell.kpi.control;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardContentBean;
+import cn.hanbell.kpi.ejb.ScorecardGrantBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardContent;
+import cn.hanbell.kpi.entity.ScorecardGrant;
 import cn.hanbell.kpi.lazy.ScorecardContentModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
@@ -24,6 +26,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -39,6 +42,10 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     private ScorecardBean scorecardBean;
     @EJB
     private ScorecardContentBean scorecardContentBean;
+    @EJB
+    private ScorecardGrantBean scorecardGrantBean;
+
+    protected ScorecardGrant scorecardGrant;
 
     protected Calendar c;
     private Scorecard scorecard;
@@ -261,8 +268,26 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         model.getSortFields().put("seq", "ASC");
         model.getSortFields().put("deptno", "ASC");
         model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
-        model.getFilterFields().put("pid", getScorecard().getId());
+        if (this.getScorecard() != null && this.getScorecard().getId() != null) {
+            model.getFilterFields().put("pid", getScorecard().getId());
+        }
         super.init();
+    }
+
+    public void handleDialogReturnWhenSelect(SelectEvent event) {
+        //考核表修改权限设定
+        if (scorecard.getId() != null) {
+            scorecardGrant = scorecardGrantBean.findByCompanyAndScorecardidAndContentidAndSeq(userManagedBean.getCompany(), scorecard.getId(), currentEntity.getId(), c.get(Calendar.YEAR));
+            if (scorecardGrant == null) {
+                scorecardGrant = new ScorecardGrant();
+                scorecardGrant.setBenchmark(false);
+                scorecardGrant.setTarget(false);
+                scorecardGrant.setActual(false);
+                scorecardGrant.setPerformance(false);
+                scorecardGrant.setDeptscore(false);
+                scorecardGrant.setGeneralscore(false);
+            }
+        }
     }
 
     @Override
@@ -318,6 +343,14 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
      */
     public boolean isFreezed() {
         return freezed;
+    }
+
+    public ScorecardGrant getScorecardGrant() {
+        return scorecardGrant;
+    }
+
+    public void setScorecardGrant(ScorecardGrant scorecardGrant) {
+        this.scorecardGrant = scorecardGrant;
     }
 
 }
