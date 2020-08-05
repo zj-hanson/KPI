@@ -14,7 +14,7 @@ public class SalesOrderQuantityPPL2 extends SalesOrderQuantity {
     public SalesOrderQuantityPPL2() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
+        //queryParams.put("decode", "2");
         queryParams.put("deptno", " '1H000','1H100' ");
         queryParams.put("n_code_DA", " ='P' ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
