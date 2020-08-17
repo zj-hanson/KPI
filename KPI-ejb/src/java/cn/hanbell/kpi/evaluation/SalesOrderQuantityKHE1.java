@@ -5,6 +5,10 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+
 /**
  *
  * @author C1879
@@ -19,6 +23,22 @@ public class SalesOrderQuantityKHE1 extends SalesOrderQuantity {
         queryParams.put("n_code_DA", " ='OH' ");
         queryParams.put("n_code_DC", " ='HE' ");
         queryParams.put("n_code_DD", " ='00' ");
+    }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal temp1, temp2;
+        //ComerERP
+        temp1 = super.getValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.remove("deptno");
+        queryParams.remove("n_code_CD");
+        queryParams.put("facno", "E");
+        queryParams.put("deptno", " '8A000' ");
+        //ZJComerERP
+        temp2 = super.getValue(y, m, d, type, queryParams);
+        //ComerERP + ZJComerERP
+        return temp1.add(temp2);
     }
 
 }

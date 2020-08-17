@@ -43,7 +43,7 @@ public class EmployeeShipmentAmount extends Shipment {
 
         StringBuilder sb = new StringBuilder();
         sb.append("select isnull(convert(decimal(16,2),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and d.issevdta='N' and h.facno='${facno}' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
@@ -75,7 +75,7 @@ public class EmployeeShipmentAmount extends Shipment {
 
         sb.setLength(0);
         sb.append("select isnull(convert(decimal(16,2),sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and d.issevdta='N' and h.facno='${facno}' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");

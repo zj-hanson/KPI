@@ -95,6 +95,16 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="comer"/>
     </properties>
   </persistence-unit>
+  <persistence-unit name="PU_zjcomererp" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/zjcomererp</jta-data-source>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.canonicalmodel.subpackage" value="zjcomer"/>
+    </properties>
+  </persistence-unit>
   <persistence-unit name="PU_qtcerp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/qtcerp</jta-data-source>
