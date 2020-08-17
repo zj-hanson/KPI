@@ -60,7 +60,7 @@ public class InventoryTurnoverA3 extends InventoryTurnover {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT isnull(sum(amt),0) from ( ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(facno)) {
             sb.append(" AND facno ").append(facno);
         }
@@ -82,7 +82,7 @@ public class InventoryTurnoverA3 extends InventoryTurnover {
          * 附属配件
          */
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(facno)) {
             sb.append(" AND facno ").append(facno);
         }
@@ -131,7 +131,7 @@ public class InventoryTurnoverA3 extends InventoryTurnover {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT isnull(sum(amt),0) from ( ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(facno)) {
             sb.append(" AND facno ").append(facno);
         }
@@ -153,7 +153,7 @@ public class InventoryTurnoverA3 extends InventoryTurnover {
          * 附属配件
          */
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(facno)) {
             sb.append(" AND facno ").append(facno);
         }

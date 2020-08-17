@@ -210,7 +210,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT isnull(sum(amt),0) from ( ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
         }
@@ -226,7 +226,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
         sb.append(" and yea = ${y} and mon= ${m} ");
         sb.append(" UNION ALL ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_other WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
         }
@@ -272,7 +272,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT isnull(sum(amt),0) FROM ( ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
         }
@@ -288,7 +288,7 @@ public class InventoryTurnoverA1 extends InventoryTurnover {
         sb.append(" and yea = ${y} and mon <= ${m} ");
         sb.append(" UNION ALL ");
         sb.append(" SELECT isnull(sum(otramt),0) as amt FROM N_CDRX666_armdta WHERE 1=1 ");
-        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND cusno not IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(issevdta)) {
             sb.append(" AND issevdta = ").append(issevdta);
         }

@@ -170,7 +170,7 @@ public class TurnoverDays implements Actual {
             sb.append("SELECT isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) ");
         }
         sb.append(" from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and h.facno='${facno}' ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and d.shpno like 'HC%' ");
@@ -200,7 +200,7 @@ public class TurnoverDays implements Actual {
             sb.append("select isnull(convert(decimal(16,4),sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) ");
         }
         sb.append(" from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and h.facno='${facno}' ");
         if ("WX".equals(n_code_CD)) {
             sb.append(" and d.shpno like 'HC%' ");
@@ -474,18 +474,18 @@ public class TurnoverDays implements Actual {
         sb.append(" (CASE WHEN armbil.address3 is null THEN '' ELSE armbil.address3 END ) as n_code_CD,(booamt - recamt) as booamt ");
         sb.append(" FROM armhad ,armbil where armhad.facno=armbil.facno AND armhad.hadno=armbil.bilno ");
         sb.append(" AND ((armhad.booamt - armhad.recamt)<> 0) AND armhad.facno = '${facno}' ");
-        sb.append(" AND (armhad.accno='1122') AND (armhad.difcod in ('1','3')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND (armhad.accno='1122') AND (armhad.difcod in ('1','3')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" union all ");
         sb.append(" SELECT (CASE WHEN armhad.n_code_DA is null THEN '' ELSE armhad.n_code_DA END ) as n_code_DA, ");
         sb.append(" (CASE WHEN armhad.isserve is null THEN '' ELSE armhad.isserve END ) as issevdta,(armhad.booamt - armhad.recamt) as booamt ");
         sb.append(" FROM armhad where ((armhad.booamt - armhad.recamt)<> 0) AND armhad.facno = '${facno}' ");
-        sb.append(" AND (armhad.accno='1122') AND (armhad.difcod ='6') AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND (armhad.accno='1122') AND (armhad.difcod ='6') AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" union all ");
         sb.append(" SELECT  '' as n_code_DA , '' as issevdta, (armhad.booamt - armhad.recamt) as booamt ");
         sb.append(" FROM armhad where ((armhad.booamt - armhad.recamt)<> 0)  AND armhad.facno = '${facno}'  AND (armhad.accno='1122') ");
-        sb.append(" AND (armhad.difcod not in ('1','3','6')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" AND (armhad.difcod not in ('1','3','6')) AND armhad.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and armhad.bildat< '${d}' ");
         sb.append(" ) a where 1=1 ");
         if ("WX".equals(n_code_CD)) {
@@ -534,7 +534,7 @@ public class TurnoverDays implements Actual {
         sb.append(" where ( armrech.facno = armtnf.facno ) and ( armrech.vouno = armtnf.vouno ) and ( armrech.facno = armrec.facno ) AND ( armtnf.accno = armrec.raccno )");
         sb.append(" and ( armrech.recno = armrec.recno ) and armrec.raccno='1122' and armrec.rectype = '2' and armtnf.hadno not like 'HC%' and armrec.recno in  ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
-        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
+        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
         if (!"LJ".equals(type)) {
             sb.append(" and year(armrech.recdate) = ${y} and month(armrech.recdate)= ${m} ");
         } else {
@@ -547,7 +547,7 @@ public class TurnoverDays implements Actual {
         sb.append(" where ( armrech.facno = armtnf.facno ) and ( armrech.vouno = armtnf.vouno ) and ( armrech.facno = armrec.facno ) ");
         sb.append(" and ( armrech.recno = armrec.recno ) and armrec.raccno='1122' and armrec.rectype = '2' and armtnf.hadno like 'HC%' and armrec.recno in  ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
-        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
+        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
         if (!"LJ".equals(type)) {
             sb.append(" and year(armrech.recdate) = ${y} and month(armrech.recdate)= ${m} ");
         } else {
@@ -560,7 +560,7 @@ public class TurnoverDays implements Actual {
         sb.append(" ( CASE WHEN armhad.n_code_CD is null THEN '' ELSE armhad.n_code_CD END ) as n_code_CD,(armrec.recamt) as recamt ");
         sb.append(" FROM armhad,armrec where armhad.facno=armrec.facno and armhad.hadno=armrec.recno and armrec.raccno='2203' AND armrec.rectype = '2' and armrec.recno in ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
-        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
+        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
         if (!"LJ".equals(type)) {
             sb.append(" and year(armrech.recdate) = ${y} and month(armrech.recdate)= ${m} ");
         } else {
@@ -571,7 +571,7 @@ public class TurnoverDays implements Actual {
         sb.append(" SELECT   '' as n_code_DA , '' as issevdta,'' as n_code_CD, (case when armrec.rectype = '2' then  armrec.recamt ELSE  -armrec.recamt end) as recamt ");
         sb.append(" FROM armrec where armrec.raccno='6805' and armrec.recno in  ");
         sb.append(" ( SELECT armrec.recno  FROM armrec,armrech  where ( armrech.facno = armrec.facno ) and ( armrech.recno = armrec.recno ) and  ( armrec.facno = '${facno}' )  ");
-        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
+        sb.append(" and  armrec.rectype = '1' and armrec.ivocus NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and   ( armrec.raccno in ('1121','6806') or left(armrec.raccno,2)='10')");
         if (!"LJ".equals(type)) {
             sb.append(" and year(armrech.recdate) = ${y} and month(armrech.recdate)= ${m} ");
         } else {

@@ -37,7 +37,7 @@ public class SalesOrderQuantity extends SalesOrder {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
-        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
         sb.append(" and d.drecsta not in ('98','99','10') ");
         if (!"".equals(decode)) {

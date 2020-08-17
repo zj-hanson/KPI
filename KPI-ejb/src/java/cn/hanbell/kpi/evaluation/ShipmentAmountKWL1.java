@@ -30,4 +30,19 @@ public class ShipmentAmountKWL1 extends ShipmentAmount {
         return BigDecimal.ZERO;
     }
 
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal temp1, temp2;
+        //ComerERP
+        temp1 = super.getValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.remove("deptno");
+        queryParams.put("facno", "E");
+        queryParams.put("deptno", " '8A000' ");
+        //ZJComerERP
+        temp2 = super.getValue(y, m, d, type, queryParams);
+        //ComerERP + ZJComerERP
+        return temp1.add(temp2);
+    }
+
 }
