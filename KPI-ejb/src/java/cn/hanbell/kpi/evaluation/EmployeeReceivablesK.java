@@ -5,6 +5,9 @@
  */
 package cn.hanbell.kpi.evaluation;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -16,4 +19,15 @@ public class EmployeeReceivablesK extends EmployeeReceivables {
         super();
         queryParams.put("facno", "K");
     }
+
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal temp1, temp2;
+        temp1 = super.getValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.put("facno", "E");
+        temp2 = super.getValue(y, m, d, type, queryParams);
+        return temp1.add(temp2);
+    }
+
 }

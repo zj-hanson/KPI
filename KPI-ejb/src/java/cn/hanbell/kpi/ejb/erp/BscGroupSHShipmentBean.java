@@ -271,6 +271,24 @@ public class BscGroupSHShipmentBean implements Serializable {
             }
         }
         queryParams.clear();
+        queryParams.put("facno", "E");
+        queryParams.put("depno", " IN('8A000') ");
+        queryParams.put("n_code_DA", " ='OH' ");
+        queryParams.put("n_code_DD", " IN ('02') ");
+        queryParams.put("ogdkid", " IN ('RL01','RL03') ");
+        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
         queryParams.put("facno", "K");
         queryParams.put("depno", " IN('5C000','5A000') ");
         queryParams.put("n_code_DA", " ='RT' ");
@@ -318,7 +336,7 @@ public class BscGroupSHShipmentBean implements Serializable {
         sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as quantity, ");
         sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD  ,mancode,hmark1,hmark2 ");
         sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'  ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -331,7 +349,7 @@ public class BscGroupSHShipmentBean implements Serializable {
         //销退
         sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,  -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as quantity, ");
         sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD  ,mancode,hmark1,hmark2 ");
-        sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -348,7 +366,7 @@ public class BscGroupSHShipmentBean implements Serializable {
             sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
             sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno ");
-            sb.append(" where h.facno='${facno}' and h.houtsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            sb.append(" where h.facno='${facno}' and h.houtsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
             }
@@ -359,7 +377,7 @@ public class BscGroupSHShipmentBean implements Serializable {
             sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity, ");
             sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode,hmark1,hmark2 from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
-            sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
             }
@@ -374,7 +392,7 @@ public class BscGroupSHShipmentBean implements Serializable {
             sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
             sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W' ");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
             }
@@ -388,7 +406,7 @@ public class BscGroupSHShipmentBean implements Serializable {
             sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity, ");
             sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append("  ,mancode,hmark1,hmark2 from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
-            sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'");
+            sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N'");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
             }
@@ -577,7 +595,7 @@ public class BscGroupSHShipmentBean implements Serializable {
         sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as quantity, ");
         sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD  ,mancode,hmark1,hmark2 ");
         sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'  ");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00'  ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00'  ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -603,7 +621,7 @@ public class BscGroupSHShipmentBean implements Serializable {
         sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,  -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as quantity, ");
         sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD  ,mancode,hmark1,hmark2 ");
         sb.append(" from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  ");
-        sb.append(" and  h.facno='${facno}' and d.issevdta='N' and d.n_code_DD ='00' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and  h.facno='${facno}' and d.issevdta='N' and d.n_code_DD ='00' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -671,7 +689,7 @@ public class BscGroupSHShipmentBean implements Serializable {
         if (depno.contains("5A")) {
             aa = "'RT'";
         }
-        if (depno.contains("5B")) {
+        if (depno.contains("5B") || depno.contains("8A")) {
             aa = "'OH'";
         }
         if (depno.contains("5C")) {

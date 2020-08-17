@@ -227,7 +227,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" ,n_code_DA,n_code_DC,n_code_DD,e.username AS manname FROM ( select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno, ");
         sb.append(" isnull(sum(d.cdrqy1),0) AS quantity,isnull(convert(decimal(16,6),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
         sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
-        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' and d.drecsta not in ('10') AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') and  h.facno='${facno}' ");
+        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' and d.drecsta not in ('10') AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and  h.facno='${facno}' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
         }
@@ -244,7 +244,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,isnull(-sum(d.cdrqy1),0) AS quantity, ");
         sb.append(" isnull(convert(decimal(16,6),-sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
-        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') and  h.facno='${facno}' ");
+        sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and  h.facno='${facno}' ");
         sb.append(" and d.drecsta in ('98','99') ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
@@ -291,7 +291,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" isnull(sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ),0) as quantity, ");
         sb.append(" isnull(convert(decimal(16,6),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
         }
@@ -308,7 +308,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         sb.append(" isnull(-sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ),0)quantity, ");
         sb.append(" isnull(convert(decimal(16,6),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode  from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and h.facno='${facno}'");
-        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' and d.n_code_DD ='00' ");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(userid)) {
             sb.append(" and h.mancode ='").append(userid).append("' ");
         }
@@ -326,7 +326,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
             sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
             sb.append(" isnull(convert(decimal(16,6),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W'");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N' ");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
             if (!"".equals(userid)) {
                 sb.append(" and h.mancode ='").append(userid).append("' ");
             }
@@ -343,7 +343,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
             sb.append("  select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,");
             sb.append(" isnull(convert(decimal(16,6),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode  from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno  where h.baksta <> 'W'  and h.facno='${facno}'");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') and d.issevdta='N'");
+            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N'");
             if (!"".equals(userid)) {
                 sb.append(" and h.mancode ='").append(userid).append("' ");
             }
@@ -474,7 +474,7 @@ public class DSALPBean extends SuperEJB<DSALP> {
         if (depno.contains("5A")) {
             aa = "'RT'";
         }
-        if (depno.contains("5B")) {
+        if (depno.contains("5B") || depno.contains("8A")) {
             aa = "'OH'";
         }
         if (depno.contains("5C")) {

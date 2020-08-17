@@ -211,6 +211,21 @@ public class BscGroupSHSaleOrderBean implements Serializable {
             }
         }
         queryParams.clear();
+        queryParams.put("facno", "E");
+        queryParams.put("n_code_DA", " ='OH' ");
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.clear();
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='RT' ");
         tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
@@ -252,7 +267,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(" select h.recdate,isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as tramt  ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
-        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
         sb.append(" and d.drecsta not in ('98','99','10') ");
         if (!"".equals(decode)) {
@@ -362,7 +377,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         BigDecimal result = BigDecimal.ZERO;
         sb.append(" select isnull(sum(d.cdrqy1),0) as num ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
-        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
+        sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
         sb.append(" and d.drecsta not in ('98','99','10') ");
         if (n_code_DA.contains("AA")) {
@@ -441,7 +456,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         if (depno.contains("5A")) {
             aa = "'RT'";
         }
-        if (depno.contains("5B")) {
+        if (depno.contains("5B") || depno.contains("8A")) {
             aa = "'OH'";
         }
         if (depno.contains("5C")) {
