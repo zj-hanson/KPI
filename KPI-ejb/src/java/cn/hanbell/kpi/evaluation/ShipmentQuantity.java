@@ -9,8 +9,6 @@ import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Query;
 
 /**
@@ -116,7 +114,7 @@ public abstract class ShipmentQuantity extends Shipment {
             shpqy1 = (BigDecimal) o1;
             bshpqy1 = (BigDecimal) o2;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex);
         }
         return shpqy1.subtract(bshpqy1);
     }
