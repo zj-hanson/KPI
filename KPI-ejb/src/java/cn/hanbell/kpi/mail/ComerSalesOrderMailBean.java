@@ -145,6 +145,7 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
             //再生能源部分
             this.indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("再生订单台数", y);
+            indicatorBean.getEntityManager().clear();
             total = indicatorBean.getSumValue(indicators);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
@@ -158,7 +159,6 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
 
         } catch (Exception ex) {
@@ -282,7 +282,6 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
         } catch (Exception ex) {
             return ex.toString();

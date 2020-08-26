@@ -149,6 +149,7 @@ public class ComerShipmentMailBean extends ShipmentMail {
             //再生能源部分
             this.indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("再生每日出货台数", y);
+            indicatorBean.getEntityManager().clear();
             total = indicatorBean.getSumValue(indicators);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
@@ -162,7 +163,6 @@ public class ComerShipmentMailBean extends ShipmentMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
 
         } catch (Exception ex) {
@@ -271,7 +271,6 @@ public class ComerShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            total = getSumIndicator();
             total = indicatorBean.getSumValue(indicators);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
@@ -284,7 +283,6 @@ public class ComerShipmentMailBean extends ShipmentMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
         } catch (Exception ex) {
             return ex.toString();
