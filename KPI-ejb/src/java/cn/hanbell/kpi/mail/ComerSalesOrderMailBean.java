@@ -145,6 +145,7 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
             //再生能源部分
             this.indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("再生订单台数", y);
+            indicatorBean.getEntityManager().clear();
             total = indicatorBean.getSumValue(indicators);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
@@ -158,7 +159,6 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
 
         } catch (Exception ex) {
@@ -282,7 +282,6 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
                 getHtmlTableRow_OH(total, y, m, d);
             }
             indicators.add(total);
-            indicatorBean.getEntityManager().clear();
             sb.append(getHtmlTable_OH(indicators, y, m, d, false, ""));
         } catch (Exception ex) {
             return ex.toString();
@@ -388,16 +387,16 @@ public class ComerSalesOrderMailBean extends SalesOrderMail {
                 }
                 //本日上海柯茂出货
                 if (indicator.getOther1Interface() != null && indicator.getOther1EJB() != null) {
-                    Actual other1Interface1 = (Actual) Class.forName(indicator.getOther1Interface()).newInstance();
-                    other1Interface1.setEJB(indicator.getActualEJB());
-                    numC1 = other1Interface1.getValue(y, m, d, Calendar.DATE, other1Interface1.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+                    Actual other1Interface = (Actual) Class.forName(indicator.getOther1Interface()).newInstance();
+                    other1Interface.setEJB(indicator.getOther1EJB());
+                    numC1 = other1Interface.getValue(y, m, d, Calendar.DATE, other1Interface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
                 } else {
                     numC1 = BigDecimal.ZERO;
                 }
                 //本日浙江柯茂出货
                 if (indicator.getOther2Interface() != null && indicator.getOther2EJB() != null) {
                     Actual other2Interface = (Actual) Class.forName(indicator.getOther2Interface()).newInstance();
-                    other2Interface.setEJB(indicator.getActualEJB());
+                    other2Interface.setEJB(indicator.getOther2EJB());
                     numC2 = other2Interface.getValue(y, m, d, Calendar.DATE, other2Interface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
                 } else {
                     numC2 = BigDecimal.ZERO;
