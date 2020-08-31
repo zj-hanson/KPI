@@ -10,49 +10,58 @@
     <ui:define name="content">
         <h:form id="formOne" rendered="#{!inventoryAmount1NReportBean.deny}">
             <div class="ui-g dashboard">
-                <div class="ui-g-12 ui-md-12">
-                    <div><h3 style="text-align: center"><span style="float: left">单位:#{inventoryAmount1NReportBean.indicator.unit}</span>#{inventoryAmount1NReportBean.y}&nbsp;&nbsp;#{inventoryAmount1NReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/></h3></div>
-                    <p:dataTable var="item" value="#{inventoryAmount1NReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100"  reflow="true" stickyHeader="true">
+                <div class="ui-g-12 ui-md-12" align="center">
+                    <div><h3 style="text-align: center">
+                            <span style="float: left">单位:#{inventoryAmount1NReportBean.indicator.unit}</span>#{inventoryAmount1NReportBean.y}&nbsp;&nbsp;#{inventoryAmount1NReportBean.indicatorChart.name}<p:link value="返回" outcome="home" style="float: right"/>
+                            <div style="float:right;margin-right:12px;">
+                                <h:selectBooleanCheckbox value="#{inventoryAmount1NReportBean.monthchecked}"  title="√不选中为所以数据" style="height: 18px;width: 18px">
+                                    <span>只显示当月</span>
+                                    <p:ajax process="@this" update="formOne"/>
+                                </h:selectBooleanCheckbox>
+                            </div>
+                        </h3>
+                    </div>
+                    <p:dataTable var="item" value="#{inventoryAmount1NReportBean.indicatorDetailList}" styleClass="#{inventoryAmount1NReportBean.monthchecked==true?'plgSheetData Wid30':'plgSheetData Wid100'}"  reflow="true" stickyHeader="true">
                         <p:column headerText="部门" groupRow="true">
                             <h:outputText value="#{item.parent.name.replace('库存金额', '')}" />
                         </p:column>
                         <p:column headerText="类别">
                             <h:outputText value="#{item.type}" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M01">
+                        <p:column headerText="M01" visible="#{inventoryAmount1NReportBean.visible(1)}" priority="#{inventoryAmount1NReportBean.m==1?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n01,1)}" />
                         </p:column>
-                        <p:column headerText="M02">
+                        <p:column headerText="M02" visible="#{inventoryAmount1NReportBean.visible(2)}" priority="#{inventoryAmount1NReportBean.m==2?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n02,2) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M03">
+                        <p:column headerText="M03" visible="#{inventoryAmount1NReportBean.visible(3)}" priority="#{inventoryAmount1NReportBean.m==3?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n03,3) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M04">
+                        <p:column headerText="M04" visible="#{inventoryAmount1NReportBean.visible(4)}" priority="#{inventoryAmount1NReportBean.m==4?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n04,4) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M05">
+                        <p:column headerText="M05" visible="#{inventoryAmount1NReportBean.visible(5)}" priority="#{inventoryAmount1NReportBean.m==5?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n05,5) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M06">
+                        <p:column headerText="M06" visible="#{inventoryAmount1NReportBean.visible(6)}" priority="#{inventoryAmount1NReportBean.m==6?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n06,6) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M07">
+                        <p:column headerText="M07" visible="#{inventoryAmount1NReportBean.visible(7)}" priority="#{inventoryAmount1NReportBean.m==7?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n07,7) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M08">
+                        <p:column headerText="M08" visible="#{inventoryAmount1NReportBean.visible(8)}" priority="#{inventoryAmount1NReportBean.m==8?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n08,8) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M09">
+                        <p:column headerText="M09" visible="#{inventoryAmount1NReportBean.visible(9)}" priority="#{inventoryAmount1NReportBean.m==9?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n09,9) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M10">
+                        <p:column headerText="M10" visible="#{inventoryAmount1NReportBean.visible(10)}" priority="#{inventoryAmount1NReportBean.m==10?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n10,10) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M11">
+                        <p:column headerText="M11" visible="#{inventoryAmount1NReportBean.visible(11)}" priority="#{inventoryAmount1NReportBean.m==11?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n11,11) }" ></h:outputText>
                         </p:column>
-                        <p:column headerText="M12">
+                        <p:column headerText="M12" visible="#{inventoryAmount1NReportBean.visible(12)}" priority="#{inventoryAmount1NReportBean.m==12?4:5}">
                             <h:outputText value="#{inventoryAmount1NReportBean.format(item.type,item.n12,12) }" ></h:outputText>
                         </p:column>
                     </p:dataTable>

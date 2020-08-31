@@ -71,6 +71,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
     protected int m;
 
     protected int scale;
+    protected boolean monthchecked;
 
     public BscChartManagedBean() {
         super(Indicator.class);
@@ -94,6 +95,7 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
 
     @Override
     public void init() {
+        monthchecked = true;
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String id = request.getParameter("id");
         if (id == null) {
@@ -597,6 +599,18 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         }
     }
 
+    public boolean visible(int m) {
+        if (m == this.m) {
+            return true;
+        } else {
+            if (monthchecked == false) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    
     /**
      * @return the indicatorChart
      */
@@ -723,4 +737,11 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
         return summaryCount;
     }
 
+    public boolean isMonthchecked() {
+        return monthchecked;
+    }
+
+    public void setMonthchecked(boolean monthchecked) {
+        this.monthchecked = monthchecked;
+    }
 }

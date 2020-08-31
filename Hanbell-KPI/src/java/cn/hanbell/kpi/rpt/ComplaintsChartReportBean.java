@@ -45,6 +45,7 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
 
     Indicator thisMIS;
     protected LineChartModel chartMIS;
+    protected LineChartModel chartAjzModel;
     protected boolean hasMIS;
     protected boolean display = false;
 
@@ -213,6 +214,140 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
                         setMethod.invoke(period, BigDecimal.valueOf(getM() + j));
                         j--;
                     }
+                    //产生A机组的图表（A机组有（9框的值，做特殊处理）
+                    if ("KS-机组保内".equals(getIndicator().getFormid())) {
+                        chartAjzModel = new LineChartModel();
+                        ChartSeries t = new ChartSeries();
+                        t.setLabel("目标");
+                        switch (getIndicator().getFormkind()) {
+                            case "M":
+                                t.set("M01", getIndicator().getOther5Indicator().getN01().doubleValue());
+                                t.set("M02", getIndicator().getOther5Indicator().getN02().doubleValue());
+                                t.set("M03", getIndicator().getOther5Indicator().getN03().doubleValue());
+                                t.set("M04", getIndicator().getOther5Indicator().getN04().doubleValue());
+                                t.set("M05", getIndicator().getOther5Indicator().getN05().doubleValue());
+                                t.set("M06", getIndicator().getOther5Indicator().getN06().doubleValue());
+                                t.set("M07", getIndicator().getOther5Indicator().getN07().doubleValue());
+                                t.set("M08", getIndicator().getOther5Indicator().getN08().doubleValue());
+                                t.set("M09", getIndicator().getOther5Indicator().getN09().doubleValue());
+                                t.set("M10", getIndicator().getOther5Indicator().getN10().doubleValue());
+                                t.set("M11", getIndicator().getOther5Indicator().getN11().doubleValue());
+                                t.set("M12", getIndicator().getOther5Indicator().getN12().doubleValue());
+                                break;
+                        }
+
+                        ChartSeries a = new ChartSeries();
+                        a.setLabel("实际");
+                        switch (getIndicator().getFormkind()) {
+                            case "M":
+                                if (getIndicator().getOther3Indicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M01", getIndicator().getOther3Indicator().getN01().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M02", getIndicator().getOther3Indicator().getN02().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M03", getIndicator().getOther3Indicator().getN03().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M04", getIndicator().getOther3Indicator().getN04().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M05", getIndicator().getOther3Indicator().getN05().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M06", getIndicator().getOther3Indicator().getN06().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M07", getIndicator().getOther3Indicator().getN07().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M08", getIndicator().getOther3Indicator().getN08().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M09", getIndicator().getOther3Indicator().getN09().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M10", getIndicator().getOther3Indicator().getN10().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M11", getIndicator().getOther3Indicator().getN11().doubleValue());
+                                }
+                                if (getIndicator().getOther3Indicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                                    a.set("M12", getIndicator().getOther3Indicator().getN12().doubleValue());
+                                }
+                                break;
+                        }
+
+                        ChartSeries b = new ChartSeries();
+                        b.setLabel("同期");
+                        switch (getIndicator().getFormkind()) {
+                            case "M":
+                                b.set("M01", getIndicator().getOther4Indicator().getN01().doubleValue());
+                                b.set("M02", getIndicator().getOther4Indicator().getN02().doubleValue());
+                                b.set("M03", getIndicator().getOther4Indicator().getN03().doubleValue());
+                                b.set("M04", getIndicator().getOther4Indicator().getN04().doubleValue());
+                                b.set("M05", getIndicator().getOther4Indicator().getN05().doubleValue());
+                                b.set("M06", getIndicator().getOther4Indicator().getN06().doubleValue());
+                                b.set("M07", getIndicator().getOther4Indicator().getN07().doubleValue());
+                                b.set("M08", getIndicator().getOther4Indicator().getN08().doubleValue());
+                                b.set("M09", getIndicator().getOther4Indicator().getN09().doubleValue());
+                                b.set("M10", getIndicator().getOther4Indicator().getN10().doubleValue());
+                                b.set("M11", getIndicator().getOther4Indicator().getN11().doubleValue());
+                                b.set("M12", getIndicator().getOther4Indicator().getN12().doubleValue());
+                                break;
+                        }
+                        ChartSeries nineC = new ChartSeries();
+                        nineC.setLabel("九框");
+                        switch (getIndicator().getFormkind()) {
+                            case "M":
+                                if (getIndicator().getOther6Indicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M01", getIndicator().getOther6Indicator().getN01().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M02", getIndicator().getOther6Indicator().getN02().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M03", getIndicator().getOther6Indicator().getN03().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M04", getIndicator().getOther6Indicator().getN04().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M05", getIndicator().getOther6Indicator().getN05().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M06", getIndicator().getOther6Indicator().getN06().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M07", getIndicator().getOther6Indicator().getN07().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M08", getIndicator().getOther6Indicator().getN08().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M09", getIndicator().getOther6Indicator().getN09().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M10", getIndicator().getOther6Indicator().getN10().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M11", getIndicator().getOther6Indicator().getN11().doubleValue());
+                                }
+                                if (getIndicator().getOther6Indicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
+                                    nineC.set("M12", getIndicator().getOther6Indicator().getN12().doubleValue());
+                                }
+                                break;
+                        }
+                        chartAjzModel.addSeries(t);//目标
+                        chartAjzModel.addSeries(b);//同期
+                        chartAjzModel.addSeries(a);//实际
+                        chartAjzModel.addSeries(nineC);//九框
+                        chartAjzModel.setTitle(getIndicator().getName());
+                        chartAjzModel.setLegendPosition("e");
+                        chartAjzModel.setShowPointLabels(true);
+                        chartAjzModel.setBreakOnNull(true);
+                    }
                     //产生图表
                     chartMIS = new LineChartModel();
                     ChartSeries mr3 = new ChartSeries();
@@ -291,6 +426,15 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
         yAxis = chartMIS.getAxis(AxisType.Y);
         yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
         return chartMIS;
+    }
+
+    public LineChartModel initLineChartAjzModel(String xTitle, String yTitle) {
+        Axis yAxis;
+        chartAjzModel.setSeriesColors("33FF66,FF6633,0000EE,F3F3F3");//自定义颜色
+        chartAjzModel.getAxes().put(AxisType.X, new CategoryAxis(xTitle));
+        yAxis = chartAjzModel.getAxis(AxisType.Y);
+        yAxis.setLabel(Objects.equals(getIndicator().getUnit(), "") ? yTitle : yTitle + "(" + getIndicator().getUnit() + ")");
+        return chartAjzModel;
     }
 
     /**
@@ -421,6 +565,14 @@ public class ComplaintsChartReportBean extends BscChartManagedBean {
 
     public boolean isDisplay() {
         return display;
+    }
+
+    public LineChartModel getChartAjzModel() {
+        return chartAjzModel;
+    }
+
+    public void setChartAjzModel(LineChartModel chartAjzModel) {
+        this.chartAjzModel = chartAjzModel;
     }
 
 }

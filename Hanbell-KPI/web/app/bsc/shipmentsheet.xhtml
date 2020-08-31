@@ -10,61 +10,67 @@
     <ui:define name="content">
         <h:form id="formOne" rendered="#{!shipmentSheetReportBean.deny}">
             <div class="ui-g dashboard">
-                <div class="ui-g-12 ui-md-12">
+                <div class="ui-g-12 ui-md-12" align="center">
                     <div><h3 style="text-align: center">
                             <span style="float: left">单位:#{shipmentSheetReportBean.indicator.unit}</span>#{shipmentSheetReportBean.y}&nbsp;&nbsp;#{shipmentSheetReportBean.indicatorChart.name}
                             <p:link value="返回" outcome="home" style="float: right"/>
                             <p:selectOneRadio id="scale" value="#{shipmentSheetReportBean.scale}" style="float:right" >
                                 <f:selectItem itemLabel="0位" itemValue="0" />
                                 <f:selectItem itemLabel="2位" itemValue="2" />
-                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                                <p:ajax process="@this" update="formOne"/>
                             </p:selectOneRadio>
+                            <div style="float:right;margin-right:12px;">
+                                <h:selectBooleanCheckbox value="#{shipmentSheetReportBean.monthchecked}"  title="√不选中为所以数据" style="height: 18px;width: 18px">
+                                <span>只显示当月</span>
+                                <p:ajax process="@this" update="formOne"/>
+                                </h:selectBooleanCheckbox>
+                            </div>
                         </h3>
                     </div>
-                    <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="plgSheetData Wid100" reflow="true" stickyHeader="true">
-                        <p:column headerText="产品" groupRow="true"> 
-                            <p:link rendered="#{shipmentSheetReportBean.isExists(item.parent.formid, item.parent.deptno)}"  value="#{item.parent.name}" outcome="#{shipmentSheetReportBean.sheetChart.api}" includeViewParams="true" >                                   
-                                <f:param name="id" value="#{shipmentSheetReportBean.sheetChart.id}" />                                                                
+                    <p:dataTable var="item" value="#{shipmentSheetReportBean.indicatorDetailList}" styleClass="#{shipmentSheetReportBean.monthchecked==true?'plgSheetData Wid30':'plgSheetData Wid100'}" reflow="true" stickyHeader="true">
+                        <p:column headerText="产品" groupRow="true">
+                            <p:link rendered="#{shipmentSheetReportBean.isExists(item.parent.formid, item.parent.deptno)}"  value="#{item.parent.name}" outcome="#{shipmentSheetReportBean.sheetChart.api}" includeViewParams="true" >
+                                <f:param name="id" value="#{shipmentSheetReportBean.sheetChart.id}" />
                             </p:link>
                             <h:outputText value="#{item.parent.name}" rendered="#{!shipmentSheetReportBean.isExists}" />
                         </p:column>
                         <p:column headerText="类别">
                             <h:outputText value="#{item.type}" />
                         </p:column>
-                        <p:column headerText="1月">
+                        <p:column headerText="1月" visible="#{shipmentSheetReportBean.visible(1)}" priority="#{shipmentSheetReportBean.m==1?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n01,1)}" />
                         </p:column>
-                        <p:column headerText="2月">
+                        <p:column headerText="2月" visible="#{shipmentSheetReportBean.visible(2)}" priority="#{shipmentSheetReportBean.m==2?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n02,2)}" />
                         </p:column>
-                        <p:column headerText="3月">
+                        <p:column headerText="3月" visible="#{shipmentSheetReportBean.visible(3)}" priority="#{shipmentSheetReportBean.m==3?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n03,3)}" />
                         </p:column>
-                        <p:column headerText="4月">
+                        <p:column headerText="4月" visible="#{shipmentSheetReportBean.visible(4)}" priority="#{shipmentSheetReportBean.m==4?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n04,4)}" />
                         </p:column>
-                        <p:column headerText="5月">
+                        <p:column headerText="5月" visible="#{shipmentSheetReportBean.visible(5)}" priority="#{shipmentSheetReportBean.m==5?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n05,5)}" />
                         </p:column>
-                        <p:column headerText="6月">
+                        <p:column headerText="6月" visible="#{shipmentSheetReportBean.visible(6)}" priority="#{shipmentSheetReportBean.m==6?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n06,6)}" />
                         </p:column>
-                        <p:column headerText="7月">
+                        <p:column headerText="7月" visible="#{shipmentSheetReportBean.visible(7)}" priority="#{shipmentSheetReportBean.m==7?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n07,7)}" />
                         </p:column>
-                        <p:column headerText="8月">
+                        <p:column headerText="8月" visible="#{shipmentSheetReportBean.visible(8)}" priority="#{shipmentSheetReportBean.m==8?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n08,8)}" />
                         </p:column>
-                        <p:column headerText="9月">
+                        <p:column headerText="9月" visible="#{shipmentSheetReportBean.visible(9)}" priority="#{shipmentSheetReportBean.m==9?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n09,9)}" />
                         </p:column>
-                        <p:column headerText="10月">
+                        <p:column headerText="10月" visible="#{shipmentSheetReportBean.visible(10)}" priority="#{shipmentSheetReportBean.m==10?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n10,10)}" />
                         </p:column>
-                        <p:column headerText="11月">
+                        <p:column headerText="11月" visible="#{shipmentSheetReportBean.visible(11)}" priority="#{shipmentSheetReportBean.m==11?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n11,11)}" />
                         </p:column>
-                        <p:column headerText="12月">
+                        <p:column headerText="12月" visible="#{shipmentSheetReportBean.visible(12)}" priority="#{shipmentSheetReportBean.m==12?4:5}">
                             <h:outputText value="#{shipmentSheetReportBean.format(item.type,item.n12,12)}" />
                         </p:column>
                         <p:column headerText="全年">

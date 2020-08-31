@@ -32,7 +32,7 @@
                                 <p:column style="width: 12%;background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
                                 <p:column style="width: 6%;background-color:#dbdbdb" rowspan="2" headerText="责任人" />
                                 <p:column style="width: 33%;color: #0033ff;background-color:#dbdbdb" colspan="4" headerText="#{turnoverdaysBean.y}年目标"   />
-                                <p:column style="width: 23%;background-color:#dbdbdb" colspan="3" headerText="实绩" />
+                                <p:column style="width: 23%;background-color:#dbdbdb" colspan="2" headerText="实绩" />
                                 <p:column style="width: 10%;background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
                             </p:row>
                             <p:row>
@@ -40,7 +40,6 @@
                                 <p:column headerText="Q2" style="color: #0033ff;background-color:#dbdbdb" />
                                 <p:column headerText="Q3" style="color: #0033ff;background-color:#dbdbdb" />
                                 <p:column headerText="Q4" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="当月" style="background-color:#dbdbdb" />
                                 <p:column headerText="#{turnoverdaysBean.y}年累计" style="background-color:#dbdbdb" />
                                 <p:column headerText="#{turnoverdaysBean.y-1}年累计" style="background-color:#dbdbdb" />
                             </p:row>
@@ -70,10 +69,7 @@
                             <h:outputText  value="#{turnoverdaysBean.format(item.targetIndicator.nq4)}"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
-                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.actualIndicator))}"  />
-                        </p:column>
-                        <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
-                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.other1Indicator))}" />
+                            <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.actualIndicator))}" />
                         </p:column>
                         <p:column style="#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{turnoverdaysBean.format(turnoverdaysBean.getValue(item.forecastIndicator))}" />
