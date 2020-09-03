@@ -191,7 +191,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                     currentEntity.setSq1(currentEntity.getDeptScore().getSq1());
                     if (currentEntity.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSq1(currentEntity.getGeneralScore().getSq1());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSq1(currentEntity.getGeneralScore().getSq1());
                     }
                     break;
@@ -199,13 +199,13 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                     currentEntity.setSq2(currentEntity.getDeptScore().getSq2());
                     if (currentEntity.getGeneralScore().getSq2().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSq2(currentEntity.getGeneralScore().getSq2());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSq2(currentEntity.getGeneralScore().getSq2());
                     }
                     currentEntity.setSh1(currentEntity.getDeptScore().getSh1());
                     if (currentEntity.getGeneralScore().getSh1().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSh1(currentEntity.getGeneralScore().getSh1());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSh1(currentEntity.getGeneralScore().getSh1());
                     }
                     break;
@@ -213,7 +213,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                     currentEntity.setSq3(currentEntity.getDeptScore().getSq3());
                     if (currentEntity.getGeneralScore().getSq3().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSq3(currentEntity.getGeneralScore().getSq3());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSq3(currentEntity.getGeneralScore().getSq3());
                     }
                     break;
@@ -221,19 +221,19 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                     currentEntity.setSq4(currentEntity.getDeptScore().getSq4());
                     if (currentEntity.getGeneralScore().getSq4().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSq4(currentEntity.getGeneralScore().getSq4());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSq4(currentEntity.getGeneralScore().getSq4());
                     }
                     currentEntity.setSh2(currentEntity.getDeptScore().getSh2());
                     if (currentEntity.getGeneralScore().getSh2().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSh2(currentEntity.getGeneralScore().getSh2());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSh2(currentEntity.getGeneralScore().getSh2());
                     }
                     currentEntity.setSfy(currentEntity.getDeptScore().getSfy());
                     if (currentEntity.getGeneralScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
                         currentEntity.setSfy(currentEntity.getGeneralScore().getSfy());
-                    } else if (currentEntity.getWeight() == 0) {
+                    } else if (currentEntity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                         currentEntity.setSfy(currentEntity.getGeneralScore().getSfy());
                     }
                     break;

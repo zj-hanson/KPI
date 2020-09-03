@@ -71,10 +71,10 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 if (value == null || "".equals(value)) {
                     continue;
                 }
-                if (entity.getWeight() == 0) {
+                if (entity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(value.toString())));
                 } else {
-                    weight = BigDecimal.valueOf(entity.getWeight()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                     score = BigDecimal.valueOf(Double.valueOf(value.toString()));
                     total = total.add(score.multiply(weight));
                 }
@@ -100,10 +100,10 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 if (value == null || "".equals(value)) {
                     continue;
                 }
-                if (entity.getWeight() == 0) {
+                if (entity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(value.toString())));
                 } else {
-                    weight = BigDecimal.valueOf(entity.getWeight()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                     score = BigDecimal.valueOf(Double.valueOf(value.toString()));
                     total = total.add(score.multiply(weight));
                 }

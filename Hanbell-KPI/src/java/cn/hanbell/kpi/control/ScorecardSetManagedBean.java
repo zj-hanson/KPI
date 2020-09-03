@@ -120,43 +120,43 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     case 1:
                         if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
                         }
                         break;
                     case 2:
                         if (currentDetail.getGeneralScore().getSq2().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
                         }
                         if (currentDetail.getGeneralScore().getSh1().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
                         }
                         break;
                     case 3:
                         if (currentDetail.getGeneralScore().getSq3().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
                         }
                         break;
                     case 4:
                         if (currentDetail.getGeneralScore().getSq4().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
                         }
                         if (currentDetail.getGeneralScore().getSh2().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
                         }
                         if (currentDetail.getGeneralScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
-                        } else if (currentDetail.getWeight() == 0) {
+                        } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
                         }
                         break;
@@ -174,11 +174,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             //super.doBeforeVerify()会重设detailList
             if (!currentEntity.getTemplate()) {
                 //不是模板需要检查权重是否100
-                int weight = 0;
+                BigDecimal weight = BigDecimal.ZERO;
                 for (ScorecardDetail d : detailList) {
-                    weight += d.getWeight();
+                    weight = weight.add(d.getWeight());
                 }
-                if (weight != 100) {
+                if (weight.compareTo(BigDecimal.valueOf(100)) != 0) {
                     showErrorMsg("Error", "权重合计需要等于100");
                     return false;
                 }
