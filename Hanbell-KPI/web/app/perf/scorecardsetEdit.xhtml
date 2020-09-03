@@ -640,11 +640,11 @@
                         </p:row>
                     </f:facet>
                 </p:panelGrid>
-                <p:overlayPanel id="dlgStageDescription" widgetVar="dlgStageDescription" appendTo="true" blockScroll="true" for="btnStageDescription" hideEffect="fade" dynamic="true" showCloseIcon="true" styleClass="plgDetail Wid90" >
+                <p:overlayPanel id="dlgStageDescription" widgetVar="dlgStageDescription" appendTo="true" blockScroll="false" for="btnStageDescription" hideEffect="fade" dynamic="true" showCloseIcon="true" style="width:100%" at="top" my="left">
                     <p:panelGrid id="plgDescriptionDetail" styleClass="plgDetail Wid100">
                         <f:facet name="header">
                             <p:row>
-                                <p:column colspan="10">未达标原因分析及对策</p:column>
+                                <p:column colspan="10">当前是#{scorecardSetManagedBean.userManagedBean.y}年，#{scorecardSetManagedBean.currentDetail.content}的未达标原因分析及对策</p:column>
                             </p:row>
                         </f:facet>
                         <p:row style="text-align: center">

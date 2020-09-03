@@ -84,6 +84,7 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
     private IndicatorChart sheetChart;
     private boolean isExists;
     private String formidValue;
+    protected boolean monthchecked;
 
     public BscSheetManagedBean() {
         super(Indicator.class);
@@ -127,6 +128,8 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
 
     @Override
     public void init() {
+        //初始化 默认为只显示当月
+        monthchecked = true;
         HttpServletRequest request = (HttpServletRequest) ec.getRequest();
         String id = request.getParameter("id");
         String mon;
@@ -428,6 +431,18 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
             return indicatorBean.percentFormat(value);
         }
     }
+    
+    public boolean visible(int m){
+        if(m == this.m){
+            return true;
+        }else{
+            if(monthchecked==false){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
 
     /**
      * @return the indicatorChart
@@ -595,6 +610,14 @@ public abstract class BscSheetManagedBean extends SuperQueryBean<Indicator> {
      */
     public void setIsExists(boolean isExists) {
         this.isExists = isExists;
+    }
+
+    public boolean isMonthchecked() {
+        return monthchecked;
+    }
+
+    public void setMonthchecked(boolean monthchecked) {
+        this.monthchecked = monthchecked;
     }
 
 }
