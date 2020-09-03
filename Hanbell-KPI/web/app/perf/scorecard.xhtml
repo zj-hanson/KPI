@@ -102,7 +102,7 @@
                 <f:facet name="header">
                     当前是#{scorecardManagedBean.userManagedBean.y}年第#{scorecardManagedBean.userManagedBean.q}季度绩效考核
                 </f:facet>
-                <p:ajax event="rowSelect"  update="formList:dlgDetail" oncomplete="PF('dlgDetail').show();" listener="#{scorecardManagedBean.handleDialogReturnWhenSelect}" />
+                <p:ajax event="rowSelect"  update="formList:dlgDetail,formList:dlgStageDescription" oncomplete="PF('dlgDetail').show();" listener="#{scorecardManagedBean.handleDialogReturnWhenSelect}" />
                 <p:ajax event="rowUnselect" update=":formList:toolbar" listener="#{scorecardManagedBean.handleDialogReturnWhenSelect}" />
                 <p:column styleClass="Wid20">
                     <f:facet name="header">
@@ -211,19 +211,19 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bq1n" value="#{scorecardManagedBean.currentEntity.bq1}" styleClass="Wid100"  title="bq1"
+                            <p:inputNumber id="bq1n" value="#{scorecardManagedBean.currentEntity.bq1}" styleClass="Wid100"  title="bq1" decimalPlaces="3" 
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tq1n" value="#{scorecardManagedBean.currentEntity.tq1}" styleClass="Wid100"  title="tq1"
+                            <p:inputNumber id="tq1n" value="#{scorecardManagedBean.currentEntity.tq1}" styleClass="Wid100"  title="tq1" decimalPlaces="3" 
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
 
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="aq1" value="#{scorecardManagedBean.currentEntity.aq1}" rows="5" styleClass="Wid100"  title="aq1" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="aq1n" value="#{scorecardManagedBean.currentEntity.aq1}" styleClass="Wid100"  title="aq1"
+                            <p:inputNumber id="aq1n" value="#{scorecardManagedBean.currentEntity.aq1}" styleClass="Wid100"  title="aq1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5">
@@ -250,18 +250,18 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bq2n" value="#{scorecardManagedBean.currentEntity.bq2}" styleClass="Wid100"  title="bq2"
+                            <p:inputNumber id="bq2n" value="#{scorecardManagedBean.currentEntity.bq2}" styleClass="Wid100"  title="bq2" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tq2n" value="#{scorecardManagedBean.currentEntity.tq2}" styleClass="Wid100"  title="tq2"
+                            <p:inputNumber id="tq2n" value="#{scorecardManagedBean.currentEntity.tq2}" styleClass="Wid100"  title="tq2" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="aq2" value="#{scorecardManagedBean.currentEntity.aq2}" rows="5" styleClass="Wid100"  title="aq2" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="aq2n" value="#{scorecardManagedBean.currentEntity.aq2}" styleClass="Wid100"  title="aq2"
+                            <p:inputNumber id="aq2n" value="#{scorecardManagedBean.currentEntity.aq2}" styleClass="Wid100"  title="aq2" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5" style="text-align: right">
@@ -288,18 +288,18 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bh1n" value="#{scorecardManagedBean.currentEntity.bh1}" styleClass="Wid100"  title="bh1"
+                            <p:inputNumber id="bh1n" value="#{scorecardManagedBean.currentEntity.bh1}" styleClass="Wid100"  title="bh1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="th1n" value="#{scorecardManagedBean.currentEntity.th1}" styleClass="Wid100"  title="th1"
+                            <p:inputNumber id="th1n" value="#{scorecardManagedBean.currentEntity.th1}" styleClass="Wid100"  title="th1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="ah1" value="#{scorecardManagedBean.currentEntity.ah1}" rows="5" styleClass="Wid100"  title="ah1" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="ah1n" value="#{scorecardManagedBean.currentEntity.ah1}" styleClass="Wid100"  title="ah1"
+                            <p:inputNumber id="ah1n" value="#{scorecardManagedBean.currentEntity.ah1}" styleClass="Wid100"  title="ah1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5" style="text-align: right">
@@ -326,18 +326,18 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bq3n" value="#{scorecardManagedBean.currentEntity.bq3}" styleClass="Wid100"  title="bq3"
+                            <p:inputNumber id="bq3n" value="#{scorecardManagedBean.currentEntity.bq3}" styleClass="Wid100"  title="bq3" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tq3n" value="#{scorecardManagedBean.currentEntity.tq3}" styleClass="Wid100"  title="tq3"
+                            <p:inputNumber id="tq3n" value="#{scorecardManagedBean.currentEntity.tq3}" styleClass="Wid100"  title="tq3" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="aq3" value="#{scorecardManagedBean.currentEntity.aq3}"  rows="5" styleClass="Wid100"  title="aq3" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="aq3n" value="#{scorecardManagedBean.currentEntity.aq3}" styleClass="Wid100"  title="aq3"
+                            <p:inputNumber id="aq3n" value="#{scorecardManagedBean.currentEntity.aq3}" styleClass="Wid100"  title="aq3" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5" style="text-align: right">
@@ -364,18 +364,18 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bq4n" value="#{scorecardManagedBean.currentEntity.bq4}" styleClass="Wid100"  title="bq4"
+                            <p:inputNumber id="bq4n" value="#{scorecardManagedBean.currentEntity.bq4}" styleClass="Wid100"  title="bq4" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tq4n" value="#{scorecardManagedBean.currentEntity.tq4}" styleClass="Wid100"  title="tq4"
+                            <p:inputNumber id="tq4n" value="#{scorecardManagedBean.currentEntity.tq4}" styleClass="Wid100"  title="tq4" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="aq4" value="#{scorecardManagedBean.currentEntity.aq4}" rows="5" styleClass="Wid100"  title="aq4" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="aq4n" value="#{scorecardManagedBean.currentEntity.aq4}" styleClass="Wid100"  title="aq4"
+                            <p:inputNumber id="aq4n" value="#{scorecardManagedBean.currentEntity.aq4}" styleClass="Wid100"  title="aq4" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5">
@@ -402,18 +402,18 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bfyn" value="#{scorecardManagedBean.currentEntity.bfy}" styleClass="Wid100"  title="bfy"
+                            <p:inputNumber id="bfyn" value="#{scorecardManagedBean.currentEntity.bfy}" styleClass="Wid100"  title="bfy" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tfyn" value="#{scorecardManagedBean.currentEntity.tfy}" styleClass="Wid100"  title="tfy"
+                            <p:inputNumber id="tfyn" value="#{scorecardManagedBean.currentEntity.tfy}" styleClass="Wid100"  title="tfy" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
                         </p:column>
                         <p:column>
                             <p:inputTextarea id="afy" value="#{scorecardManagedBean.currentEntity.afy}"  rows="5" styleClass="Wid100"  title="afy" rendered="#{scorecardManagedBean.currentEntity.type!='N'}"/>
-                            <p:inputNumber id="afyn" value="#{scorecardManagedBean.currentEntity.afy}" styleClass="Wid100"  title="afy"
+                            <p:inputNumber id="afyn" value="#{scorecardManagedBean.currentEntity.afy}" styleClass="Wid100"  title="afy" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero" rendered="#{scorecardManagedBean.currentEntity.type=='N'}" disabled="#{scorecardManagedBean.scorecardGrant.actual}" />
                         </p:column>
                         <p:column styleClass="Wid5" style="text-align: right">
@@ -442,96 +442,96 @@
                                 <p:commandButton id="btnCalcItemScore"  actionListener="#{scorecardManagedBean.calcItemScore()}" icon="ui-icon-sync" value="更新" style="float: right"
                                                  process="@this" update="formList" oncomplete="PF('dlgDetail').show();">
                                 </p:commandButton>
-                                <p:commandButton id="btnStageDescription" value="查看阶段说明" type="button" process="@this,formOne:dlgStageDescription" update="formOne:tabView:tableList" icon="ui-icon-search"/>
+                                <p:commandButton value="阶段说明" type="button" onclick="PF('dlgStageDescription').show();" icon="ui-icon-search" />
                             </p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid>
-                <p:overlayPanel id="dlgStageDescription" widgetVar="dlgStageDescription" appendTo="true" blockScroll="true" for="btnStageDescription" hideEffect="fade" dynamic="true" showCloseIcon="true" styleClass="plgDetail Wid90" >
-                    <p:panelGrid id="plgDescriptionDetail" styleClass="plgDetail Wid100">
-                        <f:facet name="header">
-                            <p:row>
-                                <p:column colspan="10">未达标原因分析及对策</p:column>
-                            </p:row>
-                        </f:facet>
-                        <p:row style="text-align: center">
-                            <p:column style="width: 8%"><p:outputLabel value="期间"/></p:column>
-                            <p:column style="width: 23%;background-color: yellow">一阶原因（本单位可解决）</p:column>
-                            <p:column style="width: 23%;background-color: yellow">对策</p:column>
-                            <p:column style="width: 23%;background-color: #FF8F00">二阶原因（矩阵配合可解决）</p:column>
-                            <p:column style="width: 23%;background-color: #FF8F00">对策</p:column>
-                        </p:row>
+            </p:dialog>
+            <p:dialog id="dlgStageDescription" widgetVar="dlgStageDescription" maximizable="true" height="800" width="100%">
+                <p:panelGrid id="plgDescriptionDetail" styleClass="plgDetail Wid100" style="height:100%">
+                    <f:facet name="header">
                         <p:row>
-                            <p:column style="width: 8%"><p:outputLabel value="Q1"/></p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c1q1" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q1}" rows="9" styleClass="Wid100" title="c1q1" />
-                            </p:column>
-                            <p:column style="width: 23">
-                                <p:inputTextarea id="s1q1" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q1}" rows="9" styleClass="Wid100" title="s1q1" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c2q1" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q1}" rows="9" styleClass="Wid100" title="c2q1" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s2q1" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q1}" rows="9" styleClass="Wid100" title="s2q1" />
-                            </p:column>
+                            <p:column colspan="10">当前是"#{scorecardManagedBean.currentEntity.content}"的未达标说明原因及对策"</p:column>
                         </p:row>
+                    </f:facet>
+                    <p:row style="text-align: center">
+                        <p:column style="width: 8%"><p:outputLabel value="期间"/></p:column>
+                        <p:column style="width: 23%;background-color: yellow">一阶原因（本单位可解决）</p:column>
+                        <p:column style="width: 23%;background-color: yellow">对策</p:column>
+                        <p:column style="width: 23%;background-color: #FF8F00">二阶原因（矩阵配合可解决）</p:column>
+                        <p:column style="width: 23%;background-color: #FF8F00">对策</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 8%"><p:outputLabel value="Q1"/></p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c1q1" value="#{scorecardManagedBean.currentEntity.causeScore1.q1}" rows="9" styleClass="Wid100" title="c1q1" />
+                        </p:column>
+                        <p:column style="width: 23">
+                            <p:inputTextarea id="s1q1" value="#{scorecardManagedBean.currentEntity.summaryScore1.q1}" rows="9" styleClass="Wid100" title="s1q1" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c2q1" value="#{scorecardManagedBean.currentEntity.causeScore2.q1}" rows="9" styleClass="Wid100" title="c2q1" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s2q1" value="#{scorecardManagedBean.currentEntity.summaryScore2.q1}" rows="9" styleClass="Wid100" title="s2q1" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 8%"><p:outputLabel value="Q2"/></p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c1q2" value="#{scorecardManagedBean.currentEntity.causeScore1.q2}" rows="9" styleClass="Wid100" title="c1q2" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s1q2" value="#{scorecardManagedBean.currentEntity.summaryScore1.q2}" rows="9" styleClass="Wid100" title="s1q2" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c2q2" value="#{scorecardManagedBean.currentEntity.causeScore2.q2}" rows="9" styleClass="Wid100" title="c2q2" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s2q2" value="#{scorecardManagedBean.currentEntity.summaryScore2.q2}" rows="9" styleClass="Wid100" title="s2q2" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 8%"><p:outputLabel value="Q3"/></p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c1q3" value="#{scorecardManagedBean.currentEntity.causeScore1.q3}" rows="9" styleClass="Wid100" title="c1q3" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s1q3" value="#{scorecardManagedBean.currentEntity.summaryScore1.q3}" rows="9" styleClass="Wid100" title="s1q3" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c2q3" value="#{scorecardManagedBean.currentEntity.causeScore2.q3}" rows="9" styleClass="Wid100" title="c2q3" />
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s2q3" value="#{scorecardManagedBean.currentEntity.summaryScore2.q3}" rows="9" styleClass="Wid100" title="s2q3" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="width: 8%"><p:outputLabel value="Q4"/></p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c1q4" value="#{scorecardManagedBean.currentEntity.causeScore1.q1}" rows="9" styleClass="Wid100"  title="c1q4"/>
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s1q4" value="#{scorecardManagedBean.currentEntity.summaryScore1.q4}" rows="9" styleClass="Wid100" title="s1q4"/>
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="c2q4" value="#{scorecardManagedBean.currentEntity.causeScore2.q4}" rows="9" styleClass="Wid100" title="c2q4"/>
+                        </p:column>
+                        <p:column style="width: 23%">
+                            <p:inputTextarea id="s2q4" value="#{scorecardManagedBean.currentEntity.summaryScore2.q4}" rows="9" styleClass="Wid100" title="s2q4"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
                         <p:row>
-                            <p:column style="width: 8%"><p:outputLabel value="Q2"/></p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c1q2" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q2}" rows="9" styleClass="Wid100" title="c1q2" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s1q2" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q2}" rows="9" styleClass="Wid100" title="s1q2" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c2q2" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q2}" rows="9" styleClass="Wid100" title="c2q2" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s2q2" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q2}" rows="9" styleClass="Wid100" title="s2q2" />
+                            <p:column colspan="10">
+                                <p:commandButton id="btnScorecardexplanationScore"  actionListener="#{scorecardManagedBean.update()}" icon="ui-icon-save" value="保存" style="float: right"
+                                                 process="@this,formList:dlgStageDescription" update="formList" oncomplete="PF('dlgStageDescription').hide();" >
+                                </p:commandButton>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column style="width: 8%"><p:outputLabel value="Q3"/></p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c1q3" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q3}" rows="9" styleClass="Wid100" title="c1q3" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s1q3" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q3}" rows="9" styleClass="Wid100" title="s1q3" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c2q3" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q3}" rows="9" styleClass="Wid100" title="c2q3" />
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s2q3" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q3}" rows="9" styleClass="Wid100" title="s2q3" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 8%"><p:outputLabel value="Q4"/></p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c1q4" value="#{scorecardSetManagedBean.currentDetail.causeScore1.q1}" rows="9" styleClass="Wid100"  title="c1q4"/>
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s1q4" value="#{scorecardSetManagedBean.currentDetail.summaryScore1.q4}" rows="9" styleClass="Wid100" title="s1q4"/>
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="c2q4" value="#{scorecardSetManagedBean.currentDetail.causeScore2.q4}" rows="9" styleClass="Wid100" title="c2q4"/>
-                            </p:column>
-                            <p:column style="width: 23%">
-                                <p:inputTextarea id="s2q4" value="#{scorecardSetManagedBean.currentDetail.summaryScore2.q4}" rows="9" styleClass="Wid100" title="s2q4"/>
-                            </p:column>
-                        </p:row>
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="10">
-                                    <p:commandButton id="btnScorecardexplanationScore" value="保存"  actionListener="#{scorecardSetManagedBean.updateScorecardexplanationScore()}" icon="ui-icon-save" style="float: right"
-                                                     process="@this,plgDescriptionDetail" update="plgDescriptionDetail" oncomplete="PF('dlgStageDescription').hide();">
-                                    </p:commandButton>
-                                </p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:overlayPanel>
+                    </f:facet>
+                </p:panelGrid>
             </p:dialog>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

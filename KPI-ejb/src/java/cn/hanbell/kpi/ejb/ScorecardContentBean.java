@@ -32,8 +32,12 @@ public class ScorecardContentBean extends SuperEJBForKPI<ScorecardContent> {
         scorecardExplanationBean.update(entity.getDeptScore());
         scorecardExplanationBean.update(entity.getGeneralScore());
         scorecardExplanationBean.update(entity.getOtherScore());
+        scorecardExplanationBean.update(entity.getCauseScore1());
+        scorecardExplanationBean.update(entity.getSummaryScore1());
+        scorecardExplanationBean.update(entity.getCauseScore2());
+        scorecardExplanationBean.update(entity.getSummaryScore2());
         scorecardExplanationBean.getEntityManager().flush();
         return super.update(entity);
     }
-
+   
 }

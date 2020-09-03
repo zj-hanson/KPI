@@ -96,7 +96,7 @@ public class ScorecardContent extends SuperEntity {
     @Basic(optional = false)
     @NotNull
     @Column(name = "weight")
-    private int weight;
+    private BigDecimal weight;
     @Column(name = "categoryId")
     private Integer categoryId;
     @Size(max = 45)
@@ -414,11 +414,11 @@ public class ScorecardContent extends SuperEntity {
         this.kind = kind;
     }
 
-    public int getWeight() {
+    public BigDecimal getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 
