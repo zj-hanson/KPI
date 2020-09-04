@@ -246,8 +246,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     }
 
     @Override
-    public void handleDialogReturnWhenNew(SelectEvent event
-    ) {
+    public void handleDialogReturnWhenNew(SelectEvent event) {
         if (event.getObject() != null && newEntity != null) {
             Department e = (Department) event.getObject();
             newEntity.setDeptno(e.getDeptno());
@@ -256,8 +255,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     }
 
     @Override
-    public void handleDialogReturnWhenEdit(SelectEvent event
-    ) {
+    public void handleDialogReturnWhenEdit(SelectEvent event) {
         if (event.getObject() != null && currentEntity != null) {
             Department e = (Department) event.getObject();
             currentEntity.setDeptno(e.getDeptno());
@@ -512,7 +510,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
-    public void updateScorecardexplanationScore() {
+    public void updateScorecardExplanationScore() {
         if (currentDetail != null) {
             if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
