@@ -188,6 +188,64 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     }
 
     @Override
+    public void doConfirmDetail() {
+        if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            showErrorMsg("Error", "资料已冻结,不可更新");
+            return;
+        }
+        try {
+            switch (userManagedBean.getQ()) {
+                case 1:
+                    if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
+                    }
+                    break;
+                case 2:
+                    if (currentDetail.getGeneralScore().getSq2().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSq2(currentDetail.getGeneralScore().getSq2());
+                    }
+                    if (currentDetail.getGeneralScore().getSh1().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSh1(currentDetail.getGeneralScore().getSh1());
+                    }
+                    break;
+                case 3:
+                    if (currentDetail.getGeneralScore().getSq3().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSq3(currentDetail.getGeneralScore().getSq3());
+                    }
+                    break;
+                case 4:
+                    if (currentDetail.getGeneralScore().getSq4().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSq4(currentDetail.getGeneralScore().getSq4());
+                    }
+                    if (currentDetail.getGeneralScore().getSh2().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSh2(currentDetail.getGeneralScore().getSh2());
+                    }
+                    if (currentDetail.getGeneralScore().getSfy().compareTo(BigDecimal.ZERO) != 0) {
+                        currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
+                    } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
+                        currentDetail.setSfy(currentDetail.getGeneralScore().getSfy());
+                    }
+                    break;
+            }
+        } catch (Exception ex) {
+            showErrorMsg("Error", "更新异常");
+        }
+        super.doConfirmDetail();
+    }
+
+    @Override
     public void handleDialogReturnWhenNew(SelectEvent event) {
         if (event.getObject() != null && newEntity != null) {
             Department e = (Department) event.getObject();
@@ -244,6 +302,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     this.currentDetail.setTq3(d.getTq3());
                     this.currentDetail.setTq4(d.getTq4());
                     this.doConfirmDetail();
+                    scorecardDetailBean.update(currentDetail);
                 }
             }
         }
@@ -451,7 +510,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
-    public void updateScorecardexplanationScore() {
+    public void updateScorecardExplanationScore() {
         if (currentDetail != null) {
             if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
