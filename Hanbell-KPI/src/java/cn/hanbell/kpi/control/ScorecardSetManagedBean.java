@@ -302,7 +302,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     this.currentDetail.setTq3(d.getTq3());
                     this.currentDetail.setTq4(d.getTq4());
                     this.doConfirmDetail();
-                    scorecardDetailBean.update(currentDetail);
                 }
             }
         }
