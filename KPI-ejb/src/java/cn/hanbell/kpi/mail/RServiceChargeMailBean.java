@@ -75,7 +75,11 @@ public class RServiceChargeMailBean extends BscSheetMail {
         }
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：").append(indicator.getUnit()).append("</div>");
-        sb.append(getHtmlTable(indicators, y, m, d, true));
+        if(m==1){
+            sb.append(getHtmlTable(indicators, y-1, 12, d, true));
+        }else{
+            sb.append(getHtmlTable(indicators, y, m-1, d, true));
+        }
         return sb.toString();
     }
 

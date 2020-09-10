@@ -161,16 +161,16 @@ public class ProcurementBean implements Serializable {
 //        sb.append(" AND month(h.podate) <=").append(findMonth(date));
         sb.append(" select isnull(sum(case when year(h.podate)= ").append(findMonth(date) == 1 ? findYear(date) - 1 : findYear(date));
         sb.append(" and month(h.podate)= ").append(findMonth(date) == 1 ? 12 : findMonth(date) - 1);
-        sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '上月', ");
+        sb.append(" then (case when d.dposta <> '98' then d.tramts*h.ratio/(h.taxrate+1) else (d.okqy1*d.unpris)*h.ratio/(h.taxrate+1) end)  ELSE 0 END),0) as '上月', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date));
         sb.append(" and month(h.podate)= ").append(findMonth(date));
-        sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '本月', ");
+        sb.append(" then (case when d.dposta <> '98' then d.tramts*h.ratio/(h.taxrate+1) else (d.okqy1*d.unpris)*h.ratio/(h.taxrate+1) end)  ELSE 0 END),0) as '本月', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date));
         sb.append(" AND month(h.podate) <=").append(findMonth(date));
-        sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '年累计', ");
+        sb.append(" then (case when d.dposta <> '98' then d.tramts*h.ratio/(h.taxrate+1) else (d.okqy1*d.unpris)*h.ratio/(h.taxrate+1) end)  ELSE 0 END),0) as '年累计', ");
         sb.append(" isnull(sum(case when year(h.podate) = ").append(findYear(date) - 1);
         sb.append(" AND month(h.podate) <=").append(findMonth(date));
-        sb.append(" then (d.tramts*ratio/(taxrate+1)) ELSE 0 END),0) as '去年同期累计' ");
+        sb.append(" then (case when d.dposta <> '98' then d.tramts*h.ratio/(h.taxrate+1) else (d.okqy1*d.unpris)*h.ratio/(h.taxrate+1) end) ELSE 0 END),0) as '去年同期累计' ");
         sb.append(" from  purhad h,purdta d where h.pono=d.pono and h.prono=d.prono and h.facno=d.facno and hposta<>'W' ");
         if (!itnbrD.equals("")) {
             sb.append(" AND d.itnbr in(").append(itnbrD).append(")");
