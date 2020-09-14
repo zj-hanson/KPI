@@ -149,7 +149,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
             //资金回收率
             indicator = new Indicator();
             if (arr.length == 2) {
-                indicator = indicatorBean.findByFormidYearAndDeptno(arr[1], y, indicatorChart.getPid());
+                indicator = indicatorBean.findByFormidYearAndDeptno(arr[1], y, indicatorChart.getApi());
             }
             if (indicator != null) {
                 secondList = indicatorBean.findByPId(indicator.getId());
