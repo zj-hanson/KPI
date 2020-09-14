@@ -163,6 +163,11 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                     } else {
                         ip.setGenre(genre);
                     }
+                    if (row[4].toString().equals("EPM01") && genre.equals("S") && row[0].toString().equals("C")) {
+                        ip.setGenre(genre);
+                    } else {
+                        ip.setGenre("P");
+                    }
                     ip.setItclscode(itclscode);
                     ip.setCategories(row[8] != null ? row[8].toString() : "");
                     ip.setIndicatorno(row[9] != null ? row[9].toString() : "");
