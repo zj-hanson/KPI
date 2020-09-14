@@ -273,43 +273,43 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
                                     break;
                                 case 3:
                                     i.getActualIndicator().setN03(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN03(r.getOpeCass());
                                     break;
                                 case 4:
                                     i.getActualIndicator().setN04(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN04(r.getOpeCass());
                                     break;
                                 case 5:
                                     i.getActualIndicator().setN05(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN05(r.getOpeCass());
                                     break;
                                 case 6:
                                     i.getActualIndicator().setN06(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN06(r.getOpeCass());
                                     break;
                                 case 7:
                                     i.getActualIndicator().setN07(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN07(r.getOpeCass());
                                     break;
                                 case 8:
                                     i.getActualIndicator().setN08(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN08(r.getOpeCass());
                                     break;
                                 case 9:
                                     i.getActualIndicator().setN09(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN09(r.getOpeCass());
                                     break;
                                 case 10:
                                     i.getActualIndicator().setN10(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN10(r.getOpeCass());
                                     break;
                                 case 11:
                                     i.getActualIndicator().setN11(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN11(r.getOpeCass());
                                     break;
                                 case 12:
                                     i.getActualIndicator().setN12(r.getOpeCass());
-                                    i.getOther1Indicator().setN02(r.getOpeCass());
+                                    i.getOther1Indicator().setN12(r.getOpeCass());
                                     break;
                                 default:
                                     break;
