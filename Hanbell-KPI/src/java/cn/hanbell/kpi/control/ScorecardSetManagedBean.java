@@ -5,11 +5,19 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.eap.ejb.DepartmentBean;
+import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.Department;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.kpi.ejb.RoleBean;
+import cn.hanbell.kpi.ejb.RoleDetailBean;
+import cn.hanbell.kpi.ejb.RoleGrantModuleBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardDetailBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.Role;
+import cn.hanbell.kpi.entity.RoleDetail;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
@@ -18,6 +26,7 @@ import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,6 +46,14 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     @EJB
     private ScorecardDetailBean scorecardDetailBean;
 
+    @EJB
+    private RoleBean systemRoleBean;
+
+    @EJB
+    private RoleDetailBean systemRoleDetailBean;
+    @EJB
+    private RoleGrantModuleBean roleGrantModuleBean;
+
     protected Calendar c;
     private boolean freezed;
 
@@ -47,12 +64,42 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     protected int queryYear;
 
     protected List<String> paramDeptno = null;
+    private List<String> deptList = null;
 
     public ScorecardSetManagedBean() {
         super(Scorecard.class, ScorecardDetail.class);
         c = Calendar.getInstance();
         openParams = new HashMap();
         openOptions = new HashMap();
+    }
+
+    /**
+     * @param userid
+     * @return
+     * @description 只能查看自己部门的考核内容
+     */
+    public List<String> findByDeptListForUserid(String userid) {
+        List<RoleDetail> roleDetails = systemRoleDetailBean.findByUserId(userid);
+        List<Role> roles = new ArrayList<>();
+        if (!roleDetails.isEmpty()) {
+            roleDetails.stream().map((rd) -> systemRoleBean.findById(rd.getPid())).filter((role) -> (role != null)).forEachOrdered((role) -> {
+                roles.add(role);
+            });
+        }
+        List<RoleGrantModule> roleGrantModules = new ArrayList<>();
+        roles.stream().map((role) -> roleGrantModuleBean.findByRoleId(role.getId())).filter((roleGrantModuleList) -> (!roleGrantModuleList.isEmpty())).forEachOrdered((roleGrantModuleList) -> {
+            roleGrantModules.addAll(roleGrantModuleList);
+        });
+        List<String> depts = new ArrayList<>();
+        //总经理室目前没有考核内容，需显示模板
+        depts.add("10000");
+        if (!roleGrantModules.isEmpty()) {
+            roleGrantModules.stream().forEach((e) -> {
+                depts.add(e.getDeptno());
+            });
+            return depts;
+        }
+        return depts;
     }
 
     @Override
@@ -421,6 +468,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         superEJB = scorecardBean;
         detailEJB = scorecardDetailBean;
         model = new ScorecardModel(scorecardBean, this.userManagedBean);
+        deptList = findByDeptListForUserid(userManagedBean.getUserid());
+        model.getFilterFields().put("deptno IN ", deptList);
         model.getSortFields().put("seq", "DESC");
         model.getSortFields().put("sortid", "ASC");
         model.getSortFields().put("deptno", "ASC");
@@ -429,6 +478,26 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         super.init();
     }
 
+    @Override
+    public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            model.getFilterFields().put("deptno IN ", deptList);
+            if (queryYear != 0) {
+                model.getFilterFields().put("seq", queryYear);
+            }
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("name", queryName);
+            }
+            if (queryDeptname != null && !"".equals(queryDeptname)) {
+                model.getFilterFields().put("deptname", queryDeptname);
+            }
+            if (queryState != null && !"ALL".equals(queryState)) {
+                model.getFilterFields().put("status", queryState);
+            }
+        }
+    }
+    
     public void moveDown() {
         if (currentDetail != null) {
             int i, n, m;
@@ -695,6 +764,10 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
      */
     public void setQueryYear(int queryYear) {
         this.queryYear = queryYear;
+    }
+
+    public void setDeptList(List<String> deptList) {
+        this.deptList = deptList;
     }
 
 }

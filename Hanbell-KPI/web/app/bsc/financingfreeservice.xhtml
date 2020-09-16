@@ -142,10 +142,10 @@
                             <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq4)}%"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator))}%"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator)*100)}%"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.other1Indicator))}%" />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.other1Indicator)*100)}%" />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.forecastIndicator))}%" />
