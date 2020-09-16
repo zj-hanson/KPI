@@ -9,9 +9,15 @@ import cn.hanbell.eap.ejb.DepartmentBean;
 import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.Department;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.kpi.ejb.RoleBean;
+import cn.hanbell.kpi.ejb.RoleDetailBean;
+import cn.hanbell.kpi.ejb.RoleGrantModuleBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardDetailBean;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.Role;
+import cn.hanbell.kpi.entity.RoleDetail;
+import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
@@ -20,6 +26,7 @@ import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,10 +47,12 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     private ScorecardDetailBean scorecardDetailBean;
 
     @EJB
-    private DepartmentBean departmentBean;
+    private RoleBean systemRoleBean;
 
     @EJB
-    private SystemUserBean systemUserBean;
+    private RoleDetailBean systemRoleDetailBean;
+    @EJB
+    private RoleGrantModuleBean roleGrantModuleBean;
 
     protected Calendar c;
     private boolean freezed;
@@ -65,14 +74,25 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     }
 
     /**
+     * @param userid
+     * @return
      * @description 只能查看自己部门的考核内容
      */
     public List<String> findByDeptListForUserid(String userid) {
-        SystemUser systemUser = systemUserBean.findByUserId(userid);
-        List<Department> departmentList = departmentBean.findByDeptList(systemUser.getDeptno().substring(0, 2) + "%");
-        if (departmentList != null && !departmentList.isEmpty()) {
+        List<RoleDetail> roleDetails = systemRoleDetailBean.findByUserId(userid);
+        List<Role> roles = new ArrayList<>();
+        if (!roleDetails.isEmpty()) {
+            roleDetails.stream().map((rd) -> systemRoleBean.findById(rd.getPid())).filter((role) -> (role != null)).forEachOrdered((role) -> {
+                roles.add(role);
+            });
+        }
+        List<RoleGrantModule> roleGrantModules = new ArrayList<>();
+        roles.stream().map((role) -> roleGrantModuleBean.findByRoleId(role.getId())).filter((roleGrantModuleList) -> (!roleGrantModuleList.isEmpty())).forEachOrdered((roleGrantModuleList) -> {
+            roleGrantModules.addAll(roleGrantModuleList);
+        });
+        if (!roleGrantModules.isEmpty()) {
             List<String> executors = new ArrayList<>();
-            departmentList.stream().forEach((e) -> {
+            roleGrantModules.stream().forEach((e) -> {
                 executors.add(e.getDeptno());
             });
             try {
@@ -463,9 +483,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     @Override
     public void query() {
-        super.query();
         if (model != null) {
             model.getFilterFields().clear();
+            if (!deptList.isEmpty()) {
+                model.getFilterFields().put("deptno IN ", deptList);
+            }
             if (queryYear != 0) {
                 model.getFilterFields().put("seq", queryYear);
             }
@@ -473,7 +495,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 model.getFilterFields().put("name", queryName);
             }
             if (queryDeptno != null && !"".equals(queryDeptno)) {
-                model.getFilterFields().put("deptno", queryDeptno);
+                model.getFilterFields().put("deptname", queryDeptno);
             }
             if (queryDeptname != null && !"".equals(queryDeptname)) {
                 model.getFilterFields().put("deptname", queryDeptname);
@@ -482,6 +504,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 model.getFilterFields().put("status", queryState);
             }
         }
+    }
+
+    @Override
+    protected boolean doAfterVerify() throws Exception {
+        return super.doAfterVerify(); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void moveDown() {

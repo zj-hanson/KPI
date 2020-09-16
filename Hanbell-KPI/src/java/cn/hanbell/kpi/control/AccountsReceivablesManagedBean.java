@@ -42,7 +42,7 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
     @EJB
     private IndicatorBean indicatorBean;
 
-    protected String queryCompany;
+    protected String queryCompany = "C";
     protected int y;
     protected int m;
     private int requestId;
@@ -57,24 +57,30 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
         requestId = Integer.valueOf(request.getParameter("id"));
         superEJB = accountsReceivablesBean;
         model = new AccountsReceivablesModel(superEJB);
-        model.getFilterFields().put("company =", "C");
-        Calendar c = Calendar.getInstance();
-        setQueryCompany("C");
-        query();
-        super.init();
-    }
-
-    @Override
-    public void construct() {
+        model.getFilterFields().put("company =", queryCompany);
         Calendar c = Calendar.getInstance();
         c.setTime(BaseLib.getDate());
         c.add(Calendar.DATE, 0 - c.get(Calendar.DATE));
         setQueryDateBegin(c.getTime());
-        super.construct(); //To change body of generated methods, choose Tools | Templates.
+        y = c.get(Calendar.YEAR);
+        m = c.get(Calendar.MONTH) + 1;
+        super.init();
     }
 
     @Override
     public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            model.getFilterFields().put("company =", queryCompany);
+            if (queryDateBegin != null) {
+                model.getFilterFields().put("seq =", y);
+                model.getFilterFields().put("mon =", m);
+            }
+        }
+    }
+
+    @Override
+    public void handleFileUploadWhenNew(FileUploadEvent event) {
         if (queryDateBegin != null) {
             Calendar c = Calendar.getInstance();
             c.setTime(queryDateBegin);
@@ -84,23 +90,7 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
             showErrorMsg("Error", "请先选择日期");
             return;
         }
-        if (model != null) {
-            model.getFilterFields().clear();
-            if (queryCompany != null && !"".equals(queryCompany)) {
-                model.getFilterFields().put("company =", queryCompany);
-            }
-            if (queryDateBegin != null) {
-                model.getFilterFields().put("seq =", y);
-            }
-            if (queryDateBegin != null) {
-                model.getFilterFields().put("mon =", m);
-            }
-        }
-    }
-
-    @Override
-    public void handleFileUploadWhenNew(FileUploadEvent event) {
-        List<AccountsReceivables> addlist = new ArrayList<>();
+        List<AccountsReceivables> addList = new ArrayList<>();
         UploadedFile file = event.getFile();
         String a = "";
         if (file != null) {
@@ -108,16 +98,8 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
                 InputStream inputStream = file.getInputstream();
                 Workbook excel = WorkbookFactory.create(inputStream);
                 Sheet sheet = excel.getSheetAt(0);
-                if (queryDateBegin != null) {
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(queryDateBegin);
-                    y = c.get(Calendar.YEAR);
-                    m = c.get(Calendar.MONTH) + 1;
-                } else {
-                    showErrorMsg("Error", "请先选择日期");
-                    return;
-                }
                 for (int i = 4; i <= sheet.getLastRowNum(); i++) {
+                    Cell c;
                     a = (i + 1) + "";
                     int sortid = 1;
                     newEntity = new AccountsReceivables();
@@ -125,49 +107,70 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
                     newEntity.setCompany(queryCompany);
                     newEntity.setSeq(y);
                     newEntity.setMon(m);
-                    newEntity.setDeptname(sheet.getRow(i).getCell(0).getStringCellValue());
-                    newEntity.setDeptno(sheet.getRow(i).getCell(1).toString());
-                    newEntity.setName(sheet.getRow(i).getCell(2).getStringCellValue());
-                    newEntity.setType(sheet.getRow(i).getCell(3).getStringCellValue());
+                    c = sheet.getRow(i).getCell(0);
+                    newEntity.setDeptname(BaseLib.convertExcelCell(String.class, c));
+                    c = sheet.getRow(i).getCell(1);
+                    newEntity.setDeptno(BaseLib.convertExcelCell(String.class, c));
+                    c = sheet.getRow(i).getCell(2);
+                    newEntity.setName(BaseLib.convertExcelCell(String.class, c));
+                    c = sheet.getRow(i).getCell(3);
+                    newEntity.setType(BaseLib.convertExcelCell(String.class, c));
                     //保证每一行为数字格式，否则赋值为零
-                    newEntity.setSaleTarget(sheet.getRow(i).getCell(4).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(4).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setSaleActual(sheet.getRow(i).getCell(5).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(5).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setSaleRatio(sheet.getRow(i).getCell(6).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(6).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setSaleCost(sheet.getRow(i).getCell(7).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(7).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setGincmrt(sheet.getRow(i).getCell(8).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(8).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setARTdayTarget(sheet.getRow(i).getCell(9).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(9).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setARTday(sheet.getRow(i).getCell(10).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(10).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setBeginAR(sheet.getRow(i).getCell(11).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(11).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setEndAR(sheet.getRow(i).getCell(12).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(12).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setOverdueAccount(sheet.getRow(i).getCell(13).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(13).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setOpeCass(sheet.getRow(i).getCell(14).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(14).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setSaleInTax(sheet.getRow(i).getCell(15).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(15).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setBillAR3(sheet.getRow(i).getCell(16).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(16).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setBillAR6(sheet.getRow(i).getCell(17).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(17).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setCashAR(sheet.getRow(i).getCell(18).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(18).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setBenchmarkARTday(sheet.getRow(i).getCell(19).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(19).getNumericCellValue()) : BigDecimal.ZERO);
-                    newEntity.setBenchmarkOpeCass(sheet.getRow(i).getCell(20).getCellType() == Cell.CELL_TYPE_NUMERIC ? BigDecimal.valueOf(sheet.getRow(i).getCell(20).getNumericCellValue()) : BigDecimal.ZERO);
-                    addlist.add(newEntity);
+                    c = sheet.getRow(i).getCell(4);
+                    newEntity.setSaleTarget(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(5);
+                    newEntity.setSaleActual(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(6);
+                    newEntity.setSaleRatio(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(7);
+                    newEntity.setSaleCost(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(8);
+                    newEntity.setGincmrt(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(9);
+                    newEntity.setARTdayTarget(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(10);
+                    newEntity.setARTday(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(11);
+                    newEntity.setBeginAR(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(12);
+                    newEntity.setEndAR(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(13);
+                    newEntity.setOverdueAccount(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(14);
+                    newEntity.setOpeCass(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(15);
+                    newEntity.setSaleInTax(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(16);
+                    newEntity.setBillAR3(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(17);
+                    newEntity.setBillAR6(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(18);
+                    newEntity.setCashAR(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(19);
+                    newEntity.setBenchmarkARTday(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    c = sheet.getRow(i).getCell(20);
+                    newEntity.setBenchmarkOpeCass(BaseLib.convertExcelCell(BigDecimal.class, c));
+                    addList.add(newEntity);
                     sortid++;
                 }
                 //导入
-                if (!addlist.isEmpty()) {
+                if (!addList.isEmpty()) {
                     List<AccountsReceivables> delList = accountsReceivablesBean.findByCompanyAndSeqAndMon(newEntity);
                     if (!delList.isEmpty()) {
                         accountsReceivablesBean.delete(delList);
                     }
-                    for (AccountsReceivables item : addlist) {
+                    for (AccountsReceivables item : addList) {
                         accountsReceivablesBean.persist(item);
                     }
-                    showInfoMsg("Info", "数据导入成功");
+                    showInfoMsg("Info", "数据导入成功!");
+                    //数据上传完之后继续执行更新
+                    updateToTurnoverdays();
                 }
             } catch (Exception ex) {
                 showErrorMsg("Error", "导入失败,找不到文件或格式错误--第" + a + "行附近栏位发生错误" + ex.toString());
-                System.out.println(a);
             }
         }
-        //数据上传完之后继续执行更新
-        updateToTurnoverdays();
+
     }
 
     /**
@@ -200,6 +203,10 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
             }
             //确认指标中的关联指标
             String[] arr = indicator.getAssociatedIndicator().split(";");
+            if (arr == null) {
+                showErrorMsg("Error", "请先填写关联指标");
+                return;
+            }
             //D-应收账款周转的指标
             Indicator indicator1 = indicatorBean.findByFormidYearAndDeptno(arr[0], y, indicator.getDeptno());
             //D-应收账款周转指标的集合
@@ -321,8 +328,7 @@ public class AccountsReceivablesManagedBean extends SuperSingleBean<AccountsRece
                 showInfoMsg("Info", "更新资金回收率指标数据成功！");
             }
         } catch (Exception ex) {
-            showErrorMsg("Error", "捕获异常，更新数据失败，请重试！");
-            ex.toString();
+            showErrorMsg("Error", "捕获异常，更新数据失败，请重试！" + ex.toString());
         }
     }
 
