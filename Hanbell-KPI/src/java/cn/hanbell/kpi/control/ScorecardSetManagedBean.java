@@ -90,19 +90,16 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         roles.stream().map((role) -> roleGrantModuleBean.findByRoleId(role.getId())).filter((roleGrantModuleList) -> (!roleGrantModuleList.isEmpty())).forEachOrdered((roleGrantModuleList) -> {
             roleGrantModules.addAll(roleGrantModuleList);
         });
+        List<String> depts = new ArrayList<>();
+        //总经理室目前没有考核内容，需显示模板
+        depts.add("10000");
         if (!roleGrantModules.isEmpty()) {
-            List<String> executors = new ArrayList<>();
             roleGrantModules.stream().forEach((e) -> {
-                executors.add(e.getDeptno());
+                depts.add(e.getDeptno());
             });
-            try {
-                return executors;
-            } catch (Exception ex) {
-                return null;
-            }
-        } else {
-            return new ArrayList<>();
+            return depts;
         }
+        return depts;
     }
 
     @Override
@@ -485,17 +482,12 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     public void query() {
         if (model != null) {
             model.getFilterFields().clear();
-            if (!deptList.isEmpty()) {
-                model.getFilterFields().put("deptno IN ", deptList);
-            }
+            model.getFilterFields().put("deptno IN ", deptList);
             if (queryYear != 0) {
                 model.getFilterFields().put("seq", queryYear);
             }
             if (queryName != null && !"".equals(queryName)) {
                 model.getFilterFields().put("name", queryName);
-            }
-            if (queryDeptno != null && !"".equals(queryDeptno)) {
-                model.getFilterFields().put("deptname", queryDeptno);
             }
             if (queryDeptname != null && !"".equals(queryDeptname)) {
                 model.getFilterFields().put("deptname", queryDeptname);
@@ -505,12 +497,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             }
         }
     }
-
-    @Override
-    protected boolean doAfterVerify() throws Exception {
-        return super.doAfterVerify(); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     public void moveDown() {
         if (currentDetail != null) {
             int i, n, m;
