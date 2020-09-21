@@ -34,11 +34,13 @@ import org.apache.commons.beanutils.BeanUtils;
 public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
 
     protected List<Indicator> indicators;
+    
+    protected int colspan;
 
     public TurnoverdaysBean() {
         super();
     }
-
+    
     @PostConstruct
     @Override
     public void construct() {
@@ -62,6 +64,8 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
         btndate = settlementDate().getTime();
         btnquery();
     }
+    
+   
 
     @Override
     public String format(BigDecimal value) {
@@ -76,6 +80,13 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
         List<Indicator> list = new ArrayList<>();
         m = getDate().get(Calendar.MONTH) + 1;
         y = getDate().get(Calendar.YEAR);
+        if(m>3 && m<=6){
+            colspan = 1;
+        }else if(m>6 && m<=9){
+            colspan = 2;
+        }else if(m>9 && m<=12){
+            colspan = 3;
+        }
         boolean aa = true;
         if (getBtndate().after(settlementDate().getTime())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
@@ -267,4 +278,12 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
         return entity;
     }
 
+    public int getColspan() {
+        return colspan;
+    }
+
+    public void setColspan(int colspan) {
+        this.colspan = colspan;
+    }
+    
 }

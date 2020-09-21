@@ -199,6 +199,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>invtrtrday</from-outcome>
+            <to-view-id>/app/prod/invtrtrday.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>product</from-outcome>
             <to-view-id>/app/prod/product.xhtml</to-view-id>
             <redirect/>
