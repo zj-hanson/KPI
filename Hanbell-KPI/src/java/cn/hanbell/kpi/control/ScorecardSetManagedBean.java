@@ -107,6 +107,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         super.create();
         this.newEntity.setCompany(userManagedBean.getCompany());
         this.newEntity.setSeq(queryYear);
+        this.newEntity.setApi("scorecard");
     }
 
     public void calcScore() {
