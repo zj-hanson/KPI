@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  *
  * @author C1879
  */
-public class FreeServiceARM5B extends FreeServiceERP{
+public class FreeServiceARM5B extends FreeServiceERP {
 
     public FreeServiceARM5B() {
         super();
@@ -23,9 +23,20 @@ public class FreeServiceARM5B extends FreeServiceERP{
         queryParams.put("n_code_DD", "  IN ('00','02') ");
     }
 
+    /**
+     * @decription 2020年9月21号顺应陈海英需求，增加浙江柯茂的数据，有效期本年年底。
+     */
     @Override
-    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {        
-       return super.getARM423Value(y, m, d, type, map);
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal temp1, temp2;
+        //SHComer
+        temp1 = super.getARM423Value(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.put("facno", "E");
+        //ZJComer
+        temp2 = super.getARM423Value(y, m, d, type, queryParams);
+        //SHComer + ZJComer
+        return temp1.add(temp2);
     }
-    
+
 }
