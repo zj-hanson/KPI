@@ -49,6 +49,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
     protected List<Indicator> firstList;
     protected List<Indicator> secondList;
     protected List<Indicator> thirdlyList;
+    protected int colspan;
 
     protected Indicator sumIndicator;
 
@@ -108,6 +109,13 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         if (getBtndate().after(settlementDate().getTime())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
             aa = false;
+        }
+        if (m > 3 && m <= 6) {
+            colspan = 1;
+        } else if (m > 6 && m <= 9) {
+            colspan = 2;
+        } else if (m > 9 && m <= 12) {
+            colspan = 3;
         }
         //分割第一个为免费服务金额 第二个为资金回收
         String[] arr = indicatorChart.getRemark().split(",");
@@ -204,7 +212,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         if (a == null) {
             return "";
         }
-        BigDecimal value = contrastValue(getValue(a.getOther1Indicator()), getValue(a.getForecastIndicator()));
+        BigDecimal value = contrastValue(getValue(a.getActualIndicator()), getValue(a.getBenchmarkIndicator()));
         if (a.getProduct().contains("应付")) {
             return getColor(value, "");
         } else {
@@ -262,6 +270,10 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
         return y;
     }
 
+    public int getM() {
+        return m;
+    }
+
     /**
      * @return the firstList
      */
@@ -302,6 +314,14 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
      */
     public void setThirdlyList(List<Indicator> thirdlyList) {
         this.thirdlyList = thirdlyList;
+    }
+
+    public int getColspan() {
+        return colspan;
+    }
+
+    public void setColspan(int colspan) {
+        this.colspan = colspan;
     }
 
 }

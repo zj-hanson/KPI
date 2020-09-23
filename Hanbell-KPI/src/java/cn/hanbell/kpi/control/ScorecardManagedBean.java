@@ -143,11 +143,33 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 if (currentEntity.getPerformanceJexl() != null && !"".equals(currentEntity.getPerformanceJexl())) {
                     //计算达成
                     scorecardBean.setPerf(currentEntity, col);
+                    if (userManagedBean.getQ() == 2) {
+                        col = scorecardBean.getColumn("h", 1);
+                        scorecardBean.setPerf(currentEntity, col);
+                    } else if (userManagedBean.getQ() == 4) {
+                        col = scorecardBean.getColumn("h", 2);
+                        scorecardBean.setPerf(currentEntity, col);
+                        //全年
+                        scorecardBean.setPerf(currentEntity, "fy");
+                    }
                     showInfoMsg("Info", "更新达成率成功");
                 }
                 if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
                     //计算得分
+                    col = scorecardBean.getColumn("q", userManagedBean.getQ());
                     scorecardBean.setContentScore(currentEntity, col);
+                    //上半年
+                    if (userManagedBean.getQ() == 2) {
+                        col = scorecardBean.getColumn("h", 1);
+                        scorecardBean.setContentScore(currentEntity, col);
+                        
+                    } else if (userManagedBean.getQ() == 4) {
+                        //下半年
+                        col = scorecardBean.getColumn("h", 2);
+                        scorecardBean.setContentScore(currentEntity, col);
+                        //全年
+                        scorecardBean.setContentScore(currentEntity, "fy");
+                    }
                     showInfoMsg("Info", "更新部门分数成功");
                 }
             } catch (Exception ex) {

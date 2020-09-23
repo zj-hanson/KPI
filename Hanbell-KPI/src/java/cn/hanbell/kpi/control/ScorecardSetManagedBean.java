@@ -107,6 +107,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         super.create();
         this.newEntity.setCompany(userManagedBean.getCompany());
         this.newEntity.setSeq(queryYear);
+        this.newEntity.setApi("scorecard");
     }
 
     public void calcScore() {
@@ -162,6 +163,18 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 if (currentDetail.getScoreJexl() != null && !"".equals(currentDetail.getScoreJexl())) {
                     //计算得分
                     scorecardBean.setDetailScore(currentDetail, col);
+                    //上半年
+                    if (userManagedBean.getQ() == 2) {
+                        col = scorecardBean.getColumn("h", 1);
+                        scorecardBean.setDetailScore(currentDetail, col);
+
+                    } else if (userManagedBean.getQ() == 4) {
+                        //下半年
+                        col = scorecardBean.getColumn("h", 2);
+                        scorecardBean.setDetailScore(currentDetail, col);
+                        //全年
+                        scorecardBean.setDetailScore(currentDetail, "fy");
+                    }
                 }
                 switch (userManagedBean.getQ()) {
                     case 1:
@@ -497,7 +510,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             }
         }
     }
-    
+
     public void moveDown() {
         if (currentDetail != null) {
             int i, n, m;

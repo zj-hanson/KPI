@@ -389,7 +389,7 @@
                     <p:row>
                         <p:column><p:outputLabel value="Q1"/></p:column>
                         <p:column colspan="2" rendered="#{scorecardSetManagedBean.currentDetail.type!='N'}">
-                            <p:inputTextarea id="tq1" value="#{scorecardSetManagedBean.currentDetail.tq1}" rows="5" styleClass="Wid100"  title="tq1" />
+                            <p:inputTextarea id="tq1" value="#{scorecardSetManagedBean.currentDetail.tq1}" rows="5" styleClass="Wid100" style="overflow:scroll !important"  title="tq1" scrollHeight="120"  />
                         </p:column>
                         <p:column rendered="#{scorecardSetManagedBean.currentDetail.type=='N'}">
                             <p:inputNumber id="bq1n" value="#{scorecardSetManagedBean.currentDetail.bq1}" styleClass="Wid100"  title="bq1" decimalPlaces="3"

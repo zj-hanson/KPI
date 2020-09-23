@@ -31,6 +31,7 @@ public class FreeServiceOuterFW5B extends FreeServiceOuterFW {
         BigDecimal o1 = BigDecimal.ZERO;
         BigDecimal o2 = BigDecimal.ZERO;
         BigDecimal o3 = BigDecimal.ZERO;
+        BigDecimal ZJComer = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
         //领料
@@ -52,14 +53,18 @@ public class FreeServiceOuterFW5B extends FreeServiceOuterFW {
         try {
             Object p1 = query1.getSingleResult();
             Object p2 = query2.getSingleResult();
-            
+
             o1 = super.getValue(y, m, d, type, map);
             o2 = (BigDecimal) p1;
             o3 = (BigDecimal) p2;
+            queryParams.remove("facno");
+            queryParams.put("facno", "E");
+            //ZJComer
+            ZJComer = super.getValue(y, m, d, type, queryParams);
         } catch (Exception ex) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return o1.add(o2).subtract(o3);
+        return o1.add(o2).subtract(o3).add(ZJComer);
     }
 
 }
