@@ -211,12 +211,12 @@
                                              readonly="#{scorecardManagedBean.scorecard.status!='N'}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="bq1n" value="#{scorecardManagedBean.currentEntity.bq1}" styleClass="Wid100"  title="bq1" decimalPlaces="3" 
+                            <p:inputNumber id="bq1n" value="#{scorecardManagedBean.currentEntity.bq1}" styleClass="Wid100"  title="bq1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.benchmark}" />
                         </p:column>
                         <p:column rendered="#{scorecardManagedBean.currentEntity.type=='N'}">
-                            <p:inputNumber id="tq1n" value="#{scorecardManagedBean.currentEntity.tq1}" styleClass="Wid100"  title="tq1" decimalPlaces="3" 
+                            <p:inputNumber id="tq1n" value="#{scorecardManagedBean.currentEntity.tq1}" styleClass="Wid100"  title="tq1" decimalPlaces="3"
                                            symbol="#{scorecardManagedBean.currentEntity.symbol}" symbolPosition="s" emptyValue="zero"
                                            readonly="#{scorecardManagedBean.scorecard.status!='N'}" disabled="#{scorecardManagedBean.scorecardGrant.target}" />
 
