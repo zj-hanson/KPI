@@ -36,7 +36,7 @@ public class MaterielReturnQuantity extends Materiel {
         if (!"".equals(deptno)) {
             sb.append(" and TC017 like '").append(deptno).append("%'");
         }
-        sb.append(" AND year(h.TC003) = ${y} and month(h.TC003)<= ${m} ");
+        sb.append(" AND year(h.TC003) = ${y} and month(h.TC003)= ${m} ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
