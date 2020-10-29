@@ -36,7 +36,7 @@ public class MaterielFCR extends Materiel {
         if (!"".equals(deptno)) {
             sb.append(" and TA004 like '").append(deptno).append("%'");
         }
-        sb.append(" AND year(h.TA003) = ${y} and month(h.TA003)= ${m} ");
+        sb.append(" AND year(h.TA003) = ${y} and month(h.TA003)<= ${m} ");
         //领料
         String sql1 = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         sb.setLength(0);
@@ -45,7 +45,7 @@ public class MaterielFCR extends Materiel {
         if (!"".equals(deptno)) {
             sb.append(" and TC017 like '").append(deptno).append("%'");
         }
-        sb.append(" AND year(h.TC003) = ${y} and month(h.TC003)= ${m} ");
+        sb.append(" AND year(h.TC003) = ${y} and month(h.TC003)<= ${m} ");
         //退料
         String sql2 = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query1 = superEJB.getEntityManager().createNativeQuery(sql1);
