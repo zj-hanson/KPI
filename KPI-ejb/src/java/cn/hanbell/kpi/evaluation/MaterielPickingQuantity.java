@@ -36,7 +36,7 @@ public class MaterielPickingQuantity extends Materiel {
         if (!"".equals(deptno)) {
             sb.append(" and TA004 like '").append(deptno).append("%'");
         }
-        sb.append(" AND year(h.TA003) = ${y} and month(h.TA003)= ${m} ");
+        sb.append(" AND year(h.TA003) = ${y} and month(h.TA003)<= ${m} ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
