@@ -43,7 +43,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Scorecard.findByMenuAndYear", query = "SELECT s FROM Scorecard s WHERE s.menu = :menu AND s.seq = :seq ORDER BY s.sortid,s.deptno"),
     @NamedQuery(name = "Scorecard.findByTemplate", query = "SELECT s FROM Scorecard s WHERE s.template = :template"),
     @NamedQuery(name = "Scorecard.findByTemplateId", query = "SELECT s FROM Scorecard s WHERE s.templateId = :templateId"),
-    @NamedQuery(name = "Scorecard.findByStatus", query = "SELECT s FROM Scorecard s WHERE s.status = :status")})
+    @NamedQuery(name = "Scorecard.findByStatus", query = "SELECT s FROM Scorecard s WHERE s.status = :status"),
+    @NamedQuery(name = "Scorecard.findByRowCount", query = "SELECT COUNT(s) FROM Scorecard s WHERE s.company = :company AND s.seq = :seq"),
+    @NamedQuery(name = "Scorecard.findByCompanyAndSeq", query = "SELECT s FROM Scorecard s WHERE s.company = :company AND s.seq = :seq")})
 public class Scorecard extends SuperEntity {
 
     @Basic(optional = false)

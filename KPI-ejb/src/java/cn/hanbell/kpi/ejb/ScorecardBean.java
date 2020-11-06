@@ -49,6 +49,28 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
+    public int findRowCount(String company, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByRowCount");
+        query.setParameter("company", company);
+        query.setParameter("seq", y);
+        if (query.getSingleResult() == null) {
+            return -1;
+        } else {
+            return Integer.parseInt(query.getSingleResult().toString());
+        }
+    }
+
+    public List<Scorecard> findCloneList(String company, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByCompanyAndSeq");
+        query.setParameter("company", company);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public String getColumn(String type, int i) {
         return type.toLowerCase() + String.format("%01d", i);
     }

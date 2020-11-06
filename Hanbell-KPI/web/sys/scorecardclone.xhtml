@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne">
+            <p:growl id="growl" showSummary="false" showDetail="true" />
+            <div class="card login-panel ui-fluid">
+                <div class="card ui-g">
+                    <div class="ui-g-12">
+                        <div class="ui-g-12">
+                            <h1>考核复制</h1>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar  value="#{scorecardCloneManagedBean.queryDateBegin}" pattern="yyyy"  placeholder="来源年度"
+                                             required="true" requiredMessage="请输入来源年度"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar  value="#{scorecardCloneManagedBean.queryDateEnd}" pattern="yyyy" placeholder="目的年度"
+                                             required="true" requiredMessage="请输入目的年度"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <h:outputLabel value="更新基准" for="updateBenchmark"/>
+                                <p:selectBooleanCheckbox id="updateBenchmark"  value="#{scorecardCloneManagedBean.updateBenchmark}" label="更新基准"
+                                                         required="true" requiredMessage="请输入是否更新基准" style=" padding-left: 30px"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton id="btnReset" value="重置日期"  type="reset" />
+                            <p:commandButton id="btnInit" value="复制考核" actionListener="#{scorecardCloneManagedBean.verify()}" rendered="true" update="growl">
+                                <p:confirm header="系统提示" message="产生吗?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnInit">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
