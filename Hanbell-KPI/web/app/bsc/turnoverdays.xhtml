@@ -50,7 +50,7 @@
                             <h:outputText  value="#{item.descript}" />
                         </p:column>
                         <p:column style="text-align: left;#{turnoverdaysBean.getBackgroundColor(item.descript)}" >
-                            <h:outputText  value="#{item.deptname}" />
+                            <h:outputText  value="#{item.descript=='总产品'?'':item.deptname}" />
                         </p:column>
                         <p:column  style="text-align: center;#{turnoverdaysBean.getBackgroundColor(item.descript)}"  >
                             <h:outputText  value="#{item.username}" />

@@ -192,6 +192,7 @@ public class TurnoverdaysBean extends FinancingFreeServiceReportBean {
         indicator.setForecastIndicator(detailSubtract(first.getForecastIndicator(), second.getForecastIndicator()));
         indicator.setTargetIndicator(detailSubtract(first.getTargetIndicator(), second.getTargetIndicator()));
         indicator.setOther1Indicator(detailSubtract(first.getOther1Indicator(), second.getOther1Indicator()));
+        indicator.setBenchmarkIndicator(detailSubtract(first.getBenchmarkIndicator(),second.getBenchmarkIndicator()));
     }
 
     //IndicatorDaily两两相减

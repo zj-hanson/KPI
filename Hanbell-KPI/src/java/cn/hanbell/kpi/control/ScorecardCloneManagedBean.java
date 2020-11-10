@@ -80,7 +80,7 @@ public class ScorecardCloneManagedBean extends SuperSingleBean<Scorecard> {
             int newY = newC.get(Calendar.YEAR);
             List<Scorecard> data;
             //复制
-            data = scorecardBean.findCloneList(userManagedBean.getCompany(), lastY);
+            data = scorecardBean.findByCompanyAndSeq(userManagedBean.getCompany(), lastY);
             if (data == null || data.isEmpty()) {
                 showErrorMsg("Error", "获取产品参考指标失败");
                 return;

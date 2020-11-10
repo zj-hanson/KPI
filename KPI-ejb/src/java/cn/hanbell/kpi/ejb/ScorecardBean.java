@@ -60,7 +60,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
-    public List<Scorecard> findCloneList(String company, int y) {
+    public List<Scorecard> findByCompanyAndSeq(String company, int y) {
         Query query = getEntityManager().createNamedQuery("Scorecard.findByCompanyAndSeq");
         query.setParameter("company", company);
         query.setParameter("seq", y);
