@@ -62,13 +62,13 @@
                             <h:outputText  value="#{item.username}" />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>3?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq1)}"  style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq1)}"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>6?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq2)}"  style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq2)}"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>9?'true':'false'}"  >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq3)}"  style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq3)}"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator))}"  />
@@ -117,13 +117,13 @@
                             <h:outputText  value="#{item.username}" />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>3?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq1)}%" style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq1)}%" style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>6?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq2)}%"  style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq2)}%"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>9?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.targetIndicator.nq3)}%"  style="color: #0033ff"  />
+                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq3)}%"  style="color: #0033ff"  />
                         </p:column>
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{financingFreeServiceReportBean.format(financingFreeServiceReportBean.getValue(item.actualIndicator))}%"  />
