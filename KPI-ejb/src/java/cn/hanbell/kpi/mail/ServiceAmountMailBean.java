@@ -9,10 +9,12 @@ import cn.hanbell.kpi.comm.ServiceMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
@@ -67,7 +69,7 @@ public class ServiceAmountMailBean extends ServiceMail {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"10%\">部门</th><th width=\"12%\">统计项目</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
+            sb.append("<tr><th width=\"10%\">部门</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
             sb.append("<th>09月</th><th>10月</th><th>11月</th><th>12月</th><th>总计</th></tr>");
             for (Indicator i : indicatorList) {
                 size++;
@@ -77,6 +79,8 @@ public class ServiceAmountMailBean extends ServiceMail {
                     sb.append(getHtmlTableRow(i, y, m, d, "#FFFFFF"));
                 }
             }
+            Indicator sumIndicator = this.getSumValue(indicatorList);
+            sb.append(getHtmlTableRow(sumIndicator, y, m, d, "#D3D7D4"));
             sb.append("</table></div>");
         } catch (Exception ex) {
             return ex.toString();
@@ -89,29 +93,11 @@ public class ServiceAmountMailBean extends ServiceMail {
         //获取需要取值栏位
         String col;
         StringBuilder sb = new StringBuilder();
-        IndicatorDetail o3 = e.getOther3Indicator();
         IndicatorDetail o4 = e.getOther4Indicator();
         Field f;
         try {
-            o3.setType(e.getOther3Label());
             o4.setType(e.getOther4Label());
-            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"3\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
-            sb.append("<td style=\"text-align: left;\">").append(o3.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o3.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o3))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o3)).equals("0") ? "" : decimalFormat.format(f.get(o3))).append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o3))).append("</td>");
-                }
-            }
-            sb.append("<td>").append(decimalFormat.format(o3.getNfy())).append("</td>");
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o4.getType()).append("</td>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"1\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o4.getClass().getDeclaredField(col);
@@ -126,27 +112,80 @@ public class ServiceAmountMailBean extends ServiceMail {
             }
             sb.append("<td>").append(decimalFormat.format(o4.getNfy())).append("</td>");
             sb.append("</tr>");
-            indicatorBean.addValue(o3, o4, "M");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">合计</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o3.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o3))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o3)).equals("0") ? "" : decimalFormat.format(f.get(o3))).append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o3))).append("</td>");
-                }
-            }
-            sb.append("<td>").append(decimalFormat.format(o3.getNfy())).append("</td>");
-            sb.append("</tr>");
-
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             throw new Exception(ex);
         }
         return sb.toString();
+    }
+
+    //算合计
+    public Indicator getSumValue(List<Indicator> indicators) {
+        if (indicators.isEmpty()) {
+            return null;
+        }
+        Indicator entity = null;
+        IndicatorDetail other4;
+        IndicatorDetail sother4;
+        try {
+            entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
+            entity.setId(-1);
+            entity.setName("合计");
+            entity.setFormid("合计");
+            sother4 = new IndicatorDetail();
+            sother4.setParent(entity);
+            sother4.setType("O4");
+            entity.setOther4Indicator(sother4);
+            for (int i = 0; i < indicators.size(); i++) {
+                other4 = indicators.get(i).getOther4Indicator();
+                addValue(entity.getOther4Indicator(), other4, entity.getFormkind());
+            }
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+            log4j.error(ex);
+        }
+        return entity;
+    }
+
+    public void addValue(IndicatorDetail a, IndicatorDetail b, String formKind) {
+        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        switch (formKind) {
+            case "M":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                a.setNq4(a.getNq4().add(b.getNq4()));
+                a.setNq3(a.getNq3().add(b.getNq3()));
+                a.setNq2(a.getNq2().add(b.getNq2()));
+                a.setNq1(a.getNq1().add(b.getNq1()));
+                a.setN01(a.getN01().add(b.getN01()));
+                a.setN02(a.getN02().add(b.getN02()));
+                a.setN03(a.getN03().add(b.getN03()));
+                a.setN04(a.getN04().add(b.getN04()));
+                a.setN05(a.getN05().add(b.getN05()));
+                a.setN06(a.getN06().add(b.getN06()));
+                a.setN07(a.getN07().add(b.getN07()));
+                a.setN08(a.getN08().add(b.getN08()));
+                a.setN09(a.getN09().add(b.getN09()));
+                a.setN10(a.getN10().add(b.getN10()));
+                a.setN11(a.getN11().add(b.getN11()));
+                a.setN12(a.getN12().add(b.getN12()));
+                break;
+            case "Q":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                a.setNq4(a.getNq4().add(b.getNq4()));
+                a.setNq3(a.getNq3().add(b.getNq3()));
+                a.setNq2(a.getNq2().add(b.getNq2()));
+                a.setNq1(a.getNq1().add(b.getNq1()));
+                break;
+            case "H":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+                a.setNh2(a.getNh2().add(b.getNh2()));
+                a.setNh1(a.getNh1().add(b.getNh1()));
+                break;
+            case "Y":
+                a.setNfy(a.getNfy().add(b.getNfy()));
+        }
     }
 
 }

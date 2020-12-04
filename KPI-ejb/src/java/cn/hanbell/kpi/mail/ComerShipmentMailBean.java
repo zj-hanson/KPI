@@ -127,6 +127,8 @@ public class ComerShipmentMailBean extends ShipmentMail {
             sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
+            getData().put("sum1", BigDecimal.ZERO);
+            getData().put("sum2", BigDecimal.ZERO);
             indicator = indicatorBean.findByFormidYearAndDeptno("Q-螺杆机组外销出货", y, deptno);
             indicatorBean.getEntityManager().clear();
             total = indicator;
@@ -245,6 +247,8 @@ public class ComerShipmentMailBean extends ShipmentMail {
             sum2 = sum2.add(getData().get("sum2"));
 
             indicators.clear();
+            getData().put("sum1", BigDecimal.ZERO);
+            getData().put("sum2", BigDecimal.ZERO);
             indicator = indicatorBean.findByFormidYearAndDeptno("A-螺杆机组外销出货", y, deptno);
             indicatorBean.getEntityManager().clear();
             indicatorBean.divideByRate(indicator, 2);
@@ -274,7 +278,7 @@ public class ComerShipmentMailBean extends ShipmentMail {
             total = indicatorBean.getSumValue(indicators);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
-                total.setName("再生能源合计");  
+                total.setName("再生能源合计");
                 getData().put("sumC1", sumC1);
                 getData().put("sumC2", sumC2);
                 getHtmlTable_OH(indicators, y, m, d, false, "");
