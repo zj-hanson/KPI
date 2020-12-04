@@ -36,11 +36,11 @@
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
                             </p:row>
                             <p:row>
-                                <p:column headerText="Q1实绩" visible="#{turnoverdaysBean.m>3?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q2实绩" visible="#{turnoverdaysBean.m>6?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q3实绩" visible="#{turnoverdaysBean.m>9?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="#{turnoverdaysBean.y}年1-#{turnoverdaysBean.m}月累计" style="background-color:#dbdbdb" />
-                                <p:column headerText="#{turnoverdaysBean.y-1}年1-#{turnoverdaysBean.m}月累计" style="background-color:#dbdbdb" />
+                                <p:column headerText="Q1实绩(1～3月)" visible="#{turnoverdaysBean.m>3?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q2实绩(1～6月)" visible="#{turnoverdaysBean.m>6?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="Q3实绩(1～9月)" visible="#{turnoverdaysBean.m>9?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
+                                <p:column headerText="#{turnoverdaysBean.y}年1～#{turnoverdaysBean.m}月累计" style="background-color:#dbdbdb" />
+                                <p:column headerText="#{turnoverdaysBean.y-1}年1～#{turnoverdaysBean.m}月累计" style="background-color:#dbdbdb" />
                             </p:row>
                         </p:columnGroup>
                         <p:column groupRow="true"  style="text-align: center" >
