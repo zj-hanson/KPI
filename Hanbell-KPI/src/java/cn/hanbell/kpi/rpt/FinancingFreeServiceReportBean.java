@@ -201,7 +201,7 @@ public class FinancingFreeServiceReportBean extends BscQueryTableManageBean impl
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = entity.getClass().getDeclaredField(mon);
             f.setAccessible(true);
-            total = BigDecimal.valueOf(Double.valueOf(f.get(entity).toString()));
+            total = BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())*100);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             total = BigDecimal.ZERO;
         }

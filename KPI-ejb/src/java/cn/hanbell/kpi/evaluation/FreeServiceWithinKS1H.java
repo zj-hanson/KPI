@@ -14,7 +14,7 @@ public class FreeServiceWithinKS1H extends FreeServiceWithinKS{
     public FreeServiceWithinKS1H() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("hmark1", "='HD' ");
+        queryParams.put("hmark1", "<>'CK' ");
         queryParams.put("hmark2", " ='P' ");
     }   
 }
