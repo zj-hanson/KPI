@@ -163,6 +163,26 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                     } else {
                         ip.setGenre(genre);
                     }
+                    //EPM01中分类1除S外，全部替换为“P”
+                    if (row[4].toString().equals("EPM01") && itclscode.equals("1") && row[0].toString().equals("C")) {
+                        if (genre.equals("S")) {
+                            ip.setGenre("S");
+                        }else{
+                            ip.setGenre("P");
+                        }
+                    }else{
+                        ip.setGenre(genre);
+                    }
+                    //EM01中分类1除S和P，全部替换为“A”
+                    if (row[4].toString().equals("EM01") && row[0].toString().equals("C")) {
+                        if (!genre.equals("S") || !genre.equals("P")) {
+                            ip.setGenre("A");
+                        }else{
+                            ip.setGenre(genre);
+                        }
+                    }else{
+                        ip.setGenre(genre);
+                    }
                     ip.setItclscode(itclscode);
                     ip.setCategories(row[8] != null ? row[8].toString() : "");
                     ip.setIndicatorno(row[9] != null ? row[9].toString() : "");
