@@ -118,7 +118,7 @@ public abstract class MailNotification {
 
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
-        sb.append("</div>");//对应Head中的div.content
+        sb.append("</div>");//对应body中的div.content
         sb.append("<div class=\"divFoot\">此报表由系统自动发送,请不要直接回复</div>");
         sb.append("<div class=\"divFoot\">报表管理员</div>");
         sb.append("</div></body></html>");
