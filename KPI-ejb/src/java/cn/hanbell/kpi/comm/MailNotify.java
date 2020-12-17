@@ -6,6 +6,8 @@
 package cn.hanbell.kpi.comm;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.logging.log4j.LogManager;
@@ -16,28 +18,41 @@ import org.apache.logging.log4j.Logger;
  * @author C0160
  */
 public class MailNotify {
-
-    protected String smtpHost = "172.16.10.18";
-    protected int smptPort = 25;
+    
+    protected String SMTP_HOST = "172.16.10.18";
+    protected int SMTP_PORT = 25;
     protected HtmlEmail email;
-
+    
     protected MailNotification notification;
-
+    
+    protected Properties propsConfiguration = new Properties();
     protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
-
+    
     public MailNotify() {
-
+        try {
+            propsConfiguration.load(this.getClass().getClassLoader().getResourceAsStream("META-INF/kpi-ejb.properties"));
+            String host = propsConfiguration.getProperty("smtp.host");
+            if (host != null && !"".equals(host)) {
+                this.SMTP_HOST = host;
+            }
+            String port = propsConfiguration.getProperty("smtp.port");
+            if (port != null && !"".equals(port)) {
+                this.SMTP_PORT = Integer.parseInt(port);
+            }
+        } catch (IOException ex) {
+            log4j.error(ex);
+        }
     }
-
+    
     protected void init() {
         if (email == null) {
             System.setProperty("mail.mime.splitlongparameters", "false");
             email = new HtmlEmail();
-            email.setHostName(smtpHost);
-            email.setSmtpPort(smptPort);
+            email.setHostName(SMTP_HOST);
+            email.setSmtpPort(SMTP_PORT);
         }
     }
-
+    
     public void send() {
         try {
             init();
@@ -70,10 +85,10 @@ public class MailNotify {
             log4j.error(ex);
         }
     }
-
+    
     public void sendMail(MailNotification notification) {
         this.notification = notification;
         send();
     }
-
+    
 }
