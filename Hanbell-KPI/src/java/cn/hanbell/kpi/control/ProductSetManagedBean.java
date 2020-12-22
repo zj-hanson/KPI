@@ -9,10 +9,22 @@ import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.entity.Category;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.JobSchedule;
+import com.lightshell.comm.BaseLib;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import org.apache.commons.logging.impl.Log4JLogger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -187,6 +199,52 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
                 showInfoMsg("Info", "更新其他数据成功");
             } catch (Exception ex) {
                 showErrorMsg("Error", ex.toString());
+            }
+        }
+    }
+
+    @Override
+    public void handleFileUploadWhenNew(FileUploadEvent event) {
+        UploadedFile file = event.getFile();
+        if (file != null && currentEntity != null) {
+            try {
+                InputStream inputStream = file.getInputstream();
+                Workbook excel = WorkbookFactory.create(inputStream);
+                Sheet sheet = excel.getSheetAt(0);
+                Cell c;
+                //月
+                c = sheet.getRow(0).getCell(0);
+                currentEntity.getTargetIndicator().setN01(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(1);
+                currentEntity.getTargetIndicator().setN02(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(2);
+                currentEntity.getTargetIndicator().setN03(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(3);
+                currentEntity.getTargetIndicator().setN04(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(4);
+                currentEntity.getTargetIndicator().setN05(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(5);
+                currentEntity.getTargetIndicator().setN06(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(6);
+                currentEntity.getTargetIndicator().setN07(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(7);
+                currentEntity.getTargetIndicator().setN08(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(8);
+                currentEntity.getTargetIndicator().setN09(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(9);
+                currentEntity.getTargetIndicator().setN10(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(10);
+                currentEntity.getTargetIndicator().setN11(BaseLib.convertExcelCell(BigDecimal.class, c));
+                c = sheet.getRow(0).getCell(11);
+                currentEntity.getTargetIndicator().setN12(BaseLib.convertExcelCell(BigDecimal.class, c));
+
+                currentEntity.setOptuser(userManagedBean.getUserid());
+                currentEntity.setOptdateToNow();
+
+                indicatorBean.update(currentEntity);
+                showInfoMsg("Info", "目标导入成功!");
+            } catch (IOException | InvalidFormatException ex) {
+                showInfoMsg("Error", "目标导入失败？");
             }
         }
     }
