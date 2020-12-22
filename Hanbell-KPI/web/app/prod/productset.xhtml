@@ -36,6 +36,10 @@
                 <f:facet name="left">
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{productSetManagedBean.init()}"  icon="ui-icon-sync"  update="formList"/>
                     <p:commandButton id="btnView" value="查看" action="#{productSetManagedBean.view('productsetView')}"  icon="ui-icon-document"/>
+                    <p:splitButton id="btnImport" value="导入"  icon="ui-icon-menu">
+                        <p:menuitem id="btnImpTarget" value="目标" icon="ui-icon-plus"
+                                    process="@this" update="formList" oncomplete="PF('importTarget').show();"/>
+                    </p:splitButton>
                 </f:facet>
                 <f:facet name="right">
                     <p:commandButton id="btnUpdateActualValue" value="计算" actionListener="#{productSetManagedBean.updateActualValue()}" icon="ui-icon-save"
@@ -135,6 +139,17 @@
             <p:blockUI id="blockUI" block="formList" trigger="btnUpdateActualValue,btnUnverify,btnExport">
                 <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
             </p:blockUI>
+        </h:form>
+        <h:form id="formImport">
+            <p:dialog id="importTargetDlg" widgetVar="importTarget" width="40%" style="border-color: #666666">
+                <p:panelGrid id="importTargetGrid" styleClass="plgDetail Wid100">
+                    <p:row>
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{productSetManagedBean.handleFileUploadWhenNew}"  styleClass="fileUpload"
+                                      allowTypes="/(\.|\/)(xlsx)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原" value="批量添加"
+                                      process="@this" update="formList"/>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 
