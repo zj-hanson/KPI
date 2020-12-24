@@ -10,7 +10,9 @@ import cn.hanbell.kpi.comm.SalesOrderMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.evaluation.SalesOrderAmount;
+import cn.hanbell.kpi.evaluation.SalesOrderAmountAA;
 import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
+import cn.hanbell.kpi.evaluation.SalesOrderQuantityAA;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -140,7 +142,7 @@ public class AASalesOrderSpecialMailBean extends SalesOrderMail {
             } else {
                 num1 = BigDecimal.ZERO;
             }
-            if (indicator.getId() != -1) {
+            if (indicator.getId() != -1 && !indicator.getCategory().contains("-按机型分")) {
                 sumAdditionalData("sum1", num1);
             }
             String color = indicator.getCategory().contains("-按机型分") ? "style=\"background:#CCFFCC;\"" : "";
