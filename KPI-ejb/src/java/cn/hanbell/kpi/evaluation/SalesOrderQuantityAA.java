@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author C1749
  */
-public class SalesOrderQuantityAA extends SalesOrder {
+public class SalesOrderQuantityAA extends SalesOrderQuantity {
 
     public SalesOrderQuantityAA() {
         super();
@@ -135,13 +135,15 @@ public class SalesOrderQuantityAA extends SalesOrder {
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
         }
-        switch (modelcode) {
-            case "QT":
-                sb.append(" and p.modelcode = ").append("null");
-                break;
-            default:
-                sb.append(" and p.modelcode ").append(modelcode);
-                break;
+        if (!"".equals(modelcode)) {
+            switch (modelcode) {
+                case "QT":
+                    sb.append(" and p.modelcode = ").append("null");
+                    break;
+                default:
+                    sb.append(" and p.modelcode ").append(modelcode);
+                    break;
+            }
         }
         sb.append(" and h.recdate<= '${d}' ");
 

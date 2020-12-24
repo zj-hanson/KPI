@@ -9,8 +9,11 @@ import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.ShipmentMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.evaluation.SalesOrder;
 import cn.hanbell.kpi.evaluation.SalesOrderAmount;
+import cn.hanbell.kpi.evaluation.SalesOrderAmountAA;
 import cn.hanbell.kpi.evaluation.SalesOrderQuantity;
+import cn.hanbell.kpi.evaluation.SalesOrderQuantityAA;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,6 +33,7 @@ import javax.ejb.Stateless;
 public class AAShipmentSpecialMailBean extends ShipmentMail {
 
     List<Indicator> indicatorList = new ArrayList<>();
+    protected SalesOrder oldSalesOrder;
 
     public AAShipmentSpecialMailBean() {
 
@@ -65,6 +69,7 @@ public class AAShipmentSpecialMailBean extends ShipmentMail {
                 indicatorList.addAll(1, data);
             }
             salesOrder = new SalesOrderQuantity();
+            oldSalesOrder = new SalesOrderQuantity();
             return getHtmlTable(this.indicatorList, y, m, d, true);
         } else {
             return "A机组每日出货台数设定错误";
@@ -86,6 +91,7 @@ public class AAShipmentSpecialMailBean extends ShipmentMail {
                 indicatorBean.divideByRate(i, 2);
             }
             salesOrder = new SalesOrderAmount();
+            oldSalesOrder = new SalesOrderAmount();
             return getHtmlTable(this.indicatorList, y, m, d, true);
         } else {
             return "A机组每日出货金额设定错误";
@@ -156,6 +162,19 @@ public class AAShipmentSpecialMailBean extends ShipmentMail {
                 actualInterface.setEJB(indicator.getActualEJB());
                 num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
                 //未交订单
+                switch (indicator.getCategory()) {
+                    case "A机组每日出货台数-按机型分":
+                    case "A机组每日订单台数-按机型分":
+                        salesOrder = new SalesOrderQuantityAA();
+                        break;
+                    case "A机组每日出货金额-按机型分":
+                    case "A机组每日订单金额-按机型分":
+                        salesOrder = new SalesOrderAmountAA();
+                        break;
+                    default:
+                        salesOrder = oldSalesOrder;
+                        break;
+                }
                 if (salesOrder != null) {
                     salesOrder.setEJB(indicator.getActualEJB());
                     num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
@@ -166,7 +185,7 @@ public class AAShipmentSpecialMailBean extends ShipmentMail {
                 num1 = BigDecimal.ZERO;
                 num2 = BigDecimal.ZERO;
             }
-            if (indicator.getId() != -1) {
+            if (indicator.getId() != -1 && !indicator.getCategory().contains("-按机型分")) {
                 sumAdditionalData("sum1", num1);
                 sumAdditionalData("sum2", num2);
             }

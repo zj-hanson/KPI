@@ -53,13 +53,15 @@ public class SalesOrderAmountAA extends SalesOrder {
         if (!"".equals(n_code_DD)) {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
         }
-        switch (modelcode) {
-            case "QT":
-                sb.append(" and p.modelcode = ").append("null");
-                break;
-            default:
-                sb.append(" and p.modelcode ").append(modelcode);
-                break;
+        if (!"".equals(modelcode)) {
+            switch (modelcode) {
+                case "QT":
+                    sb.append(" and p.modelcode = ").append("null");
+                    break;
+                default:
+                    sb.append(" and p.modelcode ").append(modelcode);
+                    break;
+            }
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {
