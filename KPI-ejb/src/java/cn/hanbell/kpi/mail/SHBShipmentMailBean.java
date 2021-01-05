@@ -106,13 +106,13 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("P真空出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("涡旋产品出货台数", y);
-//            indicatorBean.getEntityManager().clear();
-//            getHtmlTable(indicators, y, m, d, true);
-//            total = getSumIndicator();
-//            total.setName("S涡旋出货台数");
-//            sb.append(getHtmlTableRow(total, y, m, d));
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("涡旋产品出货台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("S涡旋出货台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("涡轮每日出货台数", y);
@@ -242,6 +242,22 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum2 = sum2.add(getData().get("sum2"));
             }
 
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("涡旋产品出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("S涡旋出货金额");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+
             salesOrder = null;
 
             indicators.clear();
@@ -318,6 +334,22 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
                 total.setName("P真空收费服务");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("S收费服务金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("S涡旋收费服务");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
