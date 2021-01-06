@@ -22,10 +22,8 @@ public abstract class ShipmentMail extends MailNotification {
 
     protected SalesOrder salesOrder;
 
-    protected DecimalFormat DoublelFormat;
-
     public ShipmentMail() {
-        this.DoublelFormat = new DecimalFormat("##.##");
+        this.decimalFormat = new DecimalFormat("##.##");
     }
 
     @Override
@@ -48,19 +46,6 @@ public abstract class ShipmentMail extends MailNotification {
 
     public void setSalesOrder(SalesOrder salesOrder) {
         this.salesOrder = salesOrder;
-    }
-
-    @Override
-    public void setDecimalFormat(String format) {
-        this.DoublelFormat.applyPattern(format);
-    }
-
-    public DecimalFormat getDoublelFormat() {
-        return DoublelFormat;
-    }
-
-    public void setDoublelFormat(DecimalFormat DoublelFormat) {
-        this.DoublelFormat = DoublelFormat;
     }
 
 }

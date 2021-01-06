@@ -157,16 +157,16 @@ public class ShipmentMailBean extends ShipmentMail {
                 //种类
                 sb.append("<td style='background-color:#ff8e67';>").append(indicator.getName()).append("</td>");
                 //本日
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
                 //当月
                 //实际出货量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(a))).append("</td>");
                 //目标
                 f = t.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //达成
                 f = p.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -174,28 +174,28 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 f = b.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
                 //成长率
                 sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
                 //预计订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth1))).append("</td>");
                 //实际催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth2))).append("</td>");
                 //未来几天催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth3))).append("</td>");
                 //累计
                 //实际本年出货量
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
                 //年度目标
                 f = t.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //年度达成率
                 f = p.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
@@ -203,7 +203,7 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
                 //改成按天折算
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
                 //成长率
                 //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
                 //改成按天折算
@@ -221,16 +221,16 @@ public class ShipmentMailBean extends ShipmentMail {
                 //种类
                 sb.append("<td>").append(indicator.getName()).append("</td>");
                 //本日
-                sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
                 //当月
                 //实际出货量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(a))).append("</td>");
                 //目标
                 f = t.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //达成
                 f = p.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -238,28 +238,28 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 f = b.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
                 //成长率
                 sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
                 //预计订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth1))).append("</td>");
                 //实际催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth2))).append("</td>");
                 //未来几天催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth3))).append("</td>");
                 //累计
                 //实际本年出货量
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
                 //年度目标
                 f = t.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //年度达成率
                 f = p.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
@@ -267,7 +267,7 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
                 //改成按天折算
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
                 //成长率
                 //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
                 //改成按天折算
@@ -320,16 +320,16 @@ public class ShipmentMailBean extends ShipmentMail {
                 //种类
                 sb.append("<td style='background-color:#ff8e67';>").append(indicator.getName()).append("</td>");
                 //本日
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
                 //当月
                 //实际出货量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(a))).append("</td>");
                 //目标
                 f = t.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //达成
                 f = p.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -337,28 +337,28 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 f = b.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
                 //成长率
                 sb.append("<td style='background-color:#ff8e67';>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
                 //预计订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth1))).append("</td>");
                 //实际催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth2))).append("</td>");
                 //未来几天催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(oth3))).append("</td>");
                 //累计
                 //实际本年出货量
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
                 //年度目标
                 f = t.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //年度达成率
                 f = p.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
@@ -366,7 +366,7 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
                 //改成按天折算
-                sb.append("<td style='background-color:#ff8e67';>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                sb.append("<td style='background-color:#ff8e67';>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
                 //成长率
                 //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
                 //改成按天折算
@@ -388,16 +388,16 @@ public class ShipmentMailBean extends ShipmentMail {
                 //种类
                 sb.append("<td>").append(indicator.getName()).append("</td>");
                 //本日
-                sb.append("<td>").append(DoublelFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
                 //当月
                 //实际出货量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(a))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(a))).append("</td>");
                 //目标
                 f = t.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //达成
                 f = p.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -405,28 +405,28 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 f = b.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 2))).append("</td>");//改成按天折算
                 //成长率
                 sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");//改成按天折算
                 //预计订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth1))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth1))).append("</td>");
                 //实际催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth2))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth2))).append("</td>");
                 //未来几天催货订单量
                 f = a.getClass().getDeclaredField(col);
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(oth3))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(oth3))).append("</td>");
                 //累计
                 //实际本年出货量
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
                 //年度目标
                 f = t.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
-                sb.append("<td>").append(DoublelFormat.format(f.get(t))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
                 //年度达成率
                 f = p.getClass().getDeclaredField("nfy");
                 f.setAccessible(true);
@@ -434,7 +434,7 @@ public class ShipmentMailBean extends ShipmentMail {
                 //去年同期
                 //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
                 //改成按天折算
-                sb.append("<td>").append(DoublelFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+                sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
                 //成长率
                 //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
                 //改成按天折算
