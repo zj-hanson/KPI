@@ -15,9 +15,9 @@ import javax.persistence.Query;
  *
  * @author C0160
  */
-public abstract class ShipmentTonHY extends Shipment {
+public abstract class ShipmentAmount extends Shipment {
 
-    public ShipmentTonHY() {
+    public ShipmentAmount() {
         super();
     }
 
@@ -28,14 +28,13 @@ public abstract class ShipmentTonHY extends Shipment {
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";//客户
 
-        BigDecimal shpton = BigDecimal.ZERO;
-        BigDecimal bakton = BigDecimal.ZERO;
-        BigDecimal armton = BigDecimal.ZERO;
+        BigDecimal shpamts = BigDecimal.ZERO;
+        BigDecimal bakamts = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
         //出货
-        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1 end) as decimal(17,2))),0) ");
+        sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.shpamts*h.ratio ");
+        sb.append(" else d.shpamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
         sb.append(" and h.houtsta not in ('N','W') ");
@@ -62,12 +61,12 @@ public abstract class ShipmentTonHY extends Shipment {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        //未开票销退
-        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
+        //销退 不区分未开票退货还是已开票退货
+        sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.bakamts*h.ratio ");
+        sb.append(" else d.bakamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
         sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
-        sb.append(" and h.baksta not in ('N','W') and h.owarehyn='Y' ");
+        sb.append(" and h.baksta not in ('N','W') ");
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
@@ -90,50 +89,18 @@ public abstract class ShipmentTonHY extends Shipment {
         String cdrbdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
 
-        sb.setLength(0);
-        //已开票销退
-        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
-        sb.append(" from armblos a,cdrbdta d,invmas s ");
-        sb.append(" where a.facno=d.facno ");
-        sb.append(" and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr ");
-        sb.append(" and a.facno='${facno}' ");
-        if (!"".equals(protype)) {
-            sb.append(" and left(s.spdsc,2) ").append(protype);
-        }
-        if (!"".equals(cusno)) {
-            sb.append(" and a.ivocus ").append(cusno);
-        }
-        sb.append(" and year(a.bildat) = ${y} and month(a.bildat)= ${m} ");
-        switch (type) {
-            case 2:
-                //月
-                sb.append(" and a.bildat<= '${d}' ");
-                break;
-            case 5:
-                //日
-                sb.append(" and a.bildat= '${d}' ");
-                break;
-            default:
-                sb.append(" and a.bildat<= '${d}' ");
-        }
-        String armblos = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
-                .replace("${facno}", facno);
-        //获取数值
         superEJB.setCompany(facno);
         Query query1 = superEJB.getEntityManager().createNativeQuery(cdrdta);
         Query query2 = superEJB.getEntityManager().createNativeQuery(cdrbdta);
-        Query query3 = superEJB.getEntityManager().createNativeQuery(armblos);
         try {
             Object shp = query1.getSingleResult();
-            Object shpbak = query2.getSingleResult();
-            Object armbak = query3.getSingleResult();
-            shpton = (BigDecimal) shp;
-            bakton = (BigDecimal) shpbak;
-            armton = (BigDecimal) armbak;
-            return shpton.subtract(bakton).subtract(armton);
+            Object bak = query2.getSingleResult();
+            shpamts = (BigDecimal) shp;
+            bakamts = (BigDecimal) bak;
+
+            return shpamts.subtract(bakamts);
         } catch (Exception ex) {
-            log4j.error("ShipmentTonHTHY.getValue()异常", ex);
+            log4j.error("ShipmentAmount.getValue()异常", ex);
         }
         return BigDecimal.ZERO;
     }

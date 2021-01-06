@@ -7,7 +7,7 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749 灰铁预估订单量（吨）
+ * @author C0160
  */
 public class ShipmentPredictTonHYOTH extends ShipmentPredictTonHY {
 

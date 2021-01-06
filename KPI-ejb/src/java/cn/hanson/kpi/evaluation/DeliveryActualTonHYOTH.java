@@ -7,9 +7,9 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749 汉声 灰铁实际催货量（吨）
+ * @author C0160
  */
-public class DeliveryActualTonHYOTH extends ShipmentDelyTon {
+public class DeliveryActualTonHYOTH extends DeliveryTon {
 
     public DeliveryActualTonHYOTH() {
         super();

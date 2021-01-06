@@ -12,13 +12,13 @@ import java.util.LinkedHashMap;
 import javax.persistence.Query;
 
 /**
- * 实际催货数量
+ * 实际催货金额
  *
  * @author C0160
  */
-public abstract class DeliveryTon extends Shipment {
+public abstract class DeliveryAmount extends Shipment {
 
-    public DeliveryTon() {
+    public DeliveryAmount() {
         super();
     }
 
@@ -28,17 +28,17 @@ public abstract class DeliveryTon extends Shipment {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";//客户
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
-        String variety = map.get("variety") != null ? map.get("variety").toString() : "";//细分种类别
+        String variety = map.get("variety") != null ? map.get("variety").toString() : "";//分类
         //实际催货量：cdrdta 本月 cdrhad的houtsta状态不为 W 的单据
         //未来几天催货量：cdrdta 本月 cdrhad状态为 N 的单据
         String houtsta = map.get("houtsta") != null ? map.get("houtsta").toString() : "";//状态
 
-        BigDecimal ton = BigDecimal.ZERO;
+        BigDecimal amts = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
         //出货
-        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1 end) as decimal(17,2))),0) ");
+        sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.shpamts*h.ratio ");
+        sb.append(" else d.shpamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
         if (!"".equals(cusno)) {
@@ -66,11 +66,11 @@ public abstract class DeliveryTon extends Shipment {
         Query query = superEJB.getEntityManager().createNativeQuery(cdrdta);
         try {
             Object o1 = query.getSingleResult();
-            ton = (BigDecimal) o1;
+            amts = (BigDecimal) o1;
         } catch (Exception ex) {
-            log4j.error("DeliveryTon.getValue()异常", ex);
+            log4j.error("DeliveryAmount.getValue()异常", ex);
         }
-        return ton;
+        return amts;
     }
 
 }

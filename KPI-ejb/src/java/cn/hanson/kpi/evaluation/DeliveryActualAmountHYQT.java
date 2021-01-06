@@ -9,13 +9,13 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C0160
  */
-public class DeliveryFutureTonHYOTH extends DeliveryTon {
+public class DeliveryActualAmountHYQT extends DeliveryAmount {
 
-    public DeliveryFutureTonHYOTH() {
+    public DeliveryActualAmountHYQT() {
         super();
         queryParams.put("facno", "Y");
-        queryParams.put("protype", " not in ('HT','QT') ");
-        queryParams.put("houtsta", " in ('N')");
+        queryParams.put("protype", "in ('QT') ");
+        queryParams.put("houtsta", "not in ('W')");
     }
 
 }

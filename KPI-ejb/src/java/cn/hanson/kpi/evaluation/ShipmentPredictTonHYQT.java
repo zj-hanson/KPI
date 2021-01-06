@@ -14,7 +14,7 @@ public class ShipmentPredictTonHYQT extends ShipmentPredictTonHY {
     public ShipmentPredictTonHYQT() {
         super();
         queryParams.put("facno", "Y");
-        queryParams.put("protype", "in ('QT') ");
+        queryParams.put("protype", " in ('QT') ");
     }
 
 }

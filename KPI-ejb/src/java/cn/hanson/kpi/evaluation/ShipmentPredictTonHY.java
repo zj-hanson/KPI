@@ -12,8 +12,9 @@ import java.util.LinkedHashMap;
 import javax.persistence.Query;
 
 /**
+ * 预估订单数量
  *
- * @author C1749 汉声预估订单量（吨）
+ * @author C0160
  */
 public abstract class ShipmentPredictTonHY extends Shipment {
 
