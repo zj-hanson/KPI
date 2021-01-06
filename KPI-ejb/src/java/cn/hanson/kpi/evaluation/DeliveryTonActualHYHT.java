@@ -9,9 +9,9 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C0160
  */
-public class DeliveryActualTonHYHT extends DeliveryTon {
+public class DeliveryTonActualHYHT extends DeliveryTon {
 
-    public DeliveryActualTonHYHT() {
+    public DeliveryTonActualHYHT() {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", "in ('HT') ");

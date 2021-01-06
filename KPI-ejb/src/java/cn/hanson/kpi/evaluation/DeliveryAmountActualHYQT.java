@@ -9,9 +9,9 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C0160
  */
-public class DeliveryActualAmountHYQT extends DeliveryAmount {
+public class DeliveryAmountActualHYQT extends DeliveryAmount {
 
-    public DeliveryActualAmountHYQT() {
+    public DeliveryAmountActualHYQT() {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", "in ('QT') ");

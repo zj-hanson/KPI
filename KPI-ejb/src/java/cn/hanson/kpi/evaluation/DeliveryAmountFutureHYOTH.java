@@ -9,9 +9,9 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C0160
  */
-public class DeliveryFutureAmountHYOTH extends DeliveryAmount {
+public class DeliveryAmountFutureHYOTH extends DeliveryAmount {
 
-    public DeliveryFutureAmountHYOTH() {
+    public DeliveryAmountFutureHYOTH() {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", " not in ('HT','QT') ");

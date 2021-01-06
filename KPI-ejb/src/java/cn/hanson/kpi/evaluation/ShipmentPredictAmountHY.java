@@ -12,13 +12,13 @@ import java.util.LinkedHashMap;
 import javax.persistence.Query;
 
 /**
- * 预估订单数量
+ * 预估订单金额
  *
  * @author C0160
  */
-public abstract class ShipmentPredictTonHY extends Shipment {
+public abstract class ShipmentPredictAmountHY extends Shipment {
 
-    public ShipmentPredictTonHY() {
+    public ShipmentPredictAmountHY() {
         super();
     }
 
@@ -30,11 +30,11 @@ public abstract class ShipmentPredictTonHY extends Shipment {
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
         String variety = map.get("variety") != null ? map.get("variety").toString() : "";//细类
 
-        BigDecimal ton = BigDecimal.ZERO;
+        BigDecimal amts = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.cdrqy1*s.rate2 else d.cdrqy1 end) as decimal(17,2))),0) ");
+        sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.tramts*h.ratio ");
+        sb.append(" else d.tramts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
         sb.append(" from cdrdmas d,cdrhmas h,invmas s ");
         sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and s.itnbr=d.itnbr ");
         if (!"".equals(cusno)) {
@@ -59,11 +59,11 @@ public abstract class ShipmentPredictTonHY extends Shipment {
         Query query = superEJB.getEntityManager().createNativeQuery(cdrdmas);
         try {
             Object o1 = query.getSingleResult();
-            ton = (BigDecimal) o1;
+            amts = (BigDecimal) o1;
         } catch (Exception ex) {
             log4j.error("HSShipmentExpeditingTonne getValue()异常", ex);
         }
-        return ton;
+        return amts;
     }
 
 }
