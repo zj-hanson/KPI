@@ -22,7 +22,7 @@ public abstract class Shipment implements Actual {
 
     protected LinkedHashMap<String, Object> queryParams;
 
-    protected final Logger log4j = LogManager.getLogger();
+    protected final Logger log4j = LogManager.getLogger("cn.hanbell.kpi");
 
     public Shipment() {
         queryParams = new LinkedHashMap<>();

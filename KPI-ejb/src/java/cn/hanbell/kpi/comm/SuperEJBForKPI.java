@@ -18,8 +18,8 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
 
-    protected final String url = "http://127.0.0.1:8480/EAP/EAPWebService";
-    protected final String nameSpace = "http://jws.hanbell.cn/";
+    protected final String URL = "http://127.0.0.1:8480/EAP/EAPWebService";
+    protected final String NAME_SPACE = "http://jws.hanbell.cn/";
 
     @PersistenceContext(unitName = "KPI-ejbPU")
     private EntityManager em_shbkpi;
