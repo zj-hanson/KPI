@@ -36,27 +36,7 @@
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 25px" >No records found.</span>
                 </div>
                 <div style="display:#{balanceSheetReportBean.statusMap.displaydiv2};" align="right">
-                    <script type="text/javascript">
-                        $(function () {
-                            $(".table tr[name != btitle]").hover(function () {
-                                $(this).css("background-color", "#1AB394");
-                                $(this).css("color", "white");
-                            }, function () {
-                                $(this).css("background-color", "");
-                                $(this).css("color", "black");
-                            });
-                        });
-                        $(function () {
-                            $(".table tr[name = btitle]").hover(function () {
-                                $(this).css("background-color", "black");
-                                $(this).css("color", "white");
-                            }, function () {
-                                $(this).css("background-color", "#E8E8E8");
-                                $(this).css("color", "firebrick");
-                            });
-                        });
-                    </script>
-                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px">
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;"  >
                             <tr style="height: 45px;">
                                 <th>资产</th>
@@ -67,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody class="table">
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
                                 <td>流动资产：</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('17')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -115,7 +95,7 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color:#E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color:#E8E8E8">
                                 <td>非流动资产：</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('45')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -151,7 +131,7 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td title="资产合计 = 流动资产 + 非流动资产" >资产合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('46')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -159,7 +139,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px">
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;">
                             <tr style="height: 45px;" >
                                 <th>负债和股东权益</th>
@@ -170,7 +150,7 @@
                             </tr>
                         </thead>
                         <tbody class="table">
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
                                 <td>流动负债：</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('17')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -224,7 +204,7 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
                                 <td>非流动负债：</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('27')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -242,7 +222,7 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td title="负债合计 = 流动负债 + 非流动负债">负债合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('28')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
@@ -278,13 +258,13 @@
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td>股东权益合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('45')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8;color: firebrick">
+                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td>负债和权益股东总计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('46')}" var="item" >
                                     <td style="text-align: right">#{item}</td>

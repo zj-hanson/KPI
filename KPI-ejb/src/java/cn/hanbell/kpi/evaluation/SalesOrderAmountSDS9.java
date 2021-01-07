@@ -15,7 +15,7 @@ public class SalesOrderAmountSDS9 extends SalesOrderAmount{
         super();
         queryParams.put("facno", "C");
         queryParams.put("decode", "1");
-        queryParams.put("n_code_DA", " ='AH' ");
+        queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DC", " ='SDS' ");
     }
 

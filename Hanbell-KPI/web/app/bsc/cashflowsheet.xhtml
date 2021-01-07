@@ -40,23 +40,19 @@
                         $(function () {
                             $(".table tr[name != btitle]").hover(function () {
                                 $(this).css("background-color", "#1AB394");
-                                $(this).css("color", "white");
                             }, function () {
                                 $(this).css("background-color", "");
-                                $(this).css("color", "black");
                             });
                         });
                         $(function () {
                             $(".table tr[name = btitle]").hover(function () {
-                                $(this).css("background-color", "black");
-                                $(this).css("color", "white");
+                                $(this).css("background-color", "#1AB394");
                             }, function () {
-                                $(this).css("background-color", "#dbdbdb");
-                                $(this).css("color", "firebrick");
+                                $(this).css("background-color", "#8CB4E2");
                             });
                         });
                     </script>
-                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;width: 100%;text-align: center;font-size: 18px">
+                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead>
                             <tr style="height: 45px;">
                                 <th style="width: 35%">项目</th>
@@ -69,7 +65,7 @@
                         </thead>
                         <tbody class="table" style="cursor:pointer;font-weight: bold;">
                             <c:forEach items="#{cashFlowSheetReportBean.map}" var="mp" varStatus="status" >
-                                <tr name="#{mp.value[6] ? 'btitle' : 'btitle1'}" style="#{mp.value[6] ? 'background-color: #dbdbdb;color: firebrick;' : ''}" >
+                                <tr name="#{mp.value[6] ? 'btitle' : 'btitle1'}" style="#{mp.value[6] ? 'background-color: #8CB4E2;' : ''}" >
                                     <c:forEach items="#{mp.value}" var="item"  varStatus="st" >
                                         <c:if test="${st.first}">
                                             <td style="text-align: left;">#{item}</td>
