@@ -38,7 +38,7 @@ public class ShipmentAmountT9New extends ShipmentAmount {
         BigDecimal shpamts = BigDecimal.ZERO;
         BigDecimal bshpamts = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' and h.depno not like '1A%' ");
+        sb.append("select isnull(sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end),0) from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' and h.depno not like '1A%' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
@@ -70,7 +70,7 @@ public class ShipmentAmountT9New extends ShipmentAmount {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.depno not like '1A%' ");
+        sb.append("select isnull(sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end),0) from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.depno not like '1A%' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {

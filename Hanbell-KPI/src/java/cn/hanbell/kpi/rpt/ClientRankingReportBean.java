@@ -146,9 +146,9 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
                 map.put("n_code_DC", " LIKE 'AJ%'");
                 break;
             case "1G500":
-                map.put("deptnoname", "空压机体营销二课");
+                map.put("deptnoname", "无油机组");
                 map.put("daname", "SDS无油");
-                map.put("n_code_DA", "= 'AH'");
+                map.put("n_code_DA", "= 'AA'");
                 map.put("n_code_DC", " = 'SDS' ");
                 break;
             case "1H000":
@@ -156,12 +156,8 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
                 map.put("daname", "真空泵");
                 map.put("n_code_DA", "= 'P'");
                 break;
-            case "1U000":
-                map.put("deptnoname", "涡旋产品部");
-                map.put("daname", "涡旋");
-                map.put("n_code_DA", "= 'S'");
-                break;
             case "5B000":
+            case "8A000":
                 map.put("deptnoname", "再生能源部");
                 map.put("daname", "再生能源");
                 map.put("n_code_DA", "= 'OH'");

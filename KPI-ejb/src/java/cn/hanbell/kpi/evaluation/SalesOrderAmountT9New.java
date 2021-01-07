@@ -39,7 +39,7 @@ public class SalesOrderAmountT9New extends SalesOrderAmount {
         BigDecimal tram1 = BigDecimal.ZERO;
         BigDecimal tram2 = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
+        sb.append(" SELECT  isnull(convert(decimal(16,2),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
         sb.append(" WHERE  h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and h.depno not like '1A%' ");
         sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10')");
         if (!"".equals(n_code_DA)) {

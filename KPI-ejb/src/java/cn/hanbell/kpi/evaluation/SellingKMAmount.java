@@ -30,7 +30,7 @@ public class SellingKMAmount extends Shipment {
         BigDecimal bshp1 = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum((d.shpamts * h.ratio)/(h.taxrate + 1)),0) from cdrdta d left join cdrhad h on d.shpno=h.shpno LEFT JOIN cdrdmas s on s.cdrno=d.cdrno AND s.itnbr=d.itnbr where ");
+        sb.append("select isnull(sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end),0) from cdrdta d left join cdrhad h on d.shpno=h.shpno LEFT JOIN cdrdmas s on s.cdrno=d.cdrno AND s.itnbr=d.itnbr where ");
         sb.append(" h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and h.houtsta <> 'W' and d.issevdta='N' and h.facno='C' ");
         sb.append(" and d.n_code_DA='R' and d.n_code_DD ='00' AND h.cusno='SSH00451' AND (s.dmark1 LIKE '%LT%' or s.dmark1 like '%RT%') ");
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
@@ -49,7 +49,7 @@ public class SellingKMAmount extends Shipment {
         String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
 
         sb.setLength(0);
-        sb.append("select isnull(sum((d.bakamts * h.ratio)/(h.taxrate + 1)),0) from cdrbdta d left join cdrbhad h on d.bakno=h.bakno LEFT JOIN cdrdmas s on s.cdrno=d.cdrno AND s.itnbr=d.itnbr where ");
+        sb.append("select isnull(sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end),0) from cdrbdta d left join cdrbhad h on d.bakno=h.bakno LEFT JOIN cdrdmas s on s.cdrno=d.cdrno AND s.itnbr=d.itnbr where ");
         sb.append(" h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and h.facno='C' and h.baksta<>'W'And d.issevdta='N' ");
         sb.append(" and d.n_code_DA='R' and d.n_code_DD ='00' AND (s.dmark1 LIKE '%LT%' or s.dmark1 like '%RT%') AND h.cusno='SSH00451' ");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
