@@ -150,21 +150,6 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         }
         queryParams.clear();
         queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", " ='S'");
-        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
-                }
-            }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
         queryParams.put("n_code_DC", " LIKE 'AJ%' ");
         tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
@@ -265,7 +250,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         BigDecimal amts = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select h.recdate,isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as tramt  ");
+        sb.append(" select h.recdate,isnull(convert(decimal(16,2),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) as tramt  ");
         sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
@@ -450,9 +435,6 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         if (depno.contains("1H")) {
             aa = "'P'";
         }
-        if (depno.contains("1U")) {
-            aa = "'S'";
-        }
         if (depno.contains("5A")) {
             aa = "'RT'";
         }
@@ -469,9 +451,6 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         String aa = "'ARM270'";
         if (depno.contains("1G1")) {
             aa = "'AJ'";
-        }
-        if (depno.contains("1G5")) {
-            aa = "'SDS'";
         }
         return aa;
     }
