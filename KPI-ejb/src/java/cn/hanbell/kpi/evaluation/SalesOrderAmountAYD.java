@@ -7,17 +7,17 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1879
+ * @author C1749
  */
-public class ShipmentQuantitySSF2 extends ShipmentQuantity {
+public class SalesOrderAmountAYD extends SalesOrderAmount {
 
-    public ShipmentQuantitySSF2() {
+    public SalesOrderAmountAYD() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
-        queryParams.put("deptno", " '1U000' ");
-        queryParams.put("n_code_DA", "='S' ");
-        queryParams.put("n_code_DC", " ='SF' ");
+        //queryParams.put("decode", "1");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " = 'AYD' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

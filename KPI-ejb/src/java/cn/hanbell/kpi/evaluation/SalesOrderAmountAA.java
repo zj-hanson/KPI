@@ -33,7 +33,7 @@ public class SalesOrderAmountAA extends SalesOrder {
         BigDecimal tram = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT  isnull(convert(decimal(16,2),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
+        sb.append(" SELECT  isnull(convert(decimal(16,2),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno");
         sb.append(" LEFT JOIN cdritncusmap p on d.itnbrcus = p.itnbrcus ");
         sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' AND h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         sb.append(" AND  h.facno='${facno}' ");
@@ -104,7 +104,7 @@ public class SalesOrderAmountAA extends SalesOrder {
         String modelcode = map.get("modelcode") != null ? map.get("modelcode").toString() : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append("select isnull(sum((d.cdrqy1 - d.shpqy1) * d.unpris * h.ratio/(h.taxrate + 1)),0) from cdrhmas h,cdrdmas d left join cdritncusmap p on d.itnbrcus = p.itnbrcus  ");
+        sb.append("select isnull(sum((d.cdrqy1 - d.shpqy1) * d.unpris * h.ratio/(case h.tax when '1' then 1 else (h.taxrate + 1) end)),0) from cdrhmas h,cdrdmas d left join cdritncusmap p on d.itnbrcus = p.itnbrcus  ");
         sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta<>'W' ");
         //sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146') ");
         sb.append(" and ((d.cdrqy1-d.shpqy1)>0) and d.drecsta<'95' and h.facno='${facno}' ");

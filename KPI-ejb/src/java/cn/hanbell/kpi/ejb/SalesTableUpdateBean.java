@@ -409,7 +409,7 @@ public class SalesTableUpdateBean implements Serializable {
         sb.append(" ,n_code_DA,n_code_CD,n_code_DC,n_code_DD,mancode,e.username AS manname,hmark1,hmark2 FROM (");
         if (!"1T100".equals(n_code_DA)) {
             sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
+            sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             sb.append("  and d.issevdta='Y' and h.facno='${facno}' ");
@@ -423,7 +423,7 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" union all ");
             sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,hmark1,hmark2 ");
+            sb.append(" isnull(convert(decimal(16,4),-sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,hmark1,hmark2 ");
             sb.append(" from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='Y' and h.facno='${facno}' ");
             if (!"".equals(decode)) {
@@ -471,28 +471,28 @@ public class SalesTableUpdateBean implements Serializable {
         } else {
             if (y >= 2019) {
                 sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
-                sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 ");
+                sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 ");
                 sb.append(" from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno and h.houtsta<>'W' ");
                 sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and h.depno not like '1A%' ");
                 sb.append(" and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
                 sb.append(" union all ");
-                sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
+                sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,isnull(convert(decimal(16,4),-sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end)),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,'WXLJ' AS hmark1,hmark2 from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' ");
                 sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and h.depno not like '1A%' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.bakdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             } else {
                 sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
-                sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 ");
+                sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 ");
                 sb.append(" from cdrhad h,cdrdta d where h.facno=d.facno and h.shpno=d.shpno AND h.houtsta<>'W' and h.depno='1T100' ");
                 sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003','KZJ00029') and d.n_code_DA IN ('AA','AH') ");
                 sb.append(" and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
                 sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
                 sb.append(" union all ");
-                sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
+                sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity,isnull(convert(decimal(16,4),-sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end)),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,'WXLJ' AS hmark1,hmark2 from cdrbhad h,cdrbdta d where h.facno=d.facno and h.bakno=d.bakno and h.baksta<>'W' and h.depno='1T100' ");
                 sb.append(" and h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003','KZJ00029') and d.n_code_DA IN ('AA','AH')  ");
                 sb.append(" and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
@@ -523,7 +523,7 @@ public class SalesTableUpdateBean implements Serializable {
         sb.append(" ,n_code_DA,n_code_CD,n_code_DC,n_code_DD,mancode,e.username AS manname,hmark1,hmark2 FROM (");
         if (!"1T100".equals(n_code_DA)) {
             sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,isnull(sum(d.cdrqy1),0) AS quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
+            sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) as amount, ");
             sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
             sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
@@ -536,7 +536,7 @@ public class SalesTableUpdateBean implements Serializable {
             if (!"".equals(n_code_DD)) {
                 sb.append(" union all ");
                 sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity, ");
-                sb.append(" isnull(convert(decimal(16,4),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
+                sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
                 sb.append(" from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
                 sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and isnull(h.hmark2,'') <> 'FW' and  h.facno='${facno}' ");
@@ -549,14 +549,14 @@ public class SalesTableUpdateBean implements Serializable {
             }
         } else {
             if (y >= 2019) {
-                sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity,isnull(convert(decimal(16,4),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
+                sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity,isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
                 sb.append(" WHERE  h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
                 sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') and h.depno not like '1A%' and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
                 sb.append(" AND  year(h.recdate)=${y} AND month(h.recdate)=${m} ");
                 sb.append(" GROUP BY d.facno,itnbrcus,h.cusno,h.recdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ,mancode,hmark1,hmark2 ");
             } else {
-                sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity,isnull(convert(decimal(16,4),sum((d.tramts*h.ratio)/(h.taxrate+1))),0) as amount, ");
+                sb.append(" select d.facno,itnbrcus,h.cusno,h.recdate AS cdrdate,depno,0 AS quantity,isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.tramts*h.ratio) else (d.tramts*h.ratio)/(h.taxrate+1) end)),0) as amount, ");
                 sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,'WXLJ' AS hmark1,hmark2 from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno ");
                 sb.append(" WHERE  isnull(h.hmark2,'') <> 'FW' AND h.hrecsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','STW00003','KZJ00029') and h.depno='1T100' ");
                 sb.append(" AND  h.facno='${facno}' and d.drecsta not in ('98','99','10') and d.n_code_DA IN ('AA','AH') and d.n_code_CD LIKE 'WX%' and d.n_code_DD  ='01' ");
@@ -592,7 +592,7 @@ public class SalesTableUpdateBean implements Serializable {
         //第一部分为整机出货销退
         sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno, ");
         sb.append(" sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN shpqy1 when d.n_code_DA!='AA' THEN shpqy1 ELSE 0 END ) as quantity, ");
-        sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
+        sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode,hmark1,hmark2 from cdrdta d left join cdrhad h on d.shpno=h.shpno");
         sb.append(" where h.facno='${facno}' and h.houtsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(n_code_DA)) {
@@ -603,7 +603,7 @@ public class SalesTableUpdateBean implements Serializable {
         sb.append(" union all ");
         sb.append("  select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno, ");
         sb.append(" -sum(CASE  when d.n_code_DA='AA' AND left(d.itnbr,1)='3' THEN bshpqy1 when d.n_code_DA!='AA' THEN bshpqy1 ELSE 0 END ) as quantity, ");
-        sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
+        sb.append(" isnull(convert(decimal(16,4),-sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
         sb.append(" ,mancode,hmark1,hmark2 from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
         sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' and d.n_code_DD ='00' ");
         if (!"".equals(n_code_DA)) {
@@ -616,7 +616,7 @@ public class SalesTableUpdateBean implements Serializable {
         if (!"".equals(n_code_DD) && !n_code_DA.contains("AH")) {
             sb.append(" union all ");
             sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
+            sb.append(" isnull(convert(decimal(16,4),sum(case h.tax when '1' then (d.shpamts * h.ratio) else (d.shpamts * h.ratio)/(h.taxrate + 1) end)),0) as amount, ");
             sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno ");
             sb.append(" where h.facno='${facno}' and h.houtsta <> 'W' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
@@ -628,7 +628,7 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
             sb.append(" union all ");
             sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
+            sb.append(" isnull(convert(decimal(16,4),-sum(case h.tax when '1' then (d.bakamts * h.ratio) else (d.bakamts * h.ratio)/(h.taxrate + 1) end)),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
             sb.append(" ,mancode,hmark1,hmark2 from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
             sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
             if (!"".equals(n_code_DA)) {
@@ -637,32 +637,6 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
             sb.append(" AND  year(h.bakdate)=${y} AND month(h.bakdate)=${m} ");
             sb.append(" group by  h.facno,itnbrcus,h.cusno,h.bakdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
-        }
-        //AH 中  AJ不算后处理  SDS算入后处理
-        if (n_code_DA.contains("AH")) {
-            sb.append(" union all ");
-            sb.append(" select h.facno,itnbrcus,h.cusno,h.shpdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),sum((d.shpamts * h.ratio)/(h.taxrate + 1))),0) as amount, ");
-            sb.append(" d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
-            sb.append(" from cdrdta d left join cdrhad h on d.shpno=h.shpno where h.facno='${facno}' and h.houtsta <> 'W' ");
-            sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N' ");
-            if (!"".equals(n_code_DA)) {
-                sb.append(" and d.n_code_DA ").append(n_code_DA);
-            }
-            sb.append(" and d.n_code_DC='SDS' and d.n_code_DD = '02' ");
-            sb.append(" AND year(h.shpdate)=${y} AND month(h.shpdate)=${m} ");
-            sb.append(" group by  h.facno,itnbrcus,h.cusno,h.shpdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2 ");
-            sb.append(" union all ");
-            sb.append(" select h.facno,itnbrcus,h.cusno,h.bakdate AS cdrdate,depno,0 as quantity, ");
-            sb.append(" isnull(convert(decimal(16,4),-sum((d.bakamts * h.ratio)/(h.taxrate + 1))),0) as amount,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD ");
-            sb.append("  ,mancode,hmark1,hmark2 from cdrbdta d left join cdrbhad h on  h.bakno=d.bakno ");
-            sb.append(" where h.baksta <> 'W'  and  h.facno='${facno}' and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') and d.issevdta='N'");
-            if (!"".equals(n_code_DA)) {
-                sb.append(" and d.n_code_DA ").append(n_code_DA);
-            }
-            sb.append(" and d.n_code_DC='SDS' and d.n_code_DD = '02' ");
-            sb.append(" AND year(h.bakdate)=${y} AND month(h.bakdate)=${m} ");
-            sb.append(" group by  h.facno,itnbrcus,h.cusno,h.bakdate,depno,d.n_code_DA,d.n_code_CD,d.n_code_DC,d.n_code_DD,mancode,hmark1,hmark2");
         }
         //getARM232Value 加扣款单独列出来 只算金额不算台数
         sb.append(" union all ");
@@ -706,7 +680,7 @@ public class SalesTableUpdateBean implements Serializable {
             sb.append(" SELECT h.facno,'' as itnbrcus,h.cusno,h.bildat AS cdrdate ,h.depno,0 AS quantity,ISNULL(sum(h.shpamt),0) AS amount, ");
             sb.append(getDA(depno)).append(" as n_code_DA, ");
             sb.append(" '' as  n_code_CD,");
-            sb.append(getDC(depno)).append(" as n_code_DC, ");
+            sb.append(" '' as  n_code_DC,");
             sb.append(" '00' as  n_code_DD,mancode,'ARM270' as hmark1,'ARM270' as hmark2 FROM armbil h WHERE 1=1 ");
             sb.append(" and h.rkd='RQ11' ");
             sb.append(" AND h.depno ").append(depno);
@@ -719,7 +693,7 @@ public class SalesTableUpdateBean implements Serializable {
                 sb.append(" SELECT h.facno,'' as itnbrcus,h.cusno,h.bildat AS cdrdate ,h.depno,0 AS quantity,ISNULL(sum(h.shpamt/1.21),0) AS amount, ");
                 sb.append(getDA(depno)).append(" as n_code_DA, ");
                 sb.append(" '' as  n_code_CD,");
-                sb.append(getDC(depno)).append(" as n_code_DC, ");
+                sb.append(" '' as  n_code_DC,");
                 sb.append(" '00' as  n_code_DD,mancode,'ARM270' as hmark1,'ARM270' as hmark2 FROM armbil h WHERE 1=1 ");
                 sb.append(" and h.rkd in ('RQ51') ");
                 sb.append(" AND h.depno ").append(depno);
@@ -779,17 +753,6 @@ public class SalesTableUpdateBean implements Serializable {
         }
         if (depno.contains("5C")) {
             aa = "'RT'";
-        }
-        return aa;
-    }
-
-    private String getDC(String depno) {
-        String aa = "'ARM270'";
-        if (depno.contains("1G1")) {
-            aa = "'AJ'";
-        }
-        if (depno.contains("1G5")) {
-            aa = "'SDS'";
         }
         return aa;
     }

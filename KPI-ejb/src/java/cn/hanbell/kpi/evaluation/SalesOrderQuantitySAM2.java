@@ -9,16 +9,15 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class SalesOrderAmountSSF2 extends SalesOrderAmount {
+public class SalesOrderQuantitySAM2 extends SalesOrderQuantity {
 
-    public SalesOrderAmountSSF2() {
+    public SalesOrderQuantitySAM2() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
-        queryParams.put("deptno", " '1U000' ");
-        queryParams.put("n_code_DA", "='S' ");
-        queryParams.put("n_code_DC", " ='SF' ");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
+        //20201004 暂时将外销的并到一起
+        queryParams.put("n_code_DC", " IN ('SAM-5HP','SAM-7HP') ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-    
 }

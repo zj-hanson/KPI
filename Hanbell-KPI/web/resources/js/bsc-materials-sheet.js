@@ -7,6 +7,10 @@ $(document).ready(function () {
     var m = document.getElementById("formOne:m");
     if (m !== null) {
         var tr = $("tr.ui-widget-content");
+        $(tr).css("border", "2px solid #000000");
+        for (var i = 0; i < tr.length; i++) {
+            tr[i].style.backgroundColor = (tr[i].sectionRowIndex % 2 === 0) ? "" : "#E6E6FA";
+        }
         $(tr).each(function (i, t) {
             var c;
             if ($(t).find("td").length === 17) {
@@ -17,6 +21,7 @@ $(document).ready(function () {
             if (c !== null) {
                 $(c).css("color", "red");
             }
+            $(t).find("td").css("border", "1px solid #000000");
         });
     }
     //指标说明

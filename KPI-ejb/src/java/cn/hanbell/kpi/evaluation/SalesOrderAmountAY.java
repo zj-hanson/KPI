@@ -7,16 +7,17 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1879
+ * @author C1749
  */
-public class SalesOrderAmountSDS2 extends SalesOrderAmount{
+public class SalesOrderAmountAY extends SalesOrderAmount {
 
-    public SalesOrderAmountSDS2() {
+    public SalesOrderAmountAY() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "2");
-        queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " ='SDS' ");
+        //queryParams.put("decode", "1");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " = 'AY' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

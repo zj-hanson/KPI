@@ -13,22 +13,23 @@ import java.util.LinkedHashMap;
  *
  * @author C0160
  */
-public class ShipmentAmountSDS1 extends ShipmentAmount {
+public class ShipmentAmountAY extends ShipmentAmount {
 
-    public ShipmentAmountSDS1() {
+    public ShipmentAmountAY() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("decode", "1");
-        queryParams.put("deptno", " '1Q000' ");
+        queryParams.put("deptno", " '1G000','1G100' ");
+        //queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
-        queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " ='SDS'");
-        queryParams.put("n_code_DD", " in ('00','02') ");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " = 'AY' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return BigDecimal.ZERO;
     }
-    
+
 }
