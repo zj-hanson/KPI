@@ -5,6 +5,25 @@
  */
 $(document).ready(function () {
     setColor();
+    //只显示当月
+    var thisMon = document.getElementById("formOne:j_idt13");
+    function setShowOrHiden(i, o) {
+        if (i === 0 || i === 13)
+            return;
+        $(o).hide();
+    }
+    function setThisMon() {
+        if (thisMon.checked === true) {
+            var table = document.getElementById("formOne:plgMISData");
+            var trs = $(table).find("tr");
+            trs.map(function (i, n) {
+                $(n).find("td").map(function (i, o) {
+                    setShowOrHiden(i, o);
+                });
+            });
+        }
+    }
+    setThisMon();
     //指标说明
     var sc = document.getElementById("formOne:sc");
     if (sc !== null) {
@@ -42,11 +61,16 @@ var setColor = function () {
         var chartData = document.getElementById("formOne:plgChartData");
         if (chartData !== undefined && chartData !== null) {
             var tr = $(chartData).find("tr.ui-widget-content");
+            $(tr).css("border", "2px solid #000000");
+            for (var i = 0; i < tr.length; i++) {
+                tr[i].style.backgroundColor = (tr[i].sectionRowIndex % 2 === 0) ? "" : "#E6E6FA";
+            }
             $(tr).each(function (i, t) {
                 var c = $(t).find("td.ui-panelgrid-cell")[m.value];
                 if (c !== null) {
                     $(c).css("color", "red");
                 }
+                $(t).find("td").css("border", "1px solid #000000");
             });
         }
         //MIS当月数据显示红色

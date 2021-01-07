@@ -8,11 +8,16 @@ $(document).ready(function () {
     if (m !== null) {
         var chartData = document.getElementById("formOne:plgChartData1");
         var tr = $(chartData).find("tr.ui-widget-content");
+        $(tr).css("border", "2px solid #000000");
+        for (var i = 0; i < tr.length; i++) {
+            tr[i].style.backgroundColor = (tr[i].sectionRowIndex % 2 === 0) ? "" : "#E6E6FA";
+        }
         $(tr).each(function (i, t) {
             var c = $(t).find("td.ui-panelgrid-cell")[m.value];
             if (c !== null) {
                 $(c).css("color", "red");
             }
+            $(t).find("td").css("border", "1px solid #000000");
         });
         //MIS当月数据显示红色
         var misData = document.getElementById("formOne:plgMISData1");

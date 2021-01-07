@@ -9,14 +9,15 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ShipmentQuantitySSI1 extends ShipmentQuantity {
+public class ShipmentQuantitySAM2 extends ShipmentQuantity {
 
-    public ShipmentQuantitySSI1() {
+    public ShipmentQuantitySAM2() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1U000' ");
-        queryParams.put("n_code_DA", "='S' ");
-        queryParams.put("n_code_DC", " ='SI' ");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
+        //20201004 暂时将外销的并到一起
+        queryParams.put("n_code_DC", " IN ('SAM-5HP','SAM-7HP') ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

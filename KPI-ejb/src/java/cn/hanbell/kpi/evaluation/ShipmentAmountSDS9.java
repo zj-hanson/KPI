@@ -15,7 +15,7 @@ public class ShipmentAmountSDS9 extends ShipmentAmount9 {
         super();
         queryParams.put("facno", "C");
         queryParams.put("ogdkid", "RL01");
-        queryParams.put("n_code_DA", " ='AH' ");
+        queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_DC", " ='SDS' ");
     }
 

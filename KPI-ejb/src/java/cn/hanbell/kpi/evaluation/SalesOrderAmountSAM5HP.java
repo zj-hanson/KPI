@@ -9,15 +9,15 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class SalesOrderAmountSSI1 extends SalesOrderAmount {
+public class SalesOrderAmountSAM5HP extends SalesOrderAmount {
 
-    public SalesOrderAmountSSI1() {
+    public SalesOrderAmountSAM5HP() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1U000' ");
-        queryParams.put("n_code_DA", "='S' ");
-        queryParams.put("n_code_DC", " ='SI' ");
-        queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " ='SAM-5HP' ");
+        queryParams.put("n_code_DD", " IN ('00','02') ");
     }
     
 }

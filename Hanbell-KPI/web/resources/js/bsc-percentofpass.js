@@ -5,6 +5,8 @@
  */
 $(document).ready(function () {
     var m = document.getElementById("formOne:m");
+    var a = $("tr.ui-widget-content");
+    $(a).css("border", "2px solid #000000");
     if (parseInt(m.value) < 7) {
         var tr = $("tr");
         $(tr).each(function (a, t) {

@@ -15,8 +15,8 @@ public class ShipmentQuantitySDS2 extends ShipmentQuantity {
         super();
         queryParams.put("facno", "C");
         queryParams.put("decode", "2");
-        queryParams.put("deptno", " '1G000','1G500' ");
-        queryParams.put("n_code_DA", "='AH' ");
+        queryParams.put("deptno", " '1Q000' ");
+        queryParams.put("n_code_DA", "='AA' ");
         queryParams.put("n_code_DC", " ='SDS' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
