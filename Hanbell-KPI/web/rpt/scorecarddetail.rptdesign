@@ -26,372 +26,382 @@
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">weight</property>
-                    <property name="dataType">integer</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
                     <property name="name">name</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">4</property>
                     <property name="name">tq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">5</property>
                     <property name="name">tq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">6</property>
                     <property name="name">tq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">7</property>
                     <property name="name">tq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">8</property>
                     <property name="name">th1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">9</property>
                     <property name="name">th2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">10</property>
                     <property name="name">tfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">11</property>
                     <property name="name">bq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">13</property>
+                    <property name="position">12</property>
                     <property name="name">bq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">14</property>
+                    <property name="position">13</property>
                     <property name="name">bq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">15</property>
+                    <property name="position">14</property>
                     <property name="name">bq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">16</property>
+                    <property name="position">15</property>
                     <property name="name">bh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">17</property>
+                    <property name="position">16</property>
                     <property name="name">bh2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">18</property>
+                    <property name="position">17</property>
                     <property name="name">bfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">19</property>
+                    <property name="position">18</property>
                     <property name="name">fq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">20</property>
+                    <property name="position">19</property>
                     <property name="name">fq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">21</property>
+                    <property name="position">20</property>
                     <property name="name">fq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">22</property>
+                    <property name="position">21</property>
                     <property name="name">fq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">23</property>
+                    <property name="position">22</property>
                     <property name="name">fh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">24</property>
+                    <property name="position">23</property>
                     <property name="name">fh2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">25</property>
+                    <property name="position">24</property>
                     <property name="name">ffy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">26</property>
+                    <property name="position">25</property>
                     <property name="name">aq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">27</property>
+                    <property name="position">26</property>
                     <property name="name">aq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">28</property>
+                    <property name="position">27</property>
                     <property name="name">aq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">29</property>
+                    <property name="position">28</property>
                     <property name="name">aq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">30</property>
+                    <property name="position">29</property>
                     <property name="name">ah1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">31</property>
+                    <property name="position">30</property>
                     <property name="name">ah2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">32</property>
+                    <property name="position">31</property>
                     <property name="name">afy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">33</property>
+                    <property name="position">32</property>
                     <property name="name">pq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">34</property>
+                    <property name="position">33</property>
                     <property name="name">pq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">35</property>
+                    <property name="position">34</property>
                     <property name="name">pq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">36</property>
+                    <property name="position">35</property>
                     <property name="name">pq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">37</property>
+                    <property name="position">36</property>
                     <property name="name">ph1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">38</property>
+                    <property name="position">37</property>
                     <property name="name">ph2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">39</property>
+                    <property name="position">38</property>
                     <property name="name">pfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">40</property>
+                    <property name="position">39</property>
                     <property name="name">sq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">41</property>
+                    <property name="position">40</property>
                     <property name="name">sq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">42</property>
+                    <property name="position">41</property>
                     <property name="name">sq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">43</property>
+                    <property name="position">42</property>
                     <property name="name">sq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">44</property>
+                    <property name="position">43</property>
                     <property name="name">sh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">45</property>
+                    <property name="position">44</property>
                     <property name="name">sh2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">46</property>
+                    <property name="position">45</property>
                     <property name="name">sfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">47</property>
+                    <property name="position">46</property>
                     <property name="name">cq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">48</property>
+                    <property name="position">47</property>
                     <property name="name">cq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">49</property>
+                    <property name="position">48</property>
                     <property name="name">cq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">50</property>
+                    <property name="position">49</property>
                     <property name="name">cq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">51</property>
+                    <property name="position">50</property>
                     <property name="name">ch1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">52</property>
+                    <property name="position">51</property>
                     <property name="name">ch2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">53</property>
+                    <property name="position">52</property>
                     <property name="name">cfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">54</property>
+                    <property name="position">53</property>
                     <property name="name">remark</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">55</property>
+                    <property name="position">54</property>
                     <property name="name">drq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">56</property>
+                    <property name="position">55</property>
                     <property name="name">drq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">57</property>
+                    <property name="position">56</property>
                     <property name="name">drq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">58</property>
+                    <property name="position">57</property>
                     <property name="name">drq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">59</property>
+                    <property name="position">58</property>
                     <property name="name">drh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">60</property>
+                    <property name="position">59</property>
                     <property name="name">drh2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">61</property>
+                    <property name="position">60</property>
                     <property name="name">drfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">62</property>
+                    <property name="position">61</property>
                     <property name="name">mrq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">63</property>
+                    <property name="position">62</property>
                     <property name="name">mrq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">64</property>
+                    <property name="position">63</property>
                     <property name="name">mrq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">65</property>
+                    <property name="position">64</property>
                     <property name="name">mrq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">66</property>
+                    <property name="position">65</property>
                     <property name="name">mrh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">67</property>
+                    <property name="position">66</property>
                     <property name="name">mrh2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">68</property>
+                    <property name="position">67</property>
                     <property name="name">mrfy</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">69</property>
+                    <property name="position">68</property>
                     <property name="name">seq</property>
                     <property name="dataType">integer</property>
                 </structure>
                 <structure>
-                    <property name="position">70</property>
+                    <property name="position">69</property>
                     <property name="name">season</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">71</property>
+                    <property name="position">70</property>
                     <property name="name">msq1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">72</property>
+                    <property name="position">71</property>
                     <property name="name">msq2</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">73</property>
+                    <property name="position">72</property>
                     <property name="name">msq3</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">74</property>
+                    <property name="position">73</property>
                     <property name="name">msq4</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">75</property>
+                    <property name="position">74</property>
                     <property name="name">msh1</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">76</property>
+                    <property name="position">75</property>
                     <property name="name">msh2</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">76</property>
+                    <property name="name">symbol</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">77</property>
+                    <property name="name">auditor</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">78</property>
+                    <property name="name">weight</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
@@ -401,9 +411,6 @@
                 </structure>
                 <structure>
                     <property name="columnName">type</property>
-                </structure>
-                <structure>
-                    <property name="columnName">weight</property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
@@ -624,6 +631,15 @@
                 <structure>
                     <property name="columnName">msh2</property>
                 </structure>
+                <structure>
+                    <property name="columnName">symbol</property>
+                </structure>
+                <structure>
+                    <property name="columnName">auditor</property>
+                </structure>
+                <structure>
+                    <property name="columnName">weight</property>
+                </structure>
             </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
@@ -639,372 +655,382 @@
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">weight</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
                         <property name="name">name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">4</property>
                         <property name="name">tq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">5</property>
                         <property name="name">tq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">6</property>
                         <property name="name">tq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">7</property>
                         <property name="name">tq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">8</property>
                         <property name="name">th1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">9</property>
                         <property name="name">th2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">10</property>
                         <property name="name">tfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">11</property>
                         <property name="name">bq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">12</property>
                         <property name="name">bq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">14</property>
+                        <property name="position">13</property>
                         <property name="name">bq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">15</property>
+                        <property name="position">14</property>
                         <property name="name">bq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">16</property>
+                        <property name="position">15</property>
                         <property name="name">bh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">17</property>
+                        <property name="position">16</property>
                         <property name="name">bh2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">18</property>
+                        <property name="position">17</property>
                         <property name="name">bfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">19</property>
+                        <property name="position">18</property>
                         <property name="name">fq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">20</property>
+                        <property name="position">19</property>
                         <property name="name">fq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">21</property>
+                        <property name="position">20</property>
                         <property name="name">fq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">22</property>
+                        <property name="position">21</property>
                         <property name="name">fq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">23</property>
+                        <property name="position">22</property>
                         <property name="name">fh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">24</property>
+                        <property name="position">23</property>
                         <property name="name">fh2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">25</property>
+                        <property name="position">24</property>
                         <property name="name">ffy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">26</property>
+                        <property name="position">25</property>
                         <property name="name">aq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">27</property>
+                        <property name="position">26</property>
                         <property name="name">aq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">28</property>
+                        <property name="position">27</property>
                         <property name="name">aq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">29</property>
+                        <property name="position">28</property>
                         <property name="name">aq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">30</property>
+                        <property name="position">29</property>
                         <property name="name">ah1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">31</property>
+                        <property name="position">30</property>
                         <property name="name">ah2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">32</property>
+                        <property name="position">31</property>
                         <property name="name">afy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">33</property>
+                        <property name="position">32</property>
                         <property name="name">pq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">34</property>
+                        <property name="position">33</property>
                         <property name="name">pq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">35</property>
+                        <property name="position">34</property>
                         <property name="name">pq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">36</property>
+                        <property name="position">35</property>
                         <property name="name">pq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">37</property>
+                        <property name="position">36</property>
                         <property name="name">ph1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">38</property>
+                        <property name="position">37</property>
                         <property name="name">ph2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">39</property>
+                        <property name="position">38</property>
                         <property name="name">pfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">40</property>
+                        <property name="position">39</property>
                         <property name="name">sq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">41</property>
+                        <property name="position">40</property>
                         <property name="name">sq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">42</property>
+                        <property name="position">41</property>
                         <property name="name">sq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">43</property>
+                        <property name="position">42</property>
                         <property name="name">sq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">44</property>
+                        <property name="position">43</property>
                         <property name="name">sh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">45</property>
+                        <property name="position">44</property>
                         <property name="name">sh2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">46</property>
+                        <property name="position">45</property>
                         <property name="name">sfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">47</property>
+                        <property name="position">46</property>
                         <property name="name">cq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">48</property>
+                        <property name="position">47</property>
                         <property name="name">cq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">49</property>
+                        <property name="position">48</property>
                         <property name="name">cq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">50</property>
+                        <property name="position">49</property>
                         <property name="name">cq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">51</property>
+                        <property name="position">50</property>
                         <property name="name">ch1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">52</property>
+                        <property name="position">51</property>
                         <property name="name">ch2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">53</property>
+                        <property name="position">52</property>
                         <property name="name">cfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">54</property>
+                        <property name="position">53</property>
                         <property name="name">remark</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">55</property>
+                        <property name="position">54</property>
                         <property name="name">drq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">56</property>
+                        <property name="position">55</property>
                         <property name="name">drq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">57</property>
+                        <property name="position">56</property>
                         <property name="name">drq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">58</property>
+                        <property name="position">57</property>
                         <property name="name">drq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">59</property>
+                        <property name="position">58</property>
                         <property name="name">drh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">60</property>
+                        <property name="position">59</property>
                         <property name="name">drh2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">61</property>
+                        <property name="position">60</property>
                         <property name="name">drfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">62</property>
+                        <property name="position">61</property>
                         <property name="name">mrq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">63</property>
+                        <property name="position">62</property>
                         <property name="name">mrq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">64</property>
+                        <property name="position">63</property>
                         <property name="name">mrq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">65</property>
+                        <property name="position">64</property>
                         <property name="name">mrq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">66</property>
+                        <property name="position">65</property>
                         <property name="name">mrh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">67</property>
+                        <property name="position">66</property>
                         <property name="name">mrh2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">68</property>
+                        <property name="position">67</property>
                         <property name="name">mrfy</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">69</property>
+                        <property name="position">68</property>
                         <property name="name">seq</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">70</property>
+                        <property name="position">69</property>
                         <property name="name">season</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">71</property>
+                        <property name="position">70</property>
                         <property name="name">msq1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">72</property>
+                        <property name="position">71</property>
                         <property name="name">msq2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">73</property>
+                        <property name="position">72</property>
                         <property name="name">msq3</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">74</property>
+                        <property name="position">73</property>
                         <property name="name">msq4</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">75</property>
+                        <property name="position">74</property>
                         <property name="name">msh1</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">76</property>
+                        <property name="position">75</property>
                         <property name="name">msh2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">76</property>
+                        <property name="name">symbol</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">77</property>
+                        <property name="name">auditor</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">78</property>
+                        <property name="name">weight</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -1017,14 +1043,26 @@ ejbClient.setEJB(params["JNDIName"]);
 master = ejbClient.getEntity(params["id"]);
 if(master != null){
 	detail = ejbClient.getDetail(params["id"]);
+	auditorDetail = ejbClient.getAuditorDetail(params["id"]);
 }
-var season = params["season"];]]></method>
-            <method name="fetch"><![CDATA[if(currentRow < detail.size()){
-	dataSetRow["name"] = params["seq"] + "年BSC考核表---" + params["deptname"];
+var season = params["season"];
+]]></method>
+            <method name="fetch"><![CDATA[importPackage( Packages.java.lang );
+auditor = "";
+if(currentRow < detail.size()){
+	dataSetRow["name"] = params["seq"] + "年BSC考核表---" + params["deptname"]+"Q"+params["season"];
 	dataSetRow["content"] = detail.get(currentRow).getContent();
-	dataSetRow["weight"] = detail.get(currentRow).getWeight();
+	dataSetRow["weight"] = detail.get(currentRow).getWeight()+"%";
 	dataSetRow["remark"] = detail.get(currentRow).getRemark();
 	dataSetRow["season"] = params["season"];
+	
+	if(auditorDetail.size()>0){
+		for(i = 0;i<auditorDetail.size();i++){
+			entity = auditorDetail.get(i);
+			auditor += entity.getAuditorName()+";";
+		}
+	}
+	dataSetRow["auditor"]=auditor;
 	
 	dataSetRow["msq1"] = master.getSq1();
 	dataSetRow["msq2"] = master.getSq2();
@@ -1033,37 +1071,37 @@ var season = params["season"];]]></method>
 	dataSetRow["msh1"] = master.getSh1();
 	dataSetRow["msh2"] = master.getSh2();
 	
-	dataSetRow["aq1"] = detail.get(currentRow).getAq1();
-	dataSetRow["aq2"] = detail.get(currentRow).getAq2();
-	dataSetRow["aq3"] = detail.get(currentRow).getAq3();
-	dataSetRow["aq4"] = detail.get(currentRow).getAq4();
-	dataSetRow["ah1"] = detail.get(currentRow).getAh1();
-	dataSetRow["ah2"] = detail.get(currentRow).getAh2();
-	dataSetRow["afy"] = detail.get(currentRow).getAfy();
+	dataSetRow["aq1"] = detail.get(currentRow).getAq1() + detail.get(currentRow).getSymbol();
+	dataSetRow["aq2"] = detail.get(currentRow).getAq2() + detail.get(currentRow).getSymbol();
+	dataSetRow["aq3"] = detail.get(currentRow).getAq3() + detail.get(currentRow).getSymbol();
+	dataSetRow["aq4"] = detail.get(currentRow).getAq4() + detail.get(currentRow).getSymbol();
+	dataSetRow["ah1"] = detail.get(currentRow).getAh1() + detail.get(currentRow).getSymbol();
+	dataSetRow["ah2"] = detail.get(currentRow).getAh2() + detail.get(currentRow).getSymbol();
+	dataSetRow["afy"] = detail.get(currentRow).getAfy() + detail.get(currentRow).getSymbol();
 
-	dataSetRow["tq1"] = detail.get(currentRow).getTq1();
-	dataSetRow["tq2"] = detail.get(currentRow).getTq2();
-	dataSetRow["tq3"] = detail.get(currentRow).getTq3();
-	dataSetRow["tq4"] = detail.get(currentRow).getTq4();
-	dataSetRow["th1"] = detail.get(currentRow).getTh1();
-	dataSetRow["th2"] = detail.get(currentRow).getTh2();
-	dataSetRow["tfy"] = detail.get(currentRow).getTfy();
+	dataSetRow["tq1"] = detail.get(currentRow).getTq1() + detail.get(currentRow).getSymbol();
+	dataSetRow["tq2"] = detail.get(currentRow).getTq2() + detail.get(currentRow).getSymbol();
+	dataSetRow["tq3"] = detail.get(currentRow).getTq3() + detail.get(currentRow).getSymbol();
+	dataSetRow["tq4"] = detail.get(currentRow).getTq4() + detail.get(currentRow).getSymbol();
+	dataSetRow["th1"] = detail.get(currentRow).getTh1() + detail.get(currentRow).getSymbol();
+	dataSetRow["th2"] = detail.get(currentRow).getTh2() + detail.get(currentRow).getSymbol();
+	dataSetRow["tfy"] = detail.get(currentRow).getTfy() + detail.get(currentRow).getSymbol();
 	
-	dataSetRow["bq1"] = detail.get(currentRow).getBq1();	
-	dataSetRow["bq2"] = detail.get(currentRow).getBq2();
-	dataSetRow["bq3"] = detail.get(currentRow).getBq3();
-	dataSetRow["bq4"] = detail.get(currentRow).getBq4();
-	dataSetRow["bh1"] = detail.get(currentRow).getBh1();
-	dataSetRow["bh2"] = detail.get(currentRow).getBh2();
-	dataSetRow["bfy"] = detail.get(currentRow).getBfy();
+	dataSetRow["bq1"] = detail.get(currentRow).getBq1() + detail.get(currentRow).getSymbol();	
+	dataSetRow["bq2"] = detail.get(currentRow).getBq2() + detail.get(currentRow).getSymbol();
+	dataSetRow["bq3"] = detail.get(currentRow).getBq3() + detail.get(currentRow).getSymbol();
+	dataSetRow["bq4"] = detail.get(currentRow).getBq4() + detail.get(currentRow).getSymbol();
+	dataSetRow["bh1"] = detail.get(currentRow).getBh1() + detail.get(currentRow).getSymbol();
+	dataSetRow["bh2"] = detail.get(currentRow).getBh2() + detail.get(currentRow).getSymbol();
+	dataSetRow["bfy"] = detail.get(currentRow).getBfy() + detail.get(currentRow).getSymbol();
 	
-	dataSetRow["pq1"] = detail.get(currentRow).getPq1();
-	dataSetRow["pq2"] = detail.get(currentRow).getPq2();
-	dataSetRow["pq3"] = detail.get(currentRow).getPq3();
-	dataSetRow["pq4"] = detail.get(currentRow).getPq4();
-	dataSetRow["ph1"] = detail.get(currentRow).getPh1();
-	dataSetRow["ph2"] = detail.get(currentRow).getPh2();
-	dataSetRow["pfy"] = detail.get(currentRow).getPfy();
+	dataSetRow["pq1"] = detail.get(currentRow).getPq1() + "%";
+	dataSetRow["pq2"] = detail.get(currentRow).getPq2() + "%";
+	dataSetRow["pq3"] = detail.get(currentRow).getPq3() + "%";
+	dataSetRow["pq4"] = detail.get(currentRow).getPq4() + "%";
+	dataSetRow["ph1"] = detail.get(currentRow).getPh1() + "%";
+	dataSetRow["ph2"] = detail.get(currentRow).getPh2() + "%";
+	dataSetRow["pfy"] = detail.get(currentRow).getPfy() + "%";
 	
 	dataSetRow["sq1"] = detail.get(currentRow).getSq1();
 	dataSetRow["sq2"] = detail.get(currentRow).getSq2();
@@ -1155,12 +1193,6 @@ return false;]]></method>
                     <text-property name="displayName">content</text-property>
                     <expression name="expression" type="javascript">dataSetRow["content"]</expression>
                     <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">weight</property>
-                    <text-property name="displayName">weight</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
-                    <property name="dataType">integer</property>
                 </structure>
                 <structure>
                     <property name="name">tq1</property>
@@ -1606,6 +1638,24 @@ return false;]]></method>
                     <expression name="expression" type="javascript">dataSetRow["msh2"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">weight</property>
+                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">symbol</property>
+                    <text-property name="displayName">symbol</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["symbol"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">auditor</property>
+                    <text-property name="displayName">auditor</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["auditor"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <structure name="toc"/>
             <column id="535">
@@ -1911,7 +1961,7 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <data id="844">
+                        <data id="1502">
                             <property name="resultSetColumn">weight</property>
                         </data>
                     </cell>
@@ -2071,6 +2121,9 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <label id="1387">
+                            <text-property name="text">评分合计</text-property>
+                        </label>
                     </cell>
                     <cell id="530">
                         <property name="borderBottomStyle">solid</property>
@@ -2664,6 +2717,12 @@ return false;]]></method>
                     <expression name="expression" type="javascript">dataSetRow["msh2"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">weight_1</property>
+                    <text-property name="displayName">weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <structure name="toc"/>
             <column id="982">
@@ -3049,7 +3108,478 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <data id="933">
+                        <data id="1504">
+                            <property name="dataSet">dataDetail</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">content</property>
+                                    <text-property name="displayName">content</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["content"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">type</property>
+                                    <text-property name="displayName">type</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["type"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">name</property>
+                                    <text-property name="displayName">name</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">tq1</property>
+                                    <text-property name="displayName">tq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["tq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">tq2</property>
+                                    <text-property name="displayName">tq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["tq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">tq3</property>
+                                    <text-property name="displayName">tq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["tq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">tq4</property>
+                                    <text-property name="displayName">tq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["tq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">th1</property>
+                                    <text-property name="displayName">th1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["th1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">th2</property>
+                                    <text-property name="displayName">th2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["th2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">tfy</property>
+                                    <text-property name="displayName">tfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["tfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bq1</property>
+                                    <text-property name="displayName">bq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bq2</property>
+                                    <text-property name="displayName">bq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bq3</property>
+                                    <text-property name="displayName">bq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bq4</property>
+                                    <text-property name="displayName">bq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bh1</property>
+                                    <text-property name="displayName">bh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bh2</property>
+                                    <text-property name="displayName">bh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">bfy</property>
+                                    <text-property name="displayName">bfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["bfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fq1</property>
+                                    <text-property name="displayName">fq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fq2</property>
+                                    <text-property name="displayName">fq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fq3</property>
+                                    <text-property name="displayName">fq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fq4</property>
+                                    <text-property name="displayName">fq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fh1</property>
+                                    <text-property name="displayName">fh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">fh2</property>
+                                    <text-property name="displayName">fh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["fh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ffy</property>
+                                    <text-property name="displayName">ffy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ffy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">aq1</property>
+                                    <text-property name="displayName">aq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["aq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">aq2</property>
+                                    <text-property name="displayName">aq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["aq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">aq3</property>
+                                    <text-property name="displayName">aq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["aq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">aq4</property>
+                                    <text-property name="displayName">aq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["aq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ah1</property>
+                                    <text-property name="displayName">ah1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ah1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ah2</property>
+                                    <text-property name="displayName">ah2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ah2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">afy</property>
+                                    <text-property name="displayName">afy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["afy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">pq1</property>
+                                    <text-property name="displayName">pq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["pq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">pq2</property>
+                                    <text-property name="displayName">pq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["pq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">pq3</property>
+                                    <text-property name="displayName">pq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["pq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">pq4</property>
+                                    <text-property name="displayName">pq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["pq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ph1</property>
+                                    <text-property name="displayName">ph1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ph1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ph2</property>
+                                    <text-property name="displayName">ph2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ph2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">pfy</property>
+                                    <text-property name="displayName">pfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["pfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sq1</property>
+                                    <text-property name="displayName">sq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sq2</property>
+                                    <text-property name="displayName">sq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sq3</property>
+                                    <text-property name="displayName">sq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sq4</property>
+                                    <text-property name="displayName">sq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sh1</property>
+                                    <text-property name="displayName">sh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sh2</property>
+                                    <text-property name="displayName">sh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">sfy</property>
+                                    <text-property name="displayName">sfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["sfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">cq1</property>
+                                    <text-property name="displayName">cq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["cq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">cq2</property>
+                                    <text-property name="displayName">cq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["cq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">cq3</property>
+                                    <text-property name="displayName">cq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["cq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">cq4</property>
+                                    <text-property name="displayName">cq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["cq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ch1</property>
+                                    <text-property name="displayName">ch1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ch1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">ch2</property>
+                                    <text-property name="displayName">ch2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["ch2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">cfy</property>
+                                    <text-property name="displayName">cfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["cfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">remark</property>
+                                    <text-property name="displayName">remark</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["remark"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drq1</property>
+                                    <text-property name="displayName">drq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drq2</property>
+                                    <text-property name="displayName">drq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drq3</property>
+                                    <text-property name="displayName">drq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drq4</property>
+                                    <text-property name="displayName">drq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drh1</property>
+                                    <text-property name="displayName">drh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drh2</property>
+                                    <text-property name="displayName">drh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">drfy</property>
+                                    <text-property name="displayName">drfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["drfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrq1</property>
+                                    <text-property name="displayName">mrq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrq2</property>
+                                    <text-property name="displayName">mrq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrq3</property>
+                                    <text-property name="displayName">mrq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrq4</property>
+                                    <text-property name="displayName">mrq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrh1</property>
+                                    <text-property name="displayName">mrh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrh2</property>
+                                    <text-property name="displayName">mrh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">mrfy</property>
+                                    <text-property name="displayName">mrfy</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["mrfy"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">seq</property>
+                                    <text-property name="displayName">seq</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["seq"]</expression>
+                                    <property name="dataType">integer</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">season</property>
+                                    <text-property name="displayName">season</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["season"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msq1</property>
+                                    <text-property name="displayName">msq1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msq1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msq2</property>
+                                    <text-property name="displayName">msq2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msq2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msq3</property>
+                                    <text-property name="displayName">msq3</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msq3"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msq4</property>
+                                    <text-property name="displayName">msq4</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msq4"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msh1</property>
+                                    <text-property name="displayName">msh1</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msh1"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">msh2</property>
+                                    <text-property name="displayName">msh2</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["msh2"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">symbol</property>
+                                    <text-property name="displayName">symbol</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["symbol"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">auditor</property>
+                                    <text-property name="displayName">auditor</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["auditor"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">weight</property>
+                                    <text-property name="displayName">weight</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                            </list-property>
                             <property name="resultSetColumn">weight</property>
                         </data>
                     </cell>
@@ -3261,6 +3791,9 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <label id="1386">
+                            <text-property name="text">评分合计</text-property>
+                        </label>
                     </cell>
                     <cell id="964">
                         <property name="borderBottomStyle">solid</property>
@@ -3897,6 +4430,12 @@ return false;]]></method>
                     <expression name="expression" type="javascript">dataSetRow["msh2"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">weight_1</property>
+                    <text-property name="displayName">weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <structure name="toc"/>
             <column id="1294">
@@ -4202,7 +4741,7 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <data id="1257">
+                        <data id="1506">
                             <property name="resultSetColumn">weight</property>
                         </data>
                     </cell>
@@ -4362,6 +4901,9 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <label id="1385">
+                            <text-property name="text">评分合计</text-property>
+                        </label>
                     </cell>
                     <cell id="1282">
                         <property name="borderBottomStyle">solid</property>
@@ -4506,10 +5048,16 @@ return false;]]></method>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">weight</property>
-                    <text-property name="displayName">weight</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
-                    <property name="dataType">integer</property>
+                    <property name="name">type</property>
+                    <text-property name="displayName">type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["type"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">name</property>
+                    <text-property name="displayName">name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                    <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">tq1</property>
@@ -4902,18 +5450,6 @@ return false;]]></method>
                     <property name="dataType">integer</property>
                 </structure>
                 <structure>
-                    <property name="name">name</property>
-                    <text-property name="displayName">name</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">type</property>
-                    <text-property name="displayName">type</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["type"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
                     <property name="name">season</property>
                     <text-property name="displayName">season</text-property>
                     <expression name="expression" type="javascript">dataSetRow["season"]</expression>
@@ -4944,15 +5480,33 @@ return false;]]></method>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
+                    <property name="name">msh1</property>
+                    <text-property name="displayName">msh1</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["msh1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
                     <property name="name">msh2</property>
                     <text-property name="displayName">msh2</text-property>
                     <expression name="expression" type="javascript">dataSetRow["msh2"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">msh1</property>
-                    <text-property name="displayName">msh1</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["msh1"]</expression>
+                    <property name="name">symbol</property>
+                    <text-property name="displayName">symbol</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["symbol"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">auditor</property>
+                    <text-property name="displayName">auditor</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["auditor"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">weight</property>
+                    <text-property name="displayName">weight</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["weight"]</expression>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
@@ -5069,9 +5623,6 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <label id="1379">
-                            <text-property name="text">sh2</text-property>
-                        </label>
                     </cell>
                     <cell id="1028">
                         <property name="colSpan">3</property>
@@ -5337,7 +5888,7 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <data id="1065">
+                        <data id="1508">
                             <property name="resultSetColumn">weight</property>
                         </data>
                     </cell>
@@ -6008,6 +6559,9 @@ return false;]]></method>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
+                        <label id="1384">
+                            <text-property name="text">评分合计</text-property>
+                        </label>
                     </cell>
                     <cell id="1086">
                         <property name="borderBottomStyle">solid</property>
@@ -7084,32 +7638,50 @@ return false;]]></method>
                 </row>
             </footer>
         </table>
-        <grid id="745">
-            <column id="746"/>
-            <column id="747"/>
-            <column id="748"/>
-            <column id="749"/>
-            <column id="750"/>
-            <column id="751"/>
-            <row id="752">
-                <cell id="753">
-                    <label id="759">
+        <grid id="1463">
+            <column id="1464">
+                <property name="width">0.9583333333333334in</property>
+            </column>
+            <column id="1465">
+                <property name="width">1.5416666666666667in</property>
+            </column>
+            <column id="1466"/>
+            <column id="1467"/>
+            <column id="1468"/>
+            <column id="1469"/>
+            <column id="1470"/>
+            <column id="1471"/>
+            <column id="1472"/>
+            <column id="1473"/>
+            <column id="1474"/>
+            <column id="1475"/>
+            <column id="1476"/>
+            <column id="1477"/>
+            <column id="1478"/>
+            <column id="1479"/>
+            <column id="1480"/>
+            <row id="1481">
+                <cell id="1482">
+                    <label id="1499">
                         <text-property name="text">核准：</text-property>
                     </label>
                 </cell>
-                <cell id="754"/>
-                <cell id="755">
-                    <label id="760">
-                        <text-property name="text">审核：</text-property>
-                    </label>
+                <cell id="1483">
+                    <property name="colSpan">16</property>
+                    <property name="rowSpan">1</property>
+                    <data id="1500">
+                        <property name="dataSet">dataDetail</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">auditor</property>
+                                <text-property name="displayName">auditor</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["auditor"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">auditor</property>
+                    </data>
                 </cell>
-                <cell id="756">
-                    <label id="761">
-                        <text-property name="text">制表人：</text-property>
-                    </label>
-                </cell>
-                <cell id="757"/>
-                <cell id="758"/>
             </row>
         </grid>
     </body>
