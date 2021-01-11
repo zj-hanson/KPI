@@ -7,11 +7,11 @@ package cn.hanbell.kpi.ejb;
 
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.entity.Scorecard;
+import cn.hanbell.kpi.entity.ScorecardAuditor;
 import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,6 +33,8 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
 
     @EJB
     private ScorecardDetailBean scorecardDetailBean;
+    @EJB
+    private ScorecardAuditorBean scorecardAuditorBean;
 
     public ScorecardBean() {
         super(Scorecard.class);
@@ -79,6 +81,10 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return scorecardDetailBean.findByPId(value);
     }
 
+    public List<ScorecardAuditor> getAuditorDetail(Object value) {
+        return scorecardAuditorBean.findByPId(value);
+    }
+
     public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {
         BigDecimal weight;
         BigDecimal score;
@@ -96,7 +102,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 if (entity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(value.toString())));
                 } else {
-                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2);
                     score = BigDecimal.valueOf(Double.valueOf(value.toString()));
                     total = total.add(score.multiply(weight));
                 }
@@ -125,7 +131,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                 if (entity.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(value.toString())));
                 } else {
-                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                    weight = entity.getWeight().divide(BigDecimal.valueOf(100), 2);
                     score = BigDecimal.valueOf(Double.valueOf(value.toString()));
                     total = total.add(score.multiply(weight));
                 }
@@ -176,7 +182,51 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
                     break;
                 default:
             }
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
+            throw ex;
+        }
+    }
+    
+    public void setPerf(ScorecardDetail d, String n) {
+        if (d.getPerformanceJexl() == null || "".equals(d.getPerformanceJexl())) {
+            throw new NullPointerException("表达式为空");
+        }
+        JexlEngine jexl = new JexlBuilder().create();
+        // Create an expression
+        String jexlExp = d.getPerformanceJexl().replace("${n}", n);
+        JexlExpression exp = jexl.createExpression(jexlExp);
+        // Create a context
+        JexlContext jc = new MapContext();
+        jc.set("object", d);
+        // Evaluate the expression
+        try {
+            Object value = exp.evaluate(jc);
+            BigDecimal score = BigDecimal.valueOf(Double.valueOf(value.toString()));
+            switch (n) {
+                case "q1":
+                    d.setPq1(score);
+                    break;
+                case "q2":
+                    d.setPq2(score);
+                    break;
+                case "h1":
+                    d.setPh1(score);
+                    break;
+                case "q3":
+                    d.setPq3(score);
+                    break;
+                case "q4":
+                    d.setPq4(score);
+                    break;
+                case "h2":
+                    d.setPh2(score);
+                    break;
+                case "fy":
+                    d.setPfy(score);
+                    break;
+                default:
+            }
+        } catch (NumberFormatException ex) {
             throw ex;
         }
     }
