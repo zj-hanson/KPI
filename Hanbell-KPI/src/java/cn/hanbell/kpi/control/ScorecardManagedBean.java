@@ -5,20 +5,26 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.ejb.IndicatorBean;
+import cn.hanbell.kpi.ejb.ScorecardAuditorBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardContentBean;
 import cn.hanbell.kpi.ejb.ScorecardGrantBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Scorecard;
+import cn.hanbell.kpi.entity.ScorecardAuditor;
 import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.entity.ScorecardGrant;
 import cn.hanbell.kpi.lazy.ScorecardContentModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -44,12 +50,18 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     private ScorecardContentBean scorecardContentBean;
     @EJB
     private ScorecardGrantBean scorecardGrantBean;
+    @EJB
+    private ScorecardAuditorBean scorecardAuditorBean;
+    @EJB
+    SystemUserBean systemUserBean;
 
     protected ScorecardGrant scorecardGrant;
 
     protected Calendar c;
     private Scorecard scorecard;
     private boolean freezed;
+    protected LinkedHashMap<String, String> auditorMap;
+    protected List<ScorecardAuditor> scorecardAuditorList;
 
     public ScorecardManagedBean() {
         super(ScorecardContent.class);
@@ -147,8 +159,9 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setPerf(currentEntity, col);
                     } else if (userManagedBean.getQ() == 4) {
-                        col = scorecardBean.getColumn("h", 2);
-                        scorecardBean.setPerf(currentEntity, col);
+                        //下半年隐藏 不需要计算
+                        //col = scorecardBean.getColumn("h", 2);
+                        //scorecardBean.setPerf(currentEntity, col);
                         //全年
                         scorecardBean.setPerf(currentEntity, "fy");
                     }
@@ -162,11 +175,11 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setContentScore(currentEntity, col);
-                        
+
                     } else if (userManagedBean.getQ() == 4) {
-                        //下半年
-                        col = scorecardBean.getColumn("h", 2);
-                        scorecardBean.setContentScore(currentEntity, col);
+                        //下半年隐藏 不需要计算
+                        //col = scorecardBean.getColumn("h", 2);
+                        //scorecardBean.setContentScore(currentEntity, col);
                         //全年
                         scorecardBean.setContentScore(currentEntity, "fy");
                     }
@@ -267,6 +280,30 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
 
     @Override
     public void init() {
+        c.setTime(userManagedBean.getBaseDate());
+        superEJB = scorecardContentBean;
+        model = new ScorecardContentModel(scorecardContentBean, this.userManagedBean);
+        model.getSortFields().put("seq", "ASC");
+        model.getSortFields().put("deptno", "ASC");
+        model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
+        if (this.getScorecard() != null && this.getScorecard().getId() != null) {
+            model.getFilterFields().put("pid", getScorecard().getId());
+        }
+        scorecardAuditorList = new ArrayList<>();
+        scorecardAuditorList = scorecardAuditorBean.findByPidAndQuarter(scorecard.getId(), userManagedBean.getY(), userManagedBean.getQ());
+        auditorMap = new LinkedHashMap<>();
+        if (!scorecardAuditorList.isEmpty()) {
+            for (ScorecardAuditor sa : scorecardAuditorList) {
+                auditorMap.put(sa.getAuditorId(), sa.getAuditorName() + "Q" + userManagedBean.getQ() + "已审核");
+            }
+        } else {
+            auditorMap.put("no", "没有人审核哟");
+        }
+        super.init();
+    }
+
+    @Override
+    public void construct() {
         if (fc == null) {
             fc = FacesContext.getCurrentInstance();
         }
@@ -284,16 +321,35 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         } else {
             this.freezed = scorecard.getFreezeDate() != null && scorecard.getFreezeDate().after(userManagedBean.getBaseDate());
         }
-        c.setTime(userManagedBean.getBaseDate());
-        superEJB = scorecardContentBean;
-        model = new ScorecardContentModel(scorecardContentBean, this.userManagedBean);
-        model.getSortFields().put("seq", "ASC");
-        model.getSortFields().put("deptno", "ASC");
-        model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
-        if (this.getScorecard() != null && this.getScorecard().getId() != null) {
-            model.getFilterFields().put("pid", getScorecard().getId());
+        init();
+        super.construct();
+    }
+
+    @Override
+    public void verify() {
+        try {
+            if (scorecard != null) {
+                //如果审核过了 就不能再审了
+//            List<ScorecardAuditor> data = scorecardAuditorBean.findByPidAndAuditorId(scorecard.getId(), userManagedBean.getUserid());
+//            if (!data.isEmpty()) {
+//                return;
+//            }
+                ScorecardAuditor sa = new ScorecardAuditor();
+                sa.setPid(scorecard.getId());
+                sa.setCredateToNow();
+                sa.setCreator(userManagedBean.getUserid());
+                SystemUser user = systemUserBean.findByUserId(userManagedBean.getUserid());
+                sa.setAuditorId(userManagedBean.getUserid());
+                sa.setAuditorName(user.getUsername());
+                sa.setSeq(userManagedBean.getY());
+                sa.setQuarter(userManagedBean.getQ());
+                scorecardAuditorBean.persist(sa);
+            }
+            showInfoMsg("Info", "审核成功");
+        } catch (Exception ex) {
+            showErrorMsg("Error", ex.getMessage());
         }
-        super.init();
+        init();
     }
 
     public void handleDialogReturnWhenSelect(SelectEvent event) {
@@ -373,6 +429,14 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
 
     public void setScorecardGrant(ScorecardGrant scorecardGrant) {
         this.scorecardGrant = scorecardGrant;
+    }
+
+    public LinkedHashMap<String, String> getAuditorMap() {
+        return auditorMap;
+    }
+
+    public void setAuditorMap(LinkedHashMap<String, String> auditorMap) {
+        this.auditorMap = auditorMap;
     }
 
 }

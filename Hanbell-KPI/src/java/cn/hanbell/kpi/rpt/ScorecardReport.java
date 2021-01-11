@@ -7,6 +7,7 @@ package cn.hanbell.kpi.rpt;
 
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.entity.Scorecard;
+import cn.hanbell.kpi.entity.ScorecardAuditor;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import com.lightshell.comm.SuperSingleReportBean;
 import java.util.List;
@@ -27,5 +28,9 @@ public class ScorecardReport extends SuperSingleReportBean<ScorecardBean, Scorec
 
     public List<ScorecardDetail> getDetail(int pid) {
         return this.superEJB.getDetail(pid);
+    }
+
+    public List<ScorecardAuditor> getAuditorDetail(int pid) {
+        return this.superEJB.getAuditorDetail(pid);
     }
 }
