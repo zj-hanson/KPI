@@ -5,8 +5,6 @@
  */
 package cn.hanbell.kpi.control;
 
-import cn.hanbell.eap.ejb.DepartmentBean;
-import cn.hanbell.eap.ejb.SystemUserBean;
 import cn.hanbell.eap.entity.Department;
 import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.ejb.RoleBean;
@@ -23,14 +21,30 @@ import cn.hanbell.kpi.entity.ScorecardDetail;
 import cn.hanbell.kpi.lazy.ScorecardModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
 import com.lightshell.comm.BaseLib;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -65,6 +79,10 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     protected List<String> paramDeptno = null;
     private List<String> deptList = null;
+    private List<ScorecardDetail> notAchievedList;
+    private String[] selectedQuarter;
+
+    protected final Logger log4j = LogManager.getLogger("hanbell-KPI");
 
     public ScorecardSetManagedBean() {
         super(Scorecard.class, ScorecardDetail.class);
@@ -161,6 +179,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             String col = scorecardBean.getColumn("q", userManagedBean.getQ());
             try {
                 if (currentDetail.getScoreJexl() != null && !"".equals(currentDetail.getScoreJexl())) {
+                    //计算达成
+                    scorecardBean.setPerf(currentDetail, col);
                     //计算得分
                     scorecardBean.setDetailScore(currentDetail, col);
                     //上半年
@@ -180,6 +200,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     case 1:
                         if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
+                            //currentDetail.setPq1(currentDetail.getPq1());
                         } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
                         }
@@ -700,6 +721,121 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         } else {
             showErrorMsg("Error", "请选中一个指标");
         }
+    }
+
+    /**
+     * @description 查询不达标项
+     */
+    public void queryNotAchieved() {
+        notAchievedList = new ArrayList<>();
+
+    }
+
+    /**
+     * @description 导出不达标项
+     */
+    public void printNotAchieved() {
+        notAchievedList = null;
+        if (notAchievedList == null || notAchievedList.isEmpty()) {
+            return;
+        }
+        //设置报表名称
+        fileName = "Q4" + "不达标项考核明细" + ".xls";
+        String fileFullName = reportOutputPath + fileName;
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        //获得表格样式
+        Map<String, CellStyle> style = createStyles(workbook);
+        // 生成一个表格
+        HSSFSheet sheet1 = workbook.createSheet("不达标项考核明细");
+        // 设置表格宽度
+        int[] wt = {20,5,10,10,20, 5, 5, 5, 5, 5, 5, 20, 20, 20, 20, 20, 20};
+        for (int i = 0; i < wt.length; i++) {
+            sheet1.setColumnWidth(i, wt[i] * 256);
+        }
+        //创建标题行
+        Row row;
+        //Sheet1
+        String[] title = {"考核表","季度","部门代号","部门简称","考核内容", "Q1达成率", "Q2达成率", "上半年达成率", "Q3达成率", "Q4达成率", "全年达成率", "Q1阶段说明", "Q2阶段说明", "上半年阶段说明", "Q3阶段说明", "Q4阶段说明", "全年阶段说明"};
+        row = sheet1.createRow(0);
+        row.setHeight((short) 600);
+        for (int i = 0; i < title.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellStyle(style.get("head"));
+            cell.setCellValue(title[i]);
+        }
+        int j = 1;
+        //添加数据内容
+        for (ScorecardDetail ip : notAchievedList) {
+            row = sheet1.createRow(j);
+            j++;
+            row.setHeight((short) 400);
+
+        }
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(fileFullName);
+            workbook.write(os);
+            this.reportViewPath = reportViewContext + fileName;
+            this.preview();
+        } catch (Exception ex) {
+            log4j.error(ex);
+        } finally {
+            try {
+                if (null != os) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException ex) {
+                log4j.error(ex.getMessage());
+            }
+        }
+
+    }
+
+    private Map<String, CellStyle> createStyles(Workbook wb) {
+        Map<String, CellStyle> styles = new LinkedHashMap<>();
+
+        // 文件头样式
+        CellStyle headStyle = wb.createCellStyle();
+        headStyle.setWrapText(true);//设置自动换行
+        headStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        headStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        headStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());//单元格背景颜色
+        headStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        headStyle.setBorderRight(CellStyle.BORDER_THIN);
+        headStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        headStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        headStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        headStyle.setBorderTop(CellStyle.BORDER_THIN);
+        headStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        headStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        headStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        Font headFont = wb.createFont();
+        headFont.setFontHeightInPoints((short) 12);
+        headFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        headStyle.setFont(headFont);
+        styles.put("head", headStyle);
+
+        // 正文样式
+        CellStyle cellStyle = wb.createCellStyle();
+        Font cellFont = wb.createFont();
+        cellFont.setFontHeightInPoints((short) 10);
+        cellStyle.setFont(cellFont);
+        cellStyle.setWrapText(true);//设置自动换行
+        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());//单元格背景颜色
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+        cellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        cellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+        cellStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        cellStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        styles.put("cell", cellStyle);
+
+        return styles;
     }
 
     /**
