@@ -187,14 +187,4 @@
         <validation-mode>NONE</validation-mode>
         <properties/>
     </persistence-unit>
-    <persistence-unit name="SHBTMS-ejbPU" transaction-type="JTA">
-        <jta-data-source>jdbc/shbtms</jta-data-source>
-        <class>cn.hanbell.kpi.entity.tms.Project</class>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
-        <shared-cache-mode>NONE</shared-cache-mode>
-        <validation-mode>NONE</validation-mode>
-        <properties>
-            <property name="eclipselink.canonicalmodel.subpackage" value="shbtms"/>
-        </properties>
-    </persistence-unit>
 </persistence>
