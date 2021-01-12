@@ -15,6 +15,7 @@ public class ShipmentAmountHYHT extends ShipmentAmount {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", " in ('HT')");
+        queryParams.put("cusno", " not in ('YZJ00001') ");
     }
 
 }

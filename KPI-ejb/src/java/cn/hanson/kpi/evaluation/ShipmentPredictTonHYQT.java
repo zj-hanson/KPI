@@ -7,7 +7,7 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749 灰铁预估订单量（吨）
+ * @author C0160
  */
 public class ShipmentPredictTonHYQT extends ShipmentPredictTonHY {
 
@@ -15,6 +15,7 @@ public class ShipmentPredictTonHYQT extends ShipmentPredictTonHY {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", " in ('QT') ");
+        queryParams.put("cusno", " not in ('YZJ00001') ");
     }
 
 }

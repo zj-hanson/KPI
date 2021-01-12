@@ -7,7 +7,7 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749
+ * @author C0160
  */
 public class ShipmentTonHYOTH extends ShipmentTonHY {
 
@@ -15,6 +15,7 @@ public class ShipmentTonHYOTH extends ShipmentTonHY {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", " not in ('HT','QT')");
+        queryParams.put("cusno", " not in ('YZJ00001') ");
     }
 
 }
