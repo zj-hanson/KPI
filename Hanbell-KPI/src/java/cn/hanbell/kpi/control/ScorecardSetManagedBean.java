@@ -153,8 +153,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     break;
                 case 4:
                     currentEntity.setSq4(value);
-                    value = scorecardBean.getDetailScores(data, "sh2");
-                    currentEntity.setSh2(value);
                     value = scorecardBean.getDetailScores(data, "sfy");
                     currentEntity.setSfy(value);
                     break;
@@ -187,11 +185,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setDetailScore(currentDetail, col);
-
                     } else if (userManagedBean.getQ() == 4) {
-                        //下半年
-                        col = scorecardBean.getColumn("h", 2);
-                        scorecardBean.setDetailScore(currentDetail, col);
                         //全年
                         scorecardBean.setDetailScore(currentDetail, "fy");
                     }
