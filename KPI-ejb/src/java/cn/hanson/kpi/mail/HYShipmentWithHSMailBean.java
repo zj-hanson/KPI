@@ -6,6 +6,8 @@
 package cn.hanson.kpi.mail;
 
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanson.kpi.evaluation.ShipmentPredictAmountHY;
+import cn.hanson.kpi.evaluation.ShipmentPredictTonHY;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -80,6 +82,8 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
             sum2 = BigDecimal.ZERO;
             sumList.clear();
 
+            salesOrder = new ShipmentPredictTonHY();
+
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("汉声依材质别出货重量", y);
             indicatorBean.getEntityManager().clear();
@@ -141,6 +145,8 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
             sum1 = BigDecimal.ZERO;
             sum2 = BigDecimal.ZERO;
             sumList.clear();
+
+            salesOrder = new ShipmentPredictAmountHY();
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("汉声依材质别出货金额", y);
