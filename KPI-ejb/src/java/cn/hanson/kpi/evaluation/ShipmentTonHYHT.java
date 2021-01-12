@@ -5,15 +5,9 @@
  */
 package cn.hanson.kpi.evaluation;
 
-import com.lightshell.comm.BaseLib;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import javax.persistence.Query;
-
 /**
  *
- * @author C1749
+ * @author C0160
  */
 public class ShipmentTonHYHT extends ShipmentTonHY {
 
@@ -21,6 +15,7 @@ public class ShipmentTonHYHT extends ShipmentTonHY {
         super();
         queryParams.put("facno", "Y");
         queryParams.put("protype", "in ('HT')");
+        queryParams.put("cusno", " not in ('YZJ00001') ");
     }
 
 }

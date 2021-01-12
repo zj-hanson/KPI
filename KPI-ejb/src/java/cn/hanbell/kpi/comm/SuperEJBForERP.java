@@ -24,9 +24,6 @@ public class SuperEJBForERP implements Serializable {
     @PersistenceContext(unitName = "PU_shberp")
     private EntityManager em_shberp;
 
-    @PersistenceContext(unitName = "PU_cqerp")
-    private EntityManager em_cqerp;
-
     @PersistenceContext(unitName = "PU_gzerp")
     private EntityManager em_gzerp;
 
@@ -36,8 +33,14 @@ public class SuperEJBForERP implements Serializable {
     @PersistenceContext(unitName = "PU_njerp")
     private EntityManager em_njerp;
 
+    @PersistenceContext(unitName = "PU_cqerp")
+    private EntityManager em_cqerp;
+
     @PersistenceContext(unitName = "PU_hansonerp")
     private EntityManager em_hansonerp;
+
+    @PersistenceContext(unitName = "PU_hanyoungerp")
+    private EntityManager em_hanyoungerp;
 
     @PersistenceContext(unitName = "PU_comererp")
     private EntityManager em_comererp;
@@ -70,8 +73,6 @@ public class SuperEJBForERP implements Serializable {
 
     protected EntityManager getEntityManager(String facno) {
         switch (facno) {
-            case "A":
-                return em_thberp;
             case "C":
                 return em_shberp;
             case "G":
@@ -84,6 +85,8 @@ public class SuperEJBForERP implements Serializable {
                 return em_cqerp;
             case "H":
                 return em_hansonerp;
+            case "Y":
+                return em_hanyoungerp;
             case "K":
                 return em_comererp;
             case "E":
@@ -96,6 +99,8 @@ public class SuperEJBForERP implements Serializable {
                 return em_sderp;
             case "X":
                 return em_hkerp;
+            case "A":
+                return em_thberp;
             default:
                 return em_shberp;
         }

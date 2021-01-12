@@ -1206,10 +1206,9 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    detail = indicatorDetailBean.findById(o3.getId());
-                    Method setMethod = detail.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(detail, na);
-                    indicatorDetailBean.update(detail);
+                    Method setMethod = o3.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(o3, na);
+                    indicatorDetailBean.update(o3);
                 } catch (Exception ex) {
                     log4j.error(ex);
                 }
