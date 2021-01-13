@@ -22,22 +22,22 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class HYShipmentWithHSMailBean extends ShipmentMail {
+public class ShipmentWithHSMailBean extends ShipmentMail {
 
-    public List<Indicator> sumList;
+    public List<Indicator> sumIndicatorList;
+    public Indicator total;
     protected BigDecimal sum1 = BigDecimal.ZERO;
     protected BigDecimal sum2 = BigDecimal.ZERO;
-    public Indicator allSumIndicator;
 
-    public HYShipmentWithHSMailBean() {
-        this.sumList = new ArrayList();
+    public ShipmentWithHSMailBean() {
+        this.sumIndicatorList = new ArrayList();
     }
 
     @Override
     public void init() {
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
-        if (sumList != null) {
-            this.sumList.clear();
+        if (sumIndicatorList != null) {
+            this.sumIndicatorList.clear();
         }
         super.init();
     }
@@ -80,7 +80,7 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
 
             sum1 = BigDecimal.ZERO;
             sum2 = BigDecimal.ZERO;
-            sumList.clear();
+            sumIndicatorList.clear();
 
             salesOrder = new ShipmentPredictTonHY();
 
@@ -94,7 +94,7 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
                 total.setName("汉声出货吨数");
-                sumList.add(total);
+                sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
@@ -109,18 +109,18 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
                 total.setName("汉扬出货吨数");
-                sumList.add(total);
+                sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
 
-            total = indicatorBean.getSumValue(sumList);
+            total = indicatorBean.getSumValue(sumIndicatorList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
                 total.setName("HS/HY总计");
                 getData().put("sum1", sum1);
                 getData().put("sum2", sum2);
-                sb.append(getHtmlTableRow(total, y, m, d));
+                sb.append(getHtmlTableRow(total, y, m, d, "'background-color:#ff8e67';"));
             }
 
             sb.append("</table></div>");
@@ -144,7 +144,7 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
 
             sum1 = BigDecimal.ZERO;
             sum2 = BigDecimal.ZERO;
-            sumList.clear();
+            sumIndicatorList.clear();
 
             salesOrder = new ShipmentPredictAmountHY();
 
@@ -158,7 +158,7 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
                 total.setName("汉声出货吨数");
-                sumList.add(total);
+                sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
@@ -173,18 +173,18 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
                 total.setName("汉扬出货吨数");
-                sumList.add(total);
+                sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
 
-            total = indicatorBean.getSumValue(sumList);
+            total = indicatorBean.getSumValue(sumIndicatorList);
             if (total != null) {
                 indicatorBean.updatePerformance(total);
                 total.setName("HS/HY总计");
                 getData().put("sum1", sum1);
                 getData().put("sum2", sum2);
-                sb.append(getHtmlTableRow(total, y, m, d));
+                sb.append(getHtmlTableRow(total, y, m, d, "'background-color:#ff8e67';"));
             }
 
             sb.append("</table></div>");
@@ -208,7 +208,7 @@ public class HYShipmentWithHSMailBean extends ShipmentMail {
                 sumIndicator = indicatorBean.getSumValue(indicators);
                 if (sumIndicator != null) {
                     indicatorBean.updatePerformance(sumIndicator);
-                    sb.append(getHtmlTableRow(sumIndicator, y, m, d));
+                    sb.append(getHtmlTableRow(sumIndicator, y, m, d, "'background-color:#ff8e67';"));
                 }
             }
         } catch (Exception ex) {
