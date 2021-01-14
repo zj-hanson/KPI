@@ -5,10 +5,17 @@
  */
 package cn.hanson.kpi.mail;
 
+import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanson.kpi.evaluation.ShipmentPredictAmountHY;
+import cn.hanson.kpi.evaluation.ShipmentPredictTonHY;
 import com.lightshell.comm.BaseLib;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -59,9 +66,10 @@ public class CPShipmentMailBean extends ShipmentMail {
     protected String getTableHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tbl\"><table width=\"100%\">");
-        sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
+        sb.append("<tr><th rowspan=\"2\" colspan=\"1\">类别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
         sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-        sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+        sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th>");
+        sb.append("<th rowspan=\"2\" colspan=\"1\">订单未交</th><th rowspan=\"2\" colspan=\"1\">年度比重</th></tr>");
         sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
         sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
         sb.append("</tr>");
@@ -70,6 +78,10 @@ public class CPShipmentMailBean extends ShipmentMail {
 
     @Override
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
+        return getHtmlTable(indicatorList, y, m, d, needsum, "合计");
+    }
+
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum, String sumTitle) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
         getData().put("sum2", BigDecimal.ZERO);
@@ -81,8 +93,11 @@ public class CPShipmentMailBean extends ShipmentMail {
             if (needsum) {
                 sumIndicator = indicatorBean.getSumValue(indicators);
                 if (sumIndicator != null) {
-                    sumIndicatorList.add(sumIndicator);
+                    if (sumTitle != null) {
+                        sumIndicator.setName(sumTitle);
+                    }
                     indicatorBean.updatePerformance(sumIndicator);
+                    sumIndicatorList.add(sumIndicator);
                     sb.append(getHtmlTableRow(sumIndicator, y, m, d, "'background-color:#ff8e67';"));
                 }
             }
@@ -92,7 +107,117 @@ public class CPShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    public void getSumBzValue(String aa) {
+    @Override
+    protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
+        return getHtmlTableRow(indicator, y, m, d, null);
+    }
+
+    @Override
+    protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d, String sumStyle) throws Exception {
+        //获取需要取值栏位
+        String col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), m);
+        StringBuilder sb = new StringBuilder();
+        IndicatorDetail a = indicator.getActualIndicator();
+        IndicatorDetail b = indicator.getBenchmarkIndicator();
+        IndicatorDetail p = indicator.getPerformanceIndicator();
+        IndicatorDetail t = indicator.getTargetIndicator();
+        Field f;
+        try {
+            BigDecimal num1, num2, proportion;
+            if (indicator.getActualInterface() != null && indicator.getActualEJB() != null && indicator.getId() != -1) {
+                //本日出货
+                Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
+                actualInterface.setEJB(indicator.getActualEJB());
+                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+                //未交订单
+                if (salesOrder != null) {
+                    salesOrder.setEJB(indicator.getActualEJB());
+                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
+                } else {
+                    num2 = BigDecimal.ZERO;
+                }
+            } else {
+                num1 = BigDecimal.ZERO;
+                num2 = BigDecimal.ZERO;
+            }
+            if (indicator.getId() != -1) {
+                sumAdditionalData("sum1", num1);
+                sumAdditionalData("sum2", num2);
+            }
+            sb.append("<tr>");
+            sb.append("<td style=${style}>").append(indicator.getName()).append("</td>");
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
+            //当月
+            //实际
+            f = a.getClass().getDeclaredField(col);
+            f.setAccessible(true);
+            sb.append("<td style=${style}>").append(decimalFormat.format(f.get(a))).append("</td>");
+            //目标
+            f = t.getClass().getDeclaredField(col);
+            f.setAccessible(true);
+            sb.append("<td style=${style}>").append(decimalFormat.format(f.get(t))).append("</td>");
+            //达成
+            f = p.getClass().getDeclaredField(col);
+            f.setAccessible(true);
+            sb.append("<td style=${style}>").append(percentFormat(f.get(p))).append("</td>");
+            //同期
+            f = b.getClass().getDeclaredField(col);
+            f.setAccessible(true);
+            //sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 0))).append("</td>");
+            //成长
+            //sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getGrowth(a, b, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");
+            //累计
+            //实际
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
+            //目标
+            //sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m, d))).append("</td>");
+            //达成
+            //sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, false, t, true, m, d))).append("</td>");
+            //同期
+            //sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
+            //成长
+            //sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
+            //改成按天折算
+            sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
+            //年度目标
+            f = t.getClass().getDeclaredField("nfy");
+            f.setAccessible(true);
+            sb.append("<td style=${style}>").append(decimalFormat.format(f.get(t))).append("</td>");
+            //年度达成
+            f = p.getClass().getDeclaredField("nfy");
+            f.setAccessible(true);
+            sb.append("<td style=${style}>").append(percentFormat(f.get(p))).append("</td>");
+            sb.append("<td style=${style}>").append(decimalFormat.format(indicator.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
+            //年度比重
+            if (indicator.getId() == -1 && totalActualValue.compareTo(BigDecimal.ZERO) != 0) {
+                sb.append("<td style=${style}>").append(percentFormat(indicatorBean.getAccumulatedValue(a, m).divide(totalActualValue, 4, BigDecimal.ROUND_HALF_UP)
+                        .multiply(BigDecimal.valueOf(100)))).append("</td>");
+            } else {
+                sb.append("<td style=${style}></td>");
+            }
+            sb.append("</tr>");
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            throw new Exception(ex);
+        }
+
+        if (sumStyle != null && !"".equals(sumStyle) && indicator.getId() == -1) {
+            return sb.toString().replace("${style}", sumStyle);
+        } else {
+            return sb.toString().replace("${style}", "");
+        }
+    }
+
+    public void setTotalActualValue(String aa) {
         String[] arr = aa.split(",");
         try {
             totalActualValue = BigDecimal.ZERO;
@@ -117,7 +242,7 @@ public class CPShipmentMailBean extends ShipmentMail {
     @Override
     public String getMailBody() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"tableTitle\" ></div>");
+        sb.append("<div class=\"tableTitle\"></div>");
         sb.append("<div class=\"tableTitle\" style='text-align:center'>出货统计報表(依客户材质别)</div>");
         sb.append("<div class=\"tableTitle\">单位：吨</div>");
         sb.append(getQuantityTable());
@@ -128,12 +253,15 @@ public class CPShipmentMailBean extends ShipmentMail {
         sb.append(getVarietyTonTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getVarietyAmtsTable());
-        sb.append("<div class=\"tableTitle\">預估訂單量: 客戶提供的意向訂單量&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月實際出貨量: 本月累计出貨量</div>");
-        sb.append("<div class=\"tableTitle\"><span>实际催货訂單: 客戶已通知截至昨日需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計目標: 本年月累计至本月目标的目标值</div>");
-        sb.append("<div class=\"tableTitle\"><span>未来几天催货訂單: 客戶已通知今日起需出貨訂單量</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年累計達成率: (年累計實際/ 年累計目標) ×100%</div>");
-        sb.append("<div class=\"tableTitle\">本月目標: 與查詢日期同月日累計至月底的目標值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年比重 ：(年实际/年合计) ×100%。</div>");
-        sb.append("<div class=\"tableTitle\">本月達成率: (本月實際/ 本月目標) ×100%   </div>");
-        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：因當日出貨單會延後確認，故報表抓取截至昨日之出貨數據。</span></div>");
+        sb.append("<div class=\"tableTitle\">本月实际: 本月累计出货 - 本月累计退货</div>");
+        sb.append("<div class=\"tableTitle\">本月目标: 年度方针设定的月完成目标</div>");
+        sb.append("<div class=\"tableTitle\">本月达成: (本月实际/本月目标) ×100% </div>");
+        sb.append("<div class=\"tableTitle\">年累计实际: 累计至报表查询日的出货 - 累计至报表查询日的退货</div>");
+        sb.append("<div class=\"tableTitle\">年累计目标: 之前月份的累计目标 + 本月目标/本月天数x当前天数</div>");
+        sb.append("<div class=\"tableTitle\">年累计达成: (年累计实际/年累计目标) ×100% </div>");
+        sb.append("<div class=\"tableTitle\">年度比重: (分类年实际/分类年合计) ×100% </div>");
+        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注1：报表数据已做合并抵消，扣除汉扬销售汉声部分</span></div>");
+        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注2：因当日出货单可能延后确认，故报表获取截至昨天之出货数据</span></div>");
         return sb.toString();
     }
 
@@ -142,16 +270,12 @@ public class CPShipmentMailBean extends ShipmentMail {
         sum2 = BigDecimal.ZERO;
         sumIndicatorList.clear();
 
-        getSumBzValue("汉声依SHB客户材质出货重量,汉声依THB客户材质出货重量,汉声依OTH客户材质出货重量");
+        salesOrder = new ShipmentPredictTonHY();
+
+        setTotalActualValue("汉声依SHB客户材质出货重量,汉声依THB客户材质出货重量,汉声依OTH客户材质出货重量");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"tbl\"><table width=\"100%\">");
-        sb.append("<tr><th rowspan=\"2\" colspan=\"1\">客户</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
-        sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-        sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
-        sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-        sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-        sb.append("</tr>");
+        sb.append(getTableHead());
 
         //SHB
         this.indicators.clear();
@@ -161,10 +285,7 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
@@ -178,10 +299,7 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
@@ -195,22 +313,20 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
             sb.append("");
         }
-        //最后的总合计 sumIndicator
+        //最后的总合计
         try {
             total = indicatorBean.getSumValue(sumIndicatorList);
             if (total != null) {
                 total.setName("合计");
                 getData().put("sum1", sum1);
                 getData().put("sum2", sum2);
+                indicatorBean.updatePerformance(total);
                 sb.append(getHtmlTableRow(total, y, m, d, "'background-color:#ff8e67';"));
             }
         } catch (Exception ex) {
@@ -226,7 +342,9 @@ public class CPShipmentMailBean extends ShipmentMail {
         sum2 = BigDecimal.ZERO;
         sumIndicatorList.clear();
 
-        getSumBzValue("汉声依SHB客户材质出货金额,汉声依THB客户材质出货金额,汉声依OTH客户材质出货金额");
+        salesOrder = new ShipmentPredictAmountHY();
+
+        setTotalActualValue("汉声依SHB客户材质出货金额,汉声依THB客户材质出货金额,汉声依OTH客户材质出货金额");
 
         StringBuilder sb = new StringBuilder();
         sb.append(getTableHead());
@@ -239,10 +357,7 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(this.indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(this.indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
@@ -256,10 +371,7 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(this.indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(this.indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
@@ -273,16 +385,12 @@ public class CPShipmentMailBean extends ShipmentMail {
             for (Indicator i : indicators) {
                 indicatorBean.divideByRate(i, 2);
             }
-            sb.append(getHtmlTable(this.indicators, y, m, d, true));
-            total = getSumIndicator();
-            total.setName("小计");
-            sumIndicatorList.add(total);
+            sb.append(getHtmlTable(this.indicators, y, m, d, true, "小计"));
             sum1 = sum1.add(getData().get("sum1"));
             sum2 = sum2.add(getData().get("sum2"));
         } else {
             sb.append("");
         }
-
         //最后的总合计
         try {
             total = indicatorBean.getSumValue(sumIndicatorList);
@@ -290,6 +398,7 @@ public class CPShipmentMailBean extends ShipmentMail {
                 getData().put("sum1", sum1);
                 getData().put("sum2", sum2);
                 total.setName("合计");
+                indicatorBean.updatePerformance(total);
                 sb.append(getHtmlTableRow(total, y, m, d, "'background-color:#ff8e67';"));
             }
         } catch (Exception ex) {
@@ -301,7 +410,14 @@ public class CPShipmentMailBean extends ShipmentMail {
 
     //按产品别分类重量
     protected String getVarietyTonTable() {
-        getSumBzValue("汉声依种类别出货重量");
+        sum1 = BigDecimal.ZERO;
+        sum2 = BigDecimal.ZERO;
+        sumIndicatorList.clear();
+
+        salesOrder = null;
+
+        setTotalActualValue("汉声依种类别出货重量");
+
         StringBuilder sb = new StringBuilder();
         sb.append(getTableHead());
         this.indicators.clear();
@@ -319,9 +435,16 @@ public class CPShipmentMailBean extends ShipmentMail {
         }
     }
 
-    //按产品别分类 金额
+    //按产品别分类金额
     protected String getVarietyAmtsTable() {
-        getSumBzValue("汉声依种类别出货金额");
+        sum1 = BigDecimal.ZERO;
+        sum2 = BigDecimal.ZERO;
+        sumIndicatorList.clear();
+
+        salesOrder = null;
+
+        setTotalActualValue("汉声依种类别出货金额");
+
         StringBuilder sb = new StringBuilder();
         sb.append(getTableHead());
         this.indicators.clear();
