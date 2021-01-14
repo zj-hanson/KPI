@@ -63,12 +63,18 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
         sb.append(getShipementTonTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getShipementAmountTable());
+        sb.append("<div class=\"tableTitle\">本月实际: 本月累计出货 - 本月累计退货</div>");
+        sb.append("<div class=\"tableTitle\">本月目标: 年度方针设定的月完成目标</div>");
+        sb.append("<div class=\"tableTitle\">本月达成: (本月实际/本月目标) ×100% </div>");
+        sb.append("<div class=\"tableTitle\">年累计实际: 累计至报表查询日的出货 - 累计至报表查询日的退货</div>");
+        sb.append("<div class=\"tableTitle\">年累计目标: 之前月份的累计目标 + 本月目标/本月天数x当前天数</div>");
+        sb.append("<div class=\"tableTitle\">年累计达成: (年累计实际/年累计目标) ×100% </div>");
+        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：报表目标实际累计数据，包含汉扬销售汉声部分</span></div>");
         return sb.toString();
     }
 
     protected String getShipementTonTable() {
         StringBuilder sb = new StringBuilder();
-        Indicator total;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
@@ -132,7 +138,6 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
 
     protected String getShipementAmountTable() {
         StringBuilder sb = new StringBuilder();
-        Indicator total;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
