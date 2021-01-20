@@ -6,15 +6,16 @@
 package cn.hanson.kpi.evaluation;
 
 /**
+ * 汉扬其他客户其他金额
  *
- * @author C1749
+ * @author C0160
  */
-public class ShipmentTonHTV3 extends ShipmentTon {
+public class ShipmentAmountHYOTHV3 extends ShipmentAmts {
 
-    public ShipmentTonHTV3() {
+    public ShipmentAmountHYOTHV3() {
         super();
-        queryParams.put("facno", "H");
-        queryParams.put("protype", "in ('HT')");
+        queryParams.put("facno", "Y");
+        queryParams.put("protype", " not in ('HT','QT')");
         queryParams.put("cusno", " not in ('HSH00003','HTW00001','YZJ00001')");
     }
 

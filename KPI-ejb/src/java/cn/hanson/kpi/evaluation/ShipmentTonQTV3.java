@@ -9,13 +9,13 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C1749
  */
-public class ShipmentTonQTV3 extends ShipmentTon{
-    
-    public ShipmentTonQTV3(){
+public class ShipmentTonQTV3 extends ShipmentTon {
+
+    public ShipmentTonQTV3() {
         super();
         queryParams.put("facno", "H");
         queryParams.put("protype", "in ('QT')");
-        queryParams.put("cusno", " not in ('HSH00003','HTW00001')");
+        queryParams.put("cusno", " not in ('HSH00003','HTW00001','YZJ00001')");
     }
-    
+
 }

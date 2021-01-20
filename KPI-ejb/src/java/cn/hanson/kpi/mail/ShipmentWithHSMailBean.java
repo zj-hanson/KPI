@@ -6,8 +6,8 @@
 package cn.hanson.kpi.mail;
 
 import cn.hanbell.kpi.entity.Indicator;
-import cn.hanson.kpi.evaluation.ShipmentPredictAmountHY;
-import cn.hanson.kpi.evaluation.ShipmentPredictTonHY;
+import cn.hanson.kpi.evaluation.SalesOrderAmount;
+import cn.hanson.kpi.evaluation.SalesOrderTon;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -51,7 +51,8 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
         sb.append("<div style=\"width:100%\" class=\"title\">");
         sb.append("<div style=\"text-align:center;width:100%\">浙江汉声精密机械有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:").append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:")
+                .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
         sb.append("</div>");
         return sb.toString();
     }
@@ -67,7 +68,7 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
         sb.append("<div class=\"tableTitle\">本月目标: 年度方针设定的月完成目标</div>");
         sb.append("<div class=\"tableTitle\">本月达成: (本月实际/本月目标) ×100% </div>");
         sb.append("<div class=\"tableTitle\">年累计实际: 累计至报表查询日的出货 - 累计至报表查询日的退货</div>");
-        sb.append("<div class=\"tableTitle\">年累计目标: 之前月份的累计目标 + 本月目标/本月天数x当前天数</div>");
+        sb.append("<div class=\"tableTitle\">年累计目标: 之前月份的累计目标 + 本月目标/本月天数 ×当前天数</div>");
         sb.append("<div class=\"tableTitle\">年累计达成: (年累计实际/年累计目标) ×100% </div>");
         sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：报表目标实际累计数据，包含汉扬销售汉声部分</span></div>");
         return sb.toString();
@@ -79,16 +80,19 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-            sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
-            sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append(
+                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+            sb.append(
+                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append(
+                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
             sum2 = BigDecimal.ZERO;
             sumIndicatorList.clear();
 
-            salesOrder = new ShipmentPredictTonHY();
+            salesOrder = new SalesOrderTon();
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("汉声依材质别出货重量", y);
@@ -142,16 +146,19 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
-            sb.append("<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
-            sb.append("<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
-            sb.append("<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append(
+                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+            sb.append(
+                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+            sb.append(
+                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
             sum2 = BigDecimal.ZERO;
             sumIndicatorList.clear();
 
-            salesOrder = new ShipmentPredictAmountHY();
+            salesOrder = new SalesOrderAmount();
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("汉声依材质别出货金额", y);

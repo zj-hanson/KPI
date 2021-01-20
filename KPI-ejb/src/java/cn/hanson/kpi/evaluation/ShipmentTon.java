@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1749 汉声出货重量
+ * @author C0160
  */
 public abstract class ShipmentTon extends Shipment {
 
@@ -25,24 +25,33 @@ public abstract class ShipmentTon extends Shipment {
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类别
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";//客户
-        BigDecimal ton = BigDecimal.ZERO;
+        String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
+        String variety = map.get("variety") != null ? map.get("variety").toString() : "";//分类
+
+        BigDecimal shpton = BigDecimal.ZERO;
+        BigDecimal bakton = BigDecimal.ZERO;
+        BigDecimal armton = BigDecimal.ZERO;
+
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(a.shpqy1),0) from ( ");
         //出货
-        sb.append(" select d.itnbr,d.shpno,d.trseq,s.itcls,s.itdsc,h.shpdate,isnull(d.shpqy1,0),isnull(d.shpqy2,0) as shpqy2,d.unpris,s.rate2, ");
-        sb.append(" cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else d.shpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) as decimal(10,4)) as shpamts,'2' , ");
-        sb.append(" left(convert(char(12),h.shpdate,112),6),h.moveno ");
+        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
+        sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1 end) as decimal(17,2))),0) ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
-        sb.append(" where h.shpno=d.shpno and d.itnbr=s.itnbr ");
-        sb.append(" and h.houtsta not in ('W','N') ");
+        sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
+        sb.append(" and h.houtsta not in ('N','W') ");
+        if (!"".equals(cusno)) {
+            sb.append(" and h.cusno ").append(cusno);
+        }
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
-        if (!"".equals(cusno)) {
-            sb.append(" and h.cusno ").append(cusno);
+        if (!"".equals(variety)) {
+            if (!"OTH".equals(variety)) {
+                sb.append(" and s.itcls in (select itcls from bsc_zlitcls where salitcls = '").append(variety).append("')");
+            } else {
+                sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
+            }
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
@@ -57,19 +66,28 @@ public abstract class ShipmentTon extends Shipment {
             default:
                 sb.append(" and h.shpdate<= '${d}' ");
         }
-        sb.append(" union all ");
-        //销退
-        sb.append(" select d.itnbr,d.bakno,d.trseq,s.itcls,s.itdsc,h.bakdate,-1*isnull(d.bshpqy1,0),-1*isnull(d.bshpqy2,0) as shpqy2,d.unpris,s.rate2, ");
-        sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) as decimal(10,4)) as shpamts,'1' , ");
-        sb.append(" left(convert(char(12),h.bakdate,112),6),h.bakno ");
+        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+                .replace("${facno}", facno);
+
+        sb.setLength(0);
+        //未开票销退
+        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
+        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
-        sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
+        sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
+        sb.append(" and h.baksta not in ('N','W') and h.owarehyn='Y' ");
+        if (!"".equals(cusno)) {
+            sb.append(" and h.cusno ").append(cusno);
+        }
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
-        if (!"".equals(cusno)) {
-            sb.append(" and h.cusno ").append(cusno);
+        if (!"".equals(variety)) {
+            if (!"OTH".equals(variety)) {
+                sb.append(" and s.itcls in (select itcls from bsc_zlitcls where salitcls = '").append(variety).append("')");
+            } else {
+                sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
+            }
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
@@ -84,21 +102,29 @@ public abstract class ShipmentTon extends Shipment {
             default:
                 sb.append(" and h.bakdate<= '${d}' ");
         }
-        sb.append(" union all ");
-        //折让
-        sb.append(" select  d.itnbr,d.bakno,d.trseq,s.itcls,s.itdsc,a.bildat,-1*isnull(d.bshpqy1,0),-1*isnull(d.bshpqy2,0) as shpqy2,d.unpris,s.rate2, ");
-        sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(17,2)) as shpqy1, ");
-        sb.append(" -1*cast((  a.losamts/(1+a.taxrate) ) as decimal(10,4)) as shpamts,'1' , ");
-        sb.append(" left(convert(char(12),a.bildat,112),6),a.recno ");
+        String cdrbdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+                .replace("${facno}", facno);
+
+        sb.setLength(0);
+        //已开票销退
+        sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
+        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
         sb.append(" from armblos a,cdrbdta d,invmas s ");
         sb.append(" where a.facno=d.facno ");
         sb.append(" and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr ");
         sb.append(" and a.facno='${facno}' ");
+        if (!"".equals(cusno)) {
+            sb.append(" and a.ivocus ").append(cusno);
+        }
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
-        if (!"".equals(cusno)) {
-            sb.append(" and a.ivocus ").append(cusno);
+        if (!"".equals(variety)) {
+            if (!"OTH".equals(variety)) {
+                sb.append(" and s.itcls in (select itcls from bsc_zlitcls where salitcls = '").append(variety).append("')");
+            } else {
+                sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
+            }
         }
         sb.append(" and year(a.bildat) = ${y} and month(a.bildat)= ${m} ");
         switch (type) {
@@ -113,17 +139,23 @@ public abstract class ShipmentTon extends Shipment {
             default:
                 sb.append(" and a.bildat<= '${d}' ");
         }
-        sb.append(" )as a ");
-        String cdrdta = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
+        String armblos = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
+        //获取数值
         superEJB.setCompany(facno);
-        Query query = superEJB.getEntityManager().createNativeQuery(cdrdta);
+        Query query1 = superEJB.getEntityManager().createNativeQuery(cdrdta);
+        Query query2 = superEJB.getEntityManager().createNativeQuery(cdrbdta);
+        Query query3 = superEJB.getEntityManager().createNativeQuery(armblos);
         try {
-            Object o1 = query.getSingleResult();
-            ton = (BigDecimal) o1;
-            return ton;
+            Object shp = query1.getSingleResult();
+            Object shpbak = query2.getSingleResult();
+            Object armbak = query3.getSingleResult();
+            shpton = (BigDecimal) shp;
+            bakton = (BigDecimal) shpbak;
+            armton = (BigDecimal) armbak;
+            return shpton.subtract(bakton).subtract(armton);
         } catch (Exception ex) {
-            log4j.error("ShipmentTon getValue()异常", ex);
+            log4j.error("ShipmentTon.getValue()异常", ex);
         }
         return BigDecimal.ZERO;
     }

@@ -25,8 +25,9 @@ public abstract class ShipmentAmount extends Shipment {
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";//客户
+        String protype = map.get("protype") != null ? map.get("protype").toString() : "";//种类
+        String variety = map.get("variety") != null ? map.get("variety").toString() : "";//分类
 
         BigDecimal shpamts = BigDecimal.ZERO;
         BigDecimal bakamts = BigDecimal.ZERO;
@@ -38,11 +39,18 @@ public abstract class ShipmentAmount extends Shipment {
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
         sb.append(" and h.houtsta not in ('N','W') ");
+        if (!"".equals(cusno)) {
+            sb.append(" and h.cusno ").append(cusno);
+        }
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
-        if (!"".equals(cusno)) {
-            sb.append(" and h.cusno ").append(cusno);
+        if (!"".equals(variety)) {
+            if (!"OTH".equals(variety)) {
+                sb.append(" and s.itcls in (select itcls from bsc_zlitcls where salitcls = '").append(variety).append("')");
+            } else {
+                sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
+            }
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
@@ -61,17 +69,24 @@ public abstract class ShipmentAmount extends Shipment {
                 .replace("${facno}", facno);
 
         sb.setLength(0);
-        //销退 不区分未开票退货还是已开票退货
+        //销退不区分未开票退货还是已开票退货
         sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.bakamts*h.ratio ");
         sb.append(" else d.bakamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
         sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
         sb.append(" and h.baksta not in ('N','W') ");
+        if (!"".equals(cusno)) {
+            sb.append(" and h.cusno ").append(cusno);
+        }
         if (!"".equals(protype)) {
             sb.append(" and left(s.spdsc,2) ").append(protype);
         }
-        if (!"".equals(cusno)) {
-            sb.append(" and h.cusno ").append(cusno);
+        if (!"".equals(variety)) {
+            if (!"OTH".equals(variety)) {
+                sb.append(" and s.itcls in (select itcls from bsc_zlitcls where salitcls = '").append(variety).append("')");
+            } else {
+                sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
+            }
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {

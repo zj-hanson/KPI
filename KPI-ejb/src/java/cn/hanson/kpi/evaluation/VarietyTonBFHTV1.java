@@ -9,7 +9,7 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C1749 实际值（吨）
  */
-public class VarietyTonBFHTV1 extends VarietyTon {
+public class VarietyTonBFHTV1 extends ShipmentTon {
 
     public VarietyTonBFHTV1() {
         super();

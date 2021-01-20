@@ -15,6 +15,7 @@ public class ShipmentAmtsHTV3 extends ShipmentAmts {
         super();
         queryParams.put("facno", "H");
         queryParams.put("protype", "in ('HT')");
-        queryParams.put("cusno", " not in ('HSH00003','HTW00001')");
+        queryParams.put("cusno", " not in ('HSH00003','HTW00001','YZJ00001')");
     }
+
 }

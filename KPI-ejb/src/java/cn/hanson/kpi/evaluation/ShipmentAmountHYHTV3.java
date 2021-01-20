@@ -6,14 +6,15 @@
 package cn.hanson.kpi.evaluation;
 
 /**
+ * 汉扬其他客户灰铁金额
  *
- * @author C1749
+ * @author C0160
  */
-public class ShipmentTonHTV3 extends ShipmentTon {
+public class ShipmentAmountHYHTV3 extends ShipmentAmts {
 
-    public ShipmentTonHTV3() {
+    public ShipmentAmountHYHTV3() {
         super();
-        queryParams.put("facno", "H");
+        queryParams.put("facno", "Y");
         queryParams.put("protype", "in ('HT')");
         queryParams.put("cusno", " not in ('HSH00003','HTW00001','YZJ00001')");
     }

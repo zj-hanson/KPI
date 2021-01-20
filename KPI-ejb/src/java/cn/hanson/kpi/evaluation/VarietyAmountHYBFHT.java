@@ -7,14 +7,15 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749 实际值 金额
+ * @author C0160
  */
-public class VarietyAmtsJTV1 extends ShipmentAmount {
+public class VarietyAmountHYBFHT extends ShipmentAmount {
 
-    public VarietyAmtsJTV1() {
+    public VarietyAmountHYBFHT() {
         super();
-        queryParams.put("facno", "H");
-        queryParams.put("variety", "JT");
+        queryParams.put("facno", "Y");
+        queryParams.put("variety", "BFHT");
+        queryParams.put("cusno", " not in ('YZJ00001')");
     }
 
 }
