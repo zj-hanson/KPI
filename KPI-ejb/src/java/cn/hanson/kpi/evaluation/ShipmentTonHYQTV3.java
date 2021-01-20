@@ -6,16 +6,17 @@
 package cn.hanson.kpi.evaluation;
 
 /**
+ * 汉扬其他客户球铁重量
  *
  * @author C0160
  */
-public class ShipmentTonHYHT extends ShipmentTon {
+public class ShipmentTonHYQTV3 extends ShipmentTon {
 
-    public ShipmentTonHYHT() {
+    public ShipmentTonHYQTV3() {
         super();
         queryParams.put("facno", "Y");
-        queryParams.put("protype", "in ('HT')");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
+        queryParams.put("protype", "in ('QT')");
+        queryParams.put("cusno", " not in ('YZJ00001')");
     }
 
 }

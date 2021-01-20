@@ -199,6 +199,12 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><p:outputLabel value="指标分类" for="category" /></p:column>
+                    <p:column colspan="3">
+                        <p:inputText id="category" value="#{productSetManagedBean.currentEntity.category}" title="category"/>
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><p:outputLabel value="关联指标" for="associatedIndicator" /></p:column>
                     <p:column colspan="3">
                         <p:inputText id="associatedIndicator" value="#{productSetManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"

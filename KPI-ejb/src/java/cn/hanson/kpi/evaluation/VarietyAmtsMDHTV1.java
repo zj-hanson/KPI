@@ -9,7 +9,7 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C1749
  */
-public class VarietyAmtsMDHTV1 extends VarietyAmts {
+public class VarietyAmtsMDHTV1 extends ShipmentAmount {
 
     public VarietyAmtsMDHTV1() {
         super();

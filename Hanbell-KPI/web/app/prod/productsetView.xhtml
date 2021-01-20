@@ -52,14 +52,8 @@
                 </p:row>
                 <p:row>
                     <p:column><h:outputText value="指标定义"/></p:column>
-                    <p:column>
+                    <p:column colspan="3">
                         <h:outputText id="descript" value="#{productSetManagedBean.currentEntity.descript}" title="descript" />
-                    </p:column>
-                    <p:column><h:outputText value="冻结日期"/></p:column>
-                    <p:column>
-                        <h:outputText id="freezeDate" value="#{productSetManagedBean.currentEntity.freezeDate}" title="freezeDate" >
-                            <f:convertDateTime pattern="yyyy/MM/dd"/>
-                        </h:outputText>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -154,10 +148,27 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column><p:outputLabel value="关联指标" for="associatedIndicator" /></p:column>
+                    <p:column><h:outputText value="hasOther"/></p:column>
+                    <p:column>
+                        <h:outputText id="hasOther" value="#{productSetManagedBean.currentEntity.hasOther}" title="hasOther"/>
+                    </p:column>
+                    <p:column><h:outputText value="冻结日期"/></p:column>
+                    <p:column>
+                        <h:outputText id="freezeDate" value="#{productSetManagedBean.currentEntity.freezeDate}" title="freezeDate">
+                            <f:convertDateTime pattern="yyyy/MM/dd" />
+                        </h:outputText>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="指标分类" /></p:column>
                     <p:column colspan="3">
-                        <p:inputText id="associatedIndicator" value="#{productSetManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"
-                                     placeholder="多个请用;隔开"/>
+                        <h:outputText id="category" value="#{productSetManagedBean.currentEntity.category}" title="category"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column><h:outputText value="关联指标" /></p:column>
+                    <p:column colspan="3">
+                        <h:outputText id="associatedIndicator" value="#{productSetManagedBean.currentEntity.associatedIndicator}" title="associatedIndicator"/>
                     </p:column>
                 </p:row>
                 <p:row>

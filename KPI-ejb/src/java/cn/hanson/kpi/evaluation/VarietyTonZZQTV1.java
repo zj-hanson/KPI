@@ -7,9 +7,9 @@ package cn.hanson.kpi.evaluation;
 
 /**
  *
- * @author C1749 实际值
+ * @author C1749
  */
-public class VarietyTonZZQTV1 extends VarietyTon {
+public class VarietyTonZZQTV1 extends ShipmentTon {
 
     public VarietyTonZZQTV1() {
         super();

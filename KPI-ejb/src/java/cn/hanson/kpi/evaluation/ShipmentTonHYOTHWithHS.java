@@ -9,7 +9,7 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C0160
  */
-public class ShipmentTonHYOTHWithHS extends ShipmentTonHY {
+public class ShipmentTonHYOTHWithHS extends ShipmentTon {
 
     public ShipmentTonHYOTHWithHS() {
         super();

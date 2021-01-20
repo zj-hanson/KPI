@@ -7,26 +7,27 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-                    <file>${libs.axis.classpath}</file>
+                    <file>${libs.AXIS.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.BIRT.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.POI-3.9.classpath}</file>
+                    <file>${libs.PrimeFaces_5.3.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.PrimeFaces_7.0.classpath}</file>
+                    <file>${libs.PrimeFaces_Ultima.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.PrimeFacesUltima_2.0.classpath}</file>
+                    <file>${libs.POI.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Lightshell-2.0.classpath}</file>
+                    <file>${libs.Lightshell_2.0.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -40,7 +41,7 @@
                     <file>${reference.KPI-ejb.dist}</file>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Log4j2.classpath}</file>
+                    <file>${libs.Log4j_2.10.classpath}</file>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
