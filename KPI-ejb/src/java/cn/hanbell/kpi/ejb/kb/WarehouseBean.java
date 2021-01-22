@@ -84,11 +84,11 @@ public class WarehouseBean implements Serializable {
         StringBuilder sb = new StringBuilder();
         //总储位、禁用储位、空储位、使用中储位、使用率、空储位低、空储位高、
         sb.append(" select linecode,count(linecode) as zong,SUM(jing) as jing, SUM(kong) as kong,SUM(yong) as yong,SUM(di) as di,SUM(gao) as gao  from ( ");
-        sb.append(" select (CASE when row_x in (1,2) then '1' when row_x in (3,4) then '2' when row_x in (5,6) then '3' when row_x in (7,8) then '4' end) as linecode, ");
+        sb.append(" select (CASE when row_x in (1,2) then '1' when row_x in (3,4) then '2' when row_x in (5,6) then '3' when row_x in (7,8) then '4' when row_x in (9,10) then '5' end) as linecode, ");
         sb.append(" (CASE WHEN (loc_sts ='X')  THEN 1 ELSE 0 END ) AS jing,(CASE WHEN (loc_sts not in ('X','N'))  THEN 1 ELSE 0 END ) AS yong,(CASE WHEN (loc_sts ='N')  THEN 1 ELSE 0 END ) AS kong, ");
         sb.append(" (CASE WHEN (loc_sts ='N') AND (right(asrs_tb_loc_mst.loc,2)) BETWEEN '01' and '06' THEN 1 ELSE 0 END ) AS di, ");
         sb.append(" (CASE WHEN (loc_sts ='N') AND (right(asrs_tb_loc_mst.loc,2)) BETWEEN '07' and '17' THEN 1 ELSE 0 END ) as gao ");
-        sb.append(" from asrs_tb_loc_mst where loc<'090101' ) as a GROUP BY linecode ");
+        sb.append(" from asrs_tb_loc_mst where loc<'107051' ) as a GROUP BY linecode ");
         String sql = sb.toString();
         erpEJB.setCompany("C");
         Query query = erpEJB.getEntityManager().createNativeQuery(sql);

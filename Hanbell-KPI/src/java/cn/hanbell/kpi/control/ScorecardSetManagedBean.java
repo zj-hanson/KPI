@@ -12,12 +12,14 @@ import cn.hanbell.kpi.ejb.RoleDetailBean;
 import cn.hanbell.kpi.ejb.RoleGrantModuleBean;
 import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardDetailBean;
+import cn.hanbell.kpi.ejb.tms.ProjectBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Role;
 import cn.hanbell.kpi.entity.RoleDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardDetail;
+import cn.hanbell.kpi.entity.tms.Project;
 import cn.hanbell.kpi.lazy.ScorecardModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
 import com.lightshell.comm.BaseLib;
@@ -67,6 +69,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     private RoleDetailBean systemRoleDetailBean;
     @EJB
     private RoleGrantModuleBean roleGrantModuleBean;
+
+    @EJB
+    private ProjectBean projectBean;
 
     protected Calendar c;
     private boolean freezed;
@@ -166,6 +171,10 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     public void calcItemScore() {
         if (currentDetail != null) {
+            //如果考核指标有PLM代号的就用PLM代过来的值计算
+            if (currentDetail.getProjectSeq() != null && !currentDetail.getType().equals("N")) {
+                updateScoreByPLMProject();
+            }
             if (!currentDetail.getType().equals("N")) {
                 showWarnMsg("Warn", "数值型才能更新");
                 return;
@@ -318,6 +327,109 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             showErrorMsg("Error", "更新异常");
         }
         super.doConfirmDetail();
+    }
+
+    //关联PLM的更新
+    public void updateScoreByPLMProject() {
+        try {
+            String target, actual, projectSeq;
+            BigDecimal value;
+            String col = scorecardBean.getColumn("q", userManagedBean.getQ());
+            //找到PLM的数据
+            projectSeq = projectBean.findByProjectSeq(currentDetail.getProjectSeq());
+            if (projectSeq == null || "".equals(projectSeq)) {
+                showErrorMsg("Error", "请确认PLM是否有进度");
+                return;
+            }
+            //选择季度更新
+            switch (col) {
+                case "q1":
+                    currentDetail.setAq1("#" + projectSeq + "%#" + currentDetail.getAq1());
+                    target = currentDetail.getTq1();
+                    actual = currentDetail.getAq1();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPq1(value);
+                    currentDetail.getDeptScore().setSq1(value);
+                    currentDetail.getGeneralScore().setSq1(value);
+                    break;
+                case "q2":
+                    currentDetail.setAq2("#" + projectSeq + "%#" + currentDetail.getAq2());
+                    //Q2
+                    target = currentDetail.getTq2();
+                    actual = currentDetail.getAq2();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPq2(value);
+                    currentDetail.getDeptScore().setSq2(value);
+                    currentDetail.getGeneralScore().setSq2(value);
+                    //上半年
+                    currentDetail.setAh1("#" + projectSeq + "%#" + currentDetail.getAh1());
+                    target = currentDetail.getTh1();
+                    actual = currentDetail.getAh1();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPh1(value);
+                    currentDetail.getDeptScore().setSh1(value);
+                    currentDetail.getGeneralScore().setSh1(value);
+                    break;
+                case "q3":
+                    currentDetail.setAq3("#" + projectSeq + "%#" + currentDetail.getAq3());
+                    target = currentDetail.getTq3();
+                    actual = currentDetail.getAq3();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPq3(value);
+                    currentDetail.getDeptScore().setSq3(value);
+                    currentDetail.getGeneralScore().setSq3(value);
+                    break;
+                case "q4":
+                    //Q4
+                    currentDetail.setAq4("#" + projectSeq + "%#" + currentDetail.getAq4());
+                    target = currentDetail.getTq4();
+                    actual = currentDetail.getAq4();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPq4(value);
+                    currentDetail.getDeptScore().setSq4(value);
+                    currentDetail.getGeneralScore().setSq4(value);
+                    //全年
+                    currentDetail.setAfy("#" + projectSeq + "%#" + currentDetail.getAfy());
+                    currentDetail.setAfy("#" + projectSeq + "%#" + currentDetail.getAfy());
+                    target = currentDetail.getTfy();
+                    actual = currentDetail.getAfy();
+                    value = calculateScore(target, actual);
+                    currentDetail.setPfy(value);
+                    currentDetail.getDeptScore().setSfy(value);
+                    currentDetail.getGeneralScore().setSfy(value);
+                    break;
+            }
+        } catch (NumberFormatException ex) {
+            log4j.warn("updateScoreByPLMProject()方法异常-" + ex.toString());
+        }
+
+    }
+
+    /**
+     * @desc 截取字符的数字计算得分、达成率
+     * @param target
+     * @param acutal
+     * @return value
+     */
+    public BigDecimal calculateScore(String target, String acutal) {
+        BigDecimal value = BigDecimal.ZERO;
+        String str1, str2;
+        //先判断有值
+        if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
+            str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
+            str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
+            //判断截取出来的数据是否为数字
+            if (str1.matches("-?[0-9]+.？[0-9]*") && str2.matches("-?[0-9]+.？[0-9]*")) {
+                Double t = Double.valueOf(str1);
+                Double a = Double.valueOf(str2);
+                //分母不为零
+                if (t > 0.00001) {
+                    //达成率、得分
+                    value = BigDecimal.valueOf(a / t * 100);
+                }
+            }
+        }
+        return value;
     }
 
     @Override
@@ -488,6 +600,24 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             SystemUser user = (SystemUser) o;
             currentDetail.setUserid(user.getUserid());
             currentDetail.setUsername(user.getUsername());
+        }
+    }
+
+    public void handleDialogReturnDeptWhenProjectNew(SelectEvent event) {
+        if (event.getObject() != null && currentDetail != null) {
+            Object o = event.getObject();
+            Project p = (Project) o;
+            currentDetail.setProjectSeq(String.valueOf(p.getProjectSeq()));
+            currentDetail.setProjectName(p.getProjectName());
+        }
+    }
+
+    public void handleDialogReturnDeptWhenProjectEdit(SelectEvent event) {
+        if (event.getObject() != null && currentDetail != null) {
+            Object o = event.getObject();
+            Project p = (Project) o;
+            currentDetail.setProjectSeq(String.valueOf(p.getProjectSeq()));
+            currentDetail.setProjectName(p.getProjectName());
         }
     }
 
@@ -742,14 +872,14 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         // 生成一个表格
         HSSFSheet sheet1 = workbook.createSheet("不达标项考核明细");
         // 设置表格宽度
-        int[] wt = {20,5,10,10,20, 5, 5, 5, 5, 5, 5, 20, 20, 20, 20, 20, 20};
+        int[] wt = {20, 5, 10, 10, 20, 5, 5, 5, 5, 5, 5, 20, 20, 20, 20, 20, 20};
         for (int i = 0; i < wt.length; i++) {
             sheet1.setColumnWidth(i, wt[i] * 256);
         }
         //创建标题行
         Row row;
         //Sheet1
-        String[] title = {"考核表","季度","部门代号","部门简称","考核内容", "Q1达成率", "Q2达成率", "上半年达成率", "Q3达成率", "Q4达成率", "全年达成率", "Q1阶段说明", "Q2阶段说明", "上半年阶段说明", "Q3阶段说明", "Q4阶段说明", "全年阶段说明"};
+        String[] title = {"考核表", "季度", "部门代号", "部门简称", "考核内容", "Q1达成率", "Q2达成率", "上半年达成率", "Q3达成率", "Q4达成率", "全年达成率", "Q1阶段说明", "Q2阶段说明", "上半年阶段说明", "Q3阶段说明", "Q4阶段说明", "全年阶段说明"};
         row = sheet1.createRow(0);
         row.setHeight((short) 600);
         for (int i = 0; i < title.length; i++) {

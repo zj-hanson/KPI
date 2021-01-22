@@ -238,6 +238,21 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column><p:outputLabel value="PLM编号" for="projectSeq" /></p:column>
+                            <p:column>
+                                <p:inputText id="projectSeq" value="#{scorecardSetManagedBean.currentDetail.projectSeq}" title="projectSeq"  styleClass="inputWithButton" readonly="true"/>
+                                <p:commandButton id="btnProjectSelect" actionListener="#{scorecardSetManagedBean.openDialog('projectSelect')}" icon="ui-icon-extlink"
+                                                 process="@this" >
+                                    <p:ajax event="dialogReturn" listener="#{scorecardSetManagedBean.handleDialogReturnDeptWhenProjectNew}"
+                                            update="projectSeq,projectName" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column><p:outputLabel value="PLM名称" for="projectName" /></p:column>
+                            <p:column>
+                                <p:inputText id="projectName" value="#{scorecardSetManagedBean.currentDetail.projectName}" title="projectName" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column><p:outputLabel value="考核对象" for="indicatorDeptno" /></p:column>
                             <p:column>
                                 <p:inputText id="indicatorDeptno" value="#{scorecardSetManagedBean.currentDetail.deptno}" title="indicatorDeptno"
