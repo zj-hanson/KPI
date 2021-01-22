@@ -8,6 +8,8 @@ package cn.hanbell.kpi.mail;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.ejb.erp.BscGroupHSSaleOrderBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupHSShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupHYSaleOrderBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupHYShipmentBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHSaleOrderBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHServiceBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHShipmentBean;
@@ -38,6 +40,11 @@ public class BscGroupAllMailBean extends MailNotification {
     private BscGroupHSShipmentBean bscGroupHSShipmentBean;
     @EJB
     private BscGroupHSSaleOrderBean bscGroupHSSaleOrderBean;
+    @EJB
+    private BscGroupHYShipmentBean bscGroupHYShipmentBean;
+    @EJB
+    private BscGroupHYSaleOrderBean bscGroupHYSaleOrderBean;
+    
     @EJB
     private GrpsdailytmpBean grpsdailytmpBean;
 
@@ -79,6 +86,11 @@ public class BscGroupAllMailBean extends MailNotification {
             //汉声的订单
             bscGroupHSSaleOrderBean.updataSaleOrderActualValue(y, m, d);
             log4j.info("End Execute Job updataSaleOrderActualValue");
+            //汉扬的出货
+            bscGroupHYShipmentBean.updataShpimentActualValue(y, m, d);
+            log4j.info("End Execute Job updataShpimentActualValue");
+            //汉扬的订单
+            bscGroupHYSaleOrderBean.updataSaleOrderActualValue(y, m, d);
             //再更新到台湾ERP
             StringBuilder sb = new StringBuilder();
             int num;

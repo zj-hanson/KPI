@@ -71,7 +71,7 @@ public class ScorecardDetail extends SuperDetailEntity {
     @JoinColumn(name = "summaryScore2Id", referencedColumnName = "id")
     @OneToOne
     private ScorecardExplanation summaryScore2;
-    
+
     @Size(max = 45)
     @Column(name = "content")
     private String content;
@@ -274,6 +274,12 @@ public class ScorecardDetail extends SuperDetailEntity {
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
+    @Size(max = 45)
+    @Column(name = "projectSeq")
+    private String projectSeq;
+    @Size(max = 45)
+    @Column(name = "projectName")
+    private String projectName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2)
@@ -1115,6 +1121,22 @@ public class ScorecardDetail extends SuperDetailEntity {
 
     public void setCfmdate(Date cfmdate) {
         this.cfmdate = cfmdate;
+    }
+
+    public String getProjectSeq() {
+        return projectSeq;
+    }
+
+    public void setProjectSeq(String projectSeq) {
+        this.projectSeq = projectSeq;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     @Override

@@ -8,6 +8,7 @@ package cn.hanbell.kpi.mail;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.ejb.erp.BscGroupHSSaleOrderBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupHSShipmentBean;
+import cn.hanbell.kpi.ejb.erp.BscGroupHYShipmentBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHSaleOrderBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHServiceBean;
 import cn.hanbell.kpi.ejb.erp.BscGroupSHShipmentBean;
@@ -34,6 +35,8 @@ public class BscGroupShipmentMailBean extends MailNotification {
     private BscGroupSHServiceBean bscGroupSHServiceBean;
     @EJB
     private BscGroupHSShipmentBean bscGroupHSShipmentBean;
+    @EJB
+    private BscGroupHYShipmentBean bscGroupHYShipmentBean;
     @EJB
     private GrpsdailytmpBean grpsdailytmpBean;
 
@@ -68,6 +71,9 @@ public class BscGroupShipmentMailBean extends MailNotification {
             log4j.info("End Execute Job updataServerActualValue");
             //汉声的出货
             bscGroupHSShipmentBean.updataShpimentActualValue(y, m, d);
+            log4j.info("End Execute Job updataShpimentActualValue");
+            //汉扬的出货
+            bscGroupHYShipmentBean.updataShpimentActualValue(y, m, d);
             log4j.info("End Execute Job updataShpimentActualValue");
             //再更新到台湾ERP
             StringBuilder sb = new StringBuilder();

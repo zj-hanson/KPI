@@ -550,6 +550,11 @@
             <to-view-id>/app/perf/scorecardset.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>scorecardReference</from-outcome>
+            <to-view-id>/app/perf/scorecardReference.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <!--模态开窗-->
     <navigation-rule>
@@ -588,6 +593,11 @@
         <navigation-case>
             <from-outcome>scorecardSelect</from-outcome>
             <to-view-id>/app/df/scorecardSelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>projectSelect</from-outcome>
+            <to-view-id>/app/df/projectSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
