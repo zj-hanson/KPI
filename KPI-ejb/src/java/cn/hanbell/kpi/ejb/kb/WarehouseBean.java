@@ -71,7 +71,7 @@ public class WarehouseBean implements Serializable {
     }
 
     private String[] getArr(int i, List<String[]> list) {
-        String[] arr = new String[4];
+        String[] arr = new String[5];
         for (int j = 0; j < list.size(); j++) {
             list.get(j);
             arr[j] = list.get(j)[i];
