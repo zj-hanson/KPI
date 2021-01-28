@@ -60,32 +60,32 @@ public class AAEmployeeMailBean extends EmployeeMail {
             sb.append("</tr>");
 
             this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组华东个人销售台数", y);
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销一课个人销售台数", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "华东"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, true, "营销一课"));
             } else {
-                sb.append("<tr style=\"text-align:center;\" ><td  colspan=\"9\">A机组华东个人销售台数设定错误</td></tr>");
+                sb.append("<tr style=\"text-align:center;\" ><td  colspan=\"9\">A机组营销一课个人销售台数设定错误</td></tr>");
             }
 
             this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组广州个人销售台数", y);
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销二课个人销售台数", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "广州"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, true, "营销二课"));
             } else {
-                sb.append("<tr><td style=\"text-align:center;\"  colspan=\"9\">A机组广州个人销售台数设定错误</td></tr>");
+                sb.append("<tr><td style=\"text-align:center;\"  colspan=\"9\">A机组营销二课个人销售台数设定错误</td></tr>");
             }
 
             this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组济南个人销售台数", y);
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销三课个人销售台数", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "济南"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, false, "营销三课"));
             } else {
-                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"9\">A机组济南个人销售台数设定错误</td></tr>");
+                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"9\">A机组营销三课个人销售台数设定错误</td></tr>");
             }
-            
+
 //            this.indicators.clear();
 //            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销高专个人销售台数", y);
 //            indicatorBean.getEntityManager().clear();
@@ -94,7 +94,6 @@ public class AAEmployeeMailBean extends EmployeeMail {
 //            } else {
 //                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"9\">A机组营销高专个人销售台数设定错误</td></tr>");
 //            }
-
             if (sumList != null) {
                 total = getSumValue(sumList);
                 total.setUsername("");
@@ -128,32 +127,32 @@ public class AAEmployeeMailBean extends EmployeeMail {
             sb.append("<th colspan=\"1\" width=\"10%\">出货金额</th><th colspan=\"1\" width=\"10%\">出货金额</th><th colspan=\"1\" width=\"10%\">目标金额</th><th colspan=\"1\" width=\"10%\" >目标金额达成率</th>");
             sb.append("</tr>");
             this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组华东个人销售金额", y);
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销一课个人销售金额", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "华东"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, true, "营销一课"));
             } else {
-                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组华东个人销售金额设定错误</td></tr>");
+                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组营销一课个人销售金额设定错误</td></tr>");
             }
 
             this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组广州个人销售金额", y);
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销二课个人销售金额", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "广州"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, true, "营销二课"));
             } else {
-                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组广州个人销售金额设定错误</td></tr>");
-            }
-
-            this.indicators.clear();
-            this.indicators = indicatorBean.findByCategoryAndYear("A机组济南个人销售金额", y);
-            indicatorBean.getEntityManager().clear();
-            if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, true, "济南"));
-            } else {
-                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组济南个人销售金额设定错误</td></tr>");
+                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组营销二课个人销售金额设定错误</td></tr>");
             }
             
+            this.indicators.clear();
+            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销三课个人销售金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && !indicators.isEmpty()) {
+                sb.append(getHtmlTable(this.indicators, y, m, d, false, "营销三课"));
+            } else {
+                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组营销三课个人销售台数设定错误</td></tr>");
+            }
+
 //            this.indicators.clear();
 //            this.indicators = indicatorBean.findByCategoryAndYear("A机组营销高专个人销售金额", y);
 //            indicatorBean.getEntityManager().clear();
@@ -162,7 +161,6 @@ public class AAEmployeeMailBean extends EmployeeMail {
 //            } else {
 //                sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"10\">A机组营销高专个人销售金额设定错误</td></tr>");
 //            }
-
             if (sumList != null) {
                 total = getSumValue(sumList);
                 total.setUsername("");
