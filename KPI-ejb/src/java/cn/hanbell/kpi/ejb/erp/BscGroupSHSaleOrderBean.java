@@ -151,23 +151,6 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
-        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
-                }
-            }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("n_code_DC", " ='SDS' ");
         tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -289,23 +272,13 @@ public class BscGroupSHSaleOrderBean implements Serializable {
                 protypeno = "A";
                 shptype = "2";
             } else if (n_code_DA.contains("AH")) {
-                if (n_code_DC.contains("SDS")) {
-                    protype = "日立A机组";
-                    protypeno = "A";
-                    shptype = "3";
-                } else {
-                    protype = "A机体";
-                    protypeno = "A";
-                    shptype = "1";
-                }
+                protype = "A机体";
+                protypeno = "A";
+                shptype = "1";
             } else if (n_code_DA.contains("P")) {
                 protype = "真空泵";
                 protypeno = "P";
                 shptype = "2";
-            } else if (n_code_DA.contains("S")) {
-                protype = "无油机组";
-                protypeno = "S";
-                shptype = "1";
             } else if (n_code_DA.contains("OH")) {
                 protype = "低环温热泵";
                 protypeno = "OH";
@@ -407,52 +380,6 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         }
         return result;
 
-    }
-
-    private String getDA(String depno) {
-        String aa = "'ARM270'";
-        if (depno.contains("1B")) {
-            aa = "'R'";
-        }
-        if (depno.contains("1C")) {
-            aa = "'R'";
-        }
-        if (depno.contains("1D")) {
-            aa = "'R'";
-        }
-        if (depno.contains("1E")) {
-            aa = "'R'";
-        }
-        if (depno.contains("1V")) {
-            aa = "'R'";
-        }
-        if (depno.contains("1Q")) {
-            aa = "'AA'";
-        }
-        if (depno.contains("1G")) {
-            aa = "'AH'";
-        }
-        if (depno.contains("1H")) {
-            aa = "'P'";
-        }
-        if (depno.contains("5A")) {
-            aa = "'RT'";
-        }
-        if (depno.contains("5B") || depno.contains("8A")) {
-            aa = "'OH'";
-        }
-        if (depno.contains("5C")) {
-            aa = "'RT'";
-        }
-        return aa;
-    }
-
-    private String getDC(String depno) {
-        String aa = "'ARM270'";
-        if (depno.contains("1G1")) {
-            aa = "'AJ'";
-        }
-        return aa;
     }
 
 }

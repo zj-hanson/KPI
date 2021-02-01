@@ -122,7 +122,6 @@ public class BscGroupSHServiceBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -139,7 +138,6 @@ public class BscGroupSHServiceBean implements Serializable {
         queryParams.put("facno", "C4");//目前A机组有重庆的数据，暂定这一个分公司。后续有其他分公司再添加。
         queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -156,7 +154,6 @@ public class BscGroupSHServiceBean implements Serializable {
         queryParams.put("facno", "G");
         queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -173,7 +170,6 @@ public class BscGroupSHServiceBean implements Serializable {
         queryParams.put("facno", "N");
         queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -190,7 +186,6 @@ public class BscGroupSHServiceBean implements Serializable {
         queryParams.put("facno", "J");
         queryParams.put("ogdkid", " IN('RL01','RL03') ");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
         tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
