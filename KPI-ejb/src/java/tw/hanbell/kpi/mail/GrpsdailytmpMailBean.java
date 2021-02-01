@@ -42,8 +42,12 @@ public class GrpsdailytmpMailBean extends MailNotification {
         try {
             num = grpsdailytmpBean.updateActualList(y, m, d);
             if (num > 0) {
+                
                 sb.append("<div style=\"text-align:center;width:100%\">资料上传成功！</div>");
                 sb.append("<div style=\"text-align:center;width:100%\">一共").append(num).append("笔资料！</div>");
+                if (!grpsdailytmpBean.isFlag()) {
+                    sb.append("<div style=\"text-align:center;width:100%\">产品别有空值！！！</div>");
+                }
             } else if (num == 0) {
                 sb.append("<div style=\"text-align:center;width:100%\">本日无新数据！</div>");
             } else {

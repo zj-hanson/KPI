@@ -46,14 +46,14 @@ public class BscGroupHYShipmentBean {
 
         queryParams.clear();
         queryParams.put("facno", "Y");
-        queryParams.put("spdsc", " in ('QT')");
+        queryParams.put("spdsc", "='QT'");
         queryParams.put("cusno", " not in ('YZJ00001') ");
         List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
 
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "Y");
-        queryParams.put("spdsc", " in ('HT')");
+        queryParams.put("spdsc", "='HT'");
         queryParams.put("cusno", " not in ('YZJ00001') ");
         tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {

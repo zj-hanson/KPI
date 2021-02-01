@@ -34,6 +34,8 @@ public class GrpsdailytmpBean implements Serializable {
     private BscGroupSHShipmentBean groupShipmentBean;
 
     private List<Grpsdailytmp> grpsdailytmpList;
+    
+    private boolean flag= true;
 
     public GrpsdailytmpBean() {
 
@@ -96,6 +98,7 @@ public class GrpsdailytmpBean implements Serializable {
                 }
             }
             if (grpsdailytmpList != null) {
+                flag = checkTheValueIsNull(grpsdailytmpList);
                 erpEJB.setCompany("A");
                 erpEJB.getEntityManager().createNativeQuery("delete from N_RPT_grpsdailytmp where year(trdate) = " + y + " and month(trdate) =" + m).executeUpdate();
                 for (Grpsdailytmp e : grpsdailytmpList) {
@@ -112,5 +115,24 @@ public class GrpsdailytmpBean implements Serializable {
         }
         return count;
     }
+    
+    public boolean checkTheValueIsNull(List<Grpsdailytmp> data){
+        boolean flag = true;
+        for (Grpsdailytmp g : data) {
+            if ("".equals(g.getGrpsdailytmpPK().getSeries()) && g.getGrpsdailytmpPK().getSeries()!=null) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
 
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+    
 }
