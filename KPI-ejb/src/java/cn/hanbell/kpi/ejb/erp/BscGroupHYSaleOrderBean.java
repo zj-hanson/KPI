@@ -46,14 +46,14 @@ public class BscGroupHYSaleOrderBean implements Serializable {
 
         queryParams.clear();
         queryParams.put("facno", "Y");
-        queryParams.put("spdsc", " in ('HT')");
+        queryParams.put("spdsc", "='HT'");
         queryParams.put("cusno", " not in ('YZJ00001') ");
         List<BscGroupShipment> resultData = getSalesOrder(y, m, d, y, getQueryParams());
 
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "Y");
-        queryParams.put("spdsc", " ='QT' ");
+        queryParams.put("spdsc", "='QT'");
         queryParams.put("cusno", " not in ('YZJ00001') ");
         tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
