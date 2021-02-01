@@ -203,25 +203,6 @@ public class BscGroupSHShipmentBean implements Serializable {
         queryParams.put("facno", "C");
         queryParams.put("depno", " IN('1G100','1G110') ");
         queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
-        queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
-                }
-            }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("depno", " IN('1Q000') ");
-        queryParams.put("n_code_DA", " ='AA' ");
-        queryParams.put("n_code_DC", " ='SDS' ");
         queryParams.put("ogdkid", " IN ('RL01','RL03') ");
         tempData = getShipmentAmount(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
@@ -499,28 +480,18 @@ public class BscGroupSHShipmentBean implements Serializable {
                 protype = "R机体";
                 protypeno = "R";
                 shptype = "1";
+            } else if (n_code_DA.contains("AH")) {
+                protype = "A机体";
+                protypeno = "A";
+                shptype = "1";
             } else if (n_code_DA.contains("AA")) {
                 protype = "A机组";
                 protypeno = "A";
                 shptype = "2";
-            } else if (n_code_DA.contains("AA")) {
-                if (n_code_DC.contains("SDS")) {
-                    protype = "日立A机组";
-                    protypeno = "A";
-                    shptype = "3";
-                } else {
-                    protype = "A机体";
-                    protypeno = "A";
-                    shptype = "1";
-                }
             } else if (n_code_DA.contains("P")) {
                 protype = "真空泵";
                 protypeno = "P";
                 shptype = "2";
-            } else if (n_code_DA.contains("S")) {
-                protype = "无油机组";
-                protypeno = "S";
-                shptype = "1";
             } else if (n_code_DA.contains("OH")) {
                 protype = "低环温热泵";
                 protypeno = "OH";
@@ -665,9 +636,6 @@ public class BscGroupSHShipmentBean implements Serializable {
         }
         if (depno.contains("1H")) {
             aa = "'P'";
-        }
-        if (depno.contains("1U")) {
-            aa = "'S'";
         }
         if (depno.contains("5A")) {
             aa = "'RT'";
