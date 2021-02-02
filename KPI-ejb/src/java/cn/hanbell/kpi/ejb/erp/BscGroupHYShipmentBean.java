@@ -115,7 +115,8 @@ public class BscGroupHYShipmentBean {
         if (!"".equals(cusno)) {
             sb.append(" AND h.cusno ").append(cusno);
         }
-        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
+        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}'  ");
+        sb.append(" GROUP BY h.shpdate ");
         sb.append(" UNION ALL ");
         //销退
         sb.append(" SELECT  h.bakdate as soday, ");
@@ -130,6 +131,7 @@ public class BscGroupHYShipmentBean {
             sb.append(" AND h.cusno ").append(cusno);
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
+        sb.append(" GROUP BY h.bakdate ");
         sb.append(" ) as a GROUP BY a.soday ");
         String cdrqty = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
