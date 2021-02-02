@@ -26,7 +26,6 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
     protected List<Indicator> sumList;
     protected BigDecimal sum1 = BigDecimal.ZERO;
     protected BigDecimal sum2 = BigDecimal.ZERO;
-    protected List<Indicator> indicatorList;
 
     public SHBSalesOrderMailBean() {
     }
@@ -34,7 +33,6 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
     @Override
     public void init() {
         sumList = new ArrayList<>();
-        indicatorList = new ArrayList<>();
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
     }
@@ -76,14 +74,19 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
-            indicatorList.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体订单台数", y);
-            indicatorList = indicatorBean.findByCategoryAndYear("A机体每日订单台数-涡旋", y);
-            indicators.addAll(indicatorList);
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机体订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("A机体每日订单台数-涡旋", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("S涡旋订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -94,13 +97,13 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             total.setName("A机组订单台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("SDS无油订单台数", y);
-//            indicatorBean.getEntityManager().clear();
-//            getHtmlTable(indicators, y, m, d, true);
-//            total = getSumIndicator();
-//            total.setName("SDS无油订单台数");
-//            sb.append(getHtmlTableRow(total, y, m, d));
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("SDS无油订单台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("SDS无油订单台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P订单台数", y);
@@ -171,10 +174,7 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sum1 = sum1.add(getData().get("sum1"));
 
             indicators.clear();
-            indicatorList.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体订单金额", y);
-            indicatorList = indicatorBean.findByCategoryAndYear("A机体每日订单金额-涡旋", y);
-            indicators.addAll(indicatorList);
             indicatorBean.getEntityManager().clear();
             indicators.stream().forEach((i) -> {
                 indicatorBean.divideByRate(i, 2);
@@ -182,6 +182,19 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机体订单金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("A机体每日订单金额-涡旋", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("S涡旋订单金额");
             sb.append(getHtmlTableRow(total, y, m, d));
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
@@ -199,18 +212,18 @@ public class SHBSalesOrderMailBean extends SalesOrderMail {
             sumList.add(total);
             sum1 = sum1.add(getData().get("sum1"));
 
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("SDS无油订单金额", y);
-//            indicatorBean.getEntityManager().clear();
-//            indicators.stream().forEach((i) -> {
-//                indicatorBean.divideByRate(i, 2);
-//            });
-//            getHtmlTable(indicators, y, m, d, true);
-//            total = getSumIndicator();
-//            total.setName("SDS无油订单金额");
-//            sb.append(getHtmlTableRow(total, y, m, d));
-//            sumList.add(total);
-//            sum1 = sum1.add(getData().get("sum1"));
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("SDS无油订单金额", y);
+            indicatorBean.getEntityManager().clear();
+            indicators.stream().forEach((i) -> {
+                indicatorBean.divideByRate(i, 2);
+            });
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("SDS无油订单金额");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            sumList.add(total);
+            sum1 = sum1.add(getData().get("sum1"));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P订单金额", y);

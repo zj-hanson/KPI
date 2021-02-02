@@ -26,7 +26,6 @@ public class SHBShipmentMailBean extends ShipmentMail {
     protected List<Indicator> sumList;
     protected BigDecimal sum1 = BigDecimal.ZERO;
     protected BigDecimal sum2 = BigDecimal.ZERO;
-    protected List<Indicator> indicatorList;
 
     public SHBShipmentMailBean() {
 
@@ -35,7 +34,6 @@ public class SHBShipmentMailBean extends ShipmentMail {
     @Override
     public void init() {
         sumList = new ArrayList<>();
-        indicatorList = new ArrayList<>();
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
     }
@@ -76,16 +74,20 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("R制冷出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
-            //涡旋并到A机体里
             indicators.clear();
-            indicatorList.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数", y);
-            indicatorList = indicatorBean.findByCategoryAndYear("A机体每日出货台数-涡旋", y);
-            indicators.addAll(indicatorList);
             indicatorBean.getEntityManager().clear();
             getHtmlTable(indicators, y, m, d, true);
             total = getSumIndicator();
             total.setName("A机体出货台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数-涡旋", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("S涡旋出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
@@ -96,14 +98,13 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total.setName("A机组出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
 
-            //SDS并到A机组里
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货台数", y);
-//            indicatorBean.getEntityManager().clear();
-//            getHtmlTable(indicators, y, m, d, true);
-//            total = getSumIndicator();
-//            total.setName("SDS无油出货台数");
-//            sb.append(getHtmlTableRow(total, y, m, d));
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货台数", y);
+            indicatorBean.getEntityManager().clear();
+            getHtmlTable(indicators, y, m, d, true);
+            total = getSumIndicator();
+            total.setName("SDS无油出货台数");
+            sb.append(getHtmlTableRow(total, y, m, d));
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P每日出货台数", y);
@@ -179,10 +180,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
 
             //涡旋并到机体
             indicators.clear();
-            indicatorList.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
-            indicatorList = indicatorBean.findByCategoryAndYear("A机体每日出货金额-涡旋", y);
-            indicators.addAll(indicatorList);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && indicators.size() > 0) {
                 indicators.stream().forEach((i) -> {
@@ -196,6 +194,23 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
+            
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额-涡旋", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("S涡旋出货金额");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+            
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组每日出货金额", y);
@@ -213,22 +228,21 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum2 = sum2.add(getData().get("sum2"));
             }
 
-            //SDS并到A机组
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
-//            indicatorBean.getEntityManager().clear();
-//            if (indicators != null && indicators.size() > 0) {
-//                indicators.stream().forEach((i) -> {
-//                    indicatorBean.divideByRate(i, 2);
-//                });
-//                getHtmlTable(indicators, y, m, d, true);
-//                total = getSumIndicator();
-//                total.setName("SDS无油出货金额");
-//                sb.append(getHtmlTableRow(total, y, m, d));
-//                sumList.add(total);
-//                sum1 = sum1.add(getData().get("sum1"));
-//                sum2 = sum2.add(getData().get("sum2"));
-//            }
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("SDS无油每日出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("SDS无油出货金额");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P每日出货金额", y);
@@ -296,22 +310,21 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum2 = sum2.add(getData().get("sum2"));
             }
 
-            //SDS并到A机组
-//            indicators.clear();
-//            indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
-//            indicatorBean.getEntityManager().clear();
-//            if (indicators != null && indicators.size() > 0) {
-//                indicators.stream().forEach((i) -> {
-//                    indicatorBean.divideByRate(i, 2);
-//                });
-//                getHtmlTable(indicators, y, m, d, true);
-//                total = getSumIndicator();
-//                total.setName("SDS无油收费服务");
-//                sb.append(getHtmlTableRow(total, y, m, d));
-//                sumList.add(total);
-//                sum1 = sum1.add(getData().get("sum1"));
-//                sum2 = sum2.add(getData().get("sum2"));
-//            }
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("SDS无油收费服务金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("SDS无油收费服务");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("P收费服务金额", y);
