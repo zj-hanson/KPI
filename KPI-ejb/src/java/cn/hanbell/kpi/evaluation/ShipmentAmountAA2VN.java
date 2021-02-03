@@ -22,7 +22,7 @@ public class ShipmentAmountAA2VN extends ShipmentAmount {
         queryParams.put("ogdkid", "RL03");
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_CD", " ='WXVN' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        queryParams.put("n_code_DC", " <> 'SDS' ");
         queryParams.put("n_code_DD", "  in ('00','02') ");
     }
 

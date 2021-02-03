@@ -21,7 +21,7 @@ public class ShipmentAmountAA9 extends ShipmentAmount9 {
         queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AA' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        queryParams.put("n_code_DC", " <> 'SDS' ");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
     }
 

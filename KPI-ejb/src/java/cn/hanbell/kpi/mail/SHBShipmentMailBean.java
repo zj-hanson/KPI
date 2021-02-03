@@ -81,7 +81,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             total = getSumIndicator();
             total.setName("A机体出货台数");
             sb.append(getHtmlTableRow(total, y, m, d));
-            
+
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数-涡旋", y);
             indicatorBean.getEntityManager().clear();
@@ -194,7 +194,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
-            
+
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额-涡旋", y);
             indicatorBean.getEntityManager().clear();
@@ -210,7 +210,6 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
             }
-            
 
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("A机组每日出货金额", y);
@@ -288,6 +287,22 @@ public class SHBShipmentMailBean extends ShipmentMail {
                 getHtmlTable(indicators, y, m, d, true);
                 total = getSumIndicator();
                 total.setName("A机体收费服务");
+                sb.append(getHtmlTableRow(total, y, m, d));
+                sumList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("S涡旋收费服务", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && indicators.size() > 0) {
+                indicators.stream().forEach((i) -> {
+                    indicatorBean.divideByRate(i, 2);
+                });
+                getHtmlTable(indicators, y, m, d, true);
+                total = getSumIndicator();
+                total.setName("S涡旋收费服务");
                 sb.append(getHtmlTableRow(total, y, m, d));
                 sumList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
