@@ -17,7 +17,7 @@ public class ShipmentQuantityAAQT extends ShipmentQuantityAA {
         queryParams.put("deptno", " '1Q000' ");
         queryParams.put("n_code_DA", " ='AA' ");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
-        queryParams.put("n_code_DC", " LIKE 'AA%' ");
+        queryParams.put("n_code_DC", " <> 'SDS' ");
         queryParams.put("n_code_DD", " ='00' ");
         queryParams.put("modelcode", "QT");//其他（没有客户品号的）
     }
