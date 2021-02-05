@@ -118,7 +118,6 @@ public class ScorecardCloneManagedBean extends SuperSingleBean<Scorecard> {
                     for (ScorecardDetail d : details) {
                         ScorecardDetail newDetail = (ScorecardDetail) BeanUtils.cloneBean(d);
                         newDetail.setId(null);
-                        newDetail.setSeq(y);//设置新的年份
                         newDetail.setPid(newScorecard.getId());//设置子阶的pid
                         newDetail.setStatus("N");
                         newDetail.setSelfScore(null);

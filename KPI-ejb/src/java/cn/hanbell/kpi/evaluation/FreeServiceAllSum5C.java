@@ -27,7 +27,7 @@ public class FreeServiceAllSum5C extends FreeServiceERP {
     public FreeServiceAllSum5C() {
         super();
         queryParams.put("formid", "A-再生能源综合成本");
-        queryParams.put("deptno", "5B000");
+        queryParams.put("deptno", "8A000");
     }
 
     //厂内+厂外+质量扣款

@@ -344,7 +344,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             //选择季度更新
             switch (col) {
                 case "q1":
-                    currentDetail.setAq1("#" + projectSeq + "%#" + currentDetail.getAq1());
+                    currentDetail.setAq1("#" + projectSeq + "%#" +";"+ currentDetail.getAq1());
                     target = currentDetail.getTq1();
                     actual = currentDetail.getAq1();
                     value = calculateScore(target, actual);
@@ -353,7 +353,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     currentDetail.getGeneralScore().setSq1(value);
                     break;
                 case "q2":
-                    currentDetail.setAq2("#" + projectSeq + "%#" + currentDetail.getAq2());
+                    currentDetail.setAq2("#" + projectSeq + "%#" +";"+ currentDetail.getAq2());
                     //Q2
                     target = currentDetail.getTq2();
                     actual = currentDetail.getAq2();
@@ -362,7 +362,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     currentDetail.getDeptScore().setSq2(value);
                     currentDetail.getGeneralScore().setSq2(value);
                     //上半年
-                    currentDetail.setAh1("#" + projectSeq + "%#" + currentDetail.getAh1());
+                    currentDetail.setAh1("#" + projectSeq + "%#" +";"+ currentDetail.getAh1());
                     target = currentDetail.getTh1();
                     actual = currentDetail.getAh1();
                     value = calculateScore(target, actual);
@@ -371,7 +371,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     currentDetail.getGeneralScore().setSh1(value);
                     break;
                 case "q3":
-                    currentDetail.setAq3("#" + projectSeq + "%#" + currentDetail.getAq3());
+                    currentDetail.setAq3("#" + projectSeq + "%#" +";"+ currentDetail.getAq3());
                     target = currentDetail.getTq3();
                     actual = currentDetail.getAq3();
                     value = calculateScore(target, actual);
@@ -381,7 +381,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     break;
                 case "q4":
                     //Q4
-                    currentDetail.setAq4("#" + projectSeq + "%#" + currentDetail.getAq4());
+                    currentDetail.setAq4("#" + projectSeq + "%#" +";"+ currentDetail.getAq4());
                     target = currentDetail.getTq4();
                     actual = currentDetail.getAq4();
                     value = calculateScore(target, actual);
@@ -389,8 +389,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     currentDetail.getDeptScore().setSq4(value);
                     currentDetail.getGeneralScore().setSq4(value);
                     //全年
-                    currentDetail.setAfy("#" + projectSeq + "%#" + currentDetail.getAfy());
-                    currentDetail.setAfy("#" + projectSeq + "%#" + currentDetail.getAfy());
+                    currentDetail.setAfy("#" + projectSeq + "%#" +";"+ currentDetail.getAfy());
                     target = currentDetail.getTfy();
                     actual = currentDetail.getAfy();
                     value = calculateScore(target, actual);
@@ -399,6 +398,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     currentDetail.getGeneralScore().setSfy(value);
                     break;
             }
+            scorecardDetailBean.update(currentDetail);
+            showErrorMsg("Info", "更新成功！");
         } catch (NumberFormatException ex) {
             log4j.warn("updateScoreByPLMProject()方法异常-" + ex.toString());
         }
@@ -419,7 +420,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
             str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
             //判断截取出来的数据是否为数字
-            if (str1.matches("-?[0-9]+.？[0-9]*") && str2.matches("-?[0-9]+.？[0-9]*")) {
+            if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
                 Double t = Double.valueOf(str1);
                 Double a = Double.valueOf(str2);
                 //分母不为零
@@ -427,6 +428,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     //达成率、得分
                     value = BigDecimal.valueOf(a / t * 100);
                 }
+            }else{
+                showErrorMsg("Error", "基准目标值格式不正确！！");
+                return BigDecimal.ZERO;
             }
         }
         return value;
