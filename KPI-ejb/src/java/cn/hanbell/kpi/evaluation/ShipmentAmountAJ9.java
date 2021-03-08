@@ -17,7 +17,7 @@ public class ShipmentAmountAJ9 extends ShipmentAmount9 {
         queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
+        queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
     }
 
 }

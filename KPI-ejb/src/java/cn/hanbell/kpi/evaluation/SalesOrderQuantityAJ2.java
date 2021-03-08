@@ -18,7 +18,7 @@ public class SalesOrderQuantityAJ2 extends SalesOrderQuantity {
         // queryParams.put("decode", "2");
         queryParams.put("n_code_DA", "='AH' ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
-        queryParams.put("n_code_DC", " LIKE 'AJ%' ");
+        queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 

@@ -167,7 +167,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o1)).equals("0") ? "" : decimalFormat.format(f.get(o1))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
                 }
@@ -181,7 +181,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o2))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o2)).equals("0") ? "" : decimalFormat.format(f.get(o2))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(o2))).append("</td>");
                 }
@@ -195,7 +195,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(percentFormat(f.get(o1o2))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(percentFormat(f.get(o1o2)).equals("0.00%") ? "" : percentFormat(f.get(o1o2))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(percentFormat(f.get(o1o2))).append("</td>");
                 }
@@ -209,7 +209,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(ljo1))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(ljo1)).equals("0") ? "" : decimalFormat.format(f.get(ljo1))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(ljo1))).append("</td>");
                 }
@@ -223,7 +223,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(ljo2))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(decimalFormat.format(f.get(ljo2)).equals("0") ? "" : decimalFormat.format(f.get(ljo2))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(decimalFormat.format(f.get(ljo2))).append("</td>");
                 }
@@ -237,7 +237,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(percentFormat(f.get(o3o4))).append("</td>");
                 } else if (i > m) {
-                    sb.append("<td>").append(percentFormat(f.get(o3o4)).equals("0.00%") ? "" : percentFormat(f.get(o3o4))).append("</td>");
+                    sb.append("<td>").append("").append("</td>");
                 } else {
                     sb.append("<td>").append(percentFormat(f.get(o3o4))).append("</td>");
                 }

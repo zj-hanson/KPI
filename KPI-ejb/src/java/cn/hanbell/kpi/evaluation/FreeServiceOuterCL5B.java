@@ -30,10 +30,10 @@ public class FreeServiceOuterCL5B extends FreeServiceOuterCL {
         BigDecimal temp1, temp2;
         //SHComer
         temp1 = super.getValue(y, m, d, type, map);
-        queryParams.remove("deptno");
-        queryParams.put("deptno", " like '8A%' ");
+        queryParams.remove("depno");
+        queryParams.put("depno", " like '8A%' ");
         //ZJComer
-        temp2 = super.getValue(y, m, d, type, queryParams);
+        temp2 = super.getValue(y, m, d, type, map);
         //SHComer + ZJComer
         return temp1.add(temp2);
     }

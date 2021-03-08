@@ -56,11 +56,11 @@ class FreeServiceOuterYSerp5B extends FreeServiceOuterYSerp {
         //SHComer
         temp1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
-        queryParams.remove("deptno");
+        queryParams.remove("depno");
         queryParams.put("facno", "E");
-        queryParams.put("deptno", " like '8A%' ");
+        queryParams.put("depno", " like '8A%' ");
         //ZJComer
-        temp2 = super.getValue(y, m, d, type, queryParams);
+        temp2 = super.getValue(y, m, d, type, map);
         //SHComer + ZJComer
         return temp1.add(temp2);
     }
