@@ -456,7 +456,7 @@
                                                  process="@this,formList:dlgDetail" update="formList" oncomplete="PF('dlgDetail').hide();" >
                                 </p:commandButton>
                                 <p:commandButton id="btnCalcItemScore"  actionListener="#{scorecardManagedBean.calcItemScore()}" icon="ui-icon-sync" value="更新" style="float: right"
-                                                 process="@this" update="formList" oncomplete="PF('dlgDetail').show();">
+                                                 process="@this,formList:dlgDetail" update="formList" oncomplete="PF('dlgDetail').show();">
                                 </p:commandButton>
                                 <p:commandButton value="阶段说明" type="button" onclick="PF('dlgStageDescription').show();" icon="ui-icon-search" />
                             </p:column>
