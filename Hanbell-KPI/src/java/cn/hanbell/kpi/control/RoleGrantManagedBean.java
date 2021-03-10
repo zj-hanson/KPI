@@ -219,6 +219,19 @@ public class RoleGrantManagedBean extends SuperSingleBean<Role> {
     }
 
     @Override
+    public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFormId != null && !"".equals(queryFormId)) {
+                model.getFilterFields().put("roleno", queryFormId);
+            }
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("rolename", queryName);
+            }
+        }
+    }
+
+    @Override
     protected void setToolBar() {
         if (currentEntity != null && currentEntity.getStatus() != null) {
             switch (currentEntity.getStatus()) {
