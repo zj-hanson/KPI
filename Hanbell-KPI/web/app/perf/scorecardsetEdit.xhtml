@@ -172,7 +172,7 @@
                             </p:commandButton>
                             <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{scorecardSetManagedBean.doConfirmDetail()}" icon="ui-icon-check"
                                              onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
-                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail:,:formOne:dlgStageDescription,:formOne:tabView:tableList"/>
+                                             process="@this,formOne:tabView:plgDetail" update="formOne:tabView:plgDetail,formOne:tabView:tableList,formOne:dlgStageDescription,formOne:growl"/>
                         </f:facet>
                     </p:toolbar>
                     <p:panelGrid id="plgDetail"  styleClass="plgDetail Wid100">
@@ -648,7 +648,7 @@
                                                  process="@this,formOne:dlgDetail" update="formOne:tabView:tableList" oncomplete="PF('dlgDetail').hide();" >
                                 </p:commandButton>
                                 <p:commandButton id="btnCalcItemScore" value="更新"  actionListener="#{scorecardSetManagedBean.calcItemScore()}" icon="ui-icon-sync" style="float: right"
-                                                 process="@this,formOne:dlgDetail" update="formOne:tabView:tableList" oncomplete="PF('dlgDetail').show();">
+                                                 process="@this,formOne:dlgDetail" update="formOne:tabView:tableList,formOne:dlgDetail,growl" oncomplete="PF('dlgDetail').hide();PF('dlgDetail').show();">
                                 </p:commandButton>
                                 <p:commandButton value="阶段说明" type="button" onclick="PF('dlgStageDescription').show();" icon="ui-icon-search" />
                             </p:column>

@@ -43,12 +43,12 @@
                                              process="@this" update="formOne:tabView:plgDetail"/>
                             <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{roleManagedBean.deleteDetail()}" icon="ui-icon-trash"
                                              oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
-                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
+                                             process="@this" update="formOne:tabView:plgDetail,formOne:tabView:tableList" />
                         </f:facet>
                         <f:facet name="right">
                             <p:commandButton id="btnSaveDetail" widgetVar="btnSaveDetail" value="确定" actionListener="#{roleManagedBean.doConfirmDetail()}" icon="ui-icon-check"
                                              onsuccess="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
-                                             process="@this,:formOne:tabView:plgDetail" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList"/>
+                                             process="@this,formOne:tabView:plgDetail" update="formOne:tabView:plgDetail,formOne:tabView:tableList,formOne:growl"/>
                         </f:facet>
                     </p:toolbar>
                     <p:panelGrid id="plgDetail" columns="4" columnClasses="Wid20,Wid30,Wid20,Wid30" styleClass="plgDetail Wid100">

@@ -114,13 +114,15 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 showWarnMsg("Warn", "数值型才能按计算公式更新");
                 return;
             }
-            if (currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            if (currentEntity.getFreezeDate() != null
+                    && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
                 return;
             }
             String col = scorecardBean.getColumn("q", userManagedBean.getQ());
             if (currentEntity.getIndicator() != null && !"".equals(currentEntity.getIndicator())) {
-                Indicator i = indicatorBean.findByFormidYearAndDeptno(currentEntity.getIndicator(), currentEntity.getParent().getSeq(), currentEntity.getDeptno());
+                Indicator i = indicatorBean.findByFormidYearAndDeptno(currentEntity.getIndicator(),
+                        currentEntity.getParent().getSeq(), currentEntity.getDeptno());
                 if (i != null) {
                     switch (userManagedBean.getQ()) {
                         case 1:
@@ -153,34 +155,33 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
             }
             try {
                 if (currentEntity.getPerformanceJexl() != null && !"".equals(currentEntity.getPerformanceJexl())) {
-                    //计算达成
+                    // 计算达成
                     scorecardBean.setPerf(currentEntity, col);
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setPerf(currentEntity, col);
                     } else if (userManagedBean.getQ() == 4) {
-                        //下半年隐藏 不需要计算
-                        //col = scorecardBean.getColumn("h", 2);
-                        //scorecardBean.setPerf(currentEntity, col);
-                        //全年
+                        // 下半年隐藏 不需要计算
+                        // col = scorecardBean.getColumn("h", 2);
+                        // scorecardBean.setPerf(currentEntity, col);
+                        // 全年
                         scorecardBean.setPerf(currentEntity, "fy");
                     }
                     showInfoMsg("Info", "更新达成率成功");
                 }
                 if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
-                    //计算得分
+                    // 计算得分
                     col = scorecardBean.getColumn("q", userManagedBean.getQ());
                     scorecardBean.setContentScore(currentEntity, col);
-                    //上半年
+                    // 上半年
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setContentScore(currentEntity, col);
-
                     } else if (userManagedBean.getQ() == 4) {
-                        //下半年隐藏 不需要计算
-                        //col = scorecardBean.getColumn("h", 2);
-                        //scorecardBean.setContentScore(currentEntity, col);
-                        //全年
+                        // 下半年隐藏 不需要计算
+                        // col = scorecardBean.getColumn("h", 2);
+                        // scorecardBean.setContentScore(currentEntity, col);
+                        // 全年
                         scorecardBean.setContentScore(currentEntity, "fy");
                     }
                     showInfoMsg("Info", "更新部门分数成功");
@@ -194,7 +195,9 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     @Override
     protected boolean doBeforeUpdate() throws Exception {
         if (currentEntity != null) {
-            if (currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
+
+            if (currentEntity.getFreezeDate() != null
+                    && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
                 return false;
             }
@@ -290,7 +293,8 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
             model.getFilterFields().put("pid", getScorecard().getId());
         }
         scorecardAuditorList = new ArrayList<>();
-        scorecardAuditorList = scorecardAuditorBean.findByPidAndQuarter(scorecard.getId(), userManagedBean.getY(), userManagedBean.getQ());
+        scorecardAuditorList = scorecardAuditorBean.findByPidAndQuarter(scorecard.getId(), userManagedBean.getY(),
+                userManagedBean.getQ());
         auditorMap = new LinkedHashMap<>();
         if (!scorecardAuditorList.isEmpty()) {
             for (ScorecardAuditor sa : scorecardAuditorList) {
@@ -319,7 +323,8 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         if (scorecard == null) {
             fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "error");
         } else {
-            this.freezed = scorecard.getFreezeDate() != null && scorecard.getFreezeDate().after(userManagedBean.getBaseDate());
+            this.freezed = scorecard.getFreezeDate() != null
+                    && scorecard.getFreezeDate().after(userManagedBean.getBaseDate());
         }
         init();
         super.construct();
@@ -329,11 +334,13 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     public void verify() {
         try {
             if (scorecard != null) {
-                //如果审核过了 就不能再审了
-//            List<ScorecardAuditor> data = scorecardAuditorBean.findByPidAndAuditorId(scorecard.getId(), userManagedBean.getUserid());
-//            if (!data.isEmpty()) {
-//                return;
-//            }
+                // 如果审核过了 就不能再审了
+                // List<ScorecardAuditor> data =
+                // scorecardAuditorBean.findByPidAndAuditorId(scorecard.getId(),
+                // userManagedBean.getUserid());
+                // if (!data.isEmpty()) {
+                // return;
+                // }
                 ScorecardAuditor sa = new ScorecardAuditor();
                 sa.setPid(scorecard.getId());
                 sa.setCredateToNow();
@@ -353,9 +360,10 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     }
 
     public void handleDialogReturnWhenSelect(SelectEvent event) {
-        //考核表修改权限设定
+        // 考核表修改权限设定
         if (scorecard.getId() != null) {
-            scorecardGrant = scorecardGrantBean.findByCompanyAndScorecardidAndContentidAndSeq(userManagedBean.getCompany(), scorecard.getId(), currentEntity.getId(), c.get(Calendar.YEAR));
+            scorecardGrant = scorecardGrantBean.findByCompanyAndScorecardidAndContentidAndSeq(
+                    userManagedBean.getCompany(), scorecard.getId(), currentEntity.getId(), c.get(Calendar.YEAR));
             if (scorecardGrant == null) {
                 scorecardGrant = new ScorecardGrant();
                 scorecardGrant.setBenchmark(false);
@@ -398,11 +406,11 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         this.reportViewPath = reportViewContext + this.fileName;
         try {
             reportClassLoader = Class.forName("cn.hanbell.kpi.rpt.ScorecardReport").getClassLoader();
-            //初始配置
+            // 初始配置
             this.reportInitAndConfig();
-            //生成报表
+            // 生成报表
             this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
-            //预览报表
+            // 预览报表
             this.preview();
         } catch (Exception ex) {
             throw ex;

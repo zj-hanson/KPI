@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import org.apache.logging.log4j.LogManager;
@@ -105,16 +106,19 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         List<RoleDetail> roleDetails = systemRoleDetailBean.findByUserId(userid);
         List<Role> roles = new ArrayList<>();
         if (!roleDetails.isEmpty()) {
-            roleDetails.stream().map((rd) -> systemRoleBean.findById(rd.getPid())).filter((role) -> (role != null)).forEachOrdered((role) -> {
-                roles.add(role);
-            });
+            roleDetails.stream().map((rd) -> systemRoleBean.findById(rd.getPid())).filter((role) -> (role != null))
+                    .forEachOrdered((role) -> {
+                        roles.add(role);
+                    });
         }
         List<RoleGrantModule> roleGrantModules = new ArrayList<>();
-        roles.stream().map((role) -> roleGrantModuleBean.findByRoleId(role.getId())).filter((roleGrantModuleList) -> (!roleGrantModuleList.isEmpty())).forEachOrdered((roleGrantModuleList) -> {
-            roleGrantModules.addAll(roleGrantModuleList);
-        });
+        roles.stream().map((role) -> roleGrantModuleBean.findByRoleId(role.getId()))
+                .filter((roleGrantModuleList) -> (!roleGrantModuleList.isEmpty()))
+                .forEachOrdered((roleGrantModuleList) -> {
+                    roleGrantModules.addAll(roleGrantModuleList);
+                });
         List<String> depts = new ArrayList<>();
-        //总经理室目前没有考核内容，需显示模板
+        // 总经理室目前没有考核内容，需显示模板
         depts.add("10000");
         if (!roleGrantModules.isEmpty()) {
             roleGrantModules.stream().forEach((e) -> {
@@ -134,7 +138,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     }
 
     public void calcScore() {
-        if (currentEntity != null && currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
+        if (currentEntity != null && currentEntity.getFreezeDate() != null
+                && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate())) {
             showErrorMsg("Error", "资料已冻结,不可更新");
             return;
         }
@@ -171,7 +176,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     public void calcItemScore() {
         if (currentDetail != null) {
-            //如果考核指标有PLM代号的就用PLM代过来的值计算
+            // 如果考核指标有PLM代号的就用PLM代过来的值计算
             if (currentDetail.getProjectSeq() != null && !currentDetail.getType().equals("N")) {
                 updateScoreByPLMProject();
             }
@@ -179,23 +184,24 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 showWarnMsg("Warn", "数值型才能更新");
                 return;
             }
-            if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            if (currentDetail.getFreezeDate() != null
+                    && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
                 return;
             }
             String col = scorecardBean.getColumn("q", userManagedBean.getQ());
             try {
                 if (currentDetail.getScoreJexl() != null && !"".equals(currentDetail.getScoreJexl())) {
-                    //计算达成
+                    // 计算达成
                     scorecardBean.setPerf(currentDetail, col);
-                    //计算得分
+                    // 计算得分
                     scorecardBean.setDetailScore(currentDetail, col);
-                    //上半年
+                    // 上半年
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
                         scorecardBean.setDetailScore(currentDetail, col);
                     } else if (userManagedBean.getQ() == 4) {
-                        //全年
+                        // 全年
                         scorecardBean.setDetailScore(currentDetail, "fy");
                     }
                 }
@@ -203,7 +209,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                     case 1:
                         if (currentDetail.getGeneralScore().getSq1().compareTo(BigDecimal.ZERO) != 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
-                            //currentDetail.setPq1(currentDetail.getPq1());
                         } else if (currentDetail.getWeight().compareTo(BigDecimal.ZERO) == 0) {
                             currentDetail.setSq1(currentDetail.getGeneralScore().getSq1());
                         }
@@ -255,9 +260,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     @Override
     protected boolean doBeforeVerify() throws Exception {
         if (super.doBeforeVerify()) {
-            //super.doBeforeVerify()会重设detailList
+            // super.doBeforeVerify()会重设detailList
             if (!currentEntity.getTemplate()) {
-                //不是模板需要检查权重是否100
+                // 不是模板需要检查权重是否100
                 BigDecimal weight = BigDecimal.ZERO;
                 for (ScorecardDetail d : detailList) {
                     weight = weight.add(d.getWeight());
@@ -273,9 +278,16 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     @Override
     public void doConfirmDetail() {
-        if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
-            showErrorMsg("Error", "资料已冻结,不可更新");
+        if (currentDetail.getFreezeDate() != null
+                && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            showErrorMsg("Error", "资料已经冻结,不可更新");
             return;
+        }
+        for (ScorecardDetail detail : detailList) {
+            if (!Objects.equals(currentDetail.getId(), detail.getId()) && currentDetail.getSeq() == detail.getSeq()) {
+                showErrorMsg("Error", "明细序号重复,不可更新");
+                return;
+            }
         }
         try {
             switch (userManagedBean.getQ()) {
@@ -329,19 +341,19 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         super.doConfirmDetail();
     }
 
-    //关联PLM的更新
+    // 关联PLM的更新
     public void updateScoreByPLMProject() {
         try {
             String target, actual, projectSeq;
             BigDecimal value;
             String col = scorecardBean.getColumn("q", userManagedBean.getQ());
-            //找到PLM的数据
+            // 找到PLM的数据
             projectSeq = projectBean.findByProjectSeq(currentDetail.getProjectSeq());
             if (projectSeq == null || "".equals(projectSeq)) {
                 showErrorMsg("Error", "请确认PLM是否有进度");
                 return;
             }
-            //选择季度更新
+            // 选择季度更新
             switch (col) {
                 case "q1":
                     currentDetail.setAq1("#" + projectSeq + "%#" +";"+ currentDetail.getAq1());
@@ -415,7 +427,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     public BigDecimal calculateScore(String target, String acutal) {
         BigDecimal value = BigDecimal.ZERO;
         String str1, str2;
-        //先判断有值
+        // 先判断有值
         if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
             str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
             str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
@@ -423,9 +435,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
                 Double t = Double.valueOf(str1);
                 Double a = Double.valueOf(str2);
-                //分母不为零
+                // 分母不为零
                 if (t > 0.00001) {
-                    //达成率、得分
+                    // 达成率、得分
                     value = BigDecimal.valueOf(a / t * 100);
                 }
             }else{
@@ -465,6 +477,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 for (ScorecardDetail d : templateDetail) {
                     this.createDetail();
                     this.currentDetail.setPid(currentEntity.getId());
+                    // 沿用模版序号
+                    this.currentDetail.setSeq(d.getSeq());
                     this.currentDetail.setContent(d.getContent());
                     this.currentDetail.setWeight(d.getWeight());
                     this.currentDetail.setType(d.getType());
@@ -525,7 +539,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             currentDetail.setDeptname(e.getDeptname());
             currentDetail.setUserid(e.getUserid());
             currentDetail.setUsername(e.getUsername());
-            //从指标代入基准
+            // 从指标代入基准
             currentDetail.setBq1(e.getBenchmarkIndicator().getNq1().toString());
             currentDetail.setBq2(e.getBenchmarkIndicator().getNq2().toString());
             currentDetail.setBh1(e.getBenchmarkIndicator().getNh1().toString());
@@ -533,7 +547,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             currentDetail.setBq4(e.getBenchmarkIndicator().getNq4().toString());
             currentDetail.setBh2(e.getBenchmarkIndicator().getNh2().toString());
             currentDetail.setBfy(e.getBenchmarkIndicator().getNfy().toString());
-            //从指标代入目标
+            // 从指标代入目标
             currentDetail.setTq1(e.getTargetIndicator().getNq1().toString());
             currentDetail.setTq2(e.getTargetIndicator().getNq2().toString());
             currentDetail.setTh1(e.getTargetIndicator().getNh1().toString());
@@ -553,7 +567,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             currentDetail.setDeptname(e.getDeptname());
             currentDetail.setUserid(e.getUserid());
             currentDetail.setUsername(e.getUsername());
-            //从指标代入基准
+            // 从指标代入基准
             currentDetail.setBq1(e.getBenchmarkIndicator().getNq1().toString());
             currentDetail.setBq2(e.getBenchmarkIndicator().getNq2().toString());
             currentDetail.setBh1(e.getBenchmarkIndicator().getNh1().toString());
@@ -561,7 +575,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             currentDetail.setBq4(e.getBenchmarkIndicator().getNq4().toString());
             currentDetail.setBh2(e.getBenchmarkIndicator().getNh2().toString());
             currentDetail.setBfy(e.getBenchmarkIndicator().getNfy().toString());
-            //从指标代入目标
+            // 从指标代入目标
             currentDetail.setTq1(e.getTargetIndicator().getNq1().toString());
             currentDetail.setTq2(e.getTargetIndicator().getNq2().toString());
             currentDetail.setTh1(e.getTargetIndicator().getNh1().toString());
@@ -674,7 +688,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 scd.setSeq(n);
                 currentDetail = scd;
                 this.doConfirmDetail();
-                //重新排序
+                // 重新排序
                 detailList.sort((ScorecardDetail o1, ScorecardDetail o2) -> {
                     if (o1.getSeq() > o2.getSeq()) {
                         return 1;
@@ -703,7 +717,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 scd.setSeq(n);
                 currentDetail = scd;
                 this.doConfirmDetail();
-                //重新排序
+                // 重新排序
                 detailList.sort((ScorecardDetail o1, ScorecardDetail o2) -> {
                     if (o1.getSeq() > o2.getSeq()) {
                         return 1;
@@ -742,7 +756,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     public void updateScorecardExplanationScore() {
         if (currentDetail != null) {
-            if (currentDetail.getFreezeDate() != null && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
+            if (currentDetail.getFreezeDate() != null
+                    && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
                 showErrorMsg("Error", "资料已冻结,不可更新");
                 return;
             }
@@ -806,7 +821,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             } else {
                 reportParams.put("sortFields", "");
             }
-            this.fileName = this.currentPrgGrant.getSysprg().getApi() + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + "xls";
+            this.fileName = this.currentPrgGrant.getSysprg().getApi()
+                    + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + "xls";
             String reportName = reportPath + this.currentPrgGrant.getSysprg().getRptdesign();
             String outputName = reportOutputPath + this.fileName;
             this.reportViewPath = reportViewContext + this.fileName;
@@ -814,11 +830,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 if (this.currentPrgGrant.getSysprg().getRptclazz() != null) {
                     reportClassLoader = Class.forName(this.currentPrgGrant.getSysprg().getRptclazz()).getClassLoader();
                 }
-                //初始配置
+                // 初始配置
                 this.reportInitAndConfig();
-                //生成报表
+                // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
-                //预览报表
+                // 预览报表
                 this.preview();
             } catch (Exception ex) {
                 throw ex;
@@ -830,11 +846,12 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     public void setCurrentEntity(Scorecard currentEntity) {
         super.setCurrentEntity(currentEntity);
         if (currentEntity != null) {
-            this.freezed = currentEntity.getFreezeDate() != null && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate());
+            this.freezed = currentEntity.getFreezeDate() != null
+                    && currentEntity.getFreezeDate().after(userManagedBean.getBaseDate());
         }
     }
 
-    //月结功能
+    // 月结功能
     public void setFreezeDate() {
         if (currentEntity != null) {
             currentEntity.setFreezeDate(userManagedBean.getBaseDate());
@@ -867,11 +884,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         if (notAchievedList == null || notAchievedList.isEmpty()) {
             return;
         }
-        //设置报表名称
+        // 设置报表名称
         fileName = "Q4" + "不达标项考核明细" + ".xls";
         String fileFullName = reportOutputPath + fileName;
         HSSFWorkbook workbook = new HSSFWorkbook();
-        //获得表格样式
+        // 获得表格样式
         Map<String, CellStyle> style = createStyles(workbook);
         // 生成一个表格
         HSSFSheet sheet1 = workbook.createSheet("不达标项考核明细");
@@ -880,10 +897,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         for (int i = 0; i < wt.length; i++) {
             sheet1.setColumnWidth(i, wt[i] * 256);
         }
-        //创建标题行
+        // 创建标题行
         Row row;
-        //Sheet1
-        String[] title = {"考核表", "季度", "部门代号", "部门简称", "考核内容", "Q1达成率", "Q2达成率", "上半年达成率", "Q3达成率", "Q4达成率", "全年达成率", "Q1阶段说明", "Q2阶段说明", "上半年阶段说明", "Q3阶段说明", "Q4阶段说明", "全年阶段说明"};
+        // Sheet1
+        String[] title = {"考核表", "季度", "部门代号", "部门简称", "考核内容", "Q1达成率", "Q2达成率", "上半年达成率", "Q3达成率", "Q4达成率", "全年达成率",
+            "Q1阶段说明", "Q2阶段说明", "上半年阶段说明", "Q3阶段说明", "Q4阶段说明", "全年阶段说明"};
         row = sheet1.createRow(0);
         row.setHeight((short) 600);
         for (int i = 0; i < title.length; i++) {
@@ -892,7 +910,7 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             cell.setCellValue(title[i]);
         }
         int j = 1;
-        //添加数据内容
+        // 添加数据内容
         for (ScorecardDetail ip : notAchievedList) {
             row = sheet1.createRow(j);
             j++;
@@ -925,10 +943,10 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
         // 文件头样式
         CellStyle headStyle = wb.createCellStyle();
-        headStyle.setWrapText(true);//设置自动换行
+        headStyle.setWrapText(true);// 设置自动换行
         headStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         headStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        headStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());//单元格背景颜色
+        headStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());// 单元格背景颜色
         headStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         headStyle.setBorderRight(CellStyle.BORDER_THIN);
         headStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
@@ -949,9 +967,9 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         Font cellFont = wb.createFont();
         cellFont.setFontHeightInPoints((short) 10);
         cellStyle.setFont(cellFont);
-        cellStyle.setWrapText(true);//设置自动换行
+        cellStyle.setWrapText(true);// 设置自动换行
         cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());//单元格背景颜色
+        cellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());// 单元格背景颜色
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         cellStyle.setBorderRight(CellStyle.BORDER_THIN);
         cellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
