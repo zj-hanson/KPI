@@ -66,9 +66,11 @@ public class MaterielFCRMailBean extends MailNotification {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"8%\">区域</th> <th width=\"7%\">类型</th> <th width=\"6%\">01月</th> <th width=\"6%\">02月</th> <th width=\"6%\">03月</th>");
-            sb.append("<th width=\"6%\">04月</th> <th width=\"6%\">05月</th> <th width=\"6%\">06月</th> <th width=\"6%\">07月</th> <th width=\"6%\">08月</th>");
-            sb.append("<th width=\"6%\">09月</th> <th width=\"6%\">10月</th> <th width=\"6%\">11月</th> <th width=\"6%\">12月</th></tr>");
+            sb.append("<tr><th>区域</th> <th>类型</th>");
+            for (int i = 1; i <= m; i++) {
+                sb.append("<th>").append(i).append("月</th>");
+            }
+            sb.append("</tr>");
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
@@ -95,21 +97,21 @@ public class MaterielFCRMailBean extends MailNotification {
         try {
             sb.append("<tr style=\"background:").append("").append(";\"><td  rowspan=\"3\" style=\"text-align: center;\">").append(indicator.getDescript()).append("</td>");
             sb.append("<td style=\"text-align: left;\">").append(indicator.getOther1Label()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), i);
                 f = o1.getClass().getDeclaredField(col);
                 f.setAccessible(true);
                 if (i == m) {
                     sb.append("<td style=\"color:red\">").append(f.get(o1)).append("</td>");
                 } else if (i > m) {
-                        sb.append("<td>").append(f.get(o1).toString().equals("0.00") ? "" : f.get(o1)).append("</td>");
+                    sb.append("<td>").append(f.get(o1).toString().equals("0.00") ? "" : f.get(o1)).append("</td>");
                 } else {
                     sb.append("<td>").append(f.get(o1)).append("</td>");
                 }
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append("").append(";\"><td style=\"text-align: left;\">").append(indicator.getOther2Label()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), i);
                 f = o2.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -123,7 +125,7 @@ public class MaterielFCRMailBean extends MailNotification {
             }
             sb.append("</tr>");
             sb.append("<tr>").append("<td style=\"text-align:left;background:#F7EED6;\">").append("结案率").append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), i);
                 f = actual.getClass().getDeclaredField(col);
                 f.setAccessible(true);

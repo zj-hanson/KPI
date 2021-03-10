@@ -76,8 +76,11 @@ public class ServiceMaintainMailBean extends ServiceMail {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"8%\">产品/区域</th><th width=\"8%\">项目</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
-            sb.append("<th>09月</th><th>10月</th><th>11月</th><th>12月</th><th>合计</th></tr>");
+            sb.append("<tr><th>产品/区域</th><th>项目</th>");
+            for (int i = 1; i <= m; i++) {
+                sb.append("<th>").append(i).append("月</th>");
+            }
+            sb.append("<th>合计</th></tr>");
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
@@ -183,7 +186,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             //目标维修台数
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"9\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
             sb.append("<td style=\"text-align: left;\">").append(nowt.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = nowt.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -199,7 +202,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //实际完工台数
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(nowa.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = nowa.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -215,7 +218,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //维修达成率
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(nowf.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = nowf.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -231,7 +234,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //同期目标
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(pastt.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = pastt.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -247,7 +250,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //同期完工台数
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(pasta.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = pasta.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -263,7 +266,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //同期达标率
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(pastdc.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = pastdc.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -279,7 +282,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //同比成长率
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(BG.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = BG.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -295,7 +298,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //维修工时
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(gs.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = gs.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -311,7 +314,7 @@ public class ServiceMaintainMailBean extends ServiceMail {
             sb.append("</tr>");
             //平均维修天数
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(avgday.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = avgday.getClass().getDeclaredField(col);
                 f.setAccessible(true);

@@ -28,8 +28,8 @@
                     <f:facet name="header" >
                         <p:row >
                             <p:column style="font-size: 21px;letter-spacing:2px;font-weight: 600" >#{balanceSheetReportBean.statusMap.title}<br/>
-                                 <p:spacer width="110" height="10" />损益表#{incomeStatementReportBean.statusMap.title}
-                                 <span  style="float: right;font-size: 16px;" >单位：万元</span></p:column>
+                                <p:spacer width="110" height="10" />损益表#{incomeStatementReportBean.statusMap.title}
+                                <span  style="float: right;font-size: 16px;" >单位：万元</span></p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid >
@@ -37,17 +37,17 @@
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
                 </div>
                 <div style="display:#{incomeStatementReportBean.statusMap.displaydiv2};" align="right">
-<!--                    <script type="text/javascript">
-                        $(function () {
-                            $("#table tr").hover(function () {
-                                $(this).css("background-color", "#1AB394");
-                                $(this).css("color", "white");
-                            }, function () {
-                                $(this).css("background-color", "");
-                                $(this).css("color", "black");
-                            });
-                        });
-                    </script>-->
+                    <!--                    <script type="text/javascript">
+                                            $(function () {
+                                                $("#table tr").hover(function () {
+                                                    $(this).css("background-color", "#1AB394");
+                                                    $(this).css("color", "white");
+                                                }, function () {
+                                                    $(this).css("background-color", "");
+                                                    $(this).css("color", "black");
+                                                });
+                                            });
+                                        </script>-->
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 540px;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;">
                             <tr style="height: 34px;">
@@ -118,6 +118,12 @@
                             <tr>
                                 <td>资产减值损失</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('7')}" var="item" >
+                                    <td style="text-align: right;">#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>公允价值变动收益</td>
+                                <c:forEach items="#{incomeStatementReportBean.map.get('8')}" var="item" >
                                     <td style="text-align: right;">#{item}</td>
                                 </c:forEach>
                             </tr>

@@ -143,7 +143,17 @@ public class ClientRankingReportBean extends BscQueryTableManageBean implements 
                 map.put("deptnoname", "空压机体营销一课");
                 map.put("daname", "A机体");
                 map.put("n_code_DA", "= 'AH'");
-                map.put("n_code_DC", " LIKE 'AJ%'");
+                map.put("n_code_DC", " LIKE 'A%'");
+                break;
+            case "1G000":
+                if (indicatorChart.getRemark().contains("SAM")) {
+                    map.put("deptnoname", "空压机体涡旋");
+                    map.put("daname", "涡旋");
+                    map.put("n_code_DA", " in ('AH','S') ");
+                    map.put("n_code_DC", " in ('SAM-3HP','SAM-5HP','SAM-7HP','SAM-10HP','SF','SC') ");
+                }else{
+                    map.clear();
+                }
                 break;
             case "1G500":
                 map.put("deptnoname", "无油机组");

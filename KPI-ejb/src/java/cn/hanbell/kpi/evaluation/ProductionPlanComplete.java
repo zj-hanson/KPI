@@ -42,9 +42,9 @@ public class ProductionPlanComplete extends Production {
         BigDecimal value = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT isnull(sum(d.godqty),0) FROM  sfcfsd d LEFT JOIN manmas m ON d.manno=m.manno, sfcfsh h ");
+        sb.append(" SELECT isnull(sum(d.godqty),0) FROM  sfcfsd d LEFT JOIN manmas m ON d.manno=m.manno AND d.facno=m.facno AND d.prono=m.prono, sfcfsh h ");
         sb.append(" where  h.facno=d.facno and  h.prono=d.prono  and h.fshno=d.fshno ");
-        sb.append(" AND d.facno=m.facno AND d.prono=m.prono AND d.manno=m.manno and h.facno='${facno}' and h.prono='${prono}' and h.stats='${stats}' ");
+        sb.append(" h.facno='${facno}' and h.prono='${prono}' and h.stats='${stats}' ");
         sb.append(" AND m.facno='${facno}' and m.prono='${prono}'   ");
         if (!"".equals(linecode)) {
             sb.append(" and m.linecode ").append(linecode);
@@ -123,9 +123,9 @@ public class ProductionPlanComplete extends Production {
         BigDecimal value = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT day(h.fshdat),isnull(sum(d.godqty),0) FROM  sfcfsd d, sfcfsh h LEFT JOIN manmas m ON d.manno=m.manno ");
+        sb.append(" SELECT day(h.fshdat),isnull(sum(d.godqty),0) FROM  sfcfsd d LEFT JOIN manmas m ON d.manno=m.manno AND d.facno=m.facno AND d.prono=m.prono, sfcfsh h ");
         sb.append(" where  h.facno=d.facno and  h.prono=d.prono  and h.fshno=d.fshno ");
-        sb.append(" AND d.facno=m.facno AND d.prono=m.prono AND d.manno=m.manno and h.facno='${facno}' and h.prono='${prono}' and h.stats='${stats}' ");
+        sb.append(" and h.facno='${facno}' and h.prono='${prono}' and h.stats='${stats}' ");
         sb.append(" AND m.facno='${facno}' and m.prono='${prono}'   ");
         if (!"".equals(linecode)) {
             sb.append(" and m.linecode ").append(linecode);

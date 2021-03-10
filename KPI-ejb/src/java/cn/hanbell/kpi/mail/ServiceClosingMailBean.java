@@ -70,8 +70,11 @@ public class ServiceClosingMailBean extends ServiceMail {
         int size = 0;
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th width=\"10%\">部门</th><th width=\"12%\">统计项目</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
-            sb.append("<th>09月</th><th>10月</th><th>11月</th><th>12月</th></tr>");
+            sb.append("<tr><th>部门</th><th>统计项目</th>");
+            for (int i = 1; i <= m; i++) {
+                sb.append("<th>").append(i).append("月</th>");
+            }
+            sb.append("</tr>");
             for (Indicator i : indicatorList) {
                 size++;
                 if (size % 2 != 0) {
@@ -155,7 +158,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             o3.setType(e.getOther3Label());
             sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"6\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
             sb.append("<td style=\"text-align: left;\">").append(o1.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o1.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -169,7 +172,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o2.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -183,7 +186,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o1o2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o1o2.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -197,7 +200,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(ljo1.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = ljo1.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -211,7 +214,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o3.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o3.getClass().getDeclaredField(col);
                 f.setAccessible(true);
@@ -225,7 +228,7 @@ public class ServiceClosingMailBean extends ServiceMail {
             }
             sb.append("</tr>");
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o3o4.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
+            for (int i = 1; i <= m; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = o3o4.getClass().getDeclaredField(col);
                 f.setAccessible(true);
