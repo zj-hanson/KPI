@@ -12,6 +12,7 @@ import cn.hanbell.kpi.entity.Role;
 import cn.hanbell.kpi.entity.RoleDetail;
 import cn.hanbell.kpi.lazy.SystemRoleModel;
 import cn.hanbell.kpi.web.SuperMultiBean;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -36,6 +37,17 @@ public class RoleManagedBean extends SuperMultiBean<Role, RoleDetail> {
     }
 
     @Override
+    public void doConfirmDetail() {
+        for (RoleDetail detail : detailList) {
+            if (Objects.equals(currentDetail.getUserid(), detail.getUserid())) {
+                showErrorMsg("Error", "工号重复,不可更新");
+                return;
+            }
+        }
+        super.doConfirmDetail();
+    }
+
+    @Override
     public void handleDialogReturnWhenDetailEdit(SelectEvent event) {
         if (event.getObject() != null && currentDetail != null) {
             SystemUser u = (SystemUser) event.getObject();
@@ -51,6 +63,19 @@ public class RoleManagedBean extends SuperMultiBean<Role, RoleDetail> {
         setModel(new SystemRoleModel(systemRoleBean));
         model.getSortFields().put("roleno", "ASC");
         super.init();
+    }
+
+    @Override
+    public void query() {
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFormId != null && !"".equals(queryFormId)) {
+                model.getFilterFields().put("roleno", queryFormId);
+            }
+            if (queryName != null && !"".equals(queryName)) {
+                model.getFilterFields().put("rolename", queryName);
+            }
+        }
     }
 
     @Override
