@@ -310,6 +310,10 @@ public class MenuManagedBean implements Serializable {
                         }
                     });
                     for (Scorecard i : scorecardList) {
+                        //考核模版不用显示
+                        if (i.getTemplate()) {
+                            continue;
+                        }
                         menuitem = new DefaultMenuItem(i.getName());
                         menuitem.setIcon("menu");
                         menuitem.setOutcome(i.getApi());
