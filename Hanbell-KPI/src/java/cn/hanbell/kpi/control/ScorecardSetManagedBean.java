@@ -482,8 +482,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                 for (ScorecardDetail d : templateDetail) {
                     this.createDetail();
                     this.currentDetail.setPid(currentEntity.getId());
-                    // 沿用模版序号
-                    this.currentDetail.setSeq(d.getSeq());
                     this.currentDetail.setContent(d.getContent());
                     this.currentDetail.setWeight(d.getWeight());
                     this.currentDetail.setType(d.getType());
