@@ -303,8 +303,9 @@
                     </p:panelGrid>
                     <p:dataTable id="tableList" value="#{scorecardSetManagedBean.detailList}" var="item" styleClass="tableList Mtop10"
                                  selectionMode="single" selection="#{scorecardSetManagedBean.currentDetail}" rowKey="#{item.seq}" >
-                        <p:ajax event="rowSelect"  update=":formOne:tabView:plgDetail,:formOne:dlgStageDescription" oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
-                        <p:ajax event="rowUnselect"  update=":formOne:tabView:plgDetail" oncomplete="" />
+                        <p:ajax event="rowSelect" update="formOne:tabView:plgDetail,formOne:tabView:contextMenu,formOne:dlgStageDescription"
+                                oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
+                        <p:ajax event="rowUnselect" update=":formOne:tabView:plgDetail" oncomplete="" />
                         <p:ajax event="rowDblselect" update="formOne:dlgDetail" oncomplete="PF('dlgDetail').show();"/>
                         <p:column styleClass="Wid30">
                             <f:facet name="header">
@@ -379,9 +380,11 @@
                             <h:outputText value="#{item.sq4}"/>
                         </p:column>
                     </p:dataTable>
-                    <p:contextMenu for="tableList">
-                        <p:menuitem value="Up" icon="arrow-upward" actionListener="#{scorecardSetManagedBean.moveUp}" process="@this"  update="tableList"/>
-                        <p:menuitem value="Down" icon="arrow-downward" actionListener="#{scorecardSetManagedBean.moveDown}" process="@this"  update="tableList"/>
+                    <p:contextMenu id="contextMenu" for="tableList">
+                        <p:menuitem value="Up" icon="arrow-upward" actionListener="#{scorecardSetManagedBean.moveUp}"
+                                    process="@this"  update="tableList" disabled="#{scorecardSetManagedBean.firstDetail}"/>
+                        <p:menuitem value="Down" icon="arrow-downward" actionListener="#{scorecardSetManagedBean.moveDown}"
+                                    process="@this"  update="tableList" disabled="#{scorecardSetManagedBean.lastDetail}"/>
                     </p:contextMenu>
                 </p:tab>
             </p:tabView>
