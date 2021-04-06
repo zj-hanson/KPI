@@ -160,8 +160,8 @@ public class TimerBean {
         List<MailSetting> mailSettingList = mailSettingBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
         if (mailSettingList != null && !mailSettingList.isEmpty()) {
             log4j.info("Begin Execute Send KPI Report Job Schedule " + timer.getInfo());
-            try {
-                for (MailSetting ms : mailSettingList) {
+            for (MailSetting ms : mailSettingList) {
+                try {
                     reportName = ms.getName();
                     MailNotification mn = getMailNotificationBean(ms.getMailEJB());
                     if (mn != null) {
@@ -174,9 +174,18 @@ public class TimerBean {
                     } else {
                         log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
                     }
+                } catch (Exception ex) {
+                    reportName = ms.getName();
+                    MailNotification mn = getMailNotificationBean(ms.getMailEJB());
+                    mn.getTo().clear();
+                    mn.getCc().clear();
+                    mn.setMailSubject();
+                    mn.setMailContent(reportName + "异常：" + ex.toString() + "\n请管理员及时处理！！！");
+                    mn.getTo().add("C2082@hanbell.com.cn");
+                    mn.getTo().add("C2244@hanbell.com.cn");
+                    mn.notify(new MailNotify());
+                    log4j.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
                 }
-            } catch (Exception ex) {
-                log4j.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
             }
             log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
         }

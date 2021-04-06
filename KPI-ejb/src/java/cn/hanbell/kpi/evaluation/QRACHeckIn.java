@@ -56,6 +56,8 @@ public class QRACHeckIn extends QRA {
             BigDecimal AllNum = BigDecimal.valueOf(Double.valueOf(o2.toString()));
             if (AllNum.compareTo(BigDecimal.ZERO) == 1) {
                 result = (AllNum.subtract(badNum)).divide(AllNum, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            }else{
+                return BigDecimal.valueOf(100);
             }
             return result;
         } catch (Exception ex) {

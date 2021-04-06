@@ -97,7 +97,7 @@ public abstract class MailNotification {
         this.indicators.add(i);
     }
 
-    protected abstract String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum);
+    protected abstract String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) throws Exception;
 
     protected abstract String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception;
 
@@ -114,7 +114,7 @@ public abstract class MailNotification {
         return sb.toString();
     }
 
-    protected abstract String getMailBody();
+    protected abstract String getMailBody() throws Exception;
 
     protected String getMailFooter() {
         StringBuilder sb = new StringBuilder();
@@ -125,8 +125,12 @@ public abstract class MailNotification {
         return sb.toString();
     }
 
-    public void setMailContent() {
+    public void setMailContent() throws Exception {
         mailContent = getMailHead() + getMailBody() + getMailFooter();
+    }
+
+    public void setMailContent(String ex) {
+        mailContent = getMailHead() + ex + getMailFooter();
     }
 
     public void setMailSubject() {

@@ -4,14 +4,15 @@
                 template="./../../WEB-INF/bsc.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="content">
         <h:form id="formOne" rendered="#{!qraPercentOfPassReportBean.deny}" >
             <div class="ui-g dashboard">
                 <div class="ui-g-12 ui-md-12" align="center">
                     <div><h3 style="text-align: center">
-                            <span style="float: left">单位:#{qraPercentOfPassReportBean.indicator.unit}</span>#{qraPercentOfPassReportBean.y} #{qraPercentOfPassReportBean.indicatorChart.name}
+                            <span style="float: left">单位:#{qraPercentOfPassReportBean.indicator.unit}</span>#{qraPercentOfPassReportBean.y}--品质水准
                             <p:link value="返回" outcome="home" style="float: right"/>
                             <div style="float:right;margin-right:12px;">
                                 <h:selectBooleanCheckbox value="#{qraPercentOfPassReportBean.monthchecked}"  title="√不选中为所以数据" style="height: 18px;width: 18px">
@@ -20,14 +21,10 @@
                                 </h:selectBooleanCheckbox>
                             </div>
                         </h3></div>
-                    <p:panelGrid id="plgChartData" styleClass="#{qraPercentOfPassReportBean.monthchecked==true?'plgSheetData Wid50':'plgSheetData Wid100'}">
+                    <p:panelGrid id="plgChartData" styleClass="#{qraPercentOfPassReportBean.monthchecked==true?'plgSheetData Wid30':'plgSheetData Wid100'}">
                         <f:facet name="header">
                             <p:row>
-                                <p:column>项目</p:column>
-                                <p:column>分数占比</p:column>
-                                <p:column>目标项</p:column>
-                                <p:column>目标值</p:column>
-                                <p:column>实际</p:column>
+                                <p:column colspan="2">项目</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}">1月</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}">2月</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}">3月</p:column>
@@ -43,280 +40,90 @@
                                 <p:column styleClass="Wid10">年移动平均</p:column>
                             </p:row>
                         </f:facet>
-                        <p:row>
-                            <p:column rowspan="2">进料合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n02,2)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n01,1)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other1Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n02,2)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.jlScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="2">试车合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n04,4)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n03,3)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other2Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n04,4)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.trScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="2">三次元合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n06,6)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n05,5)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other3Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n06,6)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.bsScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="2">上线合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n08,8)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n07,7)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other4Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n08,8)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.olScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="2">涂装、入库合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n10,10)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n09,9)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other5Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n10,10)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.tzScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column rowspan="2">出货合格率</p:column>
-                            <p:column rowspan="2">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.forecastIndicator.n12,12)}</p:column>
-                            <p:column>合格率</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.targetIndicator.n11,11)}</p:column>
-                            <p:column>实际合格率</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.indicator.other6Indicator.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.indicator.targetIndicator.n12,12)}</p:column>
-                            <p:column>实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.chScore.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>合计</p:column>
-                            <p:column>100</p:column>
-                            <p:column>总目标分数</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.mbTotal,1)}</p:column>
-                            <p:column>总实际分数</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.doubleformat(qraPercentOfPassReportBean.sumAG.nfy,0)}</p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>达成率</p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column></p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n01,1)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n02,2)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n03,3)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n04,4)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n05,5)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n06,6)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n07,7)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n08,8)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n09,9)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n10,10)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n11,11)}</p:column>
-                            <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.n12,12)}</p:column>
-                            <p:column>#{qraPercentOfPassReportBean.percentFormat(qraPercentOfPassReportBean.sumPerformance.nfy,0)}</p:column>
-                        </p:row>
+                        <c:forEach items="#{qraPercentOfPassReportBean.indicatorList}" var="item" varStatus="status">
+                            <p:row>
+                                <p:column rowspan="5" style="font-size:24px">#{item.descript}</p:column>
+                                <p:column>基准值</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n01,1)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n02,2)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n03,3)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n04,4)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n05,5)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n06,6)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n07,7)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n08,8)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n09,9)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n10,10)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n11,11)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.n12,12)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.doubleformat(item.benchmarkIndicator.nfy,0)}</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>目标值</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n01,1)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n02,2)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n03,3)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n04,4)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n05,5)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n06,6)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n07,7)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n08,8)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n09,9)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n10,10)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n11,11)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.n12,12)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.doubleformat(item.targetIndicator.nfy,0)}</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>实际值</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n01,1)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n02,2)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n03,3)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n04,4)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n05,5)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n06,6)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n07,7)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n08,8)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n09,9)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n10,10)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n11,11)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n12,12)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.nfy,0)}</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>达成率基准值</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n01,1)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n02,2)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n03,3)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n04,4)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n05,5)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n06,6)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n07,7)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n08,8)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n09,9)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n10,10)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n11,11)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n12,12)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.percentFormat(item.actualIndicator.nfy,0)}</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>达成率实际值</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(1)}" style="#{qraPercentOfPassReportBean.m==1?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n01,1)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(2)}" style="#{qraPercentOfPassReportBean.m==2?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n02,2)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(3)}" style="#{qraPercentOfPassReportBean.m==3?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n03,3)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(4)}" style="#{qraPercentOfPassReportBean.m==4?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n04,4)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(5)}" style="#{qraPercentOfPassReportBean.m==5?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n05,5)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(6)}" style="#{qraPercentOfPassReportBean.m==6?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n06,6)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(7)}" style="#{qraPercentOfPassReportBean.m==7?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n07,7)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(8)}" style="#{qraPercentOfPassReportBean.m==8?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n08,8)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(9)}" style="#{qraPercentOfPassReportBean.m==9?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n09,9)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n10,10)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n11,11)}</p:column>
+                                <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n12,12)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.nfy,0)}</p:column>
+                            </p:row>
+                        </c:forEach>
                     </p:panelGrid>
-                </div>
-                <div class="ui-g-12 ui-md-12">
-                    <p:chart type="line" model="#{qraPercentOfPassReportBean.initLineChartModel('月份','指标')}" style="height:380px"
-                             responsive="true" >
-                    </p:chart>
                 </div>
                 <div id="indicatorSummary" class="ui-g-12 ui-md-12">
                     <p:repeat id="repSummary" value="#{qraPercentOfPassReportBean.summaryList}" var="s" rendered="#{qraPercentOfPassReportBean.summaryCount>0}">
@@ -351,11 +158,7 @@
                     <h:inputHidden id="ac" value="#{shipmentChartReportBean.analysisCount}"></h:inputHidden>
                 </div>
             </div>
-            <div class="ui-grid-row">
-                <div id="upyear" class="ui-grid-col-left"><i class="fa fa-fw fa-hand-o-left"></i>上半年</div>
-                <div id="downyear" class="ui-grid-col-right">下半年<i class="fa fa-fw fa-hand-o-right"></i></div>
-            </div>
-            <h:outputScript name="bsc-percentofpass.js" library="js"/>
+            <h:outputScript name="bsc-analysis-sheet.js" library="js"/>
         </h:form>
         <h:form id="formTwo"  rendered="#{qraPercentOfPassReportBean.deny}">
             <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
