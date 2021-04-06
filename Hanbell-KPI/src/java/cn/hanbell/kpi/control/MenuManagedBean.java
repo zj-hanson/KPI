@@ -90,7 +90,6 @@ public class MenuManagedBean implements Serializable {
     public void init() {
 
         boolean flag;
-        int y = userManagedBean.getY();
         moduleGrantList = new ArrayList<>();
         prgGrantList = new ArrayList<>();
         //KPI授權列表
@@ -99,6 +98,9 @@ public class MenuManagedBean implements Serializable {
         model = new DefaultMenuModel();
 
         if (getUserManagedBean() != null) {
+
+            String company = userManagedBean.getCompany();
+            int y = userManagedBean.getY();
 
             DefaultSubMenu kpimenu;
             DefaultSubMenu appmenu;
@@ -295,7 +297,8 @@ public class MenuManagedBean implements Serializable {
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
                 submenu = null;
-                scorecardList = scorecardBean.findByMenuAndYear(r.getDeptno(), y);
+                //scorecardList = scorecardBean.findByMenuAndYear(r.getDeptno(), y);
+                scorecardList = scorecardBean.findByCompanyMenuAndYear(company, r.getDeptno(), y);
                 if (scorecardList != null && !scorecardList.isEmpty()) {
                     if (submenu == null) {
                         submenu = new DefaultSubMenu(r.getDept());
