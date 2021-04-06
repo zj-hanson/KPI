@@ -7,21 +7,20 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1879
+ * @author C1749
  * 2019年7月9日生管提出更改完工逻辑
  */
-public class ProductionPlanCompleteKHC extends ProductionPlanComplete {
+public class ProductionPlanCompleteZJKM extends ProductionPlanComplete {
 
-    public ProductionPlanCompleteKHC() {
+    public ProductionPlanCompleteZJKM() {
         super();
-        queryParams.put("facno", "K");
+        queryParams.put("facno", "E");
         queryParams.put("prono", "1");
         queryParams.put("stats", "2");
-        queryParams.put("linecode", " IN('AT','ORC','RT') ");
+        queryParams.put("linecode", " IN('AT','ORC','RT','A8','A9') ");
         queryParams.put("typecode", " ='01' ");
-        queryParams.put("prosscode", " in ('LX08') ");
-        queryParams.put("wrcode", "  ='ZP01' ");
-        queryParams.put("itcls", " IN('3H76','3H79','3H80')  ");
+        queryParams.put("prosscode", " IN ('OR08','KQ10','LG08') ");
+        //queryParams.put("wrcode", " IN ('ZP01','ZP02','ZP03','WL2','ZS1') ");
 
     }
 }

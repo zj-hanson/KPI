@@ -10,8 +10,16 @@ import cn.hanbell.kpi.comm.SuperEJBForCRM;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
+import cn.hanbell.kpi.ejb.QualityLevelTargetBean;
+import cn.hanbell.kpi.entity.Indicator;
+import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.entity.QualityLevelTarget;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -29,6 +37,8 @@ public abstract class QRA implements Actual {
     protected SuperEJBForKPI superEJBForKPI = lookupSuperEJBForKPI();
     protected SuperEJBForMES superEJBForMES = lookupSuperEJBForMES();
 
+    QualityLevelTargetBean qualityLevelTargetBean = lookupQualityLevelTargetBean();
+    ;
     protected LinkedHashMap<String, Object> queryParams;
     protected final Logger log4j = LogManager.getLogger();
 
@@ -113,6 +123,99 @@ public abstract class QRA implements Actual {
             }
         }
         return list;
+    }
+
+    public BigDecimal getActualValue(Indicator i, int y, int m) {
+        IndicatorDetail other1 = i.getOther1Indicator();
+        IndicatorDetail other2 = i.getOther2Indicator();
+        IndicatorDetail other3 = i.getOther3Indicator();
+        IndicatorDetail other4 = i.getOther4Indicator();
+        IndicatorDetail other5 = i.getOther5Indicator();
+        IndicatorDetail other6 = i.getOther6Indicator();
+        List<QualityLevelTarget> data;
+
+        BigDecimal value = BigDecimal.ZERO;
+        BigDecimal otherValue;
+        try {
+            data = qualityLevelTargetBean.findByIndicatorIdAndSeq(i.getId(), y);
+            if (!data.isEmpty()) {
+                for (QualityLevelTarget q : data) {
+                    if (Objects.equals(q.getOther(), other1.getId())) {
+                        otherValue = getOtherMonValue(other1, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other1"+otherValue);
+                    }
+                    if (Objects.equals(q.getOther(), other2.getId())) {
+                        otherValue = getOtherMonValue(other2, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other2"+otherValue);
+                    }
+                    if (Objects.equals(q.getOther(), other3.getId())) {
+                        otherValue = getOtherMonValue(other3, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other3"+otherValue);
+                    }
+                    if (Objects.equals(q.getOther(), other4.getId())) {
+                        otherValue = getOtherMonValue(other4, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other4"+otherValue);
+                    }
+                    if (Objects.equals(q.getOther(), other5.getId())) {
+                        otherValue = getOtherMonValue(other5, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other5"+otherValue);
+                    }
+                    if (Objects.equals(q.getOther(), other6.getId())) {
+                        otherValue = getOtherMonValue(other6, m);
+                        value = value.add(q.getTarget1().multiply(otherValue).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        System.out.println("other6"+otherValue);
+                    }
+                }
+            }
+            return value.divide(BigDecimal.valueOf(100), 4, BigDecimal.ROUND_HALF_UP);
+        } catch (Exception ex) {
+            log4j.error("QRA类中getActualValue()方法异常：", ex);
+        }
+
+        return BigDecimal.ZERO;
+    }
+
+    private BigDecimal getOtherMonValue(IndicatorDetail d, int m) {
+        Field f;
+        String mon;
+        BigDecimal value;
+        try {
+            mon = this.getIndicatorColumn("N", m);
+            //分数
+            f = d.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            value = BigDecimal.valueOf(Double.valueOf(f.get(d).toString()));
+            return value;
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException ex) {
+            log4j.error("QRA类的getOtherMonValue()方法异常：", ex);
+        }
+        return BigDecimal.ZERO;
+
+    }
+
+    public String getIndicatorColumn(String formtype, int m) {
+        if (formtype.equals("N")) {
+            return "n" + String.format("%02d", m);
+        } else if (formtype.equals("D")) {
+            return "d" + String.format("%02d", m);
+        } else {
+            return "";
+        }
+    }
+
+    private QualityLevelTargetBean lookupQualityLevelTargetBean() {
+        try {
+            Context c = new InitialContext();
+            return (QualityLevelTargetBean) c.lookup("java:global/KPI/KPI-ejb/QualityLevelTargetBean!cn.hanbell.kpi.ejb.QualityLevelTargetBean");
+        } catch (NamingException ne) {
+            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
 
 }
