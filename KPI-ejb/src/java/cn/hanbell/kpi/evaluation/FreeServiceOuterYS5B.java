@@ -85,7 +85,7 @@ class FreeServiceOuterYSoa5B extends FreeServiceOuterYSoa {
         queryParams.remove("facno");
         queryParams.remove("deptno");
         queryParams.put("facno", "E");
-        queryParams.put("deptno", " like '8A%' ");
+        queryParams.put("depno", " like '8A%' ");
         //ZJComer
         temp2 = super.getValue(y, m, d, type, queryParams);
         //SHComer + ZJComer
