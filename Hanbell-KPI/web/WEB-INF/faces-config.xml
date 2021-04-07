@@ -321,33 +321,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>complaintschartajz</from-outcome>
-            <to-view-id>/app/bsc/complaintschartajz.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartb</from-outcome>
-            <to-view-id>/app/bsc/complaintschartb.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschart</from-outcome>
-            <to-view-id>/app/bsc/complaintschart.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartc</from-outcome>
-            <to-view-id>/app/bsc/complaintschartc.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartpzk</from-outcome>
-            <to-view-id>/app/bsc/complaintschartpzk.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>complaintschartp</from-outcome>
-            <to-view-id>/app/bsc/complaintschartp.xhtml</to-view-id>
+            <from-outcome>complaintssheet</from-outcome>
+            <to-view-id>/app/bsc/complaintssheet.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
@@ -496,21 +471,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>percentofpassr</from-outcome>
-            <to-view-id>/app/bsc/percentofpassr.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>percentofpassp</from-outcome>
-            <to-view-id>/app/bsc/percentofpassp.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>percentofpassjz</from-outcome>
-            <to-view-id>/app/bsc/percentofpassjz.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>procurementsheet</from-outcome>
             <to-view-id>/app/bsc/procurementsheet.xhtml</to-view-id>
             <redirect/>
@@ -551,8 +511,8 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>scorecardReference</from-outcome>
-            <to-view-id>/app/perf/scorecardReference.xhtml</to-view-id>
+            <from-outcome>scorecardreference</from-outcome>
+            <to-view-id>/app/perf/scorecardreference.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

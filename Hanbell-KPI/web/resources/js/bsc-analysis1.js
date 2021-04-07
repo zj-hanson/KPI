@@ -19,17 +19,6 @@ $(document).ready(function () {
             }
             $(t).find("td").css("border", "1px solid #000000");
         });
-        //MIS当月数据显示红色
-        var misData = document.getElementById("formOne:plgMISData1");
-        if (misData !== undefined && misData !== null) {
-            var tr = $(misData).find("tr.ui-widget-content");
-            $(tr).each(function (i, t) {
-                var c = $(t).find("td.ui-panelgrid-cell")[12];
-                if (c !== null) {
-                    $(c).css("color", "red");
-                }
-            });
-        }
     }
     //指标说明
     var sc1 = document.getElementById("formOne:sc1");

@@ -51,6 +51,18 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
+    public List<Scorecard> findByCompanyMenuAndYear(String company, String value, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByCompanyMenuAndYear");
+        query.setParameter("company", company);
+        query.setParameter("menu", value);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public int findRowCount(String company, int y) {
         Query query = getEntityManager().createNamedQuery("Scorecard.findByRowCount");
         query.setParameter("company", company);
@@ -186,7 +198,7 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
             throw ex;
         }
     }
-    
+
     public void setPerf(ScorecardDetail d, String n) {
         if (d.getPerformanceJexl() == null || "".equals(d.getPerformanceJexl())) {
             throw new NullPointerException("表达式为空");
