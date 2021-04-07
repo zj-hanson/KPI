@@ -29,7 +29,7 @@ public class FreeServiceOuterSum5B extends FreeServiceERP{
     public FreeServiceOuterSum5B() {
         super();
         queryParams.put("formid", "A-再生能源服务成本");
-        queryParams.put("deptno", "5B000");
+        queryParams.put("deptno", "8A000");
     }
 
     //差旅费+运费+服务领退料
