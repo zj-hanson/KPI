@@ -6,6 +6,7 @@
 package cn.hanbell.kpi.entity.tms;
 
 import com.lightshell.comm.SuperEntity;
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Project.findAll", query = "SELECT p.projectSeq,p.projectName,p.pMUserId,p.pMUser FROM Project p"),
     @NamedQuery(name = "Project.findByProjectSeq", query = "SELECT p.ph FROM Project p WHERE p.projectSeq = :projectSeq")})
-public class Project extends SuperEntity{
+public class Project implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
