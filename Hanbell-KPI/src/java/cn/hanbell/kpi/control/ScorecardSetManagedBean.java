@@ -26,6 +26,7 @@ import com.lightshell.comm.BaseLib;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -260,6 +262,70 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
+    /**
+     * @desc 截取字符的数字计算得分、达成率
+     * @param target
+     * @param acutal
+     * @return value
+     */
+    public BigDecimal calculateScore(String target, String acutal) {
+        BigDecimal value = BigDecimal.ZERO;
+        String str1, str2;
+        // 先判断有值
+        if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
+            str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
+            str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
+            //判断截取出来的数据是否为数字
+            if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
+                Double t = Double.valueOf(str1);
+                Double a = Double.valueOf(str2);
+                // 分母不为零
+                if (t > 0.00001) {
+                    // 达成率、得分
+                    value = BigDecimal.valueOf(a / t * 100);
+                }
+            } else {
+                showErrorMsg("Error", "基准目标值格式不正确！！");
+                return BigDecimal.ZERO;
+            }
+        }
+        return value;
+    }
+
+    public String copyEntity(String path) {
+        if (this.currentEntity != null && this.currentPrgGrant != null) {
+            try {
+                Scorecard entity = (Scorecard) BeanUtils.cloneBean(currentEntity);
+                entity.setId(null);
+                entity.setFreezeDate(null);
+                entity.setSeq(entity.getSeq() + 1);
+                entity.setCreator(this.userManagedBean.getCurrentUser().getUserid() + "-" + this.userManagedBean.getCurrentUser().getUsername());
+                entity.setCredate(getDate());
+                entity.setStatus("N");
+                setNewEntity(entity);
+
+                if (detailList != null && !detailList.isEmpty()) {
+                    deletedDetailList.clear();
+                    editedDetailList.clear();
+                    addedDetailList.clear();
+
+                    for (ScorecardDetail sd : detailList) {
+                        ScorecardDetail detail = (ScorecardDetail) BeanUtils.cloneBean(sd);
+                        detail.setId(null);
+                        detail.setPid(0);
+                        addedDetailList.add(detail);
+                    }
+                }
+                persist();
+                setCurrentEntity(entity);
+                return path;
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+                showErrorMsg("Error", ex.getMessage());
+            }
+        }
+        return "";
+    }
+
     @Override
     protected boolean doBeforeVerify() throws Exception {
         if (super.doBeforeVerify()) {
@@ -421,36 +487,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
             log4j.warn("updateScoreByPLMProject()方法异常-" + ex.toString());
         }
 
-    }
-
-    /**
-     * @desc 截取字符的数字计算得分、达成率
-     * @param target
-     * @param acutal
-     * @return value
-     */
-    public BigDecimal calculateScore(String target, String acutal) {
-        BigDecimal value = BigDecimal.ZERO;
-        String str1, str2;
-        // 先判断有值
-        if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
-            str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
-            str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
-            //判断截取出来的数据是否为数字
-            if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
-                Double t = Double.valueOf(str1);
-                Double a = Double.valueOf(str2);
-                // 分母不为零
-                if (t > 0.00001) {
-                    // 达成率、得分
-                    value = BigDecimal.valueOf(a / t * 100);
-                }
-            } else {
-                showErrorMsg("Error", "基准目标值格式不正确！！");
-                return BigDecimal.ZERO;
-            }
-        }
-        return value;
     }
 
     @Override
