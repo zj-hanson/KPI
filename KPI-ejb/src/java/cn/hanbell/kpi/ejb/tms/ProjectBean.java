@@ -8,6 +8,7 @@ package cn.hanbell.kpi.ejb.tms;
 import cn.hanbell.kpi.comm.SuperEJBForTMS;
 import cn.hanbell.kpi.entity.tms.Project;
 import com.lightshell.comm.SuperEJB;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -23,7 +24,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class ProjectBean extends SuperEJB<Project> {
+public class ProjectBean implements Serializable {
 
     @PersistenceContext(unitName = "SHBTMS-ejbPU")
     private EntityManager em;
@@ -32,7 +33,7 @@ public class ProjectBean extends SuperEJB<Project> {
     private SuperEJBForTMS tmsEJB;
 
     public ProjectBean() {
-        super(Project.class);
+        
     }
 
     public List<Project> getProjectData() {
@@ -43,7 +44,6 @@ public class ProjectBean extends SuperEJB<Project> {
             for (int i = 0; i < data.size(); i++) {
                 Object o[] = (Object[]) data.get(i);
                 Project p = new Project();
-                p.setId(i+1);
                 p.setId(String.valueOf(i+1));
                 p.setProjectSeq(Integer.parseInt(o[0].toString()));
                 p.setProjectName(o[1].toString());
@@ -66,11 +66,6 @@ public class ProjectBean extends SuperEJB<Project> {
         } catch (NumberFormatException e) {
             return "";
         }
-    }
-
-    @Override
-    public EntityManager getEntityManager() {
-        return em;
     }
 
 }

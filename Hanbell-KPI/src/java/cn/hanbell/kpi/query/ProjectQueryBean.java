@@ -10,11 +10,14 @@ package cn.hanbell.kpi.query;
  * @author C1749
  */
 import cn.hanbell.kpi.ejb.tms.ProjectBean;
+import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.tms.Project;
 import cn.hanbell.kpi.web.SuperQueryBean;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,32 +26,29 @@ import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "projectQueryBean")
 @ViewScoped
-public class ProjectQueryBean extends SuperQueryBean<Project> {
+public class ProjectQueryBean implements Serializable{
     @EJB
     private ProjectBean projectBean;
 
     public String projectSeq;
     public String projectName;
     private Project selectedProject;
-    private List<Project> selectedProjects;
+    private List<Project> selectedProjects = new ArrayList<>();;
 
     public ProjectQueryBean() {
-        super(Project.class);
+        
     }
 
-    @Override
     public void reset() {
         selectedProjects.clear();
     }
 
-    @Override
+    @PostConstruct
     public void init() {
         selectedProject = new Project();
-        selectedProjects = new ArrayList<>();
         selectedProjects = projectBean.getProjectData();
     }
 
-    @Override
     public void query() {
         selectedProjects = new ArrayList<>();
         selectedProjects = projectBean.getProjectData();
@@ -74,12 +74,9 @@ public class ProjectQueryBean extends SuperQueryBean<Project> {
         return selectedProjects;
     }
 
-    @Override
     public void closeDialog() {
         if (selectedProject != null) {
             PrimeFaces.current().dialog().closeDynamic(selectedProject);
-        } else {
-            showErrorMsg("Error", "没有选择数据");
         }
     }
 
