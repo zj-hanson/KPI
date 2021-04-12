@@ -13,7 +13,7 @@ public class QRAActualAH extends QRAActual {
 
     public QRAActualAH() {
         super();
-        queryParams.put("OuterFormid", "QRA-机体物料");
+        queryParams.put("formid", "QRA-机体物料");
         queryParams.put("deptno", "1M000");
 
     }

@@ -13,7 +13,7 @@ public class QRAActualP extends QRAActual {
 
     public QRAActualP() {
         super();
-        queryParams.put("OuterFormid", "QRA-涡旋物料");
+        queryParams.put("formid", "QRA-涡旋物料");
         queryParams.put("deptno", "1M000");
 
     }
