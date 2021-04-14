@@ -26,7 +26,7 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class CPShipmentMailBean extends DailyMail {
+public class CPShipmentMailBean extends ShipmentMail {
 
     public List<Indicator> sumIndicatorList;// 大合计集合
     public Indicator total;// 大合计对象

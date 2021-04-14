@@ -181,7 +181,7 @@ public abstract class SheetMail extends BscSheetMail {
             targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
 
             sb.append("<tr><td  rowspan=\"6\" colspan=\"1\">").append(e.getName()).append("</td>");
-            sb.append("<td>实际</td>");
+            sb.append("<td>接单</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = a.getClass().getDeclaredField(col);
@@ -204,7 +204,7 @@ public abstract class SheetMail extends BscSheetMail {
                 sb.append("<td rowspan=\"6\"></td>");
             }
             sb.append("</tr>");
-            sb.append("<tr><td>实际累计</td>");
+            sb.append("<tr><td>接单累计</td>");
             for (int i = 1; i < 13; i++) {
                 col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
                 f = actualAccumulated.getClass().getDeclaredField(col);

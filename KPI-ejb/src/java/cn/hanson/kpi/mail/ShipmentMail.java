@@ -22,13 +22,13 @@ import java.util.List;
  *
  * @author C1749
  */
-public abstract class DailyMail extends MailNotification {
+public abstract class ShipmentMail extends MailNotification {
 
     protected Indicator sumIndicator;
 
     protected SalesOrder salesOrder;
 
-    public DailyMail() {
+    public ShipmentMail() {
 
     }
 

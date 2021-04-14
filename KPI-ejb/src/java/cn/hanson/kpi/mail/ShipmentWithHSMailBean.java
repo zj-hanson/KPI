@@ -21,7 +21,7 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class ShipmentWithHSMailBean extends DailyMail {
+public class ShipmentWithHSMailBean extends ShipmentMail {
 
     public List<Indicator> sumIndicatorList;
     public Indicator total;
