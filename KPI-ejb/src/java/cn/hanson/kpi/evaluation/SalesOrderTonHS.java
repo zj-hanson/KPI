@@ -12,14 +12,16 @@ import java.util.LinkedHashMap;
 import javax.persistence.Query;
 
 /**
- * 预估订单数量
+ * 浙江汉声订单数量
  *
  * @author C0160
  */
-public class SalesOrderTon extends SalesOrder {
+public class SalesOrderTonHS extends SalesOrder {
 
-    public SalesOrderTon() {
+    public SalesOrderTonHS() {
         super();
+        queryParams.put("facno", "H");
+        queryParams.put("cusno", " not in ('HAH00001') ");
     }
 
     @Override

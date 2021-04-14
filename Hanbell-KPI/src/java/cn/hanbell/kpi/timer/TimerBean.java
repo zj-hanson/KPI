@@ -131,7 +131,8 @@ public class TimerBean {
             }
             //部门指标来源产品指标，所以先算产品指标
             log4j.info("updateIndicatorActualValue开始产品指标堆叠计算");
-            indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "P", c.get(Calendar.YEAR), timer.getInfo().toString());
+            //indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "P", c.get(Calendar.YEAR), timer.getInfo().toString());
+            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("P", c.get(Calendar.YEAR), timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {
@@ -143,7 +144,8 @@ public class TimerBean {
                 }
             }
             log4j.info("updateIndicatorActualValue开始部门指标堆叠计算");
-            indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "D", c.get(Calendar.YEAR), timer.getInfo().toString());
+            //indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "D", c.get(Calendar.YEAR), timer.getInfo().toString());
+            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("D", c.get(Calendar.YEAR), timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {

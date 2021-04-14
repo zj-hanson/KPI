@@ -313,11 +313,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public List<Indicator> findRootByAssigned(String company, String objtype, int y) {
-        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssigned");
-        query.setParameter("company", company);
+    public List<Indicator> findRootByAssignedObjtypeAndJobSchedule(String objtype, int y, String jobschedule) {
+        Query query = getEntityManager().createNamedQuery("Indicator.findRootByAssignedObjtypeAndJobSchedule");
         query.setParameter("objtype", objtype);
         query.setParameter("seq", y);
+        query.setParameter("jobschedule", jobschedule);
         try {
             return query.getResultList();
         } catch (Exception ex) {

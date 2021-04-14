@@ -10,7 +10,6 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanson.kpi.evaluation.SalesOrderAmount;
 import cn.hanson.kpi.evaluation.SalesOrderTon;
-import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,7 +26,7 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class CPShipmentMailBean extends ShipmentMail {
+public class CPShipmentMailBean extends DailyMail {
 
     public List<Indicator> sumIndicatorList;// 大合计集合
     public Indicator total;// 大合计对象
@@ -48,22 +47,11 @@ public class CPShipmentMailBean extends ShipmentMail {
         super.init();
     }
 
-    @Override
-    protected String getMailHead() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html><head><title>Hanson</title>");
-        sb.append(css);
-        sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
-        sb.append("<div style=\"width:100%\" class=\"title\">");
-        sb.append("<div style=\"text-align:center;width:100%\">浙江汉声精密机械有限公司</div>");
-        sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:")
-                .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
-        sb.append("</div>");
-        return sb.toString();
-    }
-
-    // 表头
+    /**
+     * 复用表格标题
+     *
+     * @return
+     */
     protected String getTableHead() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tbl\"><table width=\"100%\">");
@@ -80,12 +68,7 @@ public class CPShipmentMailBean extends ShipmentMail {
     }
 
     @Override
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
-        return getHtmlTable(indicatorList, y, m, d, needsum, "合计");
-    }
-
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum,
-            String sumTitle) {
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum, String sumTitle) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
         getData().put("sum2", BigDecimal.ZERO);
@@ -109,11 +92,6 @@ public class CPShipmentMailBean extends ShipmentMail {
             return ex.toString();
         }
         return sb.toString();
-    }
-
-    @Override
-    protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
-        return getHtmlTableRow(indicator, y, m, d, null);
     }
 
     @Override
