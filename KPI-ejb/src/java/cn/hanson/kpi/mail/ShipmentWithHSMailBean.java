@@ -8,7 +8,6 @@ package cn.hanson.kpi.mail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanson.kpi.evaluation.SalesOrderAmount;
 import cn.hanson.kpi.evaluation.SalesOrderTon;
-import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,21 +39,6 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
             this.sumIndicatorList.clear();
         }
         super.init();
-    }
-
-    @Override
-    protected String getMailHead() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html><head><title>Hanson</title>");
-        sb.append(css);
-        sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
-        sb.append("<div style=\"width:100%\" class=\"title\">");
-        sb.append("<div style=\"text-align:center;width:100%\">浙江汉声精密机械有限公司</div>");
-        sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
-        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:")
-                .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
-        sb.append("</div>");
-        return sb.toString();
     }
 
     @Override

@@ -261,7 +261,7 @@ public abstract class MailNotification {
      */
     public void setD(Date d) {
         this.d = d;
-        c.setTime(d);
+        this.c.setTime(d);
         this.y = c.get(Calendar.YEAR);
         this.m = c.get(Calendar.MONTH) + 1;
     }
