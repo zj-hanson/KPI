@@ -632,7 +632,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
      * @return 新的指标对象
      */
     public Indicator getSubtractValue(Indicator minuend, Indicator subtrahend, boolean subOther, boolean updatePerf) {
-        if (!minuend.getFormtype().equals(subtrahend.getFormtype())) {
+        if (!minuend.getFormtype().equals(subtrahend.getFormtype()) || !minuend.getFormkind().equals(subtrahend.getFormkind())) {
             return null;
         }
         String formkind = minuend.getFormkind();
