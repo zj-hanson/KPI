@@ -12,14 +12,16 @@ import java.util.LinkedHashMap;
 import javax.persistence.Query;
 
 /**
- * 预估订单数量
+ * 安徽汉扬订单数量
  *
  * @author C0160
  */
-public class SalesOrderTon extends SalesOrder {
+public class SalesOrderTonHY extends SalesOrder {
 
-    public SalesOrderTon() {
+    public SalesOrderTonHY() {
         super();
+        queryParams.put("facno", "Y");
+        queryParams.put("cusno", " not in ('YZJ00001') ");
     }
 
     @Override
@@ -36,7 +38,7 @@ public class SalesOrderTon extends SalesOrder {
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
         sb.append(" when '4F' then d.cdrqy1*s.rate2 else d.cdrqy1 end) as decimal(17,2))),0) ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s ");
-        sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta<'98' and s.itnbr=d.itnbr ");
+        sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and s.itnbr=d.itnbr ");
         if (!"".equals(cusno)) {
             sb.append(" and h.cusno ").append(cusno);
         }

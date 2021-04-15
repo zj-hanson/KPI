@@ -10,10 +10,10 @@ import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanson.kpi.evaluation.SalesOrder;
+import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,11 +29,21 @@ public abstract class ShipmentMail extends MailNotification {
     protected SalesOrder salesOrder;
 
     public ShipmentMail() {
-        this.decimalFormat = new DecimalFormat("##.##");
+
+    }
+
+    @Override
+    public void init() {
+        setDecimalFormat("##.##");
+        super.init();
     }
 
     @Override
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
+        return getHtmlTable(indicatorList, y, m, d, needsum, "合计");
+    }
+
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum, String sumTitle) {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
         getData().put("sum2", BigDecimal.ZERO);
@@ -52,6 +62,9 @@ public abstract class ShipmentMail extends MailNotification {
             if (needsum) {
                 sumIndicator = indicatorBean.getSumValue(indicators);
                 if (sumIndicator != null) {
+                    if (sumTitle != null) {
+                        sumIndicator.setName(sumTitle);
+                    }
                     indicatorBean.updatePerformance(sumIndicator);
                     sb.append(getHtmlTableRow(sumIndicator, y, m, d));
                 }
@@ -65,95 +78,7 @@ public abstract class ShipmentMail extends MailNotification {
 
     @Override
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
-        //获取需要取值栏位
-        String col = indicatorBean.getIndicatorColumn(indicator.getFormtype(), m);
-        StringBuilder sb = new StringBuilder();
-        IndicatorDetail a = indicator.getActualIndicator();
-        IndicatorDetail b = indicator.getBenchmarkIndicator();
-        IndicatorDetail p = indicator.getPerformanceIndicator();
-        IndicatorDetail t = indicator.getTargetIndicator();
-        Field f;
-        try {
-            BigDecimal num1, num2;
-            if (indicator.getActualInterface() != null && indicator.getActualEJB() != null && indicator.getId() != -1) {
-                //本日出货
-                Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
-                actualInterface.setEJB(indicator.getActualEJB());
-                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
-                //未交订单
-                if (salesOrder != null) {
-                    salesOrder.setEJB(indicator.getActualEJB());
-                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
-                } else {
-                    num2 = BigDecimal.ZERO;
-                }
-            } else {
-                num1 = BigDecimal.ZERO;
-                num2 = BigDecimal.ZERO;
-            }
-            if (indicator.getId() != -1) {
-                sumAdditionalData("sum1", num1);
-                sumAdditionalData("sum2", num2);
-            }
-            sb.append("<tr>");
-            sb.append("<td>").append(indicator.getName()).append("</td>");
-            sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num1 : getData().get("sum1"))).append("</td>");
-            //当月
-            //实际
-            f = a.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(a))).append("</td>");
-            //目标
-            f = t.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
-            //达成
-            f = p.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            //同期
-            f = b.getClass().getDeclaredField(col);
-            f.setAccessible(true);
-            //sb.append("<td>").append(decimalFormat.format(f.get(b))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(b).toString())), d, 0))).append("</td>");
-            //成长
-            //sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getGrowth(a, b, m, d, 0))).append("</td>");
-            //累计
-            //实际
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(a, m))).append("</td>");
-            //目标
-            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(t, m, d))).append("</td>");
-            //达成
-            //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, t, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedPerformance(a, false, t, true, m, d))).append("</td>");
-            //同期
-            //sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(decimalFormat.format(indicatorBean.getAccumulatedValue(b, m, d))).append("</td>");
-            //成长
-            //sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m))).append("</td>");
-            //改成按天折算
-            sb.append("<td>").append(percentFormat(indicatorBean.getAccumulatedGrowth(a, b, m, d))).append("</td>");
-            //年度目标
-            f = t.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(decimalFormat.format(f.get(t))).append("</td>");
-            //年度达成
-            f = p.getClass().getDeclaredField("nfy");
-            f.setAccessible(true);
-            sb.append("<td>").append(percentFormat(f.get(p))).append("</td>");
-            sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
-            sb.append("</tr>");
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            throw new Exception(ex);
-        }
-        return sb.toString();
+        return getHtmlTableRow(indicator, y, m, d, null);
     }
 
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d, String sumStyle) throws Exception {
@@ -251,6 +176,21 @@ public abstract class ShipmentMail extends MailNotification {
         } else {
             return sb.toString().replace("${style}", "");
         }
+    }
+
+    @Override
+    protected String getMailHead() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><head><title>Hanson</title>");
+        sb.append(css);
+        sb.append("</head><body><div style=\"margin: auto;text-align: center;\">");
+        sb.append("<div style=\"width:100%\" class=\"title\">");
+        sb.append("<div style=\"text-align:center;width:100%\">浙江汉声精密机械有限公司</div>");
+        sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
+        sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:")
+                .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+        sb.append("</div>");
+        return sb.toString();
     }
 
     public Indicator getSumIndicator() {
