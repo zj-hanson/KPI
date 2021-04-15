@@ -36,7 +36,7 @@ public class SalesOrderTon extends SalesOrder {
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
         sb.append(" when '4F' then d.cdrqy1*s.rate2 else d.cdrqy1 end) as decimal(17,2))),0) ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s ");
-        sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta<'95' and s.itnbr=d.itnbr ");
+        sb.append(" where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta<'98' and s.itnbr=d.itnbr ");
         if (!"".equals(cusno)) {
             sb.append(" and h.cusno ").append(cusno);
         }

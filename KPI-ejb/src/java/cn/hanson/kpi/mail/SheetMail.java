@@ -5,6 +5,7 @@
  */
 package cn.hanson.kpi.mail;
 
+import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.BscSheetMail;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
@@ -13,6 +14,7 @@ import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +45,9 @@ public abstract class SheetMail extends BscSheetMail {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th>产品</th><th>项目</th>");
+            sb.append("<tr><th>类别</th><th>项目</th>");
             sb.append("<th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th><th>6月</th><th>7月</th><th>8月</th><th>9月</th><th>10月</th><th>11月</th><th>12月</th><th>全年</th>");
+            sb.append("<th>订单未交</th>");
             sb.append("<th>年度比重</th>");
             sb.append("</tr>");
             if (needsum) {
@@ -75,8 +78,9 @@ public abstract class SheetMail extends BscSheetMail {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
-            sb.append("<tr><th>产品</th><th>项目</th>");
+            sb.append("<tr><th>类别</th><th>项目</th>");
             sb.append("<th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th><th>6月</th><th>7月</th><th>8月</th><th>9月</th><th>10月</th><th>11月</th><th>12月</th><th>全年</th>");
+            sb.append("<th>订单未交</th>");
             sb.append("<th>年度比重</th>");
             sb.append("</tr>");
             if (needsum) {
@@ -115,6 +119,7 @@ public abstract class SheetMail extends BscSheetMail {
         mon = indicatorBean.getIndicatorColumn("N", getM());
         BigDecimal v;
         Method setMethod;
+        BigDecimal num1, num2;
         try {
             actualAccumulated = new IndicatorDetail();
             actualAccumulated.setParent(e);
@@ -180,6 +185,29 @@ public abstract class SheetMail extends BscSheetMail {
             f.setAccessible(true);
             targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
 
+            if (e.getActualInterface() != null && e.getActualEJB() != null && e.getId() != -1) {
+                // 本日订单
+                Actual actualInterface = (Actual) Class.forName(e.getActualInterface()).newInstance();
+                actualInterface.setEJB(e.getActualEJB());
+                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
+                        .divide(e.getRate(), 2, RoundingMode.HALF_UP);
+                // 未交订单
+                if (salesOrder != null) {
+                    salesOrder.setEJB(e.getActualEJB());
+                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(e.getRate(), 2,
+                            RoundingMode.HALF_UP);
+                } else {
+                    num2 = BigDecimal.ZERO;
+                }
+            } else {
+                num1 = BigDecimal.ZERO;
+                num2 = BigDecimal.ZERO;
+            }
+            if (e.getId() != -1) {
+                sumAdditionalData("sum1", num1);
+                sumAdditionalData("sum2", num2);
+            }
+
             sb.append("<tr><td  rowspan=\"6\" colspan=\"1\">").append(e.getName()).append("</td>");
             sb.append("<td>接单</td>");
             for (int i = 1; i < 13; i++) {
@@ -193,6 +221,9 @@ public abstract class SheetMail extends BscSheetMail {
                 }
             }
             sb.append("<td>").append(decimalFormat.format(a.getNfy())).append("</td>");
+            // 订单未交
+            sb.append("<td rowspan=\"6\">").append(decimalFormat.format(e.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
+
             // 年度比重
             if (e.getId() != -1 && totalActualValue.compareTo(BigDecimal.ZERO) != 0) {
                 sb.append("<td rowspan=\"6\">")
@@ -286,6 +317,7 @@ public abstract class SheetMail extends BscSheetMail {
         mon = indicatorBean.getIndicatorColumn("N", getM());
         BigDecimal v;
         Method setMethod;
+        BigDecimal num1, num2;
         try {
             actualAccumulated = new IndicatorDetail();
             actualAccumulated.setParent(e);
@@ -351,6 +383,29 @@ public abstract class SheetMail extends BscSheetMail {
             f.setAccessible(true);
             targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
 
+            if (e.getActualInterface() != null && e.getActualEJB() != null && e.getId() != -1) {
+                // 本日订单
+                Actual actualInterface = (Actual) Class.forName(e.getActualInterface()).newInstance();
+                actualInterface.setEJB(e.getActualEJB());
+                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
+                        .divide(e.getRate(), 2, RoundingMode.HALF_UP);
+                // 未交订单
+                if (salesOrder != null) {
+                    salesOrder.setEJB(e.getActualEJB());
+                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(e.getRate(), 2,
+                            RoundingMode.HALF_UP);
+                } else {
+                    num2 = BigDecimal.ZERO;
+                }
+            } else {
+                num1 = BigDecimal.ZERO;
+                num2 = BigDecimal.ZERO;
+            }
+            if (e.getId() != -1) {
+                sumAdditionalData("sum1", num1);
+                sumAdditionalData("sum2", num2);
+            }
+
             sb.append("<tr><td  rowspan=\"10\" colspan=\"1\">").append(e.getName()).append("</td>");
             sb.append("<td>目标</td>");
             for (int i = 1; i < 13; i++) {
@@ -364,6 +419,8 @@ public abstract class SheetMail extends BscSheetMail {
                 }
             }
             sb.append("<td>").append(decimalFormat.format(t.getNfy())).append("</td>");
+            // 订单未交
+            sb.append("<td rowspan=\"10\">").append(decimalFormat.format(e.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
             // 年度比重
             if (e.getId() != -1 && totalActualValue.compareTo(BigDecimal.ZERO) != 0) {
                 sb.append("<td rowspan=\"10\">")

@@ -110,6 +110,8 @@ public class CPShipmentMailBean extends ShipmentMail {
                 // 本日出货
                 Actual actualInterface = (Actual) Class.forName(indicator.getActualInterface()).newInstance();
                 actualInterface.setEJB(indicator.getActualEJB());
+                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
+                        .divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
                 // 未交订单
                 if (salesOrder != null) {
                     salesOrder.setEJB(indicator.getActualEJB());
@@ -118,9 +120,6 @@ public class CPShipmentMailBean extends ShipmentMail {
                 } else {
                     num2 = BigDecimal.ZERO;
                 }
-                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
-                        .divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
-
             } else {
                 num1 = BigDecimal.ZERO;
                 num2 = BigDecimal.ZERO;
