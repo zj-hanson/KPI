@@ -124,34 +124,52 @@ public class AuditClientRankingReportBean extends BscQueryTableManageBean implem
                 map.put("n_code_DA", "= 'R'");
                 map.put("n_code_DC", " IN ('R','H') ");
                 break;
+            case "1F340":
+                map.put("deptnoname", "制冷产品部");
+                map.put("daname", "离心机");
+                map.put("n_code_DA", "= 'R'");
+                map.put("n_code_DC", " IN ('RT') ");
+                break;
             case "1Q000":
                 map.put("deptnoname", "空压机组产品部");
                 map.put("daname", "空压机组");
                 map.put("n_code_DA", "= 'AA'");
                 break;
+            case "1Q000-AA":
+                map.put("deptnoname", "空压机组产品部");
+                map.put("daname", "空压机组");
+                map.put("n_code_DA", "= 'AA'");
+                map.put("n_code_DC", " <>'SDS' ");
+                break;
+            case "1Q000-SDS":
+                map.put("deptnoname", "空压机组产品部");
+                map.put("daname", "空压机组");
+                map.put("n_code_DA", "= 'AA'");
+                map.put("n_code_DC", " = 'SDS' ");
+                break;
             case "1G100":
                 map.put("deptnoname", "空压机体营销一课");
                 map.put("daname", "A机体");
                 map.put("n_code_DA", "= 'AH'");
-                map.put("n_code_DC", " LIKE 'AJ%'");
+                map.put("n_code_DC", " LIKE 'A%'");
                 break;
-            case "1G500":
-                map.put("deptnoname", "空压机体营销二课");
-                map.put("daname", "SDS无油");
-                map.put("n_code_DA", "= 'AH'");
-                map.put("n_code_DC", " = 'SDS' ");
+            case "1G000":
+                if (indicatorChart.getRemark().contains("SAM")) {
+                    map.put("deptnoname", "空压机体涡旋");
+                    map.put("daname", "涡旋");
+                    map.put("n_code_DA", " in ('AH','S') ");
+                    map.put("n_code_DC", " in ('SAM-3HP','SAM-5HP','SAM-7HP','SAM-10HP','SF','SC') ");
+                } else {
+                    map.clear();
+                }
                 break;
             case "1H000":
                 map.put("deptnoname", "真空产品部");
                 map.put("daname", "真空泵");
                 map.put("n_code_DA", "= 'P'");
                 break;
-            case "1U000":
-                map.put("deptnoname", "涡旋产品部");
-                map.put("daname", "涡旋");
-                map.put("n_code_DA", "= 'S'");
-                break;
             case "5B000":
+            case "8A000":
                 map.put("deptnoname", "再生能源部");
                 map.put("daname", "再生能源");
                 map.put("n_code_DA", "= 'OH'");
@@ -169,12 +187,7 @@ public class AuditClientRankingReportBean extends BscQueryTableManageBean implem
             case "11000":
                 map.put("deptnoname", "汉钟");
                 map.put("daname", "汉钟");
-                map.put("n_code_DA", " In('R','AA','AH','P','S') ");
-                break;
-            case "10000":
-                map.put("deptnoname", "汉钟柯茂");
-                map.put("daname", "汉钟柯茂");
-                map.put("n_code_DA", " In('R','AA','AH','P','S','RT','OH') ");
+                map.put("n_code_DA", " Not In('RT','OH') ");
                 break;
             default:
                 map.put("deptnoname", "");
