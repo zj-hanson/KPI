@@ -612,6 +612,85 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return entity;
     }
 
+    /**
+     * 默认不处理其他值，不计算达成率
+     *
+     * @param minuend 被减数
+     * @param subtrahend 减数
+     * @return 新的指标对象
+     */
+    public Indicator getSubtractValue(Indicator minuend, Indicator subtrahend) {
+        return getSubtractValue(minuend, subtrahend, false, false);
+    }
+
+    /**
+     *
+     * @param minuend 被减数
+     * @param subtrahend 减数
+     * @param subOther 是否处理其他值
+     * @param updatePerf 是否计算达成率
+     * @return 新的指标对象
+     */
+    public Indicator getSubtractValue(Indicator minuend, Indicator subtrahend, boolean subOther, boolean updatePerf) {
+        if (!minuend.getFormtype().equals(subtrahend.getFormtype()) || !minuend.getFormkind().equals(subtrahend.getFormkind())) {
+            return null;
+        }
+        String formkind = minuend.getFormkind();
+        Indicator entity = null;
+        try {
+            entity = (Indicator) BeanUtils.cloneBean(minuend);
+            entity.setId(-1);
+            subtractValue(entity.getActualIndicator(), subtrahend.getActualIndicator(), formkind);
+            subtractValue(entity.getBenchmarkIndicator(), subtrahend.getBenchmarkIndicator(), formkind);
+            subtractValue(entity.getForecastIndicator(), subtrahend.getForecastIndicator(), formkind);
+            subtractValue(entity.getTargetIndicator(), subtrahend.getTargetIndicator(), formkind);
+            if (subOther && minuend.getHasOther() == subtrahend.getHasOther()) {
+                switch (entity.getHasOther()) {
+                    case 1:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        break;
+                    case 2:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        subtractValue(entity.getOther2Indicator(), subtrahend.getOther2Indicator(), formkind);
+                        break;
+                    case 3:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        subtractValue(entity.getOther2Indicator(), subtrahend.getOther2Indicator(), formkind);
+                        subtractValue(entity.getOther3Indicator(), subtrahend.getOther3Indicator(), formkind);
+                        break;
+                    case 4:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        subtractValue(entity.getOther2Indicator(), subtrahend.getOther2Indicator(), formkind);
+                        subtractValue(entity.getOther3Indicator(), subtrahend.getOther3Indicator(), formkind);
+                        subtractValue(entity.getOther4Indicator(), subtrahend.getOther4Indicator(), formkind);
+                        break;
+                    case 5:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        subtractValue(entity.getOther2Indicator(), subtrahend.getOther2Indicator(), formkind);
+                        subtractValue(entity.getOther3Indicator(), subtrahend.getOther3Indicator(), formkind);
+                        subtractValue(entity.getOther4Indicator(), subtrahend.getOther4Indicator(), formkind);
+                        subtractValue(entity.getOther5Indicator(), subtrahend.getOther5Indicator(), formkind);
+                        break;
+                    case 6:
+                        subtractValue(entity.getOther1Indicator(), subtrahend.getOther1Indicator(), formkind);
+                        subtractValue(entity.getOther2Indicator(), subtrahend.getOther2Indicator(), formkind);
+                        subtractValue(entity.getOther3Indicator(), subtrahend.getOther3Indicator(), formkind);
+                        subtractValue(entity.getOther4Indicator(), subtrahend.getOther4Indicator(), formkind);
+                        subtractValue(entity.getOther5Indicator(), subtrahend.getOther5Indicator(), formkind);
+                        subtractValue(entity.getOther6Indicator(), subtrahend.getOther6Indicator(), formkind);
+                        break;
+                    default:
+                }
+            }
+            if (updatePerf) {
+                updatePerformance(entity);
+            }
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+            log4j.error(ex);
+        }
+        return entity;
+    }
+
     public BigDecimal getValueOfDays(BigDecimal v, Date d, int scale) {
         int i, j;
         Calendar c = Calendar.getInstance();
@@ -697,6 +776,49 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 table.setType(detail.getType());
                 indicatorDailyBean.persist(table);
             }
+        }
+    }
+
+    public void subtractValue(IndicatorDetail a, IndicatorDetail b, String formKind) {
+        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        switch (formKind) {
+            case "M":
+                a.setNfy(a.getNfy().subtract(b.getNfy()));
+                a.setNh2(a.getNh2().subtract(b.getNh2()));
+                a.setNh1(a.getNh1().subtract(b.getNh1()));
+                a.setNq4(a.getNq4().subtract(b.getNq4()));
+                a.setNq3(a.getNq3().subtract(b.getNq3()));
+                a.setNq2(a.getNq2().subtract(b.getNq2()));
+                a.setNq1(a.getNq1().subtract(b.getNq1()));
+                a.setN01(a.getN01().subtract(b.getN01()));
+                a.setN02(a.getN02().subtract(b.getN02()));
+                a.setN03(a.getN03().subtract(b.getN03()));
+                a.setN04(a.getN04().subtract(b.getN04()));
+                a.setN05(a.getN05().subtract(b.getN05()));
+                a.setN06(a.getN06().subtract(b.getN06()));
+                a.setN07(a.getN07().subtract(b.getN07()));
+                a.setN08(a.getN08().subtract(b.getN08()));
+                a.setN09(a.getN09().subtract(b.getN09()));
+                a.setN10(a.getN10().subtract(b.getN10()));
+                a.setN11(a.getN11().subtract(b.getN11()));
+                a.setN12(a.getN12().subtract(b.getN12()));
+                break;
+            case "Q":
+                a.setNfy(a.getNfy().subtract(b.getNfy()));
+                a.setNh2(a.getNh2().subtract(b.getNh2()));
+                a.setNh1(a.getNh1().subtract(b.getNh1()));
+                a.setNq4(a.getNq4().subtract(b.getNq4()));
+                a.setNq3(a.getNq3().subtract(b.getNq3()));
+                a.setNq2(a.getNq2().subtract(b.getNq2()));
+                a.setNq1(a.getNq1().subtract(b.getNq1()));
+                break;
+            case "H":
+                a.setNfy(a.getNfy().subtract(b.getNfy()));
+                a.setNh2(a.getNh2().subtract(b.getNh2()));
+                a.setNh1(a.getNh1().subtract(b.getNh1()));
+                break;
+            case "Y":
+                a.setNfy(a.getNfy().subtract(b.getNfy()));
         }
     }
 
