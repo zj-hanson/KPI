@@ -26,11 +26,23 @@ public class SalesOrderTonLBKZ extends SalesOrderTon {
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         BigDecimal quantity1, quantity2;
         quantity1 = super.getValue(y, m, d, type, map);
-        queryParams.remove("facno");
-        queryParams.remove("cusno");
+        map.remove("facno");
+        map.remove("cusno");
+        map.put("facno", "Y");
+        map.put("cusno", " ='YZJ00004' ");
+        quantity2 = super.getValue(y, m, d, type, map);
+        return quantity1.add(quantity2);
+    }
+
+    @Override
+    public BigDecimal getNotDelivery(Date d, LinkedHashMap<String, Object> map) {
+        BigDecimal quantity1, quantity2;
+        queryParams.put("facno", "H");
+        queryParams.put("cusno", " ='HZJ00012' ");
+        quantity1 = super.getNotDelivery(d, queryParams);
         queryParams.put("facno", "Y");
         queryParams.put("cusno", " ='YZJ00004' ");
-        quantity2 = super.getValue(y, m, d, type, map);
+        quantity2 = super.getNotDelivery(d, queryParams);
         return quantity1.add(quantity2);
     }
 
