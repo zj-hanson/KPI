@@ -5,19 +5,12 @@
  */
 package cn.hanson.kpi.mail;
 
-import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.BscSheetMail;
-import cn.hanbell.kpi.entity.Indicator;
-import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanson.kpi.evaluation.SalesOrder;
 import com.lightshell.comm.BaseLib;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  *

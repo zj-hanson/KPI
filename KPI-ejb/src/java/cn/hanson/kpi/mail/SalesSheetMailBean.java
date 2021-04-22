@@ -274,19 +274,14 @@ public class SalesSheetMailBean extends SheetMail {
             targetAccumulated.setNfy(BigDecimal.valueOf(Double.valueOf(f.get(targetAccumulated).toString())));
 
             if (e.getActualInterface() != null && e.getActualEJB() != null && e.getId() != -1) {
+                SalesOrderTon salesOrder = (SalesOrderTon) Class.forName(e.getActualInterface()).newInstance();
+                salesOrder.setEJB(e.getActualEJB());
                 // 本日订单
-                Actual actualInterface = (Actual) Class.forName(e.getActualInterface()).newInstance();
-                actualInterface.setEJB(e.getActualEJB());
-                num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
+                num1 = salesOrder.getValue(y, m, d, Calendar.DATE, salesOrder.getQueryParams())
                         .divide(e.getRate(), 2, RoundingMode.HALF_UP);
                 // 未交订单
-                if (salesOrder != null) {
-                    salesOrder.setEJB(e.getActualEJB());
-                    num2 = salesOrder.getNotDelivery(d, actualInterface.getQueryParams()).divide(e.getRate(), 2,
-                            RoundingMode.HALF_UP);
-                } else {
-                    num2 = BigDecimal.ZERO;
-                }
+                num2 = salesOrder.getNotDelivery(d, salesOrder.getQueryParams()).divide(e.getRate(), 2,
+                        RoundingMode.HALF_UP);
             } else {
                 num1 = BigDecimal.ZERO;
                 num2 = BigDecimal.ZERO;
