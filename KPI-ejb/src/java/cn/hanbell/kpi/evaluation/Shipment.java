@@ -7,11 +7,15 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.ejb.IndicatorBean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +26,7 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class Shipment implements Actual {
 
+    private IndicatorBean indicatorBean = lookupIndicatorBeanBean();
     protected SuperEJBForERP superEJB;
 
     protected LinkedHashMap<String, Object> queryParams;
@@ -237,6 +242,20 @@ public abstract class Shipment implements Actual {
             log4j.error(ex);
         }
         return BigDecimal.ZERO;
+    }
+
+    private IndicatorBean lookupIndicatorBeanBean() {
+        try {
+            Context c = new InitialContext();
+            return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
+        } catch (NamingException ne) {
+            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public IndicatorBean getIndicatorBean() {
+        return indicatorBean;
     }
 
     @Override
