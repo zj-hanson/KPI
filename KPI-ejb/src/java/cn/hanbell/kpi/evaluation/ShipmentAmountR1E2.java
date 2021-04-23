@@ -73,9 +73,5 @@ public class ShipmentAmountR1E2 extends ShipmentAmount {
         return BigDecimal.ZERO;
     }
 
-    @Override
-    public IndicatorBean getIndicatorBean() {
-        return super.getIndicatorBean(); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
