@@ -186,7 +186,7 @@ public class AJShipmentMailBean extends ShipmentMail {
             }
             salesOrder = null;
             setDecimalFormat("#,###.00");
-            String t = getHtmlTable(this.indicators, y, m, d, false);
+            String t = getHtmlTable(this.indicators, y, m, d, true);
             setDecimalFormat("#,###");
             return t;
         } else {
