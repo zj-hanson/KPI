@@ -161,7 +161,7 @@ public class WorkshopEquipmentBean implements Serializable {
                 //顾问版MTBF   月度平均生产总工时/故障件数合计
                 obj[9] = GAVA.divide(count10, 0, BigDecimal.ROUND_HALF_UP);
                 //汉钟版MTBF   月度生产总工时-故障停机时间/故障件数合计
-                obj[10] = (HAVA.subtract(ALA)).divide(count10,0,BigDecimal.ROUND_HALF_UP);
+                obj[10] = (HAVA.subtract(ALA)).divide(count10, 0, BigDecimal.ROUND_HALF_UP);
                 obj[11] = oMes[5];
                 //时间稼动率   （月度生产总工时-总异常时间）/月度生产总工时
                 obj[12] = (HAVA.subtract(abnormal)).divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
