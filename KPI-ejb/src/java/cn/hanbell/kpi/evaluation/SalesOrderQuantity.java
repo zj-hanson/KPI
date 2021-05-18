@@ -34,7 +34,7 @@ public class SalesOrderQuantity extends SalesOrder {
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         BigDecimal cdrqy1 = BigDecimal.ZERO;
-
+        
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(d.cdrqy1),0) from cdrdmas d inner join cdrhmas h on h.facno=d.facno and h.cdrno=d.cdrno where h.hrecsta <> 'W' ");
         sb.append(" and h.cusno not in ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
@@ -81,14 +81,14 @@ public class SalesOrderQuantity extends SalesOrder {
             Object o1 = query.getSingleResult();
             cdrqy1 = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
         return cdrqy1;
 
     }
 
     @Override
-    public BigDecimal getNotDelivery(Date d, LinkedHashMap<String, Object> map) {
+    public BigDecimal getNotDelivery(Date d, LinkedHashMap<String, Object> map) throws Exception {
         //获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String decode = map.get("decode") != null ? map.get("decode").toString() : "";
@@ -124,7 +124,6 @@ public class SalesOrderQuantity extends SalesOrder {
             sb.append(" and d.n_code_DD ").append(n_code_DD);
         }
         sb.append(" and h.recdate<= '${d}' ");
-
         String cdrdmas = sb.toString().replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
 
@@ -134,9 +133,8 @@ public class SalesOrderQuantity extends SalesOrder {
             Object o1 = query.getSingleResult();
             return (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        return BigDecimal.ZERO;
     }
 
 }

@@ -75,7 +75,7 @@ public class SalesOrderAmount extends SalesOrder {
             Object o1 = query.getSingleResult();
             tram = (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
         return tram;
     }
@@ -124,9 +124,7 @@ public class SalesOrderAmount extends SalesOrder {
             Object o1 = query.getSingleResult();
             return (BigDecimal) o1;
         } catch (Exception ex) {
-            Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        return BigDecimal.ZERO;
     }
-
 }

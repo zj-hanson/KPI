@@ -148,7 +148,7 @@ public abstract class ShipmentMail extends MailNotification {
             sb.append("<td>").append(decimalFormat.format(indicator.getId() != -1 ? num2 : getData().get("sum2"))).append("</td>");
             sb.append("</tr>");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            throw new Exception(ex);
+           throw ex;
         }
         return sb.toString();
     }

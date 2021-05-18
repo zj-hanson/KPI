@@ -5,6 +5,8 @@
  */
 package cn.hanbell.kpi.timer;
 
+import cn.hanbell.eap.ejb.SystemUserBean;
+import cn.hanbell.eap.entity.SystemUser;
 import cn.hanbell.kpi.comm.MailNotification;
 import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
@@ -14,7 +16,11 @@ import cn.hanbell.kpi.ejb.SalesTableBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.JobSchedule;
 import cn.hanbell.kpi.entity.MailSetting;
+import cn.hanbell.util.BaseLib;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -41,6 +47,8 @@ import org.apache.logging.log4j.Logger;
 @Startup
 public class TimerBean {
 
+    @EJB
+    private SystemUserBean systemuserBean;
     @EJB
     private IndicatorBean indicatorBean;
     @EJB
@@ -177,19 +185,29 @@ public class TimerBean {
                         log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
                     }
                 } catch (Exception ex) {
-                    reportName = ms.getName();
+                    List<SystemUser> list = systemuserBean.findByDeptnoAndSyncWeChatStatus("13120");
+                    StringBuffer users = new StringBuffer();
                     MailNotification mn = getMailNotificationBean(ms.getMailEJB());
-                    mn.getTo().clear();
-                    mn.getCc().clear();
-                    mn.setMailSubject();
-                    mn.setMailContent(reportName + "异常：" + ex.toString() + "\n请管理员及时处理！！！");
-                    mn.getTo().add("C2082@hanbell.com.cn");
-                    mn.getTo().add("C2244@hanbell.com.cn");
-                    mn.notify(new MailNotify());
-                    log4j.error(String.format("执行%s:发送报表%s时异常", "sendKPIReport", reportName), ex);
+                    if (list != null && !list.isEmpty()) {
+                        mn.getTo().clear();
+                        mn.getCc().clear();
+
+                        for (SystemUser s : list) {
+                            users.append(s.getUserid()).append("|");
+                            mn.getTo().add(s.getUserid() + "@hanbell.com.cn");
+                        }
+
+                        //企业微信推送
+                        indicatorBean.sendMsgString(users.substring(0, users.length() - 1), "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName + "发生异常，具体内容已通过邮件发送!");
+                        //邮件推送
+                        reportName = ms.getName();
+                        mn.setMailSubject();
+                        mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
+                        mn.notify(new MailNotify());
+                    }
                 }
+                log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
             }
-            log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
         }
     }
 
@@ -265,4 +283,16 @@ public class TimerBean {
         }
     }
 
+    public String getExceptionInfo(Exception ex) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream pout = new PrintStream(out);
+        ex.printStackTrace(pout);
+        String ret = new String(out.toByteArray());
+        pout.close();
+        try {
+            out.close();
+        } catch (Exception e) {
+        }
+        return ret;
+    }
 }
