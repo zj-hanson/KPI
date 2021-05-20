@@ -33,7 +33,6 @@
                         <p:columnGroup type="header"  >
                             <p:row>
                                 <p:column style="wbackground-color:#dbdbdb" rowspan="2" headerText="项目" />
-                                <p:column style="background-color:#dbdbdb" rowspan="2" headerText="产品" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="责任人" />
                                 <p:column style="color: #0033ff;background-color:#dbdbdb" colspan="#{financingFreeServiceReportBean.colspan}" headerText="#{financingFreeServiceReportBean.y}年实绩" visible="#{financingFreeServiceReportBean.m>3?'true':'fasle'}"  />
@@ -51,9 +50,7 @@
                         <p:column groupRow="true"  style="text-align: center" >
                             <h:outputText value="#{item.parent.name}(单位：#{item.parent.unit})" />
                         </p:column>
-                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
-                            <h:outputText  value="#{item.descript}" />
-                        </p:column>
+                    
                         <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{item.deptname}" />
                         </p:column>
@@ -84,7 +81,6 @@
                         <p:columnGroup type="header"  >
                             <p:row>
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="项目" />
-                                <p:column style="background-color:#dbdbdb" rowspan="2" headerText="产品" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="责任人" />
                                 <p:column style="color: #0033ff;background-color:#dbdbdb" colspan="#{financingFreeServiceReportBean.colspan}" headerText="#{financingFreeServiceReportBean.y}年实绩" visible="#{financingFreeServiceReportBean.m>3?'true':'fasle'}"   />
@@ -101,9 +97,6 @@
                         </p:columnGroup>
                         <p:column groupRow="true"  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText value="#{item.parent.name}" />
-                        </p:column>
-                        <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
-                            <h:outputText  value="#{item.descript}" />
                         </p:column>
                         <p:column style="text-align: left;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText  value="#{item.descript=='总产品'?'':item.deptname}" />
