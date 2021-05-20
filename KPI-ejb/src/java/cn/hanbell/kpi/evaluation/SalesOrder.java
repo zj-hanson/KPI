@@ -26,7 +26,7 @@ public abstract class SalesOrder implements Actual {
         queryParams = new LinkedHashMap<>();
     }
 
-    public abstract BigDecimal getNotDelivery(Date d, LinkedHashMap<String, Object> map);
+    public abstract BigDecimal getNotDelivery(Date d, LinkedHashMap<String, Object> map) throws Exception;
 
     public SuperEJBForERP getEJB() {
         return superEJB;
