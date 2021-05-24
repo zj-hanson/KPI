@@ -57,6 +57,16 @@
                     </p:column>
                 </p:row>
                 <p:row>
+                    <p:column><h:outputText value="指标年度" /></p:column>
+                    <p:column>
+                        <h:outputText id="seq" value="#{productSetManagedBean.currentEntity.seq}" title="seq"/>
+                    </p:column>
+                    <p:column><h:outputText value="产品" /></p:column>
+                    <p:column>
+                        <h:outputText id="product" value="#{productSetManagedBean.currentEntity.product}" title="product"/>
+                    </p:column>
+                </p:row>
+                <p:row>
                     <p:column><h:outputText value="考核部门"/></p:column>
                     <p:column>
                         <h:outputText id="deptno" value="#{productSetManagedBean.currentEntity.deptno}" title="deptno"  />
@@ -114,6 +124,7 @@
                                          required="true" requiredMessage="达标计算" disabled="true">
                             <f:selectItem itemLabel="实际/目标" itemValue="AT"/>
                             <f:selectItem itemLabel="目标/实际" itemValue="TA"/>
+                            <f:selectItem itemLabel="表达式" itemValue="E"/>
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>
