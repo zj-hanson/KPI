@@ -69,8 +69,8 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column styleClass="Wid20"><p:outputLabel value="考核人员" for="userid" /></p:column>
-                    <p:column styleClass="Wid30">
+                    <p:column><p:outputLabel value="考核人员" for="userid" /></p:column>
+                    <p:column>
                         <p:inputText id="userid" value="#{productSetManagedBean.newEntity.userid}" title="userid" styleClass="inputWithButton"
                                      />
                         <p:commandButton id="btnSystemUserSelect" actionListener="#{productSetManagedBean.openDialog('sysuserSelect')}" icon="ui-icon-extlink"
@@ -79,8 +79,8 @@
                                     process="@this" update="userid,username" />
                         </p:commandButton>
                     </p:column>
-                    <p:column styleClass="Wid20"><h:outputText value="姓名"/></p:column>
-                    <p:column styleClass="Wid30">
+                    <p:column><h:outputText value="姓名"/></p:column>
+                    <p:column>
                         <h:outputText id="username" value="#{productSetManagedBean.newEntity.username}" title="username" />
                     </p:column>
                 </p:row>
@@ -101,13 +101,12 @@
                     </p:column>
                     <p:column><p:outputLabel value="系統排程" for="jobSchedule" /></p:column>
                     <p:column>
-                        <p:inputText id="jobSchedule" value="#{productSetManagedBean.newEntity.jobSchedule}" title="symbol" styleClass="inputWithButton">
-                            <p:commandButton id="btnJobScheduleSelect" actionListener="#{productSetManagedBean.openDialog('jobscheduleSelect')}" icon="ui-icon-extlink"
-                                             process="@this" >
-                                <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnJobScheduleWhenNew}"
-                                        update="jobSchedule" />
-                            </p:commandButton>
-                        </p:inputText>
+                        <p:inputText id="jobSchedule" value="#{productSetManagedBean.newEntity.jobSchedule}" title="jobSchedule" styleClass="inputWithButton"/>
+                        <p:commandButton id="btnJobScheduleSelect" actionListener="#{productSetManagedBean.openDialog('jobscheduleSelect')}" icon="ui-icon-extlink"
+                                         process="@this" >
+                            <p:ajax event="dialogReturn" listener="#{productSetManagedBean.handleDialogReturnJobScheduleWhenNew}"
+                                    update="jobSchedule" />
+                        </p:commandButton>
                     </p:column>
                 </p:row>
                 <p:row>
