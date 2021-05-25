@@ -19,15 +19,50 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class SuperEJBForMES implements Serializable {
 
+    protected String company = "C";
+
     @PersistenceContext(unitName = "SHBMES-ejbPU")
-    private EntityManager em;
+    private EntityManager em_shbmes;
+
+    @PersistenceContext(unitName = "PU_HansonMES")
+    private EntityManager em_hansonmes;
+
+    @PersistenceContext(unitName = "PU_HanyoungMES")
+    private EntityManager em_hanyoungmes;
 
     public SuperEJBForMES() {
 
     }
 
     public EntityManager getEntityManager() {
-        return em;
+        return getEntityManager(getCompany());
+    }
+
+    protected EntityManager getEntityManager(String facno) {
+        switch (facno) {
+            case "C":
+                return em_shbmes;
+            case "H":
+                return em_hansonmes;
+            case "Y":
+                return em_hanyoungmes;
+            default:
+                return em_shbmes;
+        }
+    }
+
+    /**
+     * @return the company
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * @param company the company to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
     }
 
 }

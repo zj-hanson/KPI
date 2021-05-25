@@ -158,6 +158,7 @@ public class MachiningEfficiency implements Actual {
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(y))
                 .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(day));
+        superEJBForMES.setCompany(company);
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
@@ -167,7 +168,7 @@ public class MachiningEfficiency implements Actual {
                     "set" + indicatorBean.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
             // 计划工时
             IndicatorDetail t = indicator.getTargetIndicator();
-            plannedHour = updatePlannedHour(indicator.getTargetIndicator(), y, m, day, type, machine);
+            plannedHour = updatePlannedHour(t, y, m, day, type, machine);
             setMethod.invoke(t, plannedHour);
             indicatorBean.updateIndicatorDetail(t);
             // 标准工时
@@ -227,6 +228,7 @@ public class MachiningEfficiency implements Actual {
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(y))
                 .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(d));
+        superEJBForMES.setCompany(company);
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             ProcessStep ps;
@@ -338,6 +340,7 @@ public class MachiningEfficiency implements Actual {
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(uy))
                 .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
+        superEJBForMES.setCompany(entity.getParent().getCompany());
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             Object o1 = query.getSingleResult();
@@ -383,21 +386,21 @@ public class MachiningEfficiency implements Actual {
         switch (type) {
             case 2:
                 // 月
-                sb.append(" AND DATE_FORMAT(endTime,'%e') <= ${d} ");
+                sb.append(" AND DAY(endTime) <= ${d} ");
                 break;
             case 5:
                 // 日
-                sb.append(" AND DATE_FORMAT(endTime,'%e') = ${d} ");
+                sb.append(" AND DAY(endTime) = ${d} ");
                 break;
             default:
-                sb.append(" AND DATE_FORMAT(endTime,'%e') = ${d} ");
+                sb.append(" AND DAY(endTime) = ${d} ");
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(uy))
                 .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
         Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
-            Object o1 = query.getSingleResult();
-            value = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
+            Object obj = query.getSingleResult();
+            value = BigDecimal.valueOf(Double.parseDouble(obj.toString()));
             IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
                     entity.getType());
             if (daily != null) {
