@@ -139,7 +139,12 @@ public class MachiningEfficiency implements Actual {
         String machine = indicator.getProduct();
         // 每日归档
         processStepBean.delete(company, d, type, machine);
-        processStepBean.save(getProcessStep(company, d, type, machine));
+        processStepBean.getEntityManager().flush();
+        List<ProcessStep> stepList = getProcessStep(company, d, type, machine);
+        if (stepList != null && !stepList.isEmpty()) {
+            processStepBean.save(stepList);
+            processStepBean.getEntityManager().flush();
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT SUM(datediff(mi,TRACKINTIME,TRACKOUTTIME)) FROM PROCESS_STEP WHERE EQPID = '${machine}' ");
@@ -273,7 +278,7 @@ public class MachiningEfficiency implements Actual {
                 }
             }
         } catch (Exception ex) {
-            log4j.error(ex);
+            log4j.error("MachiningEfficiency.getProcessStep()异常", ex);
         }
         return processStepList;
     }
@@ -298,7 +303,7 @@ public class MachiningEfficiency implements Actual {
                 return (Object[]) result.get(0);
             }
         } catch (Exception ex) {
-            log4j.error(ex);
+            log4j.error("MachiningEfficiency.getERPStandardHour()异常", ex);
         }
         return null;
     }
@@ -343,10 +348,9 @@ public class MachiningEfficiency implements Actual {
         superEJBForMES.setCompany(entity.getParent().getCompany());
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
-            Object o1 = query.getSingleResult();
-            value = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
-                    entity.getType());
+            Object obj = query.getSingleResult();
+            value = BigDecimal.valueOf(Double.parseDouble(obj.toString()));
+            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
                         "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
@@ -355,9 +359,9 @@ public class MachiningEfficiency implements Actual {
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("updateStandardHour" + ex);
+            log4j.error("MachiningEfficiency.updateMachiningQuantity()异常", ex);
         }
-        return BigDecimal.ZERO;
+        return value;
     }
 
     protected BigDecimal updatePlannedHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
@@ -373,7 +377,7 @@ public class MachiningEfficiency implements Actual {
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("updateStandardHour" + ex);
+            log4j.error("MachiningEfficiency.updatePlannedHour()异常", ex);
         }
         return BigDecimal.ZERO;
     }
@@ -411,7 +415,7 @@ public class MachiningEfficiency implements Actual {
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("updateStandardHour" + ex);
+            log4j.error("MachiningEfficiency.updateStandardHour()异常", ex);
         }
         return BigDecimal.ZERO;
     }
