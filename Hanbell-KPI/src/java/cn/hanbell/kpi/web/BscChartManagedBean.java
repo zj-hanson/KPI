@@ -15,6 +15,7 @@ import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.IndicatorSummary;
 import cn.hanbell.kpi.entity.RoleGrantModule;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -610,6 +611,37 @@ public abstract class BscChartManagedBean extends SuperQueryBean<Indicator> {
             }
         }
     }
+    
+    /**
+     * @param indivatorDetail
+     * @return 指标明细中的月平均值
+     */
+    public BigDecimal calculateYearMoveAVG(IndicatorDetail indivatorDetail) {
+        Field f;
+        Double a;
+        BigDecimal result;
+        result = new BigDecimal("0");
+        int count = 0;
+        try {
+            for (int mon = 1; mon <= 12; mon++) {
+                String month = indicatorBean.getIndicatorColumn("N", mon);
+                f = indivatorDetail.getClass().getDeclaredField(month);
+                f.setAccessible(true);
+                a = Double.valueOf(f.get(indivatorDetail).toString());
+                if (a != null && a != 0.0) {
+                    count++;
+                    result = result.add(BigDecimal.valueOf(a));
+                }
+
+            }
+           BigDecimal bCount= BigDecimal.valueOf(count);
+            return result.divide(bCount,2,BigDecimal.ROUND_HALF_UP);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     
     /**
      * @return the indicatorChart
