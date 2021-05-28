@@ -67,7 +67,7 @@ public class SuperEJBForERP implements Serializable {
 
     }
 
-    public EntityManager getEntityManager() {
+    public synchronized EntityManager getEntityManager() {
         return getEntityManager(getCompany());
     }
 
@@ -116,7 +116,7 @@ public class SuperEJBForERP implements Serializable {
     /**
      * @param company the company to set
      */
-    public void setCompany(String company) {
+    public synchronized void setCompany(String company) {
         this.company = company;
     }
 

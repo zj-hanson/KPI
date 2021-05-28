@@ -569,12 +569,16 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     }
 
     public Indicator getSumValue(List<Indicator> indicators) {
+        return getSumValue(indicators, true, false);
+    }
+
+    public Indicator getSumValue(List<Indicator> indicators, boolean sumOther, boolean updatePerf) {
         if (indicators.isEmpty()) {
             return null;
         }
         Indicator entity = null;
         IndicatorDetail a, b, f, t;
-        IndicatorDetail sa, sb, sf, st, sp;
+        IndicatorDetail sa, sb, sf, st, sp, so1, so2, so3, so4, so5, so6;
         try {
             entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
             entity.setId(-1);
@@ -600,15 +604,159 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             entity.setForecastIndicator(sf);
             entity.setTargetIndicator(st);
             entity.setPerformanceIndicator(sp);
+            if (entity.getHasOther() > 0) {
+                switch (entity.getHasOther()) {
+                    case 1:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        break;
+                    case 2:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        so2 = new IndicatorDetail();
+                        so2.setParent(entity);
+                        so2.setType("A");
+                        entity.setOther2Indicator(so2);
+                        break;
+                    case 3:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        so2 = new IndicatorDetail();
+                        so2.setParent(entity);
+                        so2.setType("A");
+                        entity.setOther2Indicator(so2);
+                        so3 = new IndicatorDetail();
+                        so3.setParent(entity);
+                        so3.setType("A");
+                        entity.setOther3Indicator(so3);
+                        break;
+                    case 4:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        so2 = new IndicatorDetail();
+                        so2.setParent(entity);
+                        so2.setType("A");
+                        entity.setOther2Indicator(so2);
+                        so3 = new IndicatorDetail();
+                        so3.setParent(entity);
+                        so3.setType("A");
+                        entity.setOther3Indicator(so3);
+                        so4 = new IndicatorDetail();
+                        so4.setParent(entity);
+                        so4.setType("A");
+                        entity.setOther4Indicator(so4);
+                        break;
+                    case 5:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        so2 = new IndicatorDetail();
+                        so2.setParent(entity);
+                        so2.setType("A");
+                        entity.setOther2Indicator(so2);
+                        so3 = new IndicatorDetail();
+                        so3.setParent(entity);
+                        so3.setType("A");
+                        entity.setOther3Indicator(so3);
+                        so4 = new IndicatorDetail();
+                        so4.setParent(entity);
+                        so4.setType("A");
+                        entity.setOther4Indicator(so4);
+                        so5 = new IndicatorDetail();
+                        so5.setParent(entity);
+                        so5.setType("A");
+                        entity.setOther5Indicator(so5);
+                        break;
+                    case 6:
+                        so1 = new IndicatorDetail();
+                        so1.setParent(entity);
+                        so1.setType("A");
+                        entity.setOther1Indicator(so1);
+                        so2 = new IndicatorDetail();
+                        so2.setParent(entity);
+                        so2.setType("A");
+                        entity.setOther2Indicator(so2);
+                        so3 = new IndicatorDetail();
+                        so3.setParent(entity);
+                        so3.setType("A");
+                        entity.setOther3Indicator(so3);
+                        so4 = new IndicatorDetail();
+                        so4.setParent(entity);
+                        so4.setType("A");
+                        entity.setOther4Indicator(so4);
+                        so5 = new IndicatorDetail();
+                        so5.setParent(entity);
+                        so5.setType("A");
+                        entity.setOther5Indicator(so5);
+                        so6 = new IndicatorDetail();
+                        so6.setParent(entity);
+                        so6.setType("A");
+                        entity.setOther6Indicator(so6);
+                        break;
+                    default:
+                }
+            }
+            // 计算周期
+            String formkind = entity.getFormkind();
             for (int i = 0; i < indicators.size(); i++) {
                 a = indicators.get(i).getActualIndicator();
                 b = indicators.get(i).getBenchmarkIndicator();
                 f = indicators.get(i).getForecastIndicator();
                 t = indicators.get(i).getTargetIndicator();
-                addValue(entity.getActualIndicator(), a, entity.getFormkind());
-                addValue(entity.getBenchmarkIndicator(), b, entity.getFormkind());
-                addValue(entity.getForecastIndicator(), f, entity.getFormkind());
-                addValue(entity.getTargetIndicator(), t, entity.getFormkind());
+                addValue(entity.getActualIndicator(), a, formkind);
+                addValue(entity.getBenchmarkIndicator(), b, formkind);
+                addValue(entity.getForecastIndicator(), f, formkind);
+                addValue(entity.getTargetIndicator(), t, formkind);
+                if (sumOther && indicators.get(i).getHasOther() > 0) {
+                    switch (entity.getHasOther()) {
+                        case 1:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            break;
+                        case 2:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            addValue(entity.getOther2Indicator(), indicators.get(i).getOther2Indicator(), formkind);
+                            break;
+                        case 3:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            addValue(entity.getOther2Indicator(), indicators.get(i).getOther2Indicator(), formkind);
+                            addValue(entity.getOther3Indicator(), indicators.get(i).getOther3Indicator(), formkind);
+                            break;
+                        case 4:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            addValue(entity.getOther2Indicator(), indicators.get(i).getOther2Indicator(), formkind);
+                            addValue(entity.getOther3Indicator(), indicators.get(i).getOther3Indicator(), formkind);
+                            addValue(entity.getOther4Indicator(), indicators.get(i).getOther4Indicator(), formkind);
+                            break;
+                        case 5:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            addValue(entity.getOther2Indicator(), indicators.get(i).getOther2Indicator(), formkind);
+                            addValue(entity.getOther3Indicator(), indicators.get(i).getOther3Indicator(), formkind);
+                            addValue(entity.getOther4Indicator(), indicators.get(i).getOther4Indicator(), formkind);
+                            addValue(entity.getOther5Indicator(), indicators.get(i).getOther5Indicator(), formkind);
+                            break;
+                        case 6:
+                            addValue(entity.getOther1Indicator(), indicators.get(i).getOther1Indicator(), formkind);
+                            addValue(entity.getOther2Indicator(), indicators.get(i).getOther2Indicator(), formkind);
+                            addValue(entity.getOther3Indicator(), indicators.get(i).getOther3Indicator(), formkind);
+                            addValue(entity.getOther4Indicator(), indicators.get(i).getOther4Indicator(), formkind);
+                            addValue(entity.getOther5Indicator(), indicators.get(i).getOther5Indicator(), formkind);
+                            addValue(entity.getOther6Indicator(), indicators.get(i).getOther6Indicator(), formkind);
+                            break;
+                        default:
+                    }
+                }
+            }
+            if (updatePerf) {
+                updatePerformance(entity);
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
             log4j.error(ex);

@@ -154,7 +154,7 @@ public class ProductSetManagedBean extends IndicatorSetManagedBean {
                 }
                 //当按天计算
                 if ("D".equals(currentEntity.getFormkind().trim())) {
-                    indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
+                    indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.DAY_OF_MONTH);
                 } else {
                     indicatorBean.updateActual(currentEntity.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
                 }
