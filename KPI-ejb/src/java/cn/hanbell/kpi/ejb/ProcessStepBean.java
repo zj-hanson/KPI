@@ -48,6 +48,7 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         try {
             return query.getResultList();
         } catch (Exception ex) {
+            log4j.error(ex);
             return null;
         }
     }
