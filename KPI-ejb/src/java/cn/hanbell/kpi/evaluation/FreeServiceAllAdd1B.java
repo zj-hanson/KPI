@@ -23,7 +23,7 @@ public class FreeServiceAllAdd1B extends FreeServiceAllAdd {
     public FreeServiceAllAdd1B() {
         super();
         queryParams.put("OuterFormid", "A-华东服务成本");
-        queryParams.put("deptno", "1B000");
+        queryParams.put("deptno", "in ('1B000','1F700','1F800')");
     }
 
     @Override
