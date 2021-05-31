@@ -18,7 +18,7 @@ public class InventoryTurnoverA3C50m extends InventoryTurnoverA3 {
         super();
         queryParams.put("mm", "y");
         queryParams.put("formid", "华东制冷库存金额");
-        queryParams.put("deptno", "1B000");
+        queryParams.put("deptno", "in ('1B000','1F700','1F800')");
         queryParams.put("facno", "='C'");
         queryParams.put("issevdta", "'Y'");
         queryParams.put("n_code_da", "= 'R'");
