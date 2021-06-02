@@ -35,17 +35,13 @@
                                 <p:column style="wbackground-color:#dbdbdb" rowspan="2" headerText="项目" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="责任人" />
-                                <!--<p:column style="color: #0033ff;background-color:#dbdbdb" colspan="#{financingFreeServiceReportBean.colspan}" headerText="#{financingFreeServiceReportBean.y}年实绩" visible="#{financingFreeServiceReportBean.m>3?'true':'fasle'}"  />-->
-                                <p:column style="background-color:#dbdbdb" colspan="2" headerText="实绩" />
+                               <p:column style="background-color:#dbdbdb" colspan="2" headerText="实绩" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
                             </p:row>
-<!--                            <p:row>
-                                <p:column headerText="Q1实绩(1-3月)" visible="#{financingFreeServiceReportBean.m>3?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q2实绩(1-6月)" visible="#{financingFreeServiceReportBean.m>6?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q3实绩(1-9月)" visible="#{financingFreeServiceReportBean.m>9?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
+                            <p:row>
                                 <p:column headerText="#{financingFreeServiceReportBean.y}年1-#{financingFreeServiceReportBean.m}月累计" style="background-color:#dbdbdb" />
                                 <p:column headerText="#{financingFreeServiceReportBean.y-1}年1-#{financingFreeServiceReportBean.m}月累计" style="background-color:#dbdbdb" />
-                            </p:row>-->
+                            </p:row>
                         </p:columnGroup>
                         <p:column groupRow="true"  style="text-align: center" >
                             <h:outputText value="#{item.parent.descript}(单位：#{item.parent.unit})" />
@@ -82,17 +78,13 @@
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="项目" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="考核部门" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="责任人" />
-                                <!--<p:column style="color: #0033ff;background-color:#dbdbdb" colspan="#{financingFreeServiceReportBean.colspan}" headerText="#{financingFreeServiceReportBean.y}年实绩" visible="#{financingFreeServiceReportBean.m>3?'true':'fasle'}"   />-->
-                                <p:column style="background-color:#dbdbdb" colspan="2" headerText="实绩" />
+                               <p:column style="background-color:#dbdbdb" colspan="2" headerText="实绩" />
                                 <p:column style="background-color:#dbdbdb" rowspan="2" headerText="累计与上年同期对比差异" />
                             </p:row>
-<!--                            <p:row>
-                                <p:column headerText="Q1实绩(1-3月)" visible="#{financingFreeServiceReportBean.m>3?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q2实绩(1-6月)" visible="#{financingFreeServiceReportBean.m>6?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
-                                <p:column headerText="Q3实绩(1-9月)" visible="#{financingFreeServiceReportBean.m>9?'true':'false'}" style="color: #0033ff;background-color:#dbdbdb" />
+                            <p:row>
                                 <p:column headerText="#{financingFreeServiceReportBean.y}年1-#{financingFreeServiceReportBean.m}月累计" style="background-color:#dbdbdb" />
                                 <p:column headerText="#{financingFreeServiceReportBean.y-1}年1-#{financingFreeServiceReportBean.m}月累计" style="background-color:#dbdbdb" />
-                            </p:row>-->
+                            </p:row>
                         </p:columnGroup>
                         <p:column groupRow="true"  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" >
                             <h:outputText value="#{item.parent.descript}" />
@@ -103,9 +95,6 @@
                         <p:column  style="text-align: center;#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}"  >
                             <h:outputText  value="#{item.username}" />
                         </p:column>
-<!--                        <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>3?'true':'false'}" >
-                            <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq1)}%" style="color: #0033ff"  />
-                        </p:column>-->
                         <p:column style="#{financingFreeServiceReportBean.getBackgroundColor(item.descript)}" visible="#{financingFreeServiceReportBean.m>6?'true':'false'}" >
                             <h:outputText  value="#{financingFreeServiceReportBean.format(item.actualIndicator.nq2)}%"  style="color: #0033ff"  />
                         </p:column>

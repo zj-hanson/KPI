@@ -14,7 +14,7 @@ public class FreeServiceOuterCL1B extends FreeServiceOuterCL {
     public FreeServiceOuterCL1B() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("depno", " in ('1B000',1B100','1B200','1F700','1F800')  ");
+        queryParams.put("depno", " like '1B%' ");
     }
 
 }

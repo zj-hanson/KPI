@@ -44,7 +44,7 @@ class FreeServiceOuterYSerp1B extends FreeServiceOuterYSerp {
     public FreeServiceOuterYSerp1B() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("depno", " in ('1B000','1B100','1B200','1F700','1F800') ");
+        queryParams.put("depno", " like '1B%' ");
     }
 }
 
@@ -53,7 +53,7 @@ class FreeServiceOuterYSoa1B extends FreeServiceOuterYSoa {
     public FreeServiceOuterYSoa1B() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("depno", " in ('1B000','1B100','1B200','1F700','1F800')  ");
+        queryParams.put("depno", " like '1B%' ");
     }
 
 }
