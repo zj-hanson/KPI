@@ -43,7 +43,7 @@ public class SalesOrderQuantity extends SalesOrder {
         if (!"".equals(decode)) {
             sb.append(" and h.decode ='").append(decode).append("' ");
         }
-        if (n_code_DA.contains("AA") && !"SDS".equals(n_code_DC)) {
+        if (n_code_DA.contains("AA") && !" ='SDS' ".equals(n_code_DC)) {
             sb.append(" and left(d.itnbr,1)='3' ");
         }
         if (!"".equals(n_code_DA)) {
