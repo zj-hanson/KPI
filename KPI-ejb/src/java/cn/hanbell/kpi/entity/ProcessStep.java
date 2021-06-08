@@ -43,11 +43,11 @@ public class ProcessStep extends FormEntity {
     @Size(min = 1, max = 2)
     @Column(name = "company")
     private String company;
+    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "manno")
     private String manno;
-    @Basic(optional = false)
     @Size(max = 45)
     @Column(name = "component")
     private String component;
@@ -56,16 +56,19 @@ public class ProcessStep extends FormEntity {
     @Size(min = 1, max = 45)
     @Column(name = "itemno")
     private String itemno;
-    @Size(max = 45)
-    @Column(name = "equipment")
-    private String equipment;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "step")
     private String step;
+    @Size(max = 45)
+    @Column(name = "stepName")
+    private String stepName;
     @Column(name = "stepSeq")
     private Integer stepSeq;
+    @Size(max = 45)
+    @Column(name = "equipment")
+    private String equipment;
     @Column(name = "startTime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
@@ -81,6 +84,9 @@ public class ProcessStep extends FormEntity {
     @Size(max = 45)
     @Column(name = "rule")
     private String rule;
+    @Size(max = 20)
+    @Column(name = "userid")
+    private String userid;
     @Size(max = 45)
     @Column(name = "user")
     private String user;
@@ -88,33 +94,38 @@ public class ProcessStep extends FormEntity {
     private BigDecimal standardMachineTime;
     @Column(name = "standardLaborTime")
     private BigDecimal standardLaborTime;
+    @Column(name = "standardMachineCost")
+    private BigDecimal standardMachineCost;
+    @Column(name = "standardLaborCost")
+    private BigDecimal standardLaborCost;
+    @Column(name = "materialCost")
+    private BigDecimal materialCost;
+    @Column(name = "machineCost")
+    private BigDecimal machineCost;
+    @Column(name = "laborCost")
+    private BigDecimal laborCost;
+    @Column(name = "manufacturingExpenses")
+    private BigDecimal manufacturingExpenses;
     @Column(name = "standCost")
     private BigDecimal standCost;
 
     public ProcessStep() {
+        this.standardMachineCost = BigDecimal.ZERO;
+        this.standardLaborCost = BigDecimal.ZERO;
+        this.materialCost = BigDecimal.ZERO;
+        this.machineCost = BigDecimal.ZERO;
+        this.laborCost = BigDecimal.ZERO;
+        this.manufacturingExpenses = BigDecimal.ZERO;
+        this.standCost = BigDecimal.ZERO;
         this.status = "N";
     }
 
-    /**
-     * @return the company
-     */
     public String getCompany() {
         return company;
     }
 
-    /**
-     * @param company the company to set
-     */
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public String getItemno() {
-        return itemno;
-    }
-
-    public void setItemno(String itemno) {
-        this.itemno = itemno;
     }
 
     public String getManno() {
@@ -133,12 +144,12 @@ public class ProcessStep extends FormEntity {
         this.component = component;
     }
 
-    public String getEquipment() {
-        return equipment;
+    public String getItemno() {
+        return itemno;
     }
 
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
+    public void setItemno(String itemno) {
+        this.itemno = itemno;
     }
 
     public String getStep() {
@@ -149,12 +160,28 @@ public class ProcessStep extends FormEntity {
         this.step = step;
     }
 
+    public String getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
+    }
+
     public Integer getStepSeq() {
         return stepSeq;
     }
 
     public void setStepSeq(Integer stepSeq) {
         this.stepSeq = stepSeq;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
     }
 
     public Date getStartTime() {
@@ -197,6 +224,14 @@ public class ProcessStep extends FormEntity {
         this.rule = rule;
     }
 
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
     public String getUser() {
         return user;
     }
@@ -219,6 +254,54 @@ public class ProcessStep extends FormEntity {
 
     public void setStandardLaborTime(BigDecimal standardLaborTime) {
         this.standardLaborTime = standardLaborTime;
+    }
+
+    public BigDecimal getStandardMachineCost() {
+        return standardMachineCost;
+    }
+
+    public void setStandardMachineCost(BigDecimal standardMachineCost) {
+        this.standardMachineCost = standardMachineCost;
+    }
+
+    public BigDecimal getStandardLaborCost() {
+        return standardLaborCost;
+    }
+
+    public void setStandardLaborCost(BigDecimal standardLaborCost) {
+        this.standardLaborCost = standardLaborCost;
+    }
+
+    public BigDecimal getMaterialCost() {
+        return materialCost;
+    }
+
+    public void setMaterialCost(BigDecimal materialCost) {
+        this.materialCost = materialCost;
+    }
+
+    public BigDecimal getMachineCost() {
+        return machineCost;
+    }
+
+    public void setMachineCost(BigDecimal machineCost) {
+        this.machineCost = machineCost;
+    }
+
+    public BigDecimal getLaborCost() {
+        return laborCost;
+    }
+
+    public void setLaborCost(BigDecimal laborCost) {
+        this.laborCost = laborCost;
+    }
+
+    public BigDecimal getManufacturingExpenses() {
+        return manufacturingExpenses;
+    }
+
+    public void setManufacturingExpenses(BigDecimal manufacturingExpenses) {
+        this.manufacturingExpenses = manufacturingExpenses;
     }
 
     public BigDecimal getStandCost() {
