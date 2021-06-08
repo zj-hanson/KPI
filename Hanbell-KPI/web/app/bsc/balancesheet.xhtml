@@ -97,7 +97,7 @@
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color:#E8E8E8">
                                 <td>非流动资产：</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('45')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('46')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
@@ -121,7 +121,7 @@
                             </tr>
                             <tr>
                                 <td>无形资产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('39')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('40')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
@@ -133,12 +133,18 @@
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td title="资产合计 = 流动资产 + 非流动资产" >资产合计</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('46')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('47')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
                         </tbody>
                     </table>
+                    
+                    
+                    
+                    
+                    
+                    
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;">
                             <tr style="height: 45px;" >
@@ -206,7 +212,7 @@
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
                                 <td>非流动负债：</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('27')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('28')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
@@ -224,31 +230,31 @@
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td title="负债合计 = 流动负债 + 非流动负债">负债合计</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('28')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('29')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>股本</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('39')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
-                                </c:forEach>
-                            </tr>
-                            <tr>
-                                <td>资本公积</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('40')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>减：库存股</td>
+                                <td>资本公积</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('41')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>盈余公积</td>
+                                <td>减：库存股</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('42')}" var="item" >
+                                    <td style="text-align: right">#{item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>盈余公积</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('43')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
@@ -260,13 +266,13 @@
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td>股东权益合计</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('45')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('46')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
                                 <td>负债和权益股东总计</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('46')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('47')}" var="item" >
                                     <td style="text-align: right">#{item}</td>
                                 </c:forEach>
                             </tr>
