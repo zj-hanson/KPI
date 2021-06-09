@@ -88,7 +88,7 @@
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n10,10)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n11,11)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.doubleformat(item.actualIndicator.n12,12)}</p:column>
-                                  <p:column>#{qraPercentOfPassReportBean.calculateYearMoveAVG(item.actualIndicator)}</p:column>
+                                  <p:column>#{item.actualIndicator.remark1}</p:column>
                             </p:row>
                             <p:row>
                                 <p:column>达成率基准值</p:column>
@@ -104,7 +104,7 @@
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n10,10)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n11,11)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.forecastIndicator.n12,12)}</p:column>
-                                 <p:column>#{qraPercentOfPassReportBean.calculateYearMoveAVG(item.forecastIndicator)}</p:column>
+                                <p:column>#{qraPercentOfPassReportBean.calculateYearMoveAVG(item.forecastIndicator)}%</p:column>
                             </p:row>
                             <p:row>
                                 <p:column>达成率实际值</p:column>
@@ -120,7 +120,7 @@
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(10)}" style="#{qraPercentOfPassReportBean.m==10?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n10,10)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(11)}" style="#{qraPercentOfPassReportBean.m==11?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n11,11)}</p:column>
                                 <p:column rendered="#{qraPercentOfPassReportBean.visible(12)}" style="#{qraPercentOfPassReportBean.m==12?'color:red':''}">#{qraPercentOfPassReportBean.percentFormat(item.performanceIndicator.n12,12)}</p:column>
-                                <p:column>#{qraPercentOfPassReportBean.calculateYearMoveAVG(item.performanceIndicator)}</p:column>
+                                 <p:column>#{item.performanceIndicator.remark1}%</p:column>
                             </p:row>
                         </c:forEach>
                     </p:panelGrid>
