@@ -14,7 +14,7 @@ public class SalesOrderAmountR1B4 extends  SalesOrderAmount{
     public SalesOrderAmountR1B4() {
        super();
         queryParams.put("facno", "C");
-         queryParams.put("deptno", " in ('1F500','1F700') ");
+         queryParams.put("deptno", " in ('1F700','1F800') ");
 //        queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_CD", " ='HD' ");
