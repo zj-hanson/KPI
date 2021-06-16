@@ -133,10 +133,11 @@ public class MachiningEfficiency implements Actual {
         }
         String company = indicator.getCompany();
         String machine = indicator.getProduct();
+        BigDecimal stdCost = indicator.getRate();
         // 每日归档
         processStepBean.delete(company, d, type, machine);
         processStepBean.getEntityManager().flush();
-        List<ProcessStep> stepList = getProcessStep(company, d, type, machine);
+        List<ProcessStep> stepList = getProcessStep(company, d, type, machine, stdCost);
         if (stepList != null && !stepList.isEmpty()) {
             processStepBean.save(stepList);
             processStepBean.getEntityManager().flush();
@@ -204,7 +205,7 @@ public class MachiningEfficiency implements Actual {
         return actualHour;
     }
 
-    public List<ProcessStep> getProcessStep(String company, Date date, int type, String machine) {
+    public List<ProcessStep> getProcessStep(String company, Date date, int type, String machine, BigDecimal stdCost) {
         List<ProcessStep> processStepList = new ArrayList<>();
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -275,7 +276,7 @@ public class MachiningEfficiency implements Actual {
                         ps.setStandardLaborTime(BigDecimal.ZERO);
                         ps.setStandardMachineTime(BigDecimal.ZERO);
                     }
-                    ps.setStandCost(BigDecimal.ZERO);
+                    ps.setStandCost(stdCost);
                     processStepList.add(ps);
                 }
             }
