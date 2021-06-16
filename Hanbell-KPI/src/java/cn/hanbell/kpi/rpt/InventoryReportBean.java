@@ -95,7 +95,7 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
 
     public InventoryReportBean() {
         super(Indicator.class);
-        this.doubleFormat = new DecimalFormat("#,###.##");
+        this.doubleFormat = new DecimalFormat("#,###.00");
     }
 
     public void setCities() {
