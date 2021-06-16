@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -61,7 +60,7 @@ public class MachiningEfficiency implements Actual {
             Context c = new InitialContext();
             return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
         } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            log4j.error(ne);
             throw new RuntimeException(ne);
         }
     }
@@ -69,10 +68,9 @@ public class MachiningEfficiency implements Actual {
     private ProcessStepBean lookupProcessStepBean() {
         try {
             Context c = new InitialContext();
-            return (ProcessStepBean) c
-                    .lookup("java:global/KPI/KPI-ejb/ProcessStepBean!cn.hanbell.kpi.ejb.ProcessStepBean");
+            return (ProcessStepBean) c.lookup("java:global/KPI/KPI-ejb/ProcessStepBean!cn.hanbell.kpi.ejb.ProcessStepBean");
         } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            log4j.error(ne);
             throw new RuntimeException(ne);
         }
     }
@@ -80,8 +78,7 @@ public class MachiningEfficiency implements Actual {
     protected SuperEJBForERP lookupSuperEJBForERP() {
         try {
             Context c = new InitialContext();
-            return (SuperEJBForERP) c
-                    .lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
+            return (SuperEJBForERP) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
@@ -99,8 +96,7 @@ public class MachiningEfficiency implements Actual {
     protected SuperEJBForMES lookupSuperEJBForMES() {
         try {
             Context c = new InitialContext();
-            return (SuperEJBForMES) c
-                    .lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
+            return (SuperEJBForMES) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
@@ -137,10 +133,11 @@ public class MachiningEfficiency implements Actual {
         }
         String company = indicator.getCompany();
         String machine = indicator.getProduct();
+        BigDecimal stdCost = indicator.getRate();
         // 每日归档
         processStepBean.delete(company, d, type, machine);
         processStepBean.getEntityManager().flush();
-        List<ProcessStep> stepList = getProcessStep(company, d, type, machine);
+        List<ProcessStep> stepList = getProcessStep(company, d, type, machine, stdCost);
         if (stepList != null && !stepList.isEmpty()) {
             processStepBean.save(stepList);
             processStepBean.getEntityManager().flush();
@@ -208,7 +205,7 @@ public class MachiningEfficiency implements Actual {
         return actualHour;
     }
 
-    public List<ProcessStep> getProcessStep(String company, Date date, int type, String machine) {
+    public List<ProcessStep> getProcessStep(String company, Date date, int type, String machine, BigDecimal stdCost) {
         List<ProcessStep> processStepList = new ArrayList<>();
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -217,7 +214,7 @@ public class MachiningEfficiency implements Actual {
         int d = c.get(Calendar.DAY_OF_MONTH);
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT PRODUCTSERIALNUMBER,PRODUCTTIME,PRODUCTORDERID,PRODUCTCOMPID,PRODUCTID,STEPID,STEPSEQ,EQPID,");
-        sb.append("TRACKINTIME,TRACKOUTTIME,datediff(mi,TRACKINTIME,TRACKOUTTIME),TRACKOUTQTY,RULEID,MODIFYUSER,MODIFYTIME ");
+        sb.append("TRACKINTIME,TRACKOUTTIME,datediff(mi,TRACKINTIME,TRACKOUTTIME),TRACKOUTQTY,RULEID,TRACKOUTUSERID,TRACKOUTUSER,MODIFYUSERID,MODIFYTIME ");
         sb.append("  FROM PROCESS_STEP WHERE EQPID = '${machine}' AND year(TRACKOUTTIME)=${y} AND month(TRACKOUTTIME)=${m} ");
         switch (type) {
             case 2:
@@ -263,7 +260,13 @@ public class MachiningEfficiency implements Actual {
                     ps.setProcessingTime(BigDecimal.valueOf(Double.parseDouble(row[10].toString())));
                     ps.setQty(BigDecimal.valueOf(Double.parseDouble(row[11].toString())));
                     ps.setRule(row[12].toString());
-                    ps.setUser(row[13].toString());
+                    ps.setUserid(row[13].toString());
+                    ps.setUser(row[14].toString());
+                    ps.setCreator(row[15].toString());
+                    time = BaseLib.getDate("yyyy/MM/dd HH:mm:ss", row[16].toString());
+                    if (time != null) {
+                        ps.setCredate(time);
+                    }
                     // 获取标准工时
                     Object[] std = getERPStandardHour(company, ps.getItemno(), ps.getStep());
                     if (std != null) {
@@ -273,7 +276,7 @@ public class MachiningEfficiency implements Actual {
                         ps.setStandardLaborTime(BigDecimal.ZERO);
                         ps.setStandardMachineTime(BigDecimal.ZERO);
                     }
-                    ps.setStandCost(BigDecimal.ZERO);
+                    ps.setStandCost(stdCost);
                     processStepList.add(ps);
                 }
             }
