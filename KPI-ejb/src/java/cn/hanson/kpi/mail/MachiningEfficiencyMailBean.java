@@ -6,19 +6,16 @@
 package cn.hanson.kpi.mail;
 
 import cn.hanbell.kpi.comm.MailNotification;
-import cn.hanbell.kpi.ejb.IndicatorDailyBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 

@@ -87,6 +87,7 @@ public abstract class MailNotification {
         this.cc = mailSettingBean.findRecipientCc(mailSetting.getFormid());
         this.bcc = mailSettingBean.findRecipientBcc(mailSetting.getFormid());
         this.mailSubject = mailSetting.getName();
+        this.attachments.clear();
     }
 
     public void addAttachments(File f) {
