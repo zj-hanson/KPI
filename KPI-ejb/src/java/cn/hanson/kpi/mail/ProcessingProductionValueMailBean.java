@@ -544,7 +544,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 setSumValue(sumIndicator);
             }
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("HS-HMD", y);
+            indicators = indicatorBean.findByCategoryAndYear("HS-NMD", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
                 indicators.sort((Indicator i1, Indicator i2) -> {
