@@ -101,7 +101,8 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         Row row;
         Cell cell;
         for (Indicator ind : indicators) {
-            List<ProcessStep> processStepList = processStepBean.findByEndTimeAndEquipment(ind.getCompany(), d, y, ind.getProduct());
+            company = ind.getCompany();
+            List<ProcessStep> processStepList = processStepBean.findByEndTimeAndEquipment(company, d, Calendar.DAY_OF_MONTH, ind.getProduct());
             if (processStepList != null && !processStepList.isEmpty()) {
                 for (ProcessStep ps : processStepList) {
                     row = sheet.createRow(i);
@@ -134,17 +135,21 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                     cell.setCellValue(ps.getProcessingTime().doubleValue());
                     cell = row.createCell(10);
                     cell.setCellType(0);
-                    cell.setCellValue(ps.getStandardMachineTime().doubleValue());
+                    cell.setCellValue(ps.getStandardMachineTime().multiply(ps.getQty()).doubleValue());
                     cell = row.createCell(11);
                     cell.setCellType(0);
                     cell.setCellValue(ps.getStandCost().doubleValue());
-                    BigDecimal value = ps.getStandardMachineTime().multiply(ps.getStandCost());
+                    BigDecimal value = ps.getStandardMachineTime().multiply(ps.getQty()).multiply(ps.getStandCost());
                     cell = row.createCell(12);
                     cell.setCellType(0);
                     cell.setCellValue(value.doubleValue());
                     cell = row.createCell(13);
                     cell.setCellType(0);
                     cell.setCellValue(ps.getQty().doubleValue());
+                    cell = row.createCell(14);
+                    cell.setCellValue(ps.getUserid());
+                    cell = row.createCell(15);
+                    cell.setCellValue(ps.getUser());
                     i++;
                 }
             }
@@ -154,7 +159,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 return ex.toString();
             }
         }
-        for (int k = 0; k < 14; k++) {
+        for (int k = 0; k < 16; k++) {
             sheet.autoSizeColumn(k, true);
         }
         return sb.toString();
@@ -371,7 +376,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             File file = new File(fullFileName);
             FileOutputStream fos = new FileOutputStream(file);
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet();
+            Sheet sheet = workbook.createSheet("每日加工报工明细");
             Row row;
             Cell cell;
             // 初始样式
@@ -406,6 +411,10 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             cell.setCellValue("当日产值");
             cell = row.createCell(13);
             cell.setCellValue("当日数量");
+            cell = row.createCell(14);
+            cell.setCellValue("报工工号");
+            cell = row.createCell(15);
+            cell.setCellValue("报工人员");
             // 获取资料
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("HS-HMC", y);
@@ -578,6 +587,46 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 detail = getHtmlTableRow(sumIndicator, y, m, d, "'background-color:#ff8e67';");
                 sb.append(detail);
             }
+            List employeeProductionValue = processStepBean.getEmployeeOperationTime("H", d, Calendar.MONTH, null);
+            if (employeeProductionValue != null && !employeeProductionValue.isEmpty()) {
+                int i = 0;
+                sheet = workbook.createSheet("每月员工产值排名");
+                row = sheet.createRow(0);
+                cell = row.createCell(0);
+                cell.setCellValue("工号");
+                cell = row.createCell(1);
+                cell.setCellValue("姓名");
+                cell = row.createCell(2);
+                cell.setCellValue("标准工时");
+                cell = row.createCell(3);
+                cell.setCellValue("报工工时");
+                cell = row.createCell(4);
+                cell.setCellValue("标准产值");
+                for (Object data : employeeProductionValue) {
+                    i++;
+                    Object[] e = (Object[]) data;
+                    row = sheet.createRow(i);
+                    cell = row.createCell(0);
+                    cell.setCellValue(String.valueOf(e[0]));
+                    cell = row.createCell(1);
+                    cell.setCellValue(String.valueOf(e[1]));
+                    cell = row.createCell(2);
+                    cell.setCellType(0);
+                    cell.setCellStyle(getCellStyle("n"));
+                    cell.setCellValue(Double.parseDouble(String.valueOf(e[2])));
+                    cell = row.createCell(3);
+                    cell.setCellType(0);
+                    cell.setCellStyle(getCellStyle("n"));
+                    cell.setCellValue(Double.parseDouble(String.valueOf(e[3])));
+                    cell = row.createCell(4);
+                    cell.setCellType(0);
+                    cell.setCellStyle(getCellStyle("n"));
+                    cell.setCellValue(Double.parseDouble(String.valueOf(e[4])));
+                }
+                for (int k = 0; k < 5; k++) {
+                    sheet.autoSizeColumn(k, true);
+                }
+            }
             try {
                 file.deleteOnExit();
                 workbook.write(fos);
@@ -612,13 +661,13 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         CellStyle numberStyle = wb.createCellStyle();
         numberStyle.setAlignment(XSSFCellStyle.ALIGN_RIGHT);
         cellStyles.put("number", numberStyle);
-        cellStyles.put("n", stringStyle);
+        cellStyles.put("n", numberStyle);
         // 日期
         CellStyle dateStyle = wb.createCellStyle();
         dateStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
         dateStyle.setDataFormat(wb.createDataFormat().getFormat("yyyy-MM-dd"));
         cellStyles.put("date", dateStyle);
-        cellStyles.put("d", stringStyle);
+        cellStyles.put("d", dateStyle);
         // 时间
         CellStyle timeStyle = wb.createCellStyle();
         timeStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
