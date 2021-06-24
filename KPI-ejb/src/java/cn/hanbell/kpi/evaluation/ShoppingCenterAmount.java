@@ -7,14 +7,10 @@ package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import cn.hanbell.kpi.ejb.IndicatorBean;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,13 +20,13 @@ import org.apache.logging.log4j.Logger;
  *
  * @author C2082
  */
-public class ShoppinCentergAmount implements Actual {
+public class ShoppingCenterAmount implements Actual {
 
     protected SuperEJBForERP superEJB;
     protected LinkedHashMap<String, Object> queryParams;
     protected final Logger log4j = LogManager.getLogger();
 
-    public ShoppinCentergAmount() {
+    public ShoppingCenterAmount() {
         queryParams = new LinkedHashMap<>();
     }
 
