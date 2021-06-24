@@ -36,12 +36,12 @@ public class ShoppingCenterMaterailAmount implements Actual {
         String material = map.get("material") != null ? map.get("prono").toString() : "";
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT sum(acpamt) as cp_acpamt");
-        sql.append(" FROM apmpyh left join KpiPurPcm  on apmpyh.facno = KpiPurPcm.Facno and apmpyh.vdrno=KpiPurPcm.Vdrno ,purvdr ,purhad");
+        sql.append(" FROM apmpyh left join N_KpiPurPcm  on apmpyh.facno = N_KpiPurPcm.Facno and apmpyh.vdrno=N_KpiPurPcm.Vdrno ,purvdr ,purhad");
         sql.append(" WHERE apmpyh.vdrno = purvdr.vdrno  and  purhad.facno = apmpyh.facno");
         sql.append(" and purhad.prono = apmpyh.prono and purhad.pono = apmpyh.pono");
         sql.append(" and  apmpyh.pyhkind = '1'");
         sql.append(" AND apmpyh.facno = ${facno}  and apmpyh.prono =${prono}");
-        sql.append(" and KpiPurPcm.MaterialTypeName ='").append(material).append("'");
+        sql.append(" and N_KpiPurPcm.MaterialTypeName ='").append(material).append("'");
         sql.append(" and year(apmpyh.trdat) = ${year} and month(apmpyh.trdat)= ${month}");
         String sqlString = sql.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${prono}", prono);
         try {

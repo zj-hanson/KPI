@@ -6,18 +6,15 @@
 package cn.hanbell.kpi.evaluation;
 
 /**
- *采购中心买汉声铸件的金额
+ *
  * @author C2082
  */
-
-public class ShoppinCentergAmountSHBToHS extends ShoppinCentergAmount{
+public class ShoppingCenterAmountHS1X extends ShoppingCenterAmount{
     
-        
-     public ShoppinCentergAmountSHBToHS() {
+     public ShoppingCenterAmountHS1X() {
         super();
-        queryParams.put("facno", "C");
+        queryParams.put("facno", "H");
         queryParams.put("prono", "1");
-        //汉声
-        queryParams.put("vdrno", " ='SZJ00065'");  
+        queryParams.put("vdrno", " select Vdrno from N_KpiPurPcm ");  
     }
 }
