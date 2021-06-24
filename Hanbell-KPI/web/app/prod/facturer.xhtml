@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formList">
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid15,Wid20,Wid15,Wid20,Wid15,Wid20" styleClass="plgQuery Wid100" >
+                <f:facet name="header">
+                    查询条件
+                </f:facet>
+                <h:outputLabel value="公司别" for="queryFacno" />
+                <p:selectOneMenu id="queryCurrency" value="#{facturerManagedBean.queryFacno}" style="width:100%;" title="币别" >
+                    <f:selectItem itemLabel="请选择" itemValue="0"/>
+                    <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                    <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
+                </p:selectOneMenu>
+                <h:outputLabel value="厂商" for="queryVdrna" />
+                <p:inputText id="queryVdrna"  value="#{facturerManagedBean.queryVdrna}" title="厂商" />
+                <h:outputLabel value="负责人" for="queryUserna" />
+                <p:inputText id="queryUserna"  value="#{facturerManagedBean.queryUserna}" title="负责人" />
+            </p:panelGrid>
+            <p:toolbar id="toolbar" styleClass="topToolbar">
+                <f:facet name="left">
+                    <p:commandButton id="btnLoad" value="刷新" actionListener="#{facturerManagedBean.init()}" icon="ui-icon-sync"
+                                     update=":formList"/>
+                   <p:commandButton id="btnPrint" value="导出" actionListener="#{facturerManagedBean.print()}" icon="ui-icon-print"/>
+                </f:facet>
+                <f:facet name="right">
+                    <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
+                        <p:menuitem id="btnUpdate" value="修改" actionListener="#{facturerManagedBean.update()}" icon="ui-icon-update"
+                                    update=":formList" />
+                        <p:menuitem id="btnAddIndicatorSummary" value="添加" actionListener="#{facturerManagedBean.create()}" icon="ui-icon-plus"
+                                    process="@this" update="formOne:factureAdd" oncomplete="PF('factureAdd').show();"/>
+                        <p:menuitem id="btnDelete" value="删除" icon="ui-icon-trash" actionListener="#{facturerManagedBean.delete()}"
+                                    rendered="true" update=":formList">
+                            <p:confirm header="系统提示" message="删除吗?" icon="ui-icon-alert" />
+                        </p:menuitem>
+                    </p:splitButton>
+                    <p:commandButton id="btnReset" value="重置" actionListener="#{facturerManagedBean.reset()}" icon="ui-icon-refresh"
+                                     update=":formList"/>
+                    <p:commandButton id="btnQuery" value="查询" actionListener="#{facturerManagedBean.query()}" icon="ui-icon-search"
+                                     update=":formList"/>
+                </f:facet>
+            </p:toolbar>
+            <p:dataTable  value="#{facturerManagedBean.list}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
+                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                          lazy="true" selectionMode="single"  selection="#{facturerManagedBean.selectedPrupcm}" rowKey="#{item.vdrno}">
+                <f:facet name="header">
+                    采购中心维护作业
+                </f:facet>
+                <p:ajax event="rowSelect"  update=":formList:toolbar" />
+                <p:ajax event="rowUnselect" update=":formList:toolbar" />
+                <p:column styleClass="Wid10" >
+                    <f:facet name="header">
+                        <h:outputText value="公司别"/>
+                    </f:facet>
+                    <h:outputText value="#{item.facno}"/>
+                </p:column>
+                <p:column styleClass="Wid10" >
+                    <f:facet name="header">
+                        <h:outputText value="厂商代号"/>
+                    </f:facet>
+                    <h:outputText  value="#{item.vdrno}"/>
+                </p:column>
+                <p:column styleClass="Wid15">
+                    <f:facet name="header">
+                        <h:outputText value="厂商名称"/>
+                    </f:facet>
+                     <p:inputText id="vdrna"  value="#{item.vdrna}" style="width: 100%" />
+                </p:column>
+                <p:column styleClass="Wid15">
+                    <f:facet name="header">
+                        <h:outputText value="物料"/>
+                    </f:facet>
+                    <p:inputText id="materialTypeName"  value="#{item.materialTypeName}" style="width: 100%" />
+                </p:column>
+                <p:column styleClass="Wid15">
+                    <f:facet name="header">
+                        <h:outputText value="负责人"/>
+                    </f:facet>
+                    <h:outputText value="#{item.userna}"/>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+        <h:form id="formOne">
+            <p:dialog id="factureAdd" widgetVar="factureAdd" width="40%" style="border-color: #666666">
+                <p:panelGrid id="exchangeRatesValue" styleClass="plgDetail Wid100">
+                    <p:row>
+                        <p:fileUpload id="fileUpload" fileUploadListener="#{facturerManagedBean.handleFileUploadWhenNew}"  styleClass="fileUpload"
+                                      allowTypes="/(\.|\/)(xls)$/" sizeLimit="5000000" label="选择" uploadLabel="上传" cancelLabel="还原" value="批量添加"
+                                      process="@this" update="formList,formOne:exchangeRateValue"/>
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                    <f:facet name="header" >
+                        <p:row >
+                            <p:column colspan="2">采购中心厂商维护</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2" style="height: 25px"></p:column>
+                    </p:row>
+
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="公司别" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:selectOneMenu  value="#{facturerManagedBean.inputFacno}" style="width:100%;" title="公司别" >
+                                <f:selectItem itemLabel="上海汉钟" itemValue="C"/>
+                                <f:selectItem itemLabel="浙江汉声" itemValue="H"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="厂商代号" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:inputText id="inputVdrno"  value="#{facturerManagedBean.inputVdrno}" title="厂商代号" />
+                        </p:column>
+                    </p:row>
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="厂商名称" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:inputText id="inputVdrna"  value="#{facturerManagedBean.inputVdrna}" title="厂商代号" />
+                        </p:column>
+                    </p:row>
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="工号" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:inputText id="inputUserno"  value="#{facturerManagedBean.inputUserno}" title="工号" />
+                        </p:column>
+                    </p:row>
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="名字" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:inputText id="inputUserna"  value="#{facturerManagedBean.inputUserna}" title="名字" />
+                        </p:column>
+                    </p:row>
+                    <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="物料" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:inputText id="inputMaterialTypeName"  value="#{facturerManagedBean.inputMaterialTypeName}" title="物料" />
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer" rendered="#{facturerManagedBean.doEdit}" >
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="updateIndicatorSummary"  actionListener="#{facturerManagedBean.persist()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="formOne:factureAdd" update="formList,formOne:exchangeRateValue" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

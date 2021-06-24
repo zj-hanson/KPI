@@ -228,6 +228,11 @@
             <to-view-id>/app/prod/accountsreceivables.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+         <navigation-case>
+            <from-outcome>facturer</from-outcome>
+            <to-view-id>/app/prod/facturer.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <description>部门指标定义</description>
@@ -493,6 +498,16 @@
         <navigation-case>
             <from-outcome>turnoverdays</from-outcome>
             <to-view-id>/app/bsc/turnoverdays.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+         <navigation-case>
+            <from-outcome>shoppingcentermaterialamount</from-outcome>
+            <to-view-id>/app/bsc/shoppingcentermaterialamount.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+              <navigation-case>
+            <from-outcome>shoppingcenteramount</from-outcome>
+            <to-view-id>/app/bsc/shoppingcenteramount.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
