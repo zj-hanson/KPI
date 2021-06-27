@@ -9,9 +9,9 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C2082
  */
-public class ShoppinCentergAmountTHBToHS extends ShoppinCentergAmount {
+public class ShoppingCenterAmountTHBToHS extends ShoppingCenterAmount {
     
-         public ShoppinCentergAmountTHBToHS() {
+         public ShoppingCenterAmountTHBToHS() {
 //        super();
 //        queryParams.put("facno", "C");
 //        queryParams.put("prono", "1");

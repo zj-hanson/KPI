@@ -5,9 +5,9 @@
  */
 package cn.hanbell.kpi.control;
 
-import cn.hanbell.erp.ejb.NkpipurpcmBean;
-import cn.hanbell.erp.entity.Nkpipurpcm;
-import cn.hanbell.kpi.entity.ExchangeRate;
+
+import cn.hanbell.kpi.ejb.ShoppingManufacturerBean;
+import cn.hanbell.kpi.entity.ShoppingManufacturer;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
 import java.io.File;
@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -41,16 +40,16 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean(name = "facturerManagedBean")
 @SessionScoped
-public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
+public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
 
     @EJB
-    protected NkpipurpcmBean kpipurpcmBean;
+    protected ShoppingManufacturerBean shoppingManufacturerBean;
 
-    private List<Nkpipurpcm> list;
+    private List<ShoppingManufacturer> list;
     private String queryFacno;
     private String queryUserna;
     private String queryVdrna;
-    private Nkpipurpcm selectedPrupcm;
+    private ShoppingManufacturer selectedPrupcm;
 
     private String inputFacno;
     private String inputVdrno;
@@ -60,22 +59,20 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
     private String inputMaterialTypeName;
 
     public FacturerManagedBean() {
-        super(ExchangeRate.class);
+        super(ShoppingManufacturer.class);
     }
 
     @Override
     public void init() {
-
-        kpipurpcmBean.setCompany("C");
-        list = kpipurpcmBean.findByUsernaAndVdrna(queryUserna, queryVdrna);
+        queryFacno="C";
+        list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno,queryUserna, queryVdrna);
 
     }
 
     @Override
     public void query() {
         try {
-            kpipurpcmBean.setCompany(queryFacno);
-            list = kpipurpcmBean.findByUsernaAndVdrna(queryUserna, queryVdrna);
+            list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno,queryUserna, queryVdrna);
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "error", e.toString()));
         }
@@ -83,17 +80,15 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
 
     @Override
     public void persist() {
-        Nkpipurpcm p = new Nkpipurpcm();
+        ShoppingManufacturer p = new ShoppingManufacturer();
         p.setFacno(this.inputFacno);
         p.setVdrno(this.inputVdrno);
         p.setVdrna(this.inputVdrna);
         p.setUserno(this.inputUserno);
         p.setUserna(this.inputUserna);
         p.setMaterialTypeName(this.inputMaterialTypeName);
-        p.setInDate(new Date());
         try {
-            kpipurpcmBean.setCompany(this.inputFacno);
-            kpipurpcmBean.persist(p);
+            shoppingManufacturerBean.persist(p);
             showInfoMsg("Info", "添加成功");
             this.inputFacno = "C";
             this.inputVdrno = "";
@@ -128,7 +123,7 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
         row.createCell(4).setCellValue("工号");
         row.createCell(5).setCellValue("名称");
         int i = 1;
-        for (Nkpipurpcm e : list) {
+        for (ShoppingManufacturer e : list) {
             row = sheet.createRow(i);
             row.createCell(0).setCellValue(e.getFacno());
             row.createCell(1).setCellValue(e.getVdrno());
@@ -167,7 +162,7 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
     @Override
     public void update() {
         try {
-            kpipurpcmBean.update(this.selectedPrupcm);
+            shoppingManufacturerBean.update(this.selectedPrupcm);
             showInfoMsg("Info", "修改成功");
         } catch (Exception ex) {
             showInfoMsg("Warn", "修改失败" + ex);
@@ -188,24 +183,23 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
                     Row row = sheet.getRow(i);
                     String facno = cellToVlaue(row.getCell(0));
                     String vdrno = cellToVlaue(row.getCell(1));
-                    kpipurpcmBean.setCompany(facno);
-                    Nkpipurpcm k = kpipurpcmBean.findByVdrno(vdrno);
+                    ShoppingManufacturer k = shoppingManufacturerBean.findByVdrno(vdrno);
                     if (k != null) {
-                        kpipurpcmBean.delete(k);
+                        shoppingManufacturerBean.delete(k);
                     }
-                    Nkpipurpcm purpcm = new Nkpipurpcm();
+                    ShoppingManufacturer purpcm = new ShoppingManufacturer();
                     purpcm.setFacno(facno);
                     purpcm.setVdrno(vdrno);
                     purpcm.setVdrna(cellToVlaue(row.getCell(2)));
                     purpcm.setMaterialTypeName(cellToVlaue(row.getCell(3)));
                     purpcm.setUserno(cellToVlaue(row.getCell(4)));
                     purpcm.setUserna(cellToVlaue(row.getCell(5)));
-                    purpcm.setInDate(new Date());
-                    kpipurpcmBean.persist(purpcm);
+                    shoppingManufacturerBean.persist(purpcm);
                 }
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传成功"));
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
+                
                 ex.printStackTrace();
             } finally {
                 try {
@@ -276,11 +270,11 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
         return "";
     }
 
-    public List<Nkpipurpcm> getList() {
+    public List<ShoppingManufacturer> getList() {
         return list;
     }
 
-    public void setList(List<Nkpipurpcm> list) {
+    public void setList(List<ShoppingManufacturer> list) {
         this.list = list;
     }
 
@@ -356,12 +350,22 @@ public class FacturerManagedBean extends SuperSingleBean<ExchangeRate> {
         this.inputMaterialTypeName = inputMaterialTypeName;
     }
 
-    public Nkpipurpcm getSelectedPrupcm() {
+    public ShoppingManufacturerBean getShoppingManufacturerBean() {
+        return shoppingManufacturerBean;
+    }
+
+    public void setShoppingManufacturerBean(ShoppingManufacturerBean shoppingManufacturerBean) {
+        this.shoppingManufacturerBean = shoppingManufacturerBean;
+    }
+
+    public ShoppingManufacturer getSelectedPrupcm() {
         return selectedPrupcm;
     }
 
-    public void setSelectedPrupcm(Nkpipurpcm selectedPrupcm) {
+    public void setSelectedPrupcm(ShoppingManufacturer selectedPrupcm) {
         this.selectedPrupcm = selectedPrupcm;
     }
+
+
 
 }

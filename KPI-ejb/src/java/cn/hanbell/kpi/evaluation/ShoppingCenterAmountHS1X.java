@@ -9,12 +9,12 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C2082
  */
-public class ShoppingCenterAmountHS1X extends ShoppingCenterAmount{
+    public class ShoppingCenterAmountHS1X extends ShoppingCenterAmount{
     
      public ShoppingCenterAmountHS1X() {
         super();
-        queryParams.put("facno", "H");
-        queryParams.put("prono", "1");
-        queryParams.put("vdrno", " select Vdrno from N_KpiPurPcm ");  
+        queryParams.put("facno", "'H'");
+        queryParams.put("prono", "'1'");
+        queryParams.put("vdrno", " select vdrno from shoppingmanufacturer where facno='H' ");  
     }
 }

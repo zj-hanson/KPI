@@ -13,8 +13,8 @@ public class ShoppingCenterAmountSHB1X extends ShoppingCenterAmount {
 
     public ShoppingCenterAmountSHB1X() {
         super();
-        queryParams.put("facno", "C");
-        queryParams.put("prono", "1");
-        queryParams.put("vdrno", " select Vdrno from N_KpiPurPcm ");  
+        queryParams.put("facno", "'C'");
+        queryParams.put("prono", "'1'");
+        queryParams.put("vdrno", " select vdrno from shoppingmanufacturer where facno='C' ");  
     }
 }
