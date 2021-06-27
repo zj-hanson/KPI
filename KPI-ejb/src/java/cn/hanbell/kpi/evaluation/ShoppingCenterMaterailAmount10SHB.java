@@ -13,8 +13,8 @@ public class ShoppingCenterMaterailAmount10SHB extends ShoppingCenterMaterailAmo
 
     public ShoppingCenterMaterailAmount10SHB() {
         super();
-        queryParams.put("facno", "C");
-        queryParams.put("prono", "1");
-        queryParams.put("material", "接线盖板");
+        queryParams.put("facno", "'C'");
+        queryParams.put("prono", "'1'");
+        queryParams.put("material", "select vdrno from shoppingmanufacturer where facno='C' and materialTypeName='接线盖板'");
     }
 }

@@ -15,8 +15,8 @@ public class ShoppingCenterAmountSHBToHS extends ShoppingCenterAmount{
         
      public ShoppingCenterAmountSHBToHS() {
         super();
-        queryParams.put("facno", "C");
-        queryParams.put("prono", "1");
+        queryParams.put("facno", "'C'");
+        queryParams.put("prono", "'1'");
         //汉声
         queryParams.put("vdrno", " ='SZJ00065'");  
     }

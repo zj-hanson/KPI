@@ -49,7 +49,7 @@
             </p:toolbar>
             <p:dataTable  value="#{facturerManagedBean.list}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                          lazy="true" selectionMode="single"  selection="#{facturerManagedBean.selectedPrupcm}" rowKey="#{item.vdrno}">
+                          lazy="true" selectionMode="single" selection="#{facturerManagedBean.selectedPrupcm}" rowKey="#{item.id}">
                 <f:facet name="header">
                     采购中心维护作业
                 </f:facet>
@@ -67,6 +67,7 @@
                     </f:facet>
                     <h:outputText  value="#{item.vdrno}"/>
                 </p:column>
+            
                 <p:column styleClass="Wid15">
                     <f:facet name="header">
                         <h:outputText value="厂商名称"/>
