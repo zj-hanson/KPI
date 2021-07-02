@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
-import org.apache.commons.logging.impl.Log4JLogger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
