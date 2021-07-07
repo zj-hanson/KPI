@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanson.kpi.mail;
 
@@ -45,9 +44,9 @@ public class ShipmentMailBean extends ShipmentMail {
     public String getMailBody() {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：吨</div>");
-        sb.append(getShipementTonTable());
+        sb.append(getShipmentTonTable());
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getShipementAmountTable());
+        sb.append(getShipmentAmountTable());
         sb.append("<div class=\"tableTitle\">本月实际: 本月累计出货 - 本月累计退货</div>");
         sb.append("<div class=\"tableTitle\">本月目标: 年度方针设定的月完成目标</div>");
         sb.append("<div class=\"tableTitle\">本月达成: (本月实际/本月目标) ×100% </div>");
@@ -58,18 +57,18 @@ public class ShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getShipementTonTable() {
+    protected String getShipmentTonTable() {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
             sb.append(
-                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+                "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
             sb.append(
-                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append(
-                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
@@ -124,18 +123,18 @@ public class ShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getShipementAmountTable() {
+    protected String getShipmentAmountTable() {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
             sb.append(
-                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+                "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
             sb.append(
-                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append(
-                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
