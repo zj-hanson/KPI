@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanson.kpi.evaluation;
 
@@ -58,7 +57,7 @@ public class MachiningEfficiency implements Actual {
     private IndicatorBean lookupIndicatorBean() {
         try {
             Context c = new InitialContext();
-            return (IndicatorBean) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
+            return (IndicatorBean)c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
         } catch (NamingException ne) {
             log4j.error(ne);
             throw new RuntimeException(ne);
@@ -68,7 +67,8 @@ public class MachiningEfficiency implements Actual {
     private ProcessStepBean lookupProcessStepBean() {
         try {
             Context c = new InitialContext();
-            return (ProcessStepBean) c.lookup("java:global/KPI/KPI-ejb/ProcessStepBean!cn.hanbell.kpi.ejb.ProcessStepBean");
+            return (ProcessStepBean)c
+                .lookup("java:global/KPI/KPI-ejb/ProcessStepBean!cn.hanbell.kpi.ejb.ProcessStepBean");
         } catch (NamingException ne) {
             log4j.error(ne);
             throw new RuntimeException(ne);
@@ -78,7 +78,8 @@ public class MachiningEfficiency implements Actual {
     protected SuperEJBForERP lookupSuperEJBForERP() {
         try {
             Context c = new InitialContext();
-            return (SuperEJBForERP) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
+            return (SuperEJBForERP)c
+                .lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
@@ -87,7 +88,7 @@ public class MachiningEfficiency implements Actual {
     protected SuperEJBForKPI lookupSuperEJBForKPI() {
         try {
             Context c = new InitialContext();
-            return (SuperEJBForKPI) c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
+            return (SuperEJBForKPI)c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
@@ -96,7 +97,8 @@ public class MachiningEfficiency implements Actual {
     protected SuperEJBForMES lookupSuperEJBForMES() {
         try {
             Context c = new InitialContext();
-            return (SuperEJBForMES) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
+            return (SuperEJBForMES)c
+                .lookup("java:global/KPI/KPI-ejb/SuperEJBForMES!cn.hanbell.kpi.comm.SuperEJBForMES");
         } catch (NamingException ne) {
             throw new RuntimeException(ne);
         }
@@ -136,7 +138,6 @@ public class MachiningEfficiency implements Actual {
         BigDecimal stdCost = indicator.getRate();
         // 每日归档
         processStepBean.delete(company, d, type, machine);
-        processStepBean.getEntityManager().flush();
         List<ProcessStep> stepList = getProcessStep(company, d, type, machine, stdCost);
         if (stepList != null && !stepList.isEmpty()) {
             processStepBean.save(stepList);
@@ -144,7 +145,8 @@ public class MachiningEfficiency implements Actual {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT SUM(datediff(mi,TRACKINTIME,TRACKOUTTIME)) FROM PROCESS_STEP WHERE EQPID = '${machine}' ");
+        sb.append(
+            "SELECT COALESCE(SUM(datediff(mi,TRACKINTIME,TRACKOUTTIME)),0) FROM PROCESS_STEP WHERE EQPID = '${machine}' ");
         sb.append(" AND year(TRACKOUTTIME)=${y} AND month(TRACKOUTTIME)=${m} ");
         switch (type) {
             case 2:
@@ -159,15 +161,15 @@ public class MachiningEfficiency implements Actual {
                 sb.append(" AND datepart(DAY ,TRACKOUTTIME) = ${d} ");
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(y))
-                .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(day));
+            .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(day));
         superEJBForMES.setCompany(company);
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             Object o = query.getSingleResult();
             actualHour = BigDecimal.valueOf(Double.parseDouble(o.toString()));
 
-            Method setMethod = IndicatorDetail.class.getDeclaredMethod(
-                    "set" + indicatorBean.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+            Method setMethod = IndicatorDetail.class
+                .getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
             // 计划工时
             IndicatorDetail t = indicator.getTargetIndicator();
             plannedHour = updatePlannedHour(t, y, m, day, type, machine);
@@ -213,9 +215,12 @@ public class MachiningEfficiency implements Actual {
         int m = c.get(Calendar.MONTH) + 1;
         int d = c.get(Calendar.DAY_OF_MONTH);
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT PRODUCTSERIALNUMBER,PRODUCTTIME,PRODUCTORDERID,PRODUCTCOMPID,PRODUCTID,STEPID,STEPSEQ,EQPID,");
-        sb.append("TRACKINTIME,TRACKOUTTIME,datediff(mi,TRACKINTIME,TRACKOUTTIME),TRACKOUTQTY,RULEID,TRACKOUTUSERID,TRACKOUTUSER,MODIFYUSERID,MODIFYTIME ");
-        sb.append("  FROM PROCESS_STEP WHERE EQPID = '${machine}' AND year(TRACKOUTTIME)=${y} AND month(TRACKOUTTIME)=${m} ");
+        sb.append(
+            "SELECT PRODUCTSERIALNUMBER,PRODUCTTIME,PRODUCTORDERID,PRODUCTCOMPID,PRODUCTID,STEPID,STEPSEQ,EQPID,");
+        sb.append(
+            "TRACKINTIME,TRACKOUTTIME,datediff(mi,TRACKINTIME,TRACKOUTTIME),TRACKOUTQTY,RULEID,TRACKOUTUSERID,TRACKOUTUSER,MODIFYUSERID,MODIFYTIME ");
+        sb.append(
+            "  FROM PROCESS_STEP WHERE EQPID = '${machine}' AND year(TRACKOUTTIME)=${y} AND month(TRACKOUTTIME)=${m} ");
         switch (type) {
             case 2:
                 // 月
@@ -229,7 +234,7 @@ public class MachiningEfficiency implements Actual {
                 sb.append(" AND datepart(DAY ,TRACKOUTTIME) = ${d} ");
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(y))
-                .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(d));
+            .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(d));
         superEJBForMES.setCompany(company);
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
@@ -239,7 +244,7 @@ public class MachiningEfficiency implements Actual {
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
                     ps = new ProcessStep();
-                    Object[] row = (Object[]) result.get(i);
+                    Object[] row = (Object[])result.get(i);
                     ps.setCompany(company);
                     ps.setFormid(row[0].toString());
                     ps.setFormdate(BaseLib.getDate("yyyy/MM/dd", row[1].toString()));
@@ -289,21 +294,22 @@ public class MachiningEfficiency implements Actual {
     /**
      * 返回ERP中的标准工时
      *
-     * @param company 公司
-     * @param itnbr 件号
-     * @param prosscode 制程
+     * @param company:公司
+     * @param itnbr:件号
+     * @param prosscode:制程
      * @return 标准人工工时 标准机器工时
      */
     public Object[] getERPStandardHour(String company, String itnbr, String prosscode) {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT boroph.manstdtm,boroph.mchstdtm FROM boroph,borgrp WHERE boroph.itnbrgrp = borgrp.itnbrgrp AND borgrp.itnbr ='${itnbr}' AND prosscode = '${prosscode}' ");
+        sb.append(
+            "SELECT boroph.manstdtm,boroph.mchstdtm FROM boroph,borgrp WHERE boroph.itnbrgrp = borgrp.itnbrgrp AND borgrp.itnbr ='${itnbr}' AND prosscode = '${prosscode}' ");
         String sql = sb.toString().replace("${itnbr}", itnbr).replace("${prosscode}", prosscode);
         try {
             superEJBForERP.setCompany(company);
             Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
             List result = query.getResultList();
             if (result != null && !result.isEmpty() && result.size() == 1) {
-                return (Object[]) result.get(0);
+                return (Object[])result.get(0);
             }
         } catch (Exception ex) {
             log4j.error("MachiningEfficiency.getERPStandardHour()异常", ex);
@@ -314,22 +320,23 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updateDowntime(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         try {
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
-                    entity.getType());
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
-                        "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorBean.updateIndicatorDaily(daily);
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("updateDowntime" + ex);
+            log4j.error("MachiningEfficiency.updateDowntime()异常" + ex);
         }
         return BigDecimal.ZERO;
     }
 
-    protected BigDecimal updateMachiningQuantity(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
+    protected BigDecimal updateMachiningQuantity(IndicatorDetail entity, int uy, int um, int ud, int type,
+        String machine) {
         BigDecimal value = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT COUNT(PRODUCTCOMPID) FROM PROCESS_STEP WHERE EQPID = '${machine}' ");
@@ -347,16 +354,17 @@ public class MachiningEfficiency implements Actual {
                 sb.append(" AND datepart(DAY ,TRACKOUTTIME) = ${d} ");
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(uy))
-                .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
+            .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
         superEJBForMES.setCompany(entity.getParent().getCompany());
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             Object obj = query.getSingleResult();
             value = BigDecimal.valueOf(Double.parseDouble(obj.toString()));
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
-                        "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorBean.updateIndicatorDaily(daily);
                 return daily.getTotal();
@@ -370,11 +378,11 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updatePlannedHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         try {
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
-                    entity.getType());
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
-                        "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorBean.updateIndicatorDaily(daily);
                 return daily.getTotal();
@@ -388,7 +396,7 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updateStandardHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT SUM(standardMachineTime * qty) FROM processstep WHERE equipment = '${machine}' ");
+        sb.append("SELECT COALESCE(SUM(standardMachineTime * qty),0) FROM processstep WHERE equipment = '${machine}' ");
         sb.append(" AND year(endTime)=${y} AND month(endTime)=${m} ");
         switch (type) {
             case 2:
@@ -403,16 +411,16 @@ public class MachiningEfficiency implements Actual {
                 sb.append(" AND DAY(endTime) = ${d} ");
         }
         String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(uy))
-                .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
+            .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
         Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
             Object obj = query.getSingleResult();
             value = BigDecimal.valueOf(Double.parseDouble(obj.toString()));
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
-                    entity.getType());
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
-                        "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorBean.updateIndicatorDaily(daily);
                 return daily.getTotal();
@@ -426,17 +434,17 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updateWaintingTime(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         try {
-            IndicatorDaily daily = indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um,
-                    entity.getType());
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
                 Method setMethod = daily.getClass().getDeclaredMethod(
-                        "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorBean.updateIndicatorDaily(daily);
                 return daily.getTotal();
             }
         } catch (Exception ex) {
-            log4j.error("updateWaintingTime" + ex);
+            log4j.error("MachiningEfficiency.updateWaintingTime()异常" + ex);
         }
         return BigDecimal.ZERO;
     }
