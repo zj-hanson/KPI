@@ -46,12 +46,12 @@ public class ProjectQueryBean implements Serializable{
     @PostConstruct
     public void init() {
         selectedProject = new Project();
-        selectedProjects = projectBean.getProjectData();
+        selectedProjects = projectBean.getProjects("","");
     }
 
     public void query() {
         selectedProjects = new ArrayList<>();
-        selectedProjects = projectBean.getProjectData();
+        selectedProjects = projectBean.getProjects(this.projectSeq,this.projectName);
         if (!selectedProjects.isEmpty()) {
             if (!"".equals(projectSeq) && projectSeq != null) {
                 selectedProjects = selectedProjects.stream().filter(s -> s.getProjectSeq() == Integer.parseInt(projectSeq)).collect(Collectors.toList());
