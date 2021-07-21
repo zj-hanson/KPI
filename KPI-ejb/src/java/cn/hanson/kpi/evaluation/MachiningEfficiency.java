@@ -10,6 +10,7 @@ import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ProcessStepBean;
+import cn.hanbell.kpi.ejb.QuotationDataBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDetail;
@@ -17,6 +18,7 @@ import cn.hanbell.kpi.entity.ProcessStep;
 import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class MachiningEfficiency implements Actual {
 
     protected IndicatorBean indicatorBean = lookupIndicatorBean();
     protected ProcessStepBean processStepBean = lookupProcessStepBean();
+    protected QuotationDataBean quotationDataBean = lookupQuotationDataBeanBean();
     protected SuperEJBForERP superEJBForERP = lookupSuperEJBForERP();
     protected SuperEJBForKPI superEJBForKPI = lookupSuperEJBForKPI();
     protected SuperEJBForMES superEJBForMES = lookupSuperEJBForMES();
@@ -75,12 +78,24 @@ public class MachiningEfficiency implements Actual {
         }
     }
 
+    private QuotationDataBean lookupQuotationDataBeanBean() {
+        try {
+            Context c = new InitialContext();
+            return (QuotationDataBean)c
+                .lookup("java:global/KPI/KPI-ejb/QuotationDataBean!cn.hanbell.kpi.ejb.QuotationDataBean");
+        } catch (NamingException ne) {
+            log4j.error(ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
     protected SuperEJBForERP lookupSuperEJBForERP() {
         try {
             Context c = new InitialContext();
             return (SuperEJBForERP)c
                 .lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
         } catch (NamingException ne) {
+            log4j.error(ne);
             throw new RuntimeException(ne);
         }
     }
@@ -239,7 +254,7 @@ public class MachiningEfficiency implements Actual {
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             ProcessStep ps;
-            Date time;
+            Date time, day;
             List result = query.getResultList();
             if (result != null && !result.isEmpty()) {
                 for (int i = 0; i < result.size(); i++) {
@@ -281,7 +296,32 @@ public class MachiningEfficiency implements Actual {
                         ps.setStandardLaborTime(BigDecimal.ZERO);
                         ps.setStandardMachineTime(BigDecimal.ZERO);
                     }
+                    // 获取合计工时
+                    Object[] total = getERPStandardHour(company, ps.getItemno());
+                    if (total != null) {
+                        ps.setTotalLaborTime(BigDecimal.valueOf(Double.parseDouble(total[0].toString())));
+                        ps.setTotalMachineTime(BigDecimal.valueOf(Double.parseDouble(total[1].toString())));
+                    } else {
+                        ps.setTotalLaborTime(BigDecimal.ZERO);
+                        ps.setTotalMachineTime(BigDecimal.ZERO);
+                    }
                     ps.setStandCost(stdCost);
+                    // 使用完工时间获取加工价格
+                    day = BaseLib.getDate("yyyy/MM/dd", row[16].toString());
+                    if (day == null) {
+                        day = ps.getFormdate();
+                    }
+                    BigDecimal pp = quotationDataBean.getProcessingPrice(ps.getCompany(), ps.getItemno(), day);
+                    // 加工价格
+                    ps.setProcessingPrice(pp);
+                    // 按照机器工时占比计算加工产值
+                    if (ps.getTotalMachineTime().compareTo(BigDecimal.ZERO) != 0) {
+                        ps.setProcessingAmount(pp.divide(ps.getTotalMachineTime(), 2, RoundingMode.HALF_UP)
+                            .multiply(ps.getStandardMachineTime()).multiply(ps.getQty()));
+                    } else {
+                        ps.setProcessingAmount(stdCost.multiply(ps.getStandardMachineTime()).multiply(ps.getQty()));
+                    }
+                    // 加入更新列表
                     processStepList.add(ps);
                 }
             }
@@ -292,7 +332,34 @@ public class MachiningEfficiency implements Actual {
     }
 
     /**
-     * 返回ERP中的标准工时
+     * 获取某个件号ERP报工制程标准工时合计
+     *
+     * @param company
+     * @param itnbr
+     * @return 合计人工工时 合计机器工时
+     */
+    public Object[] getERPStandardHour(String company, String itnbr) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+            "SELECT COALESCE(sum(boroph.manstdtm),0),COALESCE(sum(boroph.mchstdtm),0) FROM boroph,borgrp,borprc ");
+        sb.append(
+            "WHERE boroph.itnbrgrp = borgrp.itnbrgrp AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' AND borgrp.itnbr ='${itnbr}' ");
+        String sql = sb.toString().replace("${itnbr}", itnbr);
+        try {
+            superEJBForERP.setCompany(company);
+            Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
+            List result = query.getResultList();
+            if (result != null && !result.isEmpty() && result.size() == 1) {
+                return (Object[])result.get(0);
+            }
+        } catch (Exception ex) {
+            log4j.error("MachiningEfficiency.getERPStandardHour()异常", ex);
+        }
+        return null;
+    }
+
+    /**
+     * 获取某个件号ERP具体制程标准工时
      *
      * @param company:公司
      * @param itnbr:件号
