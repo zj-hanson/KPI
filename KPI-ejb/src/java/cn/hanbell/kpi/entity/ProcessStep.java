@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.entity;
 
@@ -27,13 +26,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "processstep")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ProcessStep.findAll", query = "SELECT p FROM ProcessStep p"),
+@NamedQueries({@NamedQuery(name = "ProcessStep.findAll", query = "SELECT p FROM ProcessStep p"),
     @NamedQuery(name = "ProcessStep.findById", query = "SELECT p FROM ProcessStep p WHERE p.id = :id"),
     @NamedQuery(name = "ProcessStep.findByItemno", query = "SELECT p FROM ProcessStep p WHERE p.itemno = :itemno"),
     @NamedQuery(name = "ProcessStep.findByManno", query = "SELECT p FROM ProcessStep p WHERE p.manno = :manno"),
-    @NamedQuery(name = "ProcessStep.findByComponent", query = "SELECT p FROM ProcessStep p WHERE p.component = :component"),
-    @NamedQuery(name = "ProcessStep.findByEquipment", query = "SELECT p FROM ProcessStep p WHERE p.equipment = :equipment"),
+    @NamedQuery(name = "ProcessStep.findByComponent",
+        query = "SELECT p FROM ProcessStep p WHERE p.component = :component"),
+    @NamedQuery(name = "ProcessStep.findByEquipment",
+        query = "SELECT p FROM ProcessStep p WHERE p.equipment = :equipment"),
     @NamedQuery(name = "ProcessStep.findByStep", query = "SELECT p FROM ProcessStep p WHERE p.step = :step"),
     @NamedQuery(name = "ProcessStep.findByStatus", query = "SELECT p FROM ProcessStep p WHERE p.status = :status")})
 public class ProcessStep extends FormEntity {
@@ -94,6 +94,10 @@ public class ProcessStep extends FormEntity {
     private BigDecimal standardMachineTime;
     @Column(name = "standardLaborTime")
     private BigDecimal standardLaborTime;
+    @Column(name = "totalMachineTime")
+    private BigDecimal totalMachineTime;
+    @Column(name = "totalLaborTime")
+    private BigDecimal totalLaborTime;
     @Column(name = "standardMachineCost")
     private BigDecimal standardMachineCost;
     @Column(name = "standardLaborCost")
@@ -108,8 +112,18 @@ public class ProcessStep extends FormEntity {
     private BigDecimal manufacturingExpenses;
     @Column(name = "standCost")
     private BigDecimal standCost;
+    @Column(name = "materialPrice")
+    private BigDecimal materialPrice;
+    @Column(name = "processingPrice")
+    private BigDecimal processingPrice;
+    @Column(name = "materialAmount")
+    private BigDecimal materialAmount;
+    @Column(name = "processingAmount")
+    private BigDecimal processingAmount;
 
     public ProcessStep() {
+        this.totalMachineTime = BigDecimal.ZERO;
+        this.totalLaborTime = BigDecimal.ZERO;
         this.standardMachineCost = BigDecimal.ZERO;
         this.standardLaborCost = BigDecimal.ZERO;
         this.materialCost = BigDecimal.ZERO;
@@ -117,6 +131,10 @@ public class ProcessStep extends FormEntity {
         this.laborCost = BigDecimal.ZERO;
         this.manufacturingExpenses = BigDecimal.ZERO;
         this.standCost = BigDecimal.ZERO;
+        this.materialPrice = BigDecimal.ZERO;
+        this.processingPrice = BigDecimal.ZERO;
+        this.materialAmount = BigDecimal.ZERO;
+        this.processingAmount = BigDecimal.ZERO;
         this.status = "N";
     }
 
@@ -256,6 +274,36 @@ public class ProcessStep extends FormEntity {
         this.standardLaborTime = standardLaborTime;
     }
 
+    /**
+     * @return the totalMachineTime
+     */
+    public BigDecimal getTotalMachineTime() {
+        return totalMachineTime;
+    }
+
+    /**
+     * @param totalMachineTime
+     *                             the totalMachineTime to set
+     */
+    public void setTotalMachineTime(BigDecimal totalMachineTime) {
+        this.totalMachineTime = totalMachineTime;
+    }
+
+    /**
+     * @return the totalLaborTime
+     */
+    public BigDecimal getTotalLaborTime() {
+        return totalLaborTime;
+    }
+
+    /**
+     * @param totalLaborTime
+     *                           the totalLaborTime to set
+     */
+    public void setTotalLaborTime(BigDecimal totalLaborTime) {
+        this.totalLaborTime = totalLaborTime;
+    }
+
     public BigDecimal getStandardMachineCost() {
         return standardMachineCost;
     }
@@ -312,6 +360,66 @@ public class ProcessStep extends FormEntity {
         this.standCost = standCost;
     }
 
+    /**
+     * @return the materialPrice
+     */
+    public BigDecimal getMaterialPrice() {
+        return materialPrice;
+    }
+
+    /**
+     * @param materialPrice
+     *                          the materialPrice to set
+     */
+    public void setMaterialPrice(BigDecimal materialPrice) {
+        this.materialPrice = materialPrice;
+    }
+
+    /**
+     * @return the processingPrice
+     */
+    public BigDecimal getProcessingPrice() {
+        return processingPrice;
+    }
+
+    /**
+     * @param processingPrice
+     *                            the processingPrice to set
+     */
+    public void setProcessingPrice(BigDecimal processingPrice) {
+        this.processingPrice = processingPrice;
+    }
+
+    /**
+     * @return the materialAmount
+     */
+    public BigDecimal getMaterialAmount() {
+        return materialAmount;
+    }
+
+    /**
+     * @param materialAmount
+     *                           the materialAmount to set
+     */
+    public void setMaterialAmount(BigDecimal materialAmount) {
+        this.materialAmount = materialAmount;
+    }
+
+    /**
+     * @return the processingAmount
+     */
+    public BigDecimal getProcessingAmount() {
+        return processingAmount;
+    }
+
+    /**
+     * @param processingAmount
+     *                             the processingAmount to set
+     */
+    public void setProcessingAmount(BigDecimal processingAmount) {
+        this.processingAmount = processingAmount;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -325,7 +433,7 @@ public class ProcessStep extends FormEntity {
         if (!(object instanceof ProcessStep)) {
             return false;
         }
-        ProcessStep other = (ProcessStep) object;
+        ProcessStep other = (ProcessStep)object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
