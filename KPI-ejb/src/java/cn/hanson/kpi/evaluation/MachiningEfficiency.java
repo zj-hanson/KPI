@@ -89,7 +89,7 @@ public class MachiningEfficiency implements Actual {
         }
     }
 
-    protected SuperEJBForERP lookupSuperEJBForERP() {
+    private SuperEJBForERP lookupSuperEJBForERP() {
         try {
             Context c = new InitialContext();
             return (SuperEJBForERP)c
@@ -100,7 +100,7 @@ public class MachiningEfficiency implements Actual {
         }
     }
 
-    protected SuperEJBForKPI lookupSuperEJBForKPI() {
+    private SuperEJBForKPI lookupSuperEJBForKPI() {
         try {
             Context c = new InitialContext();
             return (SuperEJBForKPI)c.lookup("java:global/KPI/KPI-ejb/IndicatorBean!cn.hanbell.kpi.ejb.IndicatorBean");
@@ -109,7 +109,7 @@ public class MachiningEfficiency implements Actual {
         }
     }
 
-    protected SuperEJBForMES lookupSuperEJBForMES() {
+    private SuperEJBForMES lookupSuperEJBForMES() {
         try {
             Context c = new InitialContext();
             return (SuperEJBForMES)c
@@ -185,6 +185,11 @@ public class MachiningEfficiency implements Actual {
 
             Method setMethod = IndicatorDetail.class
                 .getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+            // 实际产值
+            IndicatorDetail f = indicator.getForecastIndicator();
+            tempValue = updateMachiningValue(f, y, m, day, type, machine);
+            setMethod.invoke(f, tempValue);
+            indicatorBean.updateIndicatorDetail(f);
             // 计划工时
             IndicatorDetail t = indicator.getTargetIndicator();
             plannedHour = updatePlannedHour(t, y, m, day, type, machine);
@@ -195,27 +200,30 @@ public class MachiningEfficiency implements Actual {
             standardHour = updateStandardHour(b, y, m, day, type, machine);
             setMethod.invoke(b, standardHour);
             indicatorBean.updateIndicatorDetail(b);
-            // 停机时间
+            // 停机时间o1
             IndicatorDetail o1 = indicator.getOther1Indicator();
             if (o1 != null) {
                 tempValue = updateDowntime(o1, y, m, day, type, machine);
                 setMethod.invoke(o1, tempValue);
                 indicatorBean.updateIndicatorDetail(o1);
             }
-            // 停线时间
+            // 停线时间o2
             IndicatorDetail o2 = indicator.getOther2Indicator();
             if (o2 != null) {
                 tempValue = updateWaintingTime(o2, y, m, day, type, machine);
                 setMethod.invoke(o2, tempValue);
                 indicatorBean.updateIndicatorDetail(o2);
             }
-            // 产出数量
+            // 除外换模o3
+            // 计划产出o4
+            // 产出数量o5
             IndicatorDetail o5 = indicator.getOther5Indicator();
             if (o5 != null) {
                 tempValue = updateMachiningQuantity(o5, y, m, day, type, machine);
                 setMethod.invoke(o5, tempValue);
                 indicatorBean.updateIndicatorDetail(o5);
             }
+            // 不良数量o6
         } catch (Exception ex) {
             log4j.error("MachiningEfficiency.getValue()异常", ex);
         }
@@ -440,6 +448,47 @@ public class MachiningEfficiency implements Actual {
             log4j.error("MachiningEfficiency.updateMachiningQuantity()异常", ex);
         }
         return value;
+    }
+
+    protected BigDecimal updateMachiningValue(IndicatorDetail entity, int uy, int um, int ud, int type,
+        String machine) {
+        BigDecimal value = BigDecimal.ZERO;
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+            "SELECT COALESCE(SUM(processingAmount),0) FROM processstep WHERE company = '${company}' AND equipment = '${machine}' ");
+        sb.append(" AND year(endTime)=${y} AND month(endTime)=${m} ");
+        switch (type) {
+            case 2:
+                // 月
+                sb.append(" AND DAY(endTime) <= ${d} ");
+                break;
+            case 5:
+                // 日
+                sb.append(" AND DAY(endTime) = ${d} ");
+                break;
+            default:
+                sb.append(" AND DAY(endTime) = ${d} ");
+        }
+        String sql = sb.toString().replace("${company}", entity.getParent().getCompany()).replace("${machine}", machine)
+            .replace("${y}", String.valueOf(uy)).replace("${m}", String.valueOf(um))
+            .replace("${d}", String.valueOf(ud));
+        Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
+        try {
+            Object obj = query.getSingleResult();
+            value = BigDecimal.valueOf(Double.parseDouble(obj.toString()));
+            IndicatorDaily daily =
+                indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
+            if (daily != null) {
+                Method setMethod = daily.getClass().getDeclaredMethod(
+                    "set" + indicatorBean.getIndicatorColumn("D", ud).toUpperCase(), BigDecimal.class);
+                setMethod.invoke(daily, value);
+                indicatorBean.updateIndicatorDaily(daily);
+                return daily.getTotal();
+            }
+        } catch (Exception ex) {
+            log4j.error("MachiningEfficiency.updateMachiningValue()异常", ex);
+        }
+        return BigDecimal.ZERO;
     }
 
     protected BigDecimal updatePlannedHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
