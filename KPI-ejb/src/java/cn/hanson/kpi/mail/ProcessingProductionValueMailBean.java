@@ -347,12 +347,12 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         sb.append(getProcessingProductionValue());
         sb.append("<div class=\"tableTitle\">分钟产值: 每个机台每分钟产出价值</div>");
         sb.append("<div class=\"tableTitle\">标准工时: 每个机台今日加工完成工件在ERP中标准机器工时 X 报工完成数量的合计</div>");
-        sb.append("<div class=\"tableTitle\">实际报工: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
+        sb.append("<div class=\"tableTitle\">报工工时: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
         sb.append("<div class=\"tableTitle\">标准产值: 标准工时 X 分钟产值 </div>");
         sb.append("<div class=\"tableTitle\">实际产值: 每个机台今日加工完成工件的加工价值的合计</div>");
         sb.append("<div class=\"tableTitle\">本月标准: 本月每个机台每日标准工时的合计</div>");
         sb.append("<div class=\"tableTitle\">本月报工: 本月每个机台每日报工工时的合计</div>");
-        sb.append("<div class=\"tableTitle\">月标值产值: 本月标准 X 分钟产值 </div>");
+        sb.append("<div class=\"tableTitle\">月标准产值: 本月标准 X 分钟产值 </div>");
         sb.append("<div class=\"tableTitle\">月实际产值: 每日实际产值合计</div>");
         sb.append(
             "<div class=\"tableTitle\">类别说明：HMC-卧加 VMC-立加 BMC-镗铣 GMC-龙门 HNL-卧车 VNL-立车 CMM-铣床 NHP-刨床 NMD-铣打</div>");
@@ -377,7 +377,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr>");
             sb.append(
-                "<th>类别</th><th>机台</th><th>分钟产值</th><th>标准工时</th><th>实际报工</th><th>报工数量</th><th>标准产值(元)</th><th>实际产值(元)</th>");
+                "<th>类别</th><th>机台</th><th>分钟产值</th><th>标准工时</th><th>报工工时</th><th>报工数量</th><th>标准产值(元)</th><th>实际产值(元)</th>");
             sb.append("<th>本月标准</th><th>本月报工</th><th>本月数量</th><th>月标准产值(元)</th><th>月实际产值(元)</th>");
             String detail, category;
             // 报表路径
