@@ -341,6 +341,17 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             return null;
         }
     }
+    public List<String> findCategoryList(String company, int y, String actualInterface) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT category FROM indicator WHERE company ='${company}' AND   seq = ${y} AND   actualInterface = '${actualInterface}' GROUP BY category ");
+        String sql = sb.toString().replace("${company}", company).replace("${y}", String.valueOf(y)).replace("${actualInterface}",actualInterface);
+        Query query = getEntityManager().createNativeQuery(sql);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     public BigDecimal getAccumulatedGrowth(IndicatorDetail a, IndicatorDetail b, int m) {
         return getAccumulatedGrowth(a, b, m, 2);
