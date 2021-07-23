@@ -512,7 +512,7 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updateStandardHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT COALESCE(SUM(standardMachineTime * qty),0) FROM processstep WHERE equipment = '${machine}' ");
+        sb.append("SELECT COALESCE(SUM(standardMachineTime * qty),0) FROM processstep WHERE company = '${company}' AND equipment = '${machine}' ");
         sb.append(" AND year(endTime)=${y} AND month(endTime)=${m} ");
         switch (type) {
             case 2:
@@ -526,7 +526,7 @@ public class MachiningEfficiency implements Actual {
             default:
                 sb.append(" AND DAY(endTime) = ${d} ");
         }
-        String sql = sb.toString().replace("${machine}", machine).replace("${y}", String.valueOf(uy))
+        String sql = sb.toString().replace("${company}", entity.getParent().getCompany()).replace("${machine}", machine).replace("${y}", String.valueOf(uy))
             .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
         Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
