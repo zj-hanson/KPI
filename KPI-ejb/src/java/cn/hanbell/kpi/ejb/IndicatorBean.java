@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.ejb;
 
@@ -61,9 +60,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     }
 
     public void addValue(IndicatorDetail a, IndicatorDetail b, String formKind) {
-        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        // 先算汇总字段再算每月字段,A和S类型会重算汇总
         switch (formKind) {
             case "M":
+            case "D":
                 a.setNfy(a.getNfy().add(b.getNfy()));
                 a.setNh2(a.getNh2().add(b.getNh2()));
                 a.setNh1(a.getNh1().add(b.getNh1()));
@@ -145,7 +145,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     public void divideByRate(IndicatorDetail id, BigDecimal rate, int scale) {
         getEntityManager().clear();
-        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        // 先算汇总字段再算每月字段,A和S类型会重算汇总
         id.setNfy(id.getNfy().divide(rate, scale, RoundingMode.HALF_UP));
         id.setNh2(id.getNh2().divide(rate, scale, RoundingMode.HALF_UP));
         id.setNh1(id.getNh1().divide(rate, scale, RoundingMode.HALF_UP));
@@ -208,7 +208,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         query.setParameter("deptno", value);
         try {
             Object o = query.getSingleResult();
-            return (Indicator) o;
+            return (Indicator)o;
         } catch (Exception ex) {
             return null;
         }
@@ -231,7 +231,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         query.setParameter("seq", y);
         try {
             Object o = query.getSingleResult();
-            return (Indicator) o;
+            return (Indicator)o;
         } catch (Exception ex) {
             return null;
         }
@@ -341,10 +341,13 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             return null;
         }
     }
+
     public List<String> findCategoryList(String company, int y, String actualInterface) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT category FROM indicator WHERE company ='${company}' AND   seq = ${y} AND   actualInterface = '${actualInterface}' GROUP BY category ");
-        String sql = sb.toString().replace("${company}", company).replace("${y}", String.valueOf(y)).replace("${actualInterface}",actualInterface);
+        sb.append(
+            " SELECT category FROM indicator WHERE company ='${company}' AND   seq = ${y} AND   actualInterface = '${actualInterface}' GROUP BY category ");
+        String sql = sb.toString().replace("${company}", company).replace("${y}", String.valueOf(y))
+            .replace("${actualInterface}", actualInterface);
         Query query = getEntityManager().createNativeQuery(sql);
         try {
             return query.getResultList();
@@ -361,9 +364,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         BigDecimal na, nb;
         na = getAccumulatedValue(a, m);
         nb = getAccumulatedValue(b, m);
-        //计算
+        // 计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE)
+                .multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -377,9 +381,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         BigDecimal na, nb;
         na = getAccumulatedValue(a, m);
         nb = getAccumulatedValue(b, m, d);
-        //计算
+        // 计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
-            return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+            return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE)
+                .multiply(BigDecimal.valueOf(100d));
         } else {
             return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
         }
@@ -393,7 +398,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         BigDecimal na, nb;
         na = getAccumulatedValue(a, m);
         nb = getAccumulatedValue(b, m);
-        //计算
+        // 计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
             return na.divide(nb, scale + 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
@@ -401,12 +406,14 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         }
     }
 
-    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m, Date d) {
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m,
+        Date d) {
         return getAccumulatedPerformance(a, fa, b, fb, m, d, 2);
     }
 
-    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m, Date d, int scale) {
-        //fa,fb = true 表示需要按天折算
+    public BigDecimal getAccumulatedPerformance(IndicatorDetail a, boolean fa, IndicatorDetail b, boolean fb, int m,
+        Date d, int scale) {
+        // fa,fb = true 表示需要按天折算
         BigDecimal na, nb;
         if (fa) {
             na = getAccumulatedValue(a, m, d);
@@ -418,7 +425,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         } else {
             nb = getAccumulatedValue(b, m);
         }
-        //计算
+        // 计算
         if (nb.compareTo(BigDecimal.ZERO) != 0) {
             return na.divide(nb, scale + 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
         } else {
@@ -474,7 +481,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 if (i < m) {
                     total = total.add(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())));
                 } else {
-                    total = total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 0));
+                    total =
+                        total.add(getValueOfDays(BigDecimal.valueOf(Double.valueOf(f.get(entity).toString())), d, 0));
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 log4j.error(ex);
@@ -494,17 +502,18 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         Field f;
         try {
             mon = this.getIndicatorColumn("N", m);
-            //实际值分子
+            // 实际值分子
             f = a.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             na = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
-            //比较值分母
+            // 比较值分母
             f = b.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
-            //计算
+            // 计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
-                return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+                return na.divide(nb, scale + 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE)
+                    .multiply(BigDecimal.valueOf(100d));
             } else {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
@@ -524,19 +533,20 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         Field f;
         try {
             mon = this.getIndicatorColumn("N", m);
-            //实际值分子
+            // 实际值分子
             f = a.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             na = BigDecimal.valueOf(Double.valueOf(f.get(a).toString()));
-            //比较值分母
+            // 比较值分母
             f = b.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             nb = BigDecimal.valueOf(Double.valueOf(f.get(b).toString()));
-            //折算到天数
+            // 折算到天数
             nb = getValueOfDays(nb, d, scale);
-            //计算
+            // 计算
             if (nb.compareTo(BigDecimal.ZERO) != 0) {
-                return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE).multiply(BigDecimal.valueOf(100d));
+                return na.divide(nb, scale + 4, RoundingMode.HALF_UP).subtract(BigDecimal.ONE)
+                    .multiply(BigDecimal.valueOf(100d));
             } else {
                 return BigDecimal.valueOf(na.compareTo(nb)).multiply(BigDecimal.valueOf(100d));
             }
@@ -591,7 +601,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         IndicatorDetail a, b, f, t;
         IndicatorDetail sa, sb, sf, st, sp, so1, so2, so3, so4, so5, so6;
         try {
-            entity = (Indicator) BeanUtils.cloneBean(indicators.get(0));
+            entity = (Indicator)BeanUtils.cloneBean(indicators.get(0));
             entity.setId(-1);
             entity.setName("合计");
             entity.setFormid("合计");
@@ -769,7 +779,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (updatePerf) {
                 updatePerformance(entity);
             }
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException
+            | NoSuchMethodException ex) {
             log4j.error(ex);
         }
         return entity;
@@ -778,8 +789,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     /**
      * 默认不处理其他值，不计算达成率
      *
-     * @param minuend 被减数
-     * @param subtrahend 减数
+     * @param minuend
+     *                       被减数
+     * @param subtrahend
+     *                       减数
      * @return 新的指标对象
      */
     public Indicator getSubtractValue(Indicator minuend, Indicator subtrahend) {
@@ -788,20 +801,25 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
 
     /**
      *
-     * @param minuend 被减数
-     * @param subtrahend 减数
-     * @param subOther 是否处理其他值
-     * @param updatePerf 是否计算达成率
+     * @param minuend
+     *                       被减数
+     * @param subtrahend
+     *                       减数
+     * @param subOther
+     *                       是否处理其他值
+     * @param updatePerf
+     *                       是否计算达成率
      * @return 新的指标对象
      */
     public Indicator getSubtractValue(Indicator minuend, Indicator subtrahend, boolean subOther, boolean updatePerf) {
-        if (!minuend.getFormtype().equals(subtrahend.getFormtype()) || !minuend.getFormkind().equals(subtrahend.getFormkind())) {
+        if (!minuend.getFormtype().equals(subtrahend.getFormtype())
+            || !minuend.getFormkind().equals(subtrahend.getFormkind())) {
             return null;
         }
         String formkind = minuend.getFormkind();
         Indicator entity = null;
         try {
-            entity = (Indicator) BeanUtils.cloneBean(minuend);
+            entity = (Indicator)BeanUtils.cloneBean(minuend);
             entity.setId(-1);
             subtractValue(entity.getActualIndicator(), subtrahend.getActualIndicator(), formkind);
             subtractValue(entity.getBenchmarkIndicator(), subtrahend.getBenchmarkIndicator(), formkind);
@@ -848,7 +866,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (updatePerf) {
                 updatePerformance(entity);
             }
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException
+            | NoSuchMethodException ex) {
             log4j.error(ex);
         }
         return entity;
@@ -877,7 +896,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     public void persist(Indicator entity) {
         super.persist(entity);
         this.getEntityManager().flush();
-        //目标
+        // 目标
         IndicatorDetail t = new IndicatorDetail();
         t.setPid(entity.getId());
         t.setSeq(1);
@@ -885,7 +904,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.persist(t);
         indicatorDetailBean.getEntityManager().flush();
         entity.setTargetIndicator(t);
-        //基准
+        // 基准
         IndicatorDetail b = new IndicatorDetail();
         b.setPid(entity.getId());
         b.setSeq(2);
@@ -893,7 +912,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.persist(b);
         indicatorDetailBean.getEntityManager().flush();
         entity.setBenchmarkIndicator(b);
-        //预期
+        // 预期
         IndicatorDetail f = new IndicatorDetail();
         f.setPid(entity.getId());
         f.setSeq(3);
@@ -901,7 +920,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.persist(f);
         indicatorDetailBean.getEntityManager().flush();
         entity.setForecastIndicator(f);
-        //实际
+        // 实际
         IndicatorDetail a = new IndicatorDetail();
         a.setPid(entity.getId());
         a.setSeq(4);
@@ -909,7 +928,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.persist(a);
         indicatorDetailBean.getEntityManager().flush();
         entity.setActualIndicator(a);
-        //绩效
+        // 绩效
         IndicatorDetail p = new IndicatorDetail();
         p.setPid(entity.getId());
         p.setSeq(5);
@@ -917,9 +936,9 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.persist(p);
         indicatorDetailBean.getEntityManager().flush();
         entity.setPerformanceIndicator(p);
-        //设置指标明细后保存
+        // 设置指标明细后保存
         update(entity);
-        //设置指标关联部门
+        // 设置指标关联部门
         IndicatorDepartment dept = new IndicatorDepartment();
         dept.setPid(entity.getId());
         dept.setSeq(entity.getSeq());
@@ -943,9 +962,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
     }
 
     public void subtractValue(IndicatorDetail a, IndicatorDetail b, String formKind) {
-        //先算汇总字段再算每月字段,A和S类型会重算汇总
+        // 先算汇总字段再算每月字段,A和S类型会重算汇总
         switch (formKind) {
             case "M":
+            case "D":
                 a.setNfy(a.getNfy().subtract(b.getNfy()));
                 a.setNh2(a.getNh2().subtract(b.getNh2()));
                 a.setNh1(a.getNh1().subtract(b.getNh1()));
@@ -994,20 +1014,25 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         indicatorDetailBean.update(entity.getPerformanceIndicator());
         indicatorDetailBean.getEntityManager().flush();
         if ("D".equals(entity.getFormkind())) {
-            //检查是否有天指标
-            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getTargetIndicator().getId(), entity.getTargetIndicator().getSeq())) {
+            // 检查是否有天指标
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getTargetIndicator().getId(),
+                entity.getTargetIndicator().getSeq())) {
                 persistIndicatorDaily(entity, entity.getTargetIndicator());
             }
-            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getBenchmarkIndicator().getId(), entity.getBenchmarkIndicator().getSeq())) {
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getBenchmarkIndicator().getId(),
+                entity.getBenchmarkIndicator().getSeq())) {
                 persistIndicatorDaily(entity, entity.getBenchmarkIndicator());
             }
-            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getForecastIndicator().getId(), entity.getForecastIndicator().getSeq())) {
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getForecastIndicator().getId(),
+                entity.getForecastIndicator().getSeq())) {
                 persistIndicatorDaily(entity, entity.getForecastIndicator());
             }
-            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getActualIndicator().getId(), entity.getActualIndicator().getSeq())) {
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getActualIndicator().getId(),
+                entity.getActualIndicator().getSeq())) {
                 persistIndicatorDaily(entity, entity.getActualIndicator());
             }
-            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getPerformanceIndicator().getId(), entity.getPerformanceIndicator().getSeq())) {
+            if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getPerformanceIndicator().getId(),
+                entity.getPerformanceIndicator().getSeq())) {
                 persistIndicatorDaily(entity, entity.getPerformanceIndicator());
             }
         }
@@ -1022,8 +1047,9 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther1Indicator(o1);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
             }
@@ -1048,11 +1074,13 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther2Indicator(o2);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(),
+                    entity.getOther2Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther2Indicator());
                 }
             }
@@ -1086,14 +1114,17 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther3Indicator(o3);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(),
+                    entity.getOther2Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther2Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(),
+                    entity.getOther3Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther3Indicator());
                 }
             }
@@ -1136,17 +1167,21 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther4Indicator(o4);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(),
+                    entity.getOther2Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther2Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(),
+                    entity.getOther3Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther3Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(),
+                    entity.getOther4Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther4Indicator());
                 }
             }
@@ -1198,20 +1233,25 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther5Indicator(o5);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(),
+                    entity.getOther2Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther2Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(),
+                    entity.getOther3Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther3Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(),
+                    entity.getOther4Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther4Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(), entity.getOther5Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(),
+                    entity.getOther5Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther5Indicator());
                 }
             }
@@ -1272,23 +1312,29 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 entity.setOther6Indicator(o6);
             }
             if ("D".equals(entity.getFormkind())) {
-                //检查是否有天指标
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(), entity.getOther1Indicator().getSeq())) {
+                // 检查是否有天指标
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther1Indicator().getId(),
+                    entity.getOther1Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther1Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(), entity.getOther2Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther2Indicator().getId(),
+                    entity.getOther2Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther2Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(), entity.getOther3Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther3Indicator().getId(),
+                    entity.getOther3Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther3Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(), entity.getOther4Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther4Indicator().getId(),
+                    entity.getOther4Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther4Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(), entity.getOther5Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther5Indicator().getId(),
+                    entity.getOther5Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther5Indicator());
                 }
-                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther6Indicator().getId(), entity.getOther6Indicator().getSeq())) {
+                if (!indicatorDailyBean.queryIndicatorDailyIsExist(entity.getOther6Indicator().getId(),
+                    entity.getOther6Indicator().getSeq())) {
                     persistIndicatorDaily(entity, entity.getOther6Indicator());
                 }
             }
@@ -1416,10 +1462,13 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                 if (col != null && !"".equals(col)) {
                     f = si.getActualIndicator().getClass().getDeclaredField(col);
                     f.setAccessible(true);
-                    setMethod = entity.getActualIndicator().getClass().getDeclaredMethod("set" + col.substring(0, 1).toUpperCase() + col.substring(1), BigDecimal.class);
-                    setMethod.invoke(entity.getActualIndicator(), BigDecimal.valueOf(Double.valueOf(f.get(si.getActualIndicator()).toString())));
+                    setMethod = entity.getActualIndicator().getClass().getDeclaredMethod(
+                        "set" + col.substring(0, 1).toUpperCase() + col.substring(1), BigDecimal.class);
+                    setMethod.invoke(entity.getActualIndicator(),
+                        BigDecimal.valueOf(Double.valueOf(f.get(si.getActualIndicator()).toString())));
                 }
-            } catch (NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
+            } catch (NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | IllegalAccessException | InvocationTargetException ex) {
                 log4j.error(ex);
             }
         }
@@ -1430,12 +1479,12 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         String userid = entity.getUserid();
         IndicatorDetail detail;
         int uy, um;
-        //先计算Other
+        // 先计算Other
         if (entity != null && entity.getHasOther() > 0) {
             if (entity.getOther1Interface() != null && !"".equals(entity.getOther1Interface())) {
                 IndicatorDetail o1 = entity.getOther1Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther1Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther1Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther1EJB());
@@ -1447,7 +1496,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o1.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o1.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o1, na);
                     indicatorDetailBean.update(o1);
                 } catch (Exception ex) {
@@ -1457,7 +1507,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (entity.getOther2Interface() != null && !"".equals(entity.getOther2Interface())) {
                 IndicatorDetail o2 = entity.getOther2Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther2Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther2Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther2EJB());
@@ -1469,7 +1519,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o2.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o2.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o2, na);
                     indicatorDetailBean.update(o2);
                 } catch (Exception ex) {
@@ -1479,7 +1530,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (entity.getOther3Interface() != null && !"".equals(entity.getOther3Interface())) {
                 IndicatorDetail o3 = entity.getOther3Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther3Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther3Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther3EJB());
@@ -1491,7 +1542,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o3.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o3.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o3, na);
                     indicatorDetailBean.update(o3);
                 } catch (Exception ex) {
@@ -1501,7 +1553,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (entity.getOther4Interface() != null && !"".equals(entity.getOther4Interface())) {
                 IndicatorDetail o4 = entity.getOther4Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther4Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther4Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther4EJB());
@@ -1513,7 +1565,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o4.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o4.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o4, na);
                     indicatorDetailBean.update(o4);
                 } catch (Exception ex) {
@@ -1523,7 +1576,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (entity.getOther5Interface() != null && !"".equals(entity.getOther5Interface())) {
                 IndicatorDetail o5 = entity.getOther5Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther5Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther5Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther5EJB());
@@ -1535,7 +1588,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o5.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o5.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o5, na);
                     indicatorDetailBean.update(o5);
                 } catch (Exception ex) {
@@ -1545,7 +1599,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             if (entity.getOther6Interface() != null && !"".equals(entity.getOther6Interface())) {
                 IndicatorDetail o6 = entity.getOther6Indicator();
                 try {
-                    otherInterface = (Actual) Class.forName(entity.getOther6Interface()).newInstance();
+                    otherInterface = (Actual)Class.forName(entity.getOther6Interface()).newInstance();
                     uy = otherInterface.getUpdateYear(y, m);
                     um = otherInterface.getUpdateMonth(y, m);
                     otherInterface.setEJB(entity.getOther6EJB());
@@ -1557,7 +1611,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = otherInterface.getValue(uy, um, d, type, otherInterface.getQueryParams());
                     }
-                    Method setMethod = o6.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = o6.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(o6, na);
                     indicatorDetailBean.update(o6);
                 } catch (Exception ex) {
@@ -1568,7 +1623,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         if ((entity != null) && (entity.getActualInterface() != null) && (!"".equals(entity.getActualInterface()))) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
-                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                actualInterface = (Actual)Class.forName(entity.getActualInterface()).newInstance();
                 uy = actualInterface.getUpdateYear(y, m);
                 um = actualInterface.getUpdateMonth(y, m);
                 if (entity.getSeq() == uy) {
@@ -1581,7 +1636,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
                     }
-                    Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = a.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(a, na);
                     indicatorDetailBean.update(a);
                 }
@@ -1599,7 +1655,7 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         if ((entity != null) && (entity.getActualInterface() != null) && !"".equals(entity.getActualInterface())) {
             IndicatorDetail a = entity.getActualIndicator();
             try {
-                actualInterface = (Actual) Class.forName(entity.getActualInterface()).newInstance();
+                actualInterface = (Actual)Class.forName(entity.getActualInterface()).newInstance();
                 uy = actualInterface.getUpdateYear(y, m);
                 um = actualInterface.getUpdateMonth(y, m);
                 if (entity.getSeq() == uy) {
@@ -1612,7 +1668,8 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     } else {
                         na = actualInterface.getValue(uy, um, d, type, actualInterface.getQueryParams());
                     }
-                    Method setMethod = a.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
+                    Method setMethod = a.getClass()
+                        .getDeclaredMethod("set" + this.getIndicatorColumn("N", um).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(a, na);
                     indicatorDetailBean.update(a);
                 }
@@ -1634,9 +1691,11 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             c.setTime(d);
             int day = c.get(Calendar.DAY_OF_MONTH);
             BigDecimal value = a1.getValue(uy, um, d, type, a1.getQueryParams());
-            IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
+            IndicatorDaily daily =
+                indicatorDailyBean.findByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
             if (daily != null) {
-                Method setMethod = daily.getClass().getDeclaredMethod("set" + this.getIndicatorColumn("D", day).toUpperCase(), BigDecimal.class);
+                Method setMethod = daily.getClass()
+                    .getDeclaredMethod("set" + this.getIndicatorColumn("D", day).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(daily, value);
                 indicatorDailyBean.update(daily);
                 return daily.getTotal();
@@ -1715,7 +1774,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
             switch (entity.getPerfCalc()) {
                 case "AT":
                     if (entity.getTargetIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN01(entity.getActualIndicator().getN01().divide(entity.getTargetIndicator().getN01(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN01(entity.getActualIndicator().getN01()
+                                .divide(entity.getTargetIndicator().getN01(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN01().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN01(BigDecimal.valueOf(100d));
@@ -1726,7 +1788,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN02(entity.getActualIndicator().getN02().divide(entity.getTargetIndicator().getN02(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN02(entity.getActualIndicator().getN02()
+                                .divide(entity.getTargetIndicator().getN02(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN02().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN02(BigDecimal.valueOf(100d));
@@ -1737,7 +1802,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN03(entity.getActualIndicator().getN03().divide(entity.getTargetIndicator().getN03(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN03(entity.getActualIndicator().getN03()
+                                .divide(entity.getTargetIndicator().getN03(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN03().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN03(BigDecimal.valueOf(100d));
@@ -1748,7 +1816,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN04(entity.getActualIndicator().getN04().divide(entity.getTargetIndicator().getN04(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN04(entity.getActualIndicator().getN04()
+                                .divide(entity.getTargetIndicator().getN04(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN04().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN04(BigDecimal.valueOf(100d));
@@ -1759,7 +1830,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN05(entity.getActualIndicator().getN05().divide(entity.getTargetIndicator().getN05(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN05(entity.getActualIndicator().getN05()
+                                .divide(entity.getTargetIndicator().getN05(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN05().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN05(BigDecimal.valueOf(100d));
@@ -1770,7 +1844,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN06(entity.getActualIndicator().getN06().divide(entity.getTargetIndicator().getN06(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN06(entity.getActualIndicator().getN06()
+                                .divide(entity.getTargetIndicator().getN06(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN06().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN06(BigDecimal.valueOf(100d));
@@ -1781,7 +1858,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN07(entity.getActualIndicator().getN07().divide(entity.getTargetIndicator().getN07(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN07(entity.getActualIndicator().getN07()
+                                .divide(entity.getTargetIndicator().getN07(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN07().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN07(BigDecimal.valueOf(100d));
@@ -1792,7 +1872,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN08(entity.getActualIndicator().getN08().divide(entity.getTargetIndicator().getN08(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN08(entity.getActualIndicator().getN08()
+                                .divide(entity.getTargetIndicator().getN08(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN08().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN08(BigDecimal.valueOf(100d));
@@ -1803,7 +1886,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN09(entity.getActualIndicator().getN09().divide(entity.getTargetIndicator().getN09(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN09(entity.getActualIndicator().getN09()
+                                .divide(entity.getTargetIndicator().getN09(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN09().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN09(BigDecimal.valueOf(100d));
@@ -1814,7 +1900,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN10(entity.getActualIndicator().getN10().divide(entity.getTargetIndicator().getN10(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN10(entity.getActualIndicator().getN10()
+                                .divide(entity.getTargetIndicator().getN10(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN10().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN10(BigDecimal.valueOf(100d));
@@ -1825,7 +1914,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN11(entity.getActualIndicator().getN11().divide(entity.getTargetIndicator().getN11(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN11(entity.getActualIndicator().getN11()
+                                .divide(entity.getTargetIndicator().getN11(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN11().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN11(BigDecimal.valueOf(100d));
@@ -1836,7 +1928,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN12(entity.getActualIndicator().getN12().divide(entity.getTargetIndicator().getN12(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN12(entity.getActualIndicator().getN12()
+                                .divide(entity.getTargetIndicator().getN12(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getN12().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setN12(BigDecimal.valueOf(100d));
@@ -1847,7 +1942,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq1(entity.getActualIndicator().getNq1().divide(entity.getTargetIndicator().getNq1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq1(entity.getActualIndicator().getNq1()
+                                .divide(entity.getTargetIndicator().getNq1(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNq1(BigDecimal.valueOf(100d));
@@ -1858,7 +1956,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq2(entity.getActualIndicator().getNq2().divide(entity.getTargetIndicator().getNq2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq2(entity.getActualIndicator().getNq2()
+                                .divide(entity.getTargetIndicator().getNq2(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNq2().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNq2(BigDecimal.valueOf(100d));
@@ -1869,7 +1970,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq3(entity.getActualIndicator().getNq3().divide(entity.getTargetIndicator().getNq3(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq3(entity.getActualIndicator().getNq3()
+                                .divide(entity.getTargetIndicator().getNq3(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNq3().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNq3(BigDecimal.valueOf(100d));
@@ -1880,7 +1984,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq4(entity.getActualIndicator().getNq4().divide(entity.getTargetIndicator().getNq4(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq4(entity.getActualIndicator().getNq4()
+                                .divide(entity.getTargetIndicator().getNq4(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNq4().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNq4(BigDecimal.valueOf(100d));
@@ -1891,7 +1998,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNh1().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNh1(entity.getActualIndicator().getNh1().divide(entity.getTargetIndicator().getNh1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNh1(entity.getActualIndicator().getNh1()
+                                .divide(entity.getTargetIndicator().getNh1(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNh1().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNh1(BigDecimal.valueOf(100d));
@@ -1902,7 +2012,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNh2().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNh2(entity.getActualIndicator().getNh2().divide(entity.getTargetIndicator().getNh2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNh2(entity.getActualIndicator().getNh2()
+                                .divide(entity.getTargetIndicator().getNh2(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNh2().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNh2(BigDecimal.valueOf(100d));
@@ -1913,7 +2026,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getTargetIndicator().getNfy().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNfy(entity.getActualIndicator().getNfy().divide(entity.getTargetIndicator().getNfy(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNfy(entity.getActualIndicator().getNfy()
+                                .divide(entity.getTargetIndicator().getNfy(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getActualIndicator().getNfy().compareTo(BigDecimal.ZERO) > 0) {
                             entity.getPerformanceIndicator().setNfy(BigDecimal.valueOf(100d));
@@ -1926,7 +2042,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                     break;
                 case "TA":
                     if (entity.getActualIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN01(entity.getTargetIndicator().getN01().divide(entity.getActualIndicator().getN01(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN01(entity.getTargetIndicator().getN01()
+                                .divide(entity.getActualIndicator().getN01(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN01().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN01(BigDecimal.valueOf(100d));
@@ -1935,7 +2054,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN02(entity.getTargetIndicator().getN02().divide(entity.getActualIndicator().getN02(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN02(entity.getTargetIndicator().getN02()
+                                .divide(entity.getActualIndicator().getN02(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN02().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN02(BigDecimal.valueOf(100d));
@@ -1944,7 +2066,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN03(entity.getTargetIndicator().getN03().divide(entity.getActualIndicator().getN03(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN03(entity.getTargetIndicator().getN03()
+                                .divide(entity.getActualIndicator().getN03(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN03().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN03(BigDecimal.valueOf(100d));
@@ -1953,7 +2078,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN04(entity.getTargetIndicator().getN04().divide(entity.getActualIndicator().getN04(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN04(entity.getTargetIndicator().getN04()
+                                .divide(entity.getActualIndicator().getN04(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN04().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN04(BigDecimal.valueOf(100d));
@@ -1962,7 +2090,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN05(entity.getTargetIndicator().getN05().divide(entity.getActualIndicator().getN05(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN05(entity.getTargetIndicator().getN05()
+                                .divide(entity.getActualIndicator().getN05(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN05().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN05(BigDecimal.valueOf(100d));
@@ -1971,7 +2102,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN06(entity.getTargetIndicator().getN06().divide(entity.getActualIndicator().getN06(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN06(entity.getTargetIndicator().getN06()
+                                .divide(entity.getActualIndicator().getN06(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN06().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN06(BigDecimal.valueOf(100d));
@@ -1980,7 +2114,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN07(entity.getTargetIndicator().getN07().divide(entity.getActualIndicator().getN07(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN07(entity.getTargetIndicator().getN07()
+                                .divide(entity.getActualIndicator().getN07(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN07().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN07(BigDecimal.valueOf(100d));
@@ -1989,7 +2126,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN08(entity.getTargetIndicator().getN08().divide(entity.getActualIndicator().getN08(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN08(entity.getTargetIndicator().getN08()
+                                .divide(entity.getActualIndicator().getN08(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN08().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN08(BigDecimal.valueOf(100d));
@@ -1998,7 +2138,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN09(entity.getTargetIndicator().getN09().divide(entity.getActualIndicator().getN09(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN09(entity.getTargetIndicator().getN09()
+                                .divide(entity.getActualIndicator().getN09(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN09().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN09(BigDecimal.valueOf(100d));
@@ -2007,7 +2150,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN10(entity.getTargetIndicator().getN10().divide(entity.getActualIndicator().getN10(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN10(entity.getTargetIndicator().getN10()
+                                .divide(entity.getActualIndicator().getN10(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN10().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN10(BigDecimal.valueOf(100d));
@@ -2016,7 +2162,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN11(entity.getTargetIndicator().getN11().divide(entity.getActualIndicator().getN11(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN11(entity.getTargetIndicator().getN11()
+                                .divide(entity.getActualIndicator().getN11(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN11().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN11(BigDecimal.valueOf(100d));
@@ -2025,7 +2174,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setN12(entity.getTargetIndicator().getN12().divide(entity.getActualIndicator().getN12(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setN12(entity.getTargetIndicator().getN12()
+                                .divide(entity.getActualIndicator().getN12(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getN12().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setN12(BigDecimal.valueOf(100d));
@@ -2034,7 +2186,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq1(entity.getTargetIndicator().getNq1().divide(entity.getActualIndicator().getNq1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq1(entity.getTargetIndicator().getNq1()
+                                .divide(entity.getActualIndicator().getNq1(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNq1().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNq1(BigDecimal.valueOf(100d));
@@ -2043,7 +2198,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq2(entity.getTargetIndicator().getNq2().divide(entity.getActualIndicator().getNq2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq2(entity.getTargetIndicator().getNq2()
+                                .divide(entity.getActualIndicator().getNq2(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNq2().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNq2(BigDecimal.valueOf(100d));
@@ -2052,7 +2210,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq3(entity.getTargetIndicator().getNq3().divide(entity.getActualIndicator().getNq3(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq3(entity.getTargetIndicator().getNq3()
+                                .divide(entity.getActualIndicator().getNq3(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNq3().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNq3(BigDecimal.valueOf(100d));
@@ -2061,7 +2222,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNq4(entity.getTargetIndicator().getNq4().divide(entity.getActualIndicator().getNq4(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNq4(entity.getTargetIndicator().getNq4()
+                                .divide(entity.getActualIndicator().getNq4(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNq4().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNq4(BigDecimal.valueOf(100d));
@@ -2070,7 +2234,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNh1().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNh1(entity.getTargetIndicator().getNh1().divide(entity.getActualIndicator().getNh1(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNh1(entity.getTargetIndicator().getNh1()
+                                .divide(entity.getActualIndicator().getNh1(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNh1().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNh1(BigDecimal.valueOf(100d));
@@ -2079,7 +2246,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNh2().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNh2(entity.getTargetIndicator().getNh2().divide(entity.getActualIndicator().getNh2(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNh2(entity.getTargetIndicator().getNh2()
+                                .divide(entity.getActualIndicator().getNh2(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNh2().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNh2(BigDecimal.valueOf(100d));
@@ -2088,7 +2258,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
                         }
                     }
                     if (entity.getActualIndicator().getNfy().compareTo(BigDecimal.ZERO) != 0) {
-                        entity.getPerformanceIndicator().setNfy(entity.getTargetIndicator().getNfy().divide(entity.getActualIndicator().getNfy(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d)));
+                        entity.getPerformanceIndicator()
+                            .setNfy(entity.getTargetIndicator().getNfy()
+                                .divide(entity.getActualIndicator().getNfy(), 4, RoundingMode.HALF_UP)
+                                .multiply(BigDecimal.valueOf(100d)));
                     } else {
                         if (entity.getTargetIndicator().getNfy().compareTo(BigDecimal.ZERO) != 0) {
                             entity.getPerformanceIndicator().setNfy(BigDecimal.valueOf(100d));
