@@ -37,7 +37,7 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="hansonmes"/>
     </properties>
   </persistence-unit>
-  <persistence-unit name="PU_HanyoungMES" transaction-type="JTA">
+<!--  <persistence-unit name="PU_HanyoungMES" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/hanyoungmes</jta-data-source>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
@@ -46,7 +46,7 @@
     <properties>
       <property name="eclipselink.canonicalmodel.subpackage" value="hanyoungmes"/>
     </properties>
-  </persistence-unit>
+  </persistence-unit>-->
   <persistence-unit name="PU_shberp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/shberp</jta-data-source>
@@ -189,6 +189,19 @@
       <property name="eclipselink.canonicalmodel.subpackage" value="vhb"/>
     </properties>
   </persistence-unit>
+   <persistence-unit name="PU-SHBEAM" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/shbeam</jta-data-source>
+        <class>cn.hanbell.kpi.entity.eam.EquipmentAnalyResult</class>
+        <class>cn.hanbell.kpi.entity.eam.EquipmentAnalyResultDta</class>
+        <class>cn.hanbell.kpi.entity.eam.EquipmentStandard</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>NONE</validation-mode>
+        <properties>
+            <property name="eclipselink.canonicalmodel.subpackage" value="shb"/>
+        </properties>
+    </persistence-unit>
   <persistence-unit name="PU-SHBEEP" transaction-type="JTA">
     <jta-data-source>jdbc/shbeep</jta-data-source>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
