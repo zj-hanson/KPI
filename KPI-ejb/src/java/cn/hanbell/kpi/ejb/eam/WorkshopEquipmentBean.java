@@ -5,11 +5,11 @@
  */
 package cn.hanbell.kpi.ejb.eam;
 
+import cn.hanbell.kpi.comm.SuperEJBForEAM;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
-import java.io.Serializable;
+import cn.hanbell.kpi.entity.eam.EquipmentAnalyResult;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,23 +22,16 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class WorkshopEquipmentBean implements Serializable {
+public class WorkshopEquipmentBean extends SuperEJBForEAM<EquipmentAnalyResult> {
 
     @EJB
     private SuperEJBForMES mesEJB;
-    protected LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
+ 
 
     public WorkshopEquipmentBean() {
+        super(EquipmentAnalyResult.class);
     }
 
-    /**
-     * 获取车间月报数据
-     *
-     * @param year 获取数据的年份
-     * @param type 获取的车间
-     * @param reportType 根据选择的版本调换取值数据及计算方法
-     * @return
-     */
     /**
      * 获取车间月报数据
      *
@@ -71,7 +64,7 @@ public class WorkshopEquipmentBean implements Serializable {
 
         //-- 大于10分钟的故障次数和60分钟以上的故障次数及故障停机时间和其他总的异常时间
         StringBuilder sbCount = new StringBuilder();
-        sbCount.append("  SELECT  A.MONTH, SUM(A.counts) counts10,sum(A.counts60) counts60,SUM(A.ALARMTIME_LEN) ALARMTIME_LEN,SUM(A.abnormal) abnormal");
+        sbCount.append("  SELECT  A.MONTH, SUM(A.counts) counts10,sum(A.counts60) counts60,(CASE WHEN SUM(A.ALARMTIME_LEN) IS NULL THEN 0 ELSE SUM(A.ALARMTIME_LEN) END) ALARMTIME_LEN,SUM(A.abnormal) abnormal");
         sbCount.append("  FROM ( SELECT E.EQPID, COUNT(CASE WHEN datediff(MINUTE, E.ALARMSTARTTIME, E.ALARMENDTIME) > 60 AND M.ALARMNAME = '设备故障' THEN E.EQPID END ) counts60, COUNT(CASE WHEN datediff(MINUTE, E.ALARMSTARTTIME, E.ALARMENDTIME) > 10 AND M.ALARMNAME = '设备故障'  THEN E.EQPID END ) counts,");
         sbCount.append("  sum(CASE WHEN datediff(MINUTE, E.ALARMSTARTTIME, E.ALARMENDTIME) > 10 AND M.ALARMNAME = '设备故障'  THEN  datediff(MINUTE, E.ALARMSTARTTIME, E.ALARMENDTIME )END) AS ALARMTIME_LEN,sum(datediff(MINUTE, E.ALARMSTARTTIME, E.ALARMENDTIME)) AS abnormal,");
         sbCount.append("  month(E.ALARMSTARTTIME)MONTH FROM EQP_RESULT_ALARM E LEFT JOIN MALARM M ON E.SPECIALALARMID = M.ALARMID WHERE E.ALARMSTARTTIME LIKE '").append(year).append("%'  AND M.ALARMTYPE = '").append(type).append("' GROUP BY month(E.ALARMSTARTTIME), E.EQPID ) A GROUP BY A.MONTH");
@@ -80,7 +73,7 @@ public class WorkshopEquipmentBean implements Serializable {
 
         //每月报工数及标准工时
         StringBuilder sbQty = new StringBuilder();
-        sbQty.append(" SELECT month(PROCESSCOMPLETETIME) MONTH ,count(CASE WHEN A.STEPID LIKE '%").append(str).append("清洗%' THEN A.EQPID END )  QTY,sum(round(B.REAL_TIME / 60, 1)) MINUTE ");
+        sbQty.append(" SELECT month(PROCESSCOMPLETETIME) MONTH ,count(CASE WHEN A.STEPID LIKE '%").append(str).append("清洗%' THEN A.EQPID END )  QTY,sum(round(B.STD_TIME / 60, 1)) MINUTE ");
         sbQty.append(" FROM PROCESS_STEP  A   LEFT JOIN PROCESS_STEP_TIME B ON A.SYSID = B.SYSID  AND A.EQPID = B.EQPID");
         sbQty.append(" LEFT JOIN  MEQP C ON C.EQPID = B.EQPID WHERE C.PRODUCTTYPE = '").append(type).append("'  AND A.PROCESSCOMPLETETIME LIKE'%").append(year).append("%' GROUP BY  month(PROCESSCOMPLETETIME)");
         query = mesEJB.getEntityManager().createNativeQuery(sbQty.toString());
@@ -92,6 +85,19 @@ public class WorkshopEquipmentBean implements Serializable {
         sbQG.append(" WHERE  B.ISPROCESSED='Y' AND B.PROJECTCREATETIME LIKE '").append(year).append("%' AND SOURCESTEPIP LIKE '").append(str).append("%' AND B.UQFTYPE ='UQFG0003' GROUP BY month(B.PROJECTCREATETIME)");
         query = mesEJB.getEntityManager().createNativeQuery(sbQG.toString());
         List<Object[]> qgList = query.getResultList();
+        //在报修系统中获取故障时间为60分钟以上的次数
+        StringBuilder sb60Count = new StringBuilder();
+        String strTypeString = "";
+        if (type.equals("半成品方型件")) {
+            strTypeString = "方型加工课";
+        } else {
+            strTypeString = "圆型加工课";
+        }
+        sb60Count.append(" SELECT month(hitchtime),count(CASE WHEN TIMESTAMPDIFF(MINUTE,hitchtime, completetime) > 60 THEN E.assetno END) as count60,count(*) count10 FROM equipmentrepair E LEFT JOIN assetcard A ON E.assetno=A.formid ");
+        sb60Count.append(" WHERE A.remark IS NOT NULL AND TIMESTAMPDIFF(MINUTE, hitchtime,completetime)>10 AND A.deptname='").append(strTypeString).append("' AND hitchtime LIKE '%").append(year).append("%'");
+        sb60Count.append(" AND hitchtime<now() AND hitchurgency='03' GROUP BY month(hitchtime)");
+        query = this.getEntityManager().createNativeQuery(sb60Count.toString());
+        List<Object[]> sb60CountList = query.getResultList();
         //将所有的数据按所需要的模板整合到一个List中
         List<Object[]> listMES = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
@@ -105,8 +111,7 @@ public class WorkshopEquipmentBean implements Serializable {
             }
             for (Object[] count : countList) {
                 if (i == Integer.parseInt(count[0].toString())) {
-                    obj[2] = count[1];
-                    obj[3] = count[2];
+
                     obj[4] = count[3];
                     obj[5] = count[4];
                 }
@@ -127,6 +132,12 @@ public class WorkshopEquipmentBean implements Serializable {
                     obj[10] = mtbf[1];
                 }
             }
+            for (Object[] count60 : sb60CountList) {
+                if (i == Integer.parseInt(count60[0].toString())) {
+                    obj[3] = count60[1];
+                    obj[2] = count60[2];
+                }
+            }
             obj[9] = i;
             listMES.add(obj);
         }
@@ -143,7 +154,12 @@ public class WorkshopEquipmentBean implements Serializable {
                 BigDecimal HAVA = BigDecimal.valueOf(Double.valueOf(oMes[0].toString()));//月度总生产工时
                 BigDecimal GAVA = BigDecimal.valueOf(Double.valueOf(oMes[1].toString()));//月度平均生产工时
                 BigDecimal ALA = BigDecimal.valueOf(Double.valueOf(oMes[4].toString()));//故障停机时间
-                BigDecimal count10 = BigDecimal.valueOf(Double.valueOf(oMes[2].toString()));//10分钟以上的故障次数
+                BigDecimal count10;
+                if (oMes[2] == null) {
+                    count10 = BigDecimal.ONE;
+                } else {
+                    count10 = BigDecimal.valueOf(Double.valueOf(oMes[2].toString()));//10分钟以上的故障次数
+                }
                 BigDecimal abnormal = BigDecimal.valueOf(Double.valueOf(oMes[5].toString()));//总异常时间
                 BigDecimal MINUTE = BigDecimal.valueOf(Double.valueOf(oMes[7].toString()));//产出标准工时
                 BigDecimal QTY = BigDecimal.valueOf(Double.valueOf(oMes[6].toString()));//报工数
@@ -155,22 +171,23 @@ public class WorkshopEquipmentBean implements Serializable {
                 //顾问版设备可动率
                 obj[6] = ((GAVA.subtract(ALA)).divide(GAVA, 4, BigDecimal.ROUND_HALF_UP)).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);//月度平均生产总工时-故障停机时间/月度平均生产总工时
                 //设备故障率(%)   故障停机工时合计/月度生产总工时
-                obj[7] = ALA.divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
+                obj[7] = ALA.divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 //MTTR   故障停机工时合计/故障件数合计
-                obj[8] = ALA.divide(count10, 4, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);;
+                obj[8] = ALA.divide(count10, 4, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
                 //顾问版MTBF   月度平均生产总工时/故障件数合计
-                obj[9] = GAVA.divide(count10, 0, BigDecimal.ROUND_HALF_UP);
+                obj[9] = GAVA.divide(count10, 4, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.valueOf(60), 0, BigDecimal.ROUND_HALF_UP);
                 //汉钟版MTBF   月度生产总工时-故障停机时间/故障件数合计
-                obj[10] = (HAVA.subtract(ALA)).divide(count10, 0, BigDecimal.ROUND_HALF_UP);
+                obj[10] = (HAVA.subtract(ALA)).divide(count10, 0, BigDecimal.ROUND_HALF_UP).divide(BigDecimal.valueOf(60), 0, BigDecimal.ROUND_HALF_UP);
+
                 obj[11] = oMes[5];
                 //时间稼动率   （月度生产总工时-总异常时间）/月度生产总工时
-                obj[12] = (HAVA.subtract(abnormal)).divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
-                obj[13] = (HAVA.subtract(abnormal)).divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
+                obj[12] = (HAVA.subtract(abnormal)).divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                obj[13] = (HAVA.subtract(abnormal)).divide(HAVA, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 //性能稼动率   产出标准工时/(月度生产总工时-总异常时间)
-                obj[14] = MINUTE.divide((HAVA.subtract(abnormal)), 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
-                obj[15] = MINUTE.divide((HAVA.subtract(abnormal)), 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
+                obj[14] = MINUTE.divide((HAVA.subtract(abnormal)), 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                obj[15] = MINUTE.divide((HAVA.subtract(abnormal)), 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 //良率  报工数-不良单据)/报工数(不良不论厂内外责任，只要经过加工就计入)
-                obj[16] = (QTY.subtract(QGQTY)).divide(QTY, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);;
+                obj[16] = (QTY.subtract(QGQTY)).divide(QTY, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 obj[17] = QTY;
                 obj[18] = oMes[9];//月份
                 resultsMES.add(obj);
@@ -200,7 +217,7 @@ public class WorkshopEquipmentBean implements Serializable {
         obj4[13] = "=(月度生产总工时-故障停机工时合计)/月度生产总工时";
         obj5[0] = "MTTR(分/件)";
         obj5[13] = "=故障停机工时合计/故障件数合计";
-        obj6[0] = "MTBF(分/件)";
+        obj6[0] = "MTBF(小时/件)";
         obj6[13] = "=全车间单台设备MTBF总和均值(单台的MTBF=(计划工作时间-故障停机时间)/维修次数)\n"
                 + "仅记录停线10分钟以上数据  ";
         obj7[0] = "时间稼动率(%)";
