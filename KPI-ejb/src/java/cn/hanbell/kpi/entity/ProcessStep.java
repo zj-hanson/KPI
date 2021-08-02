@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -121,6 +122,9 @@ public class ProcessStep extends FormEntity {
     @Column(name = "processingAmount")
     private BigDecimal processingAmount;
 
+    @Transient
+    private String product;
+    
     public ProcessStep() {
         this.totalMachineTime = BigDecimal.ZERO;
         this.totalLaborTime = BigDecimal.ZERO;
@@ -145,7 +149,13 @@ public class ProcessStep extends FormEntity {
     public void setCompany(String company) {
         this.company = company;
     }
+    public String getProduct() {
+        return product;
+    }
 
+    public void setProduct(String product) {
+        this.product = product;
+    }
     public String getManno() {
         return manno;
     }
