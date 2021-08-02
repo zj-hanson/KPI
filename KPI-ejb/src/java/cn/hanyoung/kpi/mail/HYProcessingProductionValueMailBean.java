@@ -61,6 +61,9 @@ public class HYProcessingProductionValueMailBean extends MailNotification {
     String reportPath = null;
     String reportOutputPath = null;
 
+    //异常数据
+    protected List<ProcessStep> abnormalList = new ArrayList<>();
+    
     public HYProcessingProductionValueMailBean() {
         this.sumIndicatorList = new ArrayList();
     }
@@ -106,6 +109,11 @@ public class HYProcessingProductionValueMailBean extends MailNotification {
                     = processStepBean.findByEndTimeAndEquipment(company, d, Calendar.DAY_OF_MONTH, ind.getProduct());
             if (processStepList != null && !processStepList.isEmpty()) {
                 for (ProcessStep ps : processStepList) {
+                    //异常数据
+                    if (ps.getStandardMachineTime().compareTo(BigDecimal.ZERO) == 0 || ps.getTotalMachineTime().compareTo(BigDecimal.ZERO) == 0 || ps.getProcessingPrice().compareTo(BigDecimal.ZERO) == 0) {
+                        ps.setProduct(ind.getProduct());
+                        abnormalList.add(ps);
+                    }
                     row = sheet.createRow(i);
                     cell = row.createCell(0);
                     cell.setCellValue(ind.getCategory());
@@ -345,6 +353,7 @@ public class HYProcessingProductionValueMailBean extends MailNotification {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：元/分钟</div>");
         sb.append(getProcessingProductionValue());
+        getAbnormalProcessingProductionValue();
         sb.append("<div class=\"tableTitle\">分钟产值: 每个机台每分钟产出价值</div>");
         sb.append("<div class=\"tableTitle\">标准工时: 每个机台今日加工完成工件在ERP中标准机器工时 X 报工完成数量的合计</div>");
         sb.append("<div class=\"tableTitle\">报工工时: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
@@ -372,6 +381,7 @@ public class HYProcessingProductionValueMailBean extends MailNotification {
         sumMonthStandardValue = BigDecimal.ZERO;
         sumMonthActualValue = BigDecimal.ZERO;
         sumIndicatorList.clear();
+        abnormalList.clear();
         StringBuilder sb = new StringBuilder();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
@@ -574,6 +584,97 @@ public class HYProcessingProductionValueMailBean extends MailNotification {
         sumMonthQuantity = sumMonthQuantity.add(getData().get("sumMonthQuantity"));
         sumMonthStandardValue = sumMonthStandardValue.add(getData().get("sumMonthStandardValue"));
         sumMonthActualValue = sumMonthActualValue.add(getData().get("sumMonthActualValue"));
+    }
+
+    //异常数据报表
+    protected void getAbnormalProcessingProductionValue() {
+        try {
+            // 报表路径
+            if (reportPath == null || reportOutputPath == null) {
+                reportPath = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt").getPath();
+                reportOutputPath
+                        = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
+            }
+            String fullFileName = reportOutputPath + "异常数据" + BaseLib.formatDate("yyyy-MM-dd", d) + ".xlsx";
+            File file = new File(fullFileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("异常数据明细");
+            Row row;
+            Cell cell;
+            // 初始样式
+            initCellStyles(workbook);
+            // 表格标题
+            String[] title = {"类别","设备编号","制令编号","制令日期","品号","工件编号","加工工序","报工开始","报工完成","实际工时","标准工时","标准成本","标准产值","当日数量","报工工号","报工人员"};
+            row = sheet.createRow(0);
+            for (int i=0;i<title.length;i++) {
+                cell = row.createCell(i);
+                cell.setCellValue(title[i]); 
+            }
+            int i=1;
+            for (ProcessStep ps : abnormalList) {
+                row = sheet.createRow(i);
+                cell = row.createCell(0);
+                cell.setCellValue(ps.getProduct());
+                cell = row.createCell(1);
+                cell.setCellValue(ps.getEquipment());
+                cell = row.createCell(2);
+                cell.setCellValue(ps.getManno());
+                cell = row.createCell(3);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("date"));
+                cell.setCellValue(ps.getFormdate());
+                cell = row.createCell(4);
+                cell.setCellValue(ps.getItemno());
+                cell = row.createCell(5);
+                cell.setCellValue(ps.getComponent());
+                cell = row.createCell(6);
+                cell.setCellValue(ps.getStep());
+                cell = row.createCell(7);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("time"));
+                cell.setCellValue(ps.getStartTime());
+                cell = row.createCell(8);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("time"));
+                cell.setCellValue(ps.getEndTime());
+                cell = row.createCell(9);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getProcessingTime().doubleValue());
+                cell = row.createCell(10);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getStandardMachineTime().multiply(ps.getQty()).doubleValue());
+                cell = row.createCell(11);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getStandCost().doubleValue());
+                BigDecimal value = ps.getStandardMachineTime().multiply(ps.getQty()).multiply(ps.getStandCost());
+                cell = row.createCell(12);
+                cell.setCellType(0);
+                cell.setCellValue(value.doubleValue());
+                cell = row.createCell(13);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getQty().doubleValue());
+                cell = row.createCell(14);
+                cell.setCellValue(ps.getUserid());
+                cell = row.createCell(15);
+                cell.setCellValue(ps.getUser());
+                i++;
+            }
+            try {
+                file.deleteOnExit();
+                workbook.write(fos);
+            } catch (Exception ex) {
+                log4j.error(ex);
+            } finally {
+                if (null != fos) {
+                    fos.flush();
+                    fos.close();
+                }
+            }
+            addAttachments(file);
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
     }
 
 }
