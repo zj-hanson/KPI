@@ -39,20 +39,25 @@ public class SHBShipmentMailBean extends ShipmentMail {
     }
 
     @Override
-    public String getMailBody() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"tableTitle\">单位：台</div>");
-        sb.append(getQuantityTable());
-        sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getSHBAmountTable());
-        sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getComerAmountTable());
-        sb.append("<div class=\"tableTitle\">单位：百万越南盾</div>");
-        sb.append(getVHBAmountTable());
-        return sb.toString();
+    public String getMailBody() throws Exception {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<div class=\"tableTitle\">单位：台</div>");
+            sb.append(getQuantityTable());
+            sb.append("<div class=\"tableTitle\">单位：万元</div>");
+            sb.append(getSHBAmountTable());
+            sb.append("<div class=\"tableTitle\">单位：万元</div>");
+            sb.append(getComerAmountTable());
+            sb.append("<div class=\"tableTitle\">单位：百万越南盾</div>");
+            sb.append(getVHBAmountTable());
+            return sb.toString();
+        } catch (Exception ex) {
+            throw ex;
+        }
+
     }
 
-    protected String getQuantityTable() {
+    protected String getQuantityTable() throws Exception {
         StringBuilder sb = new StringBuilder();
         Indicator total;
         try {
@@ -140,12 +145,12 @@ public class SHBShipmentMailBean extends ShipmentMail {
 
             sb.append("</table></div>");
         } catch (Exception ex) {
-            return ex.toString();
+            throw ex;
         }
         return sb.toString();
     }
 
-    protected String getSHBAmountTable() {
+    protected String getSHBAmountTable() throws Exception {
         StringBuilder sb = new StringBuilder();
         Indicator total;
         try {
@@ -368,12 +373,12 @@ public class SHBShipmentMailBean extends ShipmentMail {
 
             sb.append("</table></div>");
         } catch (Exception ex) {
-            return ex.toString();
+            throw ex;
         }
         return sb.toString();
     }
 
-    protected String getComerAmountTable() {
+    protected String getComerAmountTable() throws Exception {
         StringBuilder sb = new StringBuilder();
         Indicator total;
         try {
@@ -467,12 +472,12 @@ public class SHBShipmentMailBean extends ShipmentMail {
 
             sb.append("</table></div>");
         } catch (Exception ex) {
-            return ex.toString();
+            throw ex;
         }
         return sb.toString();
     }
 
-    protected String getVHBAmountTable() {
+    protected String getVHBAmountTable() throws Exception {
         StringBuilder sb = new StringBuilder();
         Indicator total;
         try {
@@ -499,7 +504,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
 
             sb.append("</table></div>");
         } catch (Exception ex) {
-            return ex.toString();
+            throw ex;
         }
         return sb.toString();
     }
