@@ -353,7 +353,9 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：元/分钟</div>");
         sb.append(getProcessingProductionValue());
-        getAbnormalProcessingProductionValue();
+        if(abnormalList.size()>0){
+            getAbnormalProcessingProductionValue();
+        }
         sb.append("<div class=\"tableTitle\">分钟产值: 每个机台每分钟产出价值</div>");
         sb.append("<div class=\"tableTitle\">标准工时: 每个机台今日加工完成工件在ERP中标准机器工时 X 报工完成数量的合计</div>");
         sb.append("<div class=\"tableTitle\">报工工时: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
@@ -621,10 +623,12 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 cell = row.createCell(1);
                 cell.setCellValue("姓名");
                 cell = row.createCell(2);
-                cell.setCellValue("标准工时");
+                cell.setCellValue("设备编号");
                 cell = row.createCell(3);
-                cell.setCellValue("报工工时");
+                cell.setCellValue("标准工时");
                 cell = row.createCell(4);
+                cell.setCellValue("报工工时");
+                cell = row.createCell(5);
                 cell.setCellValue("标准产值");
                 for (Object data : employeeProductionValue) {
                     i++;
@@ -635,9 +639,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                     cell = row.createCell(1);
                     cell.setCellValue(String.valueOf(e[1]));
                     cell = row.createCell(2);
-                    cell.setCellType(0);
-                    cell.setCellStyle(getCellStyle("n"));
-                    cell.setCellValue(Double.parseDouble(String.valueOf(e[2])));
+                    cell.setCellValue(String.valueOf(e[2]));
                     cell = row.createCell(3);
                     cell.setCellType(0);
                     cell.setCellStyle(getCellStyle("n"));
@@ -646,8 +648,12 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                     cell.setCellType(0);
                     cell.setCellStyle(getCellStyle("n"));
                     cell.setCellValue(Double.parseDouble(String.valueOf(e[4])));
+                    cell = row.createCell(5);
+                    cell.setCellType(0);
+                    cell.setCellStyle(getCellStyle("n"));
+                    cell.setCellValue(Double.parseDouble(String.valueOf(e[5])));
                 }
-                for (int k = 0; k < 5; k++) {
+                for (int k = 0; k < 6; k++) {
                     sheet.autoSizeColumn(k, true);
                 }
             }
