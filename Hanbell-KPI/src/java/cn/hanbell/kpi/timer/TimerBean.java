@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.timer;
 
@@ -112,61 +111,82 @@ public class TimerBean {
         String reportName = "";
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -1);
-        //KPI指标更新
+        // KPI指标更新
         List<Indicator> indicatorList = indicatorBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
         if (indicatorList != null && !indicatorList.isEmpty()) {
             log4j.info("Begin Execute KPI Update Job Schedule " + timer.getInfo());
             for (Indicator e : indicatorList) {
-                if ((e.getActualInterface() != null && !"".equals(e.getActualInterface())) || e.hashCode() > 0) {
+                if ((e.getActualInterface() != null && !"".equals(e.getActualInterface())) || (e.getHasOther() > 0)) {
+                    // 设计初衷有了实际接口才有其他接口,没有实际接口属于分配或者归集指标,这个规则已被打破
+                    // 有实际接口或其他接口才需要按接口方式计算
                     try {
                         if ("D".equals(e.getFormkind().trim())) {
-                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), 5);
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                                c.getTime(), Calendar.DAY_OF_MONTH);
                         } else {
-                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.getTime(), Calendar.MONTH);
+                            indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                                c.getTime(), Calendar.MONTH);
                         }
-                        log4j.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                        log4j.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(),
+                            e.getId()));
                     } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                        log4j.error(
+                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                            ex);
                     }
                     try {
                         indicatorBean.updatePerformance(e);
                         indicatorBean.update(e);
-                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
+                            e.getId()));
                     } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                        log4j.error(
+                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                            ex);
+                    }
+                } else {
+                    // 独立归集指标计算
+                    if (e.getPid() == 0) {
+                        updateActual(e, c.get(Calendar.MONTH) + 1);
                     }
                 }
             }
-            //部门指标来源产品指标，所以先算产品指标
+            // 部门指标来源产品指标，所以先算产品指标
             log4j.info("updateIndicatorActualValue开始产品指标堆叠计算");
-            //indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "P", c.get(Calendar.YEAR), timer.getInfo().toString());
-            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("P", c.get(Calendar.YEAR), timer.getInfo().toString());
+            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("P", c.get(Calendar.YEAR),
+                timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {
                         updateActual(e, c.get(Calendar.MONTH) + 1);
-                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
+                            e.getId()));
                     } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                        log4j.error(
+                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                            ex);
                     }
                 }
             }
             log4j.info("updateIndicatorActualValue开始部门指标堆叠计算");
-            //indicatorList = indicatorBean.findRootByAssignedAndJobSchedule("C", "D", c.get(Calendar.YEAR), timer.getInfo().toString());
-            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("D", c.get(Calendar.YEAR), timer.getInfo().toString());
+            indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("D", c.get(Calendar.YEAR),
+                timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {
                         updateActual(e, c.get(Calendar.MONTH) + 1);
-                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(), e.getId()));
+                        log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
+                            e.getId()));
                     } catch (Exception ex) {
-                        log4j.error(String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()), ex);
+                        log4j.error(
+                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                            ex);
                     }
                 }
             }
             log4j.info("End Execute KPI Update Job Schedule " + timer.getInfo());
         }
-        //KPI报表发送
+        // KPI报表发送
         List<MailSetting> mailSettingList = mailSettingBean.findByJobScheduleAndStatus(timer.getInfo().toString(), "V");
         if (mailSettingList != null && !mailSettingList.isEmpty()) {
             log4j.info("Begin Execute Send KPI Report Job Schedule " + timer.getInfo());
@@ -197,9 +217,11 @@ public class TimerBean {
                             mn.getTo().add(s.getUserid() + "@hanbell.com.cn");
                         }
 
-                        //企业微信推送
-                        indicatorBean.sendMsgString(users.substring(0, users.length() - 1), "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName + "发生异常，具体内容已通过邮件发送!");
-                        //邮件推送
+                        // 企业微信推送
+                        indicatorBean.sendMsgString(users.substring(0, users.length() - 1),
+                            "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName
+                                + "发生异常，具体内容已通过邮件发送!");
+                        // 邮件推送
                         reportName = ms.getName();
                         mn.setMailSubject();
                         mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
@@ -216,7 +238,7 @@ public class TimerBean {
         try {
             c = new InitialContext();
             Object objRef = c.lookup(JNDIName);
-            return (MailNotification) objRef;
+            return (MailNotification)objRef;
         } catch (NamingException ex) {
             log4j.error("getMailNotificationBean", ex);
         }
@@ -224,23 +246,25 @@ public class TimerBean {
     }
 
     private void updateActual(Indicator entity, int m) {
-        //递归更新某个月份的实际值,不调用ActualInterface计算方法
+        // 递归更新某个月份的实际值,不调用ActualInterface计算方法
         if (entity.isAssigned()) {
             List<Indicator> details = indicatorBean.findByPId(entity.getId());
             if (details != null && !details.isEmpty()) {
                 for (Indicator d : details) {
                     updateActual(d, m);
                 }
-            }//先计算子项值
+            } // 先计算子项值
             indicatorBean.updateActual(entity, m);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
-            log4j.info(String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
+            log4j.info(
+                String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         } else {
             indicatorBean.updateActual(entity, m);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
-            log4j.info(String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
+            log4j.info(
+                String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         }
     }
 
@@ -251,7 +275,7 @@ public class TimerBean {
             Calendar now = Calendar.getInstance();
             int year = now.get(Calendar.YEAR);
             int month = (now.get(Calendar.MONTH) + 1);
-            //本月更新上个月
+            // 本月更新上个月
             int y, m;
             if (month == 1) {
                 m = 12;
@@ -260,7 +284,9 @@ public class TimerBean {
                 m = month - 1;
                 y = year;
             }
-            if (salesTableBean.updateSalesTable(y, m, "", "Shipment") && salesTableBean.updateSalesTable(y, m, "", "SalesOrder") && salesTableBean.updateSalesTable(y, m, "", "ServiceAmount")) {
+            if (salesTableBean.updateSalesTable(y, m, "", "Shipment")
+                && salesTableBean.updateSalesTable(y, m, "", "SalesOrder")
+                && salesTableBean.updateSalesTable(y, m, "", "ServiceAmount")) {
                 log4j.info("End Execute Job updateKPISalesTable");
             }
         } catch (Exception e) {
