@@ -226,28 +226,15 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 IndicatorDetail ab = new IndicatorDetail();
                 ab.setType("A");
                 ab.setParent(amount);
-                if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
-                    for (int i = getM(); i > 0; i--) {
-                        ///实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = qa.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(qa, v);
-                        //实际金额  + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(amount.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i)).subtract(getNValue(e.getOther4Indicator(), i));
-                        setMethod = ab.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ab, v);
-                    }
-                } else {
-                    for (int i = getM(); i > 0; i--) {
-                        ///实际台数
-                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = qa.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(qa, v);
-                        //实际金额
-                        v = getNValue(amount.getActualIndicator(), i).add(getNValue(e.getOther2Indicator(), i));
-                        setMethod = ab.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ab, v);
-                    }
+                for (int i = getM(); i > 0; i--) {
+                    ///实际台数
+                    v = getNValue(quantity.getActualIndicator(), i);
+                    setMethod = qa.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(qa, v);
+                    //实际金额
+                    v = getNValue(amount.getActualIndicator(), i);
+                    setMethod = ab.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(ab, v);
                 }
                 //实际台数
                 e.setActualIndicator(qa);
