@@ -30,7 +30,7 @@ public abstract class ShipmentMail extends MailNotification {
     }
 
     @Override
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) throws Exception {
         getData().clear();
         getData().put("sum1", BigDecimal.ZERO);
         getData().put("sum2", BigDecimal.ZERO);
@@ -55,7 +55,7 @@ public abstract class ShipmentMail extends MailNotification {
             }
             sb.append("</table></div>");
         } catch (Exception ex) {
-            return ex.toString();
+           throw ex;
         }
         return sb.toString();
     }
