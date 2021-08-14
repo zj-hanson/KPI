@@ -13,7 +13,7 @@ public class ServiceTimeXC1H extends ServiceTime {
 
     public ServiceTimeXC1H() {
         super();
-        queryParams.put("deptno", "1H");
+        queryParams.put("deptno", "like '1H%'");
         queryParams.put("status", "");
     }
 

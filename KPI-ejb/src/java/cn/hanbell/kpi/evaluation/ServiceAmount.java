@@ -33,7 +33,7 @@ public abstract class ServiceAmount extends Service {
         sb.append(" select isnull(sum(a.MY033),0) from ( select distinct PORMY.MY033,MZ005,MZ006,TC054,MY024,TC017 ");
         sb.append(" FROM  PORMY,PORMZ LEFT JOIN REPLC ON LC001= MZ005 AND LC002=MZ006 AND LC003=MZ007 LEFT JOIN REPTC ON TC001=LC001 AND TC002=LC002");
         sb.append(" LEFT JOIN SERBQ ON BQ001=TC054  and TC054<>'' WHERE MY001=MZ001 AND MY002=MZ002 AND MZ005 like '%FW%' ");
-        sb.append(" AND TC017 like '").append(deptno).append("%'");
+        sb.append(" AND TC017 ").append(deptno);
         //status N免费 Y收费
         sb.append(" AND SERBQ.BQ501 ='").append(status).append("'");
         sb.append(" AND year(MY024) =${y} and month(MY024)=${m} ) as a ");

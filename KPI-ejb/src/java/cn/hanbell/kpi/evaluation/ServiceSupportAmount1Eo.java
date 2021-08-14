@@ -13,7 +13,7 @@ public class ServiceSupportAmount1Eo extends ServiceSupportAmount {
 
     public ServiceSupportAmount1Eo() {
         super();
-        queryParams.put("deptno", "1E");
+        queryParams.put("deptno"," like '1E%'");
         queryParams.put("status", "other");
     }
 

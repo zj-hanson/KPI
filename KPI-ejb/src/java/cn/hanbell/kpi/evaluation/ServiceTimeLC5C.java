@@ -13,7 +13,7 @@ public class ServiceTimeLC5C extends ServiceTime {
 
     public ServiceTimeLC5C() {
         super();
-        queryParams.put("deptno", "5C");
+        queryParams.put("deptno", "like '5C%'");
         queryParams.put("status", "LC");
     }
 

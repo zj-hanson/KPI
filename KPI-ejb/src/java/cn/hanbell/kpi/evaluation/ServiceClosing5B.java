@@ -13,7 +13,7 @@ public class ServiceClosing5B extends ServiceClosing {
 
     public ServiceClosing5B() {
         super();
-        queryParams.put("deptno", "5B");
+        queryParams.put("deptno", "like '5B%'");
     }
 
 }

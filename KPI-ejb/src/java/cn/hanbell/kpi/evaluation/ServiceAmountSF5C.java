@@ -13,7 +13,7 @@ public class ServiceAmountSF5C extends ServiceAmount {
 
     public ServiceAmountSF5C() {
         super();
-        queryParams.put("deptno", "5C");
+        queryParams.put("deptno", "like '5C%'");
         queryParams.put("status", "Y");
     }
 

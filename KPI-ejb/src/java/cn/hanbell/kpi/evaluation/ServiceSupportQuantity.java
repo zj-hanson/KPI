@@ -36,7 +36,7 @@ public abstract class ServiceSupportQuantity extends Service {
         if ("other".equals(status)) {
             sb.append(" AND left(TC012,2)<>left(TC017,2) ");
         }
-        sb.append(" AND TC017 like '").append(deptno).append("%'");
+        sb.append(" AND TC017 ").append(deptno);
         sb.append(" AND year(REPTC.CREATE_DATE) = ${y} and month(REPTC.CREATE_DATE)= ${m} ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));
 

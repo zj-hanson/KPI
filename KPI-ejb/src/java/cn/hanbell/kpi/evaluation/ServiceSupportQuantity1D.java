@@ -13,7 +13,7 @@ public class ServiceSupportQuantity1D extends ServiceSupportQuantity {
 
     public ServiceSupportQuantity1D() {
         super();
-        queryParams.put("deptno", "1D");
+        queryParams.put("deptno", "like '1D%'");
         queryParams.put("status", "");
     }
 
