@@ -31,7 +31,7 @@ public class AJShipmentMailBean extends ShipmentMail {
     }
 
     @Override
-    public String getMailBody() {
+    public String getMailBody() throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTableDomesticMarket());
@@ -64,7 +64,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getQuantityTableDomesticMarket() {
+    protected String getQuantityTableDomesticMarket() throws Exception {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数-内销", y);
         indicatorBean.getEntityManager().clear();
@@ -77,7 +77,7 @@ public class AJShipmentMailBean extends ShipmentMail {
     }
 
     //无油涡旋内销
-    protected String getQuantityTable_SAM() {
+    protected String getQuantityTable_SAM() throws Exception {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数-涡旋内销", y);
         indicatorBean.getEntityManager().clear();
@@ -90,7 +90,7 @@ public class AJShipmentMailBean extends ShipmentMail {
     }
 
     //无油涡旋合计
-    protected String getQuantityTable_SAMAll() {
+    protected String getQuantityTable_SAMAll() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数-涡旋", y);
         indicatorBean.getEntityManager().clear();
@@ -102,7 +102,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getQuantityTable() {
+    protected String getQuantityTable() throws Exception {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("A机体每日出货台数", y);
         indicatorBean.getEntityManager().clear();
@@ -114,7 +114,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTableDomesticMarket() {
+    protected String getAmountTableDomesticMarket() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额-内销", y);
         indicatorBean.getEntityManager().clear();
@@ -130,7 +130,7 @@ public class AJShipmentMailBean extends ShipmentMail {
     }
 
     //无油涡旋内销
-    protected String getAmountTable_SAM() {
+    protected String getAmountTable_SAM() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额-涡旋内销", y);
         indicatorBean.getEntityManager().clear();
@@ -146,7 +146,7 @@ public class AJShipmentMailBean extends ShipmentMail {
     }
 
     //无油涡旋合计
-    protected String getAmountTable_SAMAll() {
+    protected String getAmountTable_SAMAll() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额-涡旋", y);
         indicatorBean.getEntityManager().clear();
@@ -161,7 +161,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTable() {
+    protected String getAmountTable()  throws Exception{
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
         indicatorBean.getEntityManager().clear();
@@ -176,7 +176,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getServiceTable() {
+    protected String getServiceTable() throws Exception{
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体收费服务", y);
         indicatorBean.getEntityManager().clear();
@@ -194,7 +194,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getTransferTable() {
+    protected String getTransferTable() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体厂内调拨", y);
         indicatorBean.getEntityManager().clear();

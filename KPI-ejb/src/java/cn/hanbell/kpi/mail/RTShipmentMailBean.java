@@ -35,7 +35,7 @@ public class RTShipmentMailBean extends ShipmentMail {
     }
 
     @Override
-    public String getMailBody() {
+    public String getMailBody() throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable());
@@ -55,7 +55,7 @@ public class RTShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getQuantityTable() {
+    protected String getQuantityTable() throws Exception {
         this.indicators.clear();
         this.indicators = indicatorBean.findByCategoryAndYear("各分公司离心机体出货台数", y);
         indicatorBean.getEntityManager().clear();
@@ -67,7 +67,7 @@ public class RTShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTable() {
+    protected String getAmountTable() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("各分公司离心机体出货金额", y);
         indicatorBean.getEntityManager().clear();
