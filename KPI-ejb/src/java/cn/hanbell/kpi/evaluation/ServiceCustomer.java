@@ -34,7 +34,7 @@ public abstract class ServiceCustomer extends Service {
         if ("JA".equals(status)) {
             sb.append(" AND BQ035='Y' ");
         }
-        sb.append(" and BQ017 LIKE '").append(deptno).append("%'");
+        sb.append(" and BQ017 ").append(deptno);
         sb.append(" and year(BQ021) =${y} ");
         if ("JA".equals(status)) {
             if (m >= 1 && m <= 3) {
@@ -69,7 +69,7 @@ public abstract class ServiceCustomer extends Service {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" select ISNULL(count(distinct BQ001),0) from SERBQ where 1=1 AND BQ035='Y' ");
-        sb.append(" and BQ017 LIKE '").append(deptno).append("%'");
+        sb.append(" and BQ017 ").append(deptno);
         sb.append("and year(BQ021) =${y} ");
         if ("nh1".equals(status)) {
             sb.append(" AND  month(BQ021) BETWEEN 1 and 6 ");

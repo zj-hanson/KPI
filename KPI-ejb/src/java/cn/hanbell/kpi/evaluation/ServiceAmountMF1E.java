@@ -13,7 +13,7 @@ public class ServiceAmountMF1E extends ServiceAmount {
 
     public ServiceAmountMF1E() {
         super();
-        queryParams.put("deptno", "1E");
+        queryParams.put("deptno","like '1E%'");
         queryParams.put("status", "N");
     }
 

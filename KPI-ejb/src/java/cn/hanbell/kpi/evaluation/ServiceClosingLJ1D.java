@@ -13,7 +13,7 @@ public class ServiceClosingLJ1D extends ServiceClosing {
 
     public ServiceClosingLJ1D() {
         super();
-        queryParams.put("deptno", "1D");
+        queryParams.put("deptno", "like '1D%'");
         queryParams.put("status", "LJ");
     }
 

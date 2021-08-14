@@ -44,7 +44,7 @@ public abstract class ServiceTime extends Service {
         sb.append(" (CASE when REPTE.TE503 <> '' then (substring(REPTE.TE503,1,4) + '/' + substring(REPTE.TE503,5,2) + '/' + substring(REPTE.TE503,7,2) + ' ') else '0000/00/00 ' end ) + ");
         sb.append(" (CASE when REPTE.TE505 <> '' then + substring(REPTE.TE505,1,2) + ':' + substring(REPTE.TE505,3,2) else '00:00' end)   as day2  ");
         sb.append(" from REPTC LEFT JOIN REPTE on REPTC.TC002=REPTE.TE002 and REPTC.TC001= REPTE.TE001 where ");
-        sb.append(" REPTC.TC017 like '").append(deptno).append("%'");
+        sb.append(" REPTC.TC017 ").append(deptno);
         sb.append(" and year(REPTC.TC015) =${y} AND  month(REPTC.TC015)=${m} ");
         sb.append(" GROUP BY REPTC.TC015,REPTC.TC026,REPTE.TE502,REPTE.TE503,REPTE.TE504,REPTE.TE505) as a");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m));

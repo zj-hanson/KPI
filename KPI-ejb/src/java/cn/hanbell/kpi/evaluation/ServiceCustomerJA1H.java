@@ -13,7 +13,7 @@ public class ServiceCustomerJA1H extends ServiceCustomer {
 
     public ServiceCustomerJA1H() {
         super();
-        queryParams.put("deptno", "1H");
+        queryParams.put("deptno", "like '1H%'");
         queryParams.put("status", "JA");
     }
 

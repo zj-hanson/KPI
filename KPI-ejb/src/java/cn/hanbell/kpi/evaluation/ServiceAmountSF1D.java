@@ -13,7 +13,7 @@ public class ServiceAmountSF1D extends ServiceAmount {
 
     public ServiceAmountSF1D() {
         super();
-        queryParams.put("deptno", "1D");
+        queryParams.put("deptno", "like '1D%'");
         queryParams.put("status", "Y");
     }
 

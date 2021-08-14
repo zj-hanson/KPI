@@ -13,7 +13,7 @@ public class ServiceSupportQuantity1B extends ServiceSupportQuantity {
 
     public ServiceSupportQuantity1B() {
         super();
-        queryParams.put("deptno", "1B");
+        queryParams.put("deptno",  "in ('1F700','1F800','1B000','1B100','1B200')");
         queryParams.put("status", "");
     }
 
