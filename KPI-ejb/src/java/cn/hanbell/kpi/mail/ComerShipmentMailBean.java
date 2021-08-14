@@ -295,7 +295,7 @@ public class ComerShipmentMailBean extends ShipmentMail {
 
     }
 
-    protected String getServiceTable() {
+    protected String getServiceTable() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("涡轮收费服务金额", y);
         this.indicators.addAll(indicatorBean.findByCategoryAndYear("再生收费服务金额", y));

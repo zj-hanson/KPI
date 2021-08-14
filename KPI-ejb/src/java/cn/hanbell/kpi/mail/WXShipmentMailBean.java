@@ -34,7 +34,7 @@ public class WXShipmentMailBean extends ShipmentMail {
     }
 
     @Override
-    public String getMailBody() {
+    public String getMailBody() throws Exception {
         indicatorList = indicatorBean.findByDeptnoObjtypeAndYear("1T100", "P", y);
         indicatorBean.getEntityManager().clear();
         StringBuilder sb = new StringBuilder();
@@ -47,7 +47,7 @@ public class WXShipmentMailBean extends ShipmentMail {
         return sb.toString();
     }
 
-    protected String getQuantityTable() {
+    protected String getQuantityTable() throws Exception {
         indicators.clear();
         for (Indicator i : indicatorList) {
             if (i.isAssigned()) {
@@ -65,7 +65,7 @@ public class WXShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTable() {
+    protected String getAmountTable() throws Exception {
         indicators.clear();
         for (Indicator i : indicatorList) {
             if (i.isAssigned()) {
@@ -86,7 +86,7 @@ public class WXShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getServiceTable() {
+    protected String getServiceTable() throws Exception {
         indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("外销零件", y);
         indicatorBean.getEntityManager().clear();
