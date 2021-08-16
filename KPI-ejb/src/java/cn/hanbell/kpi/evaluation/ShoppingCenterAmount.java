@@ -50,11 +50,14 @@ public class ShoppingCenterAmount implements Actual {
         String vdrnoSql = map.get("vdrno") != null ? map.get("vdrno").toString() : "";
         //获取采购中心所有厂商
         try {
-            StringBuffer vdrno = new StringBuffer();
-            Query query1 = superEJBForKPI.getEntityManager().createNamedQuery(vdrnoSql);
-            List<Object[]> vdrnos = query1.getResultList();
-            for (Object[] o : vdrnos) {
-                vdrno.append("'").append(o[0]).append("',");
+            StringBuffer vdrno =null;
+            if (vdrnoSql != null && !"".equals(vdrnoSql)) {
+                 vdrno=new StringBuffer();
+                Query query1 = superEJBForKPI.getEntityManager().createNativeQuery(vdrnoSql);
+                List<String> vdrnos = query1.getResultList();
+                for (String o : vdrnos) {
+                    vdrno.append("'").append(o).append("',");
+                }
             }
             StringBuffer sb = new StringBuffer();
             sb.append(" SELECT sum(acpamt) as cp_acpamt ");
@@ -62,7 +65,7 @@ public class ShoppingCenterAmount implements Actual {
             sb.append(" WHERE apmpyh.vdrno = purvdr.vdrno  and  purhad.facno = apmpyh.facno  and  purhad.prono = apmpyh.prono ");
             sb.append(" and  purhad.pono = apmpyh.pono  and  apmpyh.pyhkind = '1' ");
             sb.append(" AND apmpyh.facno =  '${facno}'  and apmpyh.prono ='${prono} '");
-            if (!"".equals(vdrno)) {
+            if (vdrno!=null&&!"".equals(vdrno)) {
                 sb.append(" and apmpyh.vdrno in (").append(vdrno.substring(0, vdrno.length() - 1)).append(")");
             }
             sb.append(" and year(apmpyh.trdat) = ${y} and month(apmpyh.trdat)= ${m} ");
@@ -77,6 +80,7 @@ public class ShoppingCenterAmount implements Actual {
             }
             return result;
         } catch (Exception ex) {
+            ex.printStackTrace();
             return BigDecimal.ZERO;
         }
     }
