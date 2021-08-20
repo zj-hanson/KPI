@@ -13,8 +13,8 @@ public class ShoppingCenterAmountHS extends ShoppingCenterAmount {
 
     public ShoppingCenterAmountHS() {
         super();
-        queryParams.put("facno", "'H'");
-        queryParams.put("prono", "'1'");
+        queryParams.put("facno", "H");
+        queryParams.put("prono", "1");
     }
 
 }

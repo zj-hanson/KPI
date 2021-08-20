@@ -13,8 +13,8 @@ package cn.hanbell.kpi.evaluation;
     
      public ShoppingCenterAmountHS1X() {
         super();
-        queryParams.put("facno", "'H'");
-        queryParams.put("prono", "'1'");
+        queryParams.put("facno", "H");
+        queryParams.put("prono", "1");
         queryParams.put("vdrno", " select vdrno from shoppingmanufacturer where facno='H' ");  
     }
 }
