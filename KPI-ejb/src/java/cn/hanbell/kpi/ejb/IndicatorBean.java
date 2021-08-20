@@ -293,6 +293,10 @@ public class IndicatorBean extends SuperEJBForKPI<Indicator> {
         return indicatorDailyBean.findByPIdDateAndType(pid, seq, m, type);
     }
 
+    public List<IndicatorSet> findIndicatorSetByPId(int pid) {
+        return indicatorSetBean.findByPId(pid);
+    }
+
     public List<Indicator> findRootByCompany(String company, String objtype, int y) {
         Query query = getEntityManager().createNamedQuery("Indicator.findRootByCompany");
         query.setParameter("company", company);
