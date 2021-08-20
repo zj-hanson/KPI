@@ -210,7 +210,7 @@ public class MachiningEfficiency implements Actual {
             // 停线时间o2
             IndicatorDetail o2 = indicator.getOther2Indicator();
             if (o2 != null) {
-                tempValue = updateWaintingTime(o2, y, m, day, type, machine);
+                tempValue = updateWaitingTime(o2, y, m, day, type, machine);
                 setMethod.invoke(o2, tempValue);
                 indicatorBean.updateIndicatorDetail(o2);
             }
@@ -547,7 +547,7 @@ public class MachiningEfficiency implements Actual {
         return BigDecimal.ZERO;
     }
 
-    protected BigDecimal updateWaintingTime(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
+    protected BigDecimal updateWaitingTime(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         try {
             IndicatorDaily daily =
