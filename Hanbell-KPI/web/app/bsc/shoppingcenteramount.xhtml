@@ -57,8 +57,7 @@
                                 <p:column rendered="#{shoppingCenterAmountReportBean.visible(11)}" style="#{shoppingCenterAmountReportBean.m==11?'color:red':''}">#{shoppingCenterAmountReportBean.doubleformat(item.actualIndicator.n11,item.rate)}</p:column>
                                 <p:column rendered="#{shoppingCenterAmountReportBean.visible(12)}" style="#{shoppingCenterAmountReportBean.m==12?'color:red':''}">#{shoppingCenterAmountReportBean.doubleformat(item.actualIndicator.n12,item.rate)}</p:column> 
                                 <p:column>#{shoppingCenterAmountReportBean.doubleformat(item.actualIndicator.nfy,item.rate)}</p:column> 
-                                 <p:column>#{item.actualIndicator.remark1}</p:column>
-                           
+                                <p:column>#{item.actualIndicator.remark1}</p:column>
                             </p:row>
                         </c:forEach>
                     </p:panelGrid>
