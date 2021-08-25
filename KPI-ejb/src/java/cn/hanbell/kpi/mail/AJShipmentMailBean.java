@@ -47,18 +47,22 @@ public class AJShipmentMailBean extends ShipmentMail {
 
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable_SAM());
-        
+
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable_SAM());
-        
+
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable_SAMAll());
-        
+
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable_SAMAll());
 
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getServiceTable());
+
+        sb.append("<div class=\"tableTitle\">单位：万元</div>");
+        sb.append(getServiceTable_SAM());
+
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getTransferTable());
         return sb.toString();
@@ -161,7 +165,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getAmountTable()  throws Exception{
+    protected String getAmountTable() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体每日出货金额", y);
         indicatorBean.getEntityManager().clear();
@@ -176,7 +180,7 @@ public class AJShipmentMailBean extends ShipmentMail {
         }
     }
 
-    protected String getServiceTable() throws Exception{
+    protected String getServiceTable() throws Exception {
         this.indicators.clear();
         indicators = indicatorBean.findByCategoryAndYear("A机体收费服务", y);
         indicatorBean.getEntityManager().clear();
@@ -191,6 +195,24 @@ public class AJShipmentMailBean extends ShipmentMail {
             return t;
         } else {
             return "A机体每日出货金额设定错误";
+        }
+    }
+
+    protected String getServiceTable_SAM() throws Exception {
+        this.indicators.clear();
+        indicators = indicatorBean.findByCategoryAndYear("涡旋收费服务", y);
+        indicatorBean.getEntityManager().clear();
+        if (indicators != null && !indicators.isEmpty()) {
+            for (Indicator i : indicators) {
+                indicatorBean.divideByRate(i, 2);
+            }
+            salesOrder = null;
+            setDecimalFormat("#,###.00");
+            String t = getHtmlTable(this.indicators, y, m, d, true);
+            setDecimalFormat("#,###");
+            return t;
+        } else {
+            return "S涡旋每日出货金额设定错误";
         }
     }
 

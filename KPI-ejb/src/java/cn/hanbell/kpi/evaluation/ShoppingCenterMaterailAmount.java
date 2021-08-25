@@ -26,10 +26,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class ShoppingCenterMaterailAmount implements Actual {
 
-  
-   protected SuperEJBForKPI superEJBForKPI = lookupSuperEJBForKPI();
+    protected SuperEJBForKPI superEJBForKPI = lookupSuperEJBForKPI();
     protected SuperEJBForERP superEJB;
-    
+
     protected LinkedHashMap<String, Object> queryParams;
     protected final Logger log4j = LogManager.getLogger();
 
@@ -42,40 +41,46 @@ public class ShoppingCenterMaterailAmount implements Actual {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String prono = map.get("prono") != null ? map.get("prono").toString() : "";
         String materialSql = map.get("material") != null ? map.get("material").toString() : "";
-          try {
+        try {
             StringBuffer materials = new StringBuffer();
-            EntityManager em=superEJBForKPI.getEntityManager();
+            EntityManager em = superEJBForKPI.getEntityManager();
             Query query1 = em.createNativeQuery(materialSql);
             List<String> vdrnos = query1.getResultList();
             for (String o : vdrnos) {
                 materials.append("'").append(o).append("',");
             }
-            if(materials.length()==0){
-                  throw new RuntimeException();
+
+            StringBuffer sql = new StringBuffer();
+            sql.append(" SELECT sum(acpamt) as cp_acpamt");
+            sql.append(" FROM apmpyh ,purvdr ,purhad");
+            sql.append(" WHERE apmpyh.vdrno = purvdr.vdrno  and  purhad.facno = apmpyh.facno");
+            sql.append(" and purhad.prono = apmpyh.prono and purhad.pono = apmpyh.pono");
+            sql.append(" and  apmpyh.pyhkind = '1'");
+            //台湾汉钟的公司别和生产地与大陆的ERP规范不一样
+            if (!"A".equals(facno)) {
+                sql.append(" AND apmpyh.facno = '${facno}'  and apmpyh.prono ='${prono}'");
             }
-     
-        
-        StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT sum(acpamt) as cp_acpamt");
-        sql.append(" FROM apmpyh ,purvdr ,purhad");
-        sql.append(" WHERE apmpyh.vdrno = purvdr.vdrno  and  purhad.facno = apmpyh.facno");
-        sql.append(" and purhad.prono = apmpyh.prono and purhad.pono = apmpyh.pono");
-        sql.append(" and  apmpyh.pyhkind = '1'");
-        sql.append(" AND apmpyh.facno = ${facno}  and apmpyh.prono =${prono}");
-        sql.append(" and apmpyh.vdrno in(").append(materials.substring(0,materials.length()-1)).append(")");
-        sql.append(" and year(apmpyh.trdat) = ${year} and month(apmpyh.trdat)= ${month}");
-        String sqlString = sql.toString().replace("${year}", String.valueOf(y)).replace("${month}", String.valueOf(m)).replace("${facno}", facno).replace("${prono}", prono);
-    
+            if (materials != null && !"".equals(materials.toString())) {
+                sql.append(" and apmpyh.vdrno in(").append(materials.substring(0, materials.length() - 1)).append(")");
+            } else {
+                sql.append(" and apmpyh.vdrno in ('')");
+            }
+            sql.append(" and year(apmpyh.trdat) = ${year} and month(apmpyh.trdat)= ${month}");
+            String sqlString = sql.toString().replace("${year}", String.valueOf(y)).replace("${month}", String.valueOf(m)).replace("${facno}", facno).replace("${prono}", prono);
+
             superEJB.setCompany(facno);
             Query query = superEJB.getEntityManager().createNativeQuery(sqlString);
             Object o1 = query.getSingleResult();
             BigDecimal result = (BigDecimal) o1;
             if (result == null) {
-                return BigDecimal.ZERO;
+                result = BigDecimal.ZERO;
+            }
+            //台湾的币别除以汇率
+            if ("A".equals(facno)) {
+                result = result.divide(new BigDecimal("4.3"), 2);
             }
             return result;
         } catch (Exception ex) {
-            ex.printStackTrace();
             return BigDecimal.ZERO;
         }
     }
@@ -101,6 +106,7 @@ public class ShoppingCenterMaterailAmount implements Actual {
     public int getUpdateYear(int y, int m) {
         return y;
     }
+
     private SuperEJBForKPI lookupSuperEJBForKPI() {
         try {
             Context c = new InitialContext();
