@@ -155,7 +155,7 @@ public class MachiningEfficiency implements Actual {
         processStepBean.delete(company, d, type, machine);
         List<ProcessStep> stepList = getProcessStep(company, d, type, machine, stdCost);
         if (stepList != null && !stepList.isEmpty()) {
-            processStepBean.save(stepList);
+            processStepBean.persist(stepList);
             processStepBean.getEntityManager().flush();
         }
 
@@ -512,7 +512,8 @@ public class MachiningEfficiency implements Actual {
     protected BigDecimal updateStandardHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
         BigDecimal value = BigDecimal.ZERO;
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT COALESCE(SUM(standardMachineTime * qty),0) FROM processstep WHERE company = '${company}' AND equipment = '${machine}' ");
+        sb.append(
+            "SELECT COALESCE(SUM(standardMachineTime * qty),0) FROM processstep WHERE company = '${company}' AND equipment = '${machine}' ");
         sb.append(" AND year(endTime)=${y} AND month(endTime)=${m} ");
         switch (type) {
             case 2:
@@ -526,8 +527,9 @@ public class MachiningEfficiency implements Actual {
             default:
                 sb.append(" AND DAY(endTime) = ${d} ");
         }
-        String sql = sb.toString().replace("${company}", entity.getParent().getCompany()).replace("${machine}", machine).replace("${y}", String.valueOf(uy))
-            .replace("${m}", String.valueOf(um)).replace("${d}", String.valueOf(ud));
+        String sql = sb.toString().replace("${company}", entity.getParent().getCompany()).replace("${machine}", machine)
+            .replace("${y}", String.valueOf(uy)).replace("${m}", String.valueOf(um))
+            .replace("${d}", String.valueOf(ud));
         Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
             Object obj = query.getSingleResult();
