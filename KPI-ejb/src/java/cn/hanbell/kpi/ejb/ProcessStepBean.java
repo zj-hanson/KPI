@@ -117,7 +117,7 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         }
     }
 
-    public void save(List<ProcessStep> data) {
+    public void persist(List<ProcessStep> data) {
         for (ProcessStep e : data) {
             persist(e);
         }

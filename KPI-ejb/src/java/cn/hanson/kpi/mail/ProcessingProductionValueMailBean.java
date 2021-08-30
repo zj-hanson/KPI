@@ -61,9 +61,9 @@ public class ProcessingProductionValueMailBean extends MailNotification {
     String reportPath = null;
     String reportOutputPath = null;
 
-    //异常数据
+    // 异常数据
     protected List<ProcessStep> abnormalList = new ArrayList<>();
-    
+
     public ProcessingProductionValueMailBean() {
         this.sumIndicatorList = new ArrayList();
     }
@@ -109,8 +109,10 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 processStepBean.findByEndTimeAndEquipment(company, d, Calendar.DAY_OF_MONTH, ind.getProduct());
             if (processStepList != null && !processStepList.isEmpty()) {
                 for (ProcessStep ps : processStepList) {
-                    //异常数据
-                    if (ps.getStandardMachineTime().compareTo(BigDecimal.ZERO)==0||ps.getTotalMachineTime().compareTo(BigDecimal.ZERO) == 0||ps.getProcessingPrice().compareTo(BigDecimal.ZERO) == 0) {
+                    // 异常数据
+                    if (ps.getStandardMachineTime().compareTo(BigDecimal.ZERO) == 0
+                        || ps.getTotalMachineTime().compareTo(BigDecimal.ZERO) == 0
+                        || ps.getProcessingPrice().compareTo(BigDecimal.ZERO) == 0) {
                         ps.setProduct(ind.getProduct());
                         abnormalList.add(ps);
                     }
@@ -353,7 +355,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class=\"tableTitle\">单位：元/分钟</div>");
         sb.append(getProcessingProductionValue());
-        if(abnormalList.size()>0){
+        if (abnormalList.size() > 0) {
             getAbnormalProcessingProductionValue();
         }
         sb.append("<div class=\"tableTitle\">分钟产值: 每个机台每分钟产出价值</div>");
@@ -723,14 +725,15 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         sumMonthStandardValue = sumMonthStandardValue.add(getData().get("sumMonthStandardValue"));
         sumMonthActualValue = sumMonthActualValue.add(getData().get("sumMonthActualValue"));
     }
-    //异常数据报表
+
+    // 异常数据报表
     protected void getAbnormalProcessingProductionValue() {
         try {
             // 报表路径
             if (reportPath == null || reportOutputPath == null) {
                 reportPath = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt").getPath();
-                reportOutputPath
-                        = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
+                reportOutputPath =
+                    this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
             }
             String fullFileName = reportOutputPath + "异常数据" + BaseLib.formatDate("yyyy-MM-dd", d) + ".xlsx";
             File file = new File(fullFileName);
@@ -742,7 +745,8 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             // 初始样式
             initCellStyles(workbook);
             // 表格标题
-            String[] title = {"类别", "设备编号", "制令编号", "制令日期", "品号", "工件编号", "加工工序", "报工开始", "报工完成", "实际工时", "标准工时", "标准成本", "标准产值", "当日数量", "报工工号", "报工人员"};
+            String[] title = {"类别", "设备编号", "制令编号", "制令日期", "品号", "工件编号", "加工工序", "报工开始", "报工完成", "实际工时", "标准工时",
+                "标准成本", "标准产值", "当日数量", "报工工号", "报工人员"};
             row = sheet.createRow(0);
             for (int i = 0; i < title.length; i++) {
                 cell = row.createCell(i);
