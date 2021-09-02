@@ -492,7 +492,8 @@ public class MachiningEfficiency implements Actual {
     }
 
     protected BigDecimal updatePlannedHour(IndicatorDetail entity, int uy, int um, int ud, int type, String machine) {
-        BigDecimal value = BigDecimal.ZERO;
+        // 每天计划1320分钟
+        BigDecimal value = BigDecimal.valueOf(1320L);
         try {
             IndicatorDaily daily =
                 indicatorBean.findIndicatorDailyByPIdDateAndType(entity.getId(), entity.getSeq(), um, entity.getType());
