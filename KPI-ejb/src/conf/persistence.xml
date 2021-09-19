@@ -229,7 +229,7 @@
         <shared-cache-mode>NONE</shared-cache-mode>
         <validation-mode>NONE</validation-mode>
         <properties>
-            <property name="eclipselink.canonicalmodel.subpackage" value="shb"/>
+            <property name="eclipselink.canonicalmodel.subpackage" value="shbeam"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="SHBEXCH-ejbPU" transaction-type="JTA">
