@@ -27,7 +27,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author C2079 
+ * @author C2079
  */
 @Stateless
 @LocalBean
@@ -73,7 +73,7 @@ public class EquipmentPlanResultFileMailBean extends MailNotification {
         //将同一设备的基准归类
         eStandard.forEach(sobj -> {
             List<EquipmentStandard> assetno = new ArrayList<>();
-            String anKey = sobj.getAssetno()+sobj.getStandardlevel();//获取资产编号和等级相同的基准
+            String anKey = sobj.getAssetno() + sobj.getStandardlevel();//获取资产编号和等级相同的基准
             if (moMap.containsKey(anKey)) {//判断map中是否已经存在该资产编号,不存在就存在新的KEY里否则加入原来的KEY里
                 for (Map.Entry<String, List<EquipmentStandard>> entry : moMap.entrySet()) {
                     if (entry.getKey().equals(anKey)) {
@@ -94,6 +94,7 @@ public class EquipmentPlanResultFileMailBean extends MailNotification {
             EquipmentAnalyResult eAnaly = new EquipmentAnalyResult();
             String formid = equipmentAnalyResultBean.getFormId(Calendar.getInstance().getTime(), "BQ", "YYMM", 4);
             eAnaly.setFormid(formid);
+            Object[] o = equipmentAnalyResultBean.findByAssetno(itemList1.get(0).getAssetno());
             eAnaly.setFormdate(Calendar.getInstance().getTime());
             //主表只取机型编号等信息，所以只取第一条数据赋值
             eAnaly.setAssetno(itemList1.get(0).getAssetno());
@@ -121,8 +122,16 @@ public class EquipmentPlanResultFileMailBean extends MailNotification {
                 eDta.setMethod(obj.getMethod());
                 eDta.setMethodname(obj.getMethodname());
                 eDta.setDowntime(obj.getDowntime());
+                eDta.setDownunit(obj.getDownunit());
                 eDta.setManpower(obj.getManpower());
                 eDta.setManhour(obj.getManhour());
+                if (obj.getRespondept().equals("维修")) {
+                    eDta.setAnalysisuser(o[45].toString());
+                    eDta.setLastanalysisuser(o[46].toString());
+                } else if (obj.getRespondept().equals("现场")) {
+                    eDta.setAnalysisuser(o[20].toString());
+                    eDta.setLastanalysisuser(o[21].toString());
+                }
                 eDta.setAreaimage(obj.getAreaimage());
                 eDta.setStatus("N");
                 eDta.setCreator("admin");
