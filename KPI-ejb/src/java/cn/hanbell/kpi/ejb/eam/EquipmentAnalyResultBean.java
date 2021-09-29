@@ -38,24 +38,36 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
      */
     public List<EquipmentStandard> getMonthlyReport(String date, String standardlevel) throws ParseException {
         StringBuilder sbSql = new StringBuilder();
-        sbSql.append(" SELECT * FROM equipmentstandard WHERE  status='V' and nexttime>='").append(date).append("' ");
+        sbSql.append(" SELECT * FROM equipmentstandard WHERE  status='V' ");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = formatter.parse(date);//将String格式转为日期格式
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
         if (standardlevel != null && !"".equals(standardlevel)) {
-            sbSql.append(" AND  standardlevel='").append(standardlevel).append("'");
+            cal.add(Calendar.DATE, 1);//获取明天日期
+            sbSql.append(" AND nexttime>='").append(date).append("' ");
+            sbSql.append(" AND nexttime<'").append(formatter.format(cal.getTime())).append("'");
+            sbSql.append(" AND standardlevel='").append(standardlevel).append("'");
         } else {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date d = formatter.parse(date);//将String格式转为日期格式
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(d);
-            cal.add(Calendar.MONTH,1);//获取下个月1号时间,因计划排程为每月1号所以直接月份相加
-            sbSql.append(" AND  nexttime<'").append(formatter.format(cal.getTime())).append("'");
-            sbSql.append(" AND  standardlevel!='一级'");
+            cal.add(Calendar.MONTH, 1);//获取下个月1号时间,因计划排程为每月1号所以直接月份相加
+            sbSql.append(" AND nexttime>='").append(date).append("' ");
+            sbSql.append(" AND nexttime<'").append(formatter.format(cal.getTime())).append("'");
+            sbSql.append(" AND standardlevel!='一级'");
         }
         Query query = this.getEntityManager().createNativeQuery(sbSql.toString(), EquipmentStandard.class);
         List<EquipmentStandard> sList = query.getResultList();
         return sList;
     }
-
-    public List<Object[]> getMonthlyReport(int y, String string, String h) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //根据资产编号获取对应资产
+    public Object[] findByAssetno(String value) {
+        StringBuilder sbSql = new StringBuilder();
+        sbSql.append(" SELECT * FROM assetcard WHERE  formid='").append(value).append("' ");
+        Query query = this.getEntityManager().createNativeQuery(sbSql.toString());
+        try {
+            Object o = query.getSingleResult();
+            return (Object[])o;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

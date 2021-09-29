@@ -122,27 +122,27 @@ public class TimerBean {
                     try {
                         if ("D".equals(e.getFormkind().trim())) {
                             indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
-                                c.getTime(), Calendar.DAY_OF_MONTH);
+                                    c.getTime(), Calendar.DAY_OF_MONTH);
                         } else {
                             indicatorBean.updateActual(e.getId(), c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
-                                c.getTime(), Calendar.MONTH);
+                                    c.getTime(), Calendar.MONTH);
                         }
                         log4j.info(String.format("成功执行%s:更新指标%s实际值:Id:%d", "updateIndicatorActualValue", e.getName(),
-                            e.getId()));
+                                e.getId()));
                     } catch (Exception ex) {
                         log4j.error(
-                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
-                            ex);
+                                String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                                ex);
                     }
                     try {
                         indicatorBean.updatePerformance(e);
                         indicatorBean.update(e);
                         log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
-                            e.getId()));
+                                e.getId()));
                     } catch (Exception ex) {
                         log4j.error(
-                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
-                            ex);
+                                String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                                ex);
                     }
                 } else {
                     // 独立归集指标计算
@@ -154,33 +154,33 @@ public class TimerBean {
             // 部门指标来源产品指标，所以先算产品指标
             log4j.info("updateIndicatorActualValue开始产品指标堆叠计算");
             indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("P", c.get(Calendar.YEAR),
-                timer.getInfo().toString());
+                    timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {
                         updateActual(e, c.get(Calendar.MONTH) + 1);
                         log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
-                            e.getId()));
+                                e.getId()));
                     } catch (Exception ex) {
                         log4j.error(
-                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
-                            ex);
+                                String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                                ex);
                     }
                 }
             }
             log4j.info("updateIndicatorActualValue开始部门指标堆叠计算");
             indicatorList = indicatorBean.findRootByAssignedObjtypeAndJobSchedule("D", c.get(Calendar.YEAR),
-                timer.getInfo().toString());
+                    timer.getInfo().toString());
             if (indicatorList != null && !indicatorList.isEmpty()) {
                 for (Indicator e : indicatorList) {
                     try {
                         updateActual(e, c.get(Calendar.MONTH) + 1);
                         log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
-                            e.getId()));
+                                e.getId()));
                     } catch (Exception ex) {
                         log4j.error(
-                            String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
-                            ex);
+                                String.format("执行%s:更新指标%s:Id:%d时异常", "updateIndicatorActualValue", e.getName(), e.getId()),
+                                ex);
                     }
                 }
             }
@@ -205,27 +205,31 @@ public class TimerBean {
                         log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
                     }
                 } catch (Exception ex) {
-                    List<SystemUser> list = systemuserBean.findByDeptnoAndSyncWeChatStatus("13120");
-                    StringBuffer users = new StringBuffer();
-                    MailNotification mn = getMailNotificationBean(ms.getMailEJB());
-                    if (list != null && !list.isEmpty()) {
-                        mn.getTo().clear();
-                        mn.getCc().clear();
+                    try {
 
-                        for (SystemUser s : list) {
-                            users.append(s.getUserid()).append("|");
-                            mn.getTo().add(s.getUserid() + "@hanbell.com.cn");
+                        List<String> list = systemuserBean.tryFindExceptionInformUsers();
+                        StringBuffer users = new StringBuffer();
+                        MailNotification mn = getMailNotificationBean(ms.getMailEJB());
+                        if (list != null && !list.isEmpty()) {
+                            mn.getTo().clear();
+                            mn.getCc().clear();
+                            for (String s : list) {
+                                users.append(s).append("|");
+                                mn.getTo().add(s + "@hanbell.com.cn");
+                            }
+
+                            // 企业微信推送
+                            indicatorBean.sendMsgString(users.substring(0, users.length() - 1),
+                                    "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName
+                                    + "发生异常，具体内容已通过邮件发送!");
+                            // 邮件推送
+                            reportName = ms.getName();
+                            mn.setMailSubject();
+                            mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
+                            mn.notify(new MailNotify());
                         }
-
-                        // 企业微信推送
-                        indicatorBean.sendMsgString(users.substring(0, users.length() - 1),
-                            "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName
-                                + "发生异常，具体内容已通过邮件发送!");
-                        // 邮件推送
-                        reportName = ms.getName();
-                        mn.setMailSubject();
-                        mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
-                        mn.notify(new MailNotify());
+                    } catch (Exception e) {
+                        log4j.info("End Exception Send KPI Report Job Schedule " + e.toString());
                     }
                 }
                 log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
@@ -238,7 +242,7 @@ public class TimerBean {
         try {
             c = new InitialContext();
             Object objRef = c.lookup(JNDIName);
-            return (MailNotification)objRef;
+            return (MailNotification) objRef;
         } catch (NamingException ex) {
             log4j.error("getMailNotificationBean", ex);
         }
@@ -258,13 +262,13 @@ public class TimerBean {
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
             log4j.info(
-                String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
+                    String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         } else {
             indicatorBean.updateActual(entity, m);
             indicatorBean.updatePerformance(entity);
             indicatorBean.update(entity);
             log4j.info(
-                String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
+                    String.format("成功执行%s:堆叠指标%s:Id:%d", "updateIndicatorActualValue", entity.getName(), entity.getId()));
         }
     }
 
@@ -285,8 +289,8 @@ public class TimerBean {
                 y = year;
             }
             if (salesTableBean.updateSalesTable(y, m, "", "Shipment")
-                && salesTableBean.updateSalesTable(y, m, "", "SalesOrder")
-                && salesTableBean.updateSalesTable(y, m, "", "ServiceAmount")) {
+                    && salesTableBean.updateSalesTable(y, m, "", "SalesOrder")
+                    && salesTableBean.updateSalesTable(y, m, "", "ServiceAmount")) {
                 log4j.info("End Execute Job updateKPISalesTable");
             }
         } catch (Exception e) {
