@@ -185,27 +185,25 @@ public class TimerBean {
                         log4j.info(String.format("执行%s:发送报表%s失败,找不到MailBean", "sendKPIReport", reportName));
                     }
                 } catch (Exception ex) {
-                    try {
-                        List<String> list = systemuserBean.tryFindExceptionInformUsers();
-                        StringBuffer users = new StringBuffer();
-                        MailNotification mn = getMailNotificationBean(ms.getMailEJB());
-                        if (list != null && !list.isEmpty()) {
-                            mn.getTo().clear();
-                            mn.getCc().clear();
-                            for (String s : list) {
-                                users.append(s).append("|");
-                                mn.getTo().add(s + "@hanbell.com.cn");
-                            }
-                            //企业微信推送
-                            indicatorBean.sendMsgString(users.substring(0, users.length() - 1), "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName + "发生异常，具体内容已通过邮件发送!");
-                            //邮件推送
-                            reportName = ms.getName();
-                            mn.setMailSubject();
-                            mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
-                            mn.notify(new MailNotify());
+                    List<SystemUser> list = systemuserBean.findByDeptnoAndSyncWeChatStatus("13120");
+                    StringBuffer users = new StringBuffer();
+                    MailNotification mn = getMailNotificationBean(ms.getMailEJB());
+                    if (list != null && !list.isEmpty()) {
+                        mn.getTo().clear();
+                        mn.getCc().clear();
+
+                        for (SystemUser s : list) {
+                            users.append(s.getUserid()).append("|");
+                            mn.getTo().add(s.getUserid() + "@hanbell.com.cn");
                         }
-                    } catch (Exception e) {
-                        log4j.info("End Exception Send KPI Report Job Schedule" + e.toString());
+
+                        //企业微信推送
+                        indicatorBean.sendMsgString(users.substring(0, users.length() - 1), "【KPI出货报表 At " + BaseLib.formatDate("yyyy/MM/dd HH:mm:ss", new Date()) + "】" + reportName + "发生异常，具体内容已通过邮件发送!");
+                        //邮件推送
+                        reportName = ms.getName();
+                        mn.setMailSubject();
+                        mn.setMailContent(reportName + "异常：" + getExceptionInfo(ex) + "\n请管理员及时处理！！！");
+                        mn.notify(new MailNotify());
                     }
                 }
                 log4j.info("End Execute Send KPI Report Job Schedule " + timer.getInfo());
