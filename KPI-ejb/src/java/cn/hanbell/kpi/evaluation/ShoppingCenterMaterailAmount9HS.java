@@ -13,7 +13,7 @@ public class ShoppingCenterMaterailAmount9HS extends ShoppingCenterMaterailAmoun
 
     public ShoppingCenterMaterailAmount9HS() {
         super();
-        queryParams.put("facno", "'H'");
+        queryParams.put("facno", "H");
         queryParams.put("prono", "1");
         queryParams.put("material", "select vdrno from shoppingmanufacturer where facno='H' and materialTypeName='衬垫'");
     }

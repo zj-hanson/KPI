@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanson.kpi.mail;
 
@@ -16,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,20 +47,25 @@ public class ProcessingProductionValueMailBean extends MailNotification {
     protected Indicator sumIndicator;
     protected List<Indicator> sumIndicatorList;
 
+    protected BigDecimal sumPlan;
     protected BigDecimal sumStandard;
     protected BigDecimal sumActual;
     protected BigDecimal sumQuantity;
-    protected BigDecimal sumValue;
-    protected BigDecimal sumDiff;
+    protected BigDecimal sumStandardValue;
+    protected BigDecimal sumActualValue;
+    protected BigDecimal sumMonthPlan;
     protected BigDecimal sumMonthStandard;
     protected BigDecimal sumMonthActual;
     protected BigDecimal sumMonthQuantity;
-    protected BigDecimal sumMonthValue;
-    protected BigDecimal sumMonthDiff;
+    protected BigDecimal sumMonthStandardValue;
+    protected BigDecimal sumMonthActualValue;
 
     protected Map<String, CellStyle> cellStyles;
     String reportPath = null;
     String reportOutputPath = null;
+
+    // 异常数据
+    protected List<ProcessStep> abnormalList = new ArrayList<>();
 
     public ProcessingProductionValueMailBean() {
         this.sumIndicatorList = new ArrayList();
@@ -80,31 +85,42 @@ public class ProcessingProductionValueMailBean extends MailNotification {
     }
 
     @Override
-    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) throws Exception {
+    protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum)
+        throws Exception {
         return "";
     }
 
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, Sheet sheet) throws Exception {
         getData().clear();
+        getData().put("sumPlan", BigDecimal.ZERO);
         getData().put("sumStandard", BigDecimal.ZERO);
         getData().put("sumActual", BigDecimal.ZERO);
         getData().put("sumQuantity", BigDecimal.ZERO);
-        getData().put("sumValue", BigDecimal.ZERO);
-        getData().put("sumDiff", BigDecimal.ZERO);
+        getData().put("sumStandardValue", BigDecimal.ZERO);
+        getData().put("sumActualValue", BigDecimal.ZERO);
+        getData().put("sumMonthPlan", BigDecimal.ZERO);
         getData().put("sumMonthStandard", BigDecimal.ZERO);
         getData().put("sumMonthActual", BigDecimal.ZERO);
         getData().put("sumMonthQuantity", BigDecimal.ZERO);
-        getData().put("sumMonthValue", BigDecimal.ZERO);
-        getData().put("sumMonthDiff", BigDecimal.ZERO);
+        getData().put("sumMonthStandardValue", BigDecimal.ZERO);
+        getData().put("sumMonthActualValue", BigDecimal.ZERO);
         int i = sheet.getLastRowNum() + 1;
         StringBuilder sb = new StringBuilder();
         Row row;
         Cell cell;
         for (Indicator ind : indicators) {
             company = ind.getCompany();
-            List<ProcessStep> processStepList = processStepBean.findByEndTimeAndEquipment(company, d, Calendar.DAY_OF_MONTH, ind.getProduct());
+            List<ProcessStep> processStepList =
+                processStepBean.findByEndTimeAndEquipment(company, d, Calendar.DAY_OF_MONTH, ind.getProduct());
             if (processStepList != null && !processStepList.isEmpty()) {
                 for (ProcessStep ps : processStepList) {
+                    // 异常数据
+                    if (ps.getStandardMachineTime().compareTo(BigDecimal.ZERO) == 0
+                        || ps.getTotalMachineTime().compareTo(BigDecimal.ZERO) == 0
+                        || ps.getProcessingPrice().compareTo(BigDecimal.ZERO) == 0) {
+                        ps.setProduct(ind.getProduct());
+                        abnormalList.add(ps);
+                    }
                     row = sheet.createRow(i);
                     cell = row.createCell(0);
                     cell.setCellValue(ind.getCategory());
@@ -171,7 +187,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
     }
 
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d, String sumStyle) throws Exception {
-        //获取需要取值栏位
+        // 获取需要取值栏位
         String col, mon;
         StringBuilder sb = new StringBuilder();
 
@@ -179,94 +195,127 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         calendar.setTime(d);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        IndicatorDetail b, a, o5;
-        IndicatorDaily bd, ad, o5d;
-        Field f;
+        IndicatorDetail f, b, t, a, o5;
+        IndicatorDaily fd, bd, td, ad, o5d;
+        Field field;
         mon = indicatorBean.getIndicatorColumn("N", m);
         col = indicatorBean.getIndicatorColumn("D", day);
         String value;
         if (indicator.getId() != -1) {
-            //标准工时
+            // 实际产值
+            f = indicator.getForecastIndicator();
+            fd = findIndicatorDaily(f, m);
+            // 标准工时
             b = indicator.getBenchmarkIndicator();
             bd = findIndicatorDaily(b, m);
-            //报工工时
+            // 计划工时
+            t = indicator.getTargetIndicator();
+            td = findIndicatorDaily(t, m);
+            // 报工工时
             a = indicator.getActualIndicator();
             ad = findIndicatorDaily(a, m);
-            //报工数量
+            // 报工数量
             o5 = indicator.getOther5Indicator();
             o5d = findIndicatorDaily(o5, m);
             try {
-                BigDecimal standardCost, standardTime, actualTime, quantity, todayValue, diffValue, monthStandard, monthActual, monthQuantity, monthValue, monthDiff;
+                BigDecimal standardCost, planTime, standardTime, actualTime, quantity, standardValue, actualValue,
+                    monthPlan, monthStandard, monthActual, monthQuantity, monthStandardValue, monthActualValue;
                 sb.append("<tr>");
                 sb.append("<td>").append("").append("</td>");
                 sb.append("<td>").append(indicator.getName()).append("</td>");
-                //分钟产值
+                // 分钟产值
                 standardCost = indicator.getRate();
                 sb.append("<td>").append(standardCost).append("</td>");
-                //今日标准
-                f = bd.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                standardTime = BigDecimal.valueOf(Double.parseDouble(f.get(bd).toString()));
+                // 计划工时
+                field = td.getClass().getDeclaredField(col);
+                field.setAccessible(true);
+                planTime = BigDecimal.valueOf(Double.parseDouble(field.get(td).toString()));
+                value = decimalFormat.format(planTime);
+                sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
+                // 标准工时
+                field = bd.getClass().getDeclaredField(col);
+                field.setAccessible(true);
+                standardTime = BigDecimal.valueOf(Double.parseDouble(field.get(bd).toString()));
                 value = decimalFormat.format(standardTime);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //今日报工
-                f = ad.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                actualTime = BigDecimal.valueOf(Double.parseDouble(f.get(ad).toString()));
+                // 今日报工
+                field = ad.getClass().getDeclaredField(col);
+                field.setAccessible(true);
+                actualTime = BigDecimal.valueOf(Double.parseDouble(field.get(ad).toString()));
                 value = decimalFormat.format(actualTime);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //报工数量
-                f = o5d.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                quantity = BigDecimal.valueOf(Double.parseDouble(f.get(o5d).toString()));
+                // 报工数量
+                field = o5d.getClass().getDeclaredField(col);
+                field.setAccessible(true);
+                quantity = BigDecimal.valueOf(Double.parseDouble(field.get(o5d).toString()));
                 value = decimalFormat.format(quantity);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //今日产值
-                todayValue = standardCost.multiply(standardTime);
-                value = decimalFormat.format(todayValue);
+                // 标准产值
+                standardValue = standardCost.multiply(standardTime);
+                value = decimalFormat.format(standardValue);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //今日增值
-                diffValue = standardCost.multiply(standardTime.subtract(actualTime));
-                value = decimalFormat.format(diffValue);
+                // 实际产值
+                field = fd.getClass().getDeclaredField(col);
+                field.setAccessible(true);
+                actualValue = BigDecimal.valueOf(Double.parseDouble(field.get(fd).toString()));
+                value = decimalFormat.format(actualValue);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //本月标准
-                f = b.getClass().getDeclaredField(mon);
-                f.setAccessible(true);
-                monthStandard = BigDecimal.valueOf(Double.parseDouble(f.get(b).toString()));
+                // 本月计划
+                field = t.getClass().getDeclaredField(mon);
+                field.setAccessible(true);
+                monthPlan = BigDecimal.valueOf(Double.parseDouble(field.get(t).toString()));
+                value = decimalFormat.format(monthPlan);
+                sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
+                // 本月标准
+                field = b.getClass().getDeclaredField(mon);
+                field.setAccessible(true);
+                monthStandard = BigDecimal.valueOf(Double.parseDouble(field.get(b).toString()));
                 value = decimalFormat.format(monthStandard);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //本月报工
-                f = a.getClass().getDeclaredField(mon);
-                f.setAccessible(true);
-                monthActual = BigDecimal.valueOf(Double.parseDouble(f.get(a).toString()));
+                // 本月报工
+                field = a.getClass().getDeclaredField(mon);
+                field.setAccessible(true);
+                monthActual = BigDecimal.valueOf(Double.parseDouble(field.get(a).toString()));
                 value = decimalFormat.format(monthActual);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //本月数量
-                f = o5.getClass().getDeclaredField(mon);
-                f.setAccessible(true);
-                monthQuantity = BigDecimal.valueOf(Double.parseDouble(f.get(o5).toString()));
+                // 作业效率
+                if (monthPlan.compareTo(BigDecimal.ZERO) > 0) {
+                    value = percentFormat(
+                        monthStandard.divide(monthPlan, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100L)));
+                } else {
+                    value = "100%";
+                }
+                sb.append("<td>").append(value).append("</td>");
+                // 本月数量
+                field = o5.getClass().getDeclaredField(mon);
+                field.setAccessible(true);
+                monthQuantity = BigDecimal.valueOf(Double.parseDouble(field.get(o5).toString()));
                 value = decimalFormat.format(monthQuantity);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //本月产值
-                monthValue = standardCost.multiply(monthStandard);
-                value = decimalFormat.format(monthValue);
+                // 本月标准产值
+                monthStandardValue = standardCost.multiply(monthStandard);
+                value = decimalFormat.format(monthStandardValue);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
-                //本月增值
-                monthDiff = standardCost.multiply(monthStandard.subtract(monthActual));
-                value = decimalFormat.format(monthDiff);
+                // 本月实际产值
+                field = f.getClass().getDeclaredField(mon);
+                field.setAccessible(true);
+                monthActualValue = BigDecimal.valueOf(Double.parseDouble(field.get(f).toString()));
+                value = decimalFormat.format(monthActualValue);
                 sb.append("<td>").append(value.equals("0") ? "-" : value).append("</td>");
                 sb.append("</tr>");
                 if (indicator.getId() != -1) {
+                    sumAdditionalData("sumPlan", planTime);
                     sumAdditionalData("sumStandard", standardTime);
                     sumAdditionalData("sumActual", actualTime);
                     sumAdditionalData("sumQuantity", quantity);
-                    sumAdditionalData("sumValue", todayValue);
-                    sumAdditionalData("sumDiff", diffValue);
+                    sumAdditionalData("sumStandardValue", standardValue);
+                    sumAdditionalData("sumActualValue", actualValue);
+                    sumAdditionalData("sumMonthPlan", monthPlan);
                     sumAdditionalData("sumMonthStandard", monthStandard);
                     sumAdditionalData("sumMonthActual", monthActual);
                     sumAdditionalData("sumMonthQuantity", monthQuantity);
-                    sumAdditionalData("sumMonthValue", monthValue);
-                    sumAdditionalData("sumMonthDiff", monthDiff);
+                    sumAdditionalData("sumMonthStandardValue", monthStandardValue);
+                    sumAdditionalData("sumMonthActualValue", monthActualValue);
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                 throw ex;
@@ -275,37 +324,51 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             sb.append("<tr>");
             sb.append("<td style=${style}>").append(indicator.getCategory()).append("</td>");
             sb.append("<td style=${style}>").append("</td>");
-            //分钟产值
+            // 分钟产值
             sb.append("<td style=${style}>").append("</td>");
-            //今日标准
+            // 今日计划
+            value = decimalFormat.format(getData().get("sumPlan"));
+            sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
+            // 今日标准
             value = decimalFormat.format(getData().get("sumStandard"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //今日报工
+            // 今日报工
             value = decimalFormat.format(getData().get("sumActual"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //今日数量
+            // 今日数量
             value = decimalFormat.format(getData().get("sumQuantity"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //今日产值
-            value = decimalFormat.format(getData().get("sumValue"));
+            // 标准产值
+            value = decimalFormat.format(getData().get("sumStandardValue"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //今日增值
-            value = decimalFormat.format(getData().get("sumDiff"));
+            // 实际产值
+            value = decimalFormat.format(getData().get("sumActualValue"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //本月标准
+            // 本月计划
+            value = decimalFormat.format(getData().get("sumMonthPlan"));
+            sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
+            // 本月标准
             value = decimalFormat.format(getData().get("sumMonthStandard"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //本月报工
+            // 本月报工
             value = decimalFormat.format(getData().get("sumMonthActual"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //本月数量
+            // 作业效率
+            if (getData().get("sumMonthPlan").compareTo(BigDecimal.ZERO) > 0) {
+                value = percentFormat(getData().get("sumMonthStandard")
+                    .divide(getData().get("sumMonthPlan"), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100L)));
+            } else {
+                value = "100%";
+            }
+            sb.append("<td style=${style}>").append(value).append("</td>");
+            // 本月数量
             value = decimalFormat.format(getData().get("sumMonthQuantity"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //本月产值
-            value = decimalFormat.format(getData().get("sumMonthValue"));
+            // 本月产值
+            value = decimalFormat.format(getData().get("sumMonthStandardValue"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
-            //本月增值
-            value = decimalFormat.format(getData().get("sumMonthDiff"));
+            // 本月增值
+            value = decimalFormat.format(getData().get("sumMonthActualValue"));
             sb.append("<td style=${style}>").append(value.equals("0") ? "-" : value).append("</td>");
             sb.append("</tr>");
         }
@@ -326,7 +389,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         sb.append("<div style=\"text-align:center;width:100%\">浙江汉声精密机械有限公司</div>");
         sb.append("<div style=\"text-align:center;width:100%\">").append(mailSubject).append("</div>");
         sb.append("<div style=\"text-align:center;width:100%; color:Red;\">日期:")
-                .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
+            .append(BaseLib.formatDate("yyyy-MM-dd", d)).append("</div>");
         sb.append("</div>");
         return sb.toString();
     }
@@ -334,43 +397,57 @@ public class ProcessingProductionValueMailBean extends MailNotification {
     @Override
     protected String getMailBody() throws Exception {
         StringBuilder sb = new StringBuilder();
-        sb.append("<div class=\"tableTitle\">单位：元/分钟</div>");
+        sb.append("<div class=\"tableTitle\">分钟产值单位：元/分钟，产值单位：元</div>");
         sb.append(getProcessingProductionValue());
+        if (abnormalList.size() > 0) {
+            getAbnormalProcessingProductionValue();
+        }
         sb.append("<div class=\"tableTitle\">分钟产值: 每个机台每分钟产出价值</div>");
-        sb.append("<div class=\"tableTitle\">今日标准: 每个机台今日加工完成工件在ERP中标准机器工时 X 报工完成数量的合计</div>");
-        sb.append("<div class=\"tableTitle\">今日报工: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
-        sb.append("<div class=\"tableTitle\">今日产值: 今日标准 X 分钟产值 </div>");
-        sb.append("<div class=\"tableTitle\">今日增值: （今日标准 - 今日报工）X 分钟产值，正数表示效率高，负数表示效率低</div>");
+        sb.append("<div class=\"tableTitle\">计划工时: 每个机台 1320分钟/天</div>");
+        sb.append("<div class=\"tableTitle\">标准工时: 每个机台今日加工完成工件在ERP中标准机器工时 X 报工完成数量的合计</div>");
+        sb.append("<div class=\"tableTitle\">报工工时: 每个机台今日加工完成工件在MES中报工开始时间 - 报工完成时间的合计</div>");
+        sb.append("<div class=\"tableTitle\">标准产值: 标准工时 X 分钟产值 </div>");
+        sb.append("<div class=\"tableTitle\">实际产值: 每个机台今日加工完成工件的加工价值的合计</div>");
+        sb.append("<div class=\"tableTitle\">本月计划: 本月每个机台每日计划工时的合计</div>");
         sb.append("<div class=\"tableTitle\">本月标准: 本月每个机台每日标准工时的合计</div>");
         sb.append("<div class=\"tableTitle\">本月报工: 本月每个机台每日报工工时的合计</div>");
-        sb.append("<div class=\"tableTitle\">本月产值: 本月标准 X 分钟产值 </div>");
-        sb.append("<div class=\"tableTitle\">本月增值: （本月标准 - 本月报工）X 分钟产值，正数表示效率高，负数表示效率低</div>");
-        sb.append("<div class=\"tableTitle\">类别说明：HMC-卧加 VMC-立加 BMC-镗铣 GMC-龙门 HNL-卧车 VNL-立车 CMM-铣床 NHP-刨床 NMD-铣打</div>");
+        sb.append("<div class=\"tableTitle\">作业效率: 本月标准 / 本月计划 X 100%</div>");
+        sb.append("<div class=\"tableTitle\">月标准产值: 本月标准 X 分钟产值 </div>");
+        sb.append("<div class=\"tableTitle\">月实际产值: 每日实际产值合计</div>");
+        sb.append(
+            "<div class=\"tableTitle\">类别说明：HMC-卧加 VMC-立加 BMC-镗铣 GMC-龙门 HNL-卧车 VNL-立车 CMM-铣床 NHP-刨床 NMD-铣打</div>");
+        sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：标准工时和加工报价是否及时更新会影响统计结果</span></div>");
         return sb.toString();
     }
 
     protected String getProcessingProductionValue() {
+        sumPlan = BigDecimal.ZERO;
         sumStandard = BigDecimal.ZERO;
         sumActual = BigDecimal.ZERO;
         sumQuantity = BigDecimal.ZERO;
-        sumValue = BigDecimal.ZERO;
-        sumDiff = BigDecimal.ZERO;
+        sumStandardValue = BigDecimal.ZERO;
+        sumActualValue = BigDecimal.ZERO;
+        sumMonthPlan = BigDecimal.ZERO;
         sumMonthStandard = BigDecimal.ZERO;
         sumMonthActual = BigDecimal.ZERO;
         sumMonthQuantity = BigDecimal.ZERO;
-        sumMonthValue = BigDecimal.ZERO;
-        sumMonthDiff = BigDecimal.ZERO;
+        sumMonthStandardValue = BigDecimal.ZERO;
+        sumMonthActualValue = BigDecimal.ZERO;
         sumIndicatorList.clear();
         StringBuilder sb = new StringBuilder();
+        abnormalList.clear();
         try {
             sb.append("<div class=\"tbl\"><table width=\"100%\">");
             sb.append("<tr>");
-            sb.append("<th>类别</th><th>机台</th><th>分钟产值</th><th>今日标准</th><th>今日报工</th><th>今日数量</th><th>今日产值(元)</th><th>今日增值(元)</th><th>本月标准</th><th>本月报工</th><th>本月数量</th><th>本月产值(元)</th><th>本月增值(元)</th>");
+            sb.append(
+                "<th>类别</th><th>机台</th><th>分钟产值</th><th>计划工时</th><th>标准工时</th><th>报工工时</th><th>报工数量</th><th>标准产值</th><th>实际产值</th>");
+            sb.append("<th>本月计划</th><th>本月标准</th><th>本月报工</th><th>作业效率</th><th>本月数量</th><th>月标准产值</th><th>月实际产值</th>");
             String detail, category;
             // 报表路径
             if (reportPath == null || reportOutputPath == null) {
                 reportPath = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt").getPath();
-                reportOutputPath = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
+                reportOutputPath =
+                    this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
             }
             String fullFileName = reportOutputPath + mailSubject + BaseLib.formatDate("yyyy-MM-dd", d) + ".xlsx";
             File file = new File(fullFileName);
@@ -408,7 +485,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             cell = row.createCell(11);
             cell.setCellValue("标准成本");
             cell = row.createCell(12);
-            cell.setCellValue("当日产值");
+            cell.setCellValue("标准产值");
             cell = row.createCell(13);
             cell.setCellValue("当日数量");
             cell = row.createCell(14);
@@ -574,16 +651,18 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 sumIndicator.setCategory("合计");
                 sumIndicator.setName("合计");
                 getData().clear();
+                getData().put("sumPlan", sumPlan);
                 getData().put("sumStandard", sumStandard);
                 getData().put("sumActual", sumActual);
                 getData().put("sumQuantity", sumQuantity);
-                getData().put("sumValue", sumValue);
-                getData().put("sumDiff", sumDiff);
+                getData().put("sumStandardValue", sumStandardValue);
+                getData().put("sumActualValue", sumActualValue);
+                getData().put("sumMonthPlan", sumMonthPlan);
                 getData().put("sumMonthStandard", sumMonthStandard);
                 getData().put("sumMonthActual", sumMonthActual);
                 getData().put("sumMonthQuantity", sumMonthQuantity);
-                getData().put("sumMonthValue", sumMonthValue);
-                getData().put("sumMonthDiff", sumMonthDiff);
+                getData().put("sumMonthStandardValue", sumMonthStandardValue);
+                getData().put("sumMonthActualValue", sumMonthActualValue);
                 detail = getHtmlTableRow(sumIndicator, y, m, d, "'background-color:#ff8e67';");
                 sb.append(detail);
             }
@@ -597,23 +676,23 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                 cell = row.createCell(1);
                 cell.setCellValue("姓名");
                 cell = row.createCell(2);
-                cell.setCellValue("标准工时");
+                cell.setCellValue("设备编号");
                 cell = row.createCell(3);
-                cell.setCellValue("报工工时");
+                cell.setCellValue("标准工时");
                 cell = row.createCell(4);
+                cell.setCellValue("报工工时");
+                cell = row.createCell(5);
                 cell.setCellValue("标准产值");
                 for (Object data : employeeProductionValue) {
                     i++;
-                    Object[] e = (Object[]) data;
+                    Object[] e = (Object[])data;
                     row = sheet.createRow(i);
                     cell = row.createCell(0);
                     cell.setCellValue(String.valueOf(e[0]));
                     cell = row.createCell(1);
                     cell.setCellValue(String.valueOf(e[1]));
                     cell = row.createCell(2);
-                    cell.setCellType(0);
-                    cell.setCellStyle(getCellStyle("n"));
-                    cell.setCellValue(Double.parseDouble(String.valueOf(e[2])));
+                    cell.setCellValue(String.valueOf(e[2]));
                     cell = row.createCell(3);
                     cell.setCellType(0);
                     cell.setCellStyle(getCellStyle("n"));
@@ -622,8 +701,12 @@ public class ProcessingProductionValueMailBean extends MailNotification {
                     cell.setCellType(0);
                     cell.setCellStyle(getCellStyle("n"));
                     cell.setCellValue(Double.parseDouble(String.valueOf(e[4])));
+                    cell = row.createCell(5);
+                    cell.setCellType(0);
+                    cell.setCellStyle(getCellStyle("n"));
+                    cell.setCellValue(Double.parseDouble(String.valueOf(e[5])));
                 }
-                for (int k = 0; k < 5; k++) {
+                for (int k = 0; k < 6; k++) {
                     sheet.autoSizeColumn(k, true);
                 }
             }
@@ -654,7 +737,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         }
         // 文本
         CellStyle stringStyle = wb.createCellStyle();
-        stringStyle.setWrapText(true);//设置自动换行
+        stringStyle.setWrapText(true);// 设置自动换行
         cellStyles.put("string", stringStyle);
         cellStyles.put("s", stringStyle);
         // 数字
@@ -682,16 +765,110 @@ public class ProcessingProductionValueMailBean extends MailNotification {
 
     protected void setSumValue(Indicator indicator) {
         sumIndicatorList.add(indicator);
+        sumPlan = sumPlan.add(getData().get("sumPlan"));
         sumStandard = sumStandard.add(getData().get("sumStandard"));
         sumActual = sumActual.add(getData().get("sumActual"));
         sumQuantity = sumQuantity.add(getData().get("sumQuantity"));
-        sumValue = sumValue.add(getData().get("sumValue"));
-        sumDiff = sumDiff.add(getData().get("sumDiff"));
+        sumStandardValue = sumStandardValue.add(getData().get("sumStandardValue"));
+        sumActualValue = sumActualValue.add(getData().get("sumActualValue"));
+        sumMonthPlan = sumMonthPlan.add(getData().get("sumMonthPlan"));
         sumMonthStandard = sumMonthStandard.add(getData().get("sumMonthStandard"));
         sumMonthActual = sumMonthActual.add(getData().get("sumMonthActual"));
         sumMonthQuantity = sumMonthQuantity.add(getData().get("sumMonthQuantity"));
-        sumMonthValue = sumMonthValue.add(getData().get("sumMonthValue"));
-        sumMonthDiff = sumMonthDiff.add(getData().get("sumMonthDiff"));
+        sumMonthStandardValue = sumMonthStandardValue.add(getData().get("sumMonthStandardValue"));
+        sumMonthActualValue = sumMonthActualValue.add(getData().get("sumMonthActualValue"));
+    }
+
+    // 异常数据报表
+    protected void getAbnormalProcessingProductionValue() {
+        try {
+            // 报表路径
+            if (reportPath == null || reportOutputPath == null) {
+                reportPath = this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt").getPath();
+                reportOutputPath =
+                    this.getClass().getClassLoader().getResource("../Hanbell-KPI_war/rpt/output").getPath();
+            }
+            String fullFileName = reportOutputPath + "异常数据" + BaseLib.formatDate("yyyy-MM-dd", d) + ".xlsx";
+            File file = new File(fullFileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("异常数据明细");
+            Row row;
+            Cell cell;
+            // 初始样式
+            initCellStyles(workbook);
+            // 表格标题
+            String[] title = {"类别", "设备编号", "制令编号", "制令日期", "品号", "工件编号", "加工工序", "报工开始", "报工完成", "实际工时", "标准工时",
+                "标准成本", "标准产值", "当日数量", "报工工号", "报工人员"};
+            row = sheet.createRow(0);
+            for (int i = 0; i < title.length; i++) {
+                cell = row.createCell(i);
+                cell.setCellValue(title[i]);
+            }
+            int i = 1;
+            for (ProcessStep ps : abnormalList) {
+                row = sheet.createRow(i);
+                cell = row.createCell(0);
+                cell.setCellValue(ps.getProduct());
+                cell = row.createCell(1);
+                cell.setCellValue(ps.getEquipment());
+                cell = row.createCell(2);
+                cell.setCellValue(ps.getManno());
+                cell = row.createCell(3);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("date"));
+                cell.setCellValue(ps.getFormdate());
+                cell = row.createCell(4);
+                cell.setCellValue(ps.getItemno());
+                cell = row.createCell(5);
+                cell.setCellValue(ps.getComponent());
+                cell = row.createCell(6);
+                cell.setCellValue(ps.getStep());
+                cell = row.createCell(7);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("time"));
+                cell.setCellValue(ps.getStartTime());
+                cell = row.createCell(8);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("time"));
+                cell.setCellValue(ps.getEndTime());
+                cell = row.createCell(9);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getProcessingTime().doubleValue());
+                cell = row.createCell(10);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getStandardMachineTime().multiply(ps.getQty()).doubleValue());
+                cell = row.createCell(11);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getStandCost().doubleValue());
+                BigDecimal value = ps.getStandardMachineTime().multiply(ps.getQty()).multiply(ps.getStandCost());
+                cell = row.createCell(12);
+                cell.setCellType(0);
+                cell.setCellValue(value.doubleValue());
+                cell = row.createCell(13);
+                cell.setCellType(0);
+                cell.setCellValue(ps.getQty().doubleValue());
+                cell = row.createCell(14);
+                cell.setCellValue(ps.getUserid());
+                cell = row.createCell(15);
+                cell.setCellValue(ps.getUser());
+                i++;
+            }
+            try {
+                file.deleteOnExit();
+                workbook.write(fos);
+            } catch (Exception ex) {
+                log4j.error(ex);
+            } finally {
+                if (null != fos) {
+                    fos.flush();
+                    fos.close();
+                }
+            }
+            addAttachments(file);
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
     }
 
 }

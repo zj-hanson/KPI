@@ -62,7 +62,7 @@ public class WorkshopEquipmentFileMailBean extends MailNotification {
         sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\" >附件是车间设备月报报表，请查收。");
         sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\">谢谢!");
         sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\">此邮件是系统自动发送，请不要回复。");
-        sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\">报表责任人：唐帆。");
+        sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\">报表责任人：刘贵莲。");
         sb.append("<div class=\"tableTitle\" style=\"margin-top: 30px\">");
         return sb.toString();
     }

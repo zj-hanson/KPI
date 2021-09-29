@@ -9,6 +9,11 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C2082
  */
-public class ShoppingCenterMaterailAmount7THB {
-    
+public class ShoppingCenterMaterailAmount7THB extends ShoppingCenterMaterailAmount {
+
+    public ShoppingCenterMaterailAmount7THB() {
+        super();
+        queryParams.put("facno", "A");
+        queryParams.put("material", "select vdrno from shoppingmanufacturer where facno='A' and materialTypeName='阀类'");
+    }
 }

@@ -53,9 +53,11 @@ public class ProjectBean implements Serializable {
 
     }
 
-    public List<Project> getProjects() {
-        String urlString = URL + "/GetPLMProjectData";
-        CloseableHttpResponse response = get(urlString, null, null);
+    public List<Project> getProjects(String projectSeq,String projectName) {
+        StringBuffer params=new StringBuffer("/GetPLMProjectData?projectName=");
+        params.append(projectName).append("&");
+        params.append("projectSeq=").append(projectSeq);
+        CloseableHttpResponse response = get(URL+params.toString(), null, null);
         if (response != null) {
             HttpEntity httpEntity = response.getEntity();
             try {
@@ -74,7 +76,6 @@ public class ProjectBean implements Serializable {
                     p.setPMUser(data.getString("pMUser"));
                     list.add(p);
                 }
-
                 return list;
             } catch (ParseException | JSONException | IOException ex) {
 

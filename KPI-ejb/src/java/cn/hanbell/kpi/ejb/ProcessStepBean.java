@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.ejb;
 
@@ -40,7 +39,8 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         int m = c.get(Calendar.MONTH) + 1;
         int d = c.get(Calendar.DAY_OF_MONTH);
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT p FROM ProcessStep p WHERE p.company = :company AND FUNCTION('YEAR',p.endTime) = :y AND FUNCTION('MONTH',p.endTime) = :m ");
+        sb.append(
+            "SELECT p FROM ProcessStep p WHERE p.company = :company AND FUNCTION('YEAR',p.endTime) = :y AND FUNCTION('MONTH',p.endTime) = :m ");
         switch (type) {
             case 2:
                 // 月
@@ -71,9 +71,13 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
     /**
      *
      * @param company
+     *                      公司
      * @param endTime
+     *                      报工完成时间
      * @param type
+     *                      Calendar枚举 2-按月 5-按天
      * @param equipment
+     *                      设备编号
      * @return 工号 姓名 标准工时 报工工时 标准产值
      */
     public List getEmployeeOperationTime(String company, Date endTime, int type, String equipment) {
@@ -83,7 +87,8 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         int m = c.get(Calendar.MONTH) + 1;
         int d = c.get(Calendar.DAY_OF_MONTH);
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT p.userid,p.user,sum(p.standardMachineTime * p.qty) as standardMachineTime,sum(p.processingTime) as processingTime,sum(p.standardMachineTime * p.qty * p.standCost) as productionValue FROM ProcessStep p WHERE p.company = '${company}' AND YEAR(p.endTime) = ${y} AND MONTH(p.endTime) = ${m} ");
+        sb.append(
+            "SELECT p.userid,p.user,p.equipment ,sum(p.standardMachineTime * p.qty) as standardMachineTime,sum(p.processingTime) as processingTime,sum(p.standardMachineTime * p.qty * p.standCost) as productionValue FROM ProcessStep p WHERE p.company = '${company}' AND YEAR(p.endTime) = ${y} AND MONTH(p.endTime) = ${m} ");
         switch (type) {
             case 2:
                 // 月
@@ -99,9 +104,9 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         if (equipment != null && !"".equals(equipment)) {
             sb.append(" AND p.equipment = '").append(equipment).append("' ");
         }
-        sb.append(" GROUP BY p.userid,p.user ORDER BY sum(p.processingTime) DESC");
+        sb.append(" GROUP BY p.userid,p.user,p.equipment  ORDER BY sum(p.processingTime) DESC");
         String sql = sb.toString().replace("${company}", company).replace("${y}", String.valueOf(y))
-                .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(d));
+            .replace("${m}", String.valueOf(m)).replace("${d}", String.valueOf(d));
 
         Query query = getEntityManager().createNativeQuery(sql);
         try {
@@ -112,7 +117,7 @@ public class ProcessStepBean extends SuperEJBForKPI<ProcessStep> {
         }
     }
 
-    public void save(List<ProcessStep> data) {
+    public void persist(List<ProcessStep> data) {
         for (ProcessStep e : data) {
             persist(e);
         }
