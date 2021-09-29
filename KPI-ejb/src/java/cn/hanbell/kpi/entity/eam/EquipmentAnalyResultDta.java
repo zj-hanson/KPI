@@ -10,6 +10,9 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -40,6 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EquipmentAnalyResultDta.findByMethod", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.method = :method"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByMethodname", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.methodname = :methodname"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByDowntime", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.downtime = :downtime"),
+    @NamedQuery(name = "EquipmentAnalyResultDta.findByDownunit", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.downunit = :donwunit"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByManpower", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.manpower = :manpower"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByManhour", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.manhour = :manhour"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByAreaimage", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.areaimage = :areaimage"),
@@ -61,11 +65,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EquipmentAnalyResultDta.findByOptuser", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.optuser = :optuser"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByOptdate", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.optdate = :optdate"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByCfmuser", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.cfmuser = :cfmuser"),
-    @NamedQuery(name = "EquipmentAnalyResultDta.findByPId", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.pid = :pid ORDER BY e.seq"),
     @NamedQuery(name = "EquipmentAnalyResultDta.findByCfmdate", query = "SELECT e FROM EquipmentAnalyResultDta e WHERE e.cfmdate = :cfmdate")})
-public class EquipmentAnalyResultDta extends FormDetailEntity  {
+public class EquipmentAnalyResultDta extends FormDetailEntity {
 
- 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2)
@@ -95,6 +103,9 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "downtime")
     private Float downtime;
+    @Size(max = 2)
+    @Column(name = "downunit")
+    private String downunit;
     @Column(name = "manpower")
     private Float manpower;
     @Column(name = "manhour")
@@ -177,8 +188,6 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
         this.status = status;
     }
 
-  
-
     public String getCompany() {
         return company;
     }
@@ -186,7 +195,6 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
     public void setCompany(String company) {
         this.company = company;
     }
-
 
     public String getStandardtype() {
         return standardtype;
@@ -250,6 +258,14 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
 
     public void setDowntime(Float downtime) {
         this.downtime = downtime;
+    }
+
+    public String getDownunit() {
+        return downunit;
+    }
+
+    public void setDownunit(String downunit) {
+        this.downunit = downunit;
     }
 
     public Float getManpower() {
@@ -435,7 +451,6 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
         return hash;
     }
 
-
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -448,9 +463,10 @@ public class EquipmentAnalyResultDta extends FormDetailEntity  {
         }
         return this.seq == other.seq;
     }
+
     @Override
     public String toString() {
-        return "cn.hanbell.eam.entity.EquipmentAnalyResultDta[ id=" + id + " ]";
+        return "cn.hanbell.kpi.entity.eam.EquipmentAnalyResultDta[ id=" + id + " ]";
     }
-    
+
 }
