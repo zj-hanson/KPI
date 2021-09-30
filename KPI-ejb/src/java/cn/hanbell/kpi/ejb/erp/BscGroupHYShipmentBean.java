@@ -42,55 +42,57 @@ public class BscGroupHYShipmentBean {
         return this.queryParams;
     }
 
-    public void updataShpimentActualValue(int y, int m, Date d) {
+    public void updataShpimentActualValue(int y, int m, Date d) throws Exception {
+        try {
+            queryParams.clear();
+            queryParams.put("facno", "Y");
+            queryParams.put("spdsc", "='QT'");
+            queryParams.put("cusno", " not in ('YZJ00001') ");
+            List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
 
-        queryParams.clear();
-        queryParams.put("facno", "Y");
-        queryParams.put("spdsc", "='QT'");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
-        List<BscGroupShipment> resultData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
-
-        List<BscGroupShipment> tempData;
-        queryParams.clear();
-        queryParams.put("facno", "Y");
-        queryParams.put("spdsc", "='HT'");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            List<BscGroupShipment> tempData;
+            queryParams.clear();
+            queryParams.put("facno", "Y");
+            queryParams.put("spdsc", "='HT'");
+            queryParams.put("cusno", " not in ('YZJ00001') ");
+            tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "Y");
-        queryParams.put("spdsc", " not in ('HT','QT') ");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
-        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "Y");
+            queryParams.put("spdsc", " not in ('HT','QT') ");
+            queryParams.put("cusno", " not in ('YZJ00001') ");
+            tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        if (resultData != null) {
-            erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='Y' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'Shipment'").executeUpdate();
-            for (BscGroupShipment e : resultData) {
-                erpEJB.getEntityManager().persist(e);
+            if (resultData != null) {
+                erpEJB.setCompany("C");
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='Y' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'Shipment'").executeUpdate();
+                for (BscGroupShipment e : resultData) {
+                    erpEJB.getEntityManager().persist(e);
+                }
             }
+        } catch (Exception e) {
+            throw new Exception(e);
         }
-
     }
 
     //出货

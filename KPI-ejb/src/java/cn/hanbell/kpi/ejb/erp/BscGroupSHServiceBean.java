@@ -42,248 +42,252 @@ public class BscGroupSHServiceBean implements Serializable {
         return this.queryParams;
     }
 
-    public void updataServerActualValue(int y, int m, Date d) {
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("ogdkid", " ='RL01' ");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " <>'RT' ");
-        List<BscGroupShipment> resultData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        List<BscGroupShipment> tempData;
-        queryParams.clear();
-        queryParams.put("facno", "G");
-        queryParams.put("ogdkid", " ='RL01' ");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " <>'RT' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+    public void updataServerActualValue(int y, int m, Date d) throws Exception {
+        try {
+            queryParams.clear();
+            queryParams.put("facno", "C");
+            queryParams.put("ogdkid", " ='RL01' ");
+            queryParams.put("n_code_DA", " ='R' ");
+            queryParams.put("n_code_DC", " <>'RT' ");
+            List<BscGroupShipment> resultData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            List<BscGroupShipment> tempData;
+            queryParams.clear();
+            queryParams.put("facno", "G");
+            queryParams.put("ogdkid", " ='RL01' ");
+            queryParams.put("n_code_DA", " ='R' ");
+            queryParams.put("n_code_DC", " <>'RT' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "J");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " <>'RT' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "J");
+            queryParams.put("n_code_DA", " ='R' ");
+            queryParams.put("n_code_DC", " <>'RT' ");
+            queryParams.put("ogdkid", " IN ('RL01') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "N");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " <>'RT' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "N");
+            queryParams.put("n_code_DA", " ='R' ");
+            queryParams.put("n_code_DC", " <>'RT' ");
+            queryParams.put("ogdkid", " IN ('RL01') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C4");
-        queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("n_code_DC", " <>'RT' ");
-        queryParams.put("ogdkid", " IN ('RL01') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "C4");
+            queryParams.put("n_code_DA", " ='R' ");
+            queryParams.put("n_code_DC", " <>'RT' ");
+            queryParams.put("ogdkid", " IN ('RL01') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("ogdkid", " IN ('RL01','RL03') ");
-        queryParams.put("n_code_DA", "='AA' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "C");
+            queryParams.put("ogdkid", " IN ('RL01','RL03') ");
+            queryParams.put("n_code_DA", "='AA' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C4");//目前A机组有重庆的数据，暂定这一个分公司。后续有其他分公司再添加。
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        queryParams.put("n_code_DA", "='AA' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "C4");//目前A机组有重庆的数据，暂定这一个分公司。后续有其他分公司再添加。
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            queryParams.put("n_code_DA", "='AA' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "G");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        queryParams.put("n_code_DA", "='AA' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "G");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            queryParams.put("n_code_DA", "='AA' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "N");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        queryParams.put("n_code_DA", "='AA' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "N");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            queryParams.put("n_code_DA", "='AA' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "J");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        queryParams.put("n_code_DA", "='AA' ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "J");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            queryParams.put("n_code_DA", "='AA' ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "C");
+            queryParams.put("n_code_DA", " ='P' ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "C");
-        queryParams.put("n_code_DA", " ='AH' ");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "C");
+            queryParams.put("n_code_DA", " ='AH' ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "K");
-        queryParams.put("n_code_DA", " ='OH' ");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "K");
+            queryParams.put("n_code_DA", " ='OH' ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "E");
-        queryParams.put("n_code_DA", " ='OH' ");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "E");
+            queryParams.put("n_code_DA", " ='OH' ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        queryParams.clear();
-        queryParams.put("facno", "K");
-        queryParams.put("n_code_DA", " ='RT' ");
-        queryParams.put("ogdkid", " IN('RL01','RL03') ");
-        tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
-        if (tempData != null && !tempData.isEmpty()) {
-            for (BscGroupShipment b : tempData) {
-                if (resultData.contains(b)) {
-                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
-                    a.setQuantity(BigDecimal.ZERO);
-                    a.setAmount(a.getAmount().add(b.getAmount()));
-                } else {
-                    resultData.add(b);
+            queryParams.clear();
+            queryParams.put("facno", "K");
+            queryParams.put("n_code_DA", " ='RT' ");
+            queryParams.put("ogdkid", " IN('RL01','RL03') ");
+            tempData = getServiceValue(y, m, d, Calendar.MONTH, getQueryParams());
+            if (tempData != null && !tempData.isEmpty()) {
+                for (BscGroupShipment b : tempData) {
+                    if (resultData.contains(b)) {
+                        BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                        a.setQuantity(BigDecimal.ZERO);
+                        a.setAmount(a.getAmount().add(b.getAmount()));
+                    } else {
+                        resultData.add(b);
+                    }
                 }
             }
-        }
-        if (resultData != null) {
-            erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno = 'S' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
-            for (BscGroupShipment e : resultData) {
-                erpEJB.getEntityManager().persist(e);
+            if (resultData != null) {
+                erpEJB.setCompany("C");
+                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where protypeno = 'Z' and facno = 'S' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'ServiceAmount' ").executeUpdate();
+                for (BscGroupShipment e : resultData) {
+                    erpEJB.getEntityManager().persist(e);
+                }
             }
+        } catch (Exception e) {
+            throw new Exception(e);
         }
     }
 
