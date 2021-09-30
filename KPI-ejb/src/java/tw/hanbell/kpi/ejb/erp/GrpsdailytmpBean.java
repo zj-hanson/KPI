@@ -99,7 +99,7 @@ public class GrpsdailytmpBean implements Serializable {
             }
             if (grpsdailytmpList != null) {
                 flag = checkTheValueIsNull(grpsdailytmpList);
-                erpEJB.setCompany("A");
+                erpEJB.setCompany("CEXCH");
                 erpEJB.getEntityManager().createNativeQuery("delete from N_RPT_grpsdailytmp where year(trdate) = " + y + " and month(trdate) =" + m).executeUpdate();
                 for (Grpsdailytmp e : grpsdailytmpList) {
                     erpEJB.getEntityManager().persist(e);
