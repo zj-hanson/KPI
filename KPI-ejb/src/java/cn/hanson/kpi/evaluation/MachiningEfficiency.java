@@ -340,7 +340,7 @@ public class MachiningEfficiency implements Actual {
     }
 
     /**
-     * 获取某个件号ERP报工制程标准工时合计
+     * 获取某个件号ERP报工制程标准工时合计,2021/10/1起排除非机器作业制程
      *
      * @param company
      * @param itnbr
@@ -349,9 +349,10 @@ public class MachiningEfficiency implements Actual {
     public Object[] getERPStandardHour(String company, String itnbr) {
         StringBuilder sb = new StringBuilder();
         sb.append(
-            "SELECT COALESCE(sum(boroph.manstdtm),0),COALESCE(sum(boroph.mchstdtm),0) FROM boroph,borgrp,borprc ");
+            "SELECT COALESCE(sum(boroph.manstdtm),0),COALESCE(sum(boroph.mchstdtm),0) FROM boroph,borgrp,borprc WHERE boroph.itnbrgrp = borgrp.itnbrgrp ");
         sb.append(
-            "WHERE boroph.itnbrgrp = borgrp.itnbrgrp AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' AND borgrp.itnbr ='${itnbr}' ");
+            "AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' AND borprc.prosscode NOT LIKE 'ATP%' AND borprc.prosscode NOT LIKE 'SPO%' ");
+        sb.append("AND borgrp.itnbr ='${itnbr}' ");
         String sql = sb.toString().replace("${itnbr}", itnbr);
         try {
             superEJBForERP.setCompany(company);
