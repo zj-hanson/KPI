@@ -32,42 +32,43 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class EquipmentAnalyResultFileMailBean extends MailNotification {
-    
+
     @EJB
     protected EquipmentAnalyResultBean equipmentAnalyResultBean;
-    
+
     @EJB
     protected EquipmentAnalyResultDtaBean equipmentAnalyResultDtaBean;
-    
+
     @EJB
     protected EquipmentStandardBean equipmentStandardBean;
-    
+
     public EquipmentAnalyResultFileMailBean() {
-        
+
     }
-    
+
     @Override
     public void init() {
         this.mailSetting = mailSettingBean.findByMailClazz(this.getClass().getName());
         super.init();
     }
-    
+
     @Override
     protected String getMailHead() {
-        
+
         return "";
     }
-    
+
     @Override
     protected String getMailFooter() {
         return "";
     }
-    
+
     @Override
     protected String getMailBody() throws ParseException {
         attachments.clear();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateTime = simpleDateFormat.format(c.getTime());//将日期转成特定格式
+        Calendar calendar=Calendar.getInstance();
+        String dateTime = simpleDateFormat.format(calendar.getTime());//将日期转成特定格式
         List<EquipmentStandard> eStandard = equipmentAnalyResultBean.getMonthlyReport(dateTime, "一级");
         //List<Object[]> equipmentstandardList = equipmentAnalyResultBean.getMonthlyReport(dateTime, "一级");
         Map<String, List<EquipmentStandard>> moMap = new LinkedHashMap<>();
@@ -122,6 +123,7 @@ public class EquipmentAnalyResultFileMailBean extends MailNotification {
                 eDta.setMethod(obj.getMethod());
                 eDta.setMethodname(obj.getMethodname());
                 eDta.setDowntime(obj.getDowntime());
+                eDta.setDownunit(obj.getDownunit());
                 eDta.setManpower(obj.getManpower());
                 eDta.setManhour(obj.getManhour());
                 eDta.setAreaimage(obj.getAreaimage());
@@ -166,15 +168,15 @@ public class EquipmentAnalyResultFileMailBean extends MailNotification {
         }
         return null;
     }
-    
+
     @Override
     protected String getHtmlTable(List<Indicator> indicatorList, int y, int m, Date d, boolean needsum) {
         return "";
     }
-    
+
     @Override
     protected String getHtmlTableRow(Indicator indicator, int y, int m, Date d) throws Exception {
         return "";
     }
-    
+
 }
