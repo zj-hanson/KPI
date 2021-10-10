@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -854,16 +855,14 @@ public class SalesSheetMailBean extends SheetMail {
     }
 
     private void createPivotTable(Workbook workbook, Sheet sheet) {
-        XSSFSheet pivotSheet = (XSSFSheet)workbook.createSheet("sheet0");
-        pivotSheet.setDefaultColumnWidth(50 * 256);
+        XSSFSheet pivotSheet = (XSSFSheet)workbook.createSheet("pivot");
         int rowCount = sheet.getLastRowNum();
         CellReference topLeft = new CellReference(sheet.getSheetName() + "!A1");
         CellReference bottomRight = new CellReference((sheet.getSheetName() + "!Q" + rowCount));
-        CellReference startCell = new CellReference("A1");
+        CellReference startCell = new CellReference("S1");
         // 数据区域
-        AreaReference dataArea = new AreaReference(topLeft, bottomRight);
-
-        XSSFPivotTable pivotTable = pivotSheet.createPivotTable(dataArea, startCell, sheet);
+        AreaReference source = new AreaReference("A1:Q" + rowCount, SpreadsheetVersion.EXCEL2007);
+        XSSFPivotTable pivotTable = pivotSheet.createPivotTable(source, startCell);
         pivotTable.addRowLabel(2); // 客户简称
         pivotTable.addRowLabel(8); // 规格
         pivotTable.addDataColumn(15, true);
