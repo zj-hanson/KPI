@@ -350,9 +350,9 @@ public class MachiningEfficiency implements Actual {
         StringBuilder sb = new StringBuilder();
         sb.append(
             "SELECT COALESCE(sum(boroph.manstdtm),0),COALESCE(sum(boroph.mchstdtm),0) FROM boroph,borgrp,borprc WHERE boroph.itnbrgrp = borgrp.itnbrgrp ");
-        sb.append(
-            "AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' AND borprc.prosscode NOT LIKE 'ATP%' AND borprc.prosscode NOT LIKE 'SPO%' ");
-        sb.append("AND borgrp.itnbr ='${itnbr}' ");
+        sb.append(" AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' ");
+        sb.append(" AND borprc.prosscode NOT LIKE 'SPO%' AND borprc.prosscode NOT LIKE '%CS00' ");
+        sb.append(" AND borprc.prosscode NOT LIKE 'ATP%' AND borgrp.itnbr ='${itnbr}' ");
         String sql = sb.toString().replace("${itnbr}", itnbr);
         try {
             superEJBForERP.setCompany(company);
