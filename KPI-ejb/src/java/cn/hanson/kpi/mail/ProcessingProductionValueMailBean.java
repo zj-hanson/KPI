@@ -415,7 +415,7 @@ public class ProcessingProductionValueMailBean extends MailNotification {
         sb.append("<div class=\"tableTitle\">月标准产值: 本月标准 X 分钟产值 </div>");
         sb.append("<div class=\"tableTitle\">月实际产值: 每日实际产值合计</div>");
         sb.append(
-            "<div class=\"tableTitle\">类别说明：HMC-卧加 VMC-立加 BMC-镗铣 GMC-龙门 HNL-卧车 VNL-立车 CMM-铣床 NHP-刨床 NMD-铣打</div>");
+            "<div class=\"tableTitle\">类别说明：HMC-卧加 VMC-立加 BMC-镗铣 GMC-龙门 HNL-卧车 VNL-立车 CMM-铣床 NHP-刨床 NMD-铣打 TPM-良勇专机</div>");
         sb.append("<div class=\"tableTitle\"><span style=\"color:red\">注：标准工时和加工报价是否及时更新会影响统计结果</span></div>");
         return sb.toString();
     }
@@ -631,6 +631,23 @@ public class ProcessingProductionValueMailBean extends MailNotification {
             }
             indicators.clear();
             indicators = indicatorBean.findByCategoryAndYear("HS-NMD", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && !indicators.isEmpty()) {
+                indicators.sort((Indicator i1, Indicator i2) -> {
+                    if (i1.getProduct().compareTo(i2.getProduct()) < 1) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                detail = getHtmlTable(indicators, y, m, d, sheet);
+                sumIndicator = indicatorBean.getSumValue(indicators);
+                category = getHtmlTableRow(sumIndicator, y, m, d, "'background-color:#ff8e67';");
+                sb.append(category).append(detail);
+                setSumValue(sumIndicator);
+            }
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("HS-TPM", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
                 indicators.sort((Indicator i1, Indicator i2) -> {
