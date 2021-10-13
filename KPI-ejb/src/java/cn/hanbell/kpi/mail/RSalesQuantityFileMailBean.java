@@ -151,11 +151,10 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                 Indicator lastIndicator = indicatorBean.findByFormidYearAndDeptno(e.getFormid(), y - 1, e.getDeptno());
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
-                        // 实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i))
-                            .subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod(
-                            "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        //2021年3月前的逻辑 实际台数 + 录入柯茂数据 - 销往柯茂数据
+                        //实际台数
+                        v = getNValue(quantity.getActualIndicator(), i);
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                     // quantity指标数据中12月基准+ 去年录入12月柯茂数据 - 去年销往12月柯茂数据
@@ -169,10 +168,9 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     }
                 } else {
                     for (int i = 1; i <= 12; i++) {
-                        // 实际台数
-                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod(
-                            "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        ///实际台数
+                        v = getNValue(quantity.getActualIndicator(), i);
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getActualIndicator(), v);
                     }
                     // quantity指标数据中12月基准+ 去年录入12月柯茂数据
