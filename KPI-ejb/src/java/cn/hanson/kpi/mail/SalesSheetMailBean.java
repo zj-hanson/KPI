@@ -24,6 +24,7 @@ import javax.ejb.LocalBean;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataConsolidateFunction;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -33,6 +34,7 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFPivotTable;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDataField;
 
 /**
  *
@@ -135,8 +137,10 @@ public class SalesSheetMailBean extends SheetMail {
             cell = row.createCell(14);
             cell.setCellValue("已交数量2");
             cell = row.createCell(15);
-            cell.setCellValue("未交重量");
+            cell.setCellValue("未交数量");
             cell = row.createCell(16);
+            cell.setCellValue("未交重量");
+            cell = row.createCell(17);
             cell.setCellValue("未交金额");
 
             this.indicators.clear();
@@ -163,6 +167,9 @@ public class SalesSheetMailBean extends SheetMail {
             totalSum2 = getData().get("sum2");
             try {
                 createPivotTable(workbook, sheet);
+                workbook.setSelectedTab(1);
+                workbook.setActiveSheet(1);
+                workbook.setSheetHidden(0, true);
                 file.deleteOnExit();
                 workbook.write(fos);
             } catch (Exception ex) {
@@ -817,7 +824,9 @@ public class SalesSheetMailBean extends SheetMail {
                 cell = row.createCell(9);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
-                cell.setCellValue(Double.parseDouble(String.valueOf(nd[9])));
+                // 接单数量
+                Double cdrqty = Double.parseDouble(String.valueOf(nd[9]));
+                cell.setCellValue(cdrqty);
                 cell = row.createCell(10);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
@@ -836,38 +845,53 @@ public class SalesSheetMailBean extends SheetMail {
                 cell = row.createCell(13);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
-                cell.setCellValue(Double.parseDouble(String.valueOf(nd[13])));
+                Double shipqty = Double.parseDouble(String.valueOf(nd[13]));
+                cell.setCellValue(shipqty);
                 cell = row.createCell(14);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
                 cell.setCellValue(Double.parseDouble(String.valueOf(nd[14])));
+                // 未交数量
                 cell = row.createCell(15);
+                cell.setCellType(0);
+                cell.setCellStyle(getCellStyle("n"));
+                cell.setCellValue(cdrqty - shipqty);
+                // 未交重量
+                cell = row.createCell(16);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
                 Double qty = Double.parseDouble(String.valueOf(nd[15]));
                 cell.setCellValue(qty);
-                cell = row.createCell(16);
+                cell = row.createCell(17);
                 cell.setCellType(0);
                 cell.setCellStyle(getCellStyle("n"));
-                cell.setCellValue(price * qty);
+                cell.setCellValue(Double.parseDouble(String.valueOf(nd[16])));
             }
         }
     }
 
     private void createPivotTable(Workbook workbook, Sheet sheet) {
+        CTDataField dataField;
         XSSFSheet pivotSheet = (XSSFSheet)workbook.createSheet("pivot");
         int rowCount = sheet.getLastRowNum();
-        CellReference topLeft = new CellReference(sheet.getSheetName() + "!A1");
-        CellReference bottomRight = new CellReference((sheet.getSheetName() + "!Q" + rowCount));
-        CellReference startCell = new CellReference("S1");
+        CellReference startCell = new CellReference("A1");
         // 数据区域
-        AreaReference source = new AreaReference("A1:Q" + rowCount, SpreadsheetVersion.EXCEL2007);
-        XSSFPivotTable pivotTable = pivotSheet.createPivotTable(source, startCell);
+        AreaReference source = new AreaReference("$A$1:$R$" + rowCount, SpreadsheetVersion.EXCEL2007);
+        XSSFPivotTable pivotTable = pivotSheet.createPivotTable(source, startCell, sheet);
         pivotTable.addRowLabel(2); // 客户简称
         pivotTable.addRowLabel(8); // 规格
-        pivotTable.addDataColumn(15, true);
-        pivotTable.addDataColumn(16, true);
-
+        pivotTable.addRowLabel(7); // 品名
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, 15, "未交件数");
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, 16, "未交重量或数量");
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, 17, "金额合计(元)");
+        dataField = pivotTable.getCTPivotTableDefinition().getDataFields().getDataFieldArray(1);
+        if (dataField != null) {
+            dataField.setNumFmtId(3);
+        }
+        dataField = pivotTable.getCTPivotTableDefinition().getDataFields().getDataFieldArray(2);
+        if (dataField != null) {
+            dataField.setNumFmtId(4);
+        }
     }
 
 }

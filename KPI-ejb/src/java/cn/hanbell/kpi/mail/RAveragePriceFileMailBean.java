@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.mail;
 
@@ -29,7 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  *
@@ -50,7 +49,8 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
     }
 
     public String[] getTitle() {
-        return new String[]{"项目", "统计项", "全年目标", "01月", "02月", "03月", "04月", "05月", "06月", "07月", "08月", "09月", "10月", "11月", "12月", "合计", "达成率"};
+        return new String[] {"项目", "统计项", "全年目标", "01月", "02月", "03月", "04月", "05月", "06月", "07月", "08月", "09月", "10月",
+            "11月", "12月", "合计", "达成率"};
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         indicators.clear();
         indicators = indicatorBean.findByPId(indicator.getId());
         indicatorBean.getEntityManager().clear();
-        //指标排序
+        // 指标排序
         indicators.sort((Indicator o1, Indicator o2) -> {
             if (o1.getSortid() > o2.getSortid()) {
                 return 1;
@@ -93,7 +93,8 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         return BaseLib.formatDate("yyyy-MM-dd hh:mm:ss", new Date());
     }
 
-    public File getFile(Indicator indicator, String[] title, List<Map<String, Object>> list) throws FileNotFoundException, IOException {
+    public File getFile(Indicator indicator, String[] title, List<Map<String, Object>> list)
+        throws FileNotFoundException, IOException {
         String filename = String.format("%d年%d月%s", y, m, mailSubject);
         HSSFWorkbook workbook = new HSSFWorkbook();
         Short bgcolor = null;
@@ -101,12 +102,12 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         HSSFSheet sheet = workbook.createSheet("Sheet1");
         // 设置表格默认列宽度为14个字节
         sheet.setDefaultColumnWidth(14);
-        //创建标题行
+        // 创建标题行
         Row row;
         for (int j = 0; j < 4; j++) {
             row = sheet.createRow(j);
-            row.setHeight((short) 450);
-            //创建标题行
+            row.setHeight((short)450);
+            // 创建标题行
             for (int i = 0; i < title.length; i++) {
                 Cell cell = row.createCell(i);
                 if (j == 3) {
@@ -126,7 +127,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         sheet.addMergedRegion(region1);
         int index = 3;
 
-        for (int i = 0; i < list.size(); i++) {//6
+        for (int i = 0; i < list.size(); i++) {// 6
             Iterator<Map.Entry<String, Object>> map = list.get(i).entrySet().iterator();
             if (i % 2 == 0) {
                 bgcolor = IndexedColors.GREY_25_PERCENT.getIndex();
@@ -135,17 +136,17 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
             }
             while (map.hasNext()) {
                 Map.Entry<String, Object> entry = map.next();
-                List<String[]> cellList = (List<String[]>) entry.getValue();
+                List<String[]> cellList = (List<String[]>)entry.getValue();
                 for (int j = 0; j < cellList.size(); j++) {
                     index++;
                     row = sheet.createRow(index);
-                    row.setHeight((short) 450);
+                    row.setHeight((short)450);
                     if (index % 3 == 1) {
                         Cell cell1 = row.createCell(0);
                         cell1.setCellStyle(createStyles(workbook, bgcolor).get("head"));
                         cell1.setCellValue(entry.getKey());
                     }
-                    //合并三行
+                    // 合并三行
                     if (index % 3 == 0) {
                         CellRangeAddress region = new CellRangeAddress(index - 2, index, 0, 0);
                         sheet.addMergedRegion(region);
@@ -159,7 +160,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 }
             }
         }
-        String finalFilePath = "../" + filename + ".xls";//最终保存的文件路径
+        String finalFilePath = "../" + filename + ".xls";// 最终保存的文件路径
         FileOutputStream out = null;
         File file = new File(finalFilePath);
         // 如果文件存在,则删除已有的文件,重新创建一份新的
@@ -192,7 +193,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
             for (Indicator i : indicatorList) {
                 parentList.add(getChildList(i));
             }
-            //合计
+            // 合计
             sumIndicator = indicatorBean.getSumValue(sumlistIndicators);
             parentList.add(getChildList(sumIndicator));
             return parentList;
@@ -202,8 +203,9 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         return parentList;
     }
 
-    public Map<String, Object> getChildList(Indicator e) throws NoSuchMethodException, InvocationTargetException, Exception {
-        //获取需要取值栏位
+    public Map<String, Object> getChildList(Indicator e)
+        throws NoSuchMethodException, InvocationTargetException, Exception {
+        // 获取需要取值栏位
         Map<String, Object> map = new LinkedHashMap<>();
         String col, mon;
         StringBuilder sb = new StringBuilder();
@@ -218,50 +220,53 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 String[] arr = associatedIndicator.split(";");
                 quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
                 amount = indicatorBean.findByFormidYearAndDeptno(arr[1].trim(), y, arr[2].trim());
-                //实际台数
+                // 实际台数
                 IndicatorDetail qa = new IndicatorDetail();
                 qa.setType("A");
                 qa.setParent(quantity);
-                //实际金额
+                // 实际金额
                 IndicatorDetail ab = new IndicatorDetail();
                 ab.setType("A");
                 ab.setParent(amount);
                 for (int i = getM(); i > 0; i--) {
-                    ///实际台数
+                    /// 实际台数
                     v = getNValue(quantity.getActualIndicator(), i);
-                    setMethod = qa.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod = qa.getClass().getDeclaredMethod(
+                        "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(qa, v);
-                    //实际金额
+                    // 实际金额
                     v = getNValue(amount.getActualIndicator(), i);
-                    setMethod = ab.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod = ab.getClass().getDeclaredMethod(
+                        "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                     setMethod.invoke(ab, v);
                 }
-                //实际台数
+                // 实际台数
                 e.setActualIndicator(qa);
-                //实际金额
+                // 实际金额
                 e.setBenchmarkIndicator(ab);
-                //目标台数
+                // 目标台数
                 e.setTargetIndicator(quantity.getTargetIndicator());
-                //目标金额
+                // 目标金额
                 e.setForecastIndicator(amount.getTargetIndicator());
                 sumlistIndicators.add(e);
             }
-            //实际台数
+            // 实际台数
             IndicatorDetail q = e.getActualIndicator();
-            //实际金额
+            // 实际金额
             IndicatorDetail a = e.getBenchmarkIndicator();
-            //目标台数
+            // 目标台数
             IndicatorDetail tq = e.getTargetIndicator();
-            //目标金额
+            // 目标金额
             IndicatorDetail ta = e.getForecastIndicator();
-            //均价
+            // 均价
             IndicatorDetail avg = new IndicatorDetail();
             avg.setType("A");
             avg.setParent(e);
             for (int i = getM(); i > 0; i--) {
-                //实际台数
+                // 实际台数
                 v = getAvgPrice(getNValue(q, i), getNValue(a, i));
-                setMethod = avg.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                setMethod = avg.getClass().getDeclaredMethod(
+                    "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                 setMethod.invoke(avg, v);
             }
 
@@ -315,7 +320,8 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
                 }
             }
             arr3[14] = decimalFormat.format(getAvgPrice(q.getNfy(), a.getNfy()));
-            arr3[15] = percentFormat(getPerformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())));
+            arr3[15] = percentFormat(
+                getPerformance(getAvgPrice(q.getNfy(), a.getNfy()), getAvgPrice(tq.getNfy(), ta.getNfy())));
             list.add(arr3);
 
             map.put(e.getName().replace("R销售均价", ""), list);
@@ -334,7 +340,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         titleStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
         Font titleFont = wb.createFont();
-        titleFont.setFontHeightInPoints((short) 23);
+        titleFont.setFontHeightInPoints((short)23);
         titleFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         titleFont.setFontName("宋体");
         titleStyle.setFont(titleFont);
@@ -344,7 +350,7 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         CellStyle headStyle = wb.createCellStyle();
         headStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         headStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        headStyle.setFillForegroundColor(style);//单元格背景颜色
+        headStyle.setFillForegroundColor(style);// 单元格背景颜色
         headStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         headStyle.setBorderRight(CellStyle.BORDER_THIN);
         headStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
@@ -355,17 +361,17 @@ public class RAveragePriceFileMailBean extends RAveragePriceMailBean {
         headStyle.setBorderBottom(CellStyle.BORDER_THIN);
         headStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         Font headFont = wb.createFont();
-        headFont.setFontHeightInPoints((short) 10);
+        headFont.setFontHeightInPoints((short)10);
         headStyle.setFont(headFont);
         styles.put("head", headStyle);
 
         // 正文样式
         CellStyle cellStyle = wb.createCellStyle();
         Font cellFont = wb.createFont();
-        cellFont.setFontHeightInPoints((short) 10);
+        cellFont.setFontHeightInPoints((short)10);
         cellStyle.setFont(cellFont);
         cellStyle.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
-        cellStyle.setFillForegroundColor(style);//单元格背景颜色
+        cellStyle.setFillForegroundColor(style);// 单元格背景颜色
         cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         cellStyle.setBorderRight(CellStyle.BORDER_THIN);
         cellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());

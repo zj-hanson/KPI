@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.mail;
 
@@ -24,10 +23,10 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  *
@@ -75,12 +74,14 @@ public class RSalesQuantityFileMailBean extends MailNotification {
         try {
 
             finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-            //测试路径
-//            int index = finalFilePath.indexOf("dist/gfdeploy");
-//            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI/web/rpt/R冷媒订单出货统计表模板.xlsx");
-            //正式路径
+            // 测试路径
+            // int index = finalFilePath.indexOf("dist/gfdeploy");
+            // InputStream is = new FileInputStream(finalFilePath.substring(1, index) +
+            // "Hanbell-KPI/web/rpt/R冷媒订单出货统计表模板.xlsx");
+            // 正式路径
             int index = finalFilePath.indexOf("KPI-ejb");
-            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/R冷媒订单出货统计表模板.xlsx");
+            InputStream is =
+                new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/R冷媒订单出货统计表模板.xlsx");
             Workbook workbook = WorkbookFactory.create(is);
 
             Sheet sheet;
@@ -91,7 +92,8 @@ public class RSalesQuantityFileMailBean extends MailNotification {
             for (int i = 12; 1 <= i; i--) {
                 if (i <= m) {
                     sheet = workbook.getSheetAt(i - 1);
-                    annotation = "注：本月指" + y + "年" + i + "月，上月指" + (i == 1 ? (y - 1 + "年12月") : (y + "年" + (i - 1) + "月"));
+                    annotation =
+                        "注：本月指" + y + "年" + i + "月，上月指" + (i == 1 ? (y - 1 + "年12月") : (y + "年" + (i - 1) + "月"));
                     sheet.createRow(11).createCell(0).setCellValue(annotation);
                     CellRangeAddress merge = new CellRangeAddress(11, 11, 0, 4);
                     sheet.addMergedRegion(merge);
@@ -102,16 +104,16 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                 }
 
             }
-            String path = "../" + String.format("%d年%d月%s", y, m, mailSubject) + ".xlsx";//新建文件保存路径
+            String path = "../" + String.format("%d年%d月%s", y, m, mailSubject) + ".xlsx";// 新建文件保存路径
             FileOutputStream out = null;
             File file = new File(path);
-            //如果文件存在,则删除已有的文件,重新创建一份新的
+            // 如果文件存在,则删除已有的文件,重新创建一份新的
             try {
                 if (file.exists() && file.isFile()) {
                     file.delete();
                     file = new File(path);
                 }
-                //写入新File
+                // 写入新File
                 out = new FileOutputStream(file);
                 workbook.write(out);
             } catch (IOException e) {
@@ -122,7 +124,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     out.close();
                 }
             }
-            //添加到邮件发送
+            // 添加到邮件发送
             addAttachments(file);
         } catch (Exception e) {
             return e.toString() + "Path:" + finalFilePath;
@@ -145,32 +147,40 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                 arr = associatedIndicator.split(";");
                 quantity = indicatorBean.findByFormidYearAndDeptno(arr[0].trim(), y, arr[2].trim());
                 indicatorBean.getEntityManager().clear();
-                //得到去年需增减柯茂数据
+                // 得到去年需增减柯茂数据
                 Indicator lastIndicator = indicatorBean.findByFormidYearAndDeptno(e.getFormid(), y - 1, e.getDeptno());
                 if (e.getOther3Indicator() != null && e.getOther4Indicator() != null) {
                     for (int i = 1; i <= 12; i++) {
-                        //实际台数 + 录入柯茂数据 - 销往柯茂数据
-                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i)).subtract(getNValue(e.getOther3Indicator(), i));
-                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        // 实际台数 + 录入柯茂数据 - 销往柯茂数据
+                        v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i))
+                            .subtract(getNValue(e.getOther3Indicator(), i));
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod(
+                            "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getActualIndicator(), v);
                     }
-                    //quantity指标数据中12月基准+ 去年录入12月柯茂数据 - 去年销往12月柯茂数据
+                    // quantity指标数据中12月基准+ 去年录入12月柯茂数据 - 去年销往12月柯茂数据
                     if (lastIndicator != null) {
-                        v = getNValue(quantity.getBenchmarkIndicator(), 12).add(getNValue(lastIndicator.getOther1Indicator(), 12)).subtract(getNValue(lastIndicator.getOther3Indicator(), 12));
-                        setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
+                        v = getNValue(quantity.getBenchmarkIndicator(), 12)
+                            .add(getNValue(lastIndicator.getOther1Indicator(), 12))
+                            .subtract(getNValue(lastIndicator.getOther3Indicator(), 12));
+                        setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod(
+                            "set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getBenchmarkIndicator(), v);
                     }
                 } else {
                     for (int i = 1; i <= 12; i++) {
-                        ///实际台数
+                        // 实际台数
                         v = getNValue(quantity.getActualIndicator(), i).add(getNValue(e.getOther1Indicator(), i));
-                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod = quantity.getActualIndicator().getClass().getDeclaredMethod(
+                            "set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getActualIndicator(), v);
                     }
-                    //quantity指标数据中12月基准+ 去年录入12月柯茂数据
+                    // quantity指标数据中12月基准+ 去年录入12月柯茂数据
                     if (lastIndicator != null) {
-                        v = getNValue(quantity.getBenchmarkIndicator(), 12).add(getNValue(lastIndicator.getOther1Indicator(), 12));
-                        setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
+                        v = getNValue(quantity.getBenchmarkIndicator(), 12)
+                            .add(getNValue(lastIndicator.getOther1Indicator(), 12));
+                        setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod(
+                            "set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getBenchmarkIndicator(), v);
                     }
 
@@ -181,7 +191,8 @@ public class RSalesQuantityFileMailBean extends MailNotification {
         }
     }
 
-    private void setCellValue(int month, Sheet sheet, List<Indicator> shipmentQuantity, List<Indicator> salesOrderQuantity) {
+    private void setCellValue(int month, Sheet sheet, List<Indicator> shipmentQuantity,
+        List<Indicator> salesOrderQuantity) {
         String mon;
         Field f;
         Row row;
@@ -206,7 +217,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     for (Indicator salesOrde : salesOrderQuantity) {
                         if (salesOrde.getDeptno().equals(shipment.getDeptno())) {
                             mon = indicatorBean.getIndicatorColumn("N", month);
-                            //出货、订单当月
+                            // 出货、订单当月
                             f = shipment.getActualIndicator().getClass().getDeclaredField(mon);
                             f.setAccessible(true);
                             cell = row.getCell(2);
@@ -215,7 +226,7 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                             f.setAccessible(true);
                             cell = row.getCell(1);
                             cell.setCellValue(Double.valueOf(f.get(salesOrde.getActualIndicator()).toString()));
-                            //出货、订单上月
+                            // 出货、订单上月
                             if (month == 1) {
                                 mon = indicatorBean.getIndicatorColumn("N", 12);
                                 f = shipment.getBenchmarkIndicator().getClass().getDeclaredField(mon);
@@ -240,7 +251,8 @@ public class RSalesQuantityFileMailBean extends MailNotification {
 
                         }
                     }
-                } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
+                } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException
+                    | SecurityException e) {
                     System.out.println("cn.hanbell.kpi.mail.RAchievingRateFileMailBean.setCellValue()" + e.toString());
                 }
             }

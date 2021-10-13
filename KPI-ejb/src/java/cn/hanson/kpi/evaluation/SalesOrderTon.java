@@ -133,8 +133,9 @@ public class SalesOrderTon extends SalesOrder {
         StringBuilder sb = new StringBuilder();
         sb.append(
             " select h.facno,h.cusno,c.cusna,h.cdrno,h.recdate,d.trseq,d.itnbr,s.itdsc,s.spdsc,d.cdrqy1,d.cdrqy2,");
-        sb.append(" s.rate2,d.unpris,d.shpqy1,d.shpqy2,cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1) end) as decimal(17,2)) as nd ");
+        sb.append(" s.rate2,d.unpris,d.shpqy1,d.shpqy2,cast((case substring(s.judco,1,1)+s.fvco when '4F' ");
+        sb.append(" then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1) end) as decimal(17,2)) as nd, ");
+        sb.append(" (d.cdrqy1-d.shpqy1) * unpris as na ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s,cdrcus c where h.facno=d.facno and h.cdrno=d.cdrno ");
         sb.append(" and h.hrecsta<>'W' and h.cusno=c.cusno and d.itnbr=s.itnbr ");
         sb.append(" and ((d.cdrqy1-d.shpqy1)>0 or (d.cdrqy2-d.shpqy2)>0) and d.drecsta<'95' and h.facno='${facno}' ");
