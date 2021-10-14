@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Scorecard.findById", query = "SELECT s FROM Scorecard s WHERE s.id = :id"),
     @NamedQuery(name = "Scorecard.findByCompany", query = "SELECT s FROM Scorecard s WHERE s.company = :company"),
     @NamedQuery(name = "Scorecard.findByCompanyMenuAndYear", query = "SELECT s FROM Scorecard s WHERE s.company = :company AND s.menu = :menu AND s.seq = :seq ORDER BY s.sortid,s.deptno"),
-    @NamedQuery(name = "Scorecard.findByName", query = "SELECT s FROM Scorecard s WHERE s.name = :name"),
+    @NamedQuery(name = "Scorecard.findByNameAndSeq", query = "SELECT s FROM Scorecard s WHERE s.name = :name AND s.seq = :seq"),
     @NamedQuery(name = "Scorecard.findByPId", query = "SELECT s FROM Scorecard s WHERE s.pid = :pid"),
     @NamedQuery(name = "Scorecard.findBySeq", query = "SELECT s FROM Scorecard s WHERE s.seq = :seq"),
     @NamedQuery(name = "Scorecard.findByDeptno", query = "SELECT s FROM Scorecard s WHERE s.deptno = :deptno"),
@@ -43,9 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Scorecard.findByMenuAndYear", query = "SELECT s FROM Scorecard s WHERE s.menu = :menu AND s.seq = :seq ORDER BY s.sortid,s.deptno"),
     @NamedQuery(name = "Scorecard.findByTemplate", query = "SELECT s FROM Scorecard s WHERE s.template = :template"),
     @NamedQuery(name = "Scorecard.findByTemplateId", query = "SELECT s FROM Scorecard s WHERE s.templateId = :templateId"),
-    @NamedQuery(name = "Scorecard.findByStatus", query = "SELECT s FROM Scorecard s WHERE s.status = :status"),
+    @NamedQuery(name = "Scorecard.findByStatusAndYear", query = "SELECT s FROM Scorecard s WHERE s.status = :status  AND s.seq = :seq"),
     @NamedQuery(name = "Scorecard.findByRowCount", query = "SELECT COUNT(s) FROM Scorecard s WHERE s.company = :company AND s.seq = :seq"),
-    @NamedQuery(name = "Scorecard.findByCompanyAndSeq", query = "SELECT s FROM Scorecard s WHERE s.company = :company AND s.seq = :seq")})
+    @NamedQuery(name = "Scorecard.findByCompanyAndSeq", query = "SELECT s FROM Scorecard s WHERE s.company = :company AND s.seq = :seq"),
+    @NamedQuery(name = "Scorecard.findByCompanyAndSeqAndIsbsc", query = "SELECT s FROM Scorecard s WHERE s.company = :company AND s.seq = :seq AND s.isbsc = :isbsc")})
 public class Scorecard extends SuperEntity {
 
     @Basic(optional = false)
@@ -127,6 +128,10 @@ public class Scorecard extends SuperEntity {
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
+
+    @Basic(optional = false)
+    @Column(name = "isbsc")
+    private boolean isbsc;
 
     public Scorecard() {
         this.sortid = 0;
@@ -396,6 +401,14 @@ public class Scorecard extends SuperEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public boolean isIsbsc() {
+        return isbsc;
+    }
+
+    public void setIsbsc(boolean isbsc) {
+        this.isbsc = isbsc;
     }
 
     @Override

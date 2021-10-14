@@ -30,7 +30,7 @@ public class ScorecardReport extends SuperSingleReportBean<ScorecardBean, Scorec
         return this.superEJB.getDetail(pid);
     }
 
-    public List<ScorecardAuditor> getAuditorDetail(int pid) {
-        return this.superEJB.getAuditorDetail(pid);
+    public List<ScorecardAuditor> getAuditorDetail(int pid,int quater) {
+        return this.superEJB.getAuditorDetail1(pid,quater);
     }
 }
