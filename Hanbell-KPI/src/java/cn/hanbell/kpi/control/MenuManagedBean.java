@@ -7,9 +7,11 @@ package cn.hanbell.kpi.control;
 
 import cn.hanbell.eap.ejb.SystemGrantModuleBean;
 import cn.hanbell.eap.ejb.SystemGrantPrgBean;
+import cn.hanbell.eap.ejb.SystemRoleBean;
 import cn.hanbell.eap.ejb.SystemRoleDetailBean;
 import cn.hanbell.eap.entity.SystemGrantModule;
 import cn.hanbell.eap.entity.SystemGrantPrg;
+import cn.hanbell.eap.entity.SystemRole;
 import cn.hanbell.eap.entity.SystemRoleDetail;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorDepartmentBean;
@@ -61,6 +63,8 @@ public class MenuManagedBean implements Serializable {
     private SystemGrantModuleBean systemGrantModuleBean;
     @EJB
     private SystemGrantPrgBean systemGrantPrgBean;
+    @EJB
+    private SystemRoleBean systemRoleBean;
 
     @ManagedProperty(value = "#{userManagedBean}")
     private UserManagedBean userManagedBean;
@@ -328,7 +332,32 @@ public class MenuManagedBean implements Serializable {
                     kpimenu.addElement(submenu);
                 }
             }
+
             model.addElement(kpimenu);
+            // KPI001角色的人员才能打开BSC汇报
+            boolean isAdmin = false;
+            List<SystemRoleDetail> list = systemRoleDetailBean.findByUserId(userManagedBean.getCurrentUser().getId());
+            for (SystemRoleDetail u : list) {
+                System.out.print("---" + u.getId());
+                SystemRole role = systemRoleBean.findById(u.getPid());
+                if ("KPI001".equals(role.getRoleno())) {
+                    isAdmin = true;
+                    break;
+                }
+            }
+            if (isAdmin) {
+                kpimenu = new DefaultSubMenu("BSC汇报");
+                kpimenu.setIcon("menu");
+                List<Scorecard> scards = scorecardBean.findByCompanyAndIsbsc(company, true, y);
+                for (Scorecard s : scards) {
+                    menuitem = new DefaultMenuItem(s.getName());
+                    menuitem.setIcon("menu");
+                    menuitem.setOutcome("scorecardbsc");
+                    menuitem.setParam("id", s.getId());
+                    kpimenu.addElement(menuitem);
+                }
+                model.addElement(kpimenu);
+            }
 
         }
     }
