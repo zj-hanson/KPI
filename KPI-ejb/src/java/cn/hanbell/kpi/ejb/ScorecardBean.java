@@ -12,6 +12,7 @@ import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -85,6 +86,40 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         }
     }
 
+    public List<Scorecard> findByCompanyAndIsbsc(String company, boolean isbsc, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByCompanyAndSeqAndIsbsc");
+        query.setParameter("company", company);
+        query.setParameter("isbsc", isbsc);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public Scorecard findByNameAndSeq(String name, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByNameAndSeq");
+        query.setParameter("name", name);
+        query.setParameter("seq", y);
+        try {
+            return (Scorecard) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<Scorecard> findByStatusAndYear(String status, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByStatusAndYear");
+        query.setParameter("status", status);
+        query.setParameter("seq", y);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public String getColumn(String type, int i) {
         return type.toLowerCase() + String.format("%01d", i);
     }
@@ -93,8 +128,13 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         return scorecardDetailBean.findByPId(value);
     }
 
-    public List<ScorecardAuditor> getAuditorDetail(Object value) {
-        return scorecardAuditorBean.findByPId(value);
+    public List<ScorecardAuditor> getAuditorDetail1(Object value, int quater) {
+        List<ScorecardAuditor> list = scorecardAuditorBean.findByPId(value);
+        if (list.removeIf(auditor -> auditor.getQuarter() != quater)) {
+            return list;
+        }
+        return new ArrayList<ScorecardAuditor>();
+
     }
 
     public BigDecimal getContentScores(List<ScorecardContent> detail, String column) throws Exception {

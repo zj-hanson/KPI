@@ -136,7 +136,7 @@
                         <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
                             <h:panelGrid>
                                 <h:outputText id="summary"/>
-                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                                <h:outputText id="hdnSummary" value="#{s.summary}"/>
                             </h:panelGrid>
                         </p:panel>
                     </p:repeat>
@@ -151,9 +151,9 @@
                                 <h:outputText id="issue"/>
                                 <h:outputText id="factor"/>
                                 <h:outputText id="countermeasure"/>
-                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
-                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
-                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                                <h:outputText id="hdnIssue" value="#{a.issue}"/>
+                                <h:outputText id="hdnFactor" value="#{a.factor}"/>
+                                <h:outputText id="hdnCountermeasure" value="#{a.countermeasure}"/>
                             </h:panelGrid>
                         </p:panel>
                     </p:repeat>
