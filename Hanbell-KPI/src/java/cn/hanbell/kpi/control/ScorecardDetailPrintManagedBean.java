@@ -114,7 +114,7 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
             } else {
                 reportParams.put("sortFields", "");
             }
-            this.fileName = "scorecard" + BaseLib.formatDate("yyyyMMddHHss", this.getDate()) + "." + "xls";
+            this.fileName =s.getName() + BaseLib.formatDate("yyyyMMddHHmmss", this.getDate()) + "." + "xls";
             String reportName ="";
             if(userManagedBean.getQ()==1){
                    reportName = reportPath + "scorecarddetail.rptdesign";
@@ -133,6 +133,7 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
                 this.reportInitAndConfig();
                 // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
+                 System.out.print(s.getName()+"---"+s.getDeptname()+"---"+fileName);
             } catch (Exception ex) {
                 throw ex;
             }
@@ -147,6 +148,7 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
             compress(files, zos, files.getName(), true);
             this.reportViewPath = reportViewContext.replace("output/", "") + filename;
             this.preview();
+           
         } catch (Exception e) {
                e.printStackTrace();
         } finally {

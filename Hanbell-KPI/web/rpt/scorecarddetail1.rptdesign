@@ -2238,38 +2238,27 @@ return false;]]></method>
                 </row>
             </footer>
         </table>
-        <grid id="1463">
-            <column id="1464">
-                <property name="width">0.9583333333333334in</property>
+        <grid id="1948">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <column id="1949">
+                <property name="width">2.2cm</property>
             </column>
-            <column id="1465">
-                <property name="width">1.5416666666666667in</property>
-            </column>
-            <column id="1466"/>
-            <column id="1467"/>
-            <column id="1468"/>
-            <column id="1469"/>
-            <column id="1470"/>
-            <column id="1471"/>
-            <column id="1472"/>
-            <column id="1473"/>
-            <column id="1474"/>
-            <column id="1475"/>
-            <column id="1476"/>
-            <column id="1477"/>
-            <column id="1478"/>
-            <column id="1479"/>
-            <column id="1480"/>
-            <row id="1481">
-                <cell id="1482">
-                    <label id="1499">
+            <column id="1950"/>
+            <row id="1951">
+                <cell id="1952">
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <label id="1954">
                         <text-property name="text">核准：</text-property>
                     </label>
                 </cell>
-                <cell id="1483">
-                    <property name="colSpan">16</property>
-                    <property name="rowSpan">1</property>
-                    <data id="1500">
+                <cell id="1953">
+                    <data id="1955">
                         <property name="dataSet">dataDetail</property>
                         <list-property name="boundDataColumns">
                             <structure>

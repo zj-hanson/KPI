@@ -80,8 +80,8 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
     @Override
     protected String getHtmlTableRow(Indicator e, int y, int m, Date d, String color) throws Exception {
         //获取需要取值栏位
-        String col;
         StringBuilder sb = new StringBuilder();
+        Field f;
         sb.append("<div class=\"tbl\"><table width=\"100%\">");
         sb.append("<tr><th width=\"10%\">部门</th><th width=\"12%\">统计项目</th><th>01月</th><th>02月</th><th>03月</th><th>04月</th><th>05月</th><th>06月</th><th>07月</th><th>08月</th>");
         sb.append("<th>09月</th><th>10月</th><th>11月</th><th>12月</th></tr>");
@@ -91,163 +91,189 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
         IndicatorDetail o3o4;
         IndicatorDetail ljo1;
         IndicatorDetail ljo2;
+        sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"12\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
+        sb.append("<td style=\"text-align: left;\">").append(o1.getType()).append("</td>");
+        for (int i = 1; i < 13; i++) {
+            f = o1.getClass().getDeclaredField(indicatorBean.getIndicatorColumn(e.getFormtype(), i));
+            f.setAccessible(true);
+            if (i == m) {
+                sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
+            } else if (i > m) {
+                sb.append("<td>").append("").append("</td>");
+            } else {
+                sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
+            }
+        }
+        sb.append("</tr>");
+        o1o2 = new IndicatorDetail();
+        o1o2.setParent(e);
+        o1o2.setType("当月服务单结案率");
+        ljo1 = new IndicatorDetail();
+        ljo1.setParent(e);
+        ljo1.setType("累计服务单发生数");
+        ljo2 = new IndicatorDetail();
+        ljo2.setParent(e);
+        ljo2.setType("累计服务单结案数");
+        o3o4 = new IndicatorDetail();
+        o3o4.setParent(e);
+        o3o4.setType("累计服务单结案率");
+        StringBuffer ss = getHtmlTableGroupRow(e, o1, o2, o1o2, o3o4, ljo1, ljo2);
+        sb.append(ss);
+        o1 = e.getOther3Indicator();
+        o2 = e.getOther4Indicator();
+        o1o2 = new IndicatorDetail();
+        o1o2.setParent(e);
+        o1o2.setType("当月客服单结案率");
+        ljo1 = new IndicatorDetail();
+        ljo1.setParent(e);
+        ljo1.setType("累计客服单发生数");
+        ljo2 = new IndicatorDetail();
+        ljo2.setParent(e);
+        ljo2.setType("累计客服单结案数");
+        o3o4 = new IndicatorDetail();
+        o3o4.setParent(e);
+        o3o4.setType("累计客服单结案率");
+        StringBuffer ss1 = getHtmlTableGroupRow(e, o1, o2, o1o2, o3o4, ljo1, ljo2);
+        sb.append(ss1);
+        sb.append("</table></div>");
+        return sb.toString();
+    }
+
+    public StringBuffer getHtmlTableGroupRow(Indicator e, IndicatorDetail countIndicator, IndicatorDetail completeIndicator,
+            IndicatorDetail completeRatioIndicator, IndicatorDetail LJCompleteRatioIndicator, IndicatorDetail LJCountIndicator, IndicatorDetail LJCompleteIndicator) throws Exception {
+        StringBuffer sb = new StringBuffer();
         Field f;
         BigDecimal v;
         Method setMethod;
+        String col;
         try {
-            o1o2 = new IndicatorDetail();
-            o1o2.setParent(e);
-            o1o2.setType("当月服务单结案率");
-            ljo1 = new IndicatorDetail();
-            ljo1.setParent(e);
-            ljo1.setType("累计服务单发生数");
-            ljo2 = new IndicatorDetail();
-            ljo2.setParent(e);
-            ljo2.setType("累计服务单结案数");
-            o3o4 = new IndicatorDetail();
-            o3o4.setParent(e);
-            o3o4.setType("累计服务单结案率");
+
             if (getM() - 1 == 0) {
                 for (int i = 12; i > 0; i--) {
                     //顺序计算的话会导致累计值重复累加
                     //o1值累计
-                    if (o1 != null) {
-                        v = indicatorBean.getAccumulatedValue(o1, i);
-                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ljo1, v);
+                    if (countIndicator != null) {
+                        v = indicatorBean.getAccumulatedValue(countIndicator, i);
+                        setMethod = LJCountIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(LJCountIndicator, v);
                     }
-                    if (o2 != null) {
-                        v = indicatorBean.getAccumulatedValue(o2, i);
-                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ljo2, v);
+                    if (completeIndicator != null) {
+                        v = indicatorBean.getAccumulatedValue(completeIndicator, i);
+                        setMethod = LJCountIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(LJCompleteIndicator, v);
                     }
 
                     //---o2/o1
-                    v = getAccumulatedValue(o2, o1, i);
-                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(o1o2, v);
+                    v = getAccumulatedValue(completeIndicator, countIndicator, i);
+                    setMethod = completeRatioIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(completeRatioIndicator, v);
                     //o3/ljo1
-                    v = getAccumulatedValue(ljo2, ljo1, i);
-                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(o3o4, v);
+                    v = getAccumulatedValue(LJCompleteIndicator, LJCountIndicator, i);
+                    setMethod = LJCompleteRatioIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(LJCompleteRatioIndicator, v);
                 }
             } else {
                 for (int i = getM() - 1; i > 0; i--) {
                     //顺序计算的话会导致累计值重复累加
                     //o1值累计
-                    if (o1 != null) {
-                        v = indicatorBean.getAccumulatedValue(o1, i);
-                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ljo1, v);
+                    if (countIndicator != null) {
+                        v = indicatorBean.getAccumulatedValue(countIndicator, i);
+                        setMethod = LJCountIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(LJCountIndicator, v);
                     }
-                    if (o2 != null) {
-                        v = indicatorBean.getAccumulatedValue(o2, i);
-                        setMethod = ljo1.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                        setMethod.invoke(ljo2, v);
+                    if (completeIndicator != null) {
+                        v = indicatorBean.getAccumulatedValue(completeIndicator, i);
+                        setMethod = LJCountIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                        setMethod.invoke(LJCompleteIndicator, v);
                     }
 
                     //---o2/o1
-                    v = getAccumulatedValue(o2, o1, i);
-                    setMethod = o1o2.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(o1o2, v);
+                    v = getAccumulatedValue(completeIndicator, countIndicator, i);
+                    setMethod = completeRatioIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(completeRatioIndicator, v);
                     //o3/ljo1
-                    v = getAccumulatedValue(ljo2, ljo1, i);
-                    setMethod = o3o4.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
-                    setMethod.invoke(o3o4, v);
+                    v = getAccumulatedValue(LJCompleteIndicator, LJCountIndicator, i);
+                    setMethod = LJCompleteRatioIndicator.getClass().getDeclaredMethod("set" + indicatorBean.getIndicatorColumn("N", i).toUpperCase(), BigDecimal.class);
+                    setMethod.invoke(LJCompleteRatioIndicator, v);
                 }
             }
-            o1.setType(e.getOther1Label());
-            o2.setType(e.getOther2Label());
-            sb.append("<tr style=\"background:").append(color).append(";\"><td  rowspan=\"6\" colspan=\"1\" style=\"text-align: center;\">").append(e.getName()).append("</td>");
-            sb.append("<td style=\"text-align: left;\">").append(o1.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o1.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o2.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o2))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(o2))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o1o2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o1o2.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(o1o2))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(percentFormat(f.get(o1o2))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(ljo1.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = ljo1.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(ljo1))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(ljo1))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(ljo2.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = ljo2.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(ljo2))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(decimalFormat.format(f.get(ljo2))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(o3o4.getType()).append("</td>");
-            for (int i = 1; i < 13; i++) {
-                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
-                f = o3o4.getClass().getDeclaredField(col);
-                f.setAccessible(true);
-                if (i == m) {
-                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(o3o4))).append("</td>");
-                } else if (i > m) {
-                    sb.append("<td>").append("").append("</td>");
-                } else {
-                    sb.append("<td>").append(percentFormat(f.get(o3o4))).append("</td>");
-                }
-            }
-            sb.append("</tr>");
-            sb.append("</table></div>");
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            throw new Exception(ex);
-        }
-        return sb.toString();
-    }
+            countIndicator.setType(e.getOther1Label());
+            completeIndicator.setType(e.getOther2Label());
 
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(completeIndicator.getType()).append("</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = completeIndicator.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(completeIndicator))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append("").append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(completeIndicator))).append("</td>");
+                }
+            }
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(completeRatioIndicator.getType()).append("</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = completeRatioIndicator.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(completeRatioIndicator))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append("").append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(completeRatioIndicator))).append("</td>");
+                }
+            }
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(LJCountIndicator.getType()).append("</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = LJCountIndicator.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(LJCountIndicator))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append("").append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(LJCountIndicator))).append("</td>");
+                }
+            }
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(LJCompleteIndicator.getType()).append("</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = LJCompleteIndicator.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(LJCompleteIndicator))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append("").append("</td>");
+                } else {
+                    sb.append("<td>").append(decimalFormat.format(f.get(LJCompleteIndicator))).append("</td>");
+                }
+            }
+            sb.append("</tr>");
+            sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(LJCompleteRatioIndicator.getType()).append("</td>");
+            for (int i = 1; i < 13; i++) {
+                col = indicatorBean.getIndicatorColumn(e.getFormtype(), i);
+                f = LJCompleteRatioIndicator.getClass().getDeclaredField(col);
+                f.setAccessible(true);
+                if (i == m) {
+                    sb.append("<td style=\"color:red\">").append(percentFormat(f.get(LJCompleteRatioIndicator))).append("</td>");
+                } else if (i > m) {
+                    sb.append("<td>").append("").append("</td>");
+                } else {
+                    sb.append("<td>").append(percentFormat(f.get(LJCompleteRatioIndicator))).append("</td>");
+                }
+            }
+            sb.append("</tr>");
+
+        } catch (SecurityException | IllegalArgumentException ex) {
+            ex.printStackTrace();
+        }
+        return sb;
+    }
 }
