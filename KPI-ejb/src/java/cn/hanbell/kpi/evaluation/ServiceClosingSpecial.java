@@ -38,9 +38,9 @@ public abstract class ServiceClosingSpecial extends Service {
         if ("JA".equals(status)) {
             sb.append(" select isnull(count(distinct a.TC001),0) from ( Select  TC004, (TC001+TC002) as TC001 from REPTC ");
             sb.append(" LEFT JOIN PORMZ LEFT JOIN PORMY on PORMZ.MZ001 = PORMY.MY001 and PORMZ.MZ002 = PORMY.MY002 on REPTC.TC001 = PORMZ.MZ005 and REPTC.TC002 = PORMZ.MZ006 ");
-            sb.append(" where TC001 like '%FW%'  AND TC015<>'' and TC018='3' AND TC034='Y' and month(TC004)=month(TC003) ");
+            sb.append(" where TC001 like '%FW%'  AND TC015<>'' and TC018='3' AND TC034='Y' ");
             sb.append(" and TC017 like '").append(deptno).append("%'");
-            sb.append(" and year(TC003) =${y} AND  month(TC003)=${m} ");
+            sb.append(" and year(TC004) =${y} AND  month(TC004)=${m} ");
         } else {
             sb.append(" Select isnull(count(distinct a.TC001),0) from (  Select (TC001+TC002) as TC001,TC003 from REPTC where TC001 like '%FW%' ");
             sb.append(" and TC017 like '").append(deptno).append("%'");
@@ -89,7 +89,7 @@ public abstract class ServiceClosingSpecial extends Service {
             sb.append(" LEFT JOIN PORMZ LEFT JOIN PORMY on PORMZ.MZ001 = PORMY.MY001 and PORMZ.MZ002 = PORMY.MY002 on REPTC.TC001 = PORMZ.MZ005 and REPTC.TC002 = PORMZ.MZ006 ");
             sb.append(" where TC001 like '%FW%'  AND TC015<>'' and TC018='3' AND TC034='Y' ");
             sb.append(" and TC017 like '").append(deptno).append("%'");
-            sb.append(" and year(TC003) =${y} AND  month(TC003)< ${m} ");
+            sb.append(" and year(TC004) =${y} AND  month(TC004)< ${m} ");
         } else {
             sb.append(" Select month(TC003),isnull(count(distinct a.TC001),0) from (  Select (TC001+TC002) as TC001,TC003 from REPTC where TC001 like '%FW%' ");
             sb.append(" and TC017 like '").append(deptno).append("%'");
