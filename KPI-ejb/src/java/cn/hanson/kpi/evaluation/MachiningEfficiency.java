@@ -296,7 +296,7 @@ public class MachiningEfficiency implements Actual {
                         ps.setCredate(time);
                     }
                     // 获取标准工时
-                    Object[] std = getERPStandardHour(company, ps.getItemno(), ps.getStep());
+                    Object[] std = getERPStandardHour(company, ps.getManno(), ps.getItemno(), ps.getStep());
                     if (std != null) {
                         ps.setStandardLaborTime(BigDecimal.valueOf(Double.parseDouble(std[0].toString())));
                         ps.setStandardMachineTime(BigDecimal.valueOf(Double.parseDouble(std[1].toString())));
@@ -305,7 +305,7 @@ public class MachiningEfficiency implements Actual {
                         ps.setStandardMachineTime(BigDecimal.ZERO);
                     }
                     // 获取合计工时
-                    Object[] total = getERPStandardHour(company, ps.getItemno());
+                    Object[] total = getERPStandardHour(company, ps.getManno(), ps.getItemno());
                     if (total != null) {
                         ps.setTotalLaborTime(BigDecimal.valueOf(Double.parseDouble(total[0].toString())));
                         ps.setTotalMachineTime(BigDecimal.valueOf(Double.parseDouble(total[1].toString())));
@@ -342,18 +342,18 @@ public class MachiningEfficiency implements Actual {
     /**
      * 获取某个件号ERP报工制程标准工时合计,2021/10/1起排除非机器作业制程
      *
-     * @param company
-     * @param itnbr
+     * @param company:公司
+     * @param manno:制令编号
+     * @param itnbr:件号
      * @return 合计人工工时 合计机器工时
      */
-    public Object[] getERPStandardHour(String company, String itnbr) {
+    public Object[] getERPStandardHour(String company, String manno, String itnbr) {
         StringBuilder sb = new StringBuilder();
-        sb.append(
-            "SELECT COALESCE(sum(boroph.manstdtm),0),COALESCE(sum(boroph.mchstdtm),0) FROM boroph,borgrp,borprc WHERE boroph.itnbrgrp = borgrp.itnbrgrp ");
-        sb.append(" AND boroph.prosscode = borprc.prosscode AND borprc.spfshcode ='Y' ");
-        sb.append(" AND borprc.prosscode NOT LIKE 'SPO%' AND borprc.prosscode NOT LIKE '%CS00' ");
-        sb.append(" AND borprc.prosscode NOT LIKE 'ATP%' AND borgrp.itnbr ='${itnbr}' ");
-        String sql = sb.toString().replace("${itnbr}", itnbr);
+        sb.append("SELECT COALESCE(sum(manstdtm),0),COALESCE(sum(mchstdtm),0) FROM manbor WHERE  ");
+        sb.append(" spfshcode ='Y' AND prosscode NOT LIKE 'SPO%' ");
+        sb.append(" AND prosscode NOT LIKE '%CS00' AND prosscode NOT LIKE 'ATP%' ");
+        sb.append(" AND facno ='${facno}' AND manno ='${manno}' AND itnbrf ='${itnbr}' ");
+        String sql = sb.toString().replace("${facno}", company).replace("${manno}", manno).replace("${itnbr}", itnbr);
         try {
             superEJBForERP.setCompany(company);
             Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
@@ -371,15 +371,17 @@ public class MachiningEfficiency implements Actual {
      * 获取某个件号ERP具体制程标准工时
      *
      * @param company:公司
+     * @param manno:制令编号
      * @param itnbr:件号
      * @param prosscode:制程
      * @return 标准人工工时 标准机器工时
      */
-    public Object[] getERPStandardHour(String company, String itnbr, String prosscode) {
+    public Object[] getERPStandardHour(String company, String manno, String itnbr, String prosscode) {
         StringBuilder sb = new StringBuilder();
-        sb.append(
-            "SELECT boroph.manstdtm,boroph.mchstdtm FROM boroph,borgrp WHERE boroph.itnbrgrp = borgrp.itnbrgrp AND borgrp.itnbr ='${itnbr}' AND prosscode = '${prosscode}' ");
-        String sql = sb.toString().replace("${itnbr}", itnbr).replace("${prosscode}", prosscode);
+        sb.append("SELECT manstdtm,mchstdtm FROM manbor WHERE facno ='${facno}' ");
+        sb.append(" AND manno ='${manno}' AND itnbrf ='${itnbr}' AND prosscode = '${prosscode}' ");
+        String sql = sb.toString().replace("${facno}", company).replace("${manno}", manno).replace("${itnbr}", itnbr)
+            .replace("${prosscode}", prosscode);
         try {
             superEJBForERP.setCompany(company);
             Query query = superEJBForERP.getEntityManager().createNativeQuery(sql);
