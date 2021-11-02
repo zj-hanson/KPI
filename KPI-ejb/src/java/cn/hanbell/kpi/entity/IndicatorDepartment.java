@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.entity;
 
@@ -26,16 +25,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "indicatordepartment")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "IndicatorDepartment.findAll", query = "SELECT i FROM IndicatorDepartment i"),
+@NamedQueries({@NamedQuery(name = "IndicatorDepartment.findAll", query = "SELECT i FROM IndicatorDepartment i"),
     @NamedQuery(name = "IndicatorDepartment.findById", query = "SELECT i FROM IndicatorDepartment i WHERE i.id = :id"),
-    @NamedQuery(name = "IndicatorDepartment.findByPId", query = "SELECT i FROM IndicatorDepartment i WHERE i.pid = :pid"),
-    @NamedQuery(name = "IndicatorDepartment.findByPIdAndSeq", query = "SELECT i FROM IndicatorDepartment i WHERE i.pid= :pid AND i.seq = :seq"),
-    @NamedQuery(name = "IndicatorDepartment.findByDeptnoAndType", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno AND i.parent.objtype = :objtype ORDER by i.parent.seq DESC,i.parent.sortid"),
-    @NamedQuery(name = "IndicatorDepartment.findByDeptnoTypeAndYear", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno AND i.parent.objtype = :objtype AND i.parent.seq = :seq ORDER by i.parent.sortid"),
-    @NamedQuery(name = "IndicatorDepartment.findByDeptname", query = "SELECT i FROM IndicatorDepartment i WHERE i.deptname = :deptname"),
-    @NamedQuery(name = "IndicatorDepartment.findByUserid", query = "SELECT i FROM IndicatorDepartment i WHERE i.userid = :userid"),
-    @NamedQuery(name = "IndicatorDepartment.findByUsername", query = "SELECT i FROM IndicatorDepartment i WHERE i.username = :username")})
+    @NamedQuery(name = "IndicatorDepartment.findByPId",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.pid = :pid"),
+    @NamedQuery(name = "IndicatorDepartment.findByPIdAndSeq",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.pid= :pid AND i.seq = :seq"),
+    @NamedQuery(name = "IndicatorDepartment.findByDeptnoAndType",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno AND i.parent.objtype = :objtype ORDER by i.parent.seq DESC,i.parent.sortid"),
+    @NamedQuery(name = "IndicatorDepartment.findByDeptnoTypeAndYear",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.deptno = :deptno AND i.parent.objtype = :objtype AND i.parent.seq = :seq ORDER by i.parent.sortid"),
+    @NamedQuery(name = "IndicatorDepartment.findByCompanyDeptnoTypeAndYear",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.parent.company = :company AND i.deptno = :deptno AND i.parent.objtype = :objtype AND i.parent.seq = :seq ORDER by i.parent.sortid"),
+    @NamedQuery(name = "IndicatorDepartment.findByDeptname",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.deptname = :deptname"),
+    @NamedQuery(name = "IndicatorDepartment.findByUserid",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.userid = :userid"),
+    @NamedQuery(name = "IndicatorDepartment.findByUsername",
+        query = "SELECT i FROM IndicatorDepartment i WHERE i.username = :username")})
 public class IndicatorDepartment extends SuperDetailEntity {
 
     @JoinColumn(name = "pid", referencedColumnName = "id", updatable = false, insertable = false)
@@ -107,7 +114,7 @@ public class IndicatorDepartment extends SuperDetailEntity {
         if (!(object instanceof IndicatorDepartment)) {
             return false;
         }
-        IndicatorDepartment other = (IndicatorDepartment) object;
+        IndicatorDepartment other = (IndicatorDepartment)object;
         if (this.id != null && other.id != null) {
             return Objects.equals(this.id, other.id);
         }
