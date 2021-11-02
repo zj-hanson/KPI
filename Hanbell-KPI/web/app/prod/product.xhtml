@@ -1433,7 +1433,7 @@
                         <p:row>
                             <p:column colspan="2">
                                 <p:commandButton id="updateIndicatorSummary"  actionListener="#{productManagedBean.updateIndicatorSummary()}" value="保存" icon="ui-icon-save" style="float: right"
-                                                 rendered="#{productManagedBean.doEdit}"   process="@this,formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList,formOne:growl" oncomplete="PF('dlgIndicatorSummary').hide();">
+                                                 process="@this,formOne:dlgIndicatorSummary" update="formOne:tabView:summaryList,formOne:growl" oncomplete="PF('dlgIndicatorSummary').hide();">
                                 </p:commandButton>
                                 <p:commandButton id="deleteIndicatorSummary"  actionListener="#{productManagedBean.deleteIndicatorSummary()}" value="删除" icon="ui-icon-trash" style="float: right"
                                                  process="@this" update="formOne:tabView:summaryList" oncomplete="PF('dlgIndicatorSummary').hide();">

@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../../WEB-INF/bsc-hanson.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form id="formOne" rendered="#{!scrapChartReportBean.deny}">
+            <div class="ui-g dashboard">
+                <div class="ui-g-12 ui-md-12" align="center">
+                    <div><h3 style="text-align: center">
+                            <span style="float: left">单位:#{scrapChartReportBean.indicator.unit}</span>#{scrapChartReportBean.y} #{scrapChartReportBean.indicatorChart.name}
+                            <p:link value="返回" outcome="home" style="float: right"/>
+                            <p:selectOneRadio id="scale" value="#{scrapChartReportBean.scale}" label="小数位数" style="float:right">
+                                <f:selectItem itemLabel="0位" itemValue="0" />
+                                <f:selectItem itemLabel="2位" itemValue="2" />
+                                <p:ajax process="@this" update="formOne" oncomplete="setColor()"/>
+                            </p:selectOneRadio>
+                            <div style="float:right;margin-right:12px;">
+                                <h:selectBooleanCheckbox id="displayThisMonth" value="#{scrapChartReportBean.monthchecked}" style="height: 18px;width: 18px">
+                                    <span>只显示当月</span>
+                                    <p:ajax process="@this" update="formOne"/>
+                                </h:selectBooleanCheckbox>
+                            </div>
+                        </h3></div>
+                    <p:panelGrid id="plgChartData" styleClass="#{scrapChartReportBean.monthchecked==true?'plgSheetData Wid30':'plgSheetData Wid100'}">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>名称</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(1)}">1月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(2)}">2月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(3)}">3月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(4)}">4月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(5)}">5月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(6)}">6月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(7)}">7月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(8)}">8月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(9)}">9月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(10)}">10月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(11)}">11月</p:column>
+                                <p:column rendered="#{scrapChartReportBean.visible(12)}">12月</p:column>
+                                <p:column>平均</p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>基准</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(1)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n01)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(2)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n02)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(3)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n03)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(4)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n04)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(5)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n05)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(6)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n06)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(7)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n07)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(8)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n08)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(9)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n09)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(10)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n10)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(11)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n11)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(12)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.n12)}</p:column>
+                            <p:column>#{scrapChartReportBean.format(scrapChartReportBean.indicator.benchmarkIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>目标</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(1)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n01,1)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(2)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n02,2)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(3)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n03,3)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(4)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n04,4)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(5)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n05,5)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(6)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n06,6)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(7)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n07,7)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(8)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n08,8)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(9)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n09,9)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(10)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n10,10)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(11)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n11,11)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(12)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.n12,12)}</p:column>
+                            <p:column>#{scrapChartReportBean.format(scrapChartReportBean.indicator.targetIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>实际</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(1)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n01,1)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(2)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n02,2)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(3)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n03,3)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(4)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n04,4)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(5)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n05,5)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(6)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n06,6)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(7)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n07,7)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(8)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n08,8)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(9)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n09,9)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(10)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n10,10)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(11)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n11,11)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(12)}">#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.n12,12)}</p:column>
+                            <p:column>#{scrapChartReportBean.format(scrapChartReportBean.indicator.actualIndicator.nfy,0)}</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>本月达成</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(1)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n01,1)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(2)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n02,2)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(3)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n03,3)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(4)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n04,4)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(5)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n05,5)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(6)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n06,6)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(7)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n07,7)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(8)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n08,8)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(9)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n09,9)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(10)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n10,10)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(11)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n11,11)}</p:column>
+                            <p:column rendered="#{scrapChartReportBean.visible(12)}">#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.n12,12)}</p:column>
+                            <p:column>#{scrapChartReportBean.percentFormat(scrapChartReportBean.indicator.performanceIndicator.nfy,0)}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </div>
+                <div class="ui-g-12 ui-md-12">
+                    <p:chart type="line" model="#{scrapChartReportBean.initLineChartModel('月份','指标')}" style="height:380px"
+                             responsive="true" >
+                    </p:chart>
+                </div>
+                <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repSummary" value="#{scrapChartReportBean.summaryList}" var="s" rendered="#{scrapChartReportBean.summaryCount>0}">
+                        <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid>
+                                <h:outputText id="summary"/>
+                                <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                    <p:repeat id="repAnalysis" value="#{scrapChartReportBean.analysisList}" var="a" rendered="#{scrapChartReportBean.analysisCount>0}">
+                        <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                            <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                <h:outputText id="issueLabel" value="问题"/>
+                                <h:outputText id="factorLabel" value="原因"/>
+                                <h:outputText id="countermeasureLabel" value="对策"/>
+                                <h:outputText id="issue"/>
+                                <h:outputText id="factor"/>
+                                <h:outputText id="countermeasure"/>
+                                <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:repeat>
+                </div>
+                <div>
+                    <h:inputHidden id="m" value="#{scrapChartReportBean.m}"></h:inputHidden>
+                    <h:inputHidden id="sc" value="#{scrapChartReportBean.summaryCount}"></h:inputHidden>
+                    <h:inputHidden id="ac" value="#{scrapChartReportBean.analysisCount}"></h:inputHidden>
+                </div>
+            </div>
+            <h:outputScript name="bsc-hanson.js" library="js"/>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{scrapChartReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

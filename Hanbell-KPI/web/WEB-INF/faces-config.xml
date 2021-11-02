@@ -228,12 +228,12 @@
             <to-view-id>/app/prod/accountsreceivables.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-         <navigation-case>
+        <navigation-case>
             <from-outcome>facturer</from-outcome>
             <to-view-id>/app/prod/facturer.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-         <navigation-case>
+        <navigation-case>
             <from-outcome>scorecarddetailprint</from-outcome>
             <to-view-id>/app/prod/scorecarddetailPrint.xhtml</to-view-id>
             <redirect/>
@@ -505,19 +505,25 @@
             <to-view-id>/app/bsc/turnoverdays.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-         <navigation-case>
+        <navigation-case>
             <from-outcome>shoppingcentermaterialamount</from-outcome>
             <to-view-id>/app/bsc/shoppingcentermaterialamount.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-         <navigation-case>
+        <navigation-case>
             <from-outcome>shoppingcenteramount</from-outcome>
             <to-view-id>/app/bsc/shoppingcenteramount.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-         <navigation-case>
+        <navigation-case>
             <from-outcome>scorecardbsc</from-outcome>
             <to-view-id>/app/bsc/scorecardbsc.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <!--HS/HY-->
+        <navigation-case>
+            <from-outcome>scrapchart</from-outcome>
+            <to-view-id>/app/bsc/hanson/scrapchart.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
