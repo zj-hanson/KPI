@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "IndicatorChart.findAll", query = "SELECT i FROM IndicatorChart i"),
     @NamedQuery(name = "IndicatorChart.findById", query = "SELECT i FROM IndicatorChart i WHERE i.id = :id"),
     @NamedQuery(name = "IndicatorChart.findByCompany", query = "SELECT i FROM IndicatorChart i WHERE i.company = :company"),
+    @NamedQuery(name = "IndicatorChart.findByCompanyAndPId", query = "SELECT i FROM IndicatorChart i WHERE i.company = :company AND i.pid = :pid ORDER BY i.formid"),
     @NamedQuery(name = "IndicatorChart.findByFormid", query = "SELECT i FROM IndicatorChart i WHERE i.formid = :formid"),
     @NamedQuery(name = "IndicatorChart.findByPId", query = "SELECT i FROM IndicatorChart i WHERE i.pid = :pid ORDER BY i.formid"),
     @NamedQuery(name = "IndicatorChart.findByFormidAndDeptno", query = "SELECT i FROM IndicatorChart i WHERE i.formid = :formid AND i.deptno=:deptno")})

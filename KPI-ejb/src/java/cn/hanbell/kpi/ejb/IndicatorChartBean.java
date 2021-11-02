@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.ejb;
 
@@ -22,6 +21,17 @@ public class IndicatorChartBean extends SuperEJBForKPI<IndicatorChart> {
 
     public IndicatorChartBean() {
         super(IndicatorChart.class);
+    }
+
+    public List<IndicatorChart> findByCompanyAndPId(String company, String deptno) {
+        Query query = getEntityManager().createNamedQuery("IndicatorChart.findByCompanyAndPId");
+        query.setParameter("company", company);
+        query.setParameter("pid", deptno);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public List<IndicatorChart> findByFormidAndDeptno(String formid, String deptno) {

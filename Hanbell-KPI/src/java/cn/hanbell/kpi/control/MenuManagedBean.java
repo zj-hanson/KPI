@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.control;
 
@@ -96,7 +95,7 @@ public class MenuManagedBean implements Serializable {
         boolean flag;
         moduleGrantList = new ArrayList<>();
         prgGrantList = new ArrayList<>();
-        //KPI授權列表
+        // KPI授權列表
         grantList = new ArrayList<>();
 
         model = new DefaultMenuModel();
@@ -120,14 +119,16 @@ public class MenuManagedBean implements Serializable {
 
             appmenu = new DefaultSubMenu("应用");
             appmenu.setIcon("menu");
-            //将用户权限和角色权限合并后产生菜单,用户权限优先角色权限
+            // 将用户权限和角色权限合并后产生菜单,用户权限优先角色权限
             moduleGrantList.clear();
-            userModuleGrantList = systemGrantModuleBean.findBySystemNameAndUserId("KPI", userManagedBean.getCurrentUser().getId());
+            userModuleGrantList =
+                systemGrantModuleBean.findBySystemNameAndUserId("KPI", userManagedBean.getCurrentUser().getId());
             userModuleGrantList.forEach((m) -> {
                 moduleGrantList.add(m);
             });
             prgGrantList.clear();
-            userPrgGrantList = systemGrantPrgBean.findBySystemNameAndUserId("KPI", userManagedBean.getCurrentUser().getId());
+            userPrgGrantList =
+                systemGrantPrgBean.findBySystemNameAndUserId("KPI", userManagedBean.getCurrentUser().getId());
             userPrgGrantList.forEach((p) -> {
                 prgGrantList.add(p);
             });
@@ -217,7 +218,7 @@ public class MenuManagedBean implements Serializable {
                         }
                     }
                 }
-            }//得到授權查看的部門列表
+            } // 得到授權查看的部門列表
             grantList.sort((RoleGrantModule o1, RoleGrantModule o2) -> {
                 if (o1.getDeptno().compareTo(o2.getDeptno()) < 1) {
                     return -1;
@@ -227,40 +228,50 @@ public class MenuManagedBean implements Serializable {
             });
             userManagedBean.setRoleGrantDeptList(grantList);
 
+            submenu = null;
             kpimenu = new DefaultSubMenu("部门KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoTypeAndYear(r.getDeptno(), "D", y);
+                indicatorDepartmentList =
+                    indicatorDepartmentBean.findByCompanyDeptnoTypeAndYear(company, r.getDeptno(), "D", y);
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
                     submenu = new DefaultSubMenu(r.getDept());
                     submenu.setIcon("menu");
                     for (IndicatorDepartment i : indicatorDepartmentList) {
-                        menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
+                        menuitem =
+                            new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
                         menuitem.setIcon("menu");
                         menuitem.setOutcome(i.getParent().getApi());
                         menuitem.setParam("id", i.getParent().getId());
                         submenu.addElement(menuitem);
                     }
-                    kpimenu.addElement(submenu);
+                    if (submenu != null) {
+                        kpimenu.addElement(submenu);
+                    }
                 }
             }
             model.addElement(kpimenu);
 
+            submenu = null;
             kpimenu = new DefaultSubMenu("产品KPI");
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
-                indicatorDepartmentList = indicatorDepartmentBean.findByDeptnoTypeAndYear(r.getDeptno(), "P", y);
+                indicatorDepartmentList =
+                    indicatorDepartmentBean.findByCompanyDeptnoTypeAndYear(company, r.getDeptno(), "P", y);
                 if (indicatorDepartmentList != null && !indicatorDepartmentList.isEmpty()) {
                     submenu = new DefaultSubMenu(r.getDept());
                     submenu.setIcon("menu");
                     for (IndicatorDepartment i : indicatorDepartmentList) {
-                        menuitem = new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
+                        menuitem =
+                            new DefaultMenuItem(String.valueOf(i.getParent().getSeq()) + i.getParent().getName());
                         menuitem.setIcon("menu");
                         menuitem.setOutcome(i.getParent().getApi());
                         menuitem.setParam("id", i.getParent().getId());
                         submenu.addElement(menuitem);
                     }
-                    kpimenu.addElement(submenu);
+                    if (submenu != null) {
+                        kpimenu.addElement(submenu);
+                    }
                 }
             }
             model.addElement(kpimenu);
@@ -269,13 +280,13 @@ public class MenuManagedBean implements Serializable {
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
                 submenu = null;
-                indicatorChartList = indicatorChartBean.findByPId(r.getDeptno());
+                indicatorChartList = indicatorChartBean.findByCompanyAndPId(company, r.getDeptno());
                 if (indicatorChartList != null && !indicatorChartList.isEmpty()) {
                     if (submenu == null) {
                         submenu = new DefaultSubMenu(r.getDept());
                         submenu.setIcon("menu");
                     }
-                    //按报表名称重新排序
+                    // 按报表名称重新排序
                     indicatorChartList.sort((IndicatorChart o1, IndicatorChart o2) -> {
                         if (o1.getSortid() <= o2.getSortid()) {
                             return -1;
@@ -301,14 +312,14 @@ public class MenuManagedBean implements Serializable {
             kpimenu.setIcon("menu");
             for (RoleGrantModule r : grantList) {
                 submenu = null;
-                //scorecardList = scorecardBean.findByMenuAndYear(r.getDeptno(), y);
+                // scorecardList = scorecardBean.findByMenuAndYear(r.getDeptno(), y);
                 scorecardList = scorecardBean.findByCompanyMenuAndYear(company, r.getDeptno(), y);
                 if (scorecardList != null && !scorecardList.isEmpty()) {
                     if (submenu == null) {
                         submenu = new DefaultSubMenu(r.getDept());
                         submenu.setIcon("menu");
                     }
-                    //重新排序
+                    // 重新排序
                     scorecardList.sort((Scorecard o1, Scorecard o2) -> {
                         if (o1.getSortid() <= o2.getSortid() && o1.getDeptno().compareTo(o2.getDeptno()) < 0) {
                             return -1;
@@ -317,7 +328,7 @@ public class MenuManagedBean implements Serializable {
                         }
                     });
                     for (Scorecard i : scorecardList) {
-                        //考核模版不用显示
+                        // 考核模版不用显示
                         if (i.getTemplate()) {
                             continue;
                         }
@@ -338,7 +349,6 @@ public class MenuManagedBean implements Serializable {
             boolean isAdmin = false;
             List<SystemRoleDetail> list = systemRoleDetailBean.findByUserId(userManagedBean.getCurrentUser().getId());
             for (SystemRoleDetail u : list) {
-                System.out.print("---" + u.getId());
                 SystemRole role = systemRoleBean.findById(u.getPid());
                 if ("KPI001".equals(role.getRoleno())) {
                     isAdmin = true;
@@ -386,7 +396,8 @@ public class MenuManagedBean implements Serializable {
     }
 
     /**
-     * @param userManagedBean the userManagedBean to set
+     * @param userManagedBean
+     *                            the userManagedBean to set
      */
     public void setUserManagedBean(UserManagedBean userManagedBean) {
         this.userManagedBean = userManagedBean;
@@ -400,7 +411,8 @@ public class MenuManagedBean implements Serializable {
     }
 
     /**
-     * @param model the model to set
+     * @param model
+     *                  the model to set
      */
     public void setModel(MenuModel model) {
         this.model = model;
