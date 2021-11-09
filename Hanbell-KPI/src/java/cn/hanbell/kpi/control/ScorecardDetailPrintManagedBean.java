@@ -133,7 +133,6 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
                 this.reportInitAndConfig();
                 // 生成报表
                 this.reportRunAndOutput(reportName, reportParams, outputName, "xls", null);
-                 System.out.print(s.getName()+"---"+s.getDeptname()+"---"+fileName);
             } catch (Exception ex) {
                 throw ex;
             }
