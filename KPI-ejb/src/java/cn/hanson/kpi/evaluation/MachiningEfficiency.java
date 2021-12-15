@@ -10,7 +10,7 @@ import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ProcessStepBean;
-import cn.hanbell.kpi.ejb.QuotationDataBean;
+import cn.hanson.kpi.ejb.ppm.QuotationDataBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDetail;

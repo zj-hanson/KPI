@@ -3,10 +3,10 @@
  * Tools | Templates and open the template in the editor.
  */
 
-package cn.hanbell.kpi.ejb;
+package cn.hanson.kpi.ejb.ppm;
 
-import cn.hanbell.kpi.comm.SuperEJBForKPI;
-import cn.hanbell.kpi.entity.QuotationData;
+import cn.hanbell.kpi.comm.SuperEJBForPPM;
+import cn.hanson.kpi.entity.ppm.QuotationData;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +20,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class QuotationDataBean extends SuperEJBForKPI<QuotationData> {
+public class QuotationDataBean extends SuperEJBForPPM<QuotationData> {
 
     public QuotationDataBean() {
         super(QuotationData.class);
