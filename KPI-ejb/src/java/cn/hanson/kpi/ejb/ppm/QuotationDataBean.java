@@ -8,6 +8,7 @@ package cn.hanson.kpi.ejb.ppm;
 import cn.hanbell.kpi.comm.SuperEJBForPPM;
 import cn.hanson.kpi.entity.ppm.QuotationData;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -55,10 +56,19 @@ public class QuotationDataBean extends SuperEJBForPPM<QuotationData> {
     public BigDecimal getProcessingPrice(String company, String itemno, Date day) {
         List<QuotationData> data = findByCompanyItemnoEffectiveDateAndStatus(company, itemno, day, "V");
         if (data != null && data.size() == 1) {
-            QuotationData pp = data.get(0);
-            return pp.getProcessingPrice();
+            QuotationData pd = data.get(0);
+            return pd.getProcessingPrice();
         }
-        // 后续需要处理多个有效价格逻辑
+        // 多个有效价格采用平均价格
+        if (data != null && data.size() > 1) {
+            BigDecimal value = BigDecimal.ZERO;
+            int cnt = data.size();
+            for (int i = 0; i < cnt; i++) {
+                QuotationData pd = data.get(i);
+                value = value.add(pd.getProcessingPrice());
+            }
+            return value.divide(BigDecimal.valueOf(Double.parseDouble(String.valueOf(cnt))), 4, RoundingMode.HALF_UP);
+        }
         return BigDecimal.ZERO;
     }
 

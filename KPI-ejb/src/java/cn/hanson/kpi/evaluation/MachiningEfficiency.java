@@ -10,11 +10,11 @@ import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import cn.hanbell.kpi.comm.SuperEJBForMES;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.ProcessStepBean;
-import cn.hanson.kpi.ejb.ppm.QuotationDataBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDaily;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.ProcessStep;
+import cn.hanson.kpi.ejb.ppm.QuotationDataBean;
 import com.lightshell.comm.BaseLib;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -82,7 +82,7 @@ public class MachiningEfficiency implements Actual {
         try {
             Context c = new InitialContext();
             return (QuotationDataBean)c
-                .lookup("java:global/KPI/KPI-ejb/QuotationDataBean!cn.hanbell.kpi.ejb.QuotationDataBean");
+                .lookup("java:global/KPI/KPI-ejb/QuotationDataBean!cn.hanson.kpi.ejb.ppm.QuotationDataBean");
         } catch (NamingException ne) {
             log4j.error(ne);
             throw new RuntimeException(ne);
