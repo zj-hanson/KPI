@@ -143,7 +143,7 @@ public class ScrapAnalysis implements Actual {
         sb.append(" INNER JOIN ANALYSISRESULT_QCD Q ON Q.PROJECTID = UQF.PROJECTID ");
         sb.append(" AND Q.PRODUCTSERIALNUMBER = UQF.PRODUCTSERIALNUMBER AND Q.PRODUCTID = UQF.PRODUCTID ");
         sb.append(" LEFT JOIN MPRODUCT M ON M.PRODUCTID = Q.PRODUCTID ");
-        sb.append(" WHERE FLOWPROCESSID = 'UQF' AND PROCESSNODEID = 'UQFN0002' AND S.UNIT='H' ");
+        sb.append(" WHERE FLOWPROCESSID = 'UQF' AND PROCESSNODEID = 'UQFN0002' AND S.UNIT='${f}' ");
         sb.append(" AND EFFECTIVEFLAG = 'Y' AND ADDFLAG = 'N' AND ANALYSISJUDGEMENTRESULT='就地报废' ");
         sb.append(" AND YEAR(NODESTARTTIME)=${y} AND MONTH(NODESTARTTIME)=${m} ");
         switch (type) {
@@ -168,13 +168,20 @@ public class ScrapAnalysis implements Actual {
             sb.append(" and Q.DEFECTGROUPID ").append(DEFECTGROUPID);
         }
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}",
-            BaseLib.formatDate("dd", d));
+            BaseLib.formatDate("dd", d)).replace("${f}", facno);
 
         superEJBForMES.setCompany(facno);
         Query query = superEJBForMES.getEntityManager().createNativeQuery(sql);
         try {
             Object o1 = query.getSingleResult();
             scrapWeight = BigDecimal.valueOf(Double.valueOf(o1.toString()));
+            //汉扬的部分不合格单在汉声mes中开。
+            if("Y".equals(facno)){
+                superEJBForMES.setCompany("H");
+                query = superEJBForMES.getEntityManager().createNativeQuery(sql);
+                o1 = query.getSingleResult();
+                scrapWeight= scrapWeight.add(BigDecimal.valueOf(Double.valueOf(o1.toString())));;
+            }
         } catch (Exception ex) {
             log4j.error(ex);
         }
@@ -192,8 +199,8 @@ public class ScrapAnalysis implements Actual {
         BigDecimal ton = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT ISNULL(SUM(CAST(A.CASTINGWEIGHT AS FLOAT)*CAST(A.STARTQTY AS FLOAT)),0) ");
-        sb.append(" FROM CAST_PROCESS_STEP A WHERE 1=1  ");
+        sb.append(" SELECT ISNULL(SUM(CAST(B.CASTINGWEIGHT AS FLOAT)*CAST(A.STARTQTY AS FLOAT)),0) ");
+        sb.append(" FROM CAST_PROCESS_STEP A LEFT JOIN MPRODUCT B ON A.PRODUCTID = B.PRODUCTID LEFT JOIN CAST_PROCESS C ON A.PRODUCTORDERID = C.PRODUCTORDERID WHERE 1=1  AND C.PROCESSSTATUS != '已结案'   ");
         if (!"".equals(line)) {
             sb.append(" AND A.PROCESSLINE ").append(line);
         }
