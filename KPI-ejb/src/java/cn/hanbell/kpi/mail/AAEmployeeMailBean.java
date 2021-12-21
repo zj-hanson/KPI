@@ -81,7 +81,7 @@ public class AAEmployeeMailBean extends EmployeeMail {
             this.indicators = indicatorBean.findByCategoryAndYear("A机组营销三课个人销售台数", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && !indicators.isEmpty()) {
-                sb.append(getHtmlTable(this.indicators, y, m, d, false, "营销三课"));
+                sb.append(getHtmlTable(this.indicators, y, m, d, true, "营销三课"));
             } else {
                 sb.append("<tr><td  style=\"text-align:center;\"  colspan=\"9\">A机组营销三课个人销售台数设定错误</td></tr>");
             }
