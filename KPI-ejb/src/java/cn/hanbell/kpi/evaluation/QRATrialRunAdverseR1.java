@@ -39,16 +39,16 @@ public class QRATrialRunAdverseR1 extends QRA {
         sb.append(" AND D.PRODUCTID not like '%-GB%' ");
         if (!"".equals(itnbrType)) {
             if ("RC1".equals(itnbrType)) {
-                sb.append(" AND (A.PRODUCTID not like '31342-%' and  A.PRODUCTID  not like '31343-%' and A.PRODUCTID not like '31344-%' ");
-                sb.append(" AND A.PRODUCTID not like '31363-%' and A.PRODUCTID not like '31366-%' and A.PRODUCTID not like '31367-%' ");
+                sb.append(" AND (A.PRODUCTID not like '31042-%' and  A.PRODUCTID  not like '31043-%' and A.PRODUCTID not like '31044-%' ");
+                sb.append(" AND A.PRODUCTID not like '31063-%' and A.PRODUCTID not like '31066-%' and A.PRODUCTID not like '31067-%' ");
                 sb.append(" AND  B.PRODUCTMODEL not  like 'LB%' and  B.PRODUCTMODEL not  like 'LT%') ");
             }
             if ("LB".equals(itnbrType)) {
                 sb.append(" AND (B.PRODUCTMODEL  like 'LB%' or  B.PRODUCTMODEL  like 'LT%') ");
             }
             if ("RC2".equals(itnbrType)) {
-                sb.append(" AND (A.PRODUCTID  like '31342-%' or A.PRODUCTID   like '31343-%' or A.PRODUCTID  like '31344-%' ");
-                sb.append(" or A.PRODUCTID  like '31363-%' or A.PRODUCTID  like '31366-%' or A.PRODUCTID  like '31367-%' ) ");
+                sb.append(" AND (A.PRODUCTID  like '31042-%' or A.PRODUCTID   like '31043-%' or A.PRODUCTID  like '31044-%' ");
+                sb.append(" or A.PRODUCTID  like '31063-%' or A.PRODUCTID  like '31066-%' or A.PRODUCTID  like '31067-%' ) ");
             }
         }
         sb.append(" AND year(A.MODIFYTIME) = ${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
@@ -63,15 +63,15 @@ public class QRATrialRunAdverseR1 extends QRA {
         sb.append(" WHERE  A.STEPID LIKE '%冷媒试车站%'   AND A.TRRESULT='不合格'  AND A.TR_TIMES='1' and A.PRODUCTCOMPID not like '%-GB%' ");
         if (!"".equals(itnbrType)) {
             if ("RC1".equals(itnbrType)) {
-                sb.append(" AND (A.PRODUCTID not like '31342-%' or A.PRODUCTID  not like '31343-%' or A.PRODUCTID not like '31344-%' ");
-                sb.append(" or A.PRODUCTID not like '31363-%' or A.PRODUCTID not like '31366-%' or A.PRODUCTID not like '31367-%' ) ");
+                sb.append(" AND (A.PRODUCTID not like '31042-%' or A.PRODUCTID  not like '31043-%' or A.PRODUCTID not like '31044-%' ");
+                sb.append(" or A.PRODUCTID not like '31063-%' or A.PRODUCTID not like '31066-%' or A.PRODUCTID not like '31067-%' ) ");
             }
             if ("LB".equals(itnbrType)) {
                 sb.append(" AND (B.PRODUCTMODEL  like 'LB%' or  B.PRODUCTMODEL  like 'LT%') ");
             }
             if ("RC2".equals(itnbrType)) {
-                sb.append(" AND (A.PRODUCTID  like '31342-%' or A.PRODUCTID   like '31343-%' or A.PRODUCTID  like '31344-%' ");
-                sb.append(" or A.PRODUCTID  like '31363-%' or A.PRODUCTID  like '31366-%' or A.PRODUCTID  like '31367-%' ) ");
+                sb.append(" AND (A.PRODUCTID  like '31042-%' or A.PRODUCTID   like '31043-%' or A.PRODUCTID  like '31044-%' ");
+                sb.append(" or A.PRODUCTID  like '31063-%' or A.PRODUCTID  like '31066-%' or A.PRODUCTID  like '31067-%' ) ");
             }
         }
         sb.append(" AND year(A.MODIFYTIME)=${y} and month(dateadd(HOUR,-8,A.MODIFYTIME))=${m} ");
