@@ -16,6 +16,6 @@ public class ProductionPlanShipmentAJZ extends ProductionPlanShipment {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AA' ");
-        queryParams.put("itcls", " in ('3576','3579','3580','4052','3676','3679','3680','3586') and itnbr <> '35302-H5233-08' ");
+        queryParams.put("itcls", " in ('3576','3579','3580','4052','3676','3679','3680','3586') and itnbr <> '35A2C-H0233-08' ");
     }
 }

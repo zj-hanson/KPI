@@ -22,7 +22,7 @@ public class ConsumptionCutterYXo2 extends ConsumptionCutter {
         //部门
         queryParams.put("depno", " in ('1P121','1P122') ");
         //刀具型号
-        queryParams.put("qualification", " ( t.itnbr like 'B101-01%' ) ");
+        queryParams.put("qualification", " ( t.itnbr like 'BS101-01%' ) ");
 
     }
 
