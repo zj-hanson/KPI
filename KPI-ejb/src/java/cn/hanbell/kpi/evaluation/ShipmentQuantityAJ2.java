@@ -13,6 +13,7 @@ public class ShipmentQuantityAJ2 extends ShipmentQuantity {
 
     public ShipmentQuantityAJ2() {
         super();
+         // A机体总部外销出货台数
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1T100' ");
         // queryParams.put("decode", "2");

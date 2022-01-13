@@ -13,16 +13,17 @@ import java.util.LinkedHashMap;
  *
  * @author C0160
  */
-public class ShipmentAmountAYD extends ShipmentAmount {
+public class ShipmentAmountAJ3 extends ShipmentAmount {
 
-    public ShipmentAmountAYD() {
+    public ShipmentAmountAJ3() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1G000','1G100' ");
-        //queryParams.put("decode", "1");
+        // queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_DC", " in ( 'AYD','AY') ");
+        queryParams.put("n_code_CD", " in ('GZ') ");
+        queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
     @Override
@@ -31,15 +32,13 @@ public class ShipmentAmountAYD extends ShipmentAmount {
         //SHB ERP
         temp1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
+        queryParams.remove("n_code_CD");
         queryParams.put("facno", "G");
+        queryParams.put("n_code_CD", " not in ('WX','WXTW','WXVN')");
         //GZ ERP
         temp2 = super.getValue(y, m, d, type, queryParams);
         //SHB + GZ
         return temp1.add(temp2);
-    }
-    @Override
-    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
     }
 
 }

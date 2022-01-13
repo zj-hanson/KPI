@@ -45,11 +45,11 @@ public class AJShipmentMailBean extends ShipmentMail {
         sb.append("<div class=\"tableTitle\">单位：万元</div>");
         sb.append(getAmountTable());
 
-        sb.append("<div class=\"tableTitle\">单位：台</div>");
-        sb.append(getQuantityTable_SAM());
-
-        sb.append("<div class=\"tableTitle\">单位：万元</div>");
-        sb.append(getAmountTable_SAM());
+//        sb.append("<div class=\"tableTitle\">单位：台</div>");
+//        sb.append(getQuantityTable_SAM());
+//
+//        sb.append("<div class=\"tableTitle\">单位：万元</div>");
+//        sb.append(getAmountTable_SAM());
 
         sb.append("<div class=\"tableTitle\">单位：台</div>");
         sb.append(getQuantityTable_SAMAll());
