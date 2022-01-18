@@ -87,9 +87,9 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
         }
     }
 
-    public List<EquipmentAnalyResult> getUnqualifiedEquipmentAnalyResult(String deptname, String staDate) {
+    public List<EquipmentAnalyResult> getUnqualifiedEquipmentAnalyResult(String deptname, String staDate)throws ParseException {
         StringBuffer eSql = new StringBuffer();
-        eSql.append(" SELECT * FROM equipmentanalyresult  WHERE TIMESTAMPDIFF(MINUTE,startdate,enddate  )<2");
+        eSql.append(" SELECT * FROM equipmentanalyresult  WHERE (TIMESTAMPDIFF(MINUTE,startdate,enddate  )<2 OR enddate IS  NULL )");
         eSql.append("  AND formdate ='").append(staDate).append("' and deptname='").append(deptname).append("'  AND standardlevel='一级'");
         Query query = this.getEntityManager().createNativeQuery(eSql.toString(), EquipmentAnalyResult.class);
         List<EquipmentAnalyResult> list = query.getResultList();

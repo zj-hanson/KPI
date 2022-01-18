@@ -16,7 +16,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.util.Date;
@@ -79,91 +81,104 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
     }
 
     @Override
-    protected String getMailBody() {
+    protected String getMailBody() throws ParseException {
         attachments.clear();
         String finalFilePath = "";
-        String[] str = new String[2];//车间类型
-        str[0] = "方型加工课";
-        str[1] = "圆型加工课";
-
+        String deptName = "方型加工课";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String strDate = sdf.format(d);
+        Date d = sdf.parse(strDate);//将String格式转为日期格式
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.DATE, -1);
+        Date thisDate = new Date();//获取当前时间
+        int hor = thisDate.getHours();//当前时间为几时
+        if (hor > 12) {//当时间是下午时，推送方型的不合格数据
+            deptName = "方型加工课";
+        } else {
+            deptName = "圆型加工课";
+             strDate = sdf.format(cal.getTime());//推送圆型数据时推送前一天的数据
+        }
         try {
-            for (int x = 0; x < str.length; x++) {
-                finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-                int index = finalFilePath.indexOf("KPI-ejb");
-                InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/不合格点检表模板.xls");
-                Workbook workbook = WorkbookFactory.create(is);
-                //获得表格样式
-                Map<String, CellStyle> style = createStyles(workbook);
-                Sheet sheet;
-                sheet = workbook.getSheetAt(0);
-                Row row;
-                Row row1;
-                row = sheet.createRow(0);
-                row.setHeight((short) 900);
-                row1 = sheet.createRow(14);
-                row1.setHeight((short) 800);
-                List<EquipmentAnalyResult> equipmentAnalyResultList = equipmentAnalyResultBean.getUnqualifiedEquipmentAnalyResult(str[x], sdf.format(d));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
-                Cell cellTitle = row.createCell(0);
-                cellTitle.setCellStyle(style.get("title"));
-                cellTitle.setCellValue(sdf.format(d) + "点检不合格表-----" + str[x]);
-                Cell cellTime = row1.createCell(13);
-                cellTime.setCellStyle(style.get("right"));
-                cellTime.setCellValue("汉钟版");
+            List<EquipmentAnalyResult> equipmentAnalyResultList = equipmentAnalyResultBean.getUnqualifiedEquipmentAnalyResult(deptName, strDate);
+            finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            int index = finalFilePath.indexOf("KPI-ejb");
+            InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/不合格点检表模板.xls");
+            Workbook workbook = WorkbookFactory.create(is);
+            //获得表格样式
+            Map<String, CellStyle> style = createStyles(workbook);
+            Sheet sheet;
+            sheet = workbook.getSheetAt(0);
+            Row row;
+            Row row1;
+            row = sheet.createRow(0);
+            row.setHeight((short) 900);
+            row1 = sheet.createRow(14);
+            row1.setHeight((short) 800);
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+            Cell cellTitle = row.createCell(0);
+            cellTitle.setCellStyle(style.get("title"));
+            cellTitle.setCellValue(sdf.format(d) + "点检不合格表-----" + deptName);
+            Cell cellTime = row1.createCell(13);
+            cellTime.setCellStyle(style.get("right"));
+            cellTime.setCellValue("汉钟版");
 
-                int j = 2;
-                for (EquipmentAnalyResult eq : equipmentAnalyResultList) {
-                    row = sheet.createRow(j);
-                    j++;
-                    row.setHeight((short) 400);
-                    Cell cell0 = row.createCell(0);
-                    cell0.setCellValue(eq.getFormid());
-                    cell0.setCellStyle(style.get("cell"));
-                    cell0 = row.createCell(1);
-                    cell0.setCellValue(sdf.format(eq.getFormdate()) );
-                    cell0.setCellStyle(style.get("cell"));
-                    cell0 = row.createCell(2);
-                    cell0.setCellValue(eq.getAssetno());
-                    cell0.setCellStyle(style.get("cell"));
-                    cell0 = row.createCell(3);
-                    cell0.setCellValue(eq.getAssetdesc());
-                    cell0.setCellStyle(style.get("cell"));
-                    cell0 = row.createCell(4);
-                    cell0.setCellValue(eq.getDeptname());
-                    cell0.setCellStyle(style.get("cell"));
-                    cell0 = row.createCell(5);
-                    cell0.setCellValue(sDate.format(eq.getStartdate()) );
-                    cell0.setCellStyle(style.get("cell"));
-                     cell0 = row.createCell(6);
+            int j = 2;
+            for (EquipmentAnalyResult eq : equipmentAnalyResultList) {
+                row = sheet.createRow(j);
+                j++;
+                row.setHeight((short) 400);
+                Cell cell0 = row.createCell(0);
+                cell0.setCellValue(eq.getFormid());
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(1);
+                cell0.setCellValue(sdf.format(eq.getFormdate()));
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(2);
+                cell0.setCellValue(eq.getAssetno());
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(3);
+                cell0.setCellValue(eq.getAssetdesc());
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(4);
+                cell0.setCellValue(eq.getDeptname());
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(5);
+                if (eq.getStartdate() != null) {
+                    cell0.setCellValue(sDate.format(eq.getStartdate()));
+                }
+                cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(6);
+                if (eq.getEnddate() != null) {
                     cell0.setCellValue(sDate.format(eq.getEnddate()));
-                    cell0.setCellStyle(style.get("cell"));
-
                 }
-                String path = "../" + String.format("%d年%d月%s", y, m, "不合格点检单--") + str[x] + ".xls";//新建文件保存路径
-                FileOutputStream out = null;
-                File file = new File(path);
-                try {
-                    if (file.exists() && file.isFile()) {
-                        file.delete();
-                        file = new File(path);
-                    }
-                    //写入新File
-                    out = new FileOutputStream(file);
-                    workbook.write(out);
+                cell0.setCellStyle(style.get("cell"));
 
-                } catch (Exception e) {
-                    log4j.error(e.getMessage());
-                } finally {
-                    if (null != out) {
-                        out.flush();
-                        out.close();
-                    }
-                }
-                //添加到邮件发送
-                addAttachments(file);
             }
+            String path = "../" + strDate+"不合格点检单---"+ deptName + ".xls";//新建文件保存路径
+            FileOutputStream out = null;
+            File file = new File(path);
+            try {
+                if (file.exists() && file.isFile()) {
+                    file.delete();
+                    file = new File(path);
+                }
+                //写入新File
+                out = new FileOutputStream(file);
+                workbook.write(out);
+
+            } catch (Exception e) {
+                log4j.error(e.getMessage());
+            } finally {
+                if (null != out) {
+                    out.flush();
+                    out.close();
+                }
+            }
+            //添加到邮件发送
+            addAttachments(file);
+
         } catch (IOException | NumberFormatException | InvalidFormatException e) {
             return e.toString() + "Path:" + finalFilePath;
         }
