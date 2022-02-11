@@ -246,6 +246,8 @@
   <persistence-unit name="PU_hsppm" transaction-type="JTA">
     <jta-data-source>jdbc/hsppm</jta-data-source>
     <class>cn.hanson.kpi.entity.ppm.QuotationData</class>
+    <class>cn.hanson.kpi.entity.ppm.Quality</class>
+    <class>cn.hanson.kpi.entity.ppm.SafetyIncident</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>

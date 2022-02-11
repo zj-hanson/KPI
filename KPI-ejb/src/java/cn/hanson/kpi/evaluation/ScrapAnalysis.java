@@ -41,7 +41,7 @@ public class ScrapAnalysis implements Actual {
     public ScrapAnalysis() {
         queryParams = new LinkedHashMap<>();
         queryParams.put("facno", "H");
-        queryParams.put("step", " LIKE '%浇注%' ");
+        queryParams.put("step", " = '造型' ");
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ScrapAnalysis implements Actual {
         BigDecimal scrapWeight = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT COALESCE(SUM(convert(FLOAT, M.CASTINGWEIGHT) * convert(FLOAT, Q.DEFECTNUM)),0) ");
+        sb.append("SELECT COALESCE(SUM(convert(FLOAT, UQF.CASTINGWEIGHT) * convert(FLOAT, Q.DEFECTNUM)),0) ");
         sb.append(" FROM FLOW_FORM_UQF_S_NOW  S ");
         sb.append(" INNER JOIN FLOW_PROJECT_HISTORY H ON S.PROJECTID = H.PROJECTID ");
         sb.append(" INNER JOIN FLOW_FORM_UQF_COMP_NOW UQF ON S.PROJECTID = UQF.PROJECTID ");
@@ -199,26 +199,26 @@ public class ScrapAnalysis implements Actual {
         BigDecimal ton = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT ISNULL(SUM(CAST(B.CASTINGWEIGHT AS FLOAT)*CAST(A.STARTQTY AS FLOAT)),0) ");
-        sb.append(" FROM CAST_PROCESS_STEP A LEFT JOIN MPRODUCT B ON A.PRODUCTID = B.PRODUCTID LEFT JOIN CAST_PROCESS C ON A.PRODUCTORDERID = C.PRODUCTORDERID WHERE 1=1  AND C.PROCESSSTATUS != '已结案'   ");
+        sb.append(" SELECT ISNULL(SUM(CAST(A.CASTINGWEIGHT AS FLOAT)*CAST(A.TRACKOUTQTY AS FLOAT)),0) ");
+        sb.append(" FROM CAST_PROCESS_STEP_P A   WHERE 1=1     ");
         if (!"".equals(line)) {
             sb.append(" AND A.PROCESSLINE ").append(line);
         }
         if (!"".equals(step)) {
             sb.append(" AND A.STEPID ").append(step);
         }
-        sb.append(" AND year(A.PRODUCTTIME) = ${y} AND month(A.PRODUCTTIME)= ${m} ");
+        sb.append(" AND year(A.TRACKOUTTIME) = ${y} AND month(A.TRACKOUTTIME)= ${m} ");
         switch (type) {
             case 2:
                 // 月
-                sb.append(" AND datepart(DAY ,A.PRODUCTTIME) <= ${d} ");
+                sb.append(" AND datepart(DAY ,A.TRACKOUTTIME) <= ${d} ");
                 break;
             case 5:
                 // 日
-                sb.append(" AND datepart(DAY ,A.PRODUCTTIME) = ${d} ");
+                sb.append(" AND datepart(DAY ,A.TRACKOUTTIME) = ${d} ");
                 break;
             default:
-                sb.append(" AND datepart(DAY ,A.PRODUCTTIME) = ${d} ");
+                sb.append(" AND datepart(DAY ,A.TRACKOUTTIME) = ${d} ");
         }
 
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}",
