@@ -87,18 +87,19 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
         String deptName = "方型加工课";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String strDate = sdf.format(d);
-        Date d = sdf.parse(strDate);//将String格式转为日期格式
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        cal.add(Calendar.DATE, -1);
+
         Date thisDate = new Date();//获取当前时间
+        String strDate = sdf.format(thisDate);
+        // Date d = sdf.parse(strDate);//将String格式转为日期格式
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(thisDate);
+        cal.add(Calendar.DATE, -1);
         int hor = thisDate.getHours();//当前时间为几时
         if (hor > 12) {//当时间是下午时，推送方型的不合格数据
             deptName = "方型加工课";
         } else {
             deptName = "圆型加工课";
-             strDate = sdf.format(cal.getTime());//推送圆型数据时推送前一天的数据
+            strDate = sdf.format(cal.getTime());//推送圆型数据时推送前一天的数据
         }
         try {
             List<EquipmentAnalyResult> equipmentAnalyResultList = equipmentAnalyResultBean.getUnqualifiedEquipmentAnalyResult(deptName, strDate);
@@ -156,7 +157,7 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
                 cell0.setCellStyle(style.get("cell"));
 
             }
-            String path = "../" + strDate+"不合格点检单---"+ deptName + ".xls";//新建文件保存路径
+            String path = "../" + strDate + "不合格点检单---" + deptName + ".xls";//新建文件保存路径
             FileOutputStream out = null;
             File file = new File(path);
             try {
