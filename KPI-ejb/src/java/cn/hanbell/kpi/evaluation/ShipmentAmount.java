@@ -127,4 +127,44 @@ public abstract class ShipmentAmount extends Shipment {
         return shp1.subtract(bshp1).add(arm232).add(arm235).add(arm270).add(arm423);
     }
 
+     
+   //它项金额,关联部门
+    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
+        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ISNULL(SUM(h.shpamt),0) FROM armbil h WHERE h.rkd='RQ11' AND h.facno='${facno}'");
+        if (n_code_DA != null && !"".equals(n_code_DA)) {
+            sb.append(" and address4 ").append(n_code_DA);
+        }
+        if (n_code_DC != null && !"".equals(n_code_DC)) {
+            sb.append(" and n_code_DC ").append(n_code_DC);
+        }
+        //收费服务金额
+        sb.append(" and address5 ='N'");
+        sb.append(" AND year(h.bildat) = ${y} AND month(h.bildat)= ${m} ");
+        switch (type) {
+            case 2:
+                //月
+                sb.append(" AND h.bildat<= '${d}' ");
+                break;
+            case 5:
+                //日
+                sb.append(" AND h.bildat= '${d}' ");
+                break;
+            default:
+                sb.append(" AND h.bildat<= '${d}' ");
+        }
+        String sqlstr = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d)).replace("${facno}", facno);
+        superEJB.setCompany(facno);
+        Query query = superEJB.getEntityManager().createNativeQuery(sqlstr);
+        try {
+            Object o = query.getSingleResult();
+            return (BigDecimal) o;
+        } catch (Exception ex) {
+            log4j.error(ex);
+        }
+        return BigDecimal.ZERO;
+    }
 }

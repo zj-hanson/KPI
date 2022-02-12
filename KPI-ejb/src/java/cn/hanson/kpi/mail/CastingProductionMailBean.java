@@ -87,7 +87,6 @@ public class CastingProductionMailBean extends MailNotification {
                 // 本日出货
                 Actual actualInterface = (Actual)Class.forName(indicator.getActualInterface()).newInstance();
                 actualInterface.setEJB(indicator.getActualEJB());
-                actualInterface.getQueryParams().put("id", indicator.getId());
                 num1 = actualInterface.getValue(y, m, d, Calendar.DATE, actualInterface.getQueryParams())
                     .divide(indicator.getRate(), 2, RoundingMode.HALF_UP);
             } else {

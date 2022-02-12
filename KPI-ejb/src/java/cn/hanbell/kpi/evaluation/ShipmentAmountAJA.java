@@ -22,11 +22,23 @@ public class ShipmentAmountAJA extends ShipmentAmount {
         //queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
         queryParams.put("n_code_DC", " = 'AJA' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
 
+    @Override
+    public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+        BigDecimal temp1, temp2;
+        //SHB ERP
+        temp1 = super.getValue(y, m, d, type, map);
+        queryParams.remove("facno");
+        queryParams.put("facno", "G");
+        //GZ ERP
+        temp2 = super.getValue(y, m, d, type, queryParams);
+        //SHB + GZ
+        return temp1.add(temp2);
+    }
+    
     @Override
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         return BigDecimal.ZERO;
