@@ -11,18 +11,18 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author C1879
+ * @author C0160
  */
-public class SalesOrderAmountAJ3 extends SalesOrderAmount {
+public class ShipmentAmountAJ10 extends ShipmentAmountAJ9 {
 
-    public SalesOrderAmountAJ3() {
-        super();
+    public ShipmentAmountAJ10() {
+         queryParams = new LinkedHashMap<>();
         queryParams.put("facno", "C");
-        // queryParams.put("decode", "1");
+        queryParams.put("decode", "1");
+        queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_CD", " in ('GZ') ");
+        queryParams.put("n_code_CD","  in ('GZ')");
         queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
-        queryParams.put("n_code_DD", " ='00' ");
     }
 
     @Override
@@ -39,4 +39,5 @@ public class SalesOrderAmountAJ3 extends SalesOrderAmount {
         //SHB + GZ
         return temp1.add(temp2);
     }
+
 }
