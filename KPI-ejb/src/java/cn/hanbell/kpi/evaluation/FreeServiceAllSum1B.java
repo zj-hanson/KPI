@@ -26,8 +26,8 @@ public class FreeServiceAllSum1B extends FreeServiceERP {
 
     public FreeServiceAllSum1B() {
         super();
-        queryParams.put("formid", "A-华东综合成本");
-        queryParams.put("deptno", "1B000");
+        queryParams.put("formid", "A-制冷营销课综合成本");
+        queryParams.put("deptno", "1F000");
     }
 
     //厂外+质量扣款

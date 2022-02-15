@@ -28,8 +28,8 @@ public class FreeServiceOuterSumARM1B extends FreeServiceERP {
 
     public FreeServiceOuterSumARM1B() {
         super();
-        queryParams.put("formid", "A-华东服务成本");
-        queryParams.put("deptno", "1B000");
+        queryParams.put("formid", "A-制冷营销课服务成本");
+        queryParams.put("deptno", "1F000");
     }
 
     //差旅费+运费+服务领退料+质量扣款
