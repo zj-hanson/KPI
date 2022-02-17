@@ -9,6 +9,7 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
+
 public class ProductionPlanCompletePJZ extends ProductionPlanComplete {
 
     public ProductionPlanCompletePJZ() {
@@ -19,6 +20,7 @@ public class ProductionPlanCompletePJZ extends ProductionPlanComplete {
         queryParams.put("linecode", " ='VPZ' ");
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " in ('PS07')");
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " in('3776','3A76','3780','3A80') ");
 
     }

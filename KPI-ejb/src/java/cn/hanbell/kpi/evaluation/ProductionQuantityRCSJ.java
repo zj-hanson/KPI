@@ -25,7 +25,8 @@ public class ProductionQuantityRCSJ extends ProductionQuantity {
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //2019年6月3日应陆夏玲要求增加品号大类3015（世纪东元部分制令）
-        queryParams.put("itcls", " IN ('3015','3176','3177','3179','3180','3276','3279','3280','3083','4079')");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " IN ('3176','3179','3180','3276','3279','3280','3083','4079')");
 
     }
 }

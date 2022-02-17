@@ -18,8 +18,10 @@ public class ProductionQuantityZJKM extends ProductionQuantity {
         //顾迪华2019年6月19日提出更改生产线别01 改 AT\ORC\RT
         queryParams.put("linecode", " IN('AT','ORC','RT') ");
         queryParams.put("typecode", "= '01' ");
-        queryParams.put("itcls", " in ('3B79','3B80','3W76','3W80','3W79')");
-        queryParams.put("itnbrf", " and itnbrf not in (select itnbr from invmas where itcls in ('3176','3179','3180')) ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " in ('3W76','3W80','3W79','3Y76','3Y79','3Y80','3X76','3X79','3X80')");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itnbrf", " and itnbrf not in (select itnbr from invmas where itcls in ('3J76','3J79','3J80')) ");
         
     }
 
