@@ -454,15 +454,22 @@ public class ProcurementBean implements Serializable {
         jksum = jk1 + "," + jk2;
         //2019年2月26日 陆夏玲要求加入'4304'，
         //2021年12月13日 陆夏玲要求加入'4504','3703'
+        //#ITCLS CHANGE TODO #
         itnbrDj = " select itnbr from invmas where itcls in('3104','4503','4703','3504','4304','4504','3703') ";
+        //#ITCLS CHANGE TODO #
         itnbrZc = " select itnbr from invmas where itcls in('4009') ";
         //2019年2月26日 陆夏玲要求加入'1401'，删除'1E01','1E02','1K02'，
-        itnbrZj = " select itnbr from invmas where itcls in('1101','1102','1201','1202','1401','1402','1801','1802')";
+        //2022/02/05，件号转换后加入1C02
+        //#ITCLS CHANGE TODO #
+        itnbrZj = " select itnbr from invmas where itcls in('1101','1102','1201','1202','1401','1402','1801','1802','1C02')";
         //2019年2月26日 陆夏玲要求去除5063（研发大类），新增4020
         //2021年12月13日 陆夏玲要求加入 4520	A风扇/联轴器/弹性体
-        itnbrSgp = " select itnbr from invmas where itcls in('4010','4046','4047','4048','4049','5050','4052','4151','5061','5062','5064','5065','4079','4507','4020','4520')";
+         //2022/02/05，件号转换后加入移除4020，添加'4522','4523','5068'
+        //#ITCLS CHANGE TODO #
+        itnbrSgp = " select itnbr from invmas where itcls in('4010','4046','4047','4048','4049','5050','4052','4151','5061','5062','5064','5065','4079','4507','4520','4522','4523','5068')";
         //2019年2月26日 陆夏玲要求新增2401,3401，去除3016（9QC零件）
-        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3101','3102','3201','3202','3402','3801','3802','2401','3401')";
+        //#ITCLS CHANGE TODO #
+        itnbrCjjg = " select itnbr from invmas where itcls in('2012','2013','2015','2101','2102','2201','2202','2402','2801','2802','3012','3013','3015','3101','3102','3201','3202','3402','3801','3802','2401','3401','3C02')";
         try {
             //销售额
             Double monthDouble = getSaleValue(date, "month");

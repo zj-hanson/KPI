@@ -15,6 +15,7 @@ public class ProductionPlanOrderAJT extends ProductionPlanOrder {
         super();
         queryParams.put("facno", "C");
         //queryParams.put("n_code_DA", " ='AH' ");
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " in('3886','3889','3890','3876','3879','3880','3976','3979','3980') and itnbr <> '39011-GBA00'");
 
     }

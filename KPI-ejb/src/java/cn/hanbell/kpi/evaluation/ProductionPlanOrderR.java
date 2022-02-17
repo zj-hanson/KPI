@@ -15,7 +15,8 @@ public class ProductionPlanOrderR extends ProductionPlanOrder {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
-        queryParams.put("itcls", " IN('3176','3177','3179','3180','3276','3279','3280','3083','4079') ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " IN('3176','3179','3180','3276','3279','3280','3083','4079') ");
 
     }
 }

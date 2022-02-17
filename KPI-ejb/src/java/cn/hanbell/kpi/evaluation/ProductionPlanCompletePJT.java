@@ -19,6 +19,7 @@ public class ProductionPlanCompletePJT extends ProductionPlanComplete {
         queryParams.put("linecode", " ='VP' ");
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " in ('PSC3')");
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " in('3376','3379','3380','3476','3479','3480') ");
 
     }
