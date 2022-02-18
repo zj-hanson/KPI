@@ -25,15 +25,4 @@ public class ShipmentAmountR1B3 extends ShipmentAmount {
         queryParams.put("n_code_DC", " ='L' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-
-    @Override
-    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
-    @Override
-    public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
 }

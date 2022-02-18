@@ -136,7 +136,8 @@ public class TimerBean {
                     }
                     try {
                         indicatorBean.updatePerformance(e);
-                        indicatorBean.update(e);
+                        Indicator newEntity=indicatorBean.findById(e.getId());
+                        indicatorBean.update(newEntity);
                         log4j.info(String.format("成功执行%s:更新指标%s达成率:Id:%d", "updateIndicatorActualValue", e.getName(),
                                 e.getId()));
                     } catch (Exception ex) {

@@ -9,13 +9,16 @@ package cn.hanbell.kpi.evaluation;
  *
  * @author C1879
  */
-public class ProductionPlanOrderPJT extends ProductionPlanOrder {
+public class SalesOrderAmountPDVR2 extends SalesOrderAmount{
 
-    public ProductionPlanOrderPJT() {
+    public SalesOrderAmountPDVR2() {
         super();
         queryParams.put("facno", "C");
+        //queryParams.put("decode", "2");
+        queryParams.put("deptno", " '1H000','1H100' ");
         queryParams.put("n_code_DA", " ='P' ");
-        //#ITCLS CHANGE TODO #
-        queryParams.put("itcls", " in ('3376','3379','3380','3476','3478','3480') ");
+        queryParams.put("n_code_CD", " LIKE 'WX%' ");
+        queryParams.put("n_code_DC", " ='DVR' ");
+        queryParams.put("n_code_DD", " ='00' ");
     }
 }

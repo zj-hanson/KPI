@@ -16,6 +16,7 @@ public class ShipmentQuantityPDVR1 extends ShipmentQuantity {
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1H000','1H100' ");
         queryParams.put("n_code_DA", " ='P' ");
+        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
         queryParams.put("n_code_DC", " ='DVR' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

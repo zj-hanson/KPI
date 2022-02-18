@@ -20,6 +20,7 @@ public class ProductionPlanCompleteS extends ProductionPlanComplete {
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " ='FSSC'");
         //queryParams.put("wrcode", "  ='S6' ");
-        queryParams.put("itcls", " IN('3879','3979','3179','3886','3976','3176','3890','3180','3980') ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " IN('3B76','3B79','3B80','3C76','3C79','3C80') ");
     }
 }

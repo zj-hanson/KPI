@@ -13,10 +13,11 @@ public class ShipmentQuantityAJ1 extends ShipmentQuantity {
 
     public ShipmentQuantityAJ1() {
         super();
+        // A机体总部内销出货台数
         queryParams.put("facno", "C");
         // queryParams.put("decode", "1");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
+        queryParams.put("n_code_CD", " not in ('WX','WXTW','WXVN','GZ')");
         queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }

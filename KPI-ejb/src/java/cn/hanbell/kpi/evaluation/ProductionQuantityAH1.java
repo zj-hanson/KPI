@@ -25,6 +25,7 @@ public class ProductionQuantityAH1 extends ProductionQuantity {
         //制令等级
         queryParams.put("typecode", "= '01' ");
         //品号大类
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " IN ('3476','3479','3480') ");
         
     }

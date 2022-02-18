@@ -26,8 +26,10 @@ public class ProductionPlanShipmentKM extends ProductionPlanShipment {
     public ProductionPlanShipmentKM() {
         super();
         queryParams.put("facno", "K");
-        queryParams.put("itcls", " in ('3H80','3W76','3W80')");
-        queryParams.put("itnbrf", " in ('3176','3179','3180') ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " in ('3H80','3W76','3W80','3H76','3H79','3W79')");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itnbrf", " in ('3J76','3J79','3J80') ");
     }
 
     @Override
