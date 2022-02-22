@@ -389,7 +389,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         reportParams.put("seq", scorecard.getSeq());
         reportParams.put("deptname", scorecard.getDeptname());
         reportParams.put("id", scorecard.getId());
-        reportParams.put("season", userManagedBean.getQ());
+        reportParams.put("season", userManagedBean.getQ()-1);
         if (!this.model.getFilterFields().isEmpty()) {
             reportParams.put("filterFields", BaseLib.convertMapToStringWithClass(this.model.getFilterFields()));
         } else {

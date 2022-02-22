@@ -481,7 +481,11 @@ public class InventoryReportBean extends SuperQueryBean<Indicator> {
 
     public String format(BigDecimal b) {
         if (b != null) {
-            return doubleFormat.format(b);
+            if(b.compareTo(new BigDecimal("-1"))==1 && b.compareTo(new BigDecimal("1"))==-1){
+                return  new DecimalFormat("0.00").format(b);
+            }else{
+                return doubleFormat.format(b);
+            }
         } else {
             return "";
         }

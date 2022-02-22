@@ -6,10 +6,6 @@
 package cn.hanbell.kpi.comm;
 
 import com.lightshell.comm.SuperEJB;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -31,7 +27,7 @@ public abstract class SuperEJBForKPI<T> extends SuperEJB<T> {
     // 生产环境
     // private final String URL = "http://jrs.hanbell.com.cn/Hanbell-WCO/api/sendmsg/send";
     // 测试环境
-    private final String WECHAT_URL = "http://i2.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
+    private final String WECHAT_URL = "http://jrs.hanbell.com.cn:8480/Hanbell-WCO/api/sendmsg/send";
 
 
     private final String WECHAT_OPENID = "oJJhp5GvX45x3nZgoX9Ae9DyWak4";

@@ -14,7 +14,7 @@ public class ShipmentAmountR1B1 extends ShipmentAmount {
     public ShipmentAmountR1B1() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1B000','1B100' ");
+        queryParams.put("deptno", " '1B000','1B100','1F700'");
         //queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='R' ");

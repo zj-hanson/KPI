@@ -171,7 +171,6 @@
   <persistence-unit name="PU_thberp" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/thberp</jta-data-source>
-    <class>tw.hanbell.kpi.entity.erp.Grpsdailytmp</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
@@ -218,6 +217,40 @@
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="eclipselink.canonicalmodel.subpackage" value="shbtms"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="PU-SHBEAM" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/shbeam</jta-data-source>
+    <class>cn.hanbell.kpi.entity.eam.EquipmentAnalyResult</class>
+    <class>cn.hanbell.kpi.entity.eam.EquipmentAnalyResultDta</class>
+    <class>cn.hanbell.kpi.entity.eam.EquipmentStandard</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.canonicalmodel.subpackage" value="shbeam"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="SHBEXCH-ejbPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/shbexch</jta-data-source>
+    <class>tw.hanbell.kpi.entity.erp.Grpsdailytmp</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.canonicalmodel.subpackage" value="shbexch"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="PU_hsppm" transaction-type="JTA">
+    <jta-data-source>jdbc/hsppm</jta-data-source>
+    <class>cn.hanson.kpi.entity.ppm.QuotationData</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.canonicalmodel.subpackage" value="hsppm"/>
     </properties>
   </persistence-unit>
 </persistence>

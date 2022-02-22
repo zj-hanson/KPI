@@ -23,7 +23,7 @@ public class ShipmentAmountR1C2 extends ShipmentAmount {
     public ShipmentAmountR1C2() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("deptno", " '1C000','1C100' ");
+        queryParams.put("deptno", " '1C000','1C100','1C700' ");
         queryParams.put("decode", "1");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_CD", " ='JN' ");
@@ -61,15 +61,4 @@ public class ShipmentAmountR1C2 extends ShipmentAmount {
          //SHB + JN + 产品后续由分公司卖出的数据（济南R销售均价）
         return temp1.add(temp2).add(BigDecimal.valueOf(a));
     }
-
-    @Override
-    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
-    @Override
-    public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
 }

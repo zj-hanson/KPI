@@ -63,6 +63,9 @@ public class SuperEJBForERP implements Serializable {
     @PersistenceContext(unitName = "PU_vhberp")
     private EntityManager em_vhberp;
 
+    @PersistenceContext(unitName = "SHBEXCH-ejbPU")
+    private EntityManager em_shbexcherp;
+    
     public SuperEJBForERP() {
 
     }
@@ -101,6 +104,8 @@ public class SuperEJBForERP implements Serializable {
                 return em_hkerp;
             case "A":
                 return em_thberp;
+            case "CEXCH"://上海ERP中间表
+                return em_shbexcherp;
             default:
                 return em_shberp;
         }

@@ -22,7 +22,7 @@ public class ConsumptionCutterFXo3 extends ConsumptionCutter {
         //部门
         queryParams.put("depno", " IN ('1P100') ");
         //刀具型号
-        queryParams.put("qualification", " (t.itnbr like 'B102%' or t.itnbr like 'B103%' or t.itnbr like 'B104%' or t.itnbr like 'B105%' ) ");
+        queryParams.put("qualification", " (t.itnbr like 'BS102%' or t.itnbr like 'BS103%' or t.itnbr like 'BS104%' or t.itnbr like 'BS105%' ) ");
        
     }
 

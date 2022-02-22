@@ -23,7 +23,7 @@ public class ShipmentAmountKWC2 extends ShipmentAmount {
         queryParams.put("n_code_DA", " ='RT' ");
         queryParams.put("n_code_CD", " LIKE 'WX%' ");
         queryParams.put("n_code_DC", " ='WC' ");
-        queryParams.put("n_code_DD", "  IN ('00') ");
+        queryParams.put("n_code_DD", "  IN ('00','02') ");
     }
 
     @Override

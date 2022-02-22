@@ -10,7 +10,6 @@ import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -50,14 +49,12 @@ public class ShoppingCenterMaterailAmountOtherSum extends Productivity {
             f = o3.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             a3 = Double.valueOf(f.get(o3).toString());
-            if (a1 == 0.00) {
-                v1 = BigDecimal.valueOf(0);
-            } else {
-                v1 = BigDecimal.valueOf(a1 + a2 + a3);
-            }
+
+            v1 = BigDecimal.valueOf(a1 + a2 + a3);
+
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(ProcessQuantityHFX.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return BigDecimal.ZERO;
     }

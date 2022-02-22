@@ -49,12 +49,9 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
             if(indicatorList.get(i).getName().contains("采购中心")){
                 //采购中心的交易额/该公司的交易额
                 indicatorList.get(i).getActualIndicator().setRemark1(percentFormat(indicatorList.get(i).getActualIndicator().getNfy(),indicatorList.get(i-1).getActualIndicator().getNfy(),2));
-                System.out.println(indicatorList.get(i).getName()+"   "+indicatorList.get(i).getActualIndicator().getNfy()+"   "+indicatorList.get(i-1).getActualIndicator().getNfy());
             }else{
-                 indicatorList.get(i).getActualIndicator().setRemark1(percentFormat(indicatorList.get(i).getActualIndicator().getNfy(),sumAllMoney,2));
-                 System.out.println(indicatorList.get(i).getName()+"   "+indicatorList.get(i).getActualIndicator().getNfy()+"   "+sumAllMoney);
-            }
-        
+                 indicatorList.get(i).getActualIndicator().setRemark1(percentFormat(indicatorList.get(i).getActualIndicator().getNfy(),indicatorList.get(6).getActualIndicator().getNfy(),2));
+            }        
         }
         //根据指标ID加载指标说明、指标分析
         analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
@@ -114,7 +111,11 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
         }
           if (value2 == null || value2 == BigDecimal.ZERO) {
             return "0.00%";
+        }  
+          if (i == 0 || value2 == BigDecimal.ZERO) {
+            return "0.00%";
         }
+          
         return percentFormat(value1.multiply(BigDecimal.valueOf(100)).divide(value2, i, BigDecimal.ROUND_HALF_UP), 2);
 
     }
@@ -131,6 +132,9 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
     }
 
     public String doubleformat(BigDecimal value, BigDecimal scale) {
+            if (scale == null || scale.compareTo(BigDecimal.ZERO) == 0) {
+            return "";
+        } 
         if (value == null || value.compareTo(BigDecimal.ZERO) == 0) {
             return "";
         } else {
