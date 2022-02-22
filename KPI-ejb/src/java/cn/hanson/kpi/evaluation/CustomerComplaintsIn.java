@@ -131,9 +131,9 @@ public class CustomerComplaintsIn implements Actual {
                 indicatorBean.updateIndicatorDetail(o2);
             }
             if (shipNum.compareTo(BigDecimal.ZERO) != 0) {
-                return shipNum.divide(shipNum, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
+                return complaintNum.divide(shipNum, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100d));
             }
-            if (shipNum.compareTo(BigDecimal.ZERO) != 0) {
+            if (complaintNum.compareTo(BigDecimal.ZERO) != 0) {
                 return BigDecimal.valueOf(100d);
             }
         } catch (Exception ex) {
