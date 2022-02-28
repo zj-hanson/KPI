@@ -15,6 +15,7 @@ public class ProductionPlanOrderPJT extends ProductionPlanOrder {
         super();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='P' ");
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " in ('3376','3379','3380','3476','3478','3480') ");
     }
 }

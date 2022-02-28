@@ -159,9 +159,9 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     }
                     // quantity指标数据中12月基准+ 去年录入12月柯茂数据 - 去年销往12月柯茂数据
                     if (lastIndicator != null) {
-                        v = getNValue(quantity.getBenchmarkIndicator(), 12)
-                            .add(getNValue(lastIndicator.getOther1Indicator(), 12))
-                            .subtract(getNValue(lastIndicator.getOther3Indicator(), 12));
+                        v = getNValue(quantity.getBenchmarkIndicator(), 12);
+//                            .add(getNValue(lastIndicator.getOther1Indicator(), 12))
+//                            .subtract(getNValue(lastIndicator.getOther3Indicator(), 12));
                         setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod(
                             "set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getBenchmarkIndicator(), v);
@@ -175,8 +175,8 @@ public class RSalesQuantityFileMailBean extends MailNotification {
                     }
                     // quantity指标数据中12月基准+ 去年录入12月柯茂数据
                     if (lastIndicator != null) {
-                        v = getNValue(quantity.getBenchmarkIndicator(), 12)
-                            .add(getNValue(lastIndicator.getOther1Indicator(), 12));
+                        v = getNValue(quantity.getBenchmarkIndicator(), 12);
+//                            .add(getNValue(lastIndicator.getOther1Indicator(), 12));
                         setMethod = quantity.getBenchmarkIndicator().getClass().getDeclaredMethod(
                             "set" + indicatorBean.getIndicatorColumn("N", 12).toUpperCase(), BigDecimal.class);
                         setMethod.invoke(quantity.getBenchmarkIndicator(), v);

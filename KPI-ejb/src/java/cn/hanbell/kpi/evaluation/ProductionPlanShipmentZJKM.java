@@ -26,8 +26,10 @@ public class ProductionPlanShipmentZJKM extends ProductionPlanShipment {
     public ProductionPlanShipmentZJKM() {
         super();
         queryParams.put("facno", "E");
-        queryParams.put("itcls", " in ('3B79','3B80','3W76','3W80','3W79')");
-        queryParams.put("itnbrf", " in ('3176','3179','3180') ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " in ('3W76','3W80','3W79','3Y76','3Y79','3Y80','3X76','3X79','3X80')");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itnbrf", " in ('3J76','3J79','3J80') ");
     }
 
     @Override

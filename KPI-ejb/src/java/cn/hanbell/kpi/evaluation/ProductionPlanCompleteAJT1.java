@@ -21,6 +21,7 @@ public class ProductionPlanCompleteAJT1 extends ProductionPlanComplete {
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " in ('S1','S1-1','FAA09','FAA08') ");
         queryParams.put("wrcode", "  ='S4' ");
+        //#ITCLS CHANGE TODO #
         queryParams.put("itcls", " IN ('3476','3479','3480') ");
     }
 }

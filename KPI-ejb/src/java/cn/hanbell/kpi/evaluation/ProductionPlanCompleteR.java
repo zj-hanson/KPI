@@ -19,7 +19,8 @@ public class ProductionPlanCompleteR extends ProductionPlanComplete {
         queryParams.put("linecode", " ='RC' ");
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " in ('FRZ09','RSL1')");
-        queryParams.put("itcls", " IN('3176','3177','3179','3180','3276','3279','3280','3083','4079') ");
+        //#ITCLS CHANGE TODO #
+        queryParams.put("itcls", " IN('3176','3179','3180','3276','3279','3280','3083','4079') ");
 
     }
 }
