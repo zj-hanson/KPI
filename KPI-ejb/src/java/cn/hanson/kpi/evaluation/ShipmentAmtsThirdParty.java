@@ -13,7 +13,6 @@ public class ShipmentAmtsThirdParty extends ShipmentAmount {
     public ShipmentAmtsThirdParty() {
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", "in ('QT')");
         queryParams.put("cuspono", " and (c.cuspono LIKE '%恒工%' or c.cuspono LIKE '%上海卓准%') ");
     }
 
