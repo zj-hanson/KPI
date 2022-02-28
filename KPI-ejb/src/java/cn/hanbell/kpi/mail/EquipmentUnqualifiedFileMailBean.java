@@ -120,7 +120,7 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
             Cell cellTitle = row.createCell(0);
             cellTitle.setCellStyle(style.get("title"));
-            cellTitle.setCellValue(sdf.format(d) + "点检不合格表-----" + deptName);
+            cellTitle.setCellValue(strDate + "点检不合格表-----" + deptName);
             Cell cellTime = row1.createCell(13);
             cellTime.setCellStyle(style.get("right"));
             cellTime.setCellValue("汉钟版");
