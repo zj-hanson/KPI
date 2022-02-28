@@ -77,8 +77,9 @@ public abstract class ShipmentAmount extends Shipment {
         // 销退不区分未开票退货还是已开票退货
         sb.append(" select isnull(sum(cast((case when h.tax <> '4' then d.bakamts*h.ratio ");
         sb.append(" else d.bakamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) ");
-        sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
+        sb.append(" from cdrbdta d,cdrbhad h,invmas s,cdrhmas c ");
         sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
+        sb.append(" and d.facno=c.facno and d.cdrno=c.cdrno ");
         sb.append(" and h.baksta not in ('N','W') and h.trtype in ('L2A','L2B','S2A','S2B') ");
         if (!"".equals(cusno)) {
             sb.append(" and h.cusno ").append(cusno);
@@ -93,6 +94,9 @@ public abstract class ShipmentAmount extends Shipment {
             } else {
                 sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
             }
+        }
+        if (!"".equals(cuspono)) {
+            sb.append(cuspono);
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {

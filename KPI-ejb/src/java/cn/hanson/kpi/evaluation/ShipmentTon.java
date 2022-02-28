@@ -81,8 +81,9 @@ public abstract class ShipmentTon extends Shipment {
         // 未开票退货条件 h.owarehyn='Y'
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
         sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
-        sb.append(" from cdrbdta d,cdrbhad h,invmas s ");
+        sb.append(" from cdrbdta d,cdrbhad h,invmas s,cdrhmas c ");
         sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
+        sb.append(" and d.facno=c.facno and d.cdrno=c.cdrno ");
         sb.append(" and h.baksta not in ('N','W') and h.trtype in ('L2A','L2B','S2A','S2B')  ");
         if (!"".equals(cusno)) {
             sb.append(" and h.cusno ").append(cusno);
@@ -98,6 +99,8 @@ public abstract class ShipmentTon extends Shipment {
                 sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
             }
         }
+        // 重量目标不含商流销退排除
+        sb.append(" and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%'");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
             case 2:
