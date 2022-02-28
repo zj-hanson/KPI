@@ -27,6 +27,7 @@ public abstract class ShipmentTon extends Shipment {
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";// 客户
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";// 种类
         String variety = map.get("variety") != null ? map.get("variety").toString() : "";// 分类
+        String cuspono = map.get("cuspono") != null ? map.get("cuspono").toString() : "";// 客户采购单号
 
         BigDecimal shpton = BigDecimal.ZERO;
         BigDecimal bakton = BigDecimal.ZERO;
@@ -36,8 +37,9 @@ public abstract class ShipmentTon extends Shipment {
         // 出货
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
         sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1 end) as decimal(17,2))),0) ");
-        sb.append(" from cdrdta d,cdrhad h,invmas s ");
+        sb.append(" from cdrdta d,cdrhad h,invmas s,cdrhmas c ");
         sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
+        sb.append(" and d.facno=c.facno and d.cdrno=c.cdrno ");
         sb.append(" and h.houtsta not in ('N','W') and h.trtype in ('L1A','S1A') ");
         if (!"".equals(cusno)) {
             sb.append(" and h.cusno ").append(cusno);
@@ -53,6 +55,11 @@ public abstract class ShipmentTon extends Shipment {
                 sb.append(" and s.itcls not in (select itcls from bsc_zlitcls ) ");
             }
         }
+        // if (!"".equals(cuspono)) {
+        // sb.append(cuspono);
+        // }
+        // 重量目标不含商流直接排除
+        sb.append(" and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%'");
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
             case 2:

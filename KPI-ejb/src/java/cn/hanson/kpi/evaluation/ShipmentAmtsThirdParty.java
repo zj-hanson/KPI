@@ -8,13 +8,12 @@ package cn.hanson.kpi.evaluation;
  *
  * @author C1749
  */
-public class ShipmentAmtsOTH extends ShipmentAmount {
+public class ShipmentAmtsThirdParty extends ShipmentAmount {
 
-    public ShipmentAmtsOTH() {
+    public ShipmentAmtsThirdParty() {
         super();
         queryParams.put("facno", "H");
-        queryParams.put("protype", " not in ('HT','QT')");
-        queryParams.put("cuspono", " and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%' ");
+        queryParams.put("cuspono", " and (c.cuspono LIKE '%恒工%' or c.cuspono LIKE '%上海卓准%') ");
     }
 
 }

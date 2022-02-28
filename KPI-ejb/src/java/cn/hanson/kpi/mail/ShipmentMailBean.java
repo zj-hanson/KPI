@@ -152,7 +152,22 @@ public class ShipmentMailBean extends ShipmentMail {
                 }
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
-                total.setName("汉声出货吨数");
+                total.setName("汉声出货金额");
+                sumIndicatorList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("汉声商流出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && !indicators.isEmpty()) {
+                for (Indicator i : indicators) {
+                    indicatorBean.divideByRate(i, 2);
+                }
+                sb.append(getHtmlTable(indicators, y, m, d, true));
+                total = getSumIndicator();
+                total.setName("汉声出货金额");
                 sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
@@ -167,7 +182,7 @@ public class ShipmentMailBean extends ShipmentMail {
                 }
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
-                total.setName("汉扬出货吨数");
+                total.setName("汉扬出货金额");
                 sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
