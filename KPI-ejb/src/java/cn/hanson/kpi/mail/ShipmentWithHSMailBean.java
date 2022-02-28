@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanson.kpi.mail;
 
@@ -65,11 +64,11 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
             sb.append(
-                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+                "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
             sb.append(
-                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append(
-                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
@@ -131,11 +130,11 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
             sb.append("<tr><th rowspan=\"2\" colspan=\"1\">产品别</th><th rowspan=\"2\" colspan=\"1\">本日</th>");
             sb.append("<th rowspan=\"1\" colspan=\"5\">本月</th><th rowspan=\"1\" colspan=\"5\">年累计</th>");
             sb.append(
-                    "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
+                "<th rowspan=\"2\" colspan=\"1\">年度目标</th><th rowspan=\"2\" colspan=\"1\">年度达成率</th><th rowspan=\"2\" colspan=\"1\">订单未交</th></tr>");
             sb.append(
-                    "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<tr><th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append(
-                    "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
+                "<th colspan=\"1\">实际</th><th colspan=\"1\">目标</th><th colspan=\"1\">达成率</th><th colspan=\"1\">去年同期</th><th colspan=\"1\">成长率</th>");
             sb.append("</tr>");
 
             sum1 = BigDecimal.ZERO;
@@ -153,7 +152,22 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
                 }
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
-                total.setName("汉声出货吨数");
+                total.setName("汉声出货金额");
+                sumIndicatorList.add(total);
+                sum1 = sum1.add(getData().get("sum1"));
+                sum2 = sum2.add(getData().get("sum2"));
+            }
+
+            indicators.clear();
+            indicators = indicatorBean.findByCategoryAndYear("汉声商流出货金额", y);
+            indicatorBean.getEntityManager().clear();
+            if (indicators != null && !indicators.isEmpty()) {
+                for (Indicator i : indicators) {
+                    indicatorBean.divideByRate(i, 2);
+                }
+                sb.append(getHtmlTable(indicators, y, m, d, true));
+                total = getSumIndicator();
+                total.setName("汉声出货金额");
                 sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));
@@ -168,7 +182,7 @@ public class ShipmentWithHSMailBean extends ShipmentMail {
                 }
                 sb.append(getHtmlTable(indicators, y, m, d, true));
                 total = getSumIndicator();
-                total.setName("汉扬出货吨数");
+                total.setName("汉扬出货金额");
                 sumIndicatorList.add(total);
                 sum1 = sum1.add(getData().get("sum1"));
                 sum2 = sum2.add(getData().get("sum2"));

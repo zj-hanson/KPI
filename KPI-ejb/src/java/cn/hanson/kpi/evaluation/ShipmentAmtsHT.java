@@ -14,6 +14,7 @@ public class ShipmentAmtsHT extends ShipmentAmount {
         super();
         queryParams.put("facno", "H");
         queryParams.put("protype", "in ('HT')");
+        queryParams.put("cuspono", " and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%' ");
     }
 
 }
