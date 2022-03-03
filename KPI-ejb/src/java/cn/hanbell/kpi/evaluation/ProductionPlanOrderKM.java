@@ -51,7 +51,7 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
-            sb.append(" and d.itnbr NOT in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
+            sb.append(" and d.itnbr in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {
@@ -117,7 +117,7 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
-            sb.append(" and d.itnbr NOT in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
+            sb.append(" and d.itnbr  in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
         sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate< '${d}' GROUP BY day(h.recdate) ");
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
