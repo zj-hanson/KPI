@@ -18,9 +18,7 @@
                                  update="formOne" process="plgQuery" />
                 <p:commandButton id="btnQuery" value="查询" actionListener="#{balanceSheetReportBean.btnquery()}"  icon="ui-icon-search"
                                  update="formOne" process="plgQuery"/>
-
                 <p:link  value="返回"  outcome="home" style="float: left"/>
-
             </p:panelGrid>
             <div>
                 <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
@@ -47,233 +45,344 @@
                             </tr>
                         </thead>
                         <tbody class="table">
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
-                                <td>流动资产：</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('17')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                            <tr>
+                                <td>货币资金：</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('2')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>货币资金</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('2')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <td>交易性金融资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('3')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>应收票据</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('4')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>应收账款</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('7')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('5')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>预付款项</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('8')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>应收利息</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('9')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>应收股利</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('10')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>其他应收款</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('11')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>存货</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('14')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>一年到期的非流动资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('15')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>其他流动资产</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('16')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td>流动资产合计</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('17')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>其他</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('998')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <td>可供出售金融资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('19')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color:#E8E8E8">
-                                <td>非流动资产：</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('46')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                            <tr>
+                                <td>持有至到期投资</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('20')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>长期应收款</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('21')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>长期股权投资</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('22')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>投资性房地产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('25')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('23')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>固定资产</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('34')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>使用权资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('35')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>无形资产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('40')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('36')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>其他资产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('999')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <td>开发支出</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('41')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
+                            <tr>
+                                <td>长期待摊费用</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('43')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>递延所得税资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('44')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>其他非流动资产</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('45')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td>非流动资产合计</td>
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('46')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>    
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
-                                <td title="资产合计 = 流动资产 + 非流动资产" >资产合计</td>
+                                <td title="资产合计 = 流动资产 + 非流动资产" >资产总计</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('47')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
-                                </c:forEach>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    
-                    
-                    
-                    
-                    
-                    <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
-                        <thead style="background-color: #E8E8E8;">
-                            <tr style="height: 45px;" >
-                                <th>负债和股东权益</th>
-                                <th>#{balanceSheetReportBean.statusMap.th1title}</th>
-                                <th>#{balanceSheetReportBean.statusMap.th2title}</th>
-                                <th>差异额</th>
-                                <th>变动幅度</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table">
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
-                                <td>流动负债：</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('17')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>短期借款</td>
+                                <td> 短期借款</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('2')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>应付票据</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('4')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>应付账款</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('5')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>预收账款</td>
+                                <td> 预收款项</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('6')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>应付职工薪酬</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('7')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
+
+
                             <tr>
                                 <td>应交税费</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('8')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>应交股利</td>
+                                <td>应付利息</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('9')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>应付股利</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('10')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>其他</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('998')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <td>其他应付款</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('11')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #E8E8E8">
-                                <td>非流动负债：</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('28')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                            <tr>
+                                <td> 一年内到期的非流动负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('12')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
+                            <tr>
+                                <td>其他流动负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('13')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td >流动负债合计</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('17')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+
                             <tr>
                                 <td>长期借款</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('19')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
-                                <td>其他</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('999')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <td>租赁负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('21')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
-                                <td title="负债合计 = 流动负债 + 非流动负债">负债合计</td>
+                            <tr>
+                                <td>长期应付款</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('22')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>预计负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('24')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>递延收益</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('25')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>递延所得税负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('26')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>其他非流动负债</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('27')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td >非流动负债合计</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('28')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td >负债合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('29')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+
+                            <tr>
+                                <td>股东权益</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('39')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>股本</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('40')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>资本公积</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('41')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>减：库存股</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('42')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>盈余公积</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('43')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
+                                </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>本年利润</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('44')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>未分配利润</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('1000')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('45')}" var="item" >
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
-                            <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
-                                <td>股东权益合计</td>
+                            <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
+                                <td >股东权益合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('46')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr name="btitle" style="text-align: left;background-color: #8CB4E2">
-                                <td>负债和权益股东总计</td>
+                                <td title="资产合计 = 流动资产 + 非流动资产" >负债和股东权益总计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('47')}" var="item" >
-                                    <td style="text-align: right">#{item}</td>
+                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
                         </tbody>
@@ -327,5 +436,4 @@
             </div>
         </h:form>
     </ui:define>
-
 </ui:composition>
