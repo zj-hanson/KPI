@@ -34,6 +34,22 @@
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 25px" >No records found.</span>
                 </div>
                 <div style="display:#{balanceSheetReportBean.statusMap.displaydiv2};" align="right">
+                    <script type="text/javascript">
+                        $(function () {
+                            $(".table tr[name != btitle]").hover(function () {
+                                $(this).css("background-color", "#1AB394");
+                            }, function () {
+                                $(this).css("background-color", "");
+                            });
+                        });
+                        $(function () {
+                            $(".table tr[name = btitle]").hover(function () {
+                                $(this).css("background-color", "#1AB394");
+                            }, function () {
+                                $(this).css("background-color", "#8CB4E2");
+                            });
+                        });
+                    </script>
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;"  >
                             <tr style="height: 45px;">
@@ -46,7 +62,7 @@
                         </thead>
                         <tbody class="table">
                             <tr>
-                                <td>货币资金：</td>
+                                <td>货币资金</td>
                                 <c:forEach items="#{balanceSheetReportBean.zcmap.get('2')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
@@ -65,7 +81,7 @@
                             </tr>
                             <tr>
                                 <td>应收账款</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('5')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('7')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
@@ -89,7 +105,7 @@
                             </tr>
                             <tr>
                                 <td>其他应收款</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('11')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('13')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
@@ -143,7 +159,7 @@
                             </tr>
                             <tr>
                                 <td>投资性房地产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('23')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('25')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
@@ -161,7 +177,7 @@
                             </tr>
                             <tr>
                                 <td>无形资产</td>
-                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('36')}" var="item" >
+                                <c:forEach items="#{balanceSheetReportBean.zcmap.get('40')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
@@ -327,13 +343,6 @@
                             <tr name="btitle" style="text-align: left;background-color:#C0C0C0">
                                 <td >负债合计</td>
                                 <c:forEach items="#{balanceSheetReportBean.fzmap.get('29')}" var="item" >
-                                    <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
-                                </c:forEach>
-                            </tr>
-
-                            <tr>
-                                <td>股东权益</td>
-                                <c:forEach items="#{balanceSheetReportBean.fzmap.get('39')}" var="item" >
                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '-': item}</td>
                                 </c:forEach>
                             </tr>
