@@ -37,17 +37,17 @@
                     <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 30px" >No records found.</span>
                 </div>
                 <div style="display:#{incomeStatementReportBean.statusMap.displaydiv2};" align="right">
-                    <!--                    <script type="text/javascript">
-                                            $(function () {
-                                                $("#table tr").hover(function () {
-                                                    $(this).css("background-color", "#1AB394");
-                                                    $(this).css("color", "white");
-                                                }, function () {
-                                                    $(this).css("background-color", "");
-                                                    $(this).css("color", "black");
-                                                });
-                                            });
-                                        </script>-->
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#table tr").hover(function () {
+                                $(this).css("background-color", "#1AB394");
+                                $(this).css("color", "white");
+                            }, function () {
+                                $(this).css("background-color", "");
+                                $(this).css("color", "black");
+                            });
+                        });
+                    </script>
                     <table  cellspacing="0" border="1" style="border-color: #FFFFFF;table-layout:fixed;width: 100%;height: 540px;text-align: center;font-size: 18px;border:1px solid #000000">
                         <thead style="background-color: #E8E8E8;">
                             <tr style="height: 34px;">
@@ -85,19 +85,19 @@
                                     <td style="text-align: right;">#{item}</td>
                                 </c:forEach>
                             </tr>
-         
+
                             <tr>
                                 <td>销售税金</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('3')}" var="item" >
-                                      <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -108,15 +108,15 @@
                             <tr>
                                 <td>销售费用</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('4')}" var="item" >
-                                      <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -127,15 +127,15 @@
                             <tr>
                                 <td>管理费用</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('5')}" var="item" >
-                                     <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -148,13 +148,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('6')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -167,13 +167,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('7')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -186,13 +186,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('8')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -205,13 +205,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('9')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -222,15 +222,15 @@
                             <tr style="background-color: #8CB4E2">
                                 <td>营业利润</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('11')}" var="item" >
-                                     <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -243,13 +243,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('12')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -262,13 +262,13 @@
                                 <c:forEach items="#{incomeStatementReportBean.map.get('13')}" var="item" >
                                     <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -279,15 +279,15 @@
                             <tr style="background-color: #8CB4E2">
                                 <td>税前利润</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('15')}" var="item" >
-                                   <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
@@ -298,15 +298,15 @@
                             <tr>
                                 <td>所得税</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('16')}" var="item" >
-                                     <c:choose>
+                                    <c:choose>
                                         <c:when test="${item=='0.00'}">
-                                          <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='0.00％'}">
                                             <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:when test="${item=='100.00％'}">
-                                                   <td style="text-align: right;"></td>
+                                            <td style="text-align: right;"></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: right;">#{item}</td>
