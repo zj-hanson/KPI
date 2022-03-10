@@ -227,13 +227,26 @@
                             <tr  name="btitle" style="background-color: #8CB4E2">
                                 <td>营业利润</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('11')}" var="item" >
-                                    <td style="text-align: right;">#{item}</td>
+                                       <c:choose>
+                                        <c:when test="${item=='0.00'}">
+                                            <td style="text-align: right;"></td>
+                                        </c:when>
+                                        <c:when test="${item=='0.00％'}">
+                                            <td style="text-align: right;"></td>
+                                        </c:when>
+                                        <c:when test="${item=='100.00％'}">
+                                            <td style="text-align: right;"></td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td style="text-align: right;">#{item}</td>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:forEach>
                             </tr>
                             <tr>
                                 <td>营业外收入</td>
                                 <c:forEach items="#{incomeStatementReportBean.map.get('12')}" var="item" >
-                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％'? '': item}</td>
+                                     <td style="text-align: right">#{item=='0.00' || item=='0.00％' || item =='100.00％'? '': item}</td>
                                 </c:forEach>
                             </tr>
                             <tr>

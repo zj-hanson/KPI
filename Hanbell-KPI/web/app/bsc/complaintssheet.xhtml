@@ -41,7 +41,18 @@
                         </f:facet>
                         <c:forEach items="#{complaintsChartReportBean.indicatorList}" var="item" varStatus="status">
                             <p:row>
-                                <p:column rowspan="#{item.descript=='真空'?5:4}" style="font-size:24px">#{item.descript}</p:column>
+                                <c:choose>
+                                    <c:when test="#{item.descript=='真空'}">
+                                          <p:column rowspan="5" style="font-size:24px">#{item.descript}</p:column>
+                                    </c:when>
+                                    <c:when test="#{item.descript=='机组'}">
+                                         <p:column rowspan="3" style="font-size:24px">#{item.descript}</p:column>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p:column rowspan="4" style="font-size:24px;background-color: white">#{item.descript}</p:column>
+                                    </c:otherwise>
+                                </c:choose>
+
                                 <p:column>基准值</p:column>
                                 <p:column rendered="#{complaintsChartReportBean.visible(1)}" style="#{complaintsChartReportBean.m==1?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.benchmarkIndicator.n01)}</p:column>
                                 <p:column rendered="#{complaintsChartReportBean.visible(2)}" style="#{complaintsChartReportBean.m==2?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.benchmarkIndicator.n02)}</p:column>
@@ -108,24 +119,6 @@
                                         <p:column>#{item.other3Indicator.remark1}</p:column>
                                     </p:row>
                                 </c:when>
-                                <c:when test="${item.descript== '机组'}">
-                                    <p:row>
-                                        <p:column>九框客诉</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(1)}" style="#{complaintsChartReportBean.m==1?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n01,1)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(2)}" style="#{complaintsChartReportBean.m==2?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n02,2)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(3)}" style="#{complaintsChartReportBean.m==3?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n03,3)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(4)}" style="#{complaintsChartReportBean.m==4?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n04,4)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(5)}" style="#{complaintsChartReportBean.m==5?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n05,5)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(6)}" style="#{complaintsChartReportBean.m==6?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n06,6)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(7)}" style="#{complaintsChartReportBean.m==7?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n07,7)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(8)}" style="#{complaintsChartReportBean.m==8?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n08,8)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(9)}" style="#{complaintsChartReportBean.m==9?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n09,9)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(10)}" style="#{complaintsChartReportBean.m==10?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n10,10)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(11)}" style="#{complaintsChartReportBean.m==11?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n11,11)}</p:column>
-                                        <p:column rendered="#{complaintsChartReportBean.visible(12)}" style="#{complaintsChartReportBean.m==12?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other6Indicator.n12,12)}</p:column>
-                                        <p:column>#{item.other6Indicator.remark1}%</p:column>
-                                    </p:row>
-                                </c:when>
                                 <c:when test="${item.descript == '真空' }">
                                     <p:row>
                                         <p:column>实际值(干泵)</p:column>
@@ -157,7 +150,7 @@
                                         <p:column rendered="#{complaintsChartReportBean.visible(10)}" style="#{complaintsChartReportBean.m==10?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other5Indicator.n10,10)}</p:column>
                                         <p:column rendered="#{complaintsChartReportBean.visible(11)}" style="#{complaintsChartReportBean.m==11?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other5Indicator.n11,11)}</p:column>
                                         <p:column rendered="#{complaintsChartReportBean.visible(12)}" style="#{complaintsChartReportBean.m==12?'color:red':''}">#{complaintsChartReportBean.doubleformat(item.other5Indicator.n12,12)}</p:column>
-                                         <p:column>#{item.other5Indicator.remark1}%</p:column>
+                                        <p:column>#{item.other5Indicator.remark1}%</p:column>
                                     </p:row>
                                 </c:when>
                             </c:choose>
