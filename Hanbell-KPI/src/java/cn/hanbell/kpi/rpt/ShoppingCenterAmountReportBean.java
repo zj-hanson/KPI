@@ -5,13 +5,20 @@
  */
 package cn.hanbell.kpi.rpt;
 
+import cn.hanbell.kpi.ejb.ShoppingAccomuntBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.web.BscChartManagedBean;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -26,65 +33,63 @@ import org.primefaces.model.chart.PieChartModel;
 public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
 
     protected final DecimalFormat floatFormat;
-    private List<Indicator> indicatorList;
+    private List<Object[]> list;
+    protected LinkedHashMap<String, String> statusMap;
     private PieChartModel pieModel1;
     private PieChartModel pieModel2;
     private BigDecimal sum1X000Money;
     private BigDecimal sumAllMoney;
+    private Date btnDate;
+    @EJB
+    private ShoppingAccomuntBean shoppingAccomuntBean;
 
     public ShoppingCenterAmountReportBean() {
-        this.floatFormat = new DecimalFormat("#,###.00");
+        this.floatFormat = new DecimalFormat("#,###.##");
     }
 
     @Override
     public void init() {
-        super.init();
-        this.monthchecked = false;
-        indicatorList = indicatorBean.findByCategoryAndYear("采购金额", y);
-        if (indicatorList.isEmpty()) {
-            showInfoMsg("Info", "没有数据可展示");
-        }
-        //计算各数值的百分比
-        for(int i=indicatorList.size()-1;i>=0;i--){
-            if(indicatorList.get(i).getName().contains("采购中心")){
-                //采购中心的交易额/该公司的交易额
-                indicatorList.get(i).getActualIndicator().setRemark1(percentFormat(indicatorList.get(i).getActualIndicator().getNfy(),indicatorList.get(i-1).getActualIndicator().getNfy(),2));
-            }else{
-                 indicatorList.get(i).getActualIndicator().setRemark1(percentFormat(indicatorList.get(i).getActualIndicator().getNfy(),indicatorList.get(6).getActualIndicator().getNfy(),2));
-            }        
-        }
-        //根据指标ID加载指标说明、指标分析
-        analysisList = indicatorAnalysisBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标分析
-        if (analysisList != null) {
-            this.analysisCount = analysisList.size();
-        }
-        summaryList = indicatorSummaryBean.findByPIdAndMonth(indicator.getId(), this.getM());//指标说明
-        if (summaryList != null) {
-            this.summaryCount = summaryList.size();
-        }
-        try {
-            createPieModel1(indicatorList);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
 
+        super.init();
+        statusMap = new LinkedHashMap<>();
+        statusMap.put("displaydiv1", "block");
+        statusMap.put("displaydiv2", "none");
+        btnDate = userManagedBean.getBaseDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(btnDate);
+        statusMap.put("title", String.valueOf(c.get(Calendar.YEAR)));
+
+    }
+
+    public void query() {
+        try {
+            list = shoppingAccomuntBean.getList(btnDate);
+            if (list != null && !list.isEmpty()) {
+                statusMap.put("displaydiv1", "none");
+                statusMap.put("displaydiv2", "block");
+            }
+        } catch (Exception e) {
+            System.out.println("e==" + e);
         }
     }
 
-    private void createPieModel1(List<Indicator> indicatorList) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    public void reset() {
+        statusMap.put("displaydiv1", "block");
+        statusMap.put("displaydiv2", "none");
+        list.clear();
+    }
+
+    private void createPieModel() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         pieModel1 = new PieChartModel();
         pieModel2 = new PieChartModel();
 
-        for (Indicator i : indicatorList) {
-            if ("采购中心".equals(i.getDescript())) {
+        for (Object[] i : list) {
+            if (i[0].equals("采购中心")) {
                 //采购中心饼图
-                pieModel1.set(i.getName(), i.getActualIndicator().getNfy());
-            } else if ("采购金额".equals(i.getDescript())) {
+                pieModel1.set((String) i[0], (BigDecimal) i[13]);
+            } else {
                 //采购金额集团饼图
-                pieModel2.set(i.getName(), i.getActualIndicator().getNfy());
-            }
-            if ("A-集团采购中心合计".equals(i.getFormid())) {
-                this.sum1X000Money = i.getActualIndicator().getNfy();
-            } else if ("A-集团采购金额合计".equals(i.getFormid())) {
-                this.sumAllMoney = i.getActualIndicator().getNfy();
+                pieModel2.set((String) i[0], (BigDecimal) i[13]);
             }
         }
         pieModel1.setTitle("集团采购中心采购金额");
@@ -93,7 +98,6 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
         pieModel1.setShowDataLabels(true);
         pieModel1.setDiameter(250);
         pieModel1.setShadow(false);
-
         pieModel2.setTitle("集团总采购金额");
         pieModel2.setLegendPosition("e");
         pieModel2.setFill(true);
@@ -102,22 +106,18 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
         pieModel2.setShadow(false);
 
     }
-    
-    
 
-    public String percentFormat(BigDecimal value1,BigDecimal value2, int i) {
+    public String percentFormat(BigDecimal value1, BigDecimal value2, int i) {
         if (value1 == null || value1 == BigDecimal.ZERO) {
             return "0.00%";
         }
-          if (value2 == null || value2 == BigDecimal.ZERO) {
-            return "0.00%";
-        }  
-          if (i == 0 || value2 == BigDecimal.ZERO) {
+        if (value2 == null || value2 == BigDecimal.ZERO) {
             return "0.00%";
         }
-          
+        if (i == 0 || value2 == BigDecimal.ZERO) {
+            return "0.00%";
+        }
         return percentFormat(value1.multiply(BigDecimal.valueOf(100)).divide(value2, i, BigDecimal.ROUND_HALF_UP), 2);
-
     }
 
     public double getMonthSUM(IndicatorDetail indicatorDetail) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
@@ -131,24 +131,16 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
         return a1;
     }
 
-    public String doubleformat(BigDecimal value, BigDecimal scale) {
-            if (scale == null || scale.compareTo(BigDecimal.ZERO) == 0) {
-            return "";
-        } 
+    @Override
+    public String doubleformat(BigDecimal value, int scale) {
+        BigDecimal sc = new BigDecimal(scale);
+
         if (value == null || value.compareTo(BigDecimal.ZERO) == 0) {
-            return "";
+            return "0";
         } else {
-             value=value.divide(scale);
+            value = value.divide(sc);
             return floatFormat.format(value);
         }
-    }
-
-    public List<Indicator> getIndicatorList() {
-        return indicatorList;
-    }
-
-    public void setIndicatorList(List<Indicator> indicatorList) {
-        this.indicatorList = indicatorList;
     }
 
     public PieChartModel getPieModel1() {
@@ -165,6 +157,30 @@ public class ShoppingCenterAmountReportBean extends BscChartManagedBean {
 
     public void setPieModel2(PieChartModel pieModel2) {
         this.pieModel2 = pieModel2;
+    }
+
+    public List<Object[]> getList() {
+        return list;
+    }
+
+    public void setList(List<Object[]> list) {
+        this.list = list;
+    }
+
+    public Date getBtnDate() {
+        return btnDate;
+    }
+
+    public void setBtnDate(Date btnDate) {
+        this.btnDate = btnDate;
+    }
+
+    public LinkedHashMap<String, String> getStatusMap() {
+        return statusMap;
+    }
+
+    public void setStatusMap(LinkedHashMap<String, String> statusMap) {
+        this.statusMap = statusMap;
     }
 
 }

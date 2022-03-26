@@ -234,8 +234,18 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>weight</from-outcome>
+            <to-view-id>/app/prod/weight.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>scorecarddetailprint</from-outcome>
             <to-view-id>/app/prod/scorecarddetailPrint.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+                <navigation-case>
+            <from-outcome>shoppingAmountEdit</from-outcome>
+            <to-view-id>/app/prod/shoppingAmountEdit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -518,6 +528,11 @@
         <navigation-case>
             <from-outcome>scorecardbsc</from-outcome>
             <to-view-id>/app/bsc/scorecardbsc.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+                <navigation-case>
+            <from-outcome>shoppingcenteramountfromhs</from-outcome>
+            <to-view-id>/app/bsc/shoppingcenteramountfromhs.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <!--HS/HY-->

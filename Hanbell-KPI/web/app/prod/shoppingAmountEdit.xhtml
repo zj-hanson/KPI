@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="formList" style="height: 700px" >
+            <p:growl id="growl" showSummary="false" showDetail="true"/>
+            <p:panelGrid id="plgQuery" columns="9" columnClasses="Wid10,Wid15,Wid10,Wid15,Wid10,Wid15,Wid10,Wid10" styleClass="plgQuery Wid100" >
+                <f:facet name="header">
+                    查询条件
+                </f:facet>
+                <h:outputLabel value="日期：" for="btnDate" />
+                <p:calendar id="btnDate" value="#{shoppingAmountManagedBean.btnDate}" title="导出时间" pattern="yyyy/MM/dd" />
+                <p:commandButton id="download" value="同步" actionListener="#{shoppingAmountManagedBean.download()}" icon="ui-icon-print"/>
+                <p:commandButton id="update" value="更新" actionListener="#{shoppingAmountManagedBean.update()}" icon="ui-icon-print"/>
+ <p:commandButton id="print" value="下载" actionListener="#{shoppingAmountManagedBean.print()}" icon="ui-icon-print"/>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

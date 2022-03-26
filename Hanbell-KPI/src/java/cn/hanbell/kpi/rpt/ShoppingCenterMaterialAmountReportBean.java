@@ -5,16 +5,27 @@
  */
 package cn.hanbell.kpi.rpt;
 
+import cn.hanbell.kpi.ejb.IndicatorDetailBean;
+import cn.hanbell.kpi.ejb.ShoppingAccomuntBean;
+import cn.hanbell.kpi.ejb.ShoppingManufacturerBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.util.BaseLib;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -34,6 +45,20 @@ public class ShoppingCenterMaterialAmountReportBean extends FinancingFreeService
     private Date btndate;
     private double monthSum;
     private double yearSum;
+    private List<Object[]> shbList;
+    private List<Object[]> thbList;
+    private List<Object[]> hsList;
+    private List<Object[]> scmList;
+    private List<Object[]> zcmList;
+    private List<Object[]> hyList;
+
+    @EJB
+    private ShoppingAccomuntBean shoppoingAccoumuntBean;
+
+    @EJB
+    private ShoppingManufacturerBean shoppingManufacturerBean;
+    @EJB
+    private IndicatorDetailBean indicatorDetailBean;
 
     public ShoppingCenterMaterialAmountReportBean() {
         super();
@@ -73,7 +98,7 @@ public class ShoppingCenterMaterialAmountReportBean extends FinancingFreeService
             indicatorList = indicatorBean.findByCategoryAndYear("物料采购金额", y);
             Field f;
             String mon = indicatorBean.getIndicatorColumn("N", m);
-            Double a1 = 0.0, a2 = 0.0, a3 = 0.0, a4 = 0.0, b1 = 0.0;
+            Double a1 = 0.0, a2 = 0.0, a3 = 0.0, a4 = 0.0, a5 = 0.0, a6 = 0.0, a7 = 0.0, b1 = 0.0;
 
             for (Indicator indicator : indicatorList) {
                 indicator.setCategory(m + "月");
@@ -94,8 +119,22 @@ public class ShoppingCenterMaterialAmountReportBean extends FinancingFreeService
                 f.setAccessible(true);
                 a3 += Double.valueOf(f.get(o3).toString());
 
-                a4 += indicator.getActualIndicator().getNfy().doubleValue();
+                IndicatorDetail o4 = indicator.getOther4Indicator();
+                f = o4.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                a4 += Double.valueOf(f.get(o4).toString());
 
+                IndicatorDetail o5 = indicator.getOther5Indicator();
+                f = o5.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                a5 += Double.valueOf(f.get(o5).toString());
+
+                IndicatorDetail o6 = indicator.getOther6Indicator();
+                f = o6.getClass().getDeclaredField(mon);
+                f.setAccessible(true);
+                a6 += Double.valueOf(f.get(o6).toString());
+
+                a7 += indicator.getActualIndicator().getNfy().doubleValue();
                 IndicatorDetail bench = indicator.getBenchmarkIndicator();
                 f = bench.getClass().getDeclaredField(mon);
                 f.setAccessible(true);
@@ -108,7 +147,7 @@ public class ShoppingCenterMaterialAmountReportBean extends FinancingFreeService
             IndicatorDetail authDetail = new IndicatorDetail();
             f = authDetail.getClass().getDeclaredField(mon);
             f.setAccessible(true);
-            f.set(authDetail, BigDecimal.valueOf(a1 + a2 + a3));
+            f.set(authDetail, BigDecimal.valueOf(a1 + a2 + a3+a4+a5+a6));
 
             //上海汉钟合计
             IndicatorDetail other1Detail = new IndicatorDetail();
@@ -125,21 +164,41 @@ public class ShoppingCenterMaterialAmountReportBean extends FinancingFreeService
             f = other3Detail.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             f.set(other3Detail, BigDecimal.valueOf(a3));
+
+            //上海柯茂合计
+            IndicatorDetail other4Detail = new IndicatorDetail();
+            f = other4Detail.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            f.set(other4Detail, BigDecimal.valueOf(a4));
+            //浙江柯茂合计
+            IndicatorDetail other5Detail = new IndicatorDetail();
+            f = other5Detail.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            f.set(other5Detail, BigDecimal.valueOf(a5));
+            //安徽汉扬合计
+            IndicatorDetail other6Detail = new IndicatorDetail();
+            f = other6Detail.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            f.set(other6Detail, BigDecimal.valueOf(a6));
             //基准值合计
             IndicatorDetail benchDetail = new IndicatorDetail();
             f = benchDetail.getClass().getDeclaredField(mon);
             f.setAccessible(true);
             f.set(benchDetail, BigDecimal.valueOf(b1));
             //实际合计
-            authDetail.setNfy(BigDecimal.valueOf(a4));
+            authDetail.setNfy(BigDecimal.valueOf( a7));
             sumIndicator.setActualIndicator(authDetail);
             sumIndicator.setOther1Indicator(other1Detail);
             sumIndicator.setOther2Indicator(other2Detail);
             sumIndicator.setOther3Indicator(other3Detail);
+            sumIndicator.setOther4Indicator(other4Detail);
+            sumIndicator.setOther5Indicator(other5Detail);
+            sumIndicator.setOther6Indicator(other6Detail);
             sumIndicator.setBenchmarkIndicator(benchDetail);
+
             indicatorList.add(sumIndicator);
-            monthSum = a1 + a2 + a3;
-            yearSum = a4;
+            monthSum = a1 + a2 + a3 + a4 + a5 + a6;
+            yearSum = a7;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
