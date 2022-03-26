@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ShoppingManufacturer.findByVdrno", query = "SELECT s FROM ShoppingManufacturer s WHERE s.vdrno = :vdrno"),
     @NamedQuery(name = "ShoppingManufacturer.findByVdrna", query = "SELECT s FROM ShoppingManufacturer s WHERE s.vdrna = :vdrna"),
     @NamedQuery(name = "ShoppingManufacturer.findByFacno", query = "SELECT s FROM ShoppingManufacturer s WHERE s.facno = :facno"),
-    @NamedQuery(name = "ShoppingManufacturer.findByMaterialTypeName", query = "SELECT s FROM ShoppingManufacturer s WHERE s.materialTypeName = :materialTypeName"),
+    @NamedQuery(name = "ShoppingManufacturer.findByFacnoAndMaterialTypeName", query = "SELECT s FROM ShoppingManufacturer s WHERE s.facno = :facno and s.materialTypeName in(:materialTypeName)"),
     @NamedQuery(name = "ShoppingManufacturer.findByUserno", query = "SELECT s FROM ShoppingManufacturer s WHERE s.userno = :userno"),
     @NamedQuery(name = "ShoppingManufacturer.findByUserna", query = "SELECT s FROM ShoppingManufacturer s WHERE s.userna = :userna"),
     @NamedQuery(name = "ShoppingManufacturer.findByStatus", query = "SELECT s FROM ShoppingManufacturer s WHERE s.status = :status"),
@@ -36,7 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ShoppingManufacturer.findByOptuser", query = "SELECT s FROM ShoppingManufacturer s WHERE s.optuser = :optuser"),
     @NamedQuery(name = "ShoppingManufacturer.findByOptdate", query = "SELECT s FROM ShoppingManufacturer s WHERE s.optdate = :optdate"),
     @NamedQuery(name = "ShoppingManufacturer.findByCfmuser", query = "SELECT s FROM ShoppingManufacturer s WHERE s.cfmuser = :cfmuser"),
-    @NamedQuery(name = "ShoppingManufacturer.findByCfmdate", query = "SELECT s FROM ShoppingManufacturer s WHERE s.cfmdate = :cfmdate")})
+    @NamedQuery(name = "ShoppingManufacturer.findByCfmdate", query = "SELECT s FROM ShoppingManufacturer s WHERE s.cfmdate = :cfmdate"),
+    @NamedQuery(name = "ShoppingManufacturer.findByVdrnoAndFacno", query = "SELECT s FROM ShoppingManufacturer s WHERE s.vdrno = :vdrno and s.facno = :facno")})
+
 public class ShoppingManufacturer extends SuperEntity {
 
     private static final long serialVersionUID = 1L;
@@ -60,14 +62,12 @@ public class ShoppingManufacturer extends SuperEntity {
     @Column(name = "userna")
     private String userna;
 
-
     public ShoppingManufacturer() {
     }
 
     public ShoppingManufacturer(Integer id) {
         this.id = id;
     }
-
 
     public String getVdrno() {
         return vdrno;
@@ -141,5 +141,5 @@ public class ShoppingManufacturer extends SuperEntity {
     public String toString() {
         return "cn.hanbell.kpi.entity.ShoppingManufacturer[ id=" + id + " ]";
     }
-    
+
 }

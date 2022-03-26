@@ -31,11 +31,14 @@ public class ShoppingCenterMaterailAmountOtherSum extends Productivity {
         String mon;
         Field f;
         BigDecimal v1;
-        Double a1, a2, a3;
+        Double a1, a2, a3, a4, a5, a6;
         Indicator i = indicatorBean.findByFormidYearAndDeptno(map.get("formid").toString(), y, map.get("deptno").toString());
         IndicatorDetail o1 = i.getOther1Indicator();
         IndicatorDetail o2 = i.getOther2Indicator();
         IndicatorDetail o3 = i.getOther3Indicator();
+        IndicatorDetail o4 = i.getOther4Indicator();
+        IndicatorDetail o5 = i.getOther5Indicator();
+        IndicatorDetail o6 = i.getOther6Indicator();
         try {
             mon = indicatorBean.getIndicatorColumn("N", m);
             f = o1.getClass().getDeclaredField(mon);
@@ -50,7 +53,19 @@ public class ShoppingCenterMaterailAmountOtherSum extends Productivity {
             f.setAccessible(true);
             a3 = Double.valueOf(f.get(o3).toString());
 
-            v1 = BigDecimal.valueOf(a1 + a2 + a3);
+            f = o4.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a4 = Double.valueOf(f.get(o4).toString());
+
+            f = o5.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a5 = Double.valueOf(f.get(o5).toString());
+
+            f = o6.getClass().getDeclaredField(mon);
+            f.setAccessible(true);
+            a6 = Double.valueOf(f.get(o6).toString());
+
+            v1 = BigDecimal.valueOf(a1 + a2 + a3 + a4 + a5 + a6);
 
             return v1;
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {

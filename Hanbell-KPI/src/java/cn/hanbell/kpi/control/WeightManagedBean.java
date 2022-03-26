@@ -5,10 +5,13 @@
  */
 package cn.hanbell.kpi.control;
 
-import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.ejb.ShoppingAccomuntBean;
 import cn.hanbell.kpi.ejb.ShoppingManufacturerBean;
+import cn.hanbell.kpi.ejb.ShoppingMenuWeightBean;
 import cn.hanbell.kpi.entity.ShoppingManufacturer;
+import cn.hanbell.kpi.entity.ShoppingMenuWeight;
+import cn.hanbell.kpi.lazy.MailSettingModel;
+import cn.hanbell.kpi.lazy.ShoppingMenuWeightModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
 import java.io.File;
@@ -19,10 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -43,67 +43,62 @@ import org.primefaces.model.UploadedFile;
  *
  * @author C2082
  */
-@ManagedBean(name = "facturerManagedBean")
+@ManagedBean(name = "weightManagedBean")
 @SessionScoped
-public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
+public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
 
+    @EJB
+    protected ShoppingMenuWeightBean shoppingMenuWeightBean;
     @EJB
     protected ShoppingManufacturerBean shoppingManufacturerBean;
-
     @EJB
-    private ShoppingAccomuntBean shoppingAccomuntBean;
-
-    private List<ShoppingManufacturer> list;
+    protected ShoppingAccomuntBean shoppingAccomuntBean;
     private String queryFacno;
-    private String queryUserna;
-    private String queryVdrna;
-    private ShoppingManufacturer selectedPrupcm;
+    private String queryItnbr;
     private Date queryDate;
 
     private String inputFacno;
-    private String inputVdrno;
-    private String inputVdrna;
-    private String inputUserno;
-    private String inputUserna;
-    private String inputMaterialTypeName;
+    private String inputItnbr;
+    private String inputItdsc;
+    private BigDecimal inputWeight;
 
-    public FacturerManagedBean() {
-        super(ShoppingManufacturer.class);
+    public WeightManagedBean() {
+        super(ShoppingMenuWeight.class);
     }
 
     @Override
     public void init() {
+        model = new ShoppingMenuWeightModel(shoppingMenuWeightBean);
         queryFacno = "C";
-        list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno, queryUserna, queryVdrna);
-
+        query();
     }
 
     @Override
     public void query() {
-        try {
-            list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno, queryUserna, queryVdrna);
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "error", e.toString()));
+        if (model != null) {
+            model.getFilterFields().clear();
+            if (queryFacno != null && !"".equals(queryFacno)) {
+                model.getFilterFields().put("facno", queryFacno);
+            }
+            if (queryItnbr != null && !"".equals(queryItnbr)) {
+                model.getFilterFields().put("itnbr", queryItnbr);
+            }
         }
     }
 
     @Override
     public void persist() {
-        ShoppingManufacturer p = new ShoppingManufacturer();
-        p.setFacno(this.inputFacno);
-        p.setVdrno(this.inputVdrno);
-        p.setVdrna(this.inputVdrna);
-        p.setUserno(this.inputUserno);
-        p.setUserna(this.inputUserna);
-        p.setMaterialTypeName(this.inputMaterialTypeName);
+        ShoppingMenuWeight entity = new ShoppingMenuWeight();
+        entity.setFacno(this.inputFacno);
+        entity.setItnbr(this.inputItnbr);
+        entity.setWeight(this.inputWeight);
         try {
-            shoppingManufacturerBean.persist(p);
+            shoppingMenuWeightBean.persist(entity);
             showInfoMsg("Info", "添加成功");
             this.inputFacno = "C";
-            this.inputVdrno = "";
-            this.inputVdrna = "";
-            this.inputUserno = "";
-            this.inputUserna = "";
+            this.inputFacno = "";
+            this.inputItnbr = "";
+            this.inputWeight = BigDecimal.ZERO;
             init();
         } catch (Exception ex) {
             showInfoMsg("Warn", "添加失败" + ex);
@@ -112,34 +107,31 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
 
     @Override
     public void print() throws Exception {
-        if (list == null || list.isEmpty()) {
+        entityList = shoppingMenuWeightBean.findByFilters(model.getFilterFields(), model.getSortFields());
+        if (entityList == null || entityList.isEmpty()) {
             showInfoMsg("Warn", "暂无数据");
         }
-        fileName = "采购中心厂商" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
+        fileName = "采购中心物料重量" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
         String fileFullName = reportOutputPath + fileName;
         HSSFWorkbook wb = new HSSFWorkbook();
         CreationHelper createHelper = wb.getCreationHelper();
         CellStyle cellStyle = wb.createCellStyle();
         //创建内容
-        Sheet sheet = wb.createSheet("采购中心厂商");
+        Sheet sheet = wb.createSheet("采购中心物料重量");
         Cell cell;
         Row row;
         row = sheet.createRow(0);
         row.createCell(0).setCellValue("公司别");
-        row.createCell(1).setCellValue("厂商编号");
-        row.createCell(2).setCellValue("厂商名称");
-        row.createCell(3).setCellValue("物料");
-        row.createCell(4).setCellValue("工号");
-        row.createCell(5).setCellValue("名称");
+        row.createCell(1).setCellValue("品号");
+        row.createCell(2).setCellValue("品名");
+        row.createCell(3).setCellValue("重量");
         int i = 1;
-        for (ShoppingManufacturer e : list) {
+        for (ShoppingMenuWeight e : entityList) {
             row = sheet.createRow(i);
             row.createCell(0).setCellValue(e.getFacno());
-            row.createCell(1).setCellValue(e.getVdrno());
-            row.createCell(2).setCellValue(e.getVdrna());
-            row.createCell(3).setCellValue(e.getMaterialTypeName());
-            row.createCell(4).setCellValue(e.getUserno());
-            row.createCell(5).setCellValue(e.getUserna());
+            row.createCell(1).setCellValue(e.getItnbr());
+            row.createCell(2).setCellValue(e.getItdsc());
+            row.createCell(3).setCellValue(e.getWeight().doubleValue());
             i++;
         }
         OutputStream os = null;
@@ -163,19 +155,84 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
         }
     }
 
-    @Override
-    public void reset() {
+    public StringBuffer getWhereVdrnos(String facno, String materialTypeName) {
+        StringBuffer sql = new StringBuffer("");
+        try {
+            List<ShoppingManufacturer> list = shoppingManufacturerBean.findByMaterialTypeName(facno, materialTypeName);
+            if (list == null || list.isEmpty()) {
+                return sql;
+            }
+            sql.append(" in (");
+            for (ShoppingManufacturer m : list) {
+                sql.append("'").append(m.getVdrno()).append("',");
+            }
+            sql.replace(sql.length() - 1, sql.length(), "").append(")");
+            return sql;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
+    //根据公司别导出需要配置的铸件品号重量
+    public void export() throws Exception {
+        //获取所有重量品号
+        String shbFhszj = " in ('SZJ00065','SZJ00067')";
+        String twFhszj = " in ('1139')";
+        List<ShoppingMenuWeight> entyties = shoppingMenuWeightBean.findByFacno(queryFacno);
+        fileName = "采购中心物料重量" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
+        List<Object[]> shbList = shoppingAccomuntBean.getWeightDate("C", this.queryDate, getWhereVdrnos("C", "'铸件'").toString(), "");
+        List<Object[]> thbList = shoppingAccomuntBean.getWeightDate("A", this.queryDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
+        String fileFullName = reportOutputPath + fileName;
+        OutputStream os = null;
+        os = new FileOutputStream(fileFullName);
+        try {
+            HSSFWorkbook wb = new HSSFWorkbook();
+            CreationHelper createHelper = wb.getCreationHelper();
+            CellStyle cellStyle = wb.createCellStyle();
+            //创建内容
+            Sheet sheet = wb.createSheet("重量");
+            Cell cell;
+            Row row;
+            row = sheet.createRow(0);
+            row.createCell(0).setCellValue("公司别");
+            row.createCell(1).setCellValue("品号");
+            row.createCell(2).setCellValue("品名");
+            row.createCell(3).setCellValue("重量");
+            int i = 1;
+            if (shbList.addAll(thbList)) {
+                for (Object[] obj : shbList) {
+                    ShoppingMenuWeight weight = shoppingMenuWeightBean.findByItnbrAndFacno((String) obj[1], (String) obj[0]);
+                    if (weight == null) {
+                        row = sheet.createRow(i);
+                        row.createCell(0).setCellValue((String) obj[0]);
+                        row.createCell(1).setCellValue((String) obj[1]);
+                        row.createCell(2).setCellValue((String) obj[2]);
+                        i++;
+                    }
+                }
+            }
+            wb.write(os);
+            this.reportViewPath = reportViewContext + fileName;
+            this.preview();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showInfoMsg("Warn", "导出失败" + ex);
+        } finally {
+            try {
+                if (null != os) {
+                    os.flush();
+                    os.close();
+                }
+            } catch (IOException ex) {
+                showInfoMsg("Warn", "导出失败" + ex);
+
+            }
+        }
     }
 
     @Override
-    public void update() {
-        try {
-            shoppingManufacturerBean.update(this.selectedPrupcm);
-            showInfoMsg("Info", "修改成功");
-        } catch (Exception ex) {
-            showInfoMsg("Warn", "修改失败" + ex);
-        }
+    public void reset() {
+
     }
 
     public void handleFileUploadWhenNew(FileUploadEvent event) {
@@ -191,19 +248,24 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                     Row row = sheet.getRow(i);
                     String facno = cellToVlaue(row.getCell(0));
-                    String vdrno = cellToVlaue(row.getCell(1));
-                    ShoppingManufacturer k = shoppingManufacturerBean.findByVdrnoAndFacno(vdrno, facno);
+                    String itnbr = cellToVlaue(row.getCell(1));
+                    ShoppingMenuWeight k = shoppingMenuWeightBean.findByItnbrAndFacno(itnbr, facno);
                     if (k != null) {
-                        shoppingManufacturerBean.delete(k);
+                        shoppingMenuWeightBean.delete(k);
                     }
-                    ShoppingManufacturer purpcm = new ShoppingManufacturer();
-                    purpcm.setFacno(facno);
-                    purpcm.setVdrno(vdrno);
-                    purpcm.setVdrna(cellToVlaue(row.getCell(2)));
-                    purpcm.setMaterialTypeName(cellToVlaue(row.getCell(3)));
-                    purpcm.setUserno(cellToVlaue(row.getCell(4)));
-                    purpcm.setUserna(cellToVlaue(row.getCell(5)));
-                    shoppingManufacturerBean.persist(purpcm);
+//                    ShoppingManufacturer purpcm = new ShoppingManufacturer();
+//                    purpcm.setFacno(facno);
+//                    purpcm.setVdrno(vdrno);
+//                    purpcm.setVdrna(cellToVlaue(row.getCell(2)));
+//                    purpcm.setMaterialTypeName(cellToVlaue(row.getCell(3)));
+//                    purpcm.setUserno(cellToVlaue(row.getCell(4)));
+//                    purpcm.setUserna(cellToVlaue(row.getCell(5)));
+                    ShoppingMenuWeight entity = new ShoppingMenuWeight();
+                    entity.setFacno(facno);
+                    entity.setItnbr(itnbr);
+                    entity.setItdsc(cellToVlaue(row.getCell(2)));
+                    entity.setWeight(BigDecimal.valueOf(Double.valueOf(cellToVlaue(row.getCell(3)))));
+                    shoppingMenuWeightBean.persist(entity);
                 }
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传成功"));
             } catch (Exception ex) {
@@ -279,14 +341,6 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
         return "";
     }
 
-    public List<ShoppingManufacturer> getList() {
-        return list;
-    }
-
-    public void setList(List<ShoppingManufacturer> list) {
-        this.list = list;
-    }
-
     public String getQueryFacno() {
         return queryFacno;
     }
@@ -295,20 +349,12 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
         this.queryFacno = queryFacno;
     }
 
-    public String getQueryUserna() {
-        return queryUserna;
+    public String getQueryItnbr() {
+        return queryItnbr;
     }
 
-    public void setQueryUserna(String queryUserna) {
-        this.queryUserna = queryUserna;
-    }
-
-    public String getQueryVdrna() {
-        return queryVdrna;
-    }
-
-    public void setQueryVdrna(String queryVdrna) {
-        this.queryVdrna = queryVdrna;
+    public void setQueryItnbr(String queryItnbr) {
+        this.queryItnbr = queryItnbr;
     }
 
     public String getInputFacno() {
@@ -319,60 +365,20 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
         this.inputFacno = inputFacno;
     }
 
-    public String getInputVdrno() {
-        return inputVdrno;
+    public String getInputItnbr() {
+        return inputItnbr;
     }
 
-    public void setInputVdrno(String inputVdrno) {
-        this.inputVdrno = inputVdrno;
+    public void setInputItnbr(String inputItnbr) {
+        this.inputItnbr = inputItnbr;
     }
 
-    public String getInputVdrna() {
-        return inputVdrna;
+    public BigDecimal getInputWeight() {
+        return inputWeight;
     }
 
-    public void setInputVdrna(String inputVdrna) {
-        this.inputVdrna = inputVdrna;
-    }
-
-    public String getInputUserno() {
-        return inputUserno;
-    }
-
-    public void setInputUserno(String inputUserno) {
-        this.inputUserno = inputUserno;
-    }
-
-    public String getInputUserna() {
-        return inputUserna;
-    }
-
-    public void setInputUserna(String inputUserna) {
-        this.inputUserna = inputUserna;
-    }
-
-    public String getInputMaterialTypeName() {
-        return inputMaterialTypeName;
-    }
-
-    public void setInputMaterialTypeName(String inputMaterialTypeName) {
-        this.inputMaterialTypeName = inputMaterialTypeName;
-    }
-
-    public ShoppingManufacturerBean getShoppingManufacturerBean() {
-        return shoppingManufacturerBean;
-    }
-
-    public void setShoppingManufacturerBean(ShoppingManufacturerBean shoppingManufacturerBean) {
-        this.shoppingManufacturerBean = shoppingManufacturerBean;
-    }
-
-    public ShoppingManufacturer getSelectedPrupcm() {
-        return selectedPrupcm;
-    }
-
-    public void setSelectedPrupcm(ShoppingManufacturer selectedPrupcm) {
-        this.selectedPrupcm = selectedPrupcm;
+    public void setInputWeight(BigDecimal inputWeight) {
+        this.inputWeight = inputWeight;
     }
 
     public Date getQueryDate() {
@@ -381,6 +387,14 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
 
     public void setQueryDate(Date queryDate) {
         this.queryDate = queryDate;
+    }
+
+    public String getInputItdsc() {
+        return inputItdsc;
+    }
+
+    public void setInputItdsc(String inputItdsc) {
+        this.inputItdsc = inputItdsc;
     }
 
 }

@@ -90,25 +90,12 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
     private List getDataForERPList(int y, int m, LinkedHashMap<String, String> map, String facno) {
         StringBuilder sb = new StringBuilder();
         if (facno.equals("C")) {
-            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
-            sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-            sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
-            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-            sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
-            sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
-            sb.append(" where a.facno='${facno}' and a.prono = '1'  ");
-            sb.append(" AND a.genre NOT LIKE '%,%' AND a.genre NOT LIKE 'QT' ");
-            sb.append(" and a.yearmon='${y}${m}'  ");
-            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-            sb.append(" a.itclscode,d.genreno,h.genzls ");
-            sb.append(" UNION ALL ");
-            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc, ");
-            sb.append(" (case when  a.genre <> '' then  a.genre else  'R' end ), ");
-            sb.append(" a.itclscode,'' AS genreno,'' AS genzls,sum(a.amount) AS amount,'' AS amamount ");
-            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-            sb.append(" where a.facno<>'${facno}' and a.prono = '1' ");
-            sb.append(" and a.yearmon='${y}${m}'  ");
-            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode ");
+            sb.append("  SELECT facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode,'' as genreno,''genzles,sum(amount),0.0 as amamount FROM invamount WHERE facno = 'C' AND prono = '1' AND yearmon = '${y}${m}' AND genre NOT LIKE '%,%' AND genre NOT LIKE '%QT%'");
+            sb.append("  group by facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode");
+            sb.append("  UNION ALL");
+            sb.append(" SELECT facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode,'' as genreno,''genzles,sum(amount),0.0 as amamount  FROM invamount WHERE facno <> 'C' AND prono = '1' AND yearmon = '${y}${m}'");
+            sb.append(" group by facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode");
+
         } else {
             sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
             sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
@@ -130,6 +117,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error("InventoryProductBean.getDataForERPList()异常！！！", ex.toString());
         }
         return null;
@@ -164,25 +152,25 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                         ip.setGenre(genre);
                     }
                     //EPM01中分类1除S外，全部替换为“P”
-                    if (row[4].toString().equals("EPM01") && itclscode.equals("1") && row[0].toString().equals("C")) {
-                        if (genre.equals("S")) {
-                            ip.setGenre("S");
-                        }else{
-                            ip.setGenre("P");
-                        }
-                    }else{
-                        ip.setGenre(genre);
-                    }
+//                    if (row[4].toString().equals("EPM01") && itclscode.equals("1") && row[0].toString().equals("C")) {
+//                        if (genre.equals("S")) {
+//                            ip.setGenre("S");
+//                        }else{
+//                            ip.setGenre("P");
+//                        }
+//                    }else{
+//                        ip.setGenre(genre);
+//                    }
                     //EM01中分类1除S和P，全部替换为“A”
-                    if (row[4].toString().equals("EM01") && row[0].toString().equals("C")) {
-                        if (!genre.equals("S") || !genre.equals("P")) {
-                            ip.setGenre("A");
-                        }else{
-                            ip.setGenre(genre);
-                        }
-                    }else{
-                        ip.setGenre(genre);
-                    }
+//                    if (row[4].toString().equals("EM01") && row[0].toString().equals("C")) {
+//                        if (!genre.equals("S") || !genre.equals("P")) {
+//                            ip.setGenre("A");
+//                        }else{
+//                            ip.setGenre(genre);
+//                        }
+//                    }else{
+//                        ip.setGenre(genre);
+//                    }
                     ip.setItclscode(itclscode);
                     ip.setCategories(row[8] != null ? row[8].toString() : "");
                     ip.setIndicatorno(row[9] != null ? row[9].toString() : "");
