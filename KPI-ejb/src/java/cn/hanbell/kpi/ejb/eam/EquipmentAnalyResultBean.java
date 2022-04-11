@@ -11,6 +11,7 @@ import cn.hanbell.kpi.entity.eam.EquipmentAnalyResult;
 import cn.hanbell.kpi.entity.eam.EquipmentStandard;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,26 +45,6 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
     public List<EquipmentStandard> getMonthlyReport(String date, String standardlevel) throws ParseException {
         StringBuilder sbSql = new StringBuilder();
         StringBuilder sbMES = new StringBuilder();
-        StringBuilder sbFMES=new StringBuilder();
-        String sqlALN="";
-        String str = "";
-        //圆型抓取月建档停机机台
-        sbMES.append(" SELECT E.EQPID FROM EQP_AVAILABLETIME_SCHEDULE E LEFT JOIN MEQP M ON E.EQPID=M.EQPID WHERE M.PRODUCTTYPE='半成品圆型件' and PLANDATE='").append(date.replace('-', '/')).append("' AND AVAILABLEMINS=0");
-        Query query = mesEJB.getEntityManager().createNativeQuery(sbMES.toString());
-        List<String> sMES = query.getResultList();
-//        方型抓取周建档停机机台
-        sbFMES.append(" SELECT A.EQPID FROM (SELECT EQPID,sum(convert(DECIMAL, WORKHOUR) * convert(INT, NUM)) ALN  FROM PLAN_SEMI_SQUARE WHERE PLANDATE = '").append(date.replace('-', '/')).append("' GROUP BY EQPID )A  WHERE A.ALN=0");;
-        query = mesEJB.getEntityManager().createNativeQuery(sbFMES.toString());
-        List<String> sFMES = query.getResultList();
-        if (sMES.size()!=0||sFMES.size()!=0) {
-            for (String objects : sMES) {
-                str = str + "'" + objects + "',";
-            }
-            for (String objects : sFMES) {
-                str = str + "'" + objects + "',";
-            }
-            str = str.substring(0, str.length() - 1);
-        }
         sbSql.append(" SELECT E.* FROM equipmentstandard E  LEFT JOIN assetcard A  ON E.assetno=A.formid  WHERE  E.status='V' ");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date d = formatter.parse(date);//将String格式转为日期格式
@@ -74,17 +55,14 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
             sbSql.append(" AND E.nexttime>='").append(date).append("' ");
             sbSql.append(" AND E.nexttime<'").append(formatter.format(cal.getTime())).append("'");
             sbSql.append(" AND E.standardlevel='").append(standardlevel).append("'");
-            if (!"".equals(str)) {
-                sbSql.append(" AND A.remark  NOT IN(").append(str).append(")");
-            }
-
         } else {
             cal.add(Calendar.MONTH, 1);//获取下个月1号时间,因计划排程为每月1号所以直接月份相加
             sbSql.append(" AND E.nexttime>='").append(date).append("' ");
             sbSql.append(" AND E.nexttime<'").append(formatter.format(cal.getTime())).append("'");
             sbSql.append(" AND E.standardlevel!='一级'");
         }
-        query = this.getEntityManager().createNativeQuery(sbSql.toString(), EquipmentStandard.class);
+
+        Query query = this.getEntityManager().createNativeQuery(sbSql.toString(), EquipmentStandard.class);
         List<EquipmentStandard> sList = query.getResultList();
         return sList;
     }
@@ -104,10 +82,45 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
 
     public List<EquipmentAnalyResult> getUnqualifiedEquipmentAnalyResult(String deptname, String staDate) throws ParseException {
         StringBuffer eSql = new StringBuffer();
+        StringBuilder sbSql = new StringBuilder();
+        StringBuilder sbMES = new StringBuilder();
+        List<String> sMESList = new ArrayList<>();
+        List<Object> sCadeList = new ArrayList<>();
+        String str = "";
         eSql.append(" SELECT * FROM equipmentanalyresult  WHERE (TIMESTAMPDIFF(MINUTE,startdate,enddate  )<2 OR enddate IS  NULL )");
-        eSql.append("  AND formdate ='").append(staDate).append("' and deptname='").append(deptname).append("'  AND standardlevel='一级'");
+        eSql.append("  AND formdate ='").append(staDate).append("' and deptname='").append(deptname).append("'  AND standardlevel='一级' and company='C'");
         Query query = this.getEntityManager().createNativeQuery(eSql.toString(), EquipmentAnalyResult.class);
         List<EquipmentAnalyResult> list = query.getResultList();
+        if (deptname.equals("方型加工课")) {
+            //  方型抓取周建档停机机台
+            sbMES.append(" SELECT A.EQPID FROM (SELECT EQPID,sum(convert(DECIMAL, WORKHOUR) * convert(INT, NUM)) ALN  FROM PLAN_SEMI_SQUARE WHERE PLANDATE = '").append(staDate.replace('-', '/')).append("' GROUP BY EQPID )A  WHERE A.ALN=0");;
+            query = mesEJB.getEntityManager().createNativeQuery(sbMES.toString());
+            sMESList = query.getResultList();
+        } else {
+            //圆型抓取月建档停机机台
+            sbMES.append(" SELECT E.EQPID FROM EQP_AVAILABLETIME_SCHEDULE E LEFT JOIN MEQP M ON E.EQPID=M.EQPID WHERE M.PRODUCTTYPE='半成品圆型件' and PLANDATE='").append(staDate.replace('-', '/')).append("' AND AVAILABLEMINS=0");
+            query = mesEJB.getEntityManager().createNativeQuery(sbMES.toString());
+            sMESList = query.getResultList();
+        }
+        if (!sMESList.isEmpty()) {
+            for (String objects : sMESList) {
+                str = str + "'" + objects + "',";
+            }
+            str = str.substring(0, str.length() - 1);
+        }
+        if (!"".equals(str)) {
+            sbSql.append(" SELECT formid FROM assetcard WHERE  remark IN (").append(str).append(") ");
+            query = this.getEntityManager().createNativeQuery(sbSql.toString());
+            sCadeList = query.getResultList();
+            for (EquipmentAnalyResult eResult : list) {
+                for (Object obj : sCadeList) {
+                    if (eResult.getAssetno().equals(obj)) {
+                        eResult.setRemark("停机");
+                    }
+                }
+            }
+        }
+
         return list;
     }
 
