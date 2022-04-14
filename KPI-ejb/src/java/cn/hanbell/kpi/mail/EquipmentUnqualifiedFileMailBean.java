@@ -155,6 +155,12 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
                     cell0.setCellValue(sDate.format(eq.getEnddate()));
                 }
                 cell0.setCellStyle(style.get("cell"));
+                 cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(7);
+                if (eq.getRemark()!= null) {
+                    cell0.setCellValue(eq.getRemark());
+                }
+                cell0.setCellStyle(style.get("cell"));
 
             }
             String path = "../" + strDate + "不合格点检单---" + deptName + ".xls";//新建文件保存路径
