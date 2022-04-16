@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -95,9 +96,9 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             String twFhszj = " in ('1139')";
             String scmFhszj = " in ('KZJ00053')";
             String zcmFhszj = " in ('EZJ00053')";
-            Object[] shb = shoppingAccomuntBean.getShbDate("SHB", "C", btnDate, shbFhszj, "");
+            Object[] shb = shoppingAccomuntBean.getShbDate("SHB", "C", btnDate, shbFhszj,"");
             Object[] thb = shoppingAccomuntBean.getShbDate("THB", "A", btnDate, twFhszj, "");
-            Object[] scm = shoppingAccomuntBean.getShbDate("SCOMER", "K", btnDate, scmFhszj, "");
+            Object[] scm = shoppingAccomuntBean.getShbDate("SCOMER", "K", btnDate, scmFhszj,"");
             Object[] zcm = shoppingAccomuntBean.getShbDate("ZCOMER", "E", btnDate, zcmFhszj, "");
             Object[] cm = new Object[15];
             cm[0] = "CM";
@@ -120,8 +121,9 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
                 o[14] = ((BigDecimal) o[13]).multiply(BigDecimal.valueOf(100)).divide((BigDecimal) list.get(list.size() - 1)[13], 2).toString().concat("%");
             }
             //铸件重量
-            Object[] shbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "SHB", "C", btnDate, getWhereVdrnos("C", "'铸件'").toString(), "");
-            Object[] shbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "SHB", "C", btnDate, shbFhszj, "");
+   
+            Object[] shbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "SHB", "C", btnDate, getWhereVdrnos("C", "'铸件'").toString(), ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
+            Object[] shbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "SHB", "C", btnDate, shbFhszj, ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
             Object[] thbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "THB", "A", btnDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
             Object[] thbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "THB", "A", btnDate, twFhszj, "");
             weightList.clear();
@@ -204,6 +206,7 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
         }
     }
 
+ 
     public String percentFormat(BigDecimal value1, BigDecimal value2, int i) {
         if (value1 == null || value1 == BigDecimal.ZERO) {
             return "0.00%";

@@ -49,7 +49,7 @@
             </p:toolbar>
             <p:dataTable  value="#{weightManagedBean.model}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                          lazy="true" selectionMode="single"  rowKey="#{item.id}">
+                          lazy="true" selectionMode="single" selection="#{weightManagedBean.currentEntity}" rowKey="#{item.id}">
                 <f:facet name="header">
                     采购中心重量维护作业
                 </f:facet>
@@ -78,6 +78,12 @@
                         <h:outputText value="重量"/>
                     </f:facet>
                     <h:outputText value="#{item.weight}"/>
+                </p:column>
+                 <p:column styleClass="Wid10" >
+                    <f:facet name="header">
+                        <h:outputText value="是否纳入计算金额"/>
+                    </f:facet>
+                    <h:outputText value="#{item.isIn ? '是': '否'}"/>
                 </p:column>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -117,6 +123,8 @@
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
+                    
+                       
                     <p:row style="padding-top: 20px">
                         <p:column styleClass="Wid10"><h:outputLabel value="品号" /></p:column>
                         <p:column styleClass="Wid20">
@@ -130,7 +138,15 @@
                             <p:inputText id="inputWeight"  value="#{weightManagedBean.inputWeight}" title="重量" />
                         </p:column>
                     </p:row>
-
+      <p:row style="padding-top: 20px">
+                        <p:column styleClass="Wid10"><h:outputLabel value="是否纳入计算金额" /></p:column>
+                        <p:column styleClass="Wid20">
+                            <p:selectOneMenu  value="#{weightManagedBean.isIn}" style="width:100%;" title="是否纳入计算金额" >
+                                <f:selectItem itemLabel="是" itemValue="true"/>
+                                <f:selectItem itemLabel="否" itemValue="false"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
                     <f:facet name="footer" rendered="#{weightManagedBean.doEdit}" >
                         <p:row>
                             <p:column colspan="2">

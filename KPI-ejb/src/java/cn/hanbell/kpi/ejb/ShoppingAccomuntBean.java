@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -45,6 +46,39 @@ public class ShoppingAccomuntBean implements Serializable {
         this.df = new DecimalFormat("#,###");
         this.dfpercent = new DecimalFormat("0.00％");
     }
+    //上海汉钟
+    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33";
+    public static String SHB_ITCLS_DIANJI = "3703/3104";//电机
+    public static String SHB_ITCLS_ZHOUCHENG = "4009";
+    public static String SHB_ITCLS_YOUPING = "5062";
+    public static String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801";
+    public static String SHB_ITCLS_FALEI = "3134/3234/2012/2201/3102";
+    public static String SHB_ITCLS_DAOJU = "BS1";//刀具
+    public static String SHB_ITCLS_CHENGDIAN = "3133/3231/3233/3433/3533/4049";
+    public static String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
+    public static String SHB_FACT_JIEXIANGHE = "3231/3133";
+    public static String SHB_ITCLS_MOJU = "B005";
+
+    //浙江汉声
+    public static String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD";
+    public static String HS_ITCLS_ZHUANZI = "2HZZ/2HZC/2A04/2HTG";
+    public static String HS_ITCLS_MOJU = "B005";
+    //台湾汉钟
+    public static String THB_FACT_ZHUJIA = "'鑄件','加工','HS'";
+    public static String THB_FACT_DIANJI = "'電機'";//电机
+    public static String THB_FACT_ZHOUCHENG = "'軸承'";
+    public static String THB_FACT_YOUPING = "'油品','油品P'";
+    public static String THB_FACT_JINGKOU = "'SHB','CM'";
+    public static String THB_ITCLS_ZHUANZI = "2511/2521/3011";
+    public static String THB_FACT_FALEI = "'閥'";
+    public static String THB_FACT_DAOJU = "'刀具'";
+    public static String THB_FACT_CHENGDIAN = "'襯墊'";
+    public static String THB_FACT_JIEXIANGAIBAN = "'蓋板'";
+    //上海柯茂
+    public static String SCM_ITCLS_ZHUANZI = "1J02/1014/3013";
+    public static String SCM_ITCLS_DIANJI = "3J04/3J33/4047/4049";
+    public static String SCM_ITCLS_ZHOUCHENG = "4009";
+    public static String SCM_ITCLS_MOJU = "B005";
 
     private int findYear(Date date) {
         Calendar c = Calendar.getInstance();
@@ -125,7 +159,7 @@ public class ShoppingAccomuntBean implements Serializable {
             sql.append(" AND vdrno ").append(vdrnos);
         }
         if (itcls != null && !"".equals(itcls)) {
-            sql.append(" AND itcls ").append(itcls);
+            sql.append(" AND itcls ").append(getWhereItlcs(itcls).toString());
         }
         sql.append(" and yearmon like '").append(String.valueOf(findYear(date))).append("%' group by yearmon order by yearmon ASC");
         Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
@@ -158,15 +192,18 @@ public class ShoppingAccomuntBean implements Serializable {
      * @param itcls
      * @return
      */
-    public Object[] getGroupWeightDate(String name1,String name2, String facno, Date date, String vdrnos, String itcls) throws Exception {
+    public Object[] getGroupWeightDate(String name1, String name2, String facno, Date date, String vdrnos, String itcls) throws Exception {
+   
+//        String sb=getWhereItlcs(itcls).toString();
         //先判断是否有漏的重量件号
-        List list=getWeightDate(facno,date,vdrnos,itcls);
-        if(list.size()>0){
+        List list = getWeightDate1(facno, date, vdrnos, itcls);
+    
+        if (list.size() > 0) {
             throw new Exception("未配置件号重量，请维护");
         }
         Object[] row = new Object[16];
         row[0] = name1;
-         row[1] = name2;
+        row[1] = name2;
         StringBuffer sql = new StringBuffer();
         sql.append(" select CAST(right(yearmon,2) AS SIGNED) ,sum(head.payqty*detail.weight)");
         sql.append(" from (select *");
@@ -176,9 +213,9 @@ public class ShoppingAccomuntBean implements Serializable {
             sql.append(" and vdrno").append(vdrnos);
         }
         if (itcls != null && !"".equals(itcls)) {
-            sql.append(" and itcls").append(itcls);
+            sql.append(" and itcls").append(getWhereItlcs(itcls).toString());
         }
-        sql.append(" ) head left join shoppingmenuweight detail on head.facno=detail.facno and head.itnbr=detail.itnbr where detail.id is not null");
+        sql.append(" ) head left join shoppingmenuweight detail on  head.itnbr=detail.itnbr where detail.id is not null");
         sql.append(" group by yearmon order by yearmon asc");
         Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
         BigDecimal sum = BigDecimal.ZERO;
@@ -186,12 +223,12 @@ public class ShoppingAccomuntBean implements Serializable {
             List<Object[]> data = query.getResultList();
             for (int i = 1; i <= 12; i++) {
                 if (i <= data.size()) {
-                   
-                    row[i+1] = (java.math.BigDecimal) data.get(i - 1)[1];
+
+                    row[i + 1] = (java.math.BigDecimal) data.get(i - 1)[1];
                 } else {
-                    row[i+1] = new BigDecimal(0.0);
+                    row[i + 1] = new BigDecimal(0.0);
                 }
-                sum = sum.add((java.math.BigDecimal) row[i+1]);
+                sum = sum.add((java.math.BigDecimal) row[i + 1]);
             }
             row[14] = sum;
         } catch (Exception e) {
@@ -200,7 +237,20 @@ public class ShoppingAccomuntBean implements Serializable {
         return row;
     }
 
-    public List<Object[]> getWeightDate(String facno, Date date, String vdrnos, String itcls) throws Exception {
+      public StringBuffer getWhereItlcs(String itcls) {
+        StringBuffer sql = new StringBuffer("");
+        try {
+               StringTokenizer stzj = new StringTokenizer(itcls, "/");
+               sql.append(" in (");
+        while (stzj.hasMoreTokens()) {
+           sql.append("'").append(stzj.nextToken()).append("',");
+        }
+        return sql.delete(sql.length()-1,sql.length()).append(")");
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    public List<Object[]> getWeightDate1(String facno, Date date, String vdrnos, String itcls) throws Exception {
         StringBuffer sql = new StringBuffer();
         sql.append(" select  head.facno,head.itnbr,head.itdsc");
         sql.append(" from (select *");
@@ -210,9 +260,9 @@ public class ShoppingAccomuntBean implements Serializable {
             sql.append(" and vdrno ").append(vdrnos);
         }
         if (itcls != null && !"".equals(itcls)) {
-            sql.append(" and itcls").append(itcls);
+            sql.append(" and itcls").append(getWhereItlcs(itcls).toString());
         }
-        sql.append(" group by itnbr,facno)b where a.id=b.id)) head left join shoppingmenuweight detail on head.facno=detail.facno and head.itnbr=detail.itnbr where detail.id is  null");
+        sql.append(" group by itnbr,facno)b where a.id=b.id)) head left join shoppingmenuweight detail on  head.itnbr=detail.itnbr where detail.id is  null");
         Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
         BigDecimal sum = BigDecimal.ZERO;
         try {
