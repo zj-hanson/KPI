@@ -61,7 +61,8 @@ public class ShoppingMenuWeight extends SuperEntity {
     @NotNull
     @Column(name = "weight")
     private BigDecimal weight;
-
+    @Column(name = "isIn")
+    private Boolean isIn;
     public ShoppingMenuWeight() {
     }
 
@@ -169,6 +170,14 @@ public class ShoppingMenuWeight extends SuperEntity {
 
     public void setCfmdate(Date cfmdate) {
         this.cfmdate = cfmdate;
+    }
+
+    public Boolean getIsIn() {
+        return isIn;
+    }
+
+    public void setIsIn(Boolean isIn) {
+        this.isIn = isIn;
     }
 
     @Override

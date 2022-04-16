@@ -39,7 +39,7 @@ public class ShoppingTableBean extends SuperEJBForKPI<ShoppingTable> {
 
     public List<Object[]> findByFacnoAndYearmon(String facno, String yearmon) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" select head.facno,head.vdrno, head.vdrna, head.itnbr, head.itdsc, head.acpamt, head.itcls, head.iscenter,''");
+        sql.append(" select head.facno,head.vdrno, head.vdrna, head.itnbr, head.itdsc, head.acpamt, head.itcls, head.iscenter,'', head.acpno, head.sponr");
         sql.append(" from shoppingtable head left join shoppingmanufacturer detail on head.facno=detail.facno and head.vdrno=detail.vdrno");
         sql.append(" where detail.facno is not null");
         sql.append(" and");

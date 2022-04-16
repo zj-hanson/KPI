@@ -120,8 +120,8 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         shoppingTableBean.deleteByYearmon(BaseLib.formatDate("yyyyMM", btnDate));
         List<Object[]> shbList1 = shoppoingAccoumuntBean.getShbDateDetail("C", this.btnDate, "", "");
         persist(shbList1);
-        List thbList1 = shoppoingAccoumuntBean.getThbDateDetail("A", this.btnDate, "", "");
-        persist(thbList1);
+//        List thbList1 = shoppoingAccoumuntBean.getThbDateDetail("A", this.btnDate, "", "");
+//        persist(thbList1);
         List hsList1 = shoppoingAccoumuntBean.getShbDateDetail("H", this.btnDate, "", "");
         persist(hsList1);
         List scmList1 = shoppoingAccoumuntBean.getShbDateDetail("K", this.btnDate, "", "");
@@ -177,8 +177,14 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             for (Indicator entity : list) {
                 indicatorBean.updateActual(entity.getId(), cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
                         cal.getTime(), Calendar.MONTH);
+                  System.out.println(entity.getFormid()+"更新成功");
             }
+               showInfoMsg("Info", "更新成功！");
+               System.out.println("全部更新成功");
         } catch (Exception ex) {
+              System.out.println("更新失败！");
+             showInfoMsg("Info", "更新失败！");
+            ex.printStackTrace();
             Logger.getLogger(ShoppingAmountManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -212,26 +218,30 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             Cell cell;
             Row row;
             row = sheet.createRow(0);
-            row.createCell(0).setCellValue("公司别");
-            row.createCell(1).setCellValue("厂商编号");
-            row.createCell(2).setCellValue("厂商名称");
-            row.createCell(3).setCellValue("品号");
-            row.createCell(4).setCellValue("品名");
-            row.createCell(5).setCellValue("金额");
-            row.createCell(6).setCellValue("品号大类");
-            row.createCell(7).setCellValue("物料分类");
+             row.createCell(0).setCellValue("验收单号");
+              row.createCell(1).setCellValue("采购单号");
+            row.createCell(2).setCellValue("公司别");
+            row.createCell(3).setCellValue("厂商编号");
+            row.createCell(4).setCellValue("厂商名称");
+            row.createCell(5).setCellValue("品号");
+            row.createCell(6).setCellValue("品名");
+            row.createCell(7).setCellValue("金额");
+            row.createCell(8).setCellValue("品号大类");
+            row.createCell(9).setCellValue("物料分类");
             int i = 1;
             List<Object[]> val = (List<Object[]>) entry.getValue();
             for (Object[] e : val) {
                 row = sheet.createRow(i);
-                row.createCell(0).setCellValue((String) e[0]);
-                row.createCell(1).setCellValue((String) e[1]);
-                row.createCell(2).setCellValue((String) e[2]);
-                row.createCell(3).setCellValue((String) e[3]);
-                row.createCell(4).setCellValue((String) e[4]);
-                row.createCell(5).setCellValue(((BigDecimal) e[5]).doubleValue());
-                row.createCell(6).setCellValue((String) e[6]);
-                row.createCell(7).setCellValue((String) e[8]);
+                row.createCell(0).setCellValue((String) e[9]);
+                row.createCell(1).setCellValue((String) e[10]);
+                row.createCell(2).setCellValue((String) e[0]);
+                row.createCell(3).setCellValue((String) e[1]);
+                row.createCell(4).setCellValue((String) e[2]);
+                row.createCell(5).setCellValue((String) e[3]);
+                row.createCell(6).setCellValue((String) e[4]);
+                row.createCell(7).setCellValue(((BigDecimal) e[5]).doubleValue());
+                row.createCell(8).setCellValue((String) e[6]);
+                row.createCell(9).setCellValue((String) e[8]);
                 i++;
             }
         }
@@ -284,26 +294,26 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal cdSum = new BigDecimal(0);
         BigDecimal mjSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
-        List<String> zjList = getItclsString("1014/1016/1102/1202/1401/1402/1802/2013/2015/2101/2102/2201/2202/2401/2402/2801/2802/3012/3013/3015/3016/3101/3102/3133/3201/3202/3233/3401/3402/3433/3801/3802/3833/9014/9017/1C02/3C33");
-        List<String> djList = getItclsString("3703/3104");//电机
-        List<String> zcList = getItclsString("4009");
-        List<String> ypList = getItclsString("5062");
-        List<String> zzList = getItclsString("1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801");
-        List<String> flList = getItclsString("3134/3234");
-        List<String> dj1List = getItclsString("BS1");//刀具
-        List<String> cdList = getItclsString("3133/3231/3233/3433/3533/4049");
-        List<String> jxgbList = getmaterialTypeName("C", "'接线盖板'");
-        List<String> jxhList = getmaterialTypeName("C", "'接线盒'");
-        List<String> mjList = getItclsString("B005");
+        List<String> zjList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
+        List<String> djList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_DIANJI);//电机
+        List<String> zcList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_ZHOUCHENG);
+        List<String> ypList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_YOUPING);
+        List<String> zzList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_ZHUANZI);
+        List<String> flList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_FALEI);
+        List<String> dj1List = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_DAOJU);//刀具
+        List<String> cdList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_CHENGDIAN);
+        List<String> jxgbList =getItclsString(ShoppingAccomuntBean.SHB_FACT_JIEXIANGAIBAN);
+        List<String> jxhList = getItclsString(ShoppingAccomuntBean.SHB_FACT_JIEXIANGHE);
+        List<String> mjList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_MOJU);
         Iterator<Object[]> iterator = shbList.iterator();
         while (iterator.hasNext()) {
             try {
                 Object[] o = iterator.next();
                 //优先处理厂商配比,后处理品号大类的
-                if (jxgbList.contains((String) o[1])) {
+                if (jxgbList.contains((String) o[6])) {
                     o[8] = "接线盖板";
                     jxgbSum = jxgbSum.add((BigDecimal) o[5]);
-                } else if (jxhList.contains((String) o[1])) {
+                } else if (jxhList.contains((String) o[6])) {
                     o[8] = "接线盒";
                     jxhSum = jxhSum.add((BigDecimal) o[5]);
                 } else if (zjList.contains((String) o[6])) {
@@ -361,9 +371,9 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal zzSum = new BigDecimal(0);
         BigDecimal mjSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
-        List<String> zjList = getItclsString("2A05/2A02/2A05/2A06/2HJK/2HMD");
-        List<String> zzList = getItclsString("2HZZ/2HZC/2A04/2HTG");
-        List<String> mjList = getItclsString("B005");
+        List<String> zjList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_ZHUJIA);
+        List<String> zzList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_ZHUANZI);
+        List<String> mjList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_MOJU);
         Iterator<Object[]> iterator = hsList.iterator();
         while (iterator.hasNext()) {
             try {
@@ -405,16 +415,16 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal dj1Sum = new BigDecimal(0);
         BigDecimal cdSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
-        List<String> zjList = getmaterialTypeName("A", "'鑄件','加工','HS'");
-        List<String> djList = getmaterialTypeName("A", "'電機'");//电机
-        List<String> zcList = getmaterialTypeName("A", "'軸承'");
-        List<String> ypList = getmaterialTypeName("A", "'油品','油品P'");
-        List<String> jk1List = getmaterialTypeName("A", "'SHB','CM'");
-        List<String> zzList = getItclsString("2511/2521/3011");
-        List<String> flList = getmaterialTypeName("A", "'閥'");
-        List<String> dj1List = getmaterialTypeName("A", "'刀具'");
-        List<String> cdList = getmaterialTypeName("A", "'襯墊'");
-        List<String> jxgbList = getmaterialTypeName("A", "'蓋板'");
+        List<String> zjList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_ZHUJIA);
+        List<String> djList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_DIANJI);
+        List<String> zcList = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_ZHOUCHENG);
+        List<String> ypList = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_YOUPING);
+        List<String> jk1List = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_JINGKOU);
+        List<String> zzList = getItclsString(ShoppingAccomuntBean.THB_ITCLS_ZHUANZI);
+        List<String> flList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_FALEI);
+        List<String> dj1List = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_DAOJU);
+        List<String> cdList = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_CHENGDIAN);
+        List<String> jxgbList = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_JIEXIANGAIBAN);
         Iterator<Object[]> iterator = thbList.iterator();
         while (iterator.hasNext()) {
             try {
@@ -479,10 +489,10 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal zcSum = new BigDecimal(0);
         BigDecimal mjSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
-        List<String> zjList = getItclsString("1J02/1014/3013");
-        List<String> djList = getItclsString("3J04/3J33/4047/4049");
-        List<String> zcList = getItclsString("4009");
-        List<String> mjList = getItclsString("B005");
+        List<String> zjList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_ZHUANZI);
+        List<String> djList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_DIANJI);
+        List<String> zcList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_ZHOUCHENG);
+        List<String> mjList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_MOJU);
         Iterator<Object[]> iterator = scmList.iterator();
         while (iterator.hasNext()) {
             try {

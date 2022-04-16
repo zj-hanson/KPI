@@ -28,10 +28,9 @@ public class ShoppingMenuWeightBean extends SuperEJBForKPI<ShoppingMenuWeight> {
         super(ShoppingMenuWeight.class);
     }
 
-    public ShoppingMenuWeight findByItnbrAndFacno(String itnbr, String facno) {
-        Query q = this.getEntityManager().createNamedQuery("ShoppingMenuWeight.findByItnbrAndFacno");
+    public ShoppingMenuWeight findByItnbr(String itnbr) {
+        Query q = this.getEntityManager().createNamedQuery("ShoppingMenuWeight.findByItnbr");
         q.setParameter("itnbr", itnbr);
-        q.setParameter("facno", facno);
         try {
             ShoppingMenuWeight result = (ShoppingMenuWeight) q.getSingleResult();
             return result;
@@ -42,14 +41,4 @@ public class ShoppingMenuWeightBean extends SuperEJBForKPI<ShoppingMenuWeight> {
         }
     }
 
-    public List<ShoppingMenuWeight> findByFacno(String facno) {
-        Query q = this.getEntityManager().createNamedQuery("ShoppingMenuWeight.findByFacno");
-        q.setParameter("facno", facno);
-        try {
-            List<ShoppingMenuWeight> result = q.getResultList();
-            return result;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
 }

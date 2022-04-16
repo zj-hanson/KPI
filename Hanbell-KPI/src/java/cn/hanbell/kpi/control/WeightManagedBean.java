@@ -61,6 +61,7 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
     private String inputItnbr;
     private String inputItdsc;
     private BigDecimal inputWeight;
+     private String isIn;
 
     public WeightManagedBean() {
         super(ShoppingMenuWeight.class);
@@ -125,6 +126,7 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
         row.createCell(1).setCellValue("品号");
         row.createCell(2).setCellValue("品名");
         row.createCell(3).setCellValue("重量");
+        row.createCell(4).setCellValue("是否纳入采购重量计算");
         int i = 1;
         for (ShoppingMenuWeight e : entityList) {
             row = sheet.createRow(i);
@@ -132,6 +134,11 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
             row.createCell(1).setCellValue(e.getItnbr());
             row.createCell(2).setCellValue(e.getItdsc());
             row.createCell(3).setCellValue(e.getWeight().doubleValue());
+            if (e.getIsIn()) {
+                row.createCell(4).setCellValue("是");
+            } else {
+                row.createCell(4).setCellValue("否");
+            }
             i++;
         }
         OutputStream os = null;
@@ -178,10 +185,9 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
         //获取所有重量品号
         String shbFhszj = " in ('SZJ00065','SZJ00067')";
         String twFhszj = " in ('1139')";
-        List<ShoppingMenuWeight> entyties = shoppingMenuWeightBean.findByFacno(queryFacno);
         fileName = "采购中心物料重量" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
-        List<Object[]> shbList = shoppingAccomuntBean.getWeightDate("C", this.queryDate, getWhereVdrnos("C", "'铸件'").toString(), "");
-        List<Object[]> thbList = shoppingAccomuntBean.getWeightDate("A", this.queryDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
+        List<Object[]> shbList = shoppingAccomuntBean.getWeightDate1("C", this.queryDate, getWhereVdrnos("C", "'铸件'").toString(), ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
+        List<Object[]> thbList = shoppingAccomuntBean.getWeightDate1("A", this.queryDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
         String fileFullName = reportOutputPath + fileName;
         OutputStream os = null;
         os = new FileOutputStream(fileFullName);
@@ -198,19 +204,21 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
             row.createCell(1).setCellValue("品号");
             row.createCell(2).setCellValue("品名");
             row.createCell(3).setCellValue("重量");
+            row.createCell(4).setCellValue("是否纳入采购重量计算");
             int i = 1;
-            if (shbList.addAll(thbList)) {
-                for (Object[] obj : shbList) {
-                    ShoppingMenuWeight weight = shoppingMenuWeightBean.findByItnbrAndFacno((String) obj[1], (String) obj[0]);
-                    if (weight == null) {
-                        row = sheet.createRow(i);
-                        row.createCell(0).setCellValue((String) obj[0]);
-                        row.createCell(1).setCellValue((String) obj[1]);
-                        row.createCell(2).setCellValue((String) obj[2]);
-                        i++;
-                    }
+            shbList.addAll(thbList);
+            for (Object[] obj : shbList) {
+                ShoppingMenuWeight weight = shoppingMenuWeightBean.findByItnbr((String) obj[1]);
+                if (weight == null) {
+                    row = sheet.createRow(i);
+                    row.createCell(0).setCellValue((String) obj[0]);
+                    row.createCell(1).setCellValue((String) obj[1]);
+                    row.createCell(2).setCellValue((String) obj[2]);
+                    row.createCell(4).setCellValue("是");
+                    i++;
                 }
             }
+
             wb.write(os);
             this.reportViewPath = reportViewContext + fileName;
             this.preview();
@@ -235,6 +243,11 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
 
     }
 
+    @Override
+    public void delete() {
+        shoppingMenuWeightBean.delete(this.currentEntity);
+    }
+
     public void handleFileUploadWhenNew(FileUploadEvent event) {
         UploadedFile file1 = event.getFile();
         Integer a = 0;
@@ -249,27 +262,29 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
                     Row row = sheet.getRow(i);
                     String facno = cellToVlaue(row.getCell(0));
                     String itnbr = cellToVlaue(row.getCell(1));
-                    ShoppingMenuWeight k = shoppingMenuWeightBean.findByItnbrAndFacno(itnbr, facno);
+                    ShoppingMenuWeight k = shoppingMenuWeightBean.findByItnbr(itnbr);
                     if (k != null) {
                         shoppingMenuWeightBean.delete(k);
                     }
-//                    ShoppingManufacturer purpcm = new ShoppingManufacturer();
-//                    purpcm.setFacno(facno);
-//                    purpcm.setVdrno(vdrno);
-//                    purpcm.setVdrna(cellToVlaue(row.getCell(2)));
-//                    purpcm.setMaterialTypeName(cellToVlaue(row.getCell(3)));
-//                    purpcm.setUserno(cellToVlaue(row.getCell(4)));
-//                    purpcm.setUserna(cellToVlaue(row.getCell(5)));
                     ShoppingMenuWeight entity = new ShoppingMenuWeight();
                     entity.setFacno(facno);
                     entity.setItnbr(itnbr);
                     entity.setItdsc(cellToVlaue(row.getCell(2)));
                     entity.setWeight(BigDecimal.valueOf(Double.valueOf(cellToVlaue(row.getCell(3)))));
+                    if ("是".equals(cellToVlaue(row.getCell(4)))) {
+                        if("0.0".equals(entity.getWeight().toString())){
+                            throw new Exception("列表中存在纳入重量且重量为0的数据，请检查！");
+                        }
+                        entity.setIsIn(true);
+                    } else {
+                        entity.setIsIn(false);
+                        entity.setWeight(BigDecimal.ZERO);
+                    }
                     shoppingMenuWeightBean.persist(entity);
                 }
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传成功"));
             } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"+ex.getMessage()));
 
                 ex.printStackTrace();
             } finally {
@@ -395,6 +410,14 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
 
     public void setInputItdsc(String inputItdsc) {
         this.inputItdsc = inputItdsc;
+    }
+
+    public String getIsIn() {
+        return isIn;
+    }
+
+    public void setIsIn(String isIn) {
+        this.isIn = isIn;
     }
 
 }

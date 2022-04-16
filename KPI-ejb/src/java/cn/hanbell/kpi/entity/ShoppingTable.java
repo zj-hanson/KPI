@@ -73,6 +73,12 @@ public class ShoppingTable extends SuperEntity {
     @Size(max = 50)
     @Column(name = "vdrno")
     private String vdrno;
+        @Size(max = 50)
+    @Column(name = "acpno")
+    private String acpno;
+            @Size(max = 50)
+    @Column(name = "sponr")
+    private String sponr;      
     @Size(max = 50)
     @Column(name = "vdrna")
     private String vdrna;
@@ -237,6 +243,22 @@ public class ShoppingTable extends SuperEntity {
 
     public void setYearmon(String yearmon) {
         this.yearmon = yearmon;
+    }
+
+    public String getAcpno() {
+        return acpno;
+    }
+
+    public void setAcpno(String acpno) {
+        this.acpno = acpno;
+    }
+
+    public String getSponr() {
+        return sponr;
+    }
+
+    public void setSponr(String sponr) {
+        this.sponr = sponr;
     }
 
     @Override
