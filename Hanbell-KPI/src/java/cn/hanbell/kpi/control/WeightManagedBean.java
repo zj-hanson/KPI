@@ -61,7 +61,7 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
     private String inputItnbr;
     private String inputItdsc;
     private BigDecimal inputWeight;
-     private String isIn;
+    private String isIn;
 
     public WeightManagedBean() {
         super(ShoppingMenuWeight.class);
@@ -186,8 +186,10 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
         String shbFhszj = " in ('SZJ00065','SZJ00067')";
         String twFhszj = " in ('1139')";
         fileName = "采购中心物料重量" + BaseLib.formatDate("yyyyMMddHHmmss", BaseLib.getDate()) + ".xls";
-        List<Object[]> shbList = shoppingAccomuntBean.getWeightDate1("C", this.queryDate, getWhereVdrnos("C", "'铸件'").toString(), ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
-        List<Object[]> thbList = shoppingAccomuntBean.getWeightDate1("A", this.queryDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
+        List<Object[]> shbList = shoppingAccomuntBean.getWeightDate1("C", this.queryDate, getWhereVdrnos("C", "'铸件'").toString(), "");
+        //上海汉钟已作为进口列入。需手动加入上海汉钟厂商
+        StringBuffer sb = getWhereVdrnos("A", "'鑄件'");
+        List<Object[]> thbList = shoppingAccomuntBean.getWeightDate1("A", this.queryDate, sb.substring(0, sb.length() - 1).concat(",'86005')"), "");
         String fileFullName = reportOutputPath + fileName;
         OutputStream os = null;
         os = new FileOutputStream(fileFullName);
@@ -272,7 +274,7 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
                     entity.setItdsc(cellToVlaue(row.getCell(2)));
                     entity.setWeight(BigDecimal.valueOf(Double.valueOf(cellToVlaue(row.getCell(3)))));
                     if ("是".equals(cellToVlaue(row.getCell(4)))) {
-                        if("0.0".equals(entity.getWeight().toString())){
+                        if ("0.0".equals(entity.getWeight().toString())) {
                             throw new Exception("列表中存在纳入重量且重量为0的数据，请检查！");
                         }
                         entity.setIsIn(true);
@@ -284,7 +286,7 @@ public class WeightManagedBean extends SuperSingleBean<ShoppingMenuWeight> {
                 }
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传成功"));
             } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"+ex.getMessage()));
+                FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败" + ex.getMessage()));
 
                 ex.printStackTrace();
             } finally {

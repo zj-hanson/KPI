@@ -47,13 +47,13 @@ public class ShoppingAccomuntBean implements Serializable {
         this.dfpercent = new DecimalFormat("0.00％");
     }
     //上海汉钟
-    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33";
-    public static String SHB_ITCLS_DIANJI = "3703/3104";//电机
-    public static String SHB_ITCLS_ZHOUCHENG = "4009";
-    public static String SHB_ITCLS_YOUPING = "5062";
-    public static String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801";
-    public static String SHB_ITCLS_FALEI = "3134/3234/2012/2201/3102";
-    public static String SHB_ITCLS_DAOJU = "BS1";//刀具
+    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716";
+    public static String SHB_ITCLS_DIANJI = "3703/3104/9019";//电机
+    public static String SHB_ITCLS_ZHOUCHENG = "4009/4018";
+    public static String SHB_ITCLS_YOUPING = "5061/5062";
+    public static String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801/2201";
+    public static String SHB_ITCLS_FALEI = "3134/3234/3102";
+    public static String SHB_ITCLS_DAOJU = "BS1/B001/C002";//刀具
     public static String SHB_ITCLS_CHENGDIAN = "3133/3231/3233/3433/3533/4049";
     public static String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
     public static String SHB_FACT_JIEXIANGHE = "3231/3133";
@@ -75,7 +75,7 @@ public class ShoppingAccomuntBean implements Serializable {
     public static String THB_FACT_CHENGDIAN = "'襯墊'";
     public static String THB_FACT_JIEXIANGAIBAN = "'蓋板'";
     //上海柯茂
-    public static String SCM_ITCLS_ZHUANZI = "1J02/1014/3013";
+    public static String SCM_ITCLS_ZHUANZI = "1J02/1014/3013/3J02/3H33";
     public static String SCM_ITCLS_DIANJI = "3J04/3J33/4047/4049";
     public static String SCM_ITCLS_ZHOUCHENG = "4009";
     public static String SCM_ITCLS_MOJU = "B005";
@@ -208,6 +208,9 @@ public class ShoppingAccomuntBean implements Serializable {
         sql.append(" select CAST(right(yearmon,2) AS SIGNED) ,sum(head.payqty*detail.weight)");
         sql.append(" from (select *");
         sql.append(" from shoppingtable where itnbr<>'9' and  facno='").append(facno).append("'");
+        if("C".equals(facno)){
+            sql.append(" and sponr not like 'AC%'");
+        }
         sql.append(" and yearmon like '").append(BaseLib.formatDate("yyyy", date)).append("%'");
         if (vdrnos != null && !"".equals(vdrnos)) {
             sql.append(" and vdrno").append(vdrnos);
@@ -255,6 +258,9 @@ public class ShoppingAccomuntBean implements Serializable {
         sql.append(" select  head.facno,head.itnbr,head.itdsc");
         sql.append(" from (select *");
         sql.append(" from shoppingtable a where exists(select id from( select max(id) as id from shoppingtable where itnbr<>'9' and  facno='").append(facno).append("'");
+            if("C".equals(facno)){
+            sql.append(" and  sponr not like 'AC%'");
+        }
         sql.append(" and yearmon like '").append(BaseLib.formatDate("yyyy", date)).append("%'");
         if (vdrnos != null && !"".equals(vdrnos)) {
             sql.append(" and vdrno ").append(vdrnos);

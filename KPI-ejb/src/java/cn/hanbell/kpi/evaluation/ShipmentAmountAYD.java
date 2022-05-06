@@ -17,7 +17,7 @@ public class ShipmentAmountAYD extends ShipmentAmount {
 
     public ShipmentAmountAYD() {
         super();
-        queryParams.put("facno", "C");
+        queryParams.put("facno", "G");
         queryParams.put("deptno", " '1G000','1G100' ");
         //queryParams.put("decode", "1");
         queryParams.put("ogdkid", "RL01");
@@ -31,7 +31,7 @@ public class ShipmentAmountAYD extends ShipmentAmount {
         //SHB ERP
         temp1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
-        queryParams.put("facno", "G");
+        queryParams.put("facno", "C");
         //GZ ERP
         temp2 = super.getValue(y, m, d, type, queryParams);
         //SHB + GZ

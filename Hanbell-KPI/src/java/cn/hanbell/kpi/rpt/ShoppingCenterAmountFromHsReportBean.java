@@ -122,9 +122,11 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             }
             //铸件重量
    
-            Object[] shbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "SHB", "C", btnDate, getWhereVdrnos("C", "'铸件'").toString(), ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
-            Object[] shbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "SHB", "C", btnDate, shbFhszj, ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA);
-            Object[] thbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "THB", "A", btnDate, getWhereVdrnos("A", "'鑄件'").toString(), "");
+            Object[] shbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "SHB", "C", btnDate, getWhereVdrnos("C", "'铸件'").toString(),ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA+"/"+ShoppingAccomuntBean.SHB_ITCLS_ZHUANZI);
+            Object[] shbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "SHB", "C", btnDate, shbFhszj, ShoppingAccomuntBean.SHB_ITCLS_ZHUJIA+"/"+ShoppingAccomuntBean.SHB_ITCLS_ZHUANZI);
+            //上海汉钟已作为进口列入。需手动加入上海汉钟厂商
+            StringBuffer sb= getWhereVdrnos("A", "'鑄件'");
+            Object[] thbweigth = shoppingAccomuntBean.getGroupWeightDate("总重", "THB", "A", btnDate, sb.substring(0, sb.length()-1).concat(",'86005')"), "");
             Object[] thbgornhsweigth = shoppingAccomuntBean.getGroupWeightDate("汉声", "THB", "A", btnDate, twFhszj, "");
             weightList.clear();
             weightList.add(shbweigth);
@@ -237,6 +239,16 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             return "0";
         } else {
             value = value.divide(new BigDecimal(10000), 2);
+            return floatFormat.format(value);
+        }
+    }
+    
+    
+    public String weightdoubleformat(BigDecimal value) {
+        if (value == null || value.compareTo(BigDecimal.ZERO) == 0) {
+            return "0";
+        } else {
+            value = value.divide(new BigDecimal(1000), 2);
             return floatFormat.format(value);
         }
     }
