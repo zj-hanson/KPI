@@ -13,13 +13,14 @@ import java.util.LinkedHashMap;
  *
  * @author C1879
  */
-public class FreeServiceOuterFW1G extends FreeServiceOuterFW {
+//机体分为华南（广州）部分
+public class FreeServiceOuterFW1G2 extends FreeServiceOuterFW {
 
-    public FreeServiceOuterFW1G() {
+    public FreeServiceOuterFW1G2() {
         super();
         queryParams.put("facno", "C");
 //        queryParams.put("hmark1", " <> 'CK' ");
-        queryParams.put("hmark1", " not in ('CK','HN') ");
+        queryParams.put("hmark1", " not in ('CK','HD') ");
         queryParams.put("hmark2", " ='AH' ");
     }
 

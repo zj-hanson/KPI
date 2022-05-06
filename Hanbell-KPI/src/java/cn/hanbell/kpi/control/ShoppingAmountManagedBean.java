@@ -5,6 +5,8 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.comm.MailNotification;
+import cn.hanbell.kpi.comm.MailNotify;
 import cn.hanbell.kpi.ejb.IndicatorBean;
 import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.ejb.IndicatorDetailBean;
@@ -16,6 +18,7 @@ import cn.hanbell.kpi.ejb.ShoppingTableBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorChart;
 import cn.hanbell.kpi.entity.IndicatorDetail;
+import cn.hanbell.kpi.entity.MailSetting;
 import cn.hanbell.kpi.entity.SalesTable;
 import cn.hanbell.kpi.entity.ShoppingManufacturer;
 import cn.hanbell.kpi.entity.ShoppingTable;
@@ -45,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Timer;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -117,19 +121,24 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
     }
 
     public void download() {
-        shoppingTableBean.deleteByYearmon(BaseLib.formatDate("yyyyMM", btnDate));
-        List<Object[]> shbList1 = shoppoingAccoumuntBean.getShbDateDetail("C", this.btnDate, "", "");
-        persist(shbList1);
+        try {
+            shoppingTableBean.deleteByYearmon(BaseLib.formatDate("yyyyMM", btnDate));
+            List<Object[]> shbList1 = shoppoingAccoumuntBean.getShbDateDetail("C", this.btnDate, "", "");
+            persist(shbList1);
 //        List thbList1 = shoppoingAccoumuntBean.getThbDateDetail("A", this.btnDate, "", "");
 //        persist(thbList1);
-        List hsList1 = shoppoingAccoumuntBean.getShbDateDetail("H", this.btnDate, "", "");
-        persist(hsList1);
-        List scmList1 = shoppoingAccoumuntBean.getShbDateDetail("K", this.btnDate, "", "");
-        persist(scmList1);
-        List zcmList1 = shoppoingAccoumuntBean.getShbDateDetail("E", this.btnDate, "", "");
-        persist(zcmList1);
-        List hyList1 = shoppoingAccoumuntBean.getShbDateDetail("Y", this.btnDate, "", "");
-        persist(hyList1);
+            List hsList1 = shoppoingAccoumuntBean.getShbDateDetail("H", this.btnDate, "", "");
+            persist(hsList1);
+            List scmList1 = shoppoingAccoumuntBean.getShbDateDetail("K", this.btnDate, "", "");
+            persist(scmList1);
+            List zcmList1 = shoppoingAccoumuntBean.getShbDateDetail("E", this.btnDate, "", "");
+            persist(zcmList1);
+            List hyList1 = shoppoingAccoumuntBean.getShbDateDetail("Y", this.btnDate, "", "");
+            persist(hyList1);
+            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新成功！"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新失败！"));
+        }
     }
 
     public void persist(List<Object[]> list) {
@@ -177,13 +186,11 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             for (Indicator entity : list) {
                 indicatorBean.updateActual(entity.getId(), cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
                         cal.getTime(), Calendar.MONTH);
-                  System.out.println(entity.getFormid()+"更新成功");
+                System.out.println(entity.getFormid() + "更新成功");
             }
-               showInfoMsg("Info", "更新成功！");
-               System.out.println("全部更新成功");
+            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新成功！"));
         } catch (Exception ex) {
-              System.out.println("更新失败！");
-             showInfoMsg("Info", "更新失败！");
+            FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "更新失败！"));
             ex.printStackTrace();
             Logger.getLogger(ShoppingAmountManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -218,8 +225,8 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             Cell cell;
             Row row;
             row = sheet.createRow(0);
-             row.createCell(0).setCellValue("验收单号");
-              row.createCell(1).setCellValue("采购单号");
+            row.createCell(0).setCellValue("验收单号");
+            row.createCell(1).setCellValue("采购单号");
             row.createCell(2).setCellValue("公司别");
             row.createCell(3).setCellValue("厂商编号");
             row.createCell(4).setCellValue("厂商名称");
@@ -302,7 +309,7 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         List<String> flList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_FALEI);
         List<String> dj1List = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_DAOJU);//刀具
         List<String> cdList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_CHENGDIAN);
-        List<String> jxgbList =getItclsString(ShoppingAccomuntBean.SHB_FACT_JIEXIANGAIBAN);
+        List<String> jxgbList = getItclsString(ShoppingAccomuntBean.SHB_FACT_JIEXIANGAIBAN);
         List<String> jxhList = getItclsString(ShoppingAccomuntBean.SHB_FACT_JIEXIANGHE);
         List<String> mjList = getItclsString(ShoppingAccomuntBean.SHB_ITCLS_MOJU);
         Iterator<Object[]> iterator = shbList.iterator();
@@ -417,14 +424,14 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal qtSum = new BigDecimal(0);
         List<String> zjList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_ZHUJIA);
         List<String> djList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_DIANJI);
-        List<String> zcList = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_ZHOUCHENG);
-        List<String> ypList = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_YOUPING);
-        List<String> jk1List = getmaterialTypeName("A",  ShoppingAccomuntBean.THB_FACT_JINGKOU);
+        List<String> zcList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_ZHOUCHENG);
+        List<String> ypList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_YOUPING);
+        List<String> jk1List = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_JINGKOU);
         List<String> zzList = getItclsString(ShoppingAccomuntBean.THB_ITCLS_ZHUANZI);
         List<String> flList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_FALEI);
-        List<String> dj1List = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_DAOJU);
-        List<String> cdList = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_CHENGDIAN);
-        List<String> jxgbList = getmaterialTypeName("A",ShoppingAccomuntBean.THB_FACT_JIEXIANGAIBAN);
+        List<String> dj1List = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_DAOJU);
+        List<String> cdList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_CHENGDIAN);
+        List<String> jxgbList = getmaterialTypeName("A", ShoppingAccomuntBean.THB_FACT_JIEXIANGAIBAN);
         Iterator<Object[]> iterator = thbList.iterator();
         while (iterator.hasNext()) {
             try {
