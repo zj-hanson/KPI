@@ -80,17 +80,17 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
         }
     }
 
-    public List<EquipmentAnalyResult> getUnqualifiedEquipmentAnalyResult(String deptname, String staDate) throws ParseException {
+    public List<Object[]> getUnqualifiedEquipmentAnalyResult(String deptname, String staDate) throws ParseException {
         StringBuffer eSql = new StringBuffer();
         StringBuilder sbSql = new StringBuilder();
         StringBuilder sbMES = new StringBuilder();
         List<String> sMESList = new ArrayList<>();
         List<Object> sCadeList = new ArrayList<>();
         String str = "";
-        eSql.append(" SELECT * FROM equipmentanalyresult  WHERE (TIMESTAMPDIFF(MINUTE,startdate,enddate  )<2 OR enddate IS  NULL )");
-        eSql.append("  AND formdate ='").append(staDate).append("' and deptname='").append(deptname).append("'  AND standardlevel='一级' and company='C'");
-        Query query = this.getEntityManager().createNativeQuery(eSql.toString(), EquipmentAnalyResult.class);
-        List<EquipmentAnalyResult> list = query.getResultList();
+        eSql.append(" SELECT E.formid,E.formdate, E.assetno,E.assetdesc,E.deptname,E.startdate,E.enddate,A.remark,NULL FROM equipmentanalyresult E LEFT JOIN assetcard A ON E.assetno=A.formid   WHERE (TIMESTAMPDIFF(MINUTE,startdate,enddate  )<2 OR enddate IS  NULL )");
+        eSql.append("  AND E.formdate ='").append(staDate).append("' and E.deptname='").append(deptname).append("'  AND standardlevel='一级' and E.company='C'");
+        Query query = this.getEntityManager().createNativeQuery(eSql.toString());
+        List<Object[]> list = query.getResultList();
         if (deptname.equals("方型加工课")) {
             //  方型抓取周建档停机机台
             sbMES.append(" SELECT A.EQPID FROM (SELECT EQPID,sum(convert(DECIMAL, WORKHOUR) * convert(INT, NUM)) ALN  FROM PLAN_SEMI_SQUARE WHERE PLANDATE = '").append(staDate.replace('-', '/')).append("' GROUP BY EQPID )A  WHERE A.ALN=0");;
@@ -112,10 +112,10 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
             sbSql.append(" SELECT formid FROM assetcard WHERE  remark IN (").append(str).append(") ");
             query = this.getEntityManager().createNativeQuery(sbSql.toString());
             sCadeList = query.getResultList();
-            for (EquipmentAnalyResult eResult : list) {
+            for (Object[] eResult : list) {
                 for (Object obj : sCadeList) {
-                    if (eResult.getAssetno().equals(obj)) {
-                        eResult.setRemark("停机");
+                    if (eResult[2].toString().equals(obj)) {
+                        eResult[8]=("停机");
                     }
                 }
             }
