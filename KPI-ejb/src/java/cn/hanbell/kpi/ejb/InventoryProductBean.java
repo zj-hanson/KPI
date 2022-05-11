@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -225,7 +226,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         return null;
     }
 
-    public List<String[]> getDisplayInvamountProductList(int y, int m,String facno) {
+    public List<String[]> getDisplayInvamountProductList(int y, int m, String facno) {
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         List<String[]> dataResultList = new ArrayList<>();
@@ -301,4 +302,57 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         return String.valueOf(m);
     }
 
+    //获取生产计划的金额明细
+    public List<String> get(int y, int m,String facno, String genreno,String indicatorFormid) throws Exception {
+    
+            List<InventoryProduct> a=getDetailsByWareh(y,m,facno,getWarehs(genreno,indicatorFormid));
+            //需加入生产在制
+            List<InventoryProduct> b=getDetailsByWareh(y,m,facno,"in ('SCZZ')");
+            
+            List<InventoryProduct> c=getDetailsByWhdsc(y,m,facno,"借厂商");
+        
+        return null;
+    }
+    //根据仓库号获取数据
+    public List<InventoryProduct> getDetailsByWareh(int y, int m, String facno, String wareh) throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
+        sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
+        if(wareh==null ||wareh.length()==0){
+            throw new Exception("搜索明细必须加入仓库条件");
+        }
+        sql.append(" and wareh ").append(wareh);
+        Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
+        return query.getResultList();
+    }
+        //根据仓库名称获取数据
+    public List<InventoryProduct> getDetailsByWhdsc(int y, int m, String facno, String whdsc) throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
+        sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
+        sql.append(" and whdsc ").append(whdsc);
+        Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
+        return query.getResultList();
+    }
+
+    public String getWarehs(String genreno,String indicatorFormid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select detail.wareh");
+        sb.append(" from invindexdta detail left join   invindexhad head");
+        sb.append(" on detail.facno=head.facno and  detail.prono=head.prono");
+        sb.append(" AND detail.indno=head.indno and  detail.genreno=head.genreno where head.genreno ").append(genreno);
+        sb.append(" and indicatorformid='").append(indicatorFormid).append("'");
+        try {
+            Query q = superEJBForERP.getEntityManager().createNativeQuery(sb.toString());
+            List<String> warehs = q.getResultList();
+            sb.setLength(0);
+            if(warehs !=null&&!warehs.isEmpty()){
+                 sb.append("  in ('").append(StringUtils.join(warehs.toArray(), "\',\'")).append("')");
+                 return sb.toString();
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

@@ -10,12 +10,13 @@ package cn.hanbell.kpi.evaluation;
  * @author C1749
  * @description:生产性-真空
  */
-
 public class InventoryAmountA1P extends InventoryAmountA1 {
 
     public InventoryAmountA1P() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("genre", "='P'");
+        queryParams.put("genreno", " ='A1'");
+        queryParams.put("genrena", " ='生产目标'");
     }
 }

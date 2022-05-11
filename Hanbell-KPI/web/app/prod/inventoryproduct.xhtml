@@ -96,9 +96,12 @@
                 <f:facet name="left">
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{inventoryProductManagedBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
-                    <p:commandButton id="btnUpdateData" value="更新" actionListener="#{inventoryProductManagedBean.updateInventoryProduct()}" icon="ui-icon-save"
+                    <p:commandButton id="btnUpdateData" value="同步" actionListener="#{inventoryProductManagedBean.updateInventoryProduct()}" icon="ui-icon-save"
                                      update=":formList">
                         <p:confirm header="系统提示" message="确认覆盖已有数据" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                     <p:commandButton id="btnUpdateData" value="更新" actionListener="#{inventoryProductManagedBean.updateIndicator()}" icon="ui-icon-save"
+                                     update=":formList">
                     </p:commandButton>
                 </f:facet>
                 <f:facet name="right">

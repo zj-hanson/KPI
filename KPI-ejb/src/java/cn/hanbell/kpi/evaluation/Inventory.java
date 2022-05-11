@@ -6,8 +6,10 @@
 package cn.hanbell.kpi.evaluation;
 
 import cn.hanbell.kpi.comm.Actual;
+import cn.hanbell.kpi.comm.SuperEJBForERP;
 import cn.hanbell.kpi.comm.SuperEJBForKPI;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -21,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 public abstract class Inventory implements Actual {
 
     protected SuperEJBForKPI superEJBForKPI = lookupSuperEJBForKPI();
+     protected SuperEJBForERP superEJBForERP = lookupSuperEJBForERP();
     protected LinkedHashMap<String, Object> queryParams;
     protected final Logger log4j = LogManager.getLogger();
 
@@ -42,6 +45,17 @@ public abstract class Inventory implements Actual {
         }
     }
 
+    public abstract List<String> getWarehs(LinkedHashMap<String, Object> map);
+    
+    
+    protected SuperEJBForERP lookupSuperEJBForERP() {
+        try {
+            Context c = new InitialContext();
+            return (SuperEJBForERP) c.lookup("java:global/KPI/KPI-ejb/SuperEJBForERP!cn.hanbell.kpi.comm.SuperEJBForERP");
+        } catch (NamingException ne) {
+            throw new RuntimeException(ne);
+        }
+    }
     @Override
     public LinkedHashMap<String, Object> getQueryParams() {
         return queryParams;
