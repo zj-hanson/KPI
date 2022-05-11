@@ -64,7 +64,6 @@ public class CashFlowManagedBean extends SuperSingleBean<DataRecord> {
         currentEntity.setOptdateToNow();
         assistedBean.update(currentEntity.getDataRecordAssisted());
         super.update();
-
     }
 
     @Override

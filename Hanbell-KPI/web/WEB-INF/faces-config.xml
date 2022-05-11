@@ -243,9 +243,14 @@
             <to-view-id>/app/prod/scorecarddetailPrint.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-                <navigation-case>
+        <navigation-case>
             <from-outcome>shoppingAmountEdit</from-outcome>
             <to-view-id>/app/prod/shoppingAmountEdit.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>balanceimport</from-outcome>
+            <to-view-id>/app/prod/balanceimport</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -523,6 +528,11 @@
         <navigation-case>
             <from-outcome>shoppingcenteramount</from-outcome>
             <to-view-id>/app/bsc/shoppingcenteramount.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>balancesheet2</from-outcome>
+            <to-view-id>/app/bsc/balancesheet2.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

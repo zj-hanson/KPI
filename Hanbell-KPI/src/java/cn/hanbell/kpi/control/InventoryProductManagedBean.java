@@ -5,8 +5,11 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.ejb.IndicatorBean;
+import cn.hanbell.kpi.ejb.IndicatorDetailBean;
 import cn.hanbell.kpi.ejb.InventoryDepartmentBean;
 import cn.hanbell.kpi.ejb.InventoryProductBean;
+import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.InventoryProduct;
 import cn.hanbell.kpi.lazy.InventoryProductModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
@@ -14,6 +17,7 @@ import com.lightshell.comm.BaseLib;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -66,6 +71,8 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     protected final DecimalFormat doubleFormat;
 
     protected final Logger log4j = LogManager.getLogger("cn.hanbell.eap");
+
+    protected List<InventoryProduct> inventoryProductList1;//生产在制
 
     public InventoryProductManagedBean() {
         super(InventoryProduct.class);
@@ -391,6 +398,79 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         return new int[]{15, 10, 15, 15, 15, 15, 10, 20, 10, 10, 20, 20};
     }
 
+    public void updateIndicator() {
+        int y = Integer.parseInt(queryYearmon.substring(0, 4), 10);
+        int m = Integer.parseInt(queryYearmon.substring(queryYearmon.length() - 2, queryYearmon.length()), 10);
+        try { 
+            //生产库存=生产在制+实际库存+借厂商
+            inventoryProductList1.clear();
+            this.inventoryProductList1 = inventoryProductBean.getDetailsByWareh(y, m, facno, inventoryProductBean.getWarehs("A1", "生产性库存金额"));
+            this.inventoryProductList1.addAll(inventoryProductBean.getDetailsByWareh(y, m, facno, "in ('SCZZ')"));
+            this.inventoryProductList1.addAll(inventoryProductBean.getDetailsByWhdsc(y, m, facno, "借厂商"));
+            //更新指标
+            updateInventory1(y, m);
+
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(InventoryProductManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @EJB
+    private IndicatorDetailBean indicatorDetailBean;
+    @EJB
+    private IndicatorBean indicatorBean;
+
+    public void updateInventory1(int y, int m) throws Exception {
+        BigDecimal sumA = new BigDecimal(0);
+        BigDecimal sumR = new BigDecimal(0);
+        BigDecimal sumP = new BigDecimal(0);
+        BigDecimal sumAH = new BigDecimal(0);
+        BigDecimal sumS = new BigDecimal(0);
+        for (InventoryProduct entity : this.inventoryProductList1) {
+            if ("A".equals(entity.getGenre())) {
+                sumR = sumR.add(entity.getAmamount()).add(entity.getAmount());
+                entity.setCategories("A生产库存");
+            } else if ("AH".equals(entity.getGenre())) {
+                sumAH = sumAH.add(entity.getAmamount()).add(entity.getAmount());
+                entity.setCategories("AH生产库存");
+            } else if ("P".equals(entity.getGenre())) {
+                sumP = sumP.add(entity.getAmamount()).add(entity.getAmount());
+                entity.setCategories("P生产库存");
+            } else if ("S".equals(entity.getGenre())) {
+                sumS = sumS.add(entity.getAmamount()).add(entity.getAmount());
+                entity.setCategories("S生产库存");
+            } else if ("R".equals(entity.getGenre()) || "L".equals(entity.getGenre()) || "RG".equals(entity.getGenre())) {
+                sumR = sumR.add(entity.getAmamount()).add(entity.getAmount());
+                entity.setCategories("R生产库存");
+            }
+            updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("冷媒生产库存", y, "1X000").getOther1Indicator(), sumR, m);
+            updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("机组生产库存", y, "1X000").getOther1Indicator(), sumA, m);
+            updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("真空生产库存", y, "1X000").getOther1Indicator(), sumP, m);
+            updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("机体生产库存", y, "1X000").getOther1Indicator(), sumAH, m);
+            updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("涡旋生产库存", y, "1X000").getOther1Indicator(), sumS, m);
+        }
+    }
+
+    public boolean updateIndicatorDetail(IndicatorDetail detail, BigDecimal account, int m) throws Exception {
+        Method setMethod = detail.getClass()
+                .getDeclaredMethod("set" + getIndicatorColumn("N", m).toUpperCase(), BigDecimal.class);
+        setMethod.invoke(detail, account);
+        indicatorDetailBean.update(detail);
+        return true;
+    }
+
+    public String getIndicatorColumn(String formtype, int m) {
+        if (formtype.equals("N")) {
+            return "n" + String.format("%02d", m);
+        } else if (formtype.equals("D")) {
+            return "d" + String.format("%02d", m);
+        } else if (formtype.equals("NQ")) {
+            return "nq" + String.valueOf(m);
+        } else {
+            return "";
+
+        }
+    }
+
     public String getQueryYearmon() {
         return queryYearmon;
     }
@@ -449,6 +529,14 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
 
     public void setInventoryProductList(List<InventoryProduct> inventoryProductList) {
         this.inventoryProductList = inventoryProductList;
+    }
+
+    public List<InventoryProduct> getInventoryProductList1() {
+        return inventoryProductList1;
+    }
+
+    public void setInventoryProductList1(List<InventoryProduct> inventoryProductList1) {
+        this.inventoryProductList1 = inventoryProductList1;
     }
 
     public String getFacno() {

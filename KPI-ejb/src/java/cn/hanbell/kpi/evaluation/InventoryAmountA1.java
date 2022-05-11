@@ -8,7 +8,9 @@ package cn.hanbell.kpi.evaluation;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.persistence.Query;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -23,65 +25,56 @@ public class InventoryAmountA1 extends Inventory {
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
-        String indicatorno = map.get("indicatorno") != null ? map.get("indicatorno").toString() : "";
         String genre = map.get("genre") != null ? map.get("genre").toString() : "";
-        String itclscode = map.get("itclscode") != null ? map.get("itclscode").toString() : "";
-        StringBuilder sb = new StringBuilder();
-        BigDecimal result = BigDecimal.ZERO;
-        // 正常生产性物料部分
-        sb.append(" select ifnull(sum(a.num),0) from ( ");
-        sb.append(
-                " select ifnull(sum(amount+amamount),0) as num from inventoryproduct WHERE categories = 'A1' AND indicatorno = 'B05' ");
-        sb.append(" AND trtype = 'ZC' AND facno = '${facno}' ");
-        if (!genre.equals("")) {
-            sb.append(" AND genre ").append(genre);
-        }
-        if (!itclscode.equals("")) {
-            sb.append(" AND itclscode ").append(itclscode);
-        }
-        sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
-        // 借厂商部分
-        sb.append(" UNION ALL ");
-        sb.append(" select ifnull(sum(amount+amamount),0) as num from inventoryproduct where facno = '${facno}' AND whdsc = '借厂商' ");
-        if (!genre.equals("")) {
-            sb.append(" AND genre ").append(genre);
-        }
-        if (!itclscode.equals("")) {
-            sb.append(" AND itclscode ").append(itclscode);
-        }
-        sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
-        //柯茂的在制需要拧出来分开算，所以这里需要加公司别判断
-        if (facno.equals("C")) {
-            sb.append(" UNION ALL ");
-            // 如果中类编号是B40 生产在制品
-            sb.append(" SELECT ifnull(sum(amount+amamount),0) AS num FROM inventoryproduct WHERE facno = '${facno}' and trtype = 'ZZ'   ");
-            if (!genre.equals("")) {
-                sb.append(" AND genre ").append(genre);
-            }
-            sb.append(" AND wareh = 'SCZZ' ");
-            sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
-        }
-        sb.append(" )a ");
-        // 如果中类编号是B50（加工刀片库存（含刀柄））就直接选择库号
-        if (indicatorno.equals("B50")) {
-            sb.setLength(0);
-            sb.append(" SELECT ifnull(sum(amount+amamount),0) FROM inventoryproduct ");
-            sb.append(" WHERE facno = '${facno}' ");
-            sb.append(" AND categories = 'A1' ");
-            sb.append(" AND indicatorno = 'B50' ");
-            sb.append(" AND yearmon =  '").append(y).append(getMon(m)).append("'");
-        }
-        String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}",
-                facno);
-        Query query = superEJBForKPI.getEntityManager().createNativeQuery(sql);
         try {
-            Object o1 = query.getSingleResult();
-            result = BigDecimal.valueOf(Double.parseDouble(o1.toString()));
-        } catch (Exception ex) {
-            log4j.error("InventoryAmountA1.getValue()类异常", ex.toString());
+            StringBuilder sb = new StringBuilder();
+            List<String> warehs = this.getWarehs(map);
+            if (warehs == null || genre == null || "".equals(genre)) {
+                throw new Exception();
+            }
+            sb.append(" select sum(a.sum)");
+            sb.append(" from (select sum(amount)+sum(amamount) as 'sum'");
+            sb.append(" from inventoryproduct where genre ").append(genre);
+            sb.append(" and wareh in ('").append(StringUtils.join(warehs.toArray(), "\',\'")).append("')");
+            sb.append(" and yearmon =  '").append(y).append(getMon(m)).append("'");
+            sb.append(" union all");
+            //生产库存需要加上生产在制和借厂商部分
+            sb.append(" select sum(amount)+sum(amamount) as 'sum'");
+            sb.append(" from inventoryproduct where genre ").append(genre);
+            sb.append(" and wareh in ('SCZZ')");
+            sb.append(" and yearmon =  '").append(y).append(getMon(m)).append("'");
+            sb.append(" union all");
+            sb.append(" select sum(amount)+sum(amamount) as 'sum'");
+            sb.append(" from inventoryproduct where genre ").append(genre);
+            sb.append(" whdsc in ('借厂商')");
+            sb.append(" and yearmon =  '").append(y).append(getMon(m)).append("'");
+            sb.append(" )a;");
+            Query q = superEJBForKPI.getEntityManager().createNativeQuery(sb.toString());
+            return (BigDecimal) q.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
         }
-        return result;
+    }
 
+    @Override
+    public List<String> getWarehs(LinkedHashMap<String, Object> map) {
+        String facno = map.get("facno") != null ? map.get("facno").toString() : "";
+        String genreno = map.get("genreno") != null ? map.get("genreno").toString() : "";
+        String genrena = map.get("genrena") != null ? map.get("genrena").toString() : "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select detail.wareh");
+        sb.append(" from invindexdta detail left join   invindexhad head");
+        sb.append(" on detail.facno=head.facno and  detail.prono=head.prono");
+        sb.append(" AND detail.indno=head.indno and  detail.genreno=head.genreno where head.genreno ").append(genreno);
+        sb.append(" and genrena").append(genrena);
+        try {
+            Query q = superEJBForERP.getEntityManager().createNativeQuery(sb.toString());
+            List<String> warens = q.getResultList();
+            return warens;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

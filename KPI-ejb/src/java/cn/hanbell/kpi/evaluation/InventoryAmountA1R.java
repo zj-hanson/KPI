@@ -15,6 +15,8 @@ public class InventoryAmountA1R extends InventoryAmountA1 {
     public InventoryAmountA1R() {
         super();
         queryParams.put("facno", "C");
-        queryParams.put("genre", "in ('R','L','RG')");
+        queryParams.put("genre", " in ('R','L','RG')");
+        queryParams.put("genreno", " ='A1'");
+        queryParams.put("genrena", " ='生产目标'");
     }
 }
