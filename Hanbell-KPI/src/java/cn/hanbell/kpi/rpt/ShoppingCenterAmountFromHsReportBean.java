@@ -151,7 +151,7 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             weightList.add(zhanbi2);
 
             Object[] sumall1 = new Object[16];
-            sumall1[0] = "总重（t)";
+            sumall1[0] = "总重";
             sumall1[1] = "SHB+THB";
             for (int i = 2; i <= Integer.valueOf(BaseLib.formatDate("MM", btnDate)) + 1; i++) {
                 sumall1[i] = ((BigDecimal) shbweigth[i]).add((BigDecimal) thbweigth[i]);
@@ -160,7 +160,7 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             weightList.add(sumall1);
 
             Object[] sumall2 = new Object[16];
-            sumall2[0] = "汉声（t)";
+            sumall2[0] = "汉声";
             sumall2[1] = "SHB+THB";
             for (int i = 2; i <= Integer.valueOf(BaseLib.formatDate("MM", btnDate)) + 1; i++) {
                 sumall2[i] = ((BigDecimal) thbgornhsweigth[i]).add((BigDecimal) shbgornhsweigth[i]);

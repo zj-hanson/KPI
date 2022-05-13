@@ -47,8 +47,8 @@ public class ShoppingAccomuntBean implements Serializable {
         this.dfpercent = new DecimalFormat("0.00％");
     }
     //上海汉钟
-    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716";
-    public static String SHB_ITCLS_DIANJI = "3703/3104/9019";//电机
+    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716/3C02";
+    public static String SHB_ITCLS_DIANJI = "3703/3104/9019/RDJF/4504";//电机
     public static String SHB_ITCLS_ZHOUCHENG = "4009/4018";
     public static String SHB_ITCLS_YOUPING = "5061/5062";
     public static String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801/2201";
@@ -60,9 +60,13 @@ public class ShoppingAccomuntBean implements Serializable {
     public static String SHB_ITCLS_MOJU = "B005";
 
     //浙江汉声
-    public static String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD";
-    public static String HS_ITCLS_ZHUANZI = "2HZZ/2HZC/2A04/2HTG";
+    public static String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD/1A03/1HJK/1HYF/1HMD/3A03/3A01/3HMD/3HYF/2AZ1/2AZ3/3H/1/3A06/1102/2H";
+    public static String HS_ITCLS_ZHUANZI = "2HZZ/2HZC/2A04/2HTG/2101/2201/2801/3H";
     public static String HS_ITCLS_MOJU = "B005";
+    public static String HS_ITCLS_DAOJU = "5C2/B001";
+    //安徽汉阳
+    public static String HY_ITCLS_ZHUJIA = "52/1AZ9";
+    public static String HY_ITCLS_DAOJU = "B001";
     //台湾汉钟
     public static String THB_FACT_ZHUJIA = "'鑄件','加工','HS'";
     public static String THB_FACT_DIANJI = "'電機'";//电机
@@ -76,7 +80,8 @@ public class ShoppingAccomuntBean implements Serializable {
     public static String THB_FACT_JIEXIANGAIBAN = "'蓋板'";
     //上海柯茂
     public static String SCM_ITCLS_ZHUANZI = "1J02/1014/3013/3J02/3H33";
-    public static String SCM_ITCLS_DIANJI = "3J04/3J33/4047/4049";
+    public static String SCM_ITCLS_DIANJI = "3J04/4047";
+    public static String SCM_ITCLS_CHENGDIAN = "3J33/4049/4046";
     public static String SCM_ITCLS_ZHOUCHENG = "4009";
     public static String SCM_ITCLS_MOJU = "B005";
 

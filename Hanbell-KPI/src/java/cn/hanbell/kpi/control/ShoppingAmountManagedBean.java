@@ -378,9 +378,11 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal zzSum = new BigDecimal(0);
         BigDecimal mjSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
+          BigDecimal djSum = new BigDecimal(0);
         List<String> zjList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_ZHUJIA);
         List<String> zzList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_ZHUANZI);
         List<String> mjList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_MOJU);
+        List<String> djList = getItclsString(ShoppingAccomuntBean.HS_ITCLS_DAOJU);
         Iterator<Object[]> iterator = hsList.iterator();
         while (iterator.hasNext()) {
             try {
@@ -394,6 +396,9 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
                 } else if (mjList.contains((String) o[6])) {
                     o[8] = "模具";
                     mjSum = mjSum.add((BigDecimal) o[5]);
+                } else if (djList.contains((String) o[6])) {
+                    o[8] = "刀具";
+                    djSum = djSum.add((BigDecimal) o[5]);
                 } else {
                     o[8] = "其他";
                     qtSum = qtSum.add((BigDecimal) o[5]);
@@ -404,6 +409,7 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             }
         }
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-铸加类采购金额", y, "1X000").getOther2Indicator(), zjSum);
+        updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-刀具类采购金额", y, "1X000").getOther2Indicator(), djSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-转子类采购金额", y, "1X000").getOther2Indicator(), zzSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-模具类采购金额", y, "1X000").getOther2Indicator(), mjSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-其他类采购金额", y, "1X000").getOther2Indicator(), qtSum);
@@ -495,11 +501,13 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
         BigDecimal djSum = new BigDecimal(0);
         BigDecimal zcSum = new BigDecimal(0);
         BigDecimal mjSum = new BigDecimal(0);
+         BigDecimal cdSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
         List<String> zjList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_ZHUANZI);
         List<String> djList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_DIANJI);
         List<String> zcList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_ZHOUCHENG);
         List<String> mjList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_MOJU);
+          List<String> cdList = getItclsString(ShoppingAccomuntBean.SCM_ITCLS_CHENGDIAN);
         Iterator<Object[]> iterator = scmList.iterator();
         while (iterator.hasNext()) {
             try {
@@ -516,7 +524,10 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
                 } else if (mjList.contains((String) o[6])) {
                     o[8] = "模具";
                     mjSum = mjSum.add((BigDecimal) o[5]);
-                } else {
+                }else if (cdList.contains((String) o[6])) {
+                    o[8] = "衬垫";
+                    cdSum = cdSum.add((BigDecimal) o[5]);
+                }  else {
                     o[8] = "其他";
                     qtSum = qtSum.add((BigDecimal) o[5]);
                 }
@@ -526,6 +537,7 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
             }
         }
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-铸加类采购金额", y, "1X000").getOther4Indicator(), zjSum);
+        updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-衬垫类采购金额", y, "1X000").getOther4Indicator(), cdSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-电机类采购金额", y, "1X000").getOther4Indicator(), djSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-轴承类采购金额", y, "1X000").getOther4Indicator(), zcSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-模具类采购金额", y, "1X000").getOther4Indicator(), mjSum);
@@ -548,19 +560,33 @@ public class ShoppingAmountManagedBean extends SuperSingleBean<ShoppingTable> {
     }
 
     private void initHyAmount() throws NoSuchMethodException, Exception {
+           BigDecimal zjSum = new BigDecimal(0);
+             BigDecimal djSum = new BigDecimal(0);
         BigDecimal qtSum = new BigDecimal(0);
+        
+        List<String> zjList = getItclsString(ShoppingAccomuntBean.HY_ITCLS_ZHUJIA);
+        List<String> djList = getItclsString(ShoppingAccomuntBean.HY_ITCLS_DAOJU);
         Iterator<Object[]> iterator = hyList.iterator();
         while (iterator.hasNext()) {
             try {
                 Object[] o = iterator.next();
-                o[8] = "其他";
-                qtSum = qtSum.add((BigDecimal) o[5]);
+                if (zjList.contains((String) o[6])) {
+                    o[8] = "铸件";
+                    zjSum = zjSum.add((BigDecimal) o[5]);
+                } else if (djList.contains((String) o[6])) {
+                    o[8] = "刀具";
+                    djSum = djSum.add((BigDecimal) o[5]);
+                }   else {
+                    o[8] = "其他";
+                    qtSum = qtSum.add((BigDecimal) o[5]);
+                }
             } catch (Exception e) {
                 throw e;
             }
         }
+        updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-铸加类采购金额", y, "1X000").getOther6Indicator(), zjSum);
+        updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-刀具类采购金额", y, "1X000").getOther6Indicator(), djSum);
         updateIndicatorDetail(indicatorBean.findByFormidYearAndDeptno("A-其他类采购金额", y, "1X000").getOther6Indicator(), qtSum);
-
     }
 
     public boolean updateIndicatorDetail(IndicatorDetail detail, BigDecimal account) throws Exception {

@@ -47,6 +47,7 @@ public class BalancerecordBean extends SuperEJBForKPI<Balancerecord> {
         if (whethershow==false) {
             sql.append(" and b.whethershow=true");
         }
+        sql.append(" order by a.itemno");
         Query query = getEntityManager().createNativeQuery(sql.toString());
         try {
             return query.getResultList();

@@ -99,11 +99,9 @@
                     </p:panelGrid >
                     <p:dataTable var="item" value="#{shoppingCenterAmountFromHsReportBean.weightList}"  >
                         <p:column headerText="类型">
-                            <h:outputText value="#{item[0]}" />
+                            <h:outputText value="#{item[0]}(#{item[1]})" />
                         </p:column>
-                        <p:column headerText="公司">
-                            <h:outputText value="#{item[1]}" />
-                        </p:column>
+            
                         <p:column headerText="1月">
                             <h:outputText value="#{item[0] == '占比'?item[2]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[2])}" />
                         </p:column>
