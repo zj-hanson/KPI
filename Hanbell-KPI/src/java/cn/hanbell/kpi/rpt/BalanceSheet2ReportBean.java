@@ -11,6 +11,8 @@ import cn.hanbell.kpi.ejb.IndicatorChartBean;
 import cn.hanbell.kpi.entity.RoleGrantModule;
 import cn.hanbell.kpi.web.BscQueryTableManageBean;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,14 +39,16 @@ public class BalanceSheet2ReportBean extends BscQueryTableManageBean implements 
 
     @EJB
     protected IndicatorChartBean indicatorChartBean;
-
+    protected final DecimalFormat floatFormat;
     protected Date btndate;
 //    protected LinkedHashMap<String, String[]> map;
     protected List<Object[]> list;
     protected LinkedHashMap<String, String> statusMap;
     protected String facno;
     protected boolean showchecked;
+
     public BalanceSheet2ReportBean() {
+        this.floatFormat = new DecimalFormat("#,###.00");
     }
 
     public Calendar settlementDate() {
@@ -57,6 +61,14 @@ public class BalanceSheet2ReportBean extends BscQueryTableManageBean implements 
         Calendar c = Calendar.getInstance();
         c.setTime(getBtndate());
         return c;
+    }
+
+    public String format(BigDecimal value) {
+        if (value == null || value.compareTo(BigDecimal.ZERO) == 0) {
+            return "0";
+        } else {
+            return floatFormat.format(value);
+        }
     }
 
     @PostConstruct
@@ -102,30 +114,30 @@ public class BalanceSheet2ReportBean extends BscQueryTableManageBean implements 
     }
 
     public void btnquery() {
-       try{
-        statusMap.put("displaydiv1", "block");
-        statusMap.put("displaydiv2", "none");
-        boolean aa = true;
-        if (getBtndate().after(settlementDate().getTime())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
-            aa = false;
-        }
-        int y = getdate().get(Calendar.YEAR);
-        int m = getdate().get(Calendar.MONTH) + 1;
-        if (aa) {
-            list = this.balancerecordBean.findByYeaAndMonAndWhethershow(2022, 4, showchecked);
-            if (list != null && !list.isEmpty()) {
-                statusMap.put("displaydiv1", "none");
-                statusMap.put("displaydiv2", "block");
-                statusMap.put("th1title", "期末余额");
-                statusMap.put("th2title", "期初余额");
-                super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
+        try {
+            statusMap.put("displaydiv1", "block");
+            statusMap.put("displaydiv2", "none");
+            boolean aa = true;
+            if (getBtndate().after(settlementDate().getTime())) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "日期选择不能超过系统结算日期！"));
+                aa = false;
             }
-        }
-        }catch(Exception e){
-            
+            int y = getdate().get(Calendar.YEAR);
+            int m = getdate().get(Calendar.MONTH) + 1;
+            if (aa) {
+                list = this.balancerecordBean.findByYeaAndMonAndWhethershow(2022, 4, showchecked);
+                if (list != null && !list.isEmpty()) {
+                    statusMap.put("displaydiv1", "none");
+                    statusMap.put("displaydiv2", "block");
+                    statusMap.put("th1title", "期末余额");
+                    statusMap.put("th2title", "期初余额");
+                    super.getRemarkOne(indicatorChart, getdate().get(Calendar.YEAR), getdate().get(Calendar.MONTH) + 1);
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "无法查询到该日期的数据，请重新查询！"));
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -185,5 +197,4 @@ public class BalanceSheet2ReportBean extends BscQueryTableManageBean implements 
         this.showchecked = showchecked;
     }
 
-  
 }
