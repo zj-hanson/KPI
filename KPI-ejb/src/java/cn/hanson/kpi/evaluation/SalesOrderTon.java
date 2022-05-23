@@ -32,9 +32,10 @@ public class SalesOrderTon extends SalesOrder {
 
         BigDecimal ton = BigDecimal.ZERO;
 
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.cdrqy1*s.rate2 else d.cdrqy1 end) as decimal(17,2))),0) ");
+        sb.append(" when '4F' then d.cdrqy1*s.rate2 else d.cdrqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s ");
         sb.append(
             " where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta<'98' and s.itnbr=d.itnbr ");
@@ -88,9 +89,11 @@ public class SalesOrderTon extends SalesOrder {
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";// 种类
         String variety = map.get("variety") != null ? map.get("variety").toString() : "";// 细类
 
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1) end) as decimal(17,2))),0) ");
+        sb.append(
+            " when '4F' then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1)*isnull(s.rate2,0) end) as decimal(17,2))),0) ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s where h.facno=d.facno and h.cdrno=d.cdrno and h.hrecsta<>'W' ");
         sb.append(" and d.itnbr=s.itnbr ");
         sb.append(" and ((d.cdrqy1-d.shpqy1)>0 or (d.cdrqy2-d.shpqy2)>0) and d.drecsta<'95' and h.facno='${facno}' ");
@@ -130,11 +133,13 @@ public class SalesOrderTon extends SalesOrder {
         String protype = map.get("protype") != null ? map.get("protype").toString() : "";// 种类
         String variety = map.get("variety") != null ? map.get("variety").toString() : "";// 细类
 
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         StringBuilder sb = new StringBuilder();
         sb.append(
             " select h.facno,h.cusno,c.cusna,h.cdrno,h.recdate,d.trseq,d.itnbr,s.itdsc,s.spdsc,d.cdrqy1,d.cdrqy2,");
         sb.append(" s.rate2,d.unpris,d.shpqy1,d.shpqy2,cast((case substring(s.judco,1,1)+s.fvco when '4F' ");
-        sb.append(" then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1) end) as decimal(17,2)) as nd, ");
+        sb.append(
+            " then (d.cdrqy1-d.shpqy1)*s.rate2 else (d.cdrqy1-d.shpqy1)*isnull(s.rate2,0) end) as decimal(17,2)) as nd, ");
         sb.append(" (d.cdrqy1-d.shpqy1) * unpris as na ");
         sb.append(" from cdrhmas h,cdrdmas d,invmas s,cdrcus c where h.facno=d.facno and h.cdrno=d.cdrno ");
         sb.append(" and h.hrecsta<>'W' and h.cusno=c.cusno and d.itnbr=s.itnbr ");
