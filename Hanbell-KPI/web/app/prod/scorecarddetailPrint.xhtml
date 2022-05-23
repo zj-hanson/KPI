@@ -14,7 +14,7 @@
                     查询条件
                 </f:facet>
                 <h:outputLabel value="日期：" for="btnDate" />
-                <p:calendar id="btnDate" value="#{salesTableReportBean.btnDate}" title="导出时间" pattern="yyyy/MM/dd" />
+                <p:calendar id="btnDate" value="#{scorecardDetailPrintManagedBean.printDate}" title="导出时间" pattern="yyyy/MM/dd" />
                 <p:commandButton id="initial" value="重置"  icon="ui-icon-refresh"/>
                 <p:commandButton id="query" value="下载" actionListener="#{scorecardDetailPrintManagedBean.print()}" icon="ui-icon-print"/>
 

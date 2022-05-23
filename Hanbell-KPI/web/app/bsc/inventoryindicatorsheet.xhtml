@@ -24,6 +24,17 @@
                                  update="formOne" oncomplete="setTableHeaderStyle();" />
                 <p:link value="返回"  outcome="home" styleClass="left"/>
             </p:panelGrid>
+            <script type="text/javascript">
+                $(function () {
+                    $("#table tr").hover(function () {
+                        $(this).css("background-color", "#1AB394");
+                        $(this).css("color", "white");
+                    }, function () {
+                        $(this).css("background-color", "");
+                        $(this).css("color", "black");
+                    });
+                });
+            </script>
             <p:dataTable id="tblList" value="#{inventoryReportBean.inventoryIndicatorList}" var="item" tableStyleClass="plgSheetData" stickyHeader="true"
                          rowStyleClass="#{(item.category.substring(item.category.length()-2,item.category.length()) == '合计')?'bgred':''}">
                 <p:columnGroup type="header">

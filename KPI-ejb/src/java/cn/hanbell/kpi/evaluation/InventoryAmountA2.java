@@ -9,6 +9,7 @@ import cn.hanbell.kpi.ejb.IndicatorBean;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -225,6 +226,11 @@ public class InventoryAmountA2 extends Inventory {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
+    }
+
+    @Override
+    public List<String> getWarehs(LinkedHashMap<String, Object> map) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

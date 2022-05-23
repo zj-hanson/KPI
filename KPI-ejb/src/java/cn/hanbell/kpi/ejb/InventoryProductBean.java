@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -90,25 +91,12 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
     private List getDataForERPList(int y, int m, LinkedHashMap<String, String> map, String facno) {
         StringBuilder sb = new StringBuilder();
         if (facno.equals("C")) {
-            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
-            sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-            sb.append(" a.itclscode,d.genreno,h.genzls,sum(a.amount) AS amount,'' AS amamount  ");
-            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-            sb.append(" LEFT JOIN invindexdta d ON a.facno = d.facno AND a.prono = d.prono AND a.wareh = d.wareh  ");
-            sb.append(" LEFT JOIN invindexhad h ON h.facno = d.facno AND h.prono = d.prono AND h.indno = d.indno  ");
-            sb.append(" where a.facno='${facno}' and a.prono = '1'  ");
-            sb.append(" AND a.genre NOT LIKE '%,%' AND a.genre NOT LIKE 'QT' ");
-            sb.append(" and a.yearmon='${y}${m}'  ");
-            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,(case when  d.genre <> '' then  d.genre else  a.genre end ), ");
-            sb.append(" a.itclscode,d.genreno,h.genzls ");
-            sb.append(" UNION ALL ");
-            sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc, ");
-            sb.append(" (case when  a.genre <> '' then  a.genre else  'R' end ), ");
-            sb.append(" a.itclscode,'' AS genreno,'' AS genzls,sum(a.amount) AS amount,'' AS amamount ");
-            sb.append(" FROM invamount a LEFT OUTER JOIN invwh w on w.facno = a.facno and w.prono = a.prono and w.wareh = a.wareh ");
-            sb.append(" where a.facno<>'${facno}' and a.prono = '1' ");
-            sb.append(" and a.yearmon='${y}${m}'  ");
-            sb.append(" GROUP BY a.facno,a.trtype,a.deptno,a.yearmon,a.wareh,a.whdsc,a.genre,a.itclscode ");
+            sb.append("  SELECT facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode,'' as genreno,''genzles,sum(amount),0.0 as amamount FROM invamount WHERE facno = 'C' AND prono = '1' AND yearmon = '${y}${m}' AND genre NOT LIKE '%,%' AND genre NOT LIKE '%QT%'");
+            sb.append("  group by facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode");
+            sb.append("  UNION ALL");
+            sb.append(" SELECT facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode,'' as genreno,''genzles,sum(amount),0.0 as amamount  FROM invamount WHERE facno <> 'C' AND prono = '1' AND yearmon = '${y}${m}'");
+            sb.append(" group by facno,yearmon,trtype,deptno,wareh,whdsc,genre,itclscode");
+
         } else {
             sb.append(" SELECT a.facno,a.yearmon,a.trtype,a.deptno,a.wareh,a.whdsc,");
             sb.append(" (case when  d.genre <> '' then  d.genre else  a.genre end ), ");
@@ -130,6 +118,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
             List result = query.getResultList();
             return result;
         } catch (Exception ex) {
+            ex.printStackTrace();
             log4j.error("InventoryProductBean.getDataForERPList()异常！！！", ex.toString());
         }
         return null;
@@ -164,25 +153,25 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
                         ip.setGenre(genre);
                     }
                     //EPM01中分类1除S外，全部替换为“P”
-                    if (row[4].toString().equals("EPM01") && itclscode.equals("1") && row[0].toString().equals("C")) {
-                        if (genre.equals("S")) {
-                            ip.setGenre("S");
-                        }else{
-                            ip.setGenre("P");
-                        }
-                    }else{
-                        ip.setGenre(genre);
-                    }
+//                    if (row[4].toString().equals("EPM01") && itclscode.equals("1") && row[0].toString().equals("C")) {
+//                        if (genre.equals("S")) {
+//                            ip.setGenre("S");
+//                        }else{
+//                            ip.setGenre("P");
+//                        }
+//                    }else{
+//                        ip.setGenre(genre);
+//                    }
                     //EM01中分类1除S和P，全部替换为“A”
-                    if (row[4].toString().equals("EM01") && row[0].toString().equals("C")) {
-                        if (!genre.equals("S") || !genre.equals("P")) {
-                            ip.setGenre("A");
-                        }else{
-                            ip.setGenre(genre);
-                        }
-                    }else{
-                        ip.setGenre(genre);
-                    }
+//                    if (row[4].toString().equals("EM01") && row[0].toString().equals("C")) {
+//                        if (!genre.equals("S") || !genre.equals("P")) {
+//                            ip.setGenre("A");
+//                        }else{
+//                            ip.setGenre(genre);
+//                        }
+//                    }else{
+//                        ip.setGenre(genre);
+//                    }
                     ip.setItclscode(itclscode);
                     ip.setCategories(row[8] != null ? row[8].toString() : "");
                     ip.setIndicatorno(row[9] != null ? row[9].toString() : "");
@@ -237,7 +226,7 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         return null;
     }
 
-    public List<String[]> getDisplayInvamountProductList(int y, int m,String facno) {
+    public List<String[]> getDisplayInvamountProductList(int y, int m, String facno) {
         queryStringParams.clear();
         queryStringParams.put("facno", "C");
         List<String[]> dataResultList = new ArrayList<>();
@@ -313,4 +302,57 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         return String.valueOf(m);
     }
 
+    //获取生产计划的金额明细
+    public List<String> get(int y, int m,String facno, String genreno,String indicatorFormid) throws Exception {
+    
+            List<InventoryProduct> a=getDetailsByWareh(y,m,facno,getWarehs(genreno,indicatorFormid));
+            //需加入生产在制
+            List<InventoryProduct> b=getDetailsByWareh(y,m,facno,"in ('SCZZ')");
+            
+            List<InventoryProduct> c=getDetailsByWhdsc(y,m,facno,"借厂商");
+        
+        return null;
+    }
+    //根据仓库号获取数据
+    public List<InventoryProduct> getDetailsByWareh(int y, int m, String facno, String wareh) throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
+        sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
+        if(wareh==null ||wareh.length()==0){
+            throw new Exception("搜索明细必须加入仓库条件");
+        }
+        sql.append(" and wareh ").append(wareh);
+        Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
+        return query.getResultList();
+    }
+        //根据仓库名称获取数据
+    public List<InventoryProduct> getDetailsByWhdsc(int y, int m, String facno, String whdsc) throws Exception {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
+        sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
+        sql.append(" and whdsc ").append(whdsc);
+        Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
+        return query.getResultList();
+    }
+
+    public String getWarehs(String genreno,String indicatorFormid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select detail.wareh");
+        sb.append(" from invindexdta detail left join   invindexhad head");
+        sb.append(" on detail.facno=head.facno and  detail.prono=head.prono");
+        sb.append(" AND detail.indno=head.indno and  detail.genreno=head.genreno where head.genreno ").append(genreno);
+        sb.append(" and indicatorformid='").append(indicatorFormid).append("'");
+        try {
+            Query q = superEJBForERP.getEntityManager().createNativeQuery(sb.toString());
+            List<String> warehs = q.getResultList();
+            sb.setLength(0);
+            if(warehs !=null&&!warehs.isEmpty()){
+                 sb.append("  in ('").append(StringUtils.join(warehs.toArray(), "\',\'")).append("')");
+                 return sb.toString();
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

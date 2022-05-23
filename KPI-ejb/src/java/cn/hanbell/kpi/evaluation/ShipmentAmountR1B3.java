@@ -24,5 +24,6 @@ public class ShipmentAmountR1B3 extends ShipmentAmount {
         queryParams.put("n_code_CD", " ='HD' ");
         queryParams.put("n_code_DC", " ='L' ");
         queryParams.put("n_code_DD", " ='00' ");
+        queryParams.put("ogdkid", "RL01");
     }
 }

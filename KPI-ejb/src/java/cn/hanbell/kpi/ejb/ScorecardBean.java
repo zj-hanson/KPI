@@ -130,10 +130,8 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
 
     public List<ScorecardAuditor> getAuditorDetail1(Object value, int quater) {
         List<ScorecardAuditor> list = scorecardAuditorBean.findByPId(value);
-        if (list.removeIf(auditor -> auditor.getQuarter() != quater)) {
-            return list;
-        }
-        return new ArrayList<ScorecardAuditor>();
+       list.removeIf(auditor -> auditor.getQuarter() != quater);
+        return list;
 
     }
 

@@ -50,7 +50,7 @@ public class ProductionPlanShipmentKM extends ProductionPlanShipment {
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
-            sb.append(" and d.itnbr NOT in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
+            sb.append(" and d.itnbr  in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
@@ -113,7 +113,7 @@ public class ProductionPlanShipmentKM extends ProductionPlanShipment {
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
-            sb.append(" and d.itnbr NOT in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
+            sb.append(" and d.itnbr  in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate< '${d}'  GROUP BY day(h.shpdate)");
 

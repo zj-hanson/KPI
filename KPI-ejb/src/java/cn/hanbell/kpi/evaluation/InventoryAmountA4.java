@@ -8,6 +8,7 @@ package cn.hanbell.kpi.evaluation;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.persistence.Query;
 
 /**
@@ -52,6 +53,11 @@ public class InventoryAmountA4 extends Inventory {
             log4j.error("InventoryAmountA4.getValue)()异常", ex.toString());
         }
         return result;
+    }
+
+    @Override
+    public List<String> getWarehs(LinkedHashMap<String, Object> map) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

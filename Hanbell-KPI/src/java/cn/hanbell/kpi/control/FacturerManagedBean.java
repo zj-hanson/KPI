@@ -5,7 +5,8 @@
  */
 package cn.hanbell.kpi.control;
 
-
+import cn.hanbell.kpi.comm.SuperEJBForERP;
+import cn.hanbell.kpi.ejb.ShoppingAccomuntBean;
 import cn.hanbell.kpi.ejb.ShoppingManufacturerBean;
 import cn.hanbell.kpi.entity.ShoppingManufacturer;
 import cn.hanbell.kpi.web.SuperSingleBean;
@@ -16,8 +17,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -45,11 +50,15 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
     @EJB
     protected ShoppingManufacturerBean shoppingManufacturerBean;
 
+    @EJB
+    private ShoppingAccomuntBean shoppingAccomuntBean;
+
     private List<ShoppingManufacturer> list;
     private String queryFacno;
     private String queryUserna;
     private String queryVdrna;
     private ShoppingManufacturer selectedPrupcm;
+    private Date queryDate;
 
     private String inputFacno;
     private String inputVdrno;
@@ -64,15 +73,15 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
 
     @Override
     public void init() {
-        queryFacno="C";
-        list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno,queryUserna, queryVdrna);
+        queryFacno = "C";
+        list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno, queryUserna, queryVdrna);
 
     }
 
     @Override
     public void query() {
         try {
-            list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno,queryUserna, queryVdrna);
+            list = shoppingManufacturerBean.findByUsernaAndVdrna(queryFacno, queryUserna, queryVdrna);
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "error", e.toString()));
         }
@@ -183,7 +192,7 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
                     Row row = sheet.getRow(i);
                     String facno = cellToVlaue(row.getCell(0));
                     String vdrno = cellToVlaue(row.getCell(1));
-                    ShoppingManufacturer k = shoppingManufacturerBean.findByVdrno(vdrno);
+                    ShoppingManufacturer k = shoppingManufacturerBean.findByVdrnoAndFacno(vdrno, facno);
                     if (k != null) {
                         shoppingManufacturerBean.delete(k);
                     }
@@ -199,7 +208,7 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传成功"));
             } catch (Exception ex) {
                 FacesContext.getCurrentInstance().addMessage((String) null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "上传失败"));
-                
+
                 ex.printStackTrace();
             } finally {
                 try {
@@ -366,6 +375,12 @@ public class FacturerManagedBean extends SuperSingleBean<ShoppingManufacturer> {
         this.selectedPrupcm = selectedPrupcm;
     }
 
+    public Date getQueryDate() {
+        return queryDate;
+    }
 
+    public void setQueryDate(Date queryDate) {
+        this.queryDate = queryDate;
+    }
 
 }

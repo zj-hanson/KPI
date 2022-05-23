@@ -102,7 +102,7 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
             strDate = sdf.format(cal.getTime());//推送圆型数据时推送前一天的数据
         }
         try {
-            List<EquipmentAnalyResult> equipmentAnalyResultList = equipmentAnalyResultBean.getUnqualifiedEquipmentAnalyResult(deptName, strDate);
+            List<Object[]> equipmentAnalyResultList = equipmentAnalyResultBean.getUnqualifiedEquipmentAnalyResult(deptName, strDate);
             finalFilePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
             int index = finalFilePath.indexOf("KPI-ejb");
             InputStream is = new FileInputStream(finalFilePath.substring(1, index) + "Hanbell-KPI_war/rpt/不合格点检表模板.xls");
@@ -126,35 +126,50 @@ public class EquipmentUnqualifiedFileMailBean extends MailNotification {
             cellTime.setCellValue("汉钟版");
 
             int j = 2;
-            for (EquipmentAnalyResult eq : equipmentAnalyResultList) {
+            for (Object[] eq : equipmentAnalyResultList) {
                 row = sheet.createRow(j);
                 j++;
                 row.setHeight((short) 400);
                 Cell cell0 = row.createCell(0);
-                cell0.setCellValue(eq.getFormid());
+                cell0.setCellValue(eq[0].toString());
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(1);
-                cell0.setCellValue(sdf.format(eq.getFormdate()));
+                cell0.setCellValue(eq[1].toString());
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(2);
-                cell0.setCellValue(eq.getAssetno());
+                cell0.setCellValue(eq[2].toString());
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(3);
-                cell0.setCellValue(eq.getAssetdesc());
+                if (eq[7]!=null) {
+                    cell0.setCellValue(eq[7].toString()); 
+                }
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(4);
-                cell0.setCellValue(eq.getDeptname());
+                cell0.setCellValue(eq[3].toString());
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(5);
-                if (eq.getStartdate() != null) {
-                    cell0.setCellValue(sDate.format(eq.getStartdate()));
+                if (eq[4] != null) {
+                    cell0.setCellValue(eq[4].toString());
                 }
                 cell0.setCellStyle(style.get("cell"));
                 cell0 = row.createCell(6);
-                if (eq.getEnddate() != null) {
-                    cell0.setCellValue(sDate.format(eq.getEnddate()));
+                if (eq[5] != null) {
+                    cell0.setCellValue(eq[5].toString());
                 }
                 cell0.setCellStyle(style.get("cell"));
+                 cell0.setCellStyle(style.get("cell"));
+                cell0 = row.createCell(7);
+                if (eq[6]!= null) {
+                    cell0.setCellValue(eq[6].toString());
+                }
+                
+                cell0.setCellStyle(style.get("cell"));
+                 cell0 = row.createCell(8);
+                if (eq[8]!= null) {
+                    cell0.setCellValue(eq[8].toString());
+                }
+                cell0.setCellStyle(style.get("cell"));
+              
 
             }
             String path = "../" + strDate + "不合格点检单---" + deptName + ".xls";//新建文件保存路径

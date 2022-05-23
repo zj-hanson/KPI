@@ -96,9 +96,9 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
         for (int i = 1; i < 13; i++) {
             f = o1.getClass().getDeclaredField(indicatorBean.getIndicatorColumn(e.getFormtype(), i));
             f.setAccessible(true);
-            if (i == m) {
+            if (i == m+1) {
                 sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
-            } else if (i > m) {
+            } else if (i >m+1) {
                 sb.append("<td>").append("").append("</td>");
             } else {
                 sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
@@ -119,8 +119,22 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
         o3o4.setType("累计服务单结案率");
         StringBuffer ss = getHtmlTableGroupRow(e, o1, o2, o1o2, o3o4, ljo1, ljo2);
         sb.append(ss);
-        o1 = e.getOther3Indicator();
-        o2 = e.getOther4Indicator();
+         o1 = e.getOther3Indicator();
+         o2 = e.getOther4Indicator();
+        sb.append("<tr style=\"background:").append(color).append(";\">");
+        sb.append("<td style=\"text-align: left;\">").append(o1.getType()).append("</td>");
+        for (int i = 1; i < 13; i++) {
+            f = o1.getClass().getDeclaredField(indicatorBean.getIndicatorColumn(e.getFormtype(), i));
+            f.setAccessible(true);
+            if (i == m+1) {
+                sb.append("<td style=\"color:red\">").append(decimalFormat.format(f.get(o1))).append("</td>");
+            } else if (i > m+1) {
+                sb.append("<td>").append("").append("</td>");
+            } else {
+                sb.append("<td>").append(decimalFormat.format(f.get(o1))).append("</td>");
+            }
+        }
+        sb.append("</tr>");
         o1o2 = new IndicatorDetail();
         o1o2.setParent(e);
         o1o2.setType("当月客服单结案率");
@@ -173,7 +187,7 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                     setMethod.invoke(LJCompleteRatioIndicator, v);
                 }
             } else {
-                for (int i = getM() - 1; i > 0; i--) {
+                for (int i = getM() ; i > 0; i--) {
                     //顺序计算的话会导致累计值重复累加
                     //o1值累计
                     if (countIndicator != null) {
@@ -197,8 +211,8 @@ public class AJServiceClosingSpecialMailBean extends ServiceMail {
                     setMethod.invoke(LJCompleteRatioIndicator, v);
                 }
             }
-            countIndicator.setType(e.getOther1Label());
-            completeIndicator.setType(e.getOther2Label());
+//            countIndicator.setType(e.getOther1Label());
+//            completeIndicator.setType(e.getOther2Label());
 
             sb.append("<tr style=\"background:").append(color).append(";\"><td style=\"text-align: left;\">").append(completeIndicator.getType()).append("</td>");
             for (int i = 1; i < 13; i++) {

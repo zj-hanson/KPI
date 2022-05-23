@@ -58,7 +58,7 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
         model.getSortFields().put("seq", "ASC");
         model.getSortFields().put("deptno", "ASC");
         model.getFilterFields().put("parent.seq", c.get(Calendar.YEAR));
-
+        this.printDate = c.getTime();
         super.init();
     }
 
@@ -81,7 +81,9 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
 
     @Override
     public void print() throws Exception {
-        List<Scorecard> list = scorecardBean.findByStatusAndYear("V", 2021);
+         Calendar cal = Calendar.getInstance();
+         cal.setTime(this.printDate);
+        List<Scorecard> list = scorecardBean.findByStatusAndYear("V",cal.get(Calendar.YEAR));
 
         if (list == null || list.isEmpty()) {
             showMsg(FacesMessage.SEVERITY_WARN, "Warn", "没有可打印数据");
@@ -93,7 +95,7 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
         for (int i = 0; i < xlscs.length; i++) {
             if (xlscs[i].isFile()) {
                 xlscs[i].delete();
-            } 
+            }
         }
         for (Scorecard s : list) {
             HashMap<String, Object> reportParams = new HashMap<>();
@@ -114,16 +116,16 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
             } else {
                 reportParams.put("sortFields", "");
             }
-            this.fileName =s.getName() + BaseLib.formatDate("yyyyMMddHHmmss", this.getDate()) + "." + "xls";
-            String reportName ="";
-            if(userManagedBean.getQ()==1){
-                   reportName = reportPath + "scorecarddetail.rptdesign";
-            }else if(userManagedBean.getQ()==2){
-                 reportName = reportPath + "scorecarddetail2.rptdesign";
-            }else if(userManagedBean.getQ()==3){
-                 reportName = reportPath + "scorecarddetail3.rptdesign";
-            }else if(userManagedBean.getQ()==4){
-                 reportName = reportPath + "scorecarddetail4.rptdesign";
+            this.fileName = s.getName() + BaseLib.formatDate("yyyyMMddHHmmss", this.getDate()) + "." + "xls";
+            String reportName = "";
+            if (userManagedBean.getQ() == 1) {
+                reportName = reportPath + "scorecarddetail.rptdesign";
+            } else if (userManagedBean.getQ() == 2) {
+                reportName = reportPath + "scorecarddetail2.rptdesign";
+            } else if (userManagedBean.getQ() == 3) {
+                reportName = reportPath + "scorecarddetail3.rptdesign";
+            } else if (userManagedBean.getQ() == 4) {
+                reportName = reportPath + "scorecarddetail4.rptdesign";
             }
             String outputName = reportOutputPath + this.fileName;
             this.reportViewPath = reportViewContext + this.fileName;
@@ -147,9 +149,9 @@ public class ScorecardDetailPrintManagedBean extends SuperSingleBean<ScorecardCo
             compress(files, zos, files.getName(), true);
             this.reportViewPath = reportViewContext.replace("output/", "") + filename;
             this.preview();
-           
+
         } catch (Exception e) {
-               e.printStackTrace();
+            e.printStackTrace();
         } finally {
             if (zos != null) {
                 try {

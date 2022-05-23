@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../../WEB-INF/bsc.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+
+        <h:form id="formOne" style="height: 100%" rendered="#{!shoppingCenterAmountFromHsReportBean.deny}">
+            <p:growl id="growl" showSummary="false" showDetail="true" />
+            <p:panelGrid id="plgQuery" columns="6" columnClasses="Wid20,Wid30,Wid30,Wid10,Wid10,Wid5" styleClass="plgQuery Wid100">
+                <p:outputLabel value="请输入查询日期*" for="btndate" />
+                <p:calendar id="btndate" value="#{shoppingCenterAmountFromHsReportBean.btnDate}" title="日期" pattern="yyyy/MM/dd" />
+                <p:outputLabel style="visibility: hidden"/>
+                <p:commandButton id="btnReset" value="重置" actionListener="#{shoppingCenterAmountFromHsReportBean.reset()}"  icon="ui-icon-refresh"
+                                 update="formOne" process="plgQuery" />
+                <p:commandButton id="btnQuery" value="查询" actionListener="#{shoppingCenterAmountFromHsReportBean.query()}"  icon="ui-icon-search"
+                                 update="formOne" process="plgQuery"/>
+
+                <p:link  value="返回"  outcome="home" style="float: left"/>
+
+            </p:panelGrid>
+            <div>
+                <p:panelGrid id="exchangeRateValue" styleClass="plgDetail Wid100">
+                    <f:facet name="header"  >
+                        <p:row >
+                            <p:column style="font-size: 22px;letter-spacing:2px;" >#{shoppingCenterAmountFromHsReportBean.statusMap.title}年HS铸件采购金额</p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid >
+                <div style="padding-top: 10px;display:#{shoppingCenterAmountFromHsReportBean.statusMap.displaydiv1};" align="center" >
+                    <span style="font-weight: bold;color: #2F4050;font-size: 18px;padding-right: 25px" >No records found.</span>
+                </div>
+                <div  style="display:#{shoppingCenterAmountFromHsReportBean.statusMap.displaydiv2};" align="center">
+                    <script type="text/javascript">
+                        $(function () {
+                            var tr = $("tr.ui-widget-content");
+                            for (var i = tr.length - 1; i >= 0; i--) {
+                                tr[i].style.backgroundColor = (tr[i].sectionRowIndex % 2 === 0) ? "" : "#E6E6FA";
+                            }
+                        });
+                    </script> 
+                    <p:dataTable var="item" value="#{shoppingCenterAmountFromHsReportBean.list}"  >
+                        <p:column headerText="公司">
+                            <h:outputText value="#{item[0]}" />
+                        </p:column>
+                        <p:column headerText="1月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[1])}" />
+                        </p:column>
+                        <p:column headerText="2月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[2])}" />
+                        </p:column>
+                        <p:column headerText="3月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[3])}" />
+                        </p:column>
+                        <p:column headerText="4月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[4])}" />
+                        </p:column>
+                        <p:column headerText="5月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[5])}" />
+                        </p:column> 
+                        <p:column headerText="6月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[6])}" />
+                        </p:column>
+                        <p:column headerText="7月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[7])}" />
+                        </p:column>
+                        <p:column headerText="8月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[8])}" />
+                        </p:column>
+                        <p:column headerText="9月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[9])}" />
+                        </p:column>
+                        <p:column headerText="10月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[10])}" />
+                        </p:column>
+                        <p:column headerText="11月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[11])}" />
+                        </p:column>
+                        <p:column headerText="12月">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[12])}" />
+                        </p:column>
+                        <p:column headerText="合计">
+                            <h:outputText value="#{shoppingCenterAmountFromHsReportBean.doubleformat(item[13])}" />
+                        </p:column>
+                        <p:column headerText="占比">
+                            <h:outputText value="#{item[14]}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <p:panelGrid id="weightValue" styleClass="plgDetail Wid100">
+                        <f:facet name="header"  >
+                            <p:row >
+                                <p:column style="font-size: 22px;letter-spacing:2px;" >#{shoppingCenterAmountFromHsReportBean.statusMap.title}年铸件--汉声占比</p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid >
+                    <p:dataTable var="item" value="#{shoppingCenterAmountFromHsReportBean.weightList}"  >
+                        <p:column headerText="类型">
+                            <h:outputText value="#{item[0]}(#{item[1]})" />
+                        </p:column>
+            
+                        <p:column headerText="1月">
+                            <h:outputText value="#{item[0] == '占比'?item[2]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[2])}" />
+                        </p:column>
+                        <p:column headerText="2月">
+                            <h:outputText value="#{item[0] == '占比'?item[3]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[3])}" />
+                        </p:column>
+                        <p:column headerText="3月">
+                            <h:outputText value="#{item[0] == '占比'?item[4]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[4])}" />
+                        </p:column>
+                        <p:column headerText="4月">
+                            <h:outputText value="#{item[0] == '占比'?item[5]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[5])}" />
+                        </p:column>
+                        <p:column headerText="5月">
+                            <h:outputText value="#{item[0] == '占比'?item[6]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[6])}" />
+                        </p:column>
+                        <p:column headerText="6月">
+                            <h:outputText value="#{item[0] == '占比'?item[7]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[7])}" />
+                        </p:column>
+                        <p:column headerText="7月">
+                            <h:outputText value="#{item[0] == '占比'?item[8]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[8])}" />
+                        </p:column>
+                        <p:column headerText="8月">
+                            <h:outputText value="#{item[0] == '占比'?item[9]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[9])}" />
+                        </p:column>
+                        <p:column headerText="9月">
+                            <h:outputText value="#{item[0] == '占比'?item[10]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[10])}" />
+                        </p:column>
+                        <p:column headerText="10月">
+                            <h:outputText value="#{item[0] == '占比'?item[11]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[11])}" />
+                        </p:column>
+                        <p:column headerText="11月">
+                            <h:outputText value="#{item[0] == '占比'?item[12]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[12])}" />
+                        </p:column>
+                        <p:column headerText="12月">
+                            <h:outputText value="#{item[0] == '占比'?item[13]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[13])}" />
+                        </p:column>
+                        <p:column headerText="合计">
+                            <h:outputText value="#{item[0] == '占比'?item[14]: shoppingCenterAmountFromHsReportBean.weightdoubleformat(item[14])}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div style="width: 100%;">
+                    <div id="indicatorSummary" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repSummary" value="#{shoppingCenterAmountFromHsReportBean.summaryList}" var="s" rendered="#{shoppingCenterAmountFromHsReportBean.summaryCount>0}">
+                            <p:panel  id="summaryPanel" header="#{s.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid>
+                                    <h:outputText id="summary"/>
+                                    <h:inputHidden id="hdnSummary" value="#{s.summary}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
+                    <div id="indicatorAnalysis" class="ui-g-12 ui-md-12">
+                        <p:repeat id="repAnalysis" value="#{shoppingCenterAmountFromHsReportBean.analysisList}" var="a" rendered="#{shoppingCenterAmountFromHsReportBean.analysisCount>0}">
+                            <p:panel  id="analysisPanel" header="#{a.title}" toggleable="true" style="height:min-content">
+                                <h:panelGrid columns="3" columnClasses="Wid30,Wid30,Wid40" styleClass="plgDetail Wid100">
+                                    <h:outputText id="issueLabel" value="问题"/>
+                                    <h:outputText id="factorLabel" value="原因"/>
+                                    <h:outputText id="countermeasureLabel" value="对策"/>
+                                    <h:outputText id="issue"/>
+                                    <h:outputText id="factor"/>
+                                    <h:outputText id="countermeasure"/>
+                                    <h:inputHidden id="hdnIssue" value="#{a.issue}"/>
+                                    <h:inputHidden id="hdnFactor" value="#{a.factor}"/>
+                                    <h:inputHidden id="hdnCountermeasure" value="#{a.countermeasure}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:repeat>
+                    </div>
+                    <div>
+                        <h:outputScript name="bsc-clientranking.js" library="js"/>
+                        <h:inputHidden id="sc" value="#{shoppingCenterAmountFromHsReportBean.summaryCount}"></h:inputHidden>
+                        <h:inputHidden id="ac" value="#{shoppingCenterAmountFromHsReportBean.analysisCount}"></h:inputHidden>
+                    </div>
+                </div>
+            </div>
+            <p:blockUI id="blockUI" block="formOne" trigger="btnQuery">
+                <p:graphicImage name="images/ajaxloadingbar.gif" library="ultima-layout"/>
+            </p:blockUI>
+        </h:form>
+        <h:form id="formTwo"  rendered="#{shoppingCenterAmountFromHsReportBean.deny}">
+            <h1 style="text-align: center;margin-top: 50px;">你想干嘛</h1>
+            <h1 style="text-align: center">别没事找事</h1>
+            <h1 style="text-align: center">再看我真的生气了</h1>
+            <div class="exception-type" style="text-align: center;">
+                <p:graphicImage name="images/angry.gif" library="ultima-layout" style=""/>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1041,9 +1041,10 @@ currentRow = 0;
 ejbClient = new ScorecardReport();
 ejbClient.setEJB(params["JNDIName"]);
 master = ejbClient.getEntity(params["id"]);
+System.out.println("--------");
 if(master != null){
 	detail = ejbClient.getDetail(params["id"]);
-	auditorDetail = ejbClient.getAuditorDetail(params["id"]);
+	auditorDetail = ejbClient.getAuditorDetail(params["id"],1);
 }
 var season = params["season"];
 System.out.println("--------");
@@ -1059,7 +1060,7 @@ if(currentRow < detail.size()){
 	dataSetRow["remark"] = detail.get(currentRow).getRemark();
 	dataSetRow["season"] = params["season"];
 	
-	if(auditorDetail.size()>0){
+	if(auditorDetail!=null &amp;&amp; auditorDetail.size()>0){
 		for(i = 0;i<auditorDetail.size();i++){
 			entity = auditorDetail.get(i);
 			auditor += entity.getAuditorName()+";";
