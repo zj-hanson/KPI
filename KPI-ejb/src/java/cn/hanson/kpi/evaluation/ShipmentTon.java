@@ -35,8 +35,9 @@ public abstract class ShipmentTon extends Shipment {
 
         StringBuilder sb = new StringBuilder();
         // 出货
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1 end) as decimal(17,2))),0) ");
+        sb.append(" when '4F' then d.shpqy1*s.rate2 else d.shpqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) ");
         sb.append(" from cdrdta d,cdrhad h,invmas s,cdrhmas c ");
         sb.append(" where h.facno=d.facno and h.shpno=d.shpno and d.itnbr=s.itnbr ");
         sb.append(" and d.facno=c.facno and d.cdrno=c.cdrno ");
@@ -79,8 +80,9 @@ public abstract class ShipmentTon extends Shipment {
         sb.setLength(0);
         // 销退不区分未开票退货还是已开票退货 2021/8/30
         // 未开票退货条件 h.owarehyn='Y'
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
+        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s,cdrhmas c ");
         sb.append(" where h.facno=d.facno and h.bakno=d.bakno and d.itnbr=s.itnbr ");
         sb.append(" and d.facno=c.facno and d.cdrno=c.cdrno ");
@@ -119,8 +121,9 @@ public abstract class ShipmentTon extends Shipment {
 
         sb.setLength(0);
         // 已开票销退
+        // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
         sb.append(" select isnull(sum(cast((case substring(s.judco,1,1)+s.fvco ");
-        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1 end) as decimal(17,2))),0) ");
+        sb.append(" when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) ");
         sb.append(" from armblos a,cdrbdta d,invmas s ");
         sb.append(" where a.facno=d.facno ");
         sb.append(" and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr ");

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.ejb.erp;
 
@@ -181,7 +180,10 @@ public class BscGroupHSShipmentBean implements Serializable {
             }
             if (resultData != null) {
                 erpEJB.setCompany("C");
-                erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='H' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'Shipment'").executeUpdate();
+                erpEJB.getEntityManager()
+                    .createNativeQuery("delete from bsc_groupshipment where  facno='H' and year(soday)=" + y
+                        + " and month(soday) = " + m + " and type = 'Shipment'")
+                    .executeUpdate();
                 for (BscGroupShipment e : resultData) {
                     erpEJB.getEntityManager().persist(e);
                 }
@@ -191,7 +193,9 @@ public class BscGroupHSShipmentBean implements Serializable {
         }
     }
 
-    //出货
+    // 出货
+    // 2022/5/23 没有单位换算的出货数量直接是0，HS/HY互售原料不计重量
+    // d.shpqy1 d.bshpqy1 => 0
     protected List<BscGroupShipment> getShipment(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String spdsc = map.get("spdsc") != null ? map.get("spdsc").toString() : "";
@@ -203,8 +207,10 @@ public class BscGroupHSShipmentBean implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.soday,isnull(sum(a.num),0),isnull(sum(a.shpamts),0) from ( ");
         sb.append(" select h.shpdate as soday, ");
-        sb.append(" cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else d.shpqy1 end,0) as decimal(12,2)) as num,");
-        sb.append(" cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else (case when h.tax = '1' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
+        sb.append(
+            " cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2  else 0 end,0) as decimal(12,2)) as num,");
+        sb.append(
+            " cast((case when h.coin<>'RMB' then d.shpamts*h.ratio else (case when h.tax = '1' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
         sb.append(" where h.shpno=d.shpno and d.itnbr=s.itnbr  and h.houtsta not in ('W','N') ");
         if (!"".equals(spdsc)) {
@@ -215,10 +221,12 @@ public class BscGroupHSShipmentBean implements Serializable {
         }
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate<='${d}' ");
         sb.append(" UNION ALL ");
-        //销退
+        // 销退
         sb.append(" SELECT  h.bakdate as soday, ");
-        sb.append(" -1*cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end,0) as decimal(12,2)) as num, ");
-        sb.append(" -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else (case when h.tax = '1' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
+        sb.append(
+            " -1*cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else 0 end,0) as decimal(12,2)) as num, ");
+        sb.append(
+            " -1*cast((case when h.coin<>'RMB' then d.bakamts*h.ratio else (case when h.tax = '1' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate+1) end) end) as decimal(12,2)) as shpamts ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s");
         sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
         if (!"".equals(spdsc)) {
@@ -228,11 +236,13 @@ public class BscGroupHSShipmentBean implements Serializable {
             sb.append(" AND h.cusno ").append(cusno);
         }
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} and h.bakdate<='${d}' ");
-        //质量扣款
+        // 质量扣款
         sb.append(" UNION ALL ");
         sb.append(" select  a.bildat as soday, ");
-        sb.append(" -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else d.bshpqy1 end)  as decimal(12,2)) as num, ");
-        sb.append(" -1*cast((case when a.taxkd = '1' then a.losamts else a.losamts/(1+a.taxrate) end) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
+        sb.append(
+            " -1*cast( (case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2  else 0 end)  as decimal(12,2)) as num, ");
+        sb.append(
+            " -1*cast((case when a.taxkd = '1' then a.losamts else a.losamts/(1+a.taxrate) end) as decimal(12,2)) as shpamts  from armblos a,cdrbdta d,invmas s ");
         sb.append(" where a.facno=d.facno  and a.bakno=d.bakno and a.trseq=d.trseq and s.itnbr=d.itnbr  ");
         if (!"".equals(spdsc)) {
             sb.append(" and substring(s.spdsc,1,2) ").append(spdsc);
@@ -242,7 +252,8 @@ public class BscGroupHSShipmentBean implements Serializable {
         }
         sb.append(" and year(a.bildat) = ${y} and month(a.bildat) = ${m} and a.bildat<='${d}' ");
         sb.append(" ) as a GROUP BY a.soday ");
-        String cdrqty = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
+        String cdrqty = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m))
+            .replace("${facno}", facno).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
         Query shpQuery = erpEJB.getEntityManager().createNativeQuery(cdrqty);
         try {
@@ -309,7 +320,7 @@ public class BscGroupHSShipmentBean implements Serializable {
                 shptype = "";
             }
             for (int i = 0; i < shpResult.size(); i++) {
-                Object o[] = (Object[]) shpResult.get(i);
+                Object o[] = (Object[])shpResult.get(i);
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));
@@ -324,4 +335,5 @@ public class BscGroupHSShipmentBean implements Serializable {
         }
         return data;
     }
+
 }
