@@ -146,6 +146,8 @@ public class BscGroupHYSaleOrderBean implements Serializable {
                 protypeno = "";
                 shptype = "";
             }
+            // 固定5表示铸件
+            shptype = "5";
             for (int i = 0; i < cdrResult.size(); i++) {
                 Object o[] = (Object[])cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
