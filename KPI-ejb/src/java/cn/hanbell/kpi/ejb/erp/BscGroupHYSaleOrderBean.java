@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this template file, choose
+ * Tools | Templates and open the template in the editor.
  */
 package cn.hanbell.kpi.ejb.erp;
 
@@ -47,14 +46,14 @@ public class BscGroupHYSaleOrderBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "Y");
         queryParams.put("spdsc", "='HT'");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
+        // queryParams.put("cusno", " not in ('YZJ00001') ");
         List<BscGroupShipment> resultData = getSalesOrder(y, m, d, y, getQueryParams());
 
         List<BscGroupShipment> tempData;
         queryParams.clear();
         queryParams.put("facno", "Y");
         queryParams.put("spdsc", "='QT'");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
+        // queryParams.put("cusno", " not in ('YZJ00001') ");
         tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -70,7 +69,7 @@ public class BscGroupHYSaleOrderBean implements Serializable {
         queryParams.clear();
         queryParams.put("facno", "Y");
         queryParams.put("spdsc", " not in ('HT','QT') ");
-        queryParams.put("cusno", " not in ('YZJ00001') ");
+        // queryParams.put("cusno", " not in ('YZJ00001') ");
         tempData = getSalesOrder(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -85,16 +84,19 @@ public class BscGroupHYSaleOrderBean implements Serializable {
         }
         if (resultData != null) {
             erpEJB.setCompany("C");
-            erpEJB.getEntityManager().createNativeQuery("delete from bsc_groupshipment where  facno='Y' and year(soday)=" + y + " and month(soday) = " + m + " and type = 'SalesOrder'").executeUpdate();
+            erpEJB.getEntityManager()
+                .createNativeQuery("delete from bsc_groupshipment where  facno='Y' and year(soday)=" + y
+                    + " and month(soday) = " + m + " and type = 'SalesOrder'")
+                .executeUpdate();
             for (BscGroupShipment e : resultData) {
                 erpEJB.getEntityManager().persist(e);
             }
         }
     }
 
-    //订单台数金额
+    // 订单台数金额
     protected List<BscGroupShipment> getSalesOrder(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        //获得查询参数
+        // 获得查询参数
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String spdsc = map.get("spdsc") != null ? map.get("spdsc").toString() : "";
         String cusno = map.get("cusno") != null ? map.get("cusno").toString() : "";
@@ -105,8 +107,10 @@ public class BscGroupHYSaleOrderBean implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(" select a.soday,isnull(sum(ordnum),0),isnull(sum(tramts),0) from ( ");
         sb.append(" select h.recdate as soday, ");
-        sb.append(" cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.cdrqy1*s.rate2  else d.cdrqy1 end,0) as decimal(12,2)) as ordnum,  ");
-        sb.append(" cast((case when h.coin<>'RMB' then d.tramts*h.ratio else d.tramts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as tramts ");
+        sb.append(
+            " cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.cdrqy1*s.rate2  else 0 end,0) as decimal(12,2)) as ordnum,  ");
+        sb.append(
+            " cast((case when  h.tax <> '4' then d.tramts*h.ratio else d.tramts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as tramts ");
         sb.append(" from cdrdmas d, cdrhmas h ,invmas s ");
         sb.append(" where s.itnbr=d.itnbr and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta <>'98'  ");
         if (!"".equals(spdsc)) {
@@ -117,7 +121,8 @@ public class BscGroupHYSaleOrderBean implements Serializable {
         }
         sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)=${m} AND h.recdate<='${d}' ");
         sb.append(" ) as a GROUP BY a.soday ");
-        String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
+        String cdrSql = sb.toString().replace("${facno}", facno).replace("${y}", String.valueOf(y))
+            .replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d));
         erpEJB.setCompany(facno);
         Query cdrQuery = erpEJB.getEntityManager().createNativeQuery(cdrSql);
         try {
@@ -142,7 +147,7 @@ public class BscGroupHYSaleOrderBean implements Serializable {
                 shptype = "";
             }
             for (int i = 0; i < cdrResult.size(); i++) {
-                Object o[] = (Object[]) cdrResult.get(i);
+                Object o[] = (Object[])cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));

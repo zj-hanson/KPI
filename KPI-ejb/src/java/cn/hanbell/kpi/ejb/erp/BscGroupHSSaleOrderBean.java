@@ -203,7 +203,7 @@ public class BscGroupHSSaleOrderBean implements Serializable {
         sb.append(" select a.soday,isnull(sum(ordnum),0),isnull(sum(tramts),0) from ( ");
         sb.append(" select h.recdate as soday, ");
         sb.append(" cast(isnull(case substring(s.judco,1,1)+s.fvco when '4F' then d.cdrqy1*s.rate2  else d.cdrqy1 end,0) as decimal(12,2)) as ordnum,  ");
-        sb.append(" cast((case when h.coin<>'RMB' then d.tramts*h.ratio else d.tramts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as tramts ");
+        sb.append(" cast((case when  h.tax <> '4' then d.tramts*h.ratio else d.tramts*h.ratio/(h.taxrate+1) end) as decimal(12,2)) as tramts ");
         sb.append(" from cdrdmas d, cdrhmas h ,invmas s ");
         sb.append(" where s.itnbr=d.itnbr and h.cdrno=d.cdrno and h.hrecsta not in ('N','W') and d.drecsta <>'98'  ");
         if (!"".equals(spdsc)) {
