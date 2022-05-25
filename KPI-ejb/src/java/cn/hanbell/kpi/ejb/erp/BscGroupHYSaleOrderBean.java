@@ -132,22 +132,20 @@ public class BscGroupHYSaleOrderBean implements Serializable {
             if ("='QT'".equals(spdsc.trim())) {
                 protype = "球铁";
                 protypeno = "BI";
-                shptype = "";
+                shptype = "5";
             } else if ("='HT'".equals(spdsc.trim())) {
                 protype = "灰铁";
                 protypeno = "GI";
-                shptype = "";
+                shptype = "5";
             } else if (spdsc.contains("not")) {
                 protype = "其他";
                 protypeno = "OTH";
-                shptype = "";
+                shptype = "5";
             } else {
                 protype = "";
                 protypeno = "";
                 shptype = "";
             }
-            // 固定5表示铸件
-            shptype = "5";
             for (int i = 0; i < cdrResult.size(); i++) {
                 Object o[] = (Object[])cdrResult.get(i);
                 recdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
@@ -156,7 +154,7 @@ public class BscGroupHYSaleOrderBean implements Serializable {
                 BscGroupShipment e = new BscGroupShipment("Y", recdate, "SalesOrder", protype, protypeno, shptype);
                 e.setQuantity(num);
                 e.setAmount(amts);
-                e.setCusno(shptype);
+                e.setCusno("");
                 data.add(e);
             }
         } catch (Exception ex) {
