@@ -47,43 +47,43 @@ public class ShoppingAccomuntBean implements Serializable {
         this.dfpercent = new DecimalFormat("0.00％");
     }
     //上海汉钟
-    public static String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716/3C02";
-    public static String SHB_ITCLS_DIANJI = "3703/3104/9019/RDJF/4504";//电机
-    public static String SHB_ITCLS_ZHOUCHENG = "4009/4018";
-    public static String SHB_ITCLS_YOUPING = "5061/5062";
-    public static String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801/2201";
-    public static String SHB_ITCLS_FALEI = "3134/3234/3102";
-    public static String SHB_ITCLS_DAOJU = "BS1/B001/C002";//刀具
-    public static String SHB_ITCLS_CHENGDIAN = "3133/3231/3233/3433/3533/4049";
-    public static String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
-    public static String SHB_FACT_JIEXIANGHE = "3231/3133";
-    public static String SHB_ITCLS_MOJU = "B005";
+    public static final String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716/3C02";
+    public static final String SHB_ITCLS_DIANJI = "3703/3104/9019/RDJF/4504/3504";//电机
+    public static final String SHB_ITCLS_ZHOUCHENG = "4009/4018/3235";
+    public static final String SHB_ITCLS_YOUPING = "5061/5062";
+    public static final String SHB_ITCLS_ZHUANZI = "1101/1801/2101/2401/2801/3013/3012/3015/3016/3101/3201/3801/2201";
+    public static final String SHB_ITCLS_FALEI = "3134/3234/3102";
+    public static final String SHB_ITCLS_DAOJU = "BS1/B001/C002";//刀具
+    public static final String SHB_ITCLS_CHENGDIAN = "3133/3231/3233/3433/3533/4049";
+    public static final String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
+    public static final String SHB_FACT_JIEXIANGHE = "3231/3133";
+    public static final String SHB_ITCLS_MOJU = "B005";
 
     //浙江汉声
-    public static String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD/1A03/1HJK/1HYF/1HMD/3A03/3A01/3HMD/3HYF/2AZ1/2AZ3/3H/1/3A06/1102/2H";
-    public static String HS_ITCLS_ZHUANZI = "2HZZ/2HZC/2A04/2HTG/2101/2201/2801/3H";
-    public static String HS_ITCLS_MOJU = "B005";
-    public static String HS_ITCLS_DAOJU = "5C2/B001";
+    public static final String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD/1A03/1HJK/1HYF/1HMD/3A03/3A01/3HMD/3HYF/2AZ1/2AZ3/3H/1/3A06/1102/2H/3/2HZC/3HJK";
+    public static final String HS_ITCLS_ZHUANZI = "2HZZ/2A04/2HTG/2101/2201/2801/3H/2013/2015";
+    public static final String HS_ITCLS_MOJU = "B005";
+    public static final String HS_ITCLS_DAOJU = "5C2/B001";
     //安徽汉阳
-    public static String HY_ITCLS_ZHUJIA = "52/1AZ9";
-    public static String HY_ITCLS_DAOJU = "B001";
+    public static final String HY_ITCLS_ZHUJIA = "52/1AZ9";
+    public static final String HY_ITCLS_DAOJU = "B001";
     //台湾汉钟
-    public static String THB_FACT_ZHUJIA = "'鑄件','加工','HS'";
-    public static String THB_FACT_DIANJI = "'電機'";//电机
-    public static String THB_FACT_ZHOUCHENG = "'軸承'";
-    public static String THB_FACT_YOUPING = "'油品','油品P'";
-    public static String THB_FACT_JINGKOU = "'SHB','CM'";
-    public static String THB_ITCLS_ZHUANZI = "2511/2521/3011";
-    public static String THB_FACT_FALEI = "'閥'";
-    public static String THB_FACT_DAOJU = "'刀具'";
-    public static String THB_FACT_CHENGDIAN = "'襯墊'";
-    public static String THB_FACT_JIEXIANGAIBAN = "'蓋板'";
+    public static final String THB_FACT_ZHUJIA = "'鑄件','加工','HS'";
+    public static final String THB_FACT_DIANJI = "'電機'";//电机
+    public static final String THB_FACT_ZHOUCHENG = "'軸承'";
+    public static final String THB_FACT_YOUPING = "'油品','油品P'";
+    public static final String THB_FACT_JINGKOU = "'SHB','CM'";
+    public static final String THB_ITCLS_ZHUANZI = "2511/2521/3011";
+    public static final String THB_FACT_FALEI = "'閥'";
+    public static final String THB_FACT_DAOJU = "'刀具'";
+    public static final String THB_FACT_CHENGDIAN = "'襯墊'";
+    public static final String THB_FACT_JIEXIANGAIBAN = "'蓋板'";
     //上海柯茂
-    public static String SCM_ITCLS_ZHUANZI = "1J02/1014/3013/3J02/3H33";
-    public static String SCM_ITCLS_DIANJI = "3J04/4047";
-    public static String SCM_ITCLS_CHENGDIAN = "3J33/4049/4046";
-    public static String SCM_ITCLS_ZHOUCHENG = "4009";
-    public static String SCM_ITCLS_MOJU = "B005";
+    public static final String SCM_ITCLS_ZHUANZI = "1J02/1014/3013/3J02/3H33";
+    public static final String SCM_ITCLS_DIANJI = "3J04/4047";
+    public static final String SCM_ITCLS_CHENGDIAN = "3J33/4049/4046";
+    public static final String SCM_ITCLS_ZHOUCHENG = "4009";
+    public static final String SCM_ITCLS_MOJU = "B005";
 
     private int findYear(Date date) {
         Calendar c = Calendar.getInstance();
