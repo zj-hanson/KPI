@@ -99,8 +99,7 @@ public class BscGroupHYShipmentBean {
     }
 
     // 出货
-    // 没有单位换算的出货数量直接是0，HS/HY互售原料不计重量
-    // d.shpqy1 d.bshpqy1 => 0
+    // 2022/5/23不管是否单位换算都乘以换算率，非铸件 * 0.0 消除重量
     protected List<BscGroupShipment> getShipment(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String spdsc = map.get("spdsc") != null ? map.get("spdsc").toString() : "";
@@ -113,7 +112,7 @@ public class BscGroupHYShipmentBean {
         sb.append(" select a.soday,isnull(sum(a.num),0),isnull(sum(a.shpamts),0) from ( ");
         sb.append(" select h.shpdate as soday, ");
         sb.append(
-            " isnull(sum(cast((case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2 else 0 end) as decimal(17,2))),0) as num, ");
+            " isnull(sum(cast((case substring(s.judco,1,1)+s.fvco when '4F' then d.shpqy1*s.rate2 else d.shpqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) as num, ");
         sb.append(
             " isnull(sum(cast((case when h.tax <> '4' then d.shpamts*h.ratio else d.shpamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) as shpamts ");
         sb.append(" from cdrdta d,cdrhad h,invmas s ");
@@ -130,11 +129,12 @@ public class BscGroupHYShipmentBean {
         // 销退
         sb.append(" SELECT  h.bakdate as soday, ");
         sb.append(
-            " -1*isnull(sum(cast((case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2 else 0 end) as decimal(17,2))),0) as num, ");
+            " -1*isnull(sum(cast((case substring(s.judco,1,1)+s.fvco when '4F' then d.bshpqy1*s.rate2 else d.bshpqy1*isnull(s.rate2,0) end) as decimal(17,2))),0) as num, ");
         sb.append(
             " -1*isnull(sum(cast((case when h.tax <> '4' then d.bakamts*h.ratio else d.bakamts*h.ratio/(h.taxrate + 1) end) as decimal(17,2))),0) as shpamts ");
         sb.append(" from cdrbdta d,cdrbhad h,invmas s");
-        sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N') and h.owarehyn='Y' ");
+        // 2022/5/24 
+        sb.append(" where h.bakno=d.bakno and d.itnbr=s.itnbr and h.baksta not in ('W','N')  ");
         if (!"".equals(spdsc)) {
             sb.append(" and substring(s.spdsc,1,2) ").append(spdsc);
         }
@@ -170,7 +170,7 @@ public class BscGroupHYShipmentBean {
                 shpdate = BaseLib.getDate("yyyy-MM-dd", o[0].toString());
                 num = BigDecimal.valueOf(Double.valueOf(o[1].toString()));
                 amts = BigDecimal.valueOf(Double.valueOf(o[2].toString()));
-                BscGroupShipment e = new BscGroupShipment("Y", shpdate, "Shipment", protype, protypeno, "");
+                BscGroupShipment e = new BscGroupShipment("Y", shpdate, "Shipment", protype, protypeno, "5");
                 e.setQuantity(num);
                 e.setAmount(amts);
                 e.setCusno("");
