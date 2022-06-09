@@ -60,7 +60,7 @@ public abstract class ShipmentTon extends Shipment {
         // sb.append(cuspono);
         // }
         // 重量目标不含商流直接排除
-        sb.append(" and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%'");
+        sb.append(" and isnull(c.cuspono,'') NOT LIKE '%恒工%' and isnull(c.cuspono,'') NOT LIKE '%上海卓准%'");
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
             case 2:
@@ -102,7 +102,7 @@ public abstract class ShipmentTon extends Shipment {
             }
         }
         // 重量目标不含商流销退排除
-        sb.append(" and c.cuspono NOT LIKE '%恒工%' and c.cuspono NOT LIKE '%上海卓准%'");
+        sb.append(" and isnull(c.cuspono,'') NOT LIKE '%恒工%' and isnull(c.cuspono,'') NOT LIKE '%上海卓准%'");
         sb.append(" and year(h.bakdate) = ${y} and month(h.bakdate)= ${m} ");
         switch (type) {
             case 2:
