@@ -40,15 +40,4 @@ public class ShipmentAmountR1D3 extends ShipmentAmount {
         //SHB + GZ
         return temp1.add(temp2);
     }
-
-    @Override
-    public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
-    @Override
-    public BigDecimal getARM423Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
-        return BigDecimal.ZERO;
-    }
-
 }
