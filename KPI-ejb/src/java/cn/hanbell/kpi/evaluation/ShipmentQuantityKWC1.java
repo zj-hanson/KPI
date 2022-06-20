@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
  *
  * @author C0160
  */
-public class ShipmentQuantityKWC1 extends ShipmentQuantity {
+public class ShipmentQuantityKWC1 extends ShipmentQuantityZJComer {
 
     public ShipmentQuantityKWC1() {
         super();
@@ -21,6 +21,8 @@ public class ShipmentQuantityKWC1 extends ShipmentQuantity {
         queryParams.put("deptno", " '5B000' ");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='OH' ");
+        //上海柯茂的出货中客户名称不能是浙江柯茂
+        queryParams.put("cusno", " NOT IN ('KZJ00029')");
         queryParams.put("n_code_CD", " NOT LIKE 'WX%' ");
         queryParams.put("n_code_DC", " ='WC' ");
         queryParams.put("n_code_DD", " ='00' ");
@@ -33,12 +35,15 @@ public class ShipmentQuantityKWC1 extends ShipmentQuantity {
         temp1 = super.getValue(y, m, d, type, map);
         queryParams.remove("facno");
         queryParams.remove("deptno");
+        queryParams.remove("cusno");
         queryParams.put("facno", "E");
         queryParams.put("deptno", " '8A000' ");
+        //浙江柯茂中客户名称不能是上海柯茂
+        queryParams.put("cusno", " NOT IN ('ESH00031')");
         //ZJComerERP
         temp2 = super.getValue(y, m, d, type, queryParams);
         //ComerERP + ZJComerERP
         return temp1.add(temp2);
     }
-   
+
 }
