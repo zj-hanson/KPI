@@ -118,9 +118,11 @@ public class BscGroupSHSaleOrderBean implements Serializable {
                 }
             }
         }
+        //无油机组部分
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='AA' ");
+        queryParams.put("n_code_DC", " ='SDS' ");
         tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
             for (BscGroupShipment b : tempData) {
@@ -133,6 +135,24 @@ public class BscGroupSHSaleOrderBean implements Serializable {
                 }
             }
         }
+        //机组部分
+        queryParams.clear();
+        queryParams.put("facno", "C");
+        queryParams.put("n_code_DA", " ='AA' ");
+        queryParams.put("n_code_DC", " <>'SDS' ");
+        tempData = getSalesOrderAmount(y, m, d, y, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+
         queryParams.clear();
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", "= 'P'");
@@ -182,7 +202,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
                 }
             }
         }
-        
+
         queryParams.clear();
         queryParams.put("facno", "K");
         queryParams.put("n_code_DA", " ='OH' ");
@@ -271,7 +291,7 @@ public class BscGroupSHSaleOrderBean implements Serializable {
             sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         //20220604涡旋机金额也要加上后处理设备
-        if (n_code_DA.contains("AA") || n_code_DA.contains("RT") || n_code_DA.contains("OH")||("AH".equals(n_code_DA)&&" IN ('SAM-5HP','SAM-7HP') ".equals(n_code_CD))) {
+        if (n_code_DA.contains("AA") || n_code_DA.contains("RT") || n_code_DA.contains("OH") || ("AH".equals(n_code_DA) && " IN ('SAM-5HP','SAM-7HP') ".equals(n_code_CD))) {
             sb.append(" and d.n_code_DD in ('00','02') ");
         } else {
             sb.append(" and d.n_code_DD in ('00') ");
@@ -288,28 +308,32 @@ public class BscGroupSHSaleOrderBean implements Serializable {
                 protype = "R机体";
                 protypeno = "R";
                 shptype = "1";
-            } else if (n_code_DA.contains("AA")) {
+            } else if (n_code_DA.contains("AA") && " ='SDS' ".equals(n_code_DC)) {
+                protype = "日立A机组";
+                protypeno = "A";
+                shptype = "3";
+            } else if (n_code_DA.contains("AA") && " <>'SDS' ".equals(n_code_DC)) {
                 protype = "A机组";
                 protypeno = "A";
                 shptype = "2";
-            } else if (n_code_DA.contains("AH")&& " IN ('SAM-5HP','SAM-7HP') ".equals(n_code_DC)) {
-                 protype = "无油机组";
+            } else if (n_code_DA.contains("AH") && " IN ('SAM-5HP','SAM-7HP') ".equals(n_code_DC)) {
+                protype = "无油机组";
                 protypeno = "S";
                 shptype = "1";
-            }else if(n_code_DA.contains("AH")){
-                      protype = "A机体";
+            } else if (n_code_DA.contains("AH")) {
+                protype = "A机体";
                 protypeno = "A";
                 shptype = "1";
-            }else if (n_code_DA.contains("P")) {
+            } else if (n_code_DA.contains("P")) {
                 protype = "真空泵";
                 protypeno = "P";
                 shptype = "2";
             } else if (n_code_DA.contains("OH")) {
-                protype = "低环温热泵";
-                protypeno = "OH";
+                protype = "再生能源";
+                protypeno = "ORC";
                 shptype = "2";
             } else if (n_code_DA.contains("RT")) {
-                protype = "离心机体";
+                protype = "涡轮";
                 protypeno = "RT";
                 shptype = "2";
             } else {
@@ -406,4 +430,3 @@ public class BscGroupSHSaleOrderBean implements Serializable {
         return result;
     }
 }
-
