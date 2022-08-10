@@ -146,9 +146,6 @@ public class ShoppingAccomuntBean implements Serializable {
                 list.get(j)[14] = "0%";
             }
         }
-        //获取商流数据
-       Object[] row=getShangLiu("其中;商流", "H", date);
-       list.add(2, row);
         return list;
     }
 
@@ -311,7 +308,15 @@ public class ShoppingAccomuntBean implements Serializable {
         return list;
     }
 
-    public Object[] getShangLiu(String name, String facno, Date date) {
+    /**
+     * 获取商业流通部分数据
+     *
+     * @param name
+     * @param facno
+     * @param date
+     * @return
+     */
+    public Object[] getCommodityCirculation(String name, String facno, Date date) {
         int year = this.findYear(date);
         int month = this.findMonth(date);
         Object[] row = new Object[15];
@@ -328,13 +333,13 @@ public class ShoppingAccomuntBean implements Serializable {
         erpEJB.setCompany(facno);
         Query query = erpEJB.getEntityManager().createNativeQuery(sql.toString());
         List<Object[]> list = query.getResultList();
-        BigDecimal sum=BigDecimal.ZERO;
+        BigDecimal sum = BigDecimal.ZERO;
         for (int i = 1; i <= 12; i++) {
             boolean isTrue = false;
             for (Object[] o : list) {
                 if ((int) o[0] == i) {
-                    row[i] = (BigDecimal)o[1];
-                    sum=sum.add( (BigDecimal)o[1]);
+                    row[i] = (BigDecimal) o[1];
+                    sum = sum.add((BigDecimal) o[1]);
                     isTrue = true;
                     break;
                 }
@@ -345,7 +350,7 @@ public class ShoppingAccomuntBean implements Serializable {
                 row[i] = BigDecimal.ZERO;
             }
         }
-        row[13]=sum;
+        row[13] = sum;
         return row;
     }
 

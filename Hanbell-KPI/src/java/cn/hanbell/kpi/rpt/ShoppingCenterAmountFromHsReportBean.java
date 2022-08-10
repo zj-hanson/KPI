@@ -120,7 +120,7 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             //调整占比
             list.clear();
             list.add(shb);
-            list.add(shoppingAccomuntBean.getShangLiu("其中商流：", "H", btnDate));
+            list.add(shoppingAccomuntBean.getCommodityCirculation("其中商流：", "H", btnDate));
             list.add(thb);
             list.add(cm);
             list.add(sum);
