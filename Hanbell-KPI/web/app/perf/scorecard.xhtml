@@ -120,11 +120,25 @@
                 </f:facet>
                 <p:ajax event="rowSelect"  update="formList:dlgDetail,formList:dlgStageDescription" oncomplete="PF('dlgDetail').show();" listener="#{scorecardManagedBean.handleDialogReturnWhenSelect}" />
                 <p:ajax event="rowUnselect" update=":formList:toolbar" listener="#{scorecardManagedBean.handleDialogReturnWhenSelect}" />
-                <p:column styleClass="Wid20">
+                <p:column styleClass="Wid30" rendered="#{empty item.indicator and empty item.projectName}">
                     <f:facet name="header">
                         <h:outputText value="考核内容"/>
                     </f:facet>
-                    <h:outputText value="#{item.content}"/>
+                    <h:outputText  value="#{item.content}"></h:outputText>
+                </p:column>
+                <p:column styleClass="Wid30" rendered="#{!empty item.indicator and empty item.projectName}">
+                    <f:facet name="header">
+                        <h:outputText value="考核内容"/>
+                    </f:facet>
+                    <p:graphicImage name="images/K.png" library="ultima-layout" style="height:15px;width:15px;background-color: #EEE8AA"/>
+                    <h:outputText value="#{item.content}"></h:outputText>
+                </p:column>
+                <p:column styleClass="Wid30" rendered="#{empty item.indicator and !empty item.projectName}">
+                    <f:facet name="header">
+                        <h:outputText value="考核内容"/>
+                    </f:facet>
+                    <p:graphicImage name="images/P.png" library="ultima-layout" style="height:15px;width:15px;background-color: #EEE8AA"/>
+                    <h:outputText value="#{item.content}"></h:outputText>
                 </p:column>
                 <p:column style="text-align: right">
                     <f:facet name="header">

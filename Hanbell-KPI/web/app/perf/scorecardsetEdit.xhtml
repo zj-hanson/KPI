@@ -310,18 +310,31 @@
                                 oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
                         <p:ajax event="rowUnselect" update=":formOne:tabView:plgDetail" oncomplete="" />
                         <p:ajax event="rowDblselect" update="formOne:dlgDetail" oncomplete="PF('dlgDetail').show();"/>
-                 
                         <p:column rendered="#{scorecardSetManagedBean.isSort}">
                             <f:facet name="header">
                                 <h:outputText value="排序"/>
                             </f:facet>
                             <p:inputText value="#{item.seq}"/>
                         </p:column>
-                        <p:column styleClass="Wid30">
+                        <p:column styleClass="Wid30" rendered="#{empty item.indicator and empty item.projectName}">
                             <f:facet name="header">
                                 <h:outputText value="考核内容"/>
                             </f:facet>
-                            <h:outputText value="#{item.content}"/>
+                            <h:outputText  value="#{item.content}"></h:outputText>
+                        </p:column>
+                         <p:column styleClass="Wid30" rendered="#{!empty item.indicator and empty item.projectName}">
+                            <f:facet name="header">
+                                <h:outputText value="考核内容"/>
+                            </f:facet>
+                            <p:graphicImage name="images/K.png" library="ultima-layout" style="height:15px;width:15px;background-color: #EEE8AA"/>
+                            <h:outputText value="#{item.content}"></h:outputText>
+                        </p:column>
+                        <p:column styleClass="Wid30" rendered="#{empty item.indicator and !empty item.projectName}">
+                            <f:facet name="header">
+                                <h:outputText value="考核内容"/>
+                            </f:facet>
+                              <p:graphicImage name="images/P.png" library="ultima-layout" style="height:15px;width:15px;background-color: #EEE8AA"/>
+                            <h:outputText value="#{item.content}"></h:outputText>
                         </p:column>
                         <p:column style="text-align: right">
                             <f:facet name="header">
