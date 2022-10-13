@@ -408,7 +408,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         d1.setTargetQ1(getValue(scorecardDetail.getTq1()));
                         d1.setActualValueQ1(getValue(scorecardDetail.getAq1()));
                         d1.setAchievementRateQ1("".equals(getValue(scorecardDetail.getPq1())) ? "0" : getValue(scorecardDetail.getPq1()));
-                        length = this.getExplationsLength(getValue(scorecardDetail.getDeptScore().getQ1()));
+                        length = this.getExplationsLength(scorecardDetail.getDeptScore().getQ1());
                         if (length > 200) {
                             throw new Exception("部门说明超过200字。");
                         }
@@ -438,7 +438,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         d2.setTargetQ2(getValue(scorecardDetail.getTq2()));
                         d2.setActualValueQ2(getValue(scorecardDetail.getAq2()));
                         d2.setAchievementRateQ2("".equals(getValue(scorecardDetail.getPq2())) ? "0" : getValue(scorecardDetail.getPq2()));
-                        length = this.getExplationsLength(getValue(scorecardDetail.getDeptScore().getQ2()));
+                        length = this.getExplationsLength(scorecardDetail.getDeptScore().getQ2());
                         if (length > 200) {
                             throw new Exception("部门说明超过200字。");
                         }
@@ -473,7 +473,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         d3.setTargetQ3(getValue(scorecardDetail.getTq3()));
                         d3.setActualValueQ3(getValue(scorecardDetail.getAq3()));
                         d3.setAchievementRateQ3("".equals(getValue(scorecardDetail.getPq3())) ? "0" : getValue(scorecardDetail.getPq3()));
-                        length = this.getExplationsLength(getValue(scorecardDetail.getDeptScore().getQ3()));
+                        length = this.getExplationsLength(scorecardDetail.getDeptScore().getQ3());
                         if (length > 200) {
                             throw new Exception("部门说明超过200字。");
                         }
@@ -503,7 +503,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                         d4.setTargetQ4(getValue(scorecardDetail.getTq4()));
                         d4.setActualValueQ4(getValue(scorecardDetail.getAq4()));
                         d4.setAchievementRateQ4("".equals(getValue(scorecardDetail.getPq4())) ? "0" : getValue(scorecardDetail.getPq4()));
-                        length = this.getExplationsLength(getValue(scorecardDetail.getDeptScore().getQ3()));
+                        length = this.getExplationsLength(scorecardDetail.getDeptScore().getQ4());
                         if (length > 200) {
                             throw new Exception("部门说明超过200字。");
                         }
