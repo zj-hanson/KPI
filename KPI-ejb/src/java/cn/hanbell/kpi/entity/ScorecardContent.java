@@ -127,6 +127,9 @@ public class ScorecardContent extends SuperEntity {
     @Size(max = 20)
     @Column(name = "indicator")
     private String indicator;
+    @Size(max = 45)
+    @Column(name = "projectName")
+    private String projectName;
     @Size(max = 10)
     @Column(name = "deptno")
     private String deptno;
@@ -508,6 +511,14 @@ public class ScorecardContent extends SuperEntity {
 
     public void setIndicator(String indicator) {
         this.indicator = indicator;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public String getDeptno() {

@@ -145,7 +145,7 @@ public class UserManagedBean implements Serializable {
         BufferedReader in = null;
         String result = "";
         try {
-            URL realUrl = new URL(url);
+            URL realUrl = new URL(url+"?"+param);
             // 打开和URL之间的连接
             URLConnection conn = realUrl.openConnection();
             // 设置通用的请求属性
@@ -188,10 +188,10 @@ public class UserManagedBean implements Serializable {
         String userNo = "";
 
         JSONObject jsonObject = new JSONObject(result);
-        int resultTemp = jsonObject.getInt("result");// 获取成功状态
+        int resultTemp = jsonObject.getInt("code");// 获取成功状态
         if (resultTemp == 1) {// 成功则获取员工id
             JSONObject data = jsonObject.getJSONObject("data");
-            userid = data.getString("userNo");
+            userid = data.getString("UserNo");
             SystemUser u = null;
             u = systemUserBean.findByUserId(userid);
             company = "C";
