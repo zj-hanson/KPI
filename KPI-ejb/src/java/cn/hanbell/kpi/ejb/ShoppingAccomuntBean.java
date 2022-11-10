@@ -58,6 +58,8 @@ public class ShoppingAccomuntBean implements Serializable {
     public static final String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
     public static final String SHB_FACT_JIEXIANGHE = "3231/3133";
     public static final String SHB_ITCLS_MOJU = "B005";
+    public static final String SHB_ITCLS_CHILUN = "3406/3806/3E06";
+    public static final String SHB_ITCLS_LVCAI = "3140/3240";
 
     //浙江汉声
     public static final String HS_ITCLS_ZHUJIA = "2A05/2A02/2A05/2A06/2HJK/2HMD/1A03/1HJK/1HYF/1HMD/3A03/3A01/3HMD/3HYF/2AZ1/2AZ3/3H/1/3A06/1102/2H/3/2HZC/3HJK";
@@ -132,7 +134,7 @@ public class ShoppingAccomuntBean implements Serializable {
         //调整占比：各分公司占集团的百分比
         for (int j = 0; j < list.size(); j = j + 2) {
             try {
-                BigDecimal value = ((BigDecimal) list.get(j)[13]).divide(((BigDecimal) list.get(list.size() - 2)[13]), 2).multiply(new BigDecimal(100));
+                BigDecimal value = ((BigDecimal) list.get(j)[13]).multiply(new BigDecimal(100)).divide(((BigDecimal) list.get(list.size() - 2)[13]), 2, BigDecimal.ROUND_HALF_UP);
                 list.get(j)[14] = value.toString() + "%";
             } catch (ArithmeticException e) {
                 list.get(j)[14] = "0%";
@@ -140,7 +142,7 @@ public class ShoppingAccomuntBean implements Serializable {
         }
         for (int j = 1; j < list.size(); j = j + 2) {
             try {
-                BigDecimal value = ((BigDecimal) list.get(j)[13]).divide(((BigDecimal) list.get(j - 1)[13]), 2).multiply(new BigDecimal(100));
+                BigDecimal value = ((BigDecimal) list.get(j)[13]).multiply(new BigDecimal(100)).divide(((BigDecimal) list.get(j - 1)[13]), 2, BigDecimal.ROUND_HALF_UP);
                 list.get(j)[14] = value.toString() + "%";
             } catch (ArithmeticException e) {
                 list.get(j)[14] = "0%";
