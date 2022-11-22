@@ -133,6 +133,7 @@ public class UserManagedBean implements Serializable {
                         }
                     }
                 }
+                 return "";
             } catch (Exception ex) {
                 System.out.print(ex);
             }
