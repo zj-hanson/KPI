@@ -146,7 +146,7 @@ public class UserManagedBean implements Serializable {
         BufferedReader in = null;
         String result = "";
         try {
-            URL realUrl = new URL(url+"?"+param);
+            URL realUrl = new URL(url+"?"+token);
             // 打开和URL之间的连接
             URLConnection conn = realUrl.openConnection();
             // 设置通用的请求属性
