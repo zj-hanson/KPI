@@ -57,6 +57,15 @@ public class IndicatorQueryBean extends SuperQueryBean<Indicator> {
         if (this.queryName != null && !"".equals(this.queryName)) {
             model.getFilterFields().put("name", this.queryName);
         }
+        if (this.queryFormId != null && !"".equals(this.queryFormId)) {
+            model.getFilterFields().put("formid", this.queryFormId);
+        }
+        if (this.queryDeptno != null && !"".equals(this.queryDeptno)) {
+            model.getFilterFields().put("deptno", this.queryDeptno);
+        }
+        if (this.queryDeptname != null && !"".equals(this.queryDeptname)) {
+            model.getFilterFields().put("deptname", this.queryDeptname);
+        }
         model.getFilterFields().put("seq", userManagedBean.getY());
         model.getFilterFields().put("objtype =", "D");
     }
