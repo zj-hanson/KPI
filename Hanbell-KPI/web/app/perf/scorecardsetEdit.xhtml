@@ -165,9 +165,6 @@
                             <p:commandButton id="btnDeleteDetail" widgetVar="btnDeleteDetail" value="删除" actionListener="#{scorecardSetManagedBean.deleteDetail()}" icon="ui-icon-trash"
                                              oncomplete="PF('btnAddDetail').enable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
                                              process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
-                            <p:commandButton id="btnEditSort" widgetVar="btnEditSort" value="排序" actionListener="#{scorecardSetManagedBean.editSort()}" icon="ui-icon-trash"
-                                             oncomplete="PF('btnAddDetail').disable();PF('btnFillDetail').disable();PF('btnDeleteDetail').disable();PF('btnSaveDetail').disable();"
-                                             process="@this" update=":formOne:tabView:plgDetail,:formOne:tabView:tableList" />
                         </f:facet>
                         <f:facet name="right">
                             <p:commandButton id="btnFillDetail" widgetVar="btnFillDetail" value="填报"  icon="ui-icon-plus"
@@ -310,12 +307,6 @@
                                 oncomplete="PF('btnAddDetail').disable();PF('btnDeleteDetail').enable();PF('btnSaveDetail').enable();" />
                         <p:ajax event="rowUnselect" update=":formOne:tabView:plgDetail" oncomplete="" />
                         <p:ajax event="rowDblselect" update="formOne:dlgDetail" oncomplete="PF('dlgDetail').show();"/>
-                        <p:column rendered="#{scorecardSetManagedBean.isSort}">
-                            <f:facet name="header">
-                                <h:outputText value="排序"/>
-                            </f:facet>
-                            <p:inputText value="#{item.seq}"/>
-                        </p:column>
                         <p:column styleClass="Wid30" rendered="#{empty item.indicator and empty item.projectName}">
                             <f:facet name="header">
                                 <h:outputText value="考核内容"/>
@@ -404,10 +395,10 @@
                         </p:column>
                     </p:dataTable>
                     <p:contextMenu id="contextMenu" for="tableList">
-                        <p:menuitem value="Up" icon="arrow-upward" actionListener="#{scorecardSetManagedBean.moveUp}"
-                                    process="@this"  update="tableList" disabled="#{scorecardSetManagedBean.firstDetail}"/>
-                        <p:menuitem value="Down" icon="arrow-downward" actionListener="#{scorecardSetManagedBean.moveDown}"
-                                    process="@this"  update="tableList" disabled="#{scorecardSetManagedBean.lastDetail}"/>
+                        <p:menuitem value="向上" icon="arrow-upward" actionListener="#{scorecardSetManagedBean.moveUp}"
+                                    process="@this"  update="formOne:tabView:plgDetail,formOne:tabView:contextMenu,formOne:dlgStageDescription,tableList" disabled="#{scorecardSetManagedBean.firstDetail}"/>
+                        <p:menuitem value="向下" icon="arrow-downward" actionListener="#{scorecardSetManagedBean.moveDown}"
+                                    process="@this"  update="formOne:tabView:plgDetail,formOne:tabView:contextMenu,formOne:dlgStageDescription,tableList" disabled="#{scorecardSetManagedBean.lastDetail}"/>
                     </p:contextMenu>
                 </p:tab>
             </p:tabView>
