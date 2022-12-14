@@ -19,17 +19,17 @@ import javax.persistence.Query;
 
 /**
  *
- * @author C1879 柯茂机组部分
+ * @author C2082 柯茂机体部分
  */
-public class ProductionPlanOrderKM extends ProductionPlanOrder {
-
-    public ProductionPlanOrderKM() {
+public class ProductionPlanShipmentKMAH extends ProductionPlanShipment{
+    
+    public ProductionPlanShipmentKMAH() {
         super();
         queryParams.put("facno", "K");
         //#ITCLS CHANGE TODO #
-        queryParams.put("itcls", " in ('3H76','3H79','3H80','3W80','3W76','3W79')");
+        queryParams.put("itcls", " in ('3J76','3J79','3J80')");
         //#ITCLS CHANGE TODO #
-        queryParams.put("itnbrf", " in ('3H76','3H79','3H80','3W80','3W76','3W79') ");
+        queryParams.put("itnbrf", " in ('3J76','3J79','3J80') ");
     }
 
     @Override
@@ -39,32 +39,31 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
         String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
         String itnbrf = map.get("itnbrf") != null ? map.get("itnbrf").toString() : "";
         String id = map.get("id") != null ? map.get("id").toString() : "";
-        String noUpdate = map.get("noUpdate") != null ? map.get("noUpdate").toString() : "";
 
         BigDecimal value = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select isnull(sum(d.cdrqy1),0) as totcdrqy from cdrhmas h, cdrdmas d ");
-        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98') and d.n_code_DD <> 'ZZ' ");
+        sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
-            sb.append(" and d.itnbr in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
+            sb.append(" and d.itnbr  in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
-        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
+        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
             case 2:
                 //月
-                sb.append(" and h.recdate<= '${d}' ");
+                sb.append(" and h.shpdate<= '${d}' ");
                 break;
             case 5:
                 //日
-                sb.append(" and h.recdate= '${d}' ");
+                sb.append(" and h.shpdate= '${d}' ");
                 break;
             default:
-                sb.append(" and h.recdate<= '${d}' ");
+                sb.append(" and h.shpdate<= '${d}' ");
         }
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
@@ -74,24 +73,25 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
         try {
             Object o = query.getSingleResult();
             value = (BigDecimal) o;
-            //更新本月以往天数订单
-            List list = getLastValue(y, m, d, map);
-            if (list != null && !list.isEmpty()) {
-                if (!"".equals(id) && !"true".equals(noUpdate)) {
-                    Indicator entity = indicatorBean.findById(Integer.valueOf(id));
-                    if (entity != null && entity.getOther4Indicator() != null) {
-                        IndicatorDetail salesOrder = entity.getOther4Indicator();
-                        IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
-                        daily.clearDate();
-                        for (int i = 0; i < list.size(); i++) {
-                            Object[] row = (Object[]) list.get(i);
-                            updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
+            //更新往日出货
+            if (type == 5) {
+                List list = getLastValue(y, m, d, map);
+                if (list != null && !list.isEmpty()) {
+                    if (!"".equals(id)) {
+                        Indicator entity = indicatorBean.findById(Integer.valueOf(id));
+                        if (entity != null && entity.getOther3Indicator() != null) {
+                            IndicatorDetail salesOrder = entity.getOther3Indicator();
+                            IndicatorDaily daily = indicatorDailyBean.findByPIdDateAndType(salesOrder.getId(), salesOrder.getSeq(), m, salesOrder.getType());
+                            daily.clearDate();
+                            for (int i = 0; i < list.size(); i++) {
+                                Object[] row = (Object[]) list.get(i);
+                                updateValue(Integer.valueOf(row[0].toString()), BigDecimal.valueOf(Double.valueOf(row[1].toString())), daily);
+                            }
+                            indicatorDailyBean.update(daily);
                         }
-                        indicatorDailyBean.update(daily);
                     }
                 }
             }
-            return value;
         } catch (Exception e) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -102,24 +102,21 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
     public List getLastValue(int y, int m, Date d, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
-        String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
         String itnbrf = map.get("itnbrf") != null ? map.get("itnbrf").toString() : "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" select day(h.recdate),isnull(sum(d.cdrqy1),0) as totcdrqy from cdrhmas h, cdrdmas d ");
-        sb.append(" where  h.hrecsta<>'W' and h.cdrno=d.cdrno and  h.facno=d.facno  and h.facno='${facno}' and d.drecsta not in ('99','98') and d.n_code_DD <> 'ZZ' ");
+        sb.append(" select day(h.shpdate),isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
-        }
-        if (!"".equals(n_code_DC)) {
-            sb.append(" and d.n_code_DC ").append(n_code_DC);
         }
         if (!"".equals(itcls)) {
             sb.append(" and (d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
             sb.append(" and d.itnbr  in(select itnbr from invmas where itcls ").append(itnbrf).append(")) ");
         }
-        sb.append(" and year(h.recdate) = ${y} and month(h.recdate)= ${m} and h.recdate< '${d}' GROUP BY day(h.recdate) ");
+        sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} and h.shpdate< '${d}'  GROUP BY day(h.shpdate)");
+
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
 
@@ -133,5 +130,4 @@ public class ProductionPlanOrderKM extends ProductionPlanOrder {
         }
         return null;
     }
-
 }

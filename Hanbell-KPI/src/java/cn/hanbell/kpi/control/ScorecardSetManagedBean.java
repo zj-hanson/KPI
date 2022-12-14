@@ -78,7 +78,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
 
     protected Calendar c;
     private boolean freezed;
-    private boolean isSort;
 
     protected String queryDeptno;
     protected String queryDeptname;
@@ -350,22 +349,13 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         if (currentDetail.getFreezeDate() != null
                 && currentDetail.getFreezeDate().after(userManagedBean.getBaseDate())) {
             showErrorMsg("Error", "资料已经冻结,不可更新");
-             this.isSort=false;
             return;
         }
         for (ScorecardDetail detail : detailList) {
             if (!Objects.equals(currentDetail.getId(), detail.getId()) && currentDetail.getSeq() == detail.getSeq()) {
                 showErrorMsg("Error", "明细序号重复,不可更新");
-                 this.isSort=false;
                 return;
             }
-        }
-        if(this.isSort){
-            this.editedDetailList.clear();
-            this.editedDetailList.addAll(detailList);
-            super.doConfirmDetail();
-            this.isSort=false;
-            return ;
         }
         if (currentDetail.getGeneralScore() != null) {
             try {
@@ -495,7 +485,6 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         } catch (NumberFormatException ex) {
             log4j.warn("updateScoreByPLMProject()方法异常-" + ex.toString());
         }
-
     }
 
     @Override
@@ -744,11 +733,13 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                         return -1;
                     }
                 });
+                currentDetail=detailList.get(i + 1);
                 showInfoMsg("Info", "MoveDown");
             } else {
                 showWarnMsg("Warn", "已是最后");
             }
         }
+
     }
 
     public void moveUp() {
@@ -773,9 +764,8 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
                         return -1;
                     }
                 });
+                currentDetail=detailList.get(i - 1);
                 showInfoMsg("Info", "MoveUp");
-            } else {
-                showWarnMsg("Warn", "已是最前");
             }
         }
     }
@@ -934,17 +924,11 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
         }
     }
 
-    //修改明细排序
-    public void editSort() {
-        this.isSort=true;
-    }
-
     @Override
     public String edit(String path) {
         //编辑页面时移除edit集合中的内容。关闭排序功能。
-        if("scorecardsetEdit".equals(path)){
-             this.isSort=false;
-             this.editedDetailList.clear();
+        if ("scorecardsetEdit".equals(path)) {
+            this.editedDetailList.clear();
         }
         return super.edit(path);
     }
@@ -1155,13 +1139,4 @@ public class ScorecardSetManagedBean extends SuperMultiBean<Scorecard, Scorecard
     public boolean isLastDetail() {
         return lastDetail;
     }
-
-    public boolean isIsSort() {
-        return isSort;
-    }
-
-    public void setIsSort(boolean isSort) {
-        this.isSort = isSort;
-    }
-
 }
