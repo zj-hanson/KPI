@@ -62,7 +62,6 @@ public class ShipmentAmountS9 extends ShipmentAmount9 {
         } else {
             sb.append(" and d.n_code_DD <> 'ZZ' ");
         }
-        sb.append(" and isnull(c.hmark2, '') <> 'WX' ");
         sb.append(" and year(h.shpdate) = ${y} and month(h.shpdate)= ${m} ");
         switch (type) {
             case 2:
