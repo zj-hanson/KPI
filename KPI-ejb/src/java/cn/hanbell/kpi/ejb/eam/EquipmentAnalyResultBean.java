@@ -93,7 +93,7 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
         eSql.append("  AND E.formdate ='").append(staDate).append("' and E.deptname='").append(deptname).append("'  AND standardlevel='一级' and E.company='C'");
         Query query = this.getEntityManager().createNativeQuery(eSql.toString());
         List<Object[]> list = query.getResultList();
-        //获取整天计划停机的机台编号
+        //获取整天计划停机的机台编号  
         sMESList = getEPQIDDowntime();
         if (!sMESList.isEmpty()) {
             for (String objects : sMESList) {
