@@ -48,7 +48,7 @@ public class BalanceSheet2ReportBean extends BscQueryTableManageBean implements 
     protected boolean showchecked;
 
     public BalanceSheet2ReportBean() {
-        this.floatFormat = new DecimalFormat("#,###.00");
+        this.floatFormat = new DecimalFormat("#,##0.00");
     }
 
     public Calendar settlementDate() {
