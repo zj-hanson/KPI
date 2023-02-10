@@ -248,13 +248,11 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                     ct.setNowshpamts(row[3].toString());
                     list.add(ct);
                 }
-                if (!"0".equals(rowsPerPage) && size > Integer.parseInt(rowsPerPage)) {
-                    ct = new ClientRanking();
-                    ct.setCusna("其他");
-                    ct.setNowshpqy1("0");
-                    ct.setNowshpamts("0");
-                    list.add(ct);
-                }
+                ct = new ClientRanking();
+                ct.setCusna("其他");
+                ct.setNowshpqy1("0");
+                ct.setNowshpamts("0");
+                list.add(ct);
                 ct = new ClientRanking();
                 ct.setCusna("总计");
                 ct.setNowshpqy1(String.valueOf(getSumQuantity(y, m, map, type, monthchecked)));
@@ -740,7 +738,7 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
         } else {
             if (Double.parseDouble(now) < 0) {
                 return df.format(-100);
-                
+
             } else {
                 return dmf.format((Double.parseDouble(now) - Double.parseDouble(past)) / Double.parseDouble(past) * 100);
             }
