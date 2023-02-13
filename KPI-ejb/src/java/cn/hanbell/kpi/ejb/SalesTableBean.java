@@ -569,6 +569,12 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                         ranking.setPastshpamts(topPastshpamts.toString());
                         ranking.setUltshpqy1(topUltshpqy1.toString());
                         ranking.setUltshpamts(topUltshpamts.toString());
+                        if(topNowshpamts<0){
+                             ranking.setNowshpamts("0");
+                        }
+                        if(topPastshpamts<0){
+                             ranking.setPastshpamts("0");
+                        }
                     }
                     if ("总计".equals(ranking.getCusna())) {
 
