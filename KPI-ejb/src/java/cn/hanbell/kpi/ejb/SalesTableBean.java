@@ -569,10 +569,10 @@ public class SalesTableBean extends SuperEJBForKPI<SalesTable> {
                         ranking.setPastshpamts(topPastshpamts.toString());
                         ranking.setUltshpqy1(topUltshpqy1.toString());
                         ranking.setUltshpamts(topUltshpamts.toString());
-                        if(topNowshpamts<0){
+                        if(topNowshpamts<5 && -5<topNowshpamts){
                              ranking.setNowshpamts("0");
                         }
-                        if(topPastshpamts<0){
+                        if(topPastshpamts<5 && -5<topPastshpamts){
                              ranking.setPastshpamts("0");
                         }
                     }
