@@ -232,7 +232,7 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
 
         Query query = mesEJB.getEntityManager().createNativeQuery(stopSql.toString());
         fMESList = query.getResultList();
-        stopSql = "   SELECT * FROM  PLAN_SEMI_CIRCLE WHERE  PLANDATE =convert(char,dateadd(dd,-1,getdate()),111) AND PRODUCTID='计划停机' AND WORKHOUR LIKE '%1440%'";
+        stopSql = "   SELECT EQPID FROM  PLAN_SEMI_CIRCLE WHERE  PLANDATE =convert(char,dateadd(dd,-1,getdate()),111) AND PRODUCTID='计划停机' AND WORKHOUR LIKE '%1440%'";
         query = mesEJB.getEntityManager().createNativeQuery(stopSql.toString());
         yMESList = query.getResultList();
         fMESList.addAll(yMESList);
