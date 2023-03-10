@@ -299,7 +299,7 @@ public class SHBShipmentMailBean extends ShipmentMail {
             }
 
             indicators.clear();
-            indicators = indicatorBean.findByCategoryAndYear("S涡旋收费服务", y);
+            indicators = indicatorBean.findByCategoryAndYear("涡旋收费服务", y);
             indicatorBean.getEntityManager().clear();
             if (indicators != null && indicators.size() > 0) {
                 indicators.stream().forEach((i) -> {
