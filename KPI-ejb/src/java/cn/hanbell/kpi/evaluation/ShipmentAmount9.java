@@ -72,6 +72,7 @@ public abstract class ShipmentAmount9 extends Shipment {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         String ogdkid = map.get("ogdkid") != null ? map.get("ogdkid").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(d.recamt),0) FROM armrec d,armrech h where d.facno=h.facno AND d.recno=h.recno AND h.prgno='ARM423' AND h.recstat='1' AND d.raccno in('6001','6002') ");
@@ -85,7 +86,9 @@ public abstract class ShipmentAmount9 extends Shipment {
         if (!"".equals(n_code_DC)) {
             sb.append(" AND h.n_code_DC ").append(n_code_DC);
         }
-        sb.append(" AND h.n_code_DD='01' ");
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND h.n_code_DD ").append(n_code_DD);
+        }
         sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {
             case 2:
