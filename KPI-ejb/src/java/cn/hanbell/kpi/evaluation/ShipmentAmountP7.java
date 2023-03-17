@@ -7,16 +7,15 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C0160
+ * @author C2082
  */
-public class ShipmentAmountP9 extends ShipmentAmount9 {
+public class ShipmentAmountP7 extends ShipmentAmount9 {
 
-    public ShipmentAmountP9() {
+    public ShipmentAmountP7() {
         super();
         queryParams.put("facno", "C");
         queryParams.put("ogdkid", "RL01");
         queryParams.put("n_code_DA", " ='P' ");
-        queryParams.put("n_code_DD", " not in ('03','ZZ')' ");
+        queryParams.put("n_code_DD", " ='03' ");
     }
-
 }
