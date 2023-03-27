@@ -289,7 +289,9 @@ public class ScorecardContent extends SuperEntity {
     @Size(max = 200)
     @Column(name = "remark")
     private String remark;
-
+    @Size(max = 45)
+    @Column(name = "projectSeq")
+    private String projectSeq;
     public ScorecardContent() {
         this.sortid = 0;
         this.status = "N";
@@ -1135,6 +1137,14 @@ public class ScorecardContent extends SuperEntity {
 
     public void setSummaryScore2(ScorecardExplanation summaryScore2) {
         this.summaryScore2 = summaryScore2;
+    }
+
+    public String getProjectSeq() {
+        return projectSeq;
+    }
+
+    public void setProjectSeq(String projectSeq) {
+        this.projectSeq = projectSeq;
     }
 
     @Override
