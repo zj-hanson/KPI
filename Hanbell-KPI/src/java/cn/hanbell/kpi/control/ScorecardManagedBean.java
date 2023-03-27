@@ -19,6 +19,7 @@ import cn.hanbell.kpi.ejb.ScorecardBean;
 import cn.hanbell.kpi.ejb.ScorecardContentBean;
 import cn.hanbell.kpi.ejb.ScorecardDetailBean;
 import cn.hanbell.kpi.ejb.ScorecardGrantBean;
+import cn.hanbell.kpi.ejb.tms.ProjectBean;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Scorecard;
 import cn.hanbell.kpi.entity.ScorecardAuditor;
@@ -29,6 +30,7 @@ import cn.hanbell.kpi.lazy.ScorecardContentModel;
 import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.BaseLib;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,6 +73,8 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
     SystemUserBean systemUserBean;
     @EJB
     WorkFlowBean workFlowBean;
+    @EJB
+    private ProjectBean projectBean;
 
     protected ScorecardGrant scorecardGrant;
 
@@ -127,6 +131,11 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
 
     public void calcItemScore() {
         if (currentEntity != null) {
+            // 如果考核指标有PLM代号的就用PLM代过来的值计算
+            if (currentEntity.getProjectSeq() != null && !currentEntity.getType().equals("N")) {
+                updateScoreByPLMProject();
+                return;
+            }
             if (!currentEntity.getType().equals("N")) {
                 showWarnMsg("Warn", "数值型才能按计算公式更新");
                 return;
@@ -344,6 +353,111 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         }
         init();
         super.construct();
+    }
+// 关联PLM的更新
+
+    public void updateScoreByPLMProject() {
+        try {
+            String target, actual, projectSeq;
+            BigDecimal value;
+            String col = scorecardBean.getColumn("q", userManagedBean.getQ());
+            // 找到PLM的数据
+            projectSeq = projectBean.findByProjectSeq(currentEntity.getProjectSeq());
+            if (projectSeq == null || "".equals(projectSeq)) {
+                showErrorMsg("Error", "请确认PLM是否有进度");
+                return;
+            }
+            // 选择季度更新
+            switch (col) {
+                case "q1":
+                    currentEntity.setAq1(projectSeq+"%");
+                    target = currentEntity.getTq1();
+                    actual = currentEntity.getAq1();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq1(value);
+//                    currentEntity.getDeptScore().setSq1(value);
+//                    currentEntity.getGeneralScore().setSq1(value);
+                    break;
+                case "q2":
+                    currentEntity.setAq2(projectSeq+"%");
+                    //Q2
+                    target = currentEntity.getTq2();
+                    actual = currentEntity.getAq2();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq2(value);
+//                    currentEntity.getDeptScore().setSq2(value);
+//                    currentEntity.getGeneralScore().setSq2(value);
+                    //上半年
+                    currentEntity.setAh1(projectSeq+"%");
+                    target = currentEntity.getTh1();
+                    actual = currentEntity.getAh1();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPh1(value);
+//                    currentEntity.getDeptScore().setSh1(value);
+//                    currentEntity.getGeneralScore().setSh1(value);
+                    break;
+                case "q3":
+                    currentEntity.setAq3(projectSeq+"%");
+                    target = currentEntity.getTq3();
+                    actual = currentEntity.getAq3();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq3(value);
+//                    currentEntity.getDeptScore().setSq3(value);
+//                    currentEntity.getGeneralScore().setSq3(value);
+                    break;
+                case "q4":
+                    //Q4
+                    currentEntity.setAq4(projectSeq+"%");
+                    target = currentEntity.getTq4();
+                    actual = currentEntity.getAq4();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq4(value);
+//                    currentEntity.getDeptScore().setSq4(value);
+//                    currentEntity.getGeneralScore().setSq4(value);
+                    //全年
+                    currentEntity.setAfy(projectSeq+"%");
+                    target = currentEntity.getTfy();
+                    actual = currentEntity.getAfy();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPfy(value);
+                   //currentEntity.getDeptScore().setSfy(value);
+                    break;
+            }
+            scorecardContentBean.update(currentEntity);
+            showErrorMsg("Info", "更新成功！");
+        } catch (Exception ex) {
+            showWarnMsg("Warn", "更新失败" + ex.getMessage());
+        }
+    }
+
+    /**
+     * @desc 截取字符的数字计算得分、达成率
+     * @param target
+     * @param acutal
+     * @return value
+     */
+    public BigDecimal calculateScore(String target, String acutal)throws Exception {
+        BigDecimal value = BigDecimal.ZERO;
+        String str1, str2;
+        // 先判断有值
+        if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
+            str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
+            str2 = acutal.substring(0, acutal.indexOf("%"));
+            //判断截取出来的数据是否为数字
+            if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
+                Double t = Double.valueOf(str1);
+                Double a = Double.valueOf(str2);
+                // 分母不为零
+                if (t > 0.00001) {
+                    // 达成率、得分
+                    value = BigDecimal.valueOf(a / t * 100).setScale(2,BigDecimal.ROUND_HALF_UP);
+                }
+            } else {
+                showErrorMsg("Error", "基准,目标或实际值值格式不正确！！");
+                return BigDecimal.ZERO;
+            }
+        }
+        return value;
     }
 
     @Override
