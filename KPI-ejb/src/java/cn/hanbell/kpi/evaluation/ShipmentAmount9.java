@@ -29,6 +29,7 @@ public abstract class ShipmentAmount9 extends Shipment {
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(CASE h.amtco WHEN 'P' THEN d.psamt WHEN 'M' THEN d.psamt *(-1) ELSE 0 END),0) FROM armpmm h,armacq d,cdrdta s ");
         sb.append(" WHERE h.facno=d.facno AND h.trno = d.trno AND d.facno = s.facno AND d.shpno=s.shpno AND d.shpseq = s.trseq and s.issevdta='Y' AND h.facno='${facno}' ");
@@ -40,6 +41,11 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (!"".equals(n_code_DC)) {
             sb.append(" AND s.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and s.n_code_DD ").append(n_code_DD);
+        } else {
+            sb.append(" and s.n_code_DD not in ('00','02','ZZ') ");
         }
         sb.append(" AND year(h.trdat) = ${y} AND month(h.trdat) = ${m} ");
         switch (type) {
@@ -89,6 +95,11 @@ public abstract class ShipmentAmount9 extends Shipment {
         if (!"".equals(n_code_DD)) {
             sb.append(" AND h.n_code_DD ").append(n_code_DD);
         }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" AND h.n_code_DD ").append(n_code_DD);
+        } else {
+            sb.append(" AND h.n_code_DD ").append(" not in ('00','02','ZZ')");
+        }
         sb.append(" AND year(h.recdate) = ${y} and month(h.recdate)= ${m} ");
         switch (type) {
             case 2:
@@ -114,11 +125,12 @@ public abstract class ShipmentAmount9 extends Shipment {
         return BigDecimal.ZERO;
     }
 
-   //它项金额,关联部门
+    //它项金额,关联部门
     public BigDecimal getARM270Value(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(h.shpamt),0) FROM armbil h WHERE h.rkd='RQ11' AND h.facno='${facno}'");
         if (n_code_DA != null && !"".equals(n_code_DA)) {
@@ -126,6 +138,11 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (n_code_DC != null && !"".equals(n_code_DC)) {
             sb.append(" and n_code_DC ").append(n_code_DC);
+        }
+        if (n_code_CD != null && !"".equals(n_code_CD)) {
+            sb.append(" and address3 ").append(n_code_CD);
+        }else{
+            sb.append(" and address3 ").append(" not in ('00','02','ZZ')");
         }
         //收费服务金额
         sb.append(" and address5 ='Y'");
