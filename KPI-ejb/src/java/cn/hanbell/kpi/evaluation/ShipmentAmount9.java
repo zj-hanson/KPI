@@ -130,7 +130,7 @@ public abstract class ShipmentAmount9 extends Shipment {
         String facno = map.get("facno") != null ? map.get("facno").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
-         String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
+        String n_code_CD = map.get("n_code_CD") != null ? map.get("n_code_CD").toString() : "";
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT ISNULL(SUM(h.shpamt),0) FROM armbil h WHERE h.rkd='RQ11' AND h.facno='${facno}'");
         if (n_code_DA != null && !"".equals(n_code_DA)) {
@@ -141,8 +141,6 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (n_code_CD != null && !"".equals(n_code_CD)) {
             sb.append(" and address3 ").append(n_code_CD);
-        }else{
-            sb.append(" and address3 ").append(" not in ('00','02','ZZ')");
         }
         //收费服务金额
         sb.append(" and address5 ='Y'");

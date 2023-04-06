@@ -143,10 +143,8 @@ public abstract class ShipmentAmount extends Shipment {
         }
         if (n_code_CD != null && !"".equals(n_code_CD)) {
             sb.append(" and address3 ").append(n_code_CD);
-        } else {
-            sb.append(" and address3 ").append(" <>'ZZ'");
         }
-        //收费服务金额
+        //非收费服务金额
         sb.append(" and address5 ='N'");
         sb.append(" AND year(h.bildat) = ${y} AND month(h.bildat)= ${m} ");
         switch (type) {
