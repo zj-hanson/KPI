@@ -94,9 +94,6 @@ public abstract class ShipmentAmount9 extends Shipment {
         }
         if (!"".equals(n_code_DD)) {
             sb.append(" AND h.n_code_DD ").append(n_code_DD);
-        }
-        if (!"".equals(n_code_DD)) {
-            sb.append(" AND h.n_code_DD ").append(n_code_DD);
         } else {
             sb.append(" AND h.n_code_DD ").append(" not in ('00','02','ZZ')");
         }
