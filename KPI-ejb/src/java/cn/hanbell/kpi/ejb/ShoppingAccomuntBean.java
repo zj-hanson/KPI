@@ -47,7 +47,7 @@ public class ShoppingAccomuntBean implements Serializable {
         this.dfpercent = new DecimalFormat("0.00％");
     }
     //上海汉钟
-    public static final String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3133/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716/3C02";
+    public static final String SHB_ITCLS_ZHUJIA = "1014/1016/1102/1202/1401/1402/1802/2013/2015/2102/2202/2402/2802/3202/3233/3401/3402/3433/3802/3833/9014/9017/1C02/3C33/3733/2012/3102/3716/3C02";
     public static final String SHB_ITCLS_DIANJI = "3703/3104/9019/RDJF/4504/3504";//电机
     public static final String SHB_ITCLS_ZHOUCHENG = "4009/4018/3235";
     public static final String SHB_ITCLS_YOUPING = "5061/5062";
@@ -56,7 +56,7 @@ public class ShoppingAccomuntBean implements Serializable {
     public static final String SHB_ITCLS_DAOJU = "BS1/B001/C002";//刀具
     public static final String SHB_ITCLS_CHENGDIAN = "3133/3231/3233/3433/3533/4049";
     public static final String SHB_FACT_JIEXIANGAIBAN = "3139/3239/3131";
-    public static final String SHB_FACT_JIEXIANGHE = "3231/3133";
+    public static final String SHB_FACT_JIEXIANGHE = "3231";
     public static final String SHB_ITCLS_MOJU = "B005";
     public static final String SHB_ITCLS_CHILUN = "3406/3806/3E06";
     public static final String SHB_ITCLS_LVCAI = "3140/3240";
