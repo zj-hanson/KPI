@@ -35,6 +35,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
 
     @Override
     public BigDecimal getValue(int y, int m, Date d, int type, LinkedHashMap<String, Object> map) {
+         BigDecimal value = BigDecimal.ZERO;
         try {
             String facno = map.get("facno") != null ? map.get("facno").toString() : "";
             String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
@@ -42,8 +43,6 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
             String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
             String id = map.get("id") != null ? map.get("id").toString() : "";
-
-            BigDecimal value = BigDecimal.ZERO;
 
             StringBuilder sb = new StringBuilder();
             sb.append(" select sum(a.totshpqy)");
@@ -229,7 +228,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         } catch (Exception e) {
             Logger.getLogger(Shipment.class.getName()).log(Level.SEVERE, null, e);
         }
-        return BigDecimal.ZERO;
+        return value;
     }
 
     @Override
