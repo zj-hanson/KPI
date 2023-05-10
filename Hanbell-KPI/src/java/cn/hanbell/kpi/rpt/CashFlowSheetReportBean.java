@@ -126,7 +126,7 @@ public class CashFlowSheetReportBean extends BscQueryTableManageBean implements 
     }
 
     public String format(String value) {
-        if ("0".equals(value) || "0％".equals(value)) {
+        if ("0.00".equals(value) || "0％".equals(value)) {
             return "-";
         }
         if(value.matches("^(-?\\d+)(\\.\\d+)?$")){
