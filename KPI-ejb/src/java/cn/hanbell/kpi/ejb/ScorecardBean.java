@@ -12,6 +12,7 @@ import cn.hanbell.kpi.entity.ScorecardContent;
 import cn.hanbell.kpi.entity.ScorecardDetail;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -41,9 +42,11 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
         super(Scorecard.class);
     }
 
-    public List<Scorecard> findByMenuAndYear(String value, int y) {
-        Query query = getEntityManager().createNamedQuery("Scorecard.findByMenuAndYear");
+    public List<Scorecard> findByCompanyAndMenuAndIsBscAndYear(String company, String value, boolean isbsc, int y) {
+        Query query = getEntityManager().createNamedQuery("Scorecard.findByCompanyAndMenuAndYear");
+        query.setParameter("company", company);
         query.setParameter("menu", value);
+        query.setParameter("isbsc", true);
         query.setParameter("seq", y);
         try {
             return query.getResultList();
@@ -361,25 +364,25 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
             }
             switch (n) {
                 case "q1":
-                    d.getGeneralScore().setSq1(score);
+                    d.getGeneralScore().setSq1(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "q2":
-                    d.getGeneralScore().setSq2(score);
+                    d.getGeneralScore().setSq2(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "h1":
-                    d.getGeneralScore().setSh1(score);
+                    d.getGeneralScore().setSh1(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "q3":
-                    d.getGeneralScore().setSq3(score);
+                    d.getGeneralScore().setSq3(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "q4":
-                    d.getGeneralScore().setSq4(score);
+                    d.getGeneralScore().setSq4(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "h2":
-                    d.getGeneralScore().setSh2(score);
+                    d.getGeneralScore().setSh2(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 case "fy":
-                    d.getGeneralScore().setSfy(score);
+                    d.getGeneralScore().setSfy(score.setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 default:
             }

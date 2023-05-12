@@ -646,5 +646,10 @@
             <to-view-id>/app/df/scorecardDetailSelect.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+              <navigation-case>
+            <from-outcome>policySelect</from-outcome>
+            <to-view-id>/app/df/policySelect.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 </faces-config>
