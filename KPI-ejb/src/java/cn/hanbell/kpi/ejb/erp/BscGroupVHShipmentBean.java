@@ -63,6 +63,20 @@ public class BscGroupVHShipmentBean implements Serializable {
             }
         }
         queryParams.remove("hmark1");
+        queryParams.put("hmark1", " ='O' ");
+        tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
+        if (tempData != null && !tempData.isEmpty()) {
+            for (BscGroupShipment b : tempData) {
+                if (resultData.contains(b)) {
+                    BscGroupShipment a = resultData.get(resultData.indexOf(b));
+                    a.setQuantity(a.getQuantity().add(b.getQuantity()));
+                    a.setAmount(a.getAmount().add(b.getAmount()));
+                } else {
+                    resultData.add(b);
+                }
+            }
+        }
+        queryParams.remove("hmark1");
         queryParams.put("hmark1", " ='DR' ");
         tempData = getShipment(y, m, d, Calendar.MONTH, getQueryParams());
         if (tempData != null && !tempData.isEmpty()) {
@@ -379,7 +393,7 @@ public class BscGroupVHShipmentBean implements Serializable {
             List shpResult = query1.getResultList();
             Date shpdate;
             String protype, protypeno, shptype;
-            if (hmark1.contains("R")|| hmark1.contains("P")|| hmark1.contains("L") || hmark1.contains("DR")) {
+            if (hmark1.contains("R") || hmark1.contains("P") || hmark1.contains("L") || hmark1.contains("DR")) {
                 protype = "越南R&P&L出货收费服务";
                 protypeno = "R";
                 shptype = "21";
