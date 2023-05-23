@@ -72,6 +72,8 @@ public class BscGroupVHShipmentBean implements Serializable {
                     a.setQuantity(a.getQuantity().add(b.getQuantity()));
                     a.setAmount(a.getAmount().add(b.getAmount()));
                 } else {
+                    //沈里达提出代理品不计算台数，实际越南打单为ZJ，故在此处调整
+                    b.setQuantity(BigDecimal.ZERO);
                     resultData.add(b);
                 }
             }
