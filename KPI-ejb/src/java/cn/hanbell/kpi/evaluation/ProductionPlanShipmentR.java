@@ -46,7 +46,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             sb.append("  from (");
             //上海汉钟
             sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
-            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
+            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' and d.issevdta='N'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -77,7 +77,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             sb.append(" union all ");
             //重庆ERP
             sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from cqerp.dbo.cdrhad h, cqerp.dbo.cdrdta d ");
-            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='C4' ");
+            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='C4' and d.issevdta='N'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -107,7 +107,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             sb.append(" union all ");
             //广州ERP
             sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from gzerp.dbo.cdrhad h, gzerp.dbo.cdrdta d ");
-            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='G' ");
+            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='G' and d.issevdta='N'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -137,7 +137,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             sb.append(" union all ");
             //济南ERP
             sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from jnerp.dbo.cdrhad h, jnerp.dbo.cdrdta d ");
-            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='J' ");
+            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='J' and d.issevdta='N'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -167,7 +167,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
             sb.append(" union all ");
             //南京ERP
             sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from njerp.dbo.cdrhad h, njerp.dbo.cdrdta d ");
-            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='N' ");
+            sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='N' and d.issevdta='N'");
             sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
             if (!"".equals(n_code_DA)) {
                 sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -244,7 +244,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         sb.append(" from (");
         //上海汉钟ERP
         sb.append(" select day(h.shpdate) as day,isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' and d.issevdta='N' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -263,7 +263,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         //重庆ERP
         sb.append("union all");
         sb.append(" select day(h.shpdate)as day,isnull(sum(d.shpqy1),0) as totshpqy from cqerp.dbo.cdrhad h, cqerp.dbo.cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='C4' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='C4' and d.issevdta='N'");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -282,7 +282,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         //广州ERP
         sb.append("union all");
         sb.append(" select day(h.shpdate)as day,isnull(sum(d.shpqy1),0) as totshpqy from gzerp.dbo.cdrhad h, gzerp.dbo.cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='G' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='G' and d.issevdta='N'");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -301,7 +301,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         //济南ERP
         sb.append("union all");
         sb.append(" select day(h.shpdate)as day,isnull(sum(d.shpqy1),0) as totshpqy from jnerp.dbo.cdrhad h, jnerp.dbo.cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='J' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='J' and d.issevdta='N'");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
@@ -320,7 +320,7 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         //南京ERP
         sb.append("union all");
         sb.append(" select day(h.shpdate)as day,isnull(sum(d.shpqy1),0) as totshpqy from njerp.dbo.cdrhad h, njerp.dbo.cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='N' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='N' and d.issevdta='N' ");
         sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029') ");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
