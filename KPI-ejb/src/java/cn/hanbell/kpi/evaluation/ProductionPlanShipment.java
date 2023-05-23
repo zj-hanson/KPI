@@ -32,6 +32,7 @@ public class ProductionPlanShipment extends Production {
         String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         String id = map.get("id") != null ? map.get("id").toString() : "";
 
         BigDecimal value = BigDecimal.ZERO;
@@ -44,6 +45,9 @@ public class ProductionPlanShipment extends Production {
         }
         if (!"".equals(n_code_DC)) {
             sb.append(" and d.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
         }
         if (!"".equals(itcls)) {
             sb.append(" and d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
@@ -99,7 +103,7 @@ public class ProductionPlanShipment extends Production {
         String itcls = map.get("itcls") != null ? map.get("itcls").toString() : "";
         String n_code_DA = map.get("n_code_DA") != null ? map.get("n_code_DA").toString() : "";
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
-
+        String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         BigDecimal value = BigDecimal.ZERO;
 
         StringBuilder sb = new StringBuilder();
@@ -110,6 +114,9 @@ public class ProductionPlanShipment extends Production {
         }
         if (!"".equals(n_code_DC)) {
             sb.append(" and d.n_code_DC ").append(n_code_DC);
+        }
+        if (!"".equals(n_code_DD)) {
+            sb.append(" and d.n_code_DD ").append(n_code_DD);
         }
         if (!"".equals(itcls)) {
             sb.append(" and d.itnbr in(select itnbr from invmas where itcls ").append(itcls).append(") ");
