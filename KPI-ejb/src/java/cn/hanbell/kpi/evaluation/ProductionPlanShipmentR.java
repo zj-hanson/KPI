@@ -28,9 +28,6 @@ public class ProductionPlanShipmentR extends ProductionPlanShipment {
         queryParams.put("facno", "C");
         queryParams.put("n_code_DA", " ='R' ");
         queryParams.put("n_code_DD", " ='00' ");
-        //#ITCLS CHANGE TODO #
-        queryParams.put("itcls", "IN('3081','3133','3134','3136','3176','3179','3180','3276','3279','3280','4046','4047','5062')");
-
     }
 
     @Override
