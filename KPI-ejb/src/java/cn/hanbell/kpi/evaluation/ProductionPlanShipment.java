@@ -34,12 +34,11 @@ public class ProductionPlanShipment extends Production {
         String n_code_DC = map.get("n_code_DC") != null ? map.get("n_code_DC").toString() : "";
         String n_code_DD = map.get("n_code_DD") != null ? map.get("n_code_DD").toString() : "";
         String id = map.get("id") != null ? map.get("id").toString() : "";
-
         BigDecimal value = BigDecimal.ZERO;
-
         StringBuilder sb = new StringBuilder();
         sb.append(" select isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' and d.issevdta='N'");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029')");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
@@ -67,7 +66,6 @@ public class ProductionPlanShipment extends Production {
         }
         String sql = sb.toString().replace("${y}", String.valueOf(y)).replace("${m}", String.valueOf(m)).replace("${d}", BaseLib.formatDate("yyyyMMdd", d))
                 .replace("${facno}", facno);
-
         superEJB.setCompany(facno);
         Query query = superEJB.getEntityManager().createNativeQuery(sql);
         try {
@@ -108,7 +106,8 @@ public class ProductionPlanShipment extends Production {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" select day(h.shpdate),isnull(sum(d.shpqy1),0) as totshpqy from cdrhad h, cdrdta d ");
-        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' ");
+        sb.append(" where  h.houtsta<>'W' and h.shpno=d.shpno and  h.facno=d.facno  and h.facno='${facno}' and d.issevdta='N'");
+        sb.append(" and h.cusno NOT IN ('SSD00107','SGD00088','SJS00254','SCQ00146','KZJ00029')");
         if (!"".equals(n_code_DA)) {
             sb.append(" and d.n_code_DA ").append(n_code_DA);
         }
