@@ -222,7 +222,11 @@ public class BscGroupVHShipmentBean implements Serializable {
                 protype = "真空泵";
                 protypeno = "P";
                 shptype = "2";
-            } else {
+            } else if (hmark1.contains("O")) {
+                protype = "代理品";
+                protypeno = "O";
+                shptype = "21";
+            }else {
                 protype = "";
                 protypeno = "";
                 shptype = "";
