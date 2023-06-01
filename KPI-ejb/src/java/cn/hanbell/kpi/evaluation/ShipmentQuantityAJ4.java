@@ -7,19 +7,19 @@ package cn.hanbell.kpi.evaluation;
 
 /**
  *
- * @author C1879
+ * @author C2082
  */
-public class SalesOrderQuantityAJ2 extends SalesOrderQuantity {
+public class ShipmentQuantityAJ4 extends ShipmentQuantity {
 
-    public SalesOrderQuantityAJ2() {
+    public ShipmentQuantityAJ4() {
         super();
+        // A机体总部外销出货台数
         queryParams.put("facno", "C");
         queryParams.put("deptno", " '1T100' ");
         // queryParams.put("decode", "2");
         queryParams.put("n_code_DA", "='AH' ");
-        queryParams.put("n_code_CD", " = 'WX' ");
+        queryParams.put("n_code_CD", " ='WXOZ' ");
         queryParams.put("n_code_DC", " NOT LIKE 'SAM%' ");
         queryParams.put("n_code_DD", " ='00' ");
     }
-
 }
