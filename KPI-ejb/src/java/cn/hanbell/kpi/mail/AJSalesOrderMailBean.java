@@ -38,10 +38,10 @@ public class AJSalesOrderMailBean extends SalesOrderMail {
         sb.append("<div class=\"tableTitle\">按机型统计 单位：万元</div>");
         sb.append(getAmountTableDomesticSale());
 
-        sb.append("<div class=\"tableTitle\">内销统计 单位：台</div>");
+        sb.append("<div class=\"tableTitle\">按区域统计 单位：台</div>");
         sb.append(getQuantityNXTable());
 
-        sb.append("<div class=\"tableTitle\">内销统计 单位：万元</div>");
+        sb.append("<div class=\"tableTitle\">按区域统计 单位：万元</div>");
         sb.append(getAmountNXTable());
 
         sb.append("<div class=\"tableTitle\">外销统计 单位：台</div>");
