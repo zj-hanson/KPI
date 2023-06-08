@@ -116,7 +116,7 @@ public class ShoppingAccomuntBean implements Serializable {
         list.add(getShbDate("HY采购中心", "Y", date, getWhereVdrnos("Y").toString(), ""));
         //计算合计指标
         Object[] o1 = new Object[]{"集团合计", BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-            BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO};
+            BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, ""};
         for (int i = 1; i <= 13; i++) {
             for (int j = 0; j < list.size(); j = j + 2) {
                 o1[i] = ((BigDecimal) o1[i]).add((BigDecimal) list.get(j)[i]);
@@ -124,7 +124,7 @@ public class ShoppingAccomuntBean implements Serializable {
         }
         list.add(o1);
         Object[] o2 = new Object[]{"采购中心合计", BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-            BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO};
+            BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,"", ""};
         for (int i = 1; i <= 13; i++) {
             for (int j = 1; j < list.size(); j = j + 2) {
                 o2[i] = ((BigDecimal) o2[i]).add((BigDecimal) list.get(j)[i]);
@@ -137,15 +137,15 @@ public class ShoppingAccomuntBean implements Serializable {
                 BigDecimal value = ((BigDecimal) list.get(j)[13]).multiply(new BigDecimal(100)).divide(((BigDecimal) list.get(list.size() - 2)[13]), 2, BigDecimal.ROUND_HALF_UP);
                 list.get(j)[14] = value.toString() + "%";
             } catch (ArithmeticException e) {
-                list.get(j)[14] = "0%";
+                list.get(j)[14] = "-";
             }
         }
         for (int j = 1; j < list.size(); j = j + 2) {
             try {
                 BigDecimal value = ((BigDecimal) list.get(j)[13]).multiply(new BigDecimal(100)).divide(((BigDecimal) list.get(j - 1)[13]), 2, BigDecimal.ROUND_HALF_UP);
-                list.get(j)[14] = value.toString() + "%";
+                list.get(j)[15] = value.toString() + "%";
             } catch (ArithmeticException e) {
-                list.get(j)[14] = "0%";
+                list.get(j)[15] = "-";
             }
         }
         return list;
@@ -153,7 +153,7 @@ public class ShoppingAccomuntBean implements Serializable {
 
     //汉声和大陆的采购金额逻辑相同
     public Object[] getShbDate(String name, String facno, Date date, String vdrnos, String itcls) {
-        Object[] row = new Object[15];
+        Object[] row = new Object[16];
         row[0] = name;
         //循环获取12个月的数据
         StringBuffer sql = new StringBuffer();
