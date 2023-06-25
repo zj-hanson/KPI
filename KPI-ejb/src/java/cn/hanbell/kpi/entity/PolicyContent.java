@@ -9,6 +9,7 @@ import com.lightshell.comm.SuperDetailEntity;
 import com.lightshell.comm.SuperEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,12 +38,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PolicyDetail.findAll", query = "SELECT p FROM PolicyDetail p"),
     @NamedQuery(name = "PolicyDetail.findById", query = "SELECT p FROM PolicyDetail p WHERE p.id = :id"),
-    @NamedQuery(name = "PolicyDetail.findByPId", query = "SELECT p FROM PolicyDetail p WHERE p.pid = :pid order by p.seq"),
+    @NamedQuery(name = "PolicyDetail.findByPid", query = "SELECT p FROM PolicyDetail p WHERE p.pid = :pid"),
     @NamedQuery(name = "PolicyDetail.findBySeq", query = "SELECT p FROM PolicyDetail p WHERE p.seq = :seq"),
     @NamedQuery(name = "PolicyDetail.findByName", query = "SELECT p FROM PolicyDetail p WHERE p.name = :name"),
+    @NamedQuery(name = "PolicyDetail.findBySeqname", query = "SELECT p FROM PolicyDetail p WHERE p.seqname = :seqname"),
     @NamedQuery(name = "PolicyDetail.findByPerspective", query = "SELECT p FROM PolicyDetail p WHERE p.perspective = :perspective"),
     @NamedQuery(name = "PolicyDetail.findByObjective", query = "SELECT p FROM PolicyDetail p WHERE p.objective = :objective"),
     @NamedQuery(name = "PolicyDetail.findByType", query = "SELECT p FROM PolicyDetail p WHERE p.type = :type"),
+    @NamedQuery(name = "PolicyDetail.findByGenre", query = "SELECT p FROM PolicyDetail p WHERE p.genre = :genre"),
     @NamedQuery(name = "PolicyDetail.findByBq1", query = "SELECT p FROM PolicyDetail p WHERE p.bq1 = :bq1"),
     @NamedQuery(name = "PolicyDetail.findByBq2", query = "SELECT p FROM PolicyDetail p WHERE p.bq2 = :bq2"),
     @NamedQuery(name = "PolicyDetail.findByBq3", query = "SELECT p FROM PolicyDetail p WHERE p.bq3 = :bq3"),
@@ -69,55 +74,38 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PolicyDetail.findByCalculationtype", query = "SELECT p FROM PolicyDetail p WHERE p.calculationtype = :calculationtype"),
     @NamedQuery(name = "PolicyDetail.findByPerformancecalculation", query = "SELECT p FROM PolicyDetail p WHERE p.performancecalculation = :performancecalculation"),
     @NamedQuery(name = "PolicyDetail.findByFromkpi", query = "SELECT p FROM PolicyDetail p WHERE p.fromkpi = :fromkpi"),
+    @NamedQuery(name = "PolicyDetail.findByFromkpiname", query = "SELECT p FROM PolicyDetail p WHERE p.fromkpiname = :fromkpiname"),
+    @NamedQuery(name = "PolicyDetail.findByIndicatorrate", query = "SELECT p FROM PolicyDetail p WHERE p.indicatorrate = :indicatorrate"),
     @NamedQuery(name = "PolicyDetail.findByFromplm", query = "SELECT p FROM PolicyDetail p WHERE p.fromplm = :fromplm"),
-    @NamedQuery(name = "PolicyDetail.findByQ1action", query = "SELECT p FROM PolicyDetail p WHERE p.q1action = :q1action"),
-    @NamedQuery(name = "PolicyDetail.findByQ1reason1", query = "SELECT p FROM PolicyDetail p WHERE p.q1reason1 = :q1reason1"),
-    @NamedQuery(name = "PolicyDetail.findByQ1countermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.q1countermeasure1 = :q1countermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByQ1reason2", query = "SELECT p FROM PolicyDetail p WHERE p.q1reason2 = :q1reason2"),
-    @NamedQuery(name = "PolicyDetail.findByQ1countermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.q1countermeasure2 = :q1countermeasure2"),
-    @NamedQuery(name = "PolicyDetail.findByQ2action", query = "SELECT p FROM PolicyDetail p WHERE p.q2action = :q2action"),
-    @NamedQuery(name = "PolicyDetail.findByQ2reason1", query = "SELECT p FROM PolicyDetail p WHERE p.q2reason1 = :q2reason1"),
-    @NamedQuery(name = "PolicyDetail.findByQ2countermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.q2countermeasure1 = :q2countermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByQ2reason2", query = "SELECT p FROM PolicyDetail p WHERE p.q2reason2 = :q2reason2"),
-    @NamedQuery(name = "PolicyDetail.findByQ2countermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.q2countermeasure2 = :q2countermeasure2"),
-    @NamedQuery(name = "PolicyDetail.findByQ3action", query = "SELECT p FROM PolicyDetail p WHERE p.q3action = :q3action"),
-    @NamedQuery(name = "PolicyDetail.findByQ3reason1", query = "SELECT p FROM PolicyDetail p WHERE p.q3reason1 = :q3reason1"),
-    @NamedQuery(name = "PolicyDetail.findByQ3countermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.q3countermeasure1 = :q3countermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByQ3reason2", query = "SELECT p FROM PolicyDetail p WHERE p.q3reason2 = :q3reason2"),
-    @NamedQuery(name = "PolicyDetail.findByQ3countermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.q3countermeasure2 = :q3countermeasure2"),
-    @NamedQuery(name = "PolicyDetail.findByQ4action", query = "SELECT p FROM PolicyDetail p WHERE p.q4action = :q4action"),
-    @NamedQuery(name = "PolicyDetail.findByQ4reason1", query = "SELECT p FROM PolicyDetail p WHERE p.q4reason1 = :q4reason1"),
-    @NamedQuery(name = "PolicyDetail.findByQ4countermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.q4countermeasure1 = :q4countermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByQ4reason2", query = "SELECT p FROM PolicyDetail p WHERE p.q4reason2 = :q4reason2"),
-    @NamedQuery(name = "PolicyDetail.findByQ4countermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.q4countermeasure2 = :q4countermeasure2"),
-    @NamedQuery(name = "PolicyDetail.findByHyaction", query = "SELECT p FROM PolicyDetail p WHERE p.hyaction = :hyaction"),
-    @NamedQuery(name = "PolicyDetail.findByHyreason1", query = "SELECT p FROM PolicyDetail p WHERE p.hyreason1 = :hyreason1"),
-    @NamedQuery(name = "PolicyDetail.findByHycountermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.hycountermeasure1 = :hycountermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByHyreason2", query = "SELECT p FROM PolicyDetail p WHERE p.hyreason2 = :hyreason2"),
-    @NamedQuery(name = "PolicyDetail.findByHycountermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.hycountermeasure2 = :hycountermeasure2"),
-    @NamedQuery(name = "PolicyDetail.findByFyaction", query = "SELECT p FROM PolicyDetail p WHERE p.fyaction = :fyaction"),
-    @NamedQuery(name = "PolicyDetail.findByFyreason1", query = "SELECT p FROM PolicyDetail p WHERE p.fyreason1 = :fyreason1"),
-    @NamedQuery(name = "PolicyDetail.findByFycountermeasure1", query = "SELECT p FROM PolicyDetail p WHERE p.fycountermeasure1 = :fycountermeasure1"),
-    @NamedQuery(name = "PolicyDetail.findByFyreason2", query = "SELECT p FROM PolicyDetail p WHERE p.fyreason2 = :fyreason2"),
-    @NamedQuery(name = "PolicyDetail.findByFycountermeasure2", query = "SELECT p FROM PolicyDetail p WHERE p.fycountermeasure2 = :fycountermeasure2")})
+    @NamedQuery(name = "PolicyDetail.findByStatus", query = "SELECT p FROM PolicyDetail p WHERE p.status = :status"),
+    @NamedQuery(name = "PolicyDetail.findByCreator", query = "SELECT p FROM PolicyDetail p WHERE p.creator = :creator"),
+    @NamedQuery(name = "PolicyDetail.findByCredate", query = "SELECT p FROM PolicyDetail p WHERE p.credate = :credate"),
+    @NamedQuery(name = "PolicyDetail.findByOptuser", query = "SELECT p FROM PolicyDetail p WHERE p.optuser = :optuser"),
+    @NamedQuery(name = "PolicyDetail.findByOptdate", query = "SELECT p FROM PolicyDetail p WHERE p.optdate = :optdate"),
+    @NamedQuery(name = "PolicyDetail.findByCfmuser", query = "SELECT p FROM PolicyDetail p WHERE p.cfmuser = :cfmuser"),
+    @NamedQuery(name = "PolicyDetail.findByCfmdate", query = "SELECT p FROM PolicyDetail p WHERE p.cfmdate = :cfmdate")})
 public class PolicyContent extends SuperEntity {
 
     @JoinColumn(name = "pid", referencedColumnName = "id", updatable = false, insertable = false)
     @ManyToOne(optional = true)
     private Policy parent;
 
+    private static final long serialVersionUID = 1L;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "pid")
-    private int pid;
+    protected int pid;
     @Basic(optional = false)
     @NotNull
     @Column(name = "seq")
-    private int seq;
-    private static final long serialVersionUID = 1L;
+    protected int seq;
     @Size(max = 50)
     @Column(name = "name")
     private String name;
+    @Size(max = 200)
+    @Column(name = "seqname")
+    private String seqname;
     @Size(max = 50)
     @Column(name = "perspective")
     private String perspective;
@@ -127,6 +115,9 @@ public class PolicyContent extends SuperEntity {
     @Size(max = 50)
     @Column(name = "type")
     private String type;
+    @Size(max = 5)
+    @Column(name = "genre")
+    private String genre;
     @Size(max = 200)
     @Column(name = "bq1")
     private String bq1;
@@ -181,24 +172,19 @@ public class PolicyContent extends SuperEntity {
     @Size(max = 200)
     @Column(name = "afy")
     private String afy;
-    @Size(max = 200)
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "pq1")
-    private String pq1;
-    @Size(max = 200)
+    private BigDecimal pq1;
     @Column(name = "pq2")
-    private String pq2;
-    @Size(max = 200)
+    private BigDecimal pq2;
     @Column(name = "pq3")
-    private String pq3;
-    @Size(max = 200)
+    private BigDecimal pq3;
     @Column(name = "pq4")
-    private String pq4;
-    @Size(max = 200)
+    private BigDecimal pq4;
     @Column(name = "phy")
-    private String phy;
-    @Size(max = 200)
+    private BigDecimal phy;
     @Column(name = "pfy")
-    private String pfy;
+    private BigDecimal pfy;
     @Size(max = 50)
     @Column(name = "unit")
     private String unit;
@@ -221,28 +207,12 @@ public class PolicyContent extends SuperEntity {
     private String fromplm;
     @Lob
     @Size(max = 2147483647)
-    @Column(name = "q1action")
-    private String q1action;
-    @Lob
-    @Size(max = 2147483647)
     @Column(name = "q1reason1")
     private String q1reason1;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "q1countermeasure1")
     private String q1countermeasure1;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q1reason2")
-    private String q1reason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q1countermeasure2")
-    private String q1countermeasure2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q2action")
-    private String q2action;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "q2reason1")
@@ -253,36 +223,12 @@ public class PolicyContent extends SuperEntity {
     private String q2countermeasure1;
     @Lob
     @Size(max = 2147483647)
-    @Column(name = "q2reason2")
-    private String q2reason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q2countermeasure2")
-    private String q2countermeasure2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q3action")
-    private String q3action;
-    @Lob
-    @Size(max = 2147483647)
     @Column(name = "q3reason1")
     private String q3reason1;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "q3countermeasure1")
     private String q3countermeasure1;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q3reason2")
-    private String q3reason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q3countermeasure2")
-    private String q3countermeasure2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q4action")
-    private String q4action;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "q4reason1")
@@ -293,32 +239,12 @@ public class PolicyContent extends SuperEntity {
     private String q4countermeasure1;
     @Lob
     @Size(max = 2147483647)
-    @Column(name = "q4reason2")
-    private String q4reason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "q4countermeasure2")
-    private String q4countermeasure2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "hyaction")
-    private String hyaction;
-    @Lob
-    @Size(max = 2147483647)
     @Column(name = "hyreason1")
     private String hyreason1;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "hycountermeasure1")
     private String hycountermeasure1;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "hyreason2")
-    private String hyreason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "hycountermeasure2")
-    private String hycountermeasure2;
     @Lob
     @Size(max = 2147483647)
     @Column(name = "fyaction")
@@ -331,28 +257,12 @@ public class PolicyContent extends SuperEntity {
     @Size(max = 2147483647)
     @Column(name = "fycountermeasure1")
     private String fycountermeasure1;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "fyreason2")
-    private String fyreason2;
-    @Lob
-    @Size(max = 2147483647)
-    @Column(name = "fycountermeasure2")
-    private String fycountermeasure2;
 
     public PolicyContent() {
     }
 
     public PolicyContent(Integer id) {
         this.id = id;
-    }
-
-    public Policy getParent() {
-        return parent;
-    }
-
-    public void setParent(Policy parent) {
-        this.parent = parent;
     }
 
     public PolicyContent(Integer id, int seq) {
@@ -384,6 +294,14 @@ public class PolicyContent extends SuperEntity {
         this.name = name;
     }
 
+    public String getSeqname() {
+        return seqname;
+    }
+
+    public void setSeqname(String seqname) {
+        this.seqname = seqname;
+    }
+
     public String getPerspective() {
         return perspective;
     }
@@ -406,6 +324,14 @@ public class PolicyContent extends SuperEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getBq1() {
@@ -552,51 +478,51 @@ public class PolicyContent extends SuperEntity {
         this.afy = afy;
     }
 
-    public String getPq1() {
+    public BigDecimal getPq1() {
         return pq1;
     }
 
-    public void setPq1(String pq1) {
+    public void setPq1(BigDecimal pq1) {
         this.pq1 = pq1;
     }
 
-    public String getPq2() {
+    public BigDecimal getPq2() {
         return pq2;
     }
 
-    public void setPq2(String pq2) {
+    public void setPq2(BigDecimal pq2) {
         this.pq2 = pq2;
     }
 
-    public String getPq3() {
+    public BigDecimal getPq3() {
         return pq3;
     }
 
-    public void setPq3(String pq3) {
+    public void setPq3(BigDecimal pq3) {
         this.pq3 = pq3;
     }
 
-    public String getPq4() {
+    public BigDecimal getPq4() {
         return pq4;
     }
 
-    public void setPq4(String pq4) {
+    public void setPq4(BigDecimal pq4) {
         this.pq4 = pq4;
     }
 
-    public String getPhy() {
+    public BigDecimal getPhy() {
         return phy;
     }
 
-    public void setPhy(String phy) {
+    public void setPhy(BigDecimal phy) {
         this.phy = phy;
     }
 
-    public String getPfy() {
+    public BigDecimal getPfy() {
         return pfy;
     }
 
-    public void setPfy(String pfy) {
+    public void setPfy(BigDecimal pfy) {
         this.pfy = pfy;
     }
 
@@ -656,14 +582,6 @@ public class PolicyContent extends SuperEntity {
         this.fromplm = fromplm;
     }
 
-    public String getQ1action() {
-        return q1action;
-    }
-
-    public void setQ1action(String q1action) {
-        this.q1action = q1action;
-    }
-
     public String getQ1reason1() {
         return q1reason1;
     }
@@ -678,30 +596,6 @@ public class PolicyContent extends SuperEntity {
 
     public void setQ1countermeasure1(String q1countermeasure1) {
         this.q1countermeasure1 = q1countermeasure1;
-    }
-
-    public String getQ1reason2() {
-        return q1reason2;
-    }
-
-    public void setQ1reason2(String q1reason2) {
-        this.q1reason2 = q1reason2;
-    }
-
-    public String getQ1countermeasure2() {
-        return q1countermeasure2;
-    }
-
-    public void setQ1countermeasure2(String q1countermeasure2) {
-        this.q1countermeasure2 = q1countermeasure2;
-    }
-
-    public String getQ2action() {
-        return q2action;
-    }
-
-    public void setQ2action(String q2action) {
-        this.q2action = q2action;
     }
 
     public String getQ2reason1() {
@@ -720,30 +614,6 @@ public class PolicyContent extends SuperEntity {
         this.q2countermeasure1 = q2countermeasure1;
     }
 
-    public String getQ2reason2() {
-        return q2reason2;
-    }
-
-    public void setQ2reason2(String q2reason2) {
-        this.q2reason2 = q2reason2;
-    }
-
-    public String getQ2countermeasure2() {
-        return q2countermeasure2;
-    }
-
-    public void setQ2countermeasure2(String q2countermeasure2) {
-        this.q2countermeasure2 = q2countermeasure2;
-    }
-
-    public String getQ3action() {
-        return q3action;
-    }
-
-    public void setQ3action(String q3action) {
-        this.q3action = q3action;
-    }
-
     public String getQ3reason1() {
         return q3reason1;
     }
@@ -758,30 +628,6 @@ public class PolicyContent extends SuperEntity {
 
     public void setQ3countermeasure1(String q3countermeasure1) {
         this.q3countermeasure1 = q3countermeasure1;
-    }
-
-    public String getQ3reason2() {
-        return q3reason2;
-    }
-
-    public void setQ3reason2(String q3reason2) {
-        this.q3reason2 = q3reason2;
-    }
-
-    public String getQ3countermeasure2() {
-        return q3countermeasure2;
-    }
-
-    public void setQ3countermeasure2(String q3countermeasure2) {
-        this.q3countermeasure2 = q3countermeasure2;
-    }
-
-    public String getQ4action() {
-        return q4action;
-    }
-
-    public void setQ4action(String q4action) {
-        this.q4action = q4action;
     }
 
     public String getQ4reason1() {
@@ -800,30 +646,6 @@ public class PolicyContent extends SuperEntity {
         this.q4countermeasure1 = q4countermeasure1;
     }
 
-    public String getQ4reason2() {
-        return q4reason2;
-    }
-
-    public void setQ4reason2(String q4reason2) {
-        this.q4reason2 = q4reason2;
-    }
-
-    public String getQ4countermeasure2() {
-        return q4countermeasure2;
-    }
-
-    public void setQ4countermeasure2(String q4countermeasure2) {
-        this.q4countermeasure2 = q4countermeasure2;
-    }
-
-    public String getHyaction() {
-        return hyaction;
-    }
-
-    public void setHyaction(String hyaction) {
-        this.hyaction = hyaction;
-    }
-
     public String getHyreason1() {
         return hyreason1;
     }
@@ -838,22 +660,6 @@ public class PolicyContent extends SuperEntity {
 
     public void setHycountermeasure1(String hycountermeasure1) {
         this.hycountermeasure1 = hycountermeasure1;
-    }
-
-    public String getHyreason2() {
-        return hyreason2;
-    }
-
-    public void setHyreason2(String hyreason2) {
-        this.hyreason2 = hyreason2;
-    }
-
-    public String getHycountermeasure2() {
-        return hycountermeasure2;
-    }
-
-    public void setHycountermeasure2(String hycountermeasure2) {
-        this.hycountermeasure2 = hycountermeasure2;
     }
 
     public String getFyaction() {
@@ -880,20 +686,60 @@ public class PolicyContent extends SuperEntity {
         this.fycountermeasure1 = fycountermeasure1;
     }
 
-    public String getFyreason2() {
-        return fyreason2;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFyreason2(String fyreason2) {
-        this.fyreason2 = fyreason2;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getFycountermeasure2() {
-        return fycountermeasure2;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setFycountermeasure2(String fycountermeasure2) {
-        this.fycountermeasure2 = fycountermeasure2;
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Date getCredate() {
+        return credate;
+    }
+
+    public void setCredate(Date credate) {
+        this.credate = credate;
+    }
+
+    public String getOptuser() {
+        return optuser;
+    }
+
+    public void setOptuser(String optuser) {
+        this.optuser = optuser;
+    }
+
+    public Date getOptdate() {
+        return optdate;
+    }
+
+    public void setOptdate(Date optdate) {
+        this.optdate = optdate;
+    }
+
+    public String getCfmuser() {
+        return cfmuser;
+    }
+
+    public void setCfmuser(String cfmuser) {
+        this.cfmuser = cfmuser;
+    }
+
+    public Date getCfmdate() {
+        return cfmdate;
+    }
+
+    public void setCfmdate(Date cfmdate) {
+        this.cfmdate = cfmdate;
     }
 
     @Override
@@ -906,11 +752,11 @@ public class PolicyContent extends SuperEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PolicyDetail)) {
+        if (!(object instanceof PolicyContent)) {
             return false;
         }
-        PolicyDetail other = (PolicyDetail) object;
-        if ((this.id == null && other.getId() != null) || (this.id != null && !this.id.equals(other.getId()))) {
+        PolicyContent other = (PolicyContent) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;

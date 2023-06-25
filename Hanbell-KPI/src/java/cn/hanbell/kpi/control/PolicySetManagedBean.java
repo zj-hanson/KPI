@@ -190,8 +190,8 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                         newEntity.setPo(row.getCell(1).getStringCellValue());
                         continue;
                     }
-                    System.out.println("--iii-"+i);
                     PolicyDetail p = this.getPolicyDetailByExcelRow(row);
+                    p.setGenre(faects.get(faects.size()-1));
                     seq++;
                     p.setSeq(seq);
                     addedDetailList.add(p);
@@ -303,6 +303,8 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                 case "A"://文字
                     d.setBq1(cellToVlaue(row.getCell(8)));
                     d.setTq1(cellToVlaue(row.getCell(9)));
+                    d.setAq1(cellToVlaue(row.getCell(10)));
+                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))));
                     d.setBq2(cellToVlaue(row.getCell(12)));
                     d.setTq2(cellToVlaue(row.getCell(13)));
                     d.setBhy(cellToVlaue(row.getCell(16)));
@@ -323,6 +325,11 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                     b = new BigDecimal(cellToVlaue(row.getCell(9))!= "" ? cellToVlaue(row.getCell(9)) : "0");
                     d.setTq1(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
+                    b = new BigDecimal(cellToVlaue(row.getCell(10))!= "" ? cellToVlaue(row.getCell(10)) : "0");
+                    d.setAq1(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
+                    
+                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))));
+                    
                     b = new BigDecimal(cellToVlaue(row.getCell(12))!= "" ? cellToVlaue(row.getCell(12)) : "0");
                     d.setBq2(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
@@ -354,6 +361,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                     d.setTfy(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
                     break;
             }
+            
             return d;
         } catch (java.lang.IllegalStateException e) {
             e.printStackTrace();
@@ -363,7 +371,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
             throw new NumberFormatException("第" + (row.getRowNum() + 1) + "内容转换失败，请检查。");
         }catch (Exception e) {
             e.printStackTrace();
-            throw new Exception(e.getMessage());
+            throw new Exception("第" + (row.getRowNum() + 1) + "发生错误。"+e.getMessage());
         }
     }
 

@@ -61,7 +61,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Policy.findByCfmdate", query = "SELECT p FROM Policy p WHERE p.cfmdate = :cfmdate"),
     @NamedQuery(name = "Policy.findByCompanyNameAndYear", query = "SELECT p FROM Policy p WHERE p.company = :company and p.name = :name and p.year = :year"),
  @NamedQuery(name = "Policy.findByCompanyMenuAndYear", query = "SELECT p FROM Policy p WHERE p.company = :company and p.deptno = :deptno and p.year = :year")})
-public class Policy  extends SuperEntity {
+public class Policy  extends SuperEntity implements Comparable<Policy> {
 
     private static final long serialVersionUID = 1L;
 
@@ -369,5 +369,15 @@ public class Policy  extends SuperEntity {
     public String toString() {
         return "cn.hanbell.kpi.entity.Policy[ id=" + id + " ]";
     }
-    
+ 
+
+    @Override
+    public int compareTo(Policy o) {
+         if (this.getDeptno().compareTo(o.getDeptno()) < 0) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
 }

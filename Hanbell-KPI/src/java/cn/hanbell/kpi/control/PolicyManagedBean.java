@@ -73,7 +73,6 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
         }
         init();
         super.construct();
-
     }
 
     @Override
@@ -129,23 +128,23 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                         switch (userManagedBean.getQ()) {
                             case 1:
                                 selectPolicyDetail.setAq1(i.getActualIndicator().getNq1().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPq1(i.getPerformanceIndicator().getNq1().toString());
+                                selectPolicyDetail.setPq1(i.getPerformanceIndicator().getNq1());
                                 break;
                             case 2:
                                 selectPolicyDetail.setAq2(i.getActualIndicator().getNq2().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPq2(i.getPerformanceIndicator().getNq2().toString());
+                                selectPolicyDetail.setPq2(i.getPerformanceIndicator().getNq2());
                                 selectPolicyDetail.setAhy(i.getActualIndicator().getNh1().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPhy(i.getPerformanceIndicator().getNh1().toString());
+                                selectPolicyDetail.setPhy(i.getPerformanceIndicator().getNh1());
                                 break;
                             case 3:
                                 selectPolicyDetail.setAq3(i.getActualIndicator().getNq3().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPq3(i.getPerformanceIndicator().getNq3().toString());
+                                selectPolicyDetail.setPq3(i.getPerformanceIndicator().getNq3());
                                 break;
                             case 4:
                                 selectPolicyDetail.setAq4(i.getActualIndicator().getNq4().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPq4(i.getPerformanceIndicator().getNq4().toString());
+                                selectPolicyDetail.setPq4(i.getPerformanceIndicator().getNq4());
                                 selectPolicyDetail.setAfy(i.getActualIndicator().getNfy().divide(selectPolicyDetail.getIndicatorrate(), 2, BigDecimal.ROUND_HALF_UP).toString());
-                                selectPolicyDetail.setPfy(i.getPerformanceIndicator().getNfy().toString());
+                                selectPolicyDetail.setPfy(i.getPerformanceIndicator().getNfy());
                                 break;
                         }
                         showInfoMsg("Info", "更新实际值成功");
@@ -156,7 +155,6 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                 }
                 //更新PLM数据
                 if (selectPolicyDetail.getFromplm() != null && !"".equals(selectPolicyDetail.getFromplm())) {
-
                     projectSeq = projectBean.findByProjectSeq(selectPolicyDetail.getFromplm());
                     if (projectSeq == null || "".equals(projectSeq)) {
                         showErrorMsg("Error", "请确认PLM是否有进度");
@@ -172,7 +170,7 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                             target = selectPolicyDetail.getTq1();
                             actual = selectPolicyDetail.getAq1();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPq1(value.toString());
+                            selectPolicyDetail.setPq1(value);
                             break;
                         case "q2":
                             selectPolicyDetail.setAq2( projectSeq);
@@ -180,33 +178,33 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                             target = selectPolicyDetail.getTq2();
                             actual = selectPolicyDetail.getAq2();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPq2(value.toString());
+                            selectPolicyDetail.setPq2(value);
                             //上半年
                             selectPolicyDetail.setAhy(projectSeq);
                             target = selectPolicyDetail.getThy();
                             actual = selectPolicyDetail.getAhy();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPhy(value.toString());
+                            selectPolicyDetail.setPhy(value);
                             break;
                         case "q3":
                             selectPolicyDetail.setAq3(projectSeq);
                             target = selectPolicyDetail.getTq3();
                             actual = selectPolicyDetail.getAq3();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPq3(value.toString());
+                            selectPolicyDetail.setPq3(value);
                             break;
                         case "q4":
                             selectPolicyDetail.setAq4(projectSeq);
                             target = selectPolicyDetail.getTq4();
                             actual = selectPolicyDetail.getAq4();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPq4(value.toString());
+                            selectPolicyDetail.setPq4(value);
 
                             selectPolicyDetail.setAfy(projectSeq);
                             target = selectPolicyDetail.getTfy();
                             actual = selectPolicyDetail.getAfy();
                             value = calculateScore(target, actual);
-                            selectPolicyDetail.setPfy(value.toString());
+                            selectPolicyDetail.setPfy(value);
                             break;
                     }
                     return;
@@ -222,36 +220,36 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                         target = selectPolicyDetail.getTq1();
                         actual = selectPolicyDetail.getAq1();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPq1(value.toString());
+                        selectPolicyDetail.setPq1(value);
                         break;
                     case "q2":
                         //Q2
                         target = selectPolicyDetail.getTq2();
                         actual = selectPolicyDetail.getAq2();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPq2(value.toString());
+                        selectPolicyDetail.setPq2(value);
                         //上半年
                         target = selectPolicyDetail.getThy();
                         actual = selectPolicyDetail.getAhy();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPhy(value.toString());
+                        selectPolicyDetail.setPhy(value);
                         break;
                     case "q3":
                         target = selectPolicyDetail.getTq3();
                         actual = selectPolicyDetail.getAq3();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPq3(value.toString());
+                        selectPolicyDetail.setPq3(value);
                         break;
                     case "q4":
                         target = selectPolicyDetail.getTq4();
                         actual = selectPolicyDetail.getAq4();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPq4(value.toString());
+                        selectPolicyDetail.setPq4(value);
 
                         target = selectPolicyDetail.getTfy();
                         actual = selectPolicyDetail.getAfy();
                         value = calculatePerformance(target, actual);
-                        selectPolicyDetail.setPfy(value.toString());
+                        selectPolicyDetail.setPfy(value);
                         break;
                 }
 

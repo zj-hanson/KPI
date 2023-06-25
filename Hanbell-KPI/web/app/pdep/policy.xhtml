@@ -215,7 +215,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            <p:dialog id="dlgDetail" widgetVar="dlgDetail"  maximizable="true" height="720" width="80%" style="text-align: center"
+            <p:dialog id="dlgDetail" widgetVar="dlgDetail"  maximizable="true"  height="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'?450:720}" width="80%" style="text-align: center"
                       header="#{policyManagedBean.selectPolicyDetail.name}" >
                 <p:panelGrid id ="plgFillDetail1" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -256,19 +256,19 @@
                         </p:row>
                     </f:facet>
                     <p:row>
-                        <p:column><h:outputText value="Q1"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="Q1"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="tq1" value="#{policyManagedBean.selectPolicyDetail.tq1}" rows="5" styleClass="Wid100"  title="tq1" readonly="true"/>
                         </p:column>
-                        <p:column rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}">
+                        <p:column rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}" styleClass="Wid10">
                             <p:inputNumber id="bq1n" value="#{policyManagedBean.selectPolicyDetail.bq1}" styleClass="Wid100"  title="bq1" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" readonly="true"/>
                         </p:column>
-                        <p:column rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}">
+                        <p:column rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}" styleClass="Wid10">
                             <p:inputNumber id="tq1n" value="#{policyManagedBean.selectPolicyDetail.tq1}" styleClass="Wid100"  title="tq1" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" readonly="true"/>
                         </p:column>
-                        <p:column>
+                        <p:column  styleClass="Wid10">
                             <p:inputTextarea id="aq1" value="#{policyManagedBean.selectPolicyDetail.aq1}" rows="5" styleClass="Wid100"  title="aq1" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}"/>
                             <p:inputNumber id="aq1n" value="#{policyManagedBean.selectPolicyDetail.aq1}" styleClass="Wid100"  title="aq1" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}"/>
@@ -277,18 +277,19 @@
                             <p:inputNumber id="pq1" value="#{policyManagedBean.selectPolicyDetail.pq1}" title="pq1"
                                            symbol="%" symbolPosition="s" emptyValue="zero" />
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="q1reason1" value="#{policyManagedBean.selectPolicyDetail.q1reason1}" rows="5" styleClass="Wid100"  title="第一季度原因" />
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="Q1原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorQ1"  oncomplete="PF('dlgPolicyFactorQ1').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="q1countermeasure1" value="#{policyManagedBean.selectPolicyDetail.q1countermeasure1}" rows="5" styleClass="Wid100"  title="第一季度对策"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="Q1对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureQ1"  oncomplete="PF('dlgPolicyCountermeasureQ1').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
-
                     <p:row>
-                        <p:column><h:outputText value="Q2"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="Q2"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="tq2" value="#{policyManagedBean.selectPolicyDetail.tq2}" rows="5" styleClass="Wid100"  title="tq2" readonly="true"/>
                         </p:column>
@@ -300,7 +301,7 @@
                             <p:inputNumber id="tq2n" value="#{policyManagedBean.selectPolicyDetail.tq2}" styleClass="Wid100"  title="tq2" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" readonly="true"/>
                         </p:column>
-                        <p:column>
+                        <p:column styleClass="Wid5">
                             <p:inputTextarea id="aq2" value="#{policyManagedBean.selectPolicyDetail.aq2}" rows="5" styleClass="Wid100"  title="aq2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}" readonly="true"/>
                             <p:inputNumber id="aq2n" value="#{policyManagedBean.selectPolicyDetail.aq2}" styleClass="Wid100"  title="aq2" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}"/>
@@ -309,18 +310,20 @@
                             <p:inputNumber id="pq2" value="#{policyManagedBean.selectPolicyDetail.pq2}" title="pq2"
                                            symbol="%" symbolPosition="s"  emptyValue="zero" />
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="q2reason1" value="#{policyManagedBean.selectPolicyDetail.q2reason1}" rows="5" styleClass="Wid100"  title="第二季度原因" />
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="Q2原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorQ2"  oncomplete="PF('dlgPolicyFactorQ2').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="q2countermeasure1" value="#{policyManagedBean.selectPolicyDetail.q2countermeasure1}" rows="5" styleClass="Wid100"  title="第二季度对策" />
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="Q2对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureQ2"  oncomplete="PF('dlgPolicyCountermeasureQ2').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
 
                     <p:row>
-                        <p:column><h:outputText value="上半年"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="上半年"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="thy" value="#{policyManagedBean.selectPolicyDetail.thy}" rows="5" styleClass="Wid100"  title="thy" readonly="true"/>
                         </p:column>
@@ -341,17 +344,19 @@
                             <p:inputNumber id="phy" value="#{policyManagedBean.selectPolicyDetail.phy}" title="phy"
                                            symbol="%" symbolPosition="s" emptyValue="zero"/>
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="hyreason1" value="#{policyManagedBean.selectPolicyDetail.hyreason1}" rows="5" styleClass="Wid100"  title="上半年原因" />
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="上半年原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorHy"  oncomplete="PF('dlgPolicyFactorHy').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="hycountermeasure1" value="#{policyManagedBean.selectPolicyDetail.hycountermeasure1}" rows="5" styleClass="Wid100"  title="上半年对策"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="上半年对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureHy"  oncomplete="PF('dlgPolicyCountermeasureHy').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
                     <p:row>
-                        <p:column><h:outputText value="Q3"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="Q3"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="tq3" value="#{policyManagedBean.selectPolicyDetail.tq3}" rows="5" styleClass="Wid100"  title="tq3" readonly="true"/>
                         </p:column>
@@ -372,18 +377,19 @@
                             <p:inputNumber id="pq3" value="#{policyManagedBean.selectPolicyDetail.pq3}" title="pq3"
                                            symbol="%" symbolPosition="s" emptyValue="zero" />
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="q3reason1" value="#{policyManagedBean.selectPolicyDetail.q3reason1}" rows="5" styleClass="Wid100"  title="第三季度原因"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="Q3原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorQ3"  oncomplete="PF('dlgPolicyFactorQ3').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="q3countermeasure1" value="#{policyManagedBean.selectPolicyDetail.q3countermeasure1}" rows="5" styleClass="Wid100"  title="第三季度对策"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="Q3对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureQ3"  oncomplete="PF('dlgPolicyCountermeasureQ3').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
-
                     <p:row>
-                        <p:column><h:outputText value="Q4"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="Q4"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="tq4" value="#{policyManagedBean.selectPolicyDetail.tq4}" rows="5" styleClass="Wid100"  title="tq4" readonly="true"/>
                         </p:column>
@@ -404,18 +410,19 @@
                             <p:inputNumber id="pq4" value="#{policyManagedBean.selectPolicyDetail.pq4}" title="pq4"
                                            symbol="%" symbolPosition="s" emptyValue="zero"/>
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="q4reason1" value="#{policyManagedBean.selectPolicyDetail.q4reason1}" rows="5" styleClass="Wid100"  title="第四季度原因"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="Q4原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorQ4"  oncomplete="PF('dlgPolicyFactorQ4').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="q4countermeasure1" value="#{policyManagedBean.selectPolicyDetail.q4countermeasure1}" rows="5" styleClass="Wid100"  title="第四季度对策"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="Q4对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureQ4"  oncomplete="PF('dlgPolicyCountermeasureQ4').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
-
                     <p:row>
-                        <p:column><h:outputText value="全年"/></p:column>
+                        <p:column styleClass="Wid5"><h:outputText value="全年"/></p:column>
                         <p:column colspan="2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}">
                             <p:inputTextarea id="tfy" value="#{policyManagedBean.selectPolicyDetail.tfy}" rows="5" styleClass="Wid100"  title="tfy" readonly="true"/>
                         </p:column>
@@ -436,13 +443,15 @@
                             <p:inputNumber id="pfy" value="#{policyManagedBean.selectPolicyDetail.pfy}" title="pfy"
                                            symbol="%" symbolPosition="s" emptyValue="zero"/>
                         </p:column>
-                        <p:column>
-                            <!--一阶原因-->
-                            <p:inputTextarea id="fyreason1" value="#{policyManagedBean.selectPolicyDetail.fyreason1}" rows="5" styleClass="Wid100"  title="上半年原因"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}" value="全年原因" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyFactorFy"  oncomplete="PF('dlgPolicyFactorFy').show();" >
+                            </p:commandButton>
                         </p:column>
-                        <p:column>
-                            <!--一阶对策-->
-                            <p:inputTextarea id="fycountermeasure1" value="#{policyManagedBean.selectPolicyDetail.fycountermeasure1}" rows="5" styleClass="Wid100"  title="上半年对策"/>
+                        <p:column styleClass="Wid5">
+                            <p:commandButton actionListener="#{policyManagedBean.update()}"  value="全年对策" 
+                                             process="@this,formList:dlgDetail"  update="formList:dlgPolicyCountermeasureFy"  oncomplete="PF('dlgPolicyCountermeasureFy').show();" >
+                            </p:commandButton>
                         </p:column>
                     </p:row>
                     <f:facet name="footer">
@@ -454,11 +463,329 @@
                                 <p:commandButton id="btnCalcItemScore"  actionListener="#{policyManagedBean.calcItemScore()}" icon="ui-icon-sync" value="更新" style="float: right"
                                                  process="@this,formList:dlgDetail" update="formList" oncomplete="PF('dlgDetail').show();">
                                 </p:commandButton>
+                                <p:commandButton id="btnAction"  actionListener="#{policyManagedBean.update()}" icon="ui-icon-plus" value="行动" style="float: right"
+                                                 process="@this,formList:dlgDetail"  update="formList:dlgPolicySummary"  oncomplete="PF('dlgPolicySummary').show();" >
+                                </p:commandButton>
                             </p:column>
                         </p:row>
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
+            <!--行动弹窗-->
+            <p:dialog id="dlgPolicySummary" widgetVar="dlgPolicySummary" width="80%">
+                <p:panelGrid id="plgPolicySummary" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">#{policyManagedBean.selectPolicyDetail.name}行动说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.fyaction}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="updatePolicySummary"  actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicySummary" oncomplete="PF('dlgPolicySummary').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Q1原因弹窗-->
+            <p:dialog id="dlgPolicyFactorQ1" widgetVar="dlgPolicyFactorQ1" width="80%">
+                <p:panelGrid id="plgPolicyFactorQ1" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q1原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q1reason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorQ1" oncomplete="PF('dlgPolicyFactorQ1').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Q1对策弹窗-->
+            <p:dialog id="dlgPolicyCountermeasureQ1" widgetVar="dlgPolicyCountermeasureQ1" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureQ1" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q1对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q1countermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureQ1" oncomplete="PF('dlgPolicyCountermeasureQ1').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+
+               <!--Q2原因弹窗-->
+            <p:dialog id="dlgPolicyFactorQ2" widgetVar="dlgPolicyFactorQ2" width="80%">
+                <p:panelGrid id="plgPolicyFactorQ2" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q2原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q2reason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorQ2" oncomplete="PF('dlgPolicyFactorQ2').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Q2对策弹窗-->
+             <p:dialog id="dlgPolicyCountermeasureQ2" widgetVar="dlgPolicyCountermeasureQ2" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureQ2" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q2对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q2countermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureQ2" oncomplete="PF('dlgPolicyCountermeasureQ2').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            
+               <!--Hy原因弹窗-->
+            <p:dialog id="dlgPolicyFactorHy" widgetVar="dlgPolicyFactorHy" width="80%">
+                <p:panelGrid id="plgPolicyFactorHy" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">上半年原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.hyreason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorHy" oncomplete="PF('dlgPolicyFactorHy').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Hy对策弹窗-->
+             <p:dialog id="dlgPolicyCountermeasureHy" widgetVar="dlgPolicyCountermeasureHy" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureHy" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">上半年对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.hycountermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureHy" oncomplete="PF('dlgPolicyCountermeasureHy').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+               <!--Q3原因弹窗-->
+            <p:dialog id="dlgPolicyFactorQ3" widgetVar="dlgPolicyFactorQ3" width="80%">
+                <p:panelGrid id="plgPolicyFactorQ3" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q3原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q3reason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorQ3" oncomplete="PF('dlgPolicyFactorQ3').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Q3对策弹窗-->
+             <p:dialog id="dlgPolicyCountermeasureQ3" widgetVar="dlgPolicyCountermeasureQ3" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureQ3" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q3对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q3countermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureQ3" oncomplete="PF('dlgPolicyCountermeasureQ3').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+               <!--Q4原因弹窗-->
+            <p:dialog id="dlgPolicyFactorQ4" widgetVar="dlgPolicyFactorQ4" width="80%">
+                <p:panelGrid id="plgPolicyFactorQ4" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q4原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q4reason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorQ4" oncomplete="PF('dlgPolicyFactorQ4').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Q4对策弹窗-->
+             <p:dialog id="dlgPolicyCountermeasureQ4" widgetVar="dlgPolicyCountermeasureQ4" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureQ4" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Q4对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.q4countermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureQ4" oncomplete="PF('dlgPolicyCountermeasureQ4').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+               <!--Fy原因弹窗-->
+            <p:dialog id="dlgPolicyFactorFy" widgetVar="dlgPolicyFactorFy" width="80%">
+                <p:panelGrid id="plgPolicyFactorFy" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">全年原因说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.fyreason1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyFactorFy" oncomplete="PF('dlgPolicyFactorFy').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <!--Fy对策弹窗-->
+             <p:dialog id="dlgPolicyCountermeasureFy" widgetVar="dlgPolicyCountermeasureFy" width="80%">
+                <p:panelGrid id="plgPolicyCountermeasureFy" styleClass="plgDetail Wid100">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">全年对策说明</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:editor widgetVar="editorSummary" value="#{policyManagedBean.selectPolicyDetail.fycountermeasure1}" height="300"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton actionListener="#{policyManagedBean.update()}" value="保存" icon="ui-icon-save" style="float: right"
+                                                 process="@this,formList:dlgPolicyCountermeasureFy" oncomplete="PF('dlgPolicyCountermeasureFy').hide();">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            
         </h:form>
     </ui:define>
 </ui:composition>
