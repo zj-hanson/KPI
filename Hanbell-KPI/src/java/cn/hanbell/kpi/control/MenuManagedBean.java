@@ -402,6 +402,26 @@ public class MenuManagedBean implements Serializable {
                 kpimenu.addElement(menuitem);
             }
             model.addElement(kpimenu);
+
+            kpimenu = new DefaultSubMenu("方针汇报");
+            kpimenu.setIcon("menu");
+            Set<Policy> list1 = new TreeSet<Policy>((o1, o2) -> o2.compareTo(o1));
+            for (RoleGrantModule r : grantList) {
+                submenu = null;
+                System.out.println("---"+r.getDeptno());
+                policyList = policyBean.findByDepeno(r.getDeptno());
+                if (policyList != null && !policyList.isEmpty()) {
+                    list1.addAll(policyList);
+                }
+            }
+            for (Policy s : list1) {
+                menuitem = new DefaultMenuItem(s.getName());
+                menuitem.setIcon("menu");
+                menuitem.setOutcome("policysheet");
+                menuitem.setParam("id", s.getId());
+                kpimenu.addElement(menuitem);
+            }
+            model.addElement(kpimenu);
         }
     }
 
