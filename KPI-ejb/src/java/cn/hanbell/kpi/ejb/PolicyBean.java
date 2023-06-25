@@ -43,7 +43,17 @@ public class PolicyBean extends SuperEJBForKPI<Policy> {
         query.setParameter("deptno", deptno);
         query.setParameter("year", y);
         try {
-            System.out.println("deptno=="+deptno);
+            return query.getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Policy> findByDepeno(String deptno) {
+        Query query = getEntityManager().createNamedQuery("Policy.findByDeptno");
+        query.setParameter("deptno", deptno);
+        try {
             return query.getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
