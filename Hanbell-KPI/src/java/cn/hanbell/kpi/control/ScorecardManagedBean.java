@@ -132,9 +132,16 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
         if (currentEntity != null) {
             try {
                 // 如果考核指标有PLM代号的就用PLM代过来的值计算
-                if (currentEntity.getProjectSeq() != null && !currentEntity.getType().equals("N")) {
-                   showWarnMsg("Warn", "PLM指标只能读取上月底进度，不允许再次更新！！");
+                if ((this.userManagedBean.getM()== 12 || this.userManagedBean.getM() == 3 || this.userManagedBean.getM() == 6 || this.userManagedBean.getM() == 9)
+                        && currentEntity.getProjectSeq() != null && !currentEntity.getType().equals("N")) {
+                    showWarnMsg("Warn", "当前时间段不允许更新，请联系管理员！");
                     return;
+                }
+                if (currentEntity.getProjectSeq() != null) {
+                    updateScoreByPLMProject();
+                     showInfoMsg("Info", "更新部门分数成功");
+                    return ;
+//                    showWarnMsg
                 }
                 if (!currentEntity.getType().equals("N")) {
                     showWarnMsg("Warn", "数值型才能按计算公式更新");
@@ -211,6 +218,113 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
             }
         }
     }
+
+    // 关联PLM的更新
+    public void updateScoreByPLMProject() throws StringIndexOutOfBoundsException, NumberFormatException {
+        try {
+            String target, actual, projectSeq;
+            BigDecimal value;
+            String col = scorecardBean.getColumn("q", userManagedBean.getQ());
+            // 找到PLM的数据
+            projectSeq = projectBean.findByProjectSeq(currentEntity.getProjectSeq());
+            if (projectSeq == null || "".equals(projectSeq)) {
+                showErrorMsg("Error", "请确认PLM是否有进度");
+                return;
+            }
+            // 选择季度更新
+            switch (col) {
+                case "q1":
+                    currentEntity.setAq1("#" + projectSeq + "%#" + ";" + currentEntity.getAq1());
+                    target = currentEntity.getTq1();
+                    actual = currentEntity.getAq1();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq1(value);
+                    currentEntity.getDeptScore().setSq1(value);
+                    currentEntity.getGeneralScore().setSq1(value);
+                    break;
+                case "q2":
+                    currentEntity.setAq2("#" + projectSeq + "%#" + ";" + currentEntity.getAq2());
+                    //Q2
+                    target = currentEntity.getTq2();
+                    actual = currentEntity.getAq2();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq2(value);
+                    currentEntity.getDeptScore().setSq2(value);
+                    currentEntity.getGeneralScore().setSq2(value);
+                    //上半年
+                    currentEntity.setAh1("#" + projectSeq + "%#" + ";" + currentEntity.getAh1());
+                    target = currentEntity.getTh1();
+                    actual = currentEntity.getAh1();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPh1(value);
+                    currentEntity.getDeptScore().setSh1(value);
+                    currentEntity.getGeneralScore().setSh1(value);
+                    break;
+                case "q3":
+                    currentEntity.setAq3("#" + projectSeq + "%#" + ";" + currentEntity.getAq3());
+                    target = currentEntity.getTq3();
+                    actual = currentEntity.getAq3();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq3(value);
+                    currentEntity.getDeptScore().setSq3(value);
+                    currentEntity.getGeneralScore().setSq3(value);
+                    break;
+                case "q4":
+                    //Q4
+                    currentEntity.setAq4("#" + projectSeq + "%#" + ";" + currentEntity.getAq4());
+                    target = currentEntity.getTq4();
+                    actual = currentEntity.getAq4();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPq4(value);
+                    currentEntity.getDeptScore().setSq4(value);
+                    currentEntity.getGeneralScore().setSq4(value);
+                    //全年
+                    currentEntity.setAfy("#" + projectSeq + "%#" + ";" + currentEntity.getAfy());
+                    target = currentEntity.getTfy();
+                    actual = currentEntity.getAfy();
+                    value = calculateScore(target, actual);
+                    currentEntity.setPfy(value);
+                    currentEntity.getDeptScore().setSfy(value);
+                    currentEntity.getGeneralScore().setSfy(value);
+                    break;
+            }
+            scorecardContentBean.update(currentEntity);
+            showInfoMsg("Info", "更新成功！");
+        } catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
+            throw new NumberFormatException("无法解析时间，请检查！");
+        }
+    }
+
+    /**
+     * @desc 截取字符的数字计算得分、达成率
+     * @param target
+     * @param acutal
+     * @return value
+     */
+    public BigDecimal calculateScore(String target, String acutal) throws StringIndexOutOfBoundsException {
+        BigDecimal value = BigDecimal.ZERO;
+        String str1, str2;
+        // 先判断有值
+        if ((!"".equals(target) || target != null) && (!"".equals(acutal) || acutal != null)) {
+            str1 = target.substring(target.indexOf("#") + 1, target.indexOf("%"));
+            str2 = acutal.substring(acutal.indexOf("#") + 1, acutal.indexOf("%"));
+            //判断截取出来的数据是否为数字
+            if (str1.matches("[0-9]*") && str2.matches("[0-9]*")) {
+                Double t = Double.valueOf(str1);
+                Double a = Double.valueOf(str2);
+                // 分母不为零
+                if (t > 0.00001) {
+                    // 达成率、得分
+                    value = BigDecimal.valueOf(a / t * 100);
+                }
+            } else {
+                showErrorMsg("Error", "基准目标值格式不正确！！");
+                return BigDecimal.ZERO;
+            }
+        }
+        return value.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
     @Override
     protected boolean doBeforeUpdate() throws Exception {
         if (currentEntity != null) {
