@@ -244,6 +244,44 @@ public class ShoppingAccomuntBean implements Serializable {
         }
         return row;
     }
+      public Object[] getGroupSalaryDate(String name1, String name2, String facno, Date date, String vdrnos, String itcls) throws Exception {
+        Object[] row = new Object[16];
+        row[0] = name1;
+        row[1] = name2;
+        StringBuffer sql = new StringBuffer();
+        sql.append("select  CAST(right(yearmon,2) AS SIGNED),sum(acpamt) from  shoppingtable");
+        sql.append(" where yearmon like '").append(BaseLib.formatDate("yyyy", date)).append("%'");
+        sql.append(" and facno='").append(facno).append("'");
+        if ("C".equals(facno)) {
+            sql.append(" and sponr not like 'AC%'");
+        }
+       
+        if (vdrnos != null && !"".equals(vdrnos)) {
+            sql.append(" and vdrno").append(vdrnos);
+        }
+        if (itcls != null && !"".equals(itcls)) {
+            sql.append(" and itcls").append(getWhereItlcs(itcls).toString());
+        }
+        sql.append(" group by yearmon;");
+        Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
+        BigDecimal sum = BigDecimal.ZERO;
+        try {
+            List<Object[]> data = query.getResultList();
+            for (int i = 1; i <= 12; i++) {
+                if (i <= data.size()) {
+
+                    row[i + 1] = (java.math.BigDecimal) data.get(i - 1)[1];
+                } else {
+                    row[i + 1] = new BigDecimal(0.0);
+                }
+                sum = sum.add((java.math.BigDecimal) row[i + 1]);
+            }
+            row[14] = sum;
+        } catch (Exception e) {
+            throw e;
+        }
+        return row;
+    }
 
     public StringBuffer getWhereItlcs(String itcls) {
         StringBuffer sql = new StringBuffer("");
