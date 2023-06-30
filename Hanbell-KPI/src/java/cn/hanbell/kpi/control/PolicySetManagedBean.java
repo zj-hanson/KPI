@@ -163,7 +163,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                 List<String> faects = new ArrayList<String>();
                 addedDetailList.clear();
                 int seq = 0;
-                for (int i = 6; i < rowNumbers; i++) {
+                for (int i = 6; i <=rowNumbers; i++) {
                     row = sheet.getRow(i);
                     String perspective = row.getCell(0).getStringCellValue();
                     if (perspective.startsWith("C") && !faects.contains("C")) {
@@ -191,7 +191,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                         continue;
                     }
                     PolicyDetail p = this.getPolicyDetailByExcelRow(row);
-                    p.setGenre(faects.get(faects.size()-1));
+                    p.setGenre(faects.get(faects.size() - 1));
                     seq++;
                     p.setSeq(seq);
                     addedDetailList.add(p);
@@ -304,7 +304,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                     d.setBq1(cellToVlaue(row.getCell(8)));
                     d.setTq1(cellToVlaue(row.getCell(9)));
                     d.setAq1(cellToVlaue(row.getCell(10)));
-                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))));
+                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))).multiply(BigDecimal.valueOf(100)));
                     d.setBq2(cellToVlaue(row.getCell(12)));
                     d.setTq2(cellToVlaue(row.getCell(13)));
                     d.setBhy(cellToVlaue(row.getCell(16)));
@@ -319,49 +319,49 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
                 case "B"://数字
                     BigDecimal b;
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(8))!= "" ? cellToVlaue(row.getCell(8)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(8)) != "" ? cellToVlaue(row.getCell(8)) : "0");
                     d.setBq1(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(9))!= "" ? cellToVlaue(row.getCell(9)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(9)) != "" ? cellToVlaue(row.getCell(9)) : "0");
                     d.setTq1(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(10))!= "" ? cellToVlaue(row.getCell(10)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(10)) != "" ? cellToVlaue(row.getCell(10)) : "0");
                     d.setAq1(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
-                    
-                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))));
-                    
-                    b = new BigDecimal(cellToVlaue(row.getCell(12))!= "" ? cellToVlaue(row.getCell(12)) : "0");
+
+                    d.setPq1(new BigDecimal(cellToVlaue(row.getCell(11))).multiply(BigDecimal.valueOf(100)));
+
+                    b = new BigDecimal(cellToVlaue(row.getCell(12)) != "" ? cellToVlaue(row.getCell(12)) : "0");
                     d.setBq2(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(13))!= "" ? cellToVlaue(row.getCell(13)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(13)) != "" ? cellToVlaue(row.getCell(13)) : "0");
                     d.setTq2(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(16))!= "" ? cellToVlaue(row.getCell(16)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(16)) != "" ? cellToVlaue(row.getCell(16)) : "0");
                     d.setBhy(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(17))!= "" ? cellToVlaue(row.getCell(17)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(17)) != "" ? cellToVlaue(row.getCell(17)) : "0");
                     d.setThy(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(20))!= "" ? cellToVlaue(row.getCell(20)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(20)) != "" ? cellToVlaue(row.getCell(20)) : "0");
                     d.setBq3(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(21))!= "" ? cellToVlaue(row.getCell(21)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(21)) != "" ? cellToVlaue(row.getCell(21)) : "0");
                     d.setTq3(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(24))!= "" ? cellToVlaue(row.getCell(24)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(24)) != "" ? cellToVlaue(row.getCell(24)) : "0");
                     d.setBq4(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(25))!= "" ? cellToVlaue(row.getCell(25)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(25)) != "" ? cellToVlaue(row.getCell(25)) : "0");
                     d.setTq4(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(28))!= "" ? cellToVlaue(row.getCell(28)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(28)) != "" ? cellToVlaue(row.getCell(28)) : "0");
                     d.setBfy(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 
-                    b = new BigDecimal(cellToVlaue(row.getCell(29))!= "" ? cellToVlaue(row.getCell(29)) : "0");
+                    b = new BigDecimal(cellToVlaue(row.getCell(29)) != "" ? cellToVlaue(row.getCell(29)) : "0");
                     d.setTfy(b.setScale(3, BigDecimal.ROUND_HALF_UP).toString());
                     break;
             }
-            
+
             return d;
         } catch (java.lang.IllegalStateException e) {
             e.printStackTrace();
@@ -369,9 +369,9 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
         } catch (NumberFormatException e) {
             e.printStackTrace();
             throw new NumberFormatException("第" + (row.getRowNum() + 1) + "内容转换失败，请检查。");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("第" + (row.getRowNum() + 1) + "发生错误。"+e.getMessage());
+            throw new Exception("第" + (row.getRowNum() + 1) + "发生错误。" + e.getMessage());
         }
     }
 
@@ -391,7 +391,7 @@ public class PolicySetManagedBean extends SuperMultiBean<Policy, PolicyDetail> {
             case 1:
                 return cell.getStringCellValue();
             case 2:
-               throw new Exception("存在公式，请调整");
+                throw new Exception("存在公式，请调整");
             case 3:
                 return "";
             case 4:

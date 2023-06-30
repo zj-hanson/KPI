@@ -139,9 +139,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 }
                 if (currentEntity.getProjectSeq() != null) {
                     updateScoreByPLMProject();
-                     showInfoMsg("Info", "更新部门分数成功");
                     return ;
-//                    showWarnMsg
                 }
                 if (!currentEntity.getType().equals("N")) {
                     showWarnMsg("Warn", "数值型才能按计算公式更新");
