@@ -331,14 +331,14 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
     public void handleFileUploadWhenNew(FileUploadEvent event) {
         UploadedFile file = event.getFile();
         if (file != null) {
-            int index=0;
+            int index = 0;
             try {
                 InputStream is = file.getInputstream();
                 Workbook excel = WorkbookFactory.create(is);
                 Sheet sheet = excel.getSheetAt(0);
                 Row row;
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                    index=i;
+                    index = i;
                     row = sheet.getRow(i);
                     PolicyContent pc = this.policyContentBean.findByPidAndSeq(this.policy.getId(), (int) Math.round(BaseLib.convertExcelCell(Double.class, row.getCell(0))));
                     if (pc != null) {
@@ -349,11 +349,11 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                             case 1:
                                 pc.setAq1(BaseLib.convertExcelCell(String.class, row.getCell(5)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                    BigDecimal target= pc.getTq1()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getTq1());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
-                                    pc.setPq1(this.policyContentBean.getPerformance(pc.getPerformancecalculation(),  target,actual));
+                                    BigDecimal target = pc.getTq1() == null ? BigDecimal.ZERO : new BigDecimal(pc.getTq1());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(5)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
+                                    pc.setPq1(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPq1(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6))*100));
+                                    pc.setPq1(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
                                 }
                                 pc.setQ1reason1(BaseLib.convertExcelCell(String.class, row.getCell(7)));
                                 pc.setQ1countermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(8)));
@@ -361,34 +361,32 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                             case 2:
                                 pc.setAq2(BaseLib.convertExcelCell(String.class, row.getCell(5)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                    BigDecimal target= pc.getTq2()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getTq2());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
+                                    BigDecimal target = pc.getTq2() == null ? BigDecimal.ZERO : new BigDecimal(pc.getTq2());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(5)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
                                     pc.setPq2(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPq2(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6))*100));
+                                    pc.setPq2(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
                                 }
-                                pc.setQ2reason1(BaseLib.convertExcelCell(String.class, row.getCell(7)));
-                                pc.setQ2countermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(8)));
 
-                                pc.setAhy(BaseLib.convertExcelCell(String.class, row.getCell(11)));
+                                pc.setAhy(BaseLib.convertExcelCell(String.class, row.getCell(9)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                    BigDecimal target= pc.getThy()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getThy());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(11)));
-                                    pc.setPhy(this.policyContentBean.getPerformance(pc.getPerformancecalculation(),target, actual));
+                                    BigDecimal target = pc.getThy() == null ? BigDecimal.ZERO : new BigDecimal(pc.getThy());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(9)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(9)));
+                                    pc.setPhy(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPhy(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(12))*100));
+                                    pc.setPhy(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(10)) * 100));
                                 }
-                                pc.setHyreason1(BaseLib.convertExcelCell(String.class, row.getCell(13)));
-                                pc.setHycountermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(14)));
+                                pc.setHyreason1(BaseLib.convertExcelCell(String.class, row.getCell(11)));
+                                pc.setHycountermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(12)));
                                 break;
                             case 3:
                                 pc.setAq3(BaseLib.convertExcelCell(String.class, row.getCell(5)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                    BigDecimal target= pc.getTq3()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getTq3());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
-                                    pc.setPq3(this.policyContentBean.getPerformance(pc.getPerformancecalculation(),target, actual));
+                                    BigDecimal target = pc.getTq3() == null ? BigDecimal.ZERO : new BigDecimal(pc.getTq3());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(5)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
+                                    pc.setPq3(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPq3(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6))*100));
+                                    pc.setPq3(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
                                 }
                                 pc.setQ3reason1(BaseLib.convertExcelCell(String.class, row.getCell(7)));
                                 pc.setQ3countermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(8)));
@@ -396,25 +394,22 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                             case 4:
                                 pc.setAq4(BaseLib.convertExcelCell(String.class, row.getCell(5)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                   BigDecimal target= pc.getTq4()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getTq4());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
+                                    BigDecimal target = pc.getTq4() == null ? BigDecimal.ZERO : new BigDecimal(pc.getTq4());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(5)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
                                     pc.setPq4(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPq4(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6))*100));
+                                    pc.setPq4(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
                                 }
-                                pc.setQ4reason1(BaseLib.convertExcelCell(String.class, row.getCell(7)));
-                                pc.setQ4countermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(8)));
-
-                                pc.setAfy(BaseLib.convertExcelCell(String.class, row.getCell(11)));
+                                pc.setAfy(BaseLib.convertExcelCell(String.class, row.getCell(9)));
                                 if ("B".equals(pc.getCalculationtype())) {
-                                    BigDecimal target= pc.getTfy()==null ?BigDecimal.ZERO: new  BigDecimal( pc.getTfy());
-                                    BigDecimal actual=BaseLib.convertExcelCell(Double.class, row.getCell(5))==null? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(11)));
-                                    pc.setPfy(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target,actual));
+                                    BigDecimal target = pc.getTfy() == null ? BigDecimal.ZERO : new BigDecimal(pc.getTfy());
+                                    BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(9)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(9)));
+                                    pc.setPfy(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPfy(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(12))*100));
+                                    pc.setPfy(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(10)) * 100));
                                 }
-                                pc.setFyreason1(BaseLib.convertExcelCell(String.class, row.getCell(13)));
-                                pc.setFycountermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(14)));
+                                pc.setFyreason1(BaseLib.convertExcelCell(String.class, row.getCell(11)));
+                                pc.setFycountermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(12)));
                                 break;
                         }
                         this.policyContentBean.update(pc);
@@ -425,16 +420,11 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                 this.showInfoMsg("Info", "导入成功");
             } catch (Exception e) {
                 e.printStackTrace();
-                this.showErrorMsg("Error", String.format("第%d行数据发生错误，%s",index+1,e.getMessage()));
+                this.showErrorMsg("Error", String.format("第%d行数据发生错误，%s", index + 1, e.getMessage()));
             }
         }
-        //
     }
 
-    
-   
-
-    
     @Override
     public void print() throws Exception {
         isImport = false;
@@ -498,10 +488,10 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                     cell.setCellValue("Q1达成");
                     cell = row.createCell(7);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q1原因");
+                    cell.setCellValue("原因");
                     cell = row.createCell(8);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q1对策");
+                    cell.setCellValue("对策");
                     break;
                 case 2:
                     cell = row.createCell(3);
@@ -516,31 +506,25 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                     cell = row.createCell(6);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("Q2达成");
+
                     cell = row.createCell(7);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q2原因");
+                    cell.setCellValue("上半年基准");
                     cell = row.createCell(8);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q2对策");
-
+                    cell.setCellValue("上半年目标");
                     cell = row.createCell(9);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年基准");
+                    cell.setCellValue("上半年实际");
                     cell = row.createCell(10);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年目标");
+                    cell.setCellValue("上半年达成");
                     cell = row.createCell(11);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年实际");
+                    cell.setCellValue("原因");
                     cell = row.createCell(12);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年达成");
-                    cell = row.createCell(13);
-                    cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年原因");
-                    cell = row.createCell(14);
-                    cell.setCellStyle(cellStyle);
-                    cell.setCellValue("上半年对策");
+                    cell.setCellValue("对策");
                     break;
                 case 3:
                     cell = row.createCell(3);
@@ -557,10 +541,10 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                     cell.setCellValue("Q3达成");
                     cell = row.createCell(7);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q3原因");
+                    cell.setCellValue("原因");
                     cell = row.createCell(8);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q4对策");
+                    cell.setCellValue("对策");
                     break;
                 case 4:
                     cell = row.createCell(3);
@@ -578,28 +562,21 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
 
                     cell = row.createCell(7);
                     cell.setCellStyle(cellStyle);
-                    cell.setCellValue("Q4原因");
-                    cell.setCellStyle(cellStyle);
-                    cell = row.createCell(8);
-                    cell.setCellValue("Q4对策");
-
-                    cell = row.createCell(9);
-                    cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年基准");
-                    cell = row.createCell(10);
+                    cell = row.createCell(8);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年目标");
-                    cell = row.createCell(11);
+                    cell = row.createCell(9);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年实际");
-                    cell = row.createCell(12);
+                    cell = row.createCell(10);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年达成");
 
-                    cell = row.createCell(13);
+                    cell = row.createCell(11);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年原因");
-                    cell = row.createCell(14);
+                    cell = row.createCell(12);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue("全年对策");
                     break;
@@ -632,10 +609,10 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                         cell.setCellValue(pd.getPq1() == null ? 0.00 : pd.getPq1().divide(BigDecimal.TEN.multiply(BigDecimal.TEN), 2, BigDecimal.ROUND_HALF_UP).doubleValue());
                         cell = row.createCell(7);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getQ1reason1());
+                        cell.setCellValue(pd.getQ1reason1());
                         cell = row.createCell(8);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getQ1countermeasure1());
+                        cell.setCellValue(pd.getQ1countermeasure1());
                         break;
                     case 2:
                         cell = row.createCell(3);
@@ -650,31 +627,25 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                         cell = row.createCell(6);
                         cell.setCellStyle(percentStyle);
                         cell.setCellValue(pd.getPq2() == null ? 0.00 : pd.getPq2().divide(BigDecimal.TEN.multiply(BigDecimal.TEN), 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
                         cell = row.createCell(7);
                         cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getQ2reason1());
+                        cell.setCellValue(pd.getBhy());
                         cell = row.createCell(8);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getQ2countermeasure1());
-
+                        cell.setCellValue(pd.getThy());
                         cell = row.createCell(9);
                         cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getBhy());
-                        cell = row.createCell(10);
-                        cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getThy());
-                        cell = row.createCell(11);
-                        cell.setCellStyle(cellStyle);
                         cell.setCellValue(pd.getAhy());
-                        cell = row.createCell(12);
+                        cell = row.createCell(10);
                         cell.setCellStyle(percentStyle);
                         cell.setCellValue(pd.getPhy() == null ? 0.00 : pd.getPhy().divide(BigDecimal.TEN.multiply(BigDecimal.TEN), 2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        cell = row.createCell(13);
+                        cell = row.createCell(11);
                         cell.setCellStyle(cellStyle);
-                          cell.setCellValue(pd.getHyreason1());
-                        cell = row.createCell(14);
+                        cell.setCellValue(pd.getHyreason1());
+                        cell = row.createCell(12);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getHycountermeasure1());
+                        cell.setCellValue(pd.getHycountermeasure1());
                         break;
                     case 3:
                         cell = row.createCell(3);
@@ -709,31 +680,25 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                         cell = row.createCell(6);
                         cell.setCellStyle(percentStyle);
                         cell.setCellValue(pd.getPq4() == null ? 0.00 : pd.getPq4().divide(BigDecimal.TEN.multiply(BigDecimal.TEN), 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+
                         cell = row.createCell(7);
                         cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getQ4reason1());
+                        cell.setCellValue(pd.getBfy());
                         cell = row.createCell(8);
                         cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getQ4countermeasure1());
-                        
+                        cell.setCellValue(pd.getTfy());
                         cell = row.createCell(9);
                         cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getBfy());
-                        cell = row.createCell(10);
-                        cell.setCellStyle(cellStyle);
-                        cell.setCellValue(pd.getTfy());
-                        cell = row.createCell(11);
-                        cell.setCellStyle(cellStyle);
                         cell.setCellValue(pd.getAfy());
-                        cell = row.createCell(12);
+                        cell = row.createCell(10);
                         cell.setCellStyle(percentStyle);
                         cell.setCellValue(pd.getPfy() == null ? 0.00 : pd.getPfy().divide(BigDecimal.TEN.multiply(BigDecimal.TEN), 2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        cell = row.createCell(13);
+                        cell = row.createCell(11);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getFyreason1());
-                        cell = row.createCell(14);
+                        cell.setCellValue(pd.getFyreason1());
+                        cell = row.createCell(12);
                         cell.setCellStyle(cellStyle);
-                         cell.setCellValue(pd.getFycountermeasure1());
+                        cell.setCellValue(pd.getFycountermeasure1());
                         break;
                 }
                 i++;
