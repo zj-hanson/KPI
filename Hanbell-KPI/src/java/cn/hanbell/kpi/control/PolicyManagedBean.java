@@ -365,16 +365,15 @@ public class PolicyManagedBean extends SuperSingleBean<PolicyContent> {
                                     BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(5)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(5)));
                                     pc.setPq2(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPq2(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
+                                    pc.setPq2(BaseLib.convertExcelCell(Double.class, row.getCell(6))==null ? null :BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(6)) * 100));
                                 }
-
                                 pc.setAhy(BaseLib.convertExcelCell(String.class, row.getCell(9)));
                                 if ("B".equals(pc.getCalculationtype())) {
                                     BigDecimal target = pc.getThy() == null ? BigDecimal.ZERO : new BigDecimal(pc.getThy());
                                     BigDecimal actual = BaseLib.convertExcelCell(Double.class, row.getCell(9)) == null ? BigDecimal.ZERO : BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(9)));
                                     pc.setPhy(this.policyContentBean.getPerformance(pc.getPerformancecalculation(), target, actual));
                                 } else {
-                                    pc.setPhy(BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(10)) * 100));
+                                    pc.setPhy(BaseLib.convertExcelCell(Double.class, row.getCell(10))==null?null :BigDecimal.valueOf(BaseLib.convertExcelCell(Double.class, row.getCell(10)) * 100));
                                 }
                                 pc.setHyreason1(BaseLib.convertExcelCell(String.class, row.getCell(11)));
                                 pc.setHycountermeasure1(BaseLib.convertExcelCell(String.class, row.getCell(12)));
