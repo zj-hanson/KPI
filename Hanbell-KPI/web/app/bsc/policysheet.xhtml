@@ -34,7 +34,7 @@
                                             <h:outputText value="#{item.tfy}"/>
                                         </p:column>
                                         <p:column  styleClass="Wid10" headerText="Q1达成率">
-                                            <h:outputText value="#{item.pq1}%"/>
+                                            <h:outputText value="#{item.tq2==''and item.aq2==''?'':item.pq1}#{item.tq2==''and item.aq2==''?'':'%'}"/>
                                         </p:column>
                                         <p:column  styleClass="Wid10" headerText="Q2基准" style="#{policySheetReportBean.isRed(item.pq2)? 'color:red' : ''};white-space: pre-wrap">
                                             <h:outputText value="#{item.bq2}"/>
@@ -46,7 +46,7 @@
                                             <h:outputText value="#{item.aq2}"/>
                                         </p:column>
                                         <p:column styleClass="Wid10"  headerText="Q2达成率" style="#{policySheetReportBean.isRed(item.pq2)? 'color:red' : ''}">
-                                            <h:outputText value="#{item.pq2}%"/>
+                                            <h:outputText value="#{item.tq2==''and item.aq2==''?'':item.pq2}#{item.tq2==''and item.aq2==''?'':'%'}"/>
                                         </p:column>
                                         <p:column styleClass="Wid10" headerText="上半年基准" style="#{policySheetReportBean.isRed(item.phy)? 'color:red' : ''};white-space: pre-wrap">
                                             <h:outputText value="#{item.bhy}"/>
@@ -58,7 +58,7 @@
                                             <h:outputText value="#{item.ahy}"/>
                                         </p:column>
                                         <p:column styleClass="Wid10"  headerText="上半年达成率" style="#{policySheetReportBean.isRed(item.phy)? 'color:red' : ''}">
-                                            <h:outputText value="#{item.phy}%"/>
+                                            <h:outputText value="#{item.thy==''and item.ahy==''?'':item.phy}#{item.thy==''and item.ahy==''?'':'%'}"/>
                                         </p:column>
                                     </c:when>   
                                     <c:when test="#{policySheetReportBean.compareTo(policySheetReportBean.userManagedBean.getM(),12)==-1 and policySheetReportBean.userManagedBean.getM()!=10}">
