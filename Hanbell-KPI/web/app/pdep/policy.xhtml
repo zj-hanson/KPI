@@ -10,7 +10,7 @@
         <h:form id="formList">
             <p:growl id="growl"  showSummary="false" showDetail="true" />
             <p:toolbar id="toolbar" styleClass="topToolbar">
-                 <f:facet name="right">
+                <f:facet name="right">
                     <p:commandButton id="btnExport" value="导出" action="#{policyManagedBean.isDouble('')}" actionListener="#{policyManagedBean.print()}" icon="ui-icon-save"
                                      process="@this,plgHead" update="formList:btnImport" />
                     <p:commandButton id="btnImport" value="导入"  icon="ui-icon-plus" 
@@ -310,7 +310,7 @@
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" readonly="true"/>
                         </p:column>
                         <p:column styleClass="Wid5">
-                            <p:inputTextarea id="aq2" value="#{policyManagedBean.selectPolicyDetail.aq2}" rows="5" styleClass="Wid100"  title="aq2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}" readonly="true"/>
+                            <p:inputTextarea id="aq2" value="#{policyManagedBean.selectPolicyDetail.aq2}" rows="5" styleClass="Wid100"  title="aq2" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype!='B'}"/>
                             <p:inputNumber id="aq2n" value="#{policyManagedBean.selectPolicyDetail.aq2}" styleClass="Wid100"  title="aq2" decimalPlaces="3"
                                            symbol="#{policyManagedBean.selectPolicyDetail.unit}" symbolPosition="s" emptyValue="zero" rendered="#{policyManagedBean.selectPolicyDetail.calculationtype=='B'}"/>
                         </p:column>
@@ -552,7 +552,7 @@
                 </p:panelGrid>
             </p:dialog>
 
-               <!--Q2原因弹窗-->
+            <!--Q2原因弹窗-->
             <p:dialog id="dlgPolicyFactorQ2" widgetVar="dlgPolicyFactorQ2" width="80%">
                 <p:panelGrid id="plgPolicyFactorQ2" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -577,7 +577,7 @@
                 </p:panelGrid>
             </p:dialog>
             <!--Q2对策弹窗-->
-             <p:dialog id="dlgPolicyCountermeasureQ2" widgetVar="dlgPolicyCountermeasureQ2" width="80%">
+            <p:dialog id="dlgPolicyCountermeasureQ2" widgetVar="dlgPolicyCountermeasureQ2" width="80%">
                 <p:panelGrid id="plgPolicyCountermeasureQ2" styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -600,8 +600,8 @@
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
-            
-               <!--Hy原因弹窗-->
+
+            <!--Hy原因弹窗-->
             <p:dialog id="dlgPolicyFactorHy" widgetVar="dlgPolicyFactorHy" width="80%">
                 <p:panelGrid id="plgPolicyFactorHy" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -626,7 +626,7 @@
                 </p:panelGrid>
             </p:dialog>
             <!--Hy对策弹窗-->
-             <p:dialog id="dlgPolicyCountermeasureHy" widgetVar="dlgPolicyCountermeasureHy" width="80%">
+            <p:dialog id="dlgPolicyCountermeasureHy" widgetVar="dlgPolicyCountermeasureHy" width="80%">
                 <p:panelGrid id="plgPolicyCountermeasureHy" styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -649,7 +649,7 @@
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
-               <!--Q3原因弹窗-->
+            <!--Q3原因弹窗-->
             <p:dialog id="dlgPolicyFactorQ3" widgetVar="dlgPolicyFactorQ3" width="80%">
                 <p:panelGrid id="plgPolicyFactorQ3" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -674,7 +674,7 @@
                 </p:panelGrid>
             </p:dialog>
             <!--Q3对策弹窗-->
-             <p:dialog id="dlgPolicyCountermeasureQ3" widgetVar="dlgPolicyCountermeasureQ3" width="80%">
+            <p:dialog id="dlgPolicyCountermeasureQ3" widgetVar="dlgPolicyCountermeasureQ3" width="80%">
                 <p:panelGrid id="plgPolicyCountermeasureQ3" styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -697,7 +697,7 @@
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
-               <!--Q4原因弹窗-->
+            <!--Q4原因弹窗-->
             <p:dialog id="dlgPolicyFactorQ4" widgetVar="dlgPolicyFactorQ4" width="80%">
                 <p:panelGrid id="plgPolicyFactorQ4" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -722,7 +722,7 @@
                 </p:panelGrid>
             </p:dialog>
             <!--Q4对策弹窗-->
-             <p:dialog id="dlgPolicyCountermeasureQ4" widgetVar="dlgPolicyCountermeasureQ4" width="80%">
+            <p:dialog id="dlgPolicyCountermeasureQ4" widgetVar="dlgPolicyCountermeasureQ4" width="80%">
                 <p:panelGrid id="plgPolicyCountermeasureQ4" styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -745,7 +745,7 @@
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
-               <!--Fy原因弹窗-->
+            <!--Fy原因弹窗-->
             <p:dialog id="dlgPolicyFactorFy" widgetVar="dlgPolicyFactorFy" width="80%">
                 <p:panelGrid id="plgPolicyFactorFy" styleClass="plgDetail Wid100">
                     <f:facet name="header">
@@ -770,7 +770,7 @@
                 </p:panelGrid>
             </p:dialog>
             <!--Fy对策弹窗-->
-             <p:dialog id="dlgPolicyCountermeasureFy" widgetVar="dlgPolicyCountermeasureFy" width="80%">
+            <p:dialog id="dlgPolicyCountermeasureFy" widgetVar="dlgPolicyCountermeasureFy" width="80%">
                 <p:panelGrid id="plgPolicyCountermeasureFy" styleClass="plgDetail Wid100">
                     <f:facet name="header">
                         <p:row>
@@ -793,10 +793,10 @@
                     </f:facet>
                 </p:panelGrid>
             </p:dialog>
-            
+
         </h:form>
-        
-         <h:form id="formOne1">
+
+        <h:form id="formOne1">
             <p:dialog id="importPolicy" widgetVar="importPolicy" width="40%" style="border-color: #666666">
                 <p:panelGrid id="importPolicyGrid" styleClass="plgDetail Wid100">
                     <p:row>
