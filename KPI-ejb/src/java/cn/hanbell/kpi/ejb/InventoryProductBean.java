@@ -375,34 +375,8 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         StringBuffer sql = new StringBuffer();
         sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
         sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
-        if (wareh == null || wareh.length() == 0) {
-            throw new Exception("搜索明细必须加入仓库条件");
-        }
         sql.append(" and wareh ").append(wareh);
         Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
-        return query.getResultList();
-    }
-
-    //根据仓库名称获取数据
-    public List<InventoryProduct> getDetailsByWhdsc(int y, int m, String facno, String whdsc) throws Exception {
-        StringBuffer sql = new StringBuffer();
-        sql.append(" select * from inventoryproduct where facno ='").append(facno).append("'");
-        sql.append(" and yearmon='").append(String.valueOf(y)).append(getMon(m)).append("'");
-        sql.append(" and whdsc ").append(whdsc);
-        Query query = this.getEntityManager().createNativeQuery(sql.toString(), InventoryProduct.class);
-        return query.getResultList();
-    }
-
-    //获取未配置的仓库和金额
-    public List<Object[]> getNoConfigWareh(int y, int m, String facno) throws Exception {
-        StringBuffer sql = new StringBuffer();
-        sql.append(" select  wareh,whdsc,genre,sum(amount+amamount)");
-        sql.append(" from inventoryproduct where yearmon='");
-        sql.append(String.valueOf(y)).append(getMon(m)).append("'");
-        sql.append(" and facno='").append(facno).append("'  and wareh not in (");
-        sql.append("  select wareh from invindexdetail group by  wareh)");
-        sql.append(" group by  wareh,whdsc,genre");
-        Query query = this.getEntityManager().createNativeQuery(sql.toString());
         return query.getResultList();
     }
 
@@ -418,10 +392,12 @@ public class InventoryProductBean extends SuperEJBForKPI<InventoryProduct> {
         }
     }
 
-    public List<InventoryProduct> findYearmon(int y, int m) {
-        Query query = this.getEntityManager().createNamedQuery("InventoryProduct.findYearmon");
+    public List<InventoryProduct> findByFacnoAndYearmonAndCategories(String facno, String yearmon,String categories) {
+        Query query = this.getEntityManager().createNamedQuery("InventoryProduct.findByFacnoAndYearmonAndCategories");
         try {
-            query.setParameter("yearmon", String.valueOf(y) + getMon(m));
+            query.setParameter("yearmon", yearmon);
+            query.setParameter("facno", facno);
+             query.setParameter("categories", categories);
             return query.getResultList();
         } catch (Exception ex) {
             throw ex;

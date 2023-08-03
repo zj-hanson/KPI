@@ -17,6 +17,7 @@ import cn.hanbell.kpi.web.SuperSingleBean;
 import com.lightshell.comm.SuperMultiManagedBean;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.ejb.EJB;
@@ -44,19 +45,22 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
     private String queryFormid;
     private String queryGenzls;
 
+    private String queryPopGenerno;
+    private List<Object[]> warehs;
+
     public InvindexManagedBean() {
         super(Invindex.class, InvindexDetail.class);
     }
 
     @Override
     public void init() {
-//        isCreate = false;
         this.superEJB = invindexBean;
         this.detailEJB = invindexDetailBean;
-//           this.superEJB = systemRoleBean;
-//        this.detailEJB = systemRoleDetailBean;
+        warehs = new ArrayList();
         model = new InvindexModel(invindexBean);
         queryFacno = "C";
+        this.setQueryPopGenerno("A1");
+        this.popQuery();
         super.init();
     }
 
@@ -84,35 +88,50 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
             }
         }
     }
-        public void updateHead() {
-            if(this.currentEntity.getId()!=null){
-                invindexBean.update(currentEntity);
-                  showErrorMsg("Info", "修改成功！！！");
-            }
 
+    public void updateHead() {
+        if (this.currentEntity.getId() != null) {
+            invindexBean.update(currentEntity);
+            showErrorMsg("Info", "修改成功！！！");
+        }
+
+    }
+
+    public void popQuery() {
+        warehs = invindexDetailBean.getWarehAndSortid(this.getQueryPopGenerno());
+    }
+
+    public void popUpdate() {
+        for (Object[] o : warehs) {
+            List<InvindexDetail> list = invindexDetailBean.findByWareh(o[0].toString());
+            list.forEach(entity -> entity.setSort(Integer.valueOf(o[2].toString())));
+            invindexDetailBean.update(list);
+        }
     }
 
     @Override
     public void setCurrentEntity(Invindex currentEntity) {
         this.currentEntity = currentEntity;
-        if(currentEntity !=null){
-             this.detailList = invindexDetailBean.findByPId(currentEntity.getId());
+        if (currentEntity != null) {
+            this.detailList = invindexDetailBean.findByPId(currentEntity.getId());
         }
     }
 
     @Override
     public void update() {
-        System.out.println( this.currentEntity);
-        if( this.currentEntity.getId()!=null){
-             super.update();
-        }      
+        if (this.currentEntity == null) {
+            return;
+        }
+        if (this.currentEntity.getId() != null) {
+            super.update();
+        }
     }
 
     @Override
     public void createDetail() {
-               if (this.getNewDetail() == null) {
+        if (this.getNewDetail() == null) {
             try {
-                this.newDetail = (InvindexDetail)this.detailClass.newInstance();
+                this.newDetail = (InvindexDetail) this.detailClass.newInstance();
                 this.newDetail.setSeq(this.getMaxSeq(this.detailList));
                 this.newDetail.setGenerno(this.currentEntity.getGenerno());
                 this.newDetail.setIndno(this.currentEntity.getIndno());
@@ -188,6 +207,22 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
 
     public void setIsCreate(boolean isCreate) {
         this.isCreate = isCreate;
+    }
+
+    public String getQueryPopGenerno() {
+        return queryPopGenerno;
+    }
+
+    public void setQueryPopGenerno(String queryPopGenerno) {
+        this.queryPopGenerno = queryPopGenerno;
+    }
+
+    public List<Object[]> getWarehs() {
+        return warehs;
+    }
+
+    public void setWarehs(List<Object[]> warehs) {
+        this.warehs = warehs;
     }
 
 }

@@ -54,6 +54,10 @@ public class InvindexDetail extends SuperDetailEntity {
     @Size(max = 20)
     @Column(name = "wareh")
     private String wareh;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sort")
+    private int sort;
 
     public InvindexDetail() {
     }
@@ -108,6 +112,14 @@ public class InvindexDetail extends SuperDetailEntity {
 
     public void setWareh(String wareh) {
         this.wareh = wareh;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
     @Override

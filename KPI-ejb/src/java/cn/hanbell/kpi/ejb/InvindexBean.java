@@ -26,15 +26,43 @@ public class InvindexBean extends SuperEJBForKPI<Invindex> {
         super(Invindex.class);
     }
 
+    public String getGengerna(String generno) {
+        switch (generno) {
+            case "A1":
+                return "生产库存金额";
+            case "A2":
+                return "营业库存金额";
+            case "A3":
+                return "服务库存金额";
+            case "A4":
+                return "借出未归金额";
+            case "A5":
+                return "其他金额";
+            default:
+                return "";
+        }
+    }
+
     public Invindex findByGenernoAndFormid(String generno, String formid) {
         Query query = getEntityManager().createNamedQuery("Invindex.findByGenernoAndFormid");
         query.setParameter("generno", generno.trim());
         query.setParameter("formid", formid.trim());
         try {
-            return (Invindex)query.getSingleResult();
+            return (Invindex) query.getSingleResult();
         } catch (Exception ex) {
             throw ex;
         }
     }
 
+    public List<Object[]> getRemarkByGenerno(String generno) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select distinct formid,generna");
+        sb.append(" from invindex where  generno='").append(generno).append("'");
+        try {
+            Query q = getEntityManager().createNativeQuery(sb.toString());
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

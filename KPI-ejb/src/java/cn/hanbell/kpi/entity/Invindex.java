@@ -47,8 +47,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Invindex.findByOptdate", query = "SELECT i FROM Invindex i WHERE i.optdate = :optdate"),
     @NamedQuery(name = "Invindex.findByCfmuser", query = "SELECT i FROM Invindex i WHERE i.cfmuser = :cfmuser"),
     @NamedQuery(name = "Invindex.findByCfmdate", query = "SELECT i FROM Invindex i WHERE i.cfmdate = :cfmdate"),
-  @NamedQuery(name = "Invindex.findByGenernoAndFormid", query = "SELECT i FROM Invindex i WHERE  i.formid = :formid and i.generno = :generno")})
-public class Invindex extends SuperEntity{
+    @NamedQuery(name = "Invindex.findByGenernoAndFormid", query = "SELECT i FROM Invindex i WHERE  i.formid = :formid and i.generno = :generno")})
+public class Invindex extends SuperEntity {
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
@@ -76,6 +76,11 @@ public class Invindex extends SuperEntity{
     @Size(max = 20)
     @Column(name = "remark")
     private String remark;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sort")
+    private int sort;
+
     public Invindex() {
     }
 
@@ -144,6 +149,14 @@ public class Invindex extends SuperEntity{
         this.remark = remark;
     }
 
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -168,5 +181,5 @@ public class Invindex extends SuperEntity{
     public String toString() {
         return "cn.hanbell.kpi.entity.Invindex[ id=" + id + " ]";
     }
-    
+
 }
