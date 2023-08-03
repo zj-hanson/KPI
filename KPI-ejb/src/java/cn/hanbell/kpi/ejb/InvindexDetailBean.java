@@ -45,12 +45,32 @@ public class InvindexDetailBean extends SuperEJBForKPI<InvindexDetail> {
             throw ex;
         }
     }
+     public List<InvindexDetail> findByWareh(String wareh) {
+        Query query = getEntityManager().createNamedQuery("InvindexDetail.findByWareh");
+        query.setParameter("wareh", wareh);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
-    public List<Object[]> getWarehs(String genreno) {
+    public List<Object[]> getWarehs(String generno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" select head.genzls,detail.wareh,head.formid");
-        sb.append(" from invindexdetail detail left  join invindex head on head.id=detail.pid where head.generno='").append(genreno).append("'");
+        sb.append(" select head.genzls,detail.wareh,head.formid,head.generna");
+        sb.append(" from invindexdetail detail left  join invindex head on head.id=detail.pid where head.generno='").append(generno).append("'");
         sb.append(" order by head.indno ASC");
+        try {
+            Query q = getEntityManager().createNativeQuery(sb.toString());
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+       public List<Object[]> getWarehAndSortid(String generno) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" select wareh,whdsc,max(sort)");
+        sb.append(" from invindexdetail where generno='").append(generno).append("' group by wareh,whdsc order by max(sort)asc");
         try {
             Query q = getEntityManager().createNativeQuery(sb.toString());
             return q.getResultList();

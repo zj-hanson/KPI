@@ -41,7 +41,7 @@
                     <p:column styleClass="Wid30">
                         <p:inputText id="queryWareh" value="#{inventoryProductManagedBean.queryWareh}" title="查询库号"/>
                     </p:column>
-                     <p:column styleClass="Wid20">
+                    <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询库名" for="queryWhdsc"/>
                     </p:column>
                     <p:column styleClass="Wid30">
@@ -49,7 +49,7 @@
                     </p:column>
                 </p:row>
                 <p:row>
-                      <p:column styleClass="Wid20">
+                    <p:column styleClass="Wid20">
                         <p:outputLabel value="请输入查询产品别" for="queryGenre" />
                     </p:column>
                     <p:column styleClass="Wid30">
@@ -88,7 +88,7 @@
                                      update=":formList">
                         <p:confirm header="系统提示" message="确认覆盖已有数据" icon="pi pi-exclamation-triangle" />
                     </p:commandButton>
-                     <p:commandButton id="btnUpdateDat1a" value="更新" actionListener="#{inventoryProductManagedBean.updateIndicator()}" icon="ui-icon-save"
+                    <p:commandButton id="btnUpdateDat1a" value="更新" actionListener="#{inventoryProductManagedBean.updateHanbellIndicator()}" icon="ui-icon-save"
                                      update=":formList">
                     </p:commandButton>
                 </f:facet>
@@ -157,9 +157,16 @@
 
                 <p:column styleClass="Wid20" style="text-align: center;">
                     <f:facet name="header" >
-                        <h:outputText value="归类码"/>
+                        <h:outputText value="大类码"/>
                     </f:facet>
-                    <h:outputText id ="itclscode" value="#{item.itclscode}"></h:outputText>
+                    <h:outputText id ="categories" value="#{item.categories}"></h:outputText>
+                </p:column>
+
+                <p:column styleClass="Wid20" style="text-align: center;">
+                    <f:facet name="header" >
+                        <h:outputText value="中类码"/>
+                    </f:facet>
+                    <h:outputText id ="indicatorno" value="#{item.indicatorno}"></h:outputText>
                 </p:column>
 
                 <p:column styleClass="Wid20" style="text-align: right;">
