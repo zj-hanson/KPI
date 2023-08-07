@@ -17,7 +17,7 @@ public class ProductionPlanCompleteAJT1 extends ProductionPlanComplete {
         queryParams.put("facno", "C");
         queryParams.put("prono", "1");
         queryParams.put("stats", "2");
-        queryParams.put("linecode", " ='AH' ");
+        queryParams.put("linecode", " ='AH2' ");
         queryParams.put("typecode", " ='01' ");
         queryParams.put("prosscode", " in ('S1','S1-1','FAA09','FAA08') ");
         queryParams.put("wrcode", "  ='S4' ");
