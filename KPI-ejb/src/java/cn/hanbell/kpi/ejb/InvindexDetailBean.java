@@ -57,7 +57,7 @@ public class InvindexDetailBean extends SuperEJBForKPI<InvindexDetail> {
 
     public List<Object[]> getWarehs(String generno) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" select head.genzls,detail.wareh,head.formid,head.generna");
+        sb.append(" select head.genzls,detail.wareh,detail.whdsc,head.formid,head.generna");
         sb.append(" from invindexdetail detail left  join invindex head on head.id=detail.pid where head.generno='").append(generno).append("'");
         sb.append(" order by head.indno ASC");
         try {
