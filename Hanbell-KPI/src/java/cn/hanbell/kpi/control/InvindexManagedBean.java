@@ -5,9 +5,12 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.eap.entity.Product;
 import cn.hanbell.eap.entity.SystemUser;
+import cn.hanbell.kpi.ejb.IndexWarehBean;
 import cn.hanbell.kpi.ejb.InvindexBean;
 import cn.hanbell.kpi.ejb.InvindexDetailBean;
+import cn.hanbell.kpi.entity.IndexWareh;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.Invindex;
 import cn.hanbell.kpi.entity.InvindexDetail;
@@ -21,6 +24,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.ejb.EJB;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -33,11 +37,11 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
 
     @EJB
     private InvindexBean invindexBean;
-
     @EJB
     private InvindexDetailBean invindexDetailBean;
+    @EJB
+    private IndexWarehBean invindexWarehBean;
 
-    private boolean isCreate;
     private String queryFacno;
     private String queryIndno;
     private String queryGenerno;
@@ -46,7 +50,9 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
     private String queryGenzls;
 
     private String queryPopGenerno;
-    private List<Object[]> warehs;
+    private List<IndexWareh> warehs;
+
+    private IndexWareh selectWareh;
 
     public InvindexManagedBean() {
         super(Invindex.class, InvindexDetail.class);
@@ -94,19 +100,36 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
             invindexBean.update(currentEntity);
             showErrorMsg("Info", "修改成功！！！");
         }
-
     }
 
     public void popQuery() {
-        warehs = invindexDetailBean.getWarehAndSortid(this.getQueryPopGenerno());
+        warehs = invindexWarehBean.findByGenerno(this.getQueryPopGenerno());
+//         this.showInfoMsg("Info", "成功");
     }
 
-    public void popUpdate() {
-        for (Object[] o : warehs) {
-            List<InvindexDetail> list = invindexDetailBean.findByWareh(o[0].toString());
-            list.forEach(entity -> entity.setSort(Integer.valueOf(o[2].toString())));
-            invindexDetailBean.update(list);
+    public void popDelete() {
+        invindexWarehBean.delete(this.selectWareh);
+        popQuery();
+        this.showInfoMsg("Info", "成功");
+    }
+
+    public void popSave() {
+        if (this.selectWareh.getCreator() == null) {
+            this.selectWareh.setCreator(this.userManagedBean.getUserid());
+            this.selectWareh.setCredateToNow();
+        } else {
+            this.selectWareh.setOptuser(this.userManagedBean.getUserid());
+            this.selectWareh.setOptdateToNow();
         }
+        invindexWarehBean.update(selectWareh);
+        popQuery();
+        this.showInfoMsg("Info", "成功");
+    }
+
+    public void openNewSelectWareh() {
+        this.selectWareh = new IndexWareh();
+        this.selectWareh.setGenerno(queryGenerno);
+        popQuery();
     }
 
     @Override
@@ -201,14 +224,6 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
         this.queryGenzls = queryGenzls;
     }
 
-    public boolean isIsCreate() {
-        return isCreate;
-    }
-
-    public void setIsCreate(boolean isCreate) {
-        this.isCreate = isCreate;
-    }
-
     public String getQueryPopGenerno() {
         return queryPopGenerno;
     }
@@ -217,12 +232,20 @@ public class InvindexManagedBean extends SuperMultiBean<Invindex, InvindexDetail
         this.queryPopGenerno = queryPopGenerno;
     }
 
-    public List<Object[]> getWarehs() {
+    public List<IndexWareh> getWarehs() {
         return warehs;
     }
 
-    public void setWarehs(List<Object[]> warehs) {
+    public void setWarehs(List<IndexWareh> warehs) {
         this.warehs = warehs;
+    }
+
+    public IndexWareh getSelectWareh() {
+        return selectWareh;
+    }
+
+    public void setSelectWareh(IndexWareh selectWareh) {
+        this.selectWareh = selectWareh;
     }
 
 }

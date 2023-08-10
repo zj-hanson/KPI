@@ -5,11 +5,13 @@
  */
 package cn.hanbell.kpi.control;
 
+import cn.hanbell.kpi.ejb.IndexWarehBean;
 import cn.hanbell.kpi.ejb.IndicatorDetailBean;
 import cn.hanbell.kpi.ejb.InventoryDepartmentBean;
 import cn.hanbell.kpi.ejb.InventoryProductBean;
 import cn.hanbell.kpi.ejb.InvindexBean;
 import cn.hanbell.kpi.ejb.InvindexDetailBean;
+import cn.hanbell.kpi.entity.IndexWareh;
 import cn.hanbell.kpi.entity.Indicator;
 import cn.hanbell.kpi.entity.IndicatorDetail;
 import cn.hanbell.kpi.entity.InventoryProduct;
@@ -76,6 +78,8 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     @EJB
     private InvindexBean invindexBean;
 
+    @EJB
+    private IndexWarehBean indexWarehBean;
     protected String facno;
     protected String queryYearmon;
     protected String queryWhdsc;
@@ -371,7 +375,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
     }
 
     public void setSheet(HSSFSheet sheet, Map<String, CellStyle> style, String generno, String generna) {
-        List<Object[]> rows = invindexDetailBean.getWarehAndSortid(generno);
+        List<IndexWareh> rows = indexWarehBean.findByGenerno(generno);
         List<Object[]> columns = invindexBean.getRemarkByGenerno(generno);
         List<InventoryProduct> list = inventoryProductBean.findByFacnoAndYearmonAndCategories(facno, this.queryYearmon, generna);
         if ("C".equals(facno)) {
@@ -399,7 +403,7 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
             row.setHeight((short) 500);
             cell = row.createCell(0);
             cell.setCellStyle(style.get("head"));
-            cell.setCellValue(rows.get(i)[1].toString());
+            cell.setCellValue(rows.get(i).getWhdsc());
         }
 
         for (int i = 0; i <=columns.size(); i++) {
@@ -407,10 +411,17 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
         }
         for (int x = 0; x < rows.size(); x++) {
             row = sheet.getRow(x+1);
-            String wareh=rows.get(x)[0].toString();
+            String wareh=rows.get(x).getWareh();
+            String whdsc=rows.get(x).getWhdsc();
             for (int y = 0; y < columns.size(); y++) {
                 String indicatorno=columns.get(y)[0].toString();
-                Double sum = list.stream().filter(d -> d.getWareh().equals(wareh) && d.getIndicatorno().equals(indicatorno)).collect(Collectors.toList()).stream().mapToDouble(InventoryProduct::getSumAmount).sum();
+                int i=0;
+                for(InventoryProduct p:list){
+                    if( p.getWareh().equals(wareh) && p.getIndicatorno().equals(indicatorno)){
+                        i++;
+                    }
+                }
+                Double sum = list.stream().filter(d ->  d.getWhdsc().equals(whdsc) &&d.getWareh().equals(wareh) && d.getIndicatorno().equals(indicatorno)).collect(Collectors.toList()).stream().mapToDouble(InventoryProduct::getSumAmount).sum();
                 cell = row.createCell(y+1);
                 cell.setCellStyle(style.get("cell"));
                 cell.setCellValue(sum);
@@ -493,31 +504,31 @@ public class InventoryProductManagedBean extends SuperSingleBean<InventoryProduc
                 for (Object[] o : A1List) {
                     if (entity.getWareh().equals(o[1]) && this.genzlsToList((String) o[0]).contains(entity.getGenre())) {
                         entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ? invindexBean.getGengerna("A1"): String.format("%s,%s", entity.getCategories(), invindexBean.getGengerna("A1")));
-                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[2] : String.format("%s,%s", entity.getIndicatorno(), (String) o[2]));
+                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[3] : String.format("%s,%s", entity.getIndicatorno(), (String) o[3]));
                     }
                 }
                 for (Object[] o : A2List) {
                     if (entity.getWareh().equals(o[1]) && this.genzlsToList((String) o[0]).contains(entity.getGenre())) {
                         entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ?invindexBean.getGengerna("A2"): String.format("%s,%s", entity.getCategories(), invindexBean.getGengerna("A2")));
-                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[2] : String.format("%s,%s", entity.getIndicatorno(), (String) o[2]));
+                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[3] : String.format("%s,%s", entity.getIndicatorno(), (String) o[3]));
                     }
                 }
                 for (Object[] o : A3List) {
                     if (entity.getWareh().equals(o[1])) {
                         entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ? invindexBean.getGengerna("A3"): String.format("%s,%s", entity.getCategories(),invindexBean.getGengerna("A3")));
-                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[2] : String.format("%s,%s", entity.getIndicatorno(), (String) o[2]));
+                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[3] : String.format("%s,%s", entity.getIndicatorno(), (String) o[3]));
                     }
                 }
                 for (Object[] o : A4List) {
                     if (entity.getWareh().equals(o[1]) && startWithDeptno((String) o[0], entity.getDeptno())) {
                         entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ? invindexBean.getGengerna("A4") : String.format("%s,%s", entity.getCategories(),invindexBean.getGengerna("A3")));
-                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[2] : String.format("%s,%s", entity.getIndicatorno(), (String) o[2]));
+                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[3] : String.format("%s,%s", entity.getIndicatorno(), (String) o[3]));
                     }
                 }
                 for (Object[] o : A5List) {
                     if (entity.getWareh().equals(o[1])) {
-                        entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ? invindexBean.getGengerna("A5") : String.format("%s,%s", invindexBean.getGengerna("A5")));
-                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[2] : String.format("%s,%s", entity.getIndicatorno(), (String) o[2]));
+                        entity.setCategories(entity.getCategories() == null || "".equals(entity.getCategories()) ? invindexBean.getGengerna("A5") : String.format("%s,%s",entity.getCategories(), invindexBean.getGengerna("A5")));
+                        entity.setIndicatorno(entity.getIndicatorno() == null || "".equals(entity.getIndicatorno()) ? (String) o[3] : String.format("%s,%s", entity.getIndicatorno(), (String) o[3]));
                     }
                 }
             }
