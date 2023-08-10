@@ -47,7 +47,7 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
     public List<EquipmentStandard> getMonthlyReport(String date, String standardlevel) throws ParseException {
         StringBuilder sbSql = new StringBuilder();
         StringBuilder sbMES = new StringBuilder();
-        sbSql.append(" SELECT E.* FROM equipmentstandard E  LEFT JOIN assetcard A  ON E.assetno=A.formid  WHERE  E.status='V' ");
+        sbSql.append(" SELECT E.* FROM equipmentstandard E   WHERE  E.status='V' ");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date d = formatter.parse(date);//将String格式转为日期格式
         Calendar cal = Calendar.getInstance();
@@ -238,4 +238,27 @@ public class EquipmentAnalyResultBean extends SuperEJBForEAM<EquipmentAnalyResul
         fMESList.addAll(yMESList);
         return fMESList;
     }
+    /**
+     * 获取备件库存到预警线的数据
+     * @return 
+     */
+       public List getEquipmentSpare() {
+        String resultSql = "SELECT A.sparenum,A.sparedesc,A.sparemodel,A.qty,B.minstock FROM(SELECT T.sparenum,S.sparedesc,S.sparemodel,sum(T.qty) as qty"
+                + "   FROM equipmentsparestock T LEFT JOIN equipmentspare S ON T.sparenum = S.sparenum AND S.company = 'C'  LEFT JOIN equipmentspareclass C ON S.scategory = C.scategory AND C.company = 'C'"
+                + "   LEFT JOIN equipmentsparemid M ON S.scategory = M.scategory AND S.mcategory = M.mcategory AND M.company = 'C'  WHERE T.sarea = '枫泾厂' AND T.company = 'C'  GROUP BY  sparenum,sparemodel) A LEFT JOIN equipmentspare B ON A.sparenum = B.sparenum AND B.company = 'C'  WHERE A.qty<minstock ORDER BY  sparenum";
+        Query query = getEntityManager().createNativeQuery(resultSql);
+        List<Object[]> results = query.getResultList();
+        return results;
+    }
+       /**
+        * 获取维修完成后48小时未结案单子
+        * @return 
+        */
+      public List getPendingEquipment() {
+        String resultSql = "SELECT formid,assetno,repairusername,serviceusername,TIMESTAMPDIFF(HOUR, hitchtime, NOW()),rstatus FROM equipmentrepair WHERE rstatus>30  and rstatus<95 AND TIMESTAMPDIFF(HOUR, hitchtime, NOW())>48";
+        Query query = getEntityManager().createNativeQuery(resultSql);
+        List<Object[]> results = query.getResultList();
+        return results;
+    }
+    
 }
