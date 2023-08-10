@@ -38,7 +38,7 @@
                     <p:commandButton id="btnLoad" value="刷新" actionListener="#{invindexManagedBean.init()}" icon="ui-icon-sync"
                                      update=":formList"/>
                     <p:commandButton id="btnSort" value="排序"  
-                                     update=":formList" oncomplete="PF('warehSortEdit').show();"/>
+                                     update=":formList,formEdit" oncomplete="PF('warehSortEdit').show();"/>
                 </f:facet>
                 <f:facet name="right">
                     <p:splitButton id="btnOperate" value="操作" icon="ui-icon-menu">
@@ -105,13 +105,13 @@
             </p:confirmDialog>
         </h:form>
         <h:form id="formEdit">
-            <p:dialog id="warehSortEdit" widgetVar="warehSortEdit" width="65%" style="border-color: #666666">
+            <p:dialog id="warehSortEdit" widgetVar="warehSortEdit"  height="700" width="70%" style="border-color: #666666" >
                 <p:panelGrid id="plgQuery" columns="2" columnClasses="Wid15,Wid20,Wid15,Wid20" styleClass="plgQuery Wid100" >
                     <f:facet name="header">
                         查询条件
                     </f:facet>
                     <h:outputLabel value="库存大类" for="queryPopGenerno" />
-                    <p:selectOneMenu id="queryCurrency" value="#{invindexManagedBean.queryPopGenerno}" style="width:100%;" title="公司别" >
+                    <p:selectOneMenu id="queryPopGenerno" value="#{invindexManagedBean.queryPopGenerno}" style="width:100%;" title="公司别" >
                         <f:selectItem itemLabel="请选择" itemValue=""/>
                         <f:selectItem itemLabel="生产库存" itemValue="A1"/>
                         <f:selectItem itemLabel="营业库存" itemValue="A2"/>
@@ -121,36 +121,66 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:toolbar id="toolbar" styleClass="topToolbar">
-                    <f:facet name="right">
+                    <p:toolbarGroup>
+                        <p:commandButton value="新增" icon="ui-icon-plus"  styleClass="ui-button-success" actionListener="#{invindexManagedBean.openNewSelectWareh}" update="popItemDialog" oncomplete="PF('popItemDialog').show()"
+                                        process="@this" ></p:commandButton>
+                           <p:commandButton value="编辑" icon="ui-icon-pencil"  styleClass="ui-button-success"  update="popItemDialog" oncomplete="PF('popItemDialog').show()"  process="@this" ></p:commandButton>
+                        <p:commandButton value="删除" icon="ui-icon-delete"  styleClass="ui-button-danger" actionListener="#{invindexManagedBean.popDelete}" process="@this" update="formList:growl,warehDataTable"></p:commandButton>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup  align="right">
+                        <p:commandButton  value="重置" actionListener="#{invindexManagedBean.popQuery()}" icon="ui-icon-check"
+                                          process="@this,formEdit:plgQuery" update="warehDataTable" />
                         <p:commandButton  value="查询" actionListener="#{invindexManagedBean.popQuery()}" icon="ui-icon-search"
-                                         update="formEdit:warehDataTable"/>
-                        <p:commandButton  value="保存" actionListener="#{invindexManagedBean.popUpdate()}" icon="ui-icon-check"
-                                          process="@this,formEdit:warehDataTable" update="formEdit:warehDataTable"/>
-                    </f:facet>
+                                          update="warehDataTable" process="@this,formEdit:plgQuery"/>
+                    </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="warehDataTable" value="#{invindexManagedBean.warehs}" var="item"  tableStyleClass="tableList" paginator="true" paginatorPosition="bottom" rows="15"
-                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                          lazy="true" >
-                    <p:column styleClass="Wid10">
+                <p:dataTable id="warehDataTable" value="#{invindexManagedBean.warehs}"  var="item"  tableStyleClass="tableList" scrollable="true"  scrollHeight="500" 
+                             selection="#{invindexManagedBean.selectWareh}" selectionMode="single"  rowKey="#{item.id}">
+                          <p:ajax event="rowSelect"  update="formEdit:warehDataTable" oncomplete="" />
+                        <p:ajax event="rowUnselect"  update="formEdit:warehDataTable" oncomplete="" />
+                    <p:column styleClass="Wid5" >
                         <f:facet name="header">
                             <h:outputText value="库号"/>
                         </f:facet>
-                        <h:outputText value="#{item[0]}"/>
+                        <h:outputText value="#{item.wareh}"/>
                     </p:column>
-                    <p:column styleClass="Wid10">
+                    <p:column styleClass="Wid10" >
                         <f:facet name="header">
                             <h:outputText value="库名"/>
                         </f:facet>
-                        <h:outputText value="#{item[1]}"/>
+                        <h:outputText value="#{item.whdsc}"/>
                     </p:column>
-                    <p:column styleClass="Wid5">
+                    <p:column styleClass="Wid10" >
                         <f:facet name="header">
                             <h:outputText value="序号"/>
                         </f:facet>
-                        <p:inputNumber  value="#{item[2]}"  inputStyleClass="scoreInputNumber">
-                        </p:inputNumber>
+                        <h:outputText value="#{item.sort}"/>
                     </p:column>
                 </p:dataTable>
+            </p:dialog>
+            <p:dialog id="popItemDialog" header="仓库排序明细" showEffect="fade" modal="true" widgetVar="popItemDialog"  responsive="true"  width="40%">
+                <p:panelGrid id="plgQWarehDetail" columns="4" columnClasses="Wid15,Wid20,Wid15,Wid20" styleClass="plgQuery Wid100" >
+                    <f:facet name="header">
+                        新增仓库序号
+                    </f:facet>
+                    <h:outputLabel value="仓库代号" for="wareh" />
+                    <p:inputText id="wareh"  value="#{invindexManagedBean.selectWareh.wareh}" title="仓库代号" />
+                    <h:outputLabel value="仓库名称" for="whdsc" />
+                    <p:inputText id="whdsc"  value="#{invindexManagedBean.selectWareh.whdsc}" title="仓库名称"/>
+                    <h:outputLabel value="序号" for="sort" />
+                    <p:inputText id="sort"  value="#{invindexManagedBean.selectWareh.sort}" title="序号" />
+                    <h:outputLabel value="库存大类" for="queryFacno" />
+                    <p:selectOneMenu id="genernp" value="#{invindexManagedBean.selectWareh.generno}" style="width:100%;" title="库存大类" rendered="true">
+                        <f:selectItem itemLabel="生产库存" itemValue="A1"/>
+                        <f:selectItem itemLabel="营业库存" itemValue="A2"/>
+                        <f:selectItem itemLabel="服务库存" itemValue="A3"/>
+                        <f:selectItem itemLabel="借出未归" itemValue="A4"/>
+                        <f:selectItem itemLabel="其他" itemValue="A5"/>
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <p:commandButton value="保存" icon="ui-icon-check" actionListener="#{invindexManagedBean.popSave()}"  oncomplete="PF('popItemDialog').hide()" process="@this,formEdit:plgQWarehDetail" update="formList:growl,warehDataTable"/>
+                    </f:facet>
+                </p:panelGrid>
             </p:dialog>
         </h:form>
     </ui:define>
