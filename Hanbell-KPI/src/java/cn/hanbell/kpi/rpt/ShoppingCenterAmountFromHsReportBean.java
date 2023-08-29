@@ -101,10 +101,10 @@ public class ShoppingCenterAmountFromHsReportBean extends FinancingFreeServiceRe
             String twFhszj = " in ('1139')";
             String scmFhszj = " in ('KZJ00053')";
             String zcmFhszj = " in ('EZJ00053')";
-            Object[] shb = shoppingAccomuntBean.getShbDate("SHB", "C", btnDate, shbFhszj, "");
-            Object[] thb = shoppingAccomuntBean.getShbDate("THB", "A", btnDate, twFhszj, "");
-            Object[] scm = shoppingAccomuntBean.getShbDate("SCOMER", "K", btnDate, scmFhszj, "");
-            Object[] zcm = shoppingAccomuntBean.getShbDate("ZCOMER", "E", btnDate, zcmFhszj, "");
+            Object[] shb = shoppingAccomuntBean.getShbDateByVdrno("SHB", "C", btnDate, shbFhszj);
+            Object[] thb = shoppingAccomuntBean.getShbDateByVdrno("THB", "A", btnDate, twFhszj);
+            Object[] scm = shoppingAccomuntBean.getShbDateByVdrno("SCOMER", "K", btnDate, scmFhszj);
+            Object[] zcm = shoppingAccomuntBean.getShbDateByVdrno("ZCOMER", "E", btnDate, zcmFhszj);
             Object[] cm = new Object[15];
             cm[0] = "CM";
             for (int i = 1; i <= 13; i++) {

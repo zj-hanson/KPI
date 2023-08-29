@@ -102,18 +102,18 @@ public class ShoppingAccomuntBean implements Serializable {
     //
     public List<Object[]> getList(Date date) {
         List<Object[]> list = new ArrayList<>();
-        list.add(getShbDate("SHB全部", "C", date, "", ""));
-        list.add(getShbDate("SHB采购中心", "C", date, getWhereVdrnos("C").toString(), ""));
-        list.add(getShbDate("THB全部", "A", date, "", ""));
-        list.add(getShbDate("THB采购中心", "A", date, getWhereVdrnos("A").toString(), ""));
-        list.add(getShbDate("HS全部", "H", date, "", ""));
-        list.add(getShbDate("HS采购中心", "H", date, getWhereVdrnos("H").toString(), ""));
-        list.add(getShbDate("SCM全部", "K", date, "", ""));
-        list.add(getShbDate("SCM采购中心", "K", date, getWhereVdrnos("K").toString(), ""));
-        list.add(getShbDate("ZCM全部", "E", date, "", ""));
-        list.add(getShbDate("ZCM采购中心", "E", date, getWhereVdrnos("E").toString(), ""));
-        list.add(getShbDate("HY全部", "Y", date, "", ""));
-        list.add(getShbDate("HY采购中心", "Y", date, getWhereVdrnos("Y").toString(), ""));
+        list.add(getDateByIsCenter("SHB全部", "C", date, false));
+        list.add(getDateByIsCenter("SHB采购中心", "C", date,true));
+        list.add(getDateByIsCenter("THB全部", "A", date, false));
+        list.add(getDateByIsCenter("THB采购中心", "A", date,true));
+        list.add(getDateByIsCenter("HS全部", "H", date, false));
+        list.add(getDateByIsCenter("HS采购中心", "H", date, true));
+        list.add(getDateByIsCenter("SCM全部", "K", date, false));
+        list.add(getDateByIsCenter("SCM采购中心", "K", date, true));
+        list.add(getDateByIsCenter("ZCM全部", "E", date, false));
+        list.add(getDateByIsCenter("ZCM采购中心", "E", date, true));
+        list.add(getDateByIsCenter("HY全部", "Y", date,false));
+        list.add(getDateByIsCenter("HY采购中心", "Y", date, true));
         //计算合计指标
         Object[] o1 = new Object[]{"集团合计", BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
             BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, ""};
@@ -151,8 +151,8 @@ public class ShoppingAccomuntBean implements Serializable {
         return list;
     }
 
-    //汉声和大陆的采购金额逻辑相同
-    public Object[] getShbDate(String name, String facno, Date date, String vdrnos, String itcls) {
+
+    public Object[] getShbDateByVdrno(String name, String facno, Date date, String vdrnos) {
         Object[] row = new Object[16];
         row[0] = name;
         //循环获取12个月的数据
@@ -163,8 +163,37 @@ public class ShoppingAccomuntBean implements Serializable {
         if (vdrnos != null && !"".equals(vdrnos)) {
             sql.append(" AND vdrno ").append(vdrnos);
         }
-        if (itcls != null && !"".equals(itcls)) {
-            sql.append(" AND itcls ").append(getWhereItlcs(itcls).toString());
+        sql.append(" and yearmon like '").append(String.valueOf(findYear(date))).append("%' group by yearmon order by yearmon ASC");
+        Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
+        BigDecimal sum = BigDecimal.ZERO;
+        try {
+            List<Object[]> data = query.getResultList();
+            for (int i = 1; i <= 12; i++) {
+                if (i <= data.size()) {
+                    row[i] = (java.math.BigDecimal) data.get(i - 1)[1];
+                } else {
+                    row[i] = new BigDecimal(0.0);
+                }
+                sum = sum.add((java.math.BigDecimal) row[i]);
+            }
+            row[13] = sum;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return row;
+    }
+    
+      public Object[] getDateByIsCenter(String name, String facno, Date date,boolean iscenter) {
+        Object[] row = new Object[16];
+        row[0] = name;
+        //循环获取12个月的数据
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select CAST(right(yearmon,2) AS SIGNED) ,sum(acpamt)");
+        sql.append(" from shoppingtable");
+        sql.append(" where facno ='").append(facno).append("'");
+        if(iscenter){
+            sql.append(" and iscenter=1 ");
         }
         sql.append(" and yearmon like '").append(String.valueOf(findYear(date))).append("%' group by yearmon order by yearmon ASC");
         Query query = shoppingManufacturerBean.getEntityManager().createNativeQuery(sql.toString());
@@ -396,7 +425,7 @@ public class ShoppingAccomuntBean implements Serializable {
 
     public List<Object[]> getShbDateDetail(String facno, Date date, String vdrnos, String itcls) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" select a.*,b.itcls,''");
+        sql.append(" select a.*,b.itcls");
         sql.append(" from (");
         sql.append(" SELECT apmpyh.facno ,apmpyh.vdrno , purvdr.vdrna , apmpyh.itnbr,apmpyh.itdsc,  apmpyh.acpamt ,apmpyh.payqty");
         sql.append(" FROM apmpyh ,purvdr ,purhad");

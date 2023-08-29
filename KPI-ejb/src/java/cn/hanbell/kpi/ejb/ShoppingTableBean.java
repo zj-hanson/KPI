@@ -37,18 +37,18 @@ public class ShoppingTableBean extends SuperEJBForKPI<ShoppingTable> {
         }
     }
 
-    public List<Object[]> findByFacnoAndYearmon(String facno, String yearmon) {
+    public List<ShoppingTable> findByFacnoAndYearmon(String facno, String yearmon) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" select head.facno,head.vdrno, head.vdrna, head.itnbr, head.itdsc, head.acpamt, head.itcls, head.iscenter,'', head.acpno, head.sponr");
+        sql.append(" select head.*");
         sql.append(" from shoppingtable head left join shoppingmanufacturer detail on head.facno=detail.facno and head.vdrno=detail.vdrno");
         sql.append(" where detail.facno is not null");
         sql.append(" and");
         sql.append(" head.facno='").append(facno).append("'");
         sql.append(" and");
         sql.append(" head.yearmon='").append(yearmon).append("'");
-        Query q = this.getEntityManager().createNativeQuery(sql.toString());
+        Query q = this.getEntityManager().createNativeQuery(sql.toString(),ShoppingTable.class);
         try {
-            List<Object[]> result = q.getResultList();
+            List<ShoppingTable> result = q.getResultList();
             return result;
         } catch (Exception ex) {
             throw ex;
