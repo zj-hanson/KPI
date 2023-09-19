@@ -6,21 +6,15 @@
 package cn.hanbell.kpi.ejb;
 
 import cn.hanbell.kpi.comm.SuperEJBForERP;
-import cn.hanbell.kpi.comm.SuperEJBForKPI;
-import cn.hanbell.kpi.entity.AccountsReceivables;
 import cn.hanbell.kpi.entity.ShoppingManufacturer;
 import cn.hanbell.util.BaseLib;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
