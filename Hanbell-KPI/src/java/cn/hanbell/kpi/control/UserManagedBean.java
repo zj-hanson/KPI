@@ -113,8 +113,8 @@ public class UserManagedBean implements Serializable {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     HttpEntity httpEntity = response.getEntity();
                     JSONObject jo = new JSONObject(EntityUtils.toString(httpEntity, "UTF-8"));
-                    if (jo.has("code") && jo.getString("code").equals("200") && jo.has("object")) {
-                        userid = jo.getJSONObject("object").getString("username");
+                    if (jo.has("code") && jo.getString("code").equals("200") && jo.has("data")) {
+                        userid = jo.getJSONObject("data").getString("username");
                         currentUser = systemUserBean.findByUserId(userid);
                         if (currentUser != null) {
                             company = currentUser.getDept().getCompany();
