@@ -615,7 +615,7 @@
                         </p:column>
                         <p:column styleClass="Wid5">
                             <p:spinner id="cq3" value="#{scorecardSetManagedBean.currentDetail.cq3}"  stepFactor="0.10" title="cq3">
-                                <p:ajax listener="#{scorecardSetManagedBean.calcItemScore()}" process="@this,cq3" update="gsq3" />
+                                <p:ajax listener="#{scorecardSetManagedBean.calcItemScore(false)}" process="@this,cq3" update="gsq3" />
                             </p:spinner>
                         </p:column>
                     </p:row>

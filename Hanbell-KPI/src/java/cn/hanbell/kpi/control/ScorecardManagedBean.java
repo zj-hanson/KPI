@@ -199,7 +199,7 @@ public class ScorecardManagedBean extends SuperSingleBean<ScorecardContent> {
                 if (currentEntity.getScoreJexl() != null && !"".equals(currentEntity.getScoreJexl())) {
                     // 计算得分
                     col = scorecardBean.getColumn("q", userManagedBean.getQ());
-                    scorecardBean.setContentScore(currentEntity, col);
+                    scorecardBean.setContentScoreByCoefficient(currentEntity, col);
                     // 上半年
                     if (userManagedBean.getQ() == 2) {
                         col = scorecardBean.getColumn("h", 1);
