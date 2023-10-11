@@ -390,26 +390,48 @@ public class ScorecardBean extends SuperEJBForKPI<Scorecard> {
             throw ex;
         }
     }
-    
+
     public void setContentScoreByCoefficient(ScorecardContent d, String n) throws Exception {
         if (d.getScoreJexl() == null || "".equals(d.getScoreJexl())) {
             throw new NullPointerException("表达式为空");
         }
         double score = 0.0;
-        double minDifference = 0.0;
+        double minDifference = 500;
         double minCoefficient = 0.0;
+        BigDecimal target = BigDecimal.ZERO;
+        switch (n) {
+            case "q1":
+                target = d.getPq1();
+                break;
+            case "q2":
+                target = d.getPq2();
+                break;
+            case "q3":
+                target = d.getPq3();
+                break;
+            case "q4":
+                target = d.getPq4();
+                break;
+            case "h1":
+                target = d.getPh1();
+                break;
+            case "h2":
+                target = d.getPh2();
+                break;
+        }
         for (double i = 0.1; i <= 0.9; i = i + 0.1) {
             JexlEngine jexl = new JexlBuilder().create();
-            String jexlExp = d.getScoreJexl().replace("object.c${n}",String.valueOf(i)).replace("${n}", n);
+            String jexlExp = d.getScoreJexl().replace("object.c${n}", String.valueOf(i)).replace("${n}", n);
             JexlExpression exp = jexl.createExpression(jexlExp);
             JexlContext jc = new MapContext();
             jc.set("object", d);
             BigDecimal score1 = BigDecimal.valueOf(Double.valueOf(exp.evaluate(jc).toString()));
-            double value=score1.doubleValue();
-            if (Math.abs(100 - value) > minDifference) {
-                minDifference = value;
+            double value = score1.doubleValue();
+            if (Math.abs(target.doubleValue() - value) < minDifference) {
+                minDifference = Math.abs(target.doubleValue() - value);
                 minCoefficient = i;
                 score = value;
+              
             }
         }
         BigDecimal bigDecimalScore = BigDecimal.valueOf(score);
